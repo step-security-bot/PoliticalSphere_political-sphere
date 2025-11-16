@@ -4,6 +4,40 @@ This file is the canonical, repository-root changelog for Political Sphere. It c
 
 The format follows Keep a Changelog (https://keepachangelog.com/en/1.0.0/) and the project follows Semantic Versioning (https://semver.org/).
 
+## [2025-11-16] - Copilot Instructions Enhancement
+
+### Added
+- **GitHub Issues and Pull Request Workflow sections** to `.github/copilot-instructions.md`:
+  - "Working with GitHub Issues" section with issue requirement guidelines, well-scoped issue characteristics, example issue format, and progress tracking guidance
+  - "Pull Request Workflow" section with PR creation best practices, description template, feedback response guidelines, iterative improvement process, and common pitfalls to avoid
+  
+- **Specialized scoped instruction files** in `.github/instructions/`:
+  - `testing.instructions.md`: Vitest testing patterns, AAA structure, accessibility testing, security testing, coverage requirements
+  - `security.instructions.md`: Authentication, input validation, cryptography, rate limiting, OWASP guidelines, security testing
+  - `accessibility.instructions.md`: WCAG 2.2 AA compliance, semantic HTML, keyboard navigation, ARIA usage, color contrast
+
+- **Custom agent profiles** in `.github/agents/`:
+  - `readme-expert.md`: Specialized agent for creating and maintaining high-quality README files
+  - `test-generator.md`: Specialized agent for generating comprehensive test suites with high coverage
+  - `docs-improver.md`: Specialized agent for enhancing documentation quality and clarity
+
+### Changed
+- Updated `.github/copilot-instructions.md` version from 2.5.0 to 2.6.0
+- Updated table of contents to include new sections
+- Added version history entry for 2.6.0
+- Updated last reviewed date to 2025-11-16
+
+### Impact
+- ✅ Aligns repository with GitHub's official best practices for Copilot coding agents
+- ✅ Provides clear guidance on working with issues and pull requests
+- ✅ Enables specialized, context-aware assistance through scoped instructions
+- ✅ Supports task-specific workflows through custom agent profiles
+- ✅ Improves collaboration between developers and AI coding agents
+
+**References**: GitHub Copilot Best Practices (https://docs.github.com/en/copilot/tutorials/coding-agent/get-the-best-results)
+
+Closes #111
+
 ## [2025-11-16] - Database Setup Standardization
 
 ### Added

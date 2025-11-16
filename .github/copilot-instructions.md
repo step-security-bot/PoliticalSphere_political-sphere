@@ -1,8 +1,8 @@
 # GitHub Copilot Custom Instructions: Political Sphere
 
-**Version:** 2.5.0
-**Last Reviewed:** 2025-11-08
-**Next Review:** 2026-05-08
+**Version:** 2.6.0
+**Last Reviewed:** 2025-11-16
+**Next Review:** 2026-05-16
 
 ## Executive Summary
 
@@ -39,6 +39,7 @@ The following list is non-hiracrachial
 
 | Version | Date       | Author   | Key Changes                                                                                                    | Impact              |
 | ------- | ---------- | -------- | -------------------------------------------------------------------------------------------------------------- | ------------------- |
+| 2.6.0   | 2025-11-16 | AI Agent | Added GitHub Issues and Pull Request workflow sections; enhanced collaboration guidance                       | Major enhancement   |
 | 2.3.0   | 2025-11-07 | AI Agent | Added AI Effectiveness Principles: effectiveness, efficiency, security-first, innovation, proactive, realistic | Major enhancement   |
 | 2.2.0   | 2025-11-07 | AI Agent | Updated project structure section to align with new file-structure.md Mermaid diagram design                   | Documentation       |
 | 2.1.0   | 2025-11-06 | AI Agent | Added Function Feasibility and Implementation Status rules; Added external source usage guidelines             | Quality enhancement |
@@ -126,13 +127,21 @@ The following list is non-hiracrachial
 9. [AI Governance and Ethics](copilot-instructions.md#ai-governance-and-ethics)
    - Political Neutrality
    - Transparency & Human Oversight
-10. [Change Management](copilot-instructions.md#change-management)
-    - Execution Modes (Safe, Fast-Secure, Audit, R&D)
-    - Risk Tier Examples
-11. [Collaboration and Communication](copilot-instructions.md#collaboration-and-communication)
+10. [Collaboration and Communication](copilot-instructions.md#collaboration-and-communication)
     - When to Ask Questions
     - Constitutional Citation Requirements
-12. [Compliance and Auditability](copilot-instructions.md#compliance-and-auditability)
+11. [Working with GitHub Issues](copilot-instructions.md#working-with-github-issues) - 📋 TASK GUIDANCE
+    - Understanding Requirements
+    - Well-Scoped Issues
+    - Example Issue Format
+12. [Pull Request Workflow](copilot-instructions.md#pull-request-workflow) - 🔄 PR PROCESS
+    - Creating Effective PRs
+    - Responding to Feedback
+    - Iterative Improvement
+13. [Change Management](copilot-instructions.md#change-management)
+    - Execution Modes (Safe, Fast-Secure, Audit, R&D)
+    - Risk Tier Examples
+14. [Compliance and Auditability](copilot-instructions.md#compliance-and-auditability)
     - GDPR/CCPA Data Protection
     - Audit Readiness
 
@@ -1271,6 +1280,226 @@ Compliance verified: [Yes/No - explain alignment or escalate for review]
 
 **Escalation**: Referred to TGC for constitutional review before any implementation.
 ```
+
+---
+
+## Working with GitHub Issues
+
+When assigned to or working on GitHub issues, follow these best practices:
+
+### Understanding Issue Requirements
+
+1. **Read the entire issue carefully**:
+   - Review the issue title, description, and all comments
+   - Identify acceptance criteria (explicit or implicit)
+   - Check for linked issues, PRs, or documentation
+   - Note any specific constraints or requirements
+
+2. **Ask clarifying questions** if:
+   - Requirements are ambiguous or contradictory
+   - Acceptance criteria are not clear
+   - Technical approach is uncertain
+   - Multiple valid solutions exist with different trade-offs
+
+3. **Acknowledge the task** before starting:
+   - Restate your understanding of the requirements
+   - Outline your proposed approach
+   - Identify any potential risks or blockers
+   - Estimate complexity and scope
+
+### Well-Scoped Issue Characteristics
+
+Issues that work best with Copilot coding agents have:
+
+- **Clear, specific problem statement**: What needs to be fixed or built?
+- **Explicit acceptance criteria**: How do we know when it's done?
+- **Defined scope**: What files/components are affected?
+- **Context provided**: Links to related code, docs, or issues
+- **Test requirements**: What tests are needed?
+- **Documentation needs**: What docs need updating?
+
+### Example: Well-Formed Issue
+
+```markdown
+**Title**: Add input validation for user email addresses
+
+**Description**:
+The user registration form currently accepts invalid email formats, leading to failed 
+notifications and poor UX. We need to add proper email validation.
+
+**Acceptance Criteria**:
+- [ ] Validate email format on client-side (React component)
+- [ ] Validate email format on server-side (API endpoint)
+- [ ] Display clear error message for invalid emails
+- [ ] Add unit tests for validation logic (80%+ coverage)
+- [ ] Add E2E test for registration flow with invalid email
+- [ ] Update API documentation with validation rules
+- [ ] Ensure WCAG 2.2 AA compliance for error messages
+
+**Files Affected**:
+- `apps/web/src/components/RegistrationForm.tsx`
+- `apps/api/src/routes/auth/register.ts`
+- `libs/shared/utils/src/validation.ts`
+
+**Technical Notes**:
+- Use established email regex pattern from RFC 5322
+- Follow existing validation patterns in codebase
+- Ensure error messages are i18n-ready
+
+**Related Issues**: #123, #456
+**Labels**: bug, security, accessibility
+```
+
+### Handling Incomplete Issues
+
+If an issue lacks detail:
+
+1. **Request clarification** with specific questions
+2. **Propose assumptions** and ask for confirmation
+3. **Suggest splitting** large issues into smaller tasks
+4. **Offer to help** refine acceptance criteria
+
+### Progress Tracking
+
+As you work on an issue:
+
+1. **Comment on progress**: Post updates when reaching milestones
+2. **Ask questions early**: Don't wait until stuck
+3. **Share blockers**: Identify dependencies or blockers immediately
+4. **Link commits/PRs**: Reference the issue in commits and PRs
+5. **Update checklists**: Check off completed acceptance criteria
+
+---
+
+## Pull Request Workflow
+
+Follow these practices when creating and iterating on pull requests:
+
+### Creating Effective PRs
+
+1. **Clear title and description**:
+   - Use conventional commit format: `feat:`, `fix:`, `docs:`, etc.
+   - Reference related issues: `Closes #123`, `Fixes #456`
+   - Explain WHAT changed and WHY
+   - Include screenshots for UI changes
+   - List breaking changes explicitly
+
+2. **Small, focused changes**:
+   - Prefer multiple small PRs over one large PR
+   - Each PR should address a single concern
+   - Maximum ~300 lines changed (Safe mode)
+   - Maximum ~12 files modified (Safe mode)
+
+3. **Self-review before submission**:
+   - Review your own diff first
+   - Ensure tests pass locally
+   - Run linting and type checking
+   - Verify documentation is updated
+   - Check for leftover TODOs or debugging code
+
+### PR Description Template
+
+```markdown
+## Description
+Brief summary of the changes and motivation.
+
+## Type of Change
+- [ ] Bug fix (non-breaking change which fixes an issue)
+- [ ] New feature (non-breaking change which adds functionality)
+- [ ] Breaking change (fix or feature that would cause existing functionality to not work as expected)
+- [ ] Documentation update
+- [ ] Refactoring (no functional changes)
+- [ ] Performance improvement
+- [ ] Security fix
+
+## Related Issues
+Closes #123
+Related to #456
+
+## Changes Made
+- Added email validation to registration form
+- Implemented client-side and server-side validation
+- Added comprehensive test coverage
+- Updated API documentation
+
+## Testing
+- [ ] Unit tests added/updated
+- [ ] Integration tests added/updated
+- [ ] E2E tests added/updated (if applicable)
+- [ ] Manual testing completed
+- [ ] Accessibility testing completed (WCAG 2.2 AA)
+
+## Checklist
+- [ ] Code follows project style guidelines
+- [ ] Self-review completed
+- [ ] Comments added to complex code
+- [ ] Documentation updated
+- [ ] No new warnings generated
+- [ ] Tests pass locally
+- [ ] Dependent changes merged and published
+
+## Screenshots (if applicable)
+[Add screenshots for UI changes]
+
+## Security Considerations
+[Describe any security implications]
+
+## Performance Impact
+[Describe any performance implications]
+```
+
+### Responding to Feedback
+
+When reviewers provide feedback:
+
+1. **Read all comments carefully**: Understand the full context
+2. **Acknowledge feedback**: Reply to show you've read it
+3. **Ask for clarification**: If feedback is unclear
+4. **Make requested changes**: Address each comment
+5. **Explain decisions**: If you disagree, provide rationale
+6. **Mark resolved**: Mark conversations as resolved when addressed
+7. **Request re-review**: When ready for another look
+
+### Iterative Improvement Process
+
+Treat PRs as collaborative refinement:
+
+1. **Initial PR**: Get early feedback on approach
+2. **Address feedback**: Make incremental improvements
+3. **Re-request review**: After significant changes
+4. **Iterate**: Continue until approved
+5. **Merge**: Only when all checks pass and approved
+
+### PR Workflow Example
+
+```markdown
+**Initial PR Comment**:
+"I've implemented email validation as specified in #123. The approach uses 
+RFC 5322 compliant regex on both client and server. Tests are passing locally, 
+but I'd like feedback on the error message UX before finalizing."
+
+**After Feedback**:
+"Thanks @reviewer! I've addressed your comments:
+- ✅ Updated error message to be more user-friendly (commit abc123)
+- ✅ Added aria-live region for screen reader support (commit def456)
+- ✅ Extracted validation regex to shared utils (commit ghi789)
+
+The regex pattern is now reusable across the codebase. Ready for re-review."
+
+**Follow-up**:
+"I've added the suggested integration test for failed validation scenarios.
+All CI checks are now passing. Please take another look when you have a chance."
+```
+
+### Common PR Pitfalls to Avoid
+
+- ❌ **Creating huge PRs**: Break into smaller, reviewable chunks
+- ❌ **Missing tests**: Always include tests for new code
+- ❌ **Unclear descriptions**: Explain the context and reasoning
+- ❌ **Ignoring CI failures**: Fix all failing checks before requesting review
+- ❌ **Defensive responses**: Accept feedback gracefully
+- ❌ **Force pushing**: Avoid force push after review has started
+- ❌ **Mixing concerns**: Keep PRs focused on one thing
 
 ---
 
