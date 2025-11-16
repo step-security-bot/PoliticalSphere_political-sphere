@@ -4,12 +4,12 @@ import process from 'node:process';
 import { URL } from 'node:url';
 
 import {
-    checkRateLimit,
-    getCorsHeaders,
-    getLogger,
-    getRateLimitInfo,
-    isIpAllowed,
-    SECURITY_HEADERS,
+  checkRateLimit,
+  getCorsHeaders,
+  getLogger,
+  getRateLimitInfo,
+  isIpAllowed,
+  SECURITY_HEADERS,
 } from '@political-sphere/shared';
 
 /**
@@ -23,22 +23,22 @@ interface UserAuthPayload {
 }
 
 import {
-    authenticateUser,
-    createUser,
-    generateAccessToken,
-    generateRefreshToken,
-    getUserById,
-    initiatePasswordReset,
-    resetPassword,
-    revokeRefreshToken,
-    verifyRefreshToken,
+  authenticateUser,
+  createUser,
+  generateAccessToken,
+  generateRefreshToken,
+  getUserById,
+  initiatePasswordReset,
+  resetPassword,
+  revokeRefreshToken,
+  verifyRefreshToken,
 } from './modules/auth.js';
 import {
-    methodNotAllowed,
-    notFound,
-    readJsonBody,
-    sendError,
-    sendJson,
+  methodNotAllowed,
+  notFound,
+  readJsonBody,
+  sendError,
+  sendJson,
 } from './utils/http-utils.mjs';
 
 function parsePositiveInt(value: string | undefined | null, fallback: number): number {

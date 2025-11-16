@@ -95,7 +95,7 @@ router.put('/parties/:id', requireAuth, async (req, res) => {
       return res.status(400).json({
         success: false,
         error: 'Validation failed',
-        details: error.issues.map((e) => ({
+        details: error.issues.map(e => ({
           field: e.path.join('.'),
           message: e.message,
         })),

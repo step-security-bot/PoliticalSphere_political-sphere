@@ -82,7 +82,7 @@ The following list is non-hiracrachial
 - **Constitutional** - Highest-priority rules that can never be bypassed (ethics, safety, privacy)
 - **Zero-trust** - Security model assuming no implicit trust at any layer
 
-> **Note:** Technology-specific guidance is integrated into `docs/` (see [Path-Specific Instructions](copilot-instructions.md#path-specific-instructions)).
+> **Note:** Technology-specific guidance is integrated into `docs/` (see [Path-Specific Instructions](#path-specific-instructions)).
 
 ---
 
@@ -90,58 +90,58 @@ The following list is non-hiracrachial
 
 **Essential Reading:**
 
-- [Five Core Rules](copilot-instructions.md#five-core-rules) - ⭐ START HERE
-- [Version History & Glossary](copilot-instructions.md#version-history) - 📚 TERMINOLOGY
-- [Quick Reference Appendix](copilot-instructions.md#quick-reference-appendix) - 🔍 CHEAT SHEET
+- [Five Core Rules](#five-core-rules) - ⭐ START HERE
+- [Version History & Glossary](#version-history) - 📚 TERMINOLOGY
+- [Quick Reference Appendix](#quick-reference-appendix) - 🔍 CHEAT SHEET
 
 **Main Sections:**
 
-1. [Quick Reference Links](copilot-instructions.md#quick-reference-links)
-2. [Project Context](copilot-instructions.md#project-context)
+1. [Quick Reference Links](#quick-reference-links)
+2. [Project Context](#project-context)
    - What This Project Does
    - Technology Stack
    - Core Principles
-3. [Your Role as GitHub Copilot](copilot-instructions.md#your-role-as-github-copilot)
+3. [Your Role as GitHub Copilot](#your-role-as-github-copilot)
    - AI Persona & Interaction Style
    - High-Risk Patterns (Never Suggest)
    - Fail-Gracefully Strategy
    - Output Validation Checklist
-4. [Project Structure](copilot-instructions.md#project-structure-and-organization)
+4. [Project Structure](#project-structure-and-organization)
    - Directory Layout
    - Naming Conventions
-5. [Code Quality Standards](copilot-instructions.md#code-quality-standards)
+5. [Code Quality Standards](#code-quality-standards)
    - Definition of Done
    - Code Style
    - Function Feasibility and Implementation Status
-6. [Testing Infrastructure](copilot-instructions.md#testing-infrastructure-core-principle) - ⭐ CORE PRINCIPLE
+6. [Testing Infrastructure](#testing-infrastructure-core-principle) - ⭐ CORE PRINCIPLE
    - Test Pyramid Strategy
    - CI/CD Integration
    - Specialized Testing (MLOps, Database, Microservices)
-7. [Security and Privacy](copilot-instructions.md#security-and-privacy)
+7. [Security and Privacy](#security-and-privacy)
    - Zero-Trust Model
    - Secrets Management
    - Data Classification
-8. [Accessibility Requirements](copilot-instructions.md#accessibility-requirements-mandatory) - ⚠️ MANDATORY
+8. [Accessibility Requirements](#accessibility-requirements-mandatory) - ⚠️ MANDATORY
    - WCAG 2.2 AA Compliance
    - Code Examples
-9. [AI Governance and Ethics](copilot-instructions.md#ai-governance-and-ethics)
+9. [AI Governance and Ethics](#ai-governance-and-ethics)
    - Political Neutrality
    - Transparency & Human Oversight
-10. [Collaboration and Communication](copilot-instructions.md#collaboration-and-communication)
+10. [Collaboration and Communication](#collaboration-and-communication)
     - When to Ask Questions
     - Constitutional Citation Requirements
-11. [Working with GitHub Issues](copilot-instructions.md#working-with-github-issues) - 📋 TASK GUIDANCE
+11. [Working with GitHub Issues](#working-with-github-issues) - 📋 TASK GUIDANCE
     - Understanding Requirements
     - Well-Scoped Issues
     - Example Issue Format
-12. [Pull Request Workflow](copilot-instructions.md#pull-request-workflow) - 🔄 PR PROCESS
+12. [Pull Request Workflow](#pull-request-workflow) - 🔄 PR PROCESS
     - Creating Effective PRs
     - Responding to Feedback
     - Iterative Improvement
-13. [Change Management](copilot-instructions.md#change-management)
+13. [Change Management](#change-management)
     - Execution Modes (Safe, Fast-Secure, Audit, R&D)
     - Risk Tier Examples
-14. [Compliance and Auditability](copilot-instructions.md#compliance-and-auditability)
+14. [Compliance and Auditability](#compliance-and-auditability)
     - GDPR/CCPA Data Protection
     - Audit Readiness
 
@@ -416,7 +416,7 @@ function checkPermission(user: User, resource: Resource): boolean {
 - ✅ **No political content assumptions**: Neutral, unbiased examples and data
 - ✅ **Accessibility considered**: WCAG compliance for UI changes
 - ✅ **Constitutional compliance**: No violation of democratic integrity principles
-- ✅ **Feasibility validated**: All functions are implementable with available technology and resources (see [Function Feasibility](copilot-instructions.md#function-feasibility-and-implementation-status))
+- ✅ **Feasibility validated**: All functions are implementable with available technology and resources (see [Function Feasibility](#function-feasibility-and-implementation-status))
 
 ### AI Recommendation Report Format
 

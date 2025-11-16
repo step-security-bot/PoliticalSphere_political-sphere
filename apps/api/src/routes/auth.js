@@ -12,11 +12,11 @@ const RegisterSchema = z.object({
     .string()
     .min(3, 'Username must be at least 3 characters')
     .max(50, 'Username must not exceed 50 characters')
-    .regex(/^[a-zA-Z0-9_-]+$/, 'Username can only contain letters, numbers, underscores, and hyphens'),
-  email: z
-    .string()
-    .email('Invalid email address')
-    .max(255, 'Email must not exceed 255 characters'),
+    .regex(
+      /^[a-zA-Z0-9_-]+$/,
+      'Username can only contain letters, numbers, underscores, and hyphens'
+    ),
+  email: z.string().email('Invalid email address').max(255, 'Email must not exceed 255 characters'),
   password: z
     .string()
     .min(8, 'Password must be at least 8 characters')
@@ -62,7 +62,7 @@ router.post('/register', async (req, res) => {
       return res.status(400).json({
         success: false,
         error: 'Validation failed',
-        details: error.errors.map((e) => ({
+        details: error.errors.map(e => ({
           field: e.path.join('.'),
           message: e.message,
         })),
@@ -118,7 +118,7 @@ router.post('/login', async (req, res) => {
       return res.status(400).json({
         success: false,
         error: 'Validation failed',
-        details: error.errors.map((e) => ({
+        details: error.errors.map(e => ({
           field: e.path.join('.'),
           message: e.message,
         })),

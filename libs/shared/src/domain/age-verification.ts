@@ -9,12 +9,7 @@ export const VerificationMethodSchema = z.enum([
 
 export type VerificationMethod = z.infer<typeof VerificationMethodSchema>;
 
-export const VerificationStatusSchema = z.enum([
-  'pending',
-  'verified',
-  'rejected',
-  'expired',
-]);
+export const VerificationStatusSchema = z.enum(['pending', 'verified', 'rejected', 'expired']);
 
 export type VerificationStatus = z.infer<typeof VerificationStatusSchema>;
 

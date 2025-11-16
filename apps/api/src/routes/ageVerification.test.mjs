@@ -60,7 +60,7 @@ const createTestRouter = _unused => {
       const input = CompleteVerificationSchema.parse(req.body);
       const result = await mockAgeVerificationService.completeVerification(
         input.verificationId,
-        input,
+        input
       );
 
       if (result.success) {

@@ -45,7 +45,11 @@ describe('Auth Routes - Input Validation', () => {
         });
 
         assert.strictEqual(response.status, 201);
-        assert.strictEqual(response.body.success, true, `Expected success=true but got: ${JSON.stringify(response.body)}`);
+        assert.strictEqual(
+          response.body.success,
+          true,
+          `Expected success=true but got: ${JSON.stringify(response.body)}`
+        );
         assert(response.body.data.id);
         assert(response.body.data.token);
         assert(response.body.data.refreshToken);
@@ -67,7 +71,7 @@ describe('Auth Routes - Input Validation', () => {
         assert.strictEqual(response.status, 400);
         assert.strictEqual(response.body.success, false);
         assert(response.body.details);
-        const usernameError = response.body.details.find((e) => e.field === 'username');
+        const usernameError = response.body.details.find(e => e.field === 'username');
         assert(usernameError);
         assert(usernameError.message.includes('at least 3 characters'));
       });
@@ -85,17 +89,17 @@ describe('Auth Routes - Input Validation', () => {
 
         assert.strictEqual(response.status, 400);
         assert.strictEqual(response.body.success, false);
-        const usernameError = response.body.details.find((e) => e.field === 'username');
+        const usernameError = response.body.details.find(e => e.field === 'username');
         assert(usernameError.message.includes('not exceed 50 characters'));
       });
 
       it('should reject username with invalid characters', async () => {
         const invalidUsernames = [
-          'user name',  // space
-          'user@name',  // @
-          'user.name',  // period
-          'user#name',  // hash
-          'user$name',  // dollar
+          'user name', // space
+          'user@name', // @
+          'user.name', // period
+          'user#name', // hash
+          'user$name', // dollar
         ];
 
         for (const username of invalidUsernames) {
@@ -110,18 +114,13 @@ describe('Auth Routes - Input Validation', () => {
           });
 
           assert.strictEqual(response.status, 400, `Should reject username: ${username}`);
-          const usernameError = response.body.details.find((e) => e.field === 'username');
+          const usernameError = response.body.details.find(e => e.field === 'username');
           assert(usernameError.message.includes('only contain'));
         }
       });
 
       it('should accept valid username characters (letters, numbers, underscore, hyphen)', async () => {
-        const validUsernames = [
-          'user_name',
-          'user-name',
-          'user123',
-          'User_Name-123',
-        ];
+        const validUsernames = ['user_name', 'user-name', 'user123', 'User_Name-123'];
 
         for (const username of validUsernames) {
           const timestamp = Date.now();
@@ -163,7 +162,7 @@ describe('Auth Routes - Input Validation', () => {
           });
 
           assert.strictEqual(response.status, 400, `Should reject email: ${email}`);
-          const emailError = response.body.details.find((e) => e.field === 'email');
+          const emailError = response.body.details.find(e => e.field === 'email');
           assert(emailError);
           assert(emailError.message.includes('Invalid email'));
         }
@@ -182,7 +181,7 @@ describe('Auth Routes - Input Validation', () => {
         });
 
         assert.strictEqual(response.status, 400);
-        const emailError = response.body.details.find((e) => e.field === 'email');
+        const emailError = response.body.details.find(e => e.field === 'email');
         assert(emailError.message.includes('not exceed 255 characters'));
       });
     });
@@ -200,7 +199,7 @@ describe('Auth Routes - Input Validation', () => {
         });
 
         assert.strictEqual(response.status, 400);
-        const passwordError = response.body.details.find((e) => e.field === 'password');
+        const passwordError = response.body.details.find(e => e.field === 'password');
         assert(passwordError.message.includes('at least 8 characters'));
       });
 
@@ -216,7 +215,7 @@ describe('Auth Routes - Input Validation', () => {
         });
 
         assert.strictEqual(response.status, 400);
-        const passwordError = response.body.details.find((e) => e.field === 'password');
+        const passwordError = response.body.details.find(e => e.field === 'password');
         assert(passwordError.message.includes('not exceed 128 characters'));
       });
 
@@ -232,7 +231,7 @@ describe('Auth Routes - Input Validation', () => {
         });
 
         assert.strictEqual(response.status, 400);
-        const passwordError = response.body.details.find((e) => e.field === 'password');
+        const passwordError = response.body.details.find(e => e.field === 'password');
         assert(passwordError.message.includes('uppercase letter'));
       });
 
@@ -248,7 +247,7 @@ describe('Auth Routes - Input Validation', () => {
         });
 
         assert.strictEqual(response.status, 400);
-        const passwordError = response.body.details.find((e) => e.field === 'password');
+        const passwordError = response.body.details.find(e => e.field === 'password');
         assert(passwordError.message.includes('lowercase letter'));
       });
 
@@ -264,7 +263,7 @@ describe('Auth Routes - Input Validation', () => {
         });
 
         assert.strictEqual(response.status, 400);
-        const passwordError = response.body.details.find((e) => e.field === 'password');
+        const passwordError = response.body.details.find(e => e.field === 'password');
         assert(passwordError.message.includes('number'));
       });
     });
@@ -432,7 +431,7 @@ describe('Auth Routes - Input Validation', () => {
 
         assert.strictEqual(response.status, 400);
         assert(response.body.details);
-        const emailError = response.body.details.find((e) => e.field === 'email');
+        const emailError = response.body.details.find(e => e.field === 'email');
         assert(emailError.message.includes('Invalid email'));
       });
     });
@@ -450,7 +449,7 @@ describe('Auth Routes - Input Validation', () => {
 
         assert.strictEqual(response.status, 400);
         assert(response.body.details);
-        const passwordError = response.body.details.find((e) => e.field === 'password');
+        const passwordError = response.body.details.find(e => e.field === 'password');
         assert(passwordError.message.includes('required'));
       });
     });

@@ -27,4 +27,3 @@ export { BillSchema, BillStatusSchema, CreateBillSchema, UpdateBillSchema } from
 export { CreatePartySchema, PartySchema, UpdatePartySchema } from './party';
 export { CreateUserSchema, UpdateUserSchema, UserSchema } from './user';
 export { CreateVoteSchema, UpdateVoteSchema, VoteSchema, VoteTypeSchema } from './vote';
-

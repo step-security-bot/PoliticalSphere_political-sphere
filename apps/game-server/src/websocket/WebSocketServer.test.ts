@@ -1,7 +1,7 @@
 /**
  * WebSocket Server Integration Tests
  * Tests authentication, rate limiting, input validation, and message broadcasting
- * 
+ *
  * NOTE: Tests using done() callback are deprecated in Vitest and temporarily skipped.
  * TODO: Convert to async/await pattern - see issue #XXX
  */

@@ -154,7 +154,7 @@ router.get('/queue', authenticate, requireRole('moderator'), async (req, res) =>
     const queue = await moderationService.getModerationQueue(
       parseInt(limit, 10),
       status,
-      parseInt(page, 10),
+      parseInt(page, 10)
     );
 
     res.json({
@@ -189,7 +189,7 @@ router.put('/review/:contentId', authenticate, requireRole('moderator'), async (
       contentId,
       input.decision,
       moderatorId,
-      input.notes,
+      input.notes
     );
 
     // Log for audit trail

@@ -45,7 +45,7 @@ describe('Moderation Routes Validation', () => {
     assert.strictEqual(response.body.error, 'Validation failed');
     assert(Array.isArray(response.body.details));
     const contentError = response.body.details.find(
-      d => d.field === 'content' || d.field === 'input',
+      d => d.field === 'content' || d.field === 'input'
     );
     assert(contentError);
   });
