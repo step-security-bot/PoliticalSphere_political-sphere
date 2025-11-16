@@ -1,0 +1,42 @@
+{
+  "new-voting-ui": {
+    "defaultValue": false,
+    "description": "Enable new voting interface with improved accessibility"
+  },
+  "experimental-dashboard": {
+    "defaultValue": false,
+    "description": "Experimental dashboard with real-time updates"
+  },
+  "enable-analytics": {
+    "defaultValue": true,
+    "description": "Enable privacy-preserving analytics"
+  },
+  "max-bill-length": {
+    "defaultValue": 10000,
+    "description": "Maximum character length for bill descriptions"
+  },
+  "maintenance-mode": {
+    "defaultValue": false,
+    "description": "Enable maintenance mode banner"
+  },
+  "beta-features": {
+    "defaultValue": false,
+    "description": "Enable beta features for testing",
+    "rules": [
+      {
+        "conditions": [
+          {
+            "property": "role",
+            "operator": "in",
+            "value": ["admin", "moderator"]
+          }
+        ],
+        "value": true
+      }
+    ]
+  },
+  "rate-limit-votes": {
+    "defaultValue": 10,
+    "description": "Maximum votes per user per hour"
+  }
+}

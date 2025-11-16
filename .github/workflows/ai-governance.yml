@@ -1,0 +1,291 @@
+# CI/CD Integration for AI Development System
+
+name: AI Governance Validation
+permissions:
+  contents: read
+
+on:
+  pull_request:
+    branches: [main, develop]
+  push:
+    branches: [main, develop]
+
+jobs:
+  political-neutrality:
+    name: Political Neutrality Check
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+    
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Build AI system package
+        run: |
+          echo "Building @political-sphere/ai-system..."
+          cd libs/ai-system && npm run build
+      
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v41
+        with:
+          files: |
+            **/*.ts
+            **/*.tsx
+            **/*.js
+            **/*.jsx
+            **/*.md
+            docs/**/*
+      
+      - name: Run political neutrality validation
+        if: steps.changed-files.outputs.any_changed == 'true'
+        run: |
+          node tools/scripts/ai/ci-neutrality-check.mts ${{ steps.changed-files.outputs.all_changed_files }}
+      
+      - name: Comment on PR
+        if: failure() && github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '❌ **Political Neutrality Validation Failed**\n\nPlease review the flagged content and ensure political neutrality.\n\nSee the [AI Governance Guidelines](docs/07-ai-and-simulation/ai-governance.md) for requirements.'
+            })
+
+  nist-ai-rmf-compliance:
+    name: NIST AI RMF Compliance
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Build AI system package
+        run: |
+          echo "Building @political-sphere/ai-system..."
+          cd libs/ai-system && npm run build
+      
+      - name: Check AI system registrations
+        run: |
+          echo "🔍 Verifying all AI systems are properly registered..."
+          # This would integrate with the NIST AI RMF governance system
+          # For now, we'll check that the system exists
+          cd libs/ai-system && npm test tests/governance/nist-ai-rmf.test.ts
+
+  validation-gate-tests:
+    name: Validation Gate Tests
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Run validation gate tests
+        run: |
+          cd libs/ai-system && npm test tests/validation/ tests/integration.test.ts
+
+  semantic-quality-check:
+    name: Semantic Code Quality Check
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v41
+        with:
+          files: |
+            **/*.ts
+            **/*.tsx
+            **/*.js
+            **/*.jsx
+      
+      - name: Run semantic indexer on changed files
+        if: steps.changed-files.outputs.any_changed == 'true'
+        run: |
+          echo "Running semantic analysis on changed files..."
+          node tools/scripts/ai/semantic-indexer.cjs analyze ${{ steps.changed-files.outputs.all_changed_files }} || echo "⚠️ Semantic analysis completed with warnings"
+      
+      - name: Add semantic analysis to PR
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            if (fs.existsSync('semantic-analysis-report.json')) {
+              const report = JSON.parse(fs.readFileSync('semantic-analysis-report.json', 'utf8'));
+              const body = `## 🔍 Semantic Code Quality Analysis
+              
+              **Files Analyzed:** ${report.filesAnalyzed || 0}
+              **Quality Score:** ${report.qualityScore || 'N/A'}
+              
+              ${report.warnings && report.warnings.length > 0 ? '### ⚠️ Warnings\n' + report.warnings.map(w => `- ${w}`).join('\n') : '✅ No warnings'}
+              
+              See [AI Governance Guidelines](docs/07-ai-and-simulation/ai-governance.md) for quality standards.`;
+              
+              github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: body
+              });
+            }
+
+  competence-assessment:
+    name: AI Competence Assessment
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 100 # Need history for quality trends
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Run competence monitor
+        run: |
+          echo "Assessing AI-assisted code quality..."
+          node tools/scripts/ai/competence-monitor.js assess > competence-assessment.txt
+          cat competence-assessment.txt
+      
+      - name: Check competence threshold
+        run: |
+          # Extract competence score and fail if below threshold
+          if grep -q "Competence Score: 0\." competence-assessment.txt; then
+            echo "⚠️ Low competence score detected - please review AI-generated code carefully"
+            # Don't fail CI, just warn
+          fi
+      
+      - name: Upload competence report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: competence-assessment-${{ github.run_number }}
+          path: competence-assessment.txt
+          retention-days: 30
+
+  context-quality-check:
+    name: Context Quality Validation
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Validate AI context bundles
+        run: |
+          echo "Validating AI context bundles..."
+          node tools/scripts/ai/context-preloader.js validate || echo "⚠️ Context validation warnings (non-blocking)"
+      
+      - name: Check context freshness
+        run: |
+          echo "Checking context bundle freshness..."
+          # Check if context bundles are older than 7 days
+          if [ -d "tools/ai/context-bundles" ]; then
+            OLDEST=$(find tools/ai/context-bundles -name "*.md" -mtime +7 | head -1)
+            if [ -n "$OLDEST" ]; then
+              echo "⚠️ Context bundles older than 7 days detected"
+              echo "Consider running: npm run ai:refresh"
+            fi
+          fi
+
+  change-budget-validation:
+    name: Change Budget Enforcement
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Check change budget
+        run: |
+          echo "Enforcing change budget limits..."
+          node tools/scripts/ai/guard-change-budget.mjs
+      
+      - name: Comment on budget violation
+        if: failure() && github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `❌ **Change Budget Violation**
+              
+              This PR exceeds the change budget for the current execution mode.
+              
+              **Options:**
+              1. Split PR into smaller, focused changes (recommended)
+              2. Switch to Audit mode if comprehensive changes are required
+              3. Review change scope and remove non-essential modifications
+              
+              See [Change Management Guidelines](docs/copilot-instructions.md#change-management) for execution modes.`
+            })

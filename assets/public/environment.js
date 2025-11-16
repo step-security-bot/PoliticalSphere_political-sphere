@@ -131,11 +131,11 @@ window.projectGraphResponse = {
             executor: 'nx:run-commands',
             outputs: ['{workspaceRoot}/coverage/libs/infrastructure'],
             options: {
-              command: 'vitest run --config ../../vitest.config.js --coverage --reporter=verbose',
+              command: 'vitest run --config ../../vitest.config.ts --coverage --reporter=verbose',
             },
             configurations: {
-              watch: { command: 'vitest --config ../../vitest.config.js --watch' },
-              coverage: { command: 'vitest run --config ../../vitest.config.js --coverage' },
+              watch: { command: 'vitest --config ../../vitest.config.ts --watch' },
+              coverage: { command: 'vitest run --config ../../vitest.config.ts --coverage' },
               ci: {
                 coverageThreshold: {
                   global: { branches: 80, functions: 80, lines: 80, statements: 80 },
@@ -214,11 +214,11 @@ window.projectGraphResponse = {
             executor: 'nx:run-commands',
             outputs: ['{workspaceRoot}/coverage/libs/platform'],
             options: {
-              command: 'vitest run --config ../../vitest.config.js --coverage --reporter=verbose',
+              command: 'vitest run --config ../../vitest.config.ts --coverage --reporter=verbose',
             },
             configurations: {
-              watch: { command: 'vitest --config ../../vitest.config.js --watch' },
-              coverage: { command: 'vitest run --config ../../vitest.config.js --coverage' },
+              watch: { command: 'vitest --config ../../vitest.config.ts --watch' },
+              coverage: { command: 'vitest run --config ../../vitest.config.ts --coverage' },
               ci: {
                 coverageThreshold: {
                   global: { branches: 80, functions: 80, lines: 80, statements: 80 },
@@ -293,11 +293,11 @@ window.projectGraphResponse = {
             executor: 'nx:run-commands',
             outputs: ['{workspaceRoot}/coverage/libs/shared'],
             options: {
-              command: 'vitest run --config ../../vitest.config.js --coverage --reporter=verbose',
+              command: 'vitest run --config ../../vitest.config.ts --coverage --reporter=verbose',
             },
             configurations: {
-              watch: { command: 'vitest --config ../../vitest.config.js --watch' },
-              coverage: { command: 'vitest run --config ../../vitest.config.js --coverage' },
+              watch: { command: 'vitest --config ../../vitest.config.ts --watch' },
+              coverage: { command: 'vitest run --config ../../vitest.config.ts --coverage' },
               ci: {
                 coverageThreshold: {
                   global: { branches: 80, functions: 80, lines: 80, statements: 80 },
@@ -496,12 +496,12 @@ window.projectGraphResponse = {
             executor: 'nx:run-commands',
             outputs: ['{workspaceRoot}/coverage/{projectRoot}'],
             options: {
-              command: 'vitest run --config ../../vitest.config.js --coverage --reporter=verbose',
+              command: 'vitest run --config ../../vitest.config.ts --coverage --reporter=verbose',
               dependsOn: ['@political-sphere/shared:build'],
             },
             configurations: {
-              watch: { command: 'vitest --config ../../vitest.config.js --watch' },
-              coverage: { command: 'vitest run --config ../../vitest.config.js --coverage' },
+              watch: { command: 'vitest --config ../../vitest.config.ts --watch' },
+              coverage: { command: 'vitest run --config ../../vitest.config.ts --coverage' },
               ci: {
                 coverageThreshold: {
                   global: { branches: 80, functions: 80, lines: 80, statements: 80 },
@@ -618,11 +618,11 @@ window.projectGraphResponse = {
             executor: 'nx:run-commands',
             outputs: ['{workspaceRoot}/coverage/{projectRoot}'],
             options: {
-              command: 'vitest run --config ../../vitest.config.js --coverage --reporter=verbose',
+              command: 'vitest run --config ../../vitest.config.ts --coverage --reporter=verbose',
             },
             configurations: {
-              watch: { command: 'vitest --config ../../vitest.config.js --watch' },
-              coverage: { command: 'vitest run --config ../../vitest.config.js --coverage' },
+              watch: { command: 'vitest --config ../../vitest.config.ts --watch' },
+              coverage: { command: 'vitest run --config ../../vitest.config.ts --coverage' },
               e2e: { command: 'npm run test:e2e' },
               ci: {
                 coverageThreshold: {
@@ -743,11 +743,11 @@ window.projectGraphResponse = {
             executor: 'nx:run-commands',
             outputs: ['{workspaceRoot}/coverage/libs/ci'],
             options: {
-              command: 'vitest run --config ../../vitest.config.js --coverage --reporter=verbose',
+              command: 'vitest run --config ../../vitest.config.ts --coverage --reporter=verbose',
             },
             configurations: {
-              watch: { command: 'vitest --config ../../vitest.config.js --watch' },
-              coverage: { command: 'vitest run --config ../../vitest.config.js --coverage' },
+              watch: { command: 'vitest --config ../../vitest.config.ts --watch' },
+              coverage: { command: 'vitest run --config ../../vitest.config.ts --coverage' },
               ci: {
                 coverageThreshold: {
                   global: { branches: 80, functions: 80, lines: 80, statements: 80 },
@@ -786,11 +786,11 @@ window.projectGraphResponse = {
             executor: 'nx:run-commands',
             outputs: ['{workspaceRoot}/coverage/libs/ui'],
             options: {
-              command: 'vitest run --config ../../vitest.config.js --coverage --reporter=verbose',
+              command: 'vitest run --config ../../vitest.config.ts --coverage --reporter=verbose',
             },
             configurations: {
-              watch: { command: 'vitest --config ../../vitest.config.js --watch' },
-              coverage: { command: 'vitest run --config ../../vitest.config.js --coverage' },
+              watch: { command: 'vitest --config ../../vitest.config.ts --watch' },
+              coverage: { command: 'vitest run --config ../../vitest.config.ts --coverage' },
               ci: {
                 coverageThreshold: {
                   global: { branches: 80, functions: 80, lines: 80, statements: 80 },

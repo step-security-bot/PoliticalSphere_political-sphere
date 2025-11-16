@@ -6,7 +6,10 @@
 import type { AxiosInstance } from 'axios';
 import axios from 'axios';
 
+import { getLogger } from '@political-sphere/shared';
 import { CircuitBreaker } from './utils/circuit-breaker';
+
+const logger = getLogger({ service: 'game-server' });
 
 interface ComplianceLogEntry {
   category: string;
@@ -44,16 +47,14 @@ class ComplianceClient {
           await this.client.post('/compliance/log', event);
         })
         .catch((err: Error) => {
-          // TODO: Add structured logger import
-          console.warn('Compliance logging failed (circuit breaker):', err.message);
+          logger.warn('Compliance logging failed (circuit breaker)', { error: err.message });
         });
 
       // Return a local event ID for immediate response
       return `local-${Date.now()}-${Math.random()}`;
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-      // TODO: Add structured logger import
-      console.warn('Compliance logging error:', errorMessage);
+      logger.warn('Compliance logging error', { error: errorMessage });
       return null;
     }
   }

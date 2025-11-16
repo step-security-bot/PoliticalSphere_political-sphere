@@ -24,6 +24,16 @@ Engineering and DevOps documentation covers the entire software development life
 - **[Code Review Guidelines](./code-review-guidelines.md)**: Code review processes and quality gates
 - **[Monorepo Standards (Nx)](./monorepo-standards-nx.md)**: Nx workspace organization and dependency management
 
+### Standard Operating Procedures
+
+- **[Code Review SOP](./sops/code-review-sop.md)**: Structured code review process with checklists
+- **[PR Merge SOP](./sops/pr-merge-sop.md)**: Pull request merge validation and process
+- **[Deployment SOP](./sops/deployment-sop.md)**: Safe deployment procedures and rollback plans
+- **[Feature Implementation SOP](./sops/feature-implementation-sop.md)**: Feature development lifecycle and quality gates
+- **[Incident Response SOP](./sops/incident-response-sop.md)**: Incident detection, response, and recovery procedures
+- **[Onboarding SOP](./sops/onboarding-sop.md)**: New team member setup and training process
+- **[Maintenance SOP](./sops/maintenance-sop.md)**: Routine system maintenance and optimization
+
 ### Development Workflow
 
 - **[Branching and Release Strategy](./branching-and-release-strategy.md)**: Git workflow, branching model, and release processes

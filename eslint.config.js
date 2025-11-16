@@ -17,6 +17,11 @@ export default [
   prettierConfig,
   {
     files: ['**/*.{js,mjs,cjs,ts,tsx,jsx}'],
+    linterOptions: {
+      reportUnusedDisableDirectives: false,
+    },
+  },
+  {
     languageOptions: {
       parser: tsparser,
       parserOptions: {

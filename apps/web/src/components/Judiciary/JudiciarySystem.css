@@ -1,0 +1,390 @@
+/**
+ * Judiciary System Styles
+ * WCAG 2.2 AA Compliant
+ */
+
+.judiciary-system {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.judiciary-header {
+  margin-bottom: 2rem;
+}
+
+.judiciary-header h1 {
+  margin: 0 0 0.5rem 0;
+  font-size: 2rem;
+  color: #1f2937;
+}
+
+.judiciary-subtitle {
+  color: #6b7280;
+  margin: 0;
+}
+
+.judiciary-tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.judiciary-tabs button {
+  padding: 1rem 2rem;
+  background: none;
+  border: none;
+  border-bottom: 3px solid transparent;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #6b7280;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.judiciary-tabs button:hover {
+  color: #1f2937;
+  background: #f3f4f6;
+}
+
+.judiciary-tabs button:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+.judiciary-tabs button.active {
+  color: #1e3a8a;
+  border-bottom-color: #3b82f6;
+  font-weight: 600;
+}
+
+.cases-section h2,
+.judges-section h2,
+.rulings-section h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+  color: #1f2937;
+}
+
+.cases-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 2rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.case-card {
+  background: white;
+  border: 2px solid #e5e7eb;
+  border-left: 4px solid #3b82f6;
+  border-radius: 8px;
+  padding: 1.5rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.case-card:hover {
+  border-color: #3b82f6;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+.case-card:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+.case-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  margin-bottom: 1rem;
+  gap: 1rem;
+}
+
+.case-header h3 {
+  margin: 0;
+  font-size: 1.125rem;
+  color: #1f2937;
+  flex: 1;
+}
+
+.case-status {
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.case-status.status-pending {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.case-status.status-hearing {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.case-status.status-decided {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.case-status.status-dismissed {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.case-description {
+  color: #4b5563;
+  line-height: 1.6;
+  margin: 0 0 1rem 0;
+}
+
+.case-meta,
+.case-parties {
+  display: flex;
+  gap: 2rem;
+  font-size: 0.875rem;
+  color: #6b7280;
+  flex-wrap: wrap;
+}
+
+.case-meta {
+  margin-bottom: 0.5rem;
+}
+
+.case-type {
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.judges-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.judge-card {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.judge-info h3 {
+  margin: 0 0 1rem 0;
+  font-size: 1.25rem;
+  color: #1e3a8a;
+}
+
+.judge-info p {
+  margin: 0.5rem 0;
+  color: #6b7280;
+}
+
+.judge-status {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-top: 0.5rem;
+}
+
+.judge-status.status-active {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.judge-status.status-retired {
+  background: #f3f4f6;
+  color: #6b7280;
+}
+
+.rulings-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.ruling-card {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-left: 4px solid #10b981;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.ruling-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.ruling-header h3 {
+  margin: 0;
+  font-size: 1.125rem;
+  color: #1f2937;
+}
+
+.unanimous-badge {
+  padding: 0.25rem 0.75rem;
+  background: #d1fae5;
+  color: #065f46;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.ruling-reasoning {
+  color: #4b5563;
+  line-height: 1.6;
+  margin: 0 0 1rem 0;
+}
+
+.ruling-meta {
+  color: #6b7280;
+  font-size: 0.875rem;
+  margin: 0;
+}
+
+.file-case-form,
+.issue-ruling-form {
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 2rem;
+  margin-top: 2rem;
+}
+
+.file-case-form h3,
+.issue-ruling-form h3 {
+  margin: 0 0 1.5rem 0;
+  font-size: 1.25rem;
+  color: #1f2937;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: #374151;
+}
+
+.form-group label span[aria-label="required"] {
+  color: #dc2626;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-family: inherit;
+  transition: border-color 0.2s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.btn-primary {
+  background: #3b82f6;
+  color: white;
+  padding: 0.75rem 2rem;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-primary:hover {
+  background: #2563eb;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.btn-primary:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+.error {
+  color: #dc2626;
+  background: #fee2e2;
+  padding: 1rem;
+  border-radius: 4px;
+  border-left: 4px solid #dc2626;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .case-card:hover,
+  .btn-primary:hover {
+    transform: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .judiciary-system {
+    padding: 1rem;
+  }
+
+  .judiciary-tabs {
+    flex-direction: column;
+  }
+
+  .judiciary-tabs button {
+    width: 100%;
+    text-align: left;
+  }
+
+  .judges-list {
+    grid-template-columns: 1fr;
+  }
+
+  .case-header,
+  .ruling-header {
+    flex-direction: column;
+  }
+}

@@ -171,10 +171,38 @@ export function generateSecureToken(length = 32): string {
 }
 
 /**
- * Hashes a value using SHA-256
+ * Hashes a value using SHA-256 (for non-password data)
  */
 export function hashValue(value: string): string {
   return createHash('sha256').update(value).digest('hex');
+}
+
+/**
+ * Hashes a password using bcrypt (12 rounds minimum)
+ */
+export async function hashPassword(password: string): Promise<string> {
+  if (typeof password !== 'string' || password.length === 0) {
+    throw new TypeError('Password must be a non-empty string');
+  }
+
+  // Use 12 rounds for production security
+  const saltRounds = 12;
+  return await hash(password, saltRounds);
+}
+
+/**
+ * Verifies a password against a bcrypt hash
+ */
+export async function verifyPassword(password: string, hashedPassword: string): Promise<boolean> {
+  if (typeof password !== 'string' || typeof hashedPassword !== 'string') {
+    return false;
+  }
+
+  try {
+    return await compare(password, hashedPassword);
+  } catch {
+    return false;
+  }
 }
 
 /**

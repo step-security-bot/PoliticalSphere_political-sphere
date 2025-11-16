@@ -39,7 +39,7 @@ export function handleError(err: Error, req: Request, res: Response, _next: Next
 }
 
 export function asyncHandler(
-  fn: (req: Request, res: Response, next: NextFunction) => Promise<void>
+  fn: (req: Request, res: Response, _next: NextFunction) => Promise<void>
 ) {
   return (req: Request, res: Response, next: NextFunction) => {
     Promise.resolve(fn(req, res, next)).catch(next);
@@ -151,16 +151,16 @@ export const retryWithBackoff = async <T>(
   maxRetries: number = 3,
   baseDelay: number = 1000
 ): Promise<T> => {
-  let lastError: Error | undefined;
+  let _lastError: Error | undefined;
 
   for (let attempt = 0; attempt <= maxRetries; attempt++) {
     try {
       return await fn();
     } catch (error) {
-      lastError = error as Error;
+      _lastError = error as Error;
 
       if (attempt === maxRetries) {
-        throw lastError;
+        throw _lastError;
       }
 
       const delay = baseDelay * 2 ** attempt;

@@ -134,3 +134,24 @@ test-results/
 
 # Temporary directories
 tools/tmp/
+
+# Performance optimization ignores
+*.tsbuildinfo
+.vitest/
+.playwright/
+*.log
+.cache/
+
+# Performance optimization ignores
+*.tsbuildinfo
+.vitest/
+.playwright/
+*.log
+.cache/
+
+# Performance optimization ignores
+*.tsbuildinfo
+.vitest/
+.playwright/
+*.log
+.cache/

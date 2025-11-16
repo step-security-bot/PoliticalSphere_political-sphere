@@ -5,17 +5,14 @@
  * Ultra-fast, intelligent, context-aware code assistance
  */
 
-const { execSync } = require('child_process');
-const fs = require('fs');
-const path = require('path');
+const { execSync } = require('node:child_process');
+const fs = require('node:fs');
+const path = require('node:path');
 
 const { validateFilename, safeJoin } = require('../../../libs/shared/src/path-security');
 
 // Import all AI systems
 const AIHub = require('./ai-hub.cjs');
-const CodeAnalyzer = require('./code-analyzer.cjs');
-const ExpertKnowledge = require('./expert-knowledge.cjs');
-const PatternMatcher = require('./pattern-matcher.cjs');
 
 const ROOT = path.join(__dirname, '../../..');
 const WORKSPACE_CACHE_PRIMARY = path.join(ROOT, 'ai-cache/workspace-state.json');
@@ -127,7 +124,7 @@ class AIAssistant {
       )
         .toString()
         .trim();
-      return { testFiles: parseInt(testFiles) || 0 };
+      return { testFiles: parseInt(testFiles, 10) || 0 };
     } catch {
       return { testFiles: 0 };
     }
@@ -466,7 +463,7 @@ class AIAssistant {
     return results;
   }
 
-  async handleLearn(intent, options) {
+  async handleLearn(intent) {
     const results = {
       type: 'learning-assistance',
       topic: intent.topic,
@@ -575,7 +572,7 @@ class AIAssistant {
   /**
    * Auto-improve workspace
    */
-  async autoImprove(options = {}) {
+  async autoImprove() {
     const improvements = [];
     const startTime = Date.now();
 
@@ -629,7 +626,7 @@ class AIAssistant {
     console.log('\n🤖 AI Development Assistant - Interactive Mode');
     console.log('Type your questions or "exit" to quit\n');
 
-    const readline = require('readline');
+    const readline = require('node:readline');
     const rl = readline.createInterface({
       input: process.stdin,
       output: process.stdout,
@@ -654,7 +651,7 @@ class AIAssistant {
 
       try {
         const response = await this.assist(input);
-        console.log('\n' + JSON.stringify(response, null, 2) + '\n');
+        console.log(`\n${JSON.stringify(response, null, 2)}\n`);
       } catch (error) {
         console.error('Error:', error.message);
       }

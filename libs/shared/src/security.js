@@ -2,6 +2,7 @@
 // Implements OWASP best practices for input validation and sanitization
 
 import { createHash, randomBytes, timingSafeEqual } from 'node:crypto';
+import bcrypt from 'bcrypt';
 import process from 'node:process';
 
 // Reserved for future protocol validation
@@ -160,12 +161,45 @@ export function generateSecureToken(length = 32) {
 }
 
 /**
- * Hashes a value using SHA-256
+ * Hashes a value using SHA-256 (for non-password data)
  * @param {string} value - Value to hash
  * @returns {string} - Hex-encoded hash
  */
 export function hashValue(value) {
   return createHash('sha256').update(value).digest('hex');
+}
+
+/**
+ * Hashes a password using bcrypt (12 rounds minimum)
+ * @param {string} password - Password to hash
+ * @returns {Promise<string>} - Bcrypt hash
+ */
+export async function hashPassword(password) {
+  if (typeof password !== 'string' || password.length === 0) {
+    throw new TypeError('Password must be a non-empty string');
+  }
+
+  // Use 12 rounds for production security
+  const saltRounds = 12;
+  return await bcrypt.hash(password, saltRounds);
+}
+
+/**
+ * Verifies a password against a bcrypt hash
+ * @param {string} password - Plain text password
+ * @param {string} hashedPassword - Bcrypt hash to verify against
+ * @returns {Promise<boolean>} - True if password matches
+ */
+export async function verifyPassword(password, hashedPassword) {
+  if (typeof password !== 'string' || typeof hashedPassword !== 'string') {
+    return false;
+  }
+
+  try {
+    return await bcrypt.compare(password, hashedPassword);
+  } catch {
+    return false;
+  }
 }
 
 /**

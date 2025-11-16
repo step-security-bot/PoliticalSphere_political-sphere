@@ -1,0 +1,445 @@
+openapi: 3.0.0
+info:
+  title: Political Sphere API
+  description: REST API for Political Sphere democratic simulation platform
+  version: 1.0.0
+  contact:
+    name: Political Sphere Team
+    url: https://github.com/PoliticalSphere/political-sphere
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+
+servers:
+  - url: http://localhost:3000
+    description: Local development
+  - url: https://api-staging.political-sphere.com
+    description: Staging environment
+  - url: https://api.political-sphere.com
+    description: Production environment
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT token obtained from /auth/login or /auth/register
+
+  schemas:
+    User:
+      type: object
+      required: [id, username, email, createdAt]
+      properties:
+        id:
+          type: string
+          format: uuid
+        username:
+          type: string
+          minLength: 3
+          maxLength: 50
+        email:
+          type: string
+          format: email
+        createdAt:
+          type: string
+          format: date-time
+
+    CreateUserInput:
+      type: object
+      required: [username, email, password]
+      properties:
+        username:
+          type: string
+          minLength: 3
+          maxLength: 50
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          minLength: 8
+
+    Bill:
+      type: object
+      required: [id, title, proposerId, createdAt]
+      properties:
+        id:
+          type: string
+          format: uuid
+        title:
+          type: string
+        description:
+          type: string
+        proposerId:
+          type: string
+          format: uuid
+        createdAt:
+          type: string
+          format: date-time
+
+    CreateBillInput:
+      type: object
+      required: [title, proposerId]
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        proposerId:
+          type: string
+          format: uuid
+
+    Party:
+      type: object
+      required: [id, name, color, createdAt]
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+          minLength: 1
+          maxLength: 100
+        description:
+          type: string
+          maxLength: 500
+        color:
+          type: string
+          pattern: '^#[0-9A-Fa-f]{6}$'
+        createdAt:
+          type: string
+          format: date-time
+
+    CreatePartyInput:
+      type: object
+      required: [name, color]
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 100
+        description:
+          type: string
+          maxLength: 500
+        color:
+          type: string
+          pattern: '^#[0-9A-Fa-f]{6}$'
+
+    Vote:
+      type: object
+      required: [billId, userId, vote]
+      properties:
+        billId:
+          type: string
+          format: uuid
+        userId:
+          type: string
+          format: uuid
+        vote:
+          type: string
+          enum: [for, against, abstain]
+
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+        details:
+          type: object
+
+security:
+  - bearerAuth: []
+
+paths:
+  /auth/register:
+    post:
+      summary: Register a new user
+      tags: [Authentication]
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateUserInput'
+      responses:
+        '201':
+          description: User registered successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user:
+                    $ref: '#/components/schemas/User'
+                  accessToken:
+                    type: string
+                  refreshToken:
+                    type: string
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /auth/login:
+    post:
+      summary: Login user
+      tags: [Authentication]
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [username, password]
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  accessToken:
+                    type: string
+                  refreshToken:
+                    type: string
+        '401':
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/users:
+    post:
+      summary: Create a new user
+      tags: [Users]
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateUserInput'
+      responses:
+        '201':
+          description: User created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    get:
+      summary: Get all users
+      tags: [Users]
+      responses:
+        '200':
+          description: List of users
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+
+  /api/users/{id}:
+    get:
+      summary: Get user by ID
+      tags: [Users]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: User details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '404':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/bills:
+    post:
+      summary: Create a new bill
+      tags: [Bills]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateBillInput'
+      responses:
+        '201':
+          description: Bill created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Bill'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    get:
+      summary: Get all bills
+      tags: [Bills]
+      responses:
+        '200':
+          description: List of bills
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Bill'
+
+  /api/bills/{id}:
+    get:
+      summary: Get bill by ID
+      tags: [Bills]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Bill details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Bill'
+        '404':
+          description: Bill not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/parties:
+    post:
+      summary: Create a new party
+      tags: [Parties]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePartyInput'
+      responses:
+        '201':
+          description: Party created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    $ref: '#/components/schemas/Party'
+        '400':
+          description: Invalid input or duplicate name
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    get:
+      summary: Get all parties
+      tags: [Parties]
+      responses:
+        '200':
+          description: List of parties
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  parties:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Party'
+
+  /api/parties/{id}:
+    get:
+      summary: Get party by ID
+      tags: [Parties]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Party details
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  party:
+                    $ref: '#/components/schemas/Party'
+        '404':
+          description: Party not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /api/votes:
+    post:
+      summary: Create a vote
+      tags: [Votes]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Vote'
+      responses:
+        '201':
+          description: Vote recorded successfully
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+tags:
+  - name: Authentication
+    description: User authentication endpoints
+  - name: Users
+    description: User management endpoints
+  - name: Bills
+    description: Bill/legislation management endpoints
+  - name: Parties
+    description: Political party management endpoints
+  - name: Votes
+    description: Voting endpoints

@@ -1,5 +1,0 @@
-{
-  "status": "error",
-  "message": "@stoplight/spectral-cli@6.15.0 is not installed",
-  "resolution": "Install dev dependency @stoplight/spectral-cli before running scripts/ci/openapi-audit/openapi-audit.sh."
-}

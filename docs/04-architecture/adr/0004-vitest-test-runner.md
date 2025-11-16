@@ -97,7 +97,7 @@ We need a modern, fast, and maintainable test runner for our TypeScript/ESM mono
 
 - [Vitest Documentation](https://vitest.dev)
 - `/docs/05-engineering-and-devops/development/testing.md`
-- `/vitest.config.js`
+- `/vitest.config.ts`
 - `/docs/quick-ref.md`
 
 ## Compliance Checklist

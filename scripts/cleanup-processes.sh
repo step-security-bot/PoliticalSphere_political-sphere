@@ -31,6 +31,10 @@ pkill -9 -f "index-server" 2>/dev/null && echo "✅ Killed AI index server" || e
 echo "🔍 Killing orphaned TypeScript servers..."
 pkill -9 -f "tsserver.*--cancellationPipeName" 2>/dev/null && echo "✅ Killed orphaned TypeScript servers" || echo "ℹ️  No orphaned TypeScript servers found"
 
+# Kill stuck Nx daemon processes
+echo "🔍 Killing stuck Nx daemon..."
+pkill -9 -f "nx-daemon" 2>/dev/null && echo "✅ Killed Nx daemon" || echo "ℹ️  No Nx daemon found"
+
 # Clean up test database files cluttering the workspace
 echo "🔍 Cleaning test database files..."
 deleted_dbs=$(find . -maxdepth 1 -name "test-*.db*" -type f 2>/dev/null | wc -l | tr -d ' ')

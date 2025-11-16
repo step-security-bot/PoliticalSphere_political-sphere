@@ -101,8 +101,39 @@ pre-commit:
           hadolint {staged_files}
         fi
 
+    # AI-powered validations
+    ai-neutrality-check:
+      glob: '*.{ts,tsx,js,jsx,md}'
+      run: |
+        if [ -f tools/scripts/ai/precommit-neutrality.mts ]; then
+          node tools/scripts/ai/precommit-neutrality.mts {staged_files} || echo "⚠️ AI neutrality check completed with warnings"
+        fi
+
+    ai-semantic-quality:
+      glob: '*.{ts,tsx,js,jsx}'
+      run: |
+        if [ -f tools/scripts/ai/semantic-indexer.cjs ]; then
+          node tools/scripts/ai/semantic-indexer.cjs check {staged_files} || echo "⚠️ Semantic quality check completed with warnings"
+        fi
+
+    ai-competence-quick:
+      glob: '*.{ts,tsx,js,jsx}'
+      run: |
+        if [ -f tools/scripts/ai/competence-monitor.js ]; then
+          # Quick competence check on staged files only
+          node tools/scripts/ai/competence-monitor.js quick-check {staged_files} || echo "⚠️ Competence check completed with warnings"
+        fi
+
 pre-push:
   commands:
+    # Update AI index before push
+    update-ai-index:
+      run: |
+        if [ -f tools/scripts/ai/update-recent-changes.js ]; then
+          echo "📝 Updating AI index with recent changes..."
+          node tools/scripts/ai/update-recent-changes.js || echo "⚠️ AI index update failed (non-blocking)"
+        fi
+
     audit:
       run: npm run audit || true
 

@@ -174,7 +174,7 @@ for (const q of queries) {
   test(`brute-force vector search returns results for q="${q}"`, async () => {
     const port = bruteProc?.port ?? 3031;
     const { status, data } = await httpGetJSON(
-      `http://127.0.0.1:${port}/vector-search?q=${encodeURIComponent(q)}&top=${K}`,
+      `http://127.0.0.1:${port}/vector-search?q=${encodeURIComponent(q)}&top=${K}`
     );
     expect(status).toBe(200);
     expect(Array.isArray(data.results)).toBe(true);
@@ -193,10 +193,10 @@ if (TEST_ANN_URL) {
     const recalls = [];
     for (const q of queries) {
       const base = await httpGetJSON(
-        `http://127.0.0.1:${basePort}/vector-search?q=${encodeURIComponent(q)}&top=${K}`,
+        `http://127.0.0.1:${basePort}/vector-search?q=${encodeURIComponent(q)}&top=${K}`
       );
       const ann = await httpGetJSON(
-        `http://127.0.0.1:${annPort}/vector-search?q=${encodeURIComponent(q)}&top=${K}`,
+        `http://127.0.0.1:${annPort}/vector-search?q=${encodeURIComponent(q)}&top=${K}`
       );
       expect(ann.status).toBe(200);
       expect(ann.data.meta.backend).toBe('ann');
@@ -267,7 +267,7 @@ test('ANN fallback: server returns brute-force results on ANN failure', async ()
     throw new Error(`${err.message}${extra}`);
   }
   const { status, data } = await httpGetJSON(
-    `http://127.0.0.1:${freePort}/vector-search?q=test&top=3`,
+    `http://127.0.0.1:${freePort}/vector-search?q=test&top=3`
   );
   expect(status).toBe(200);
   expect(Array.isArray(data.results) && data.results.length > 0).toBe(true);

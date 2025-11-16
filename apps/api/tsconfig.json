@@ -2,10 +2,11 @@
   "extends": "../../tools/config/tsconfig.base.json",
   "compilerOptions": {
     "ignoreDeprecations": "6.0",
-    "rootDir": ".",
+    "rootDir": "../../",
     "baseUrl": "../../",
     "paths": {
-      "@political-sphere/shared": ["libs/shared/src"]
+      "@political-sphere/shared": ["libs/shared/src"],
+      "@political-sphere/game-engine": ["libs/game-engine/src/index.ts"]
     },
     "module": "es2022",
     "target": "es2022",

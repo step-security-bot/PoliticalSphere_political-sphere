@@ -25,14 +25,14 @@
       "executor": "nx:run-commands",
       "outputs": ["{workspaceRoot}/coverage/libs/data-user"],
       "options": {
-        "command": "vitest run --config ../../vitest.config.js --coverage --reporter=verbose"
+        "command": "vitest run --config ../../vitest.config.ts --coverage --reporter=verbose"
       },
       "configurations": {
         "watch": {
-          "command": "vitest --config ../../vitest.config.js --watch"
+          "command": "vitest --config ../../vitest.config.ts --watch"
         },
         "coverage": {
-          "command": "vitest run --config ../../vitest.config.js --coverage"
+          "command": "vitest run --config ../../vitest.config.ts --coverage"
         }
       }
     }

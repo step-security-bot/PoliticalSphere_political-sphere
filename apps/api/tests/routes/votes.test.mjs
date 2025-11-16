@@ -1,12 +1,14 @@
 import assert from 'node:assert';
 
 import express from 'express';
+import { afterEach, beforeEach, describe, it } from 'vitest';
 
 import authRoutes from '../../src/auth/auth.routes.ts';
 import { closeDatabase, getDatabase } from '../../src/modules/stores/index.ts';
 import billsRouter from '../../src/routes/bills.js';
 import usersRouter from '../../src/routes/users.js';
 import votesRouter from '../../src/routes/votes.js';
+import { bearer, getTestToken } from '../helpers/auth-token.mjs';
 import { dispatchRequest } from '../utils/express-request.js';
 
 describe('Votes Routes', () => {
@@ -21,19 +23,9 @@ describe('Votes Routes', () => {
     app.use('/api', votesRouter);
     app.use('/auth', authRoutes);
 
-    // Create a test user and get auth token
-    const timestamp = Date.now();
-    const createResponse = await dispatchRequest(app, {
-      method: 'POST',
-      url: '/auth/register',
-      body: {
-        username: `testuser${timestamp}`,
-        password: 'password123',
-        email: `test${timestamp}@example.com`,
-      },
-    });
-    assert.strictEqual(createResponse.status, 201);
-    authToken = createResponse.body.tokens.accessToken;
+    // Acquire auth token
+    const { token } = await getTestToken(app);
+    authToken = token;
   });
 
   afterEach(() => {
@@ -45,6 +37,7 @@ describe('Votes Routes', () => {
     const response = await dispatchRequest(app, {
       method: 'POST',
       url: '/api/users',
+      headers: bearer(authToken),
       body: {
         username: `user-${uniqueId}`,
         email: `test-${uniqueId}@example.com`,
@@ -58,6 +51,7 @@ describe('Votes Routes', () => {
     const response = await dispatchRequest(app, {
       method: 'POST',
       url: '/api/bills',
+      headers: bearer(authToken),
       body: {
         title: `Bill-${Date.now()}`,
         description: 'A test bill',
@@ -98,6 +92,7 @@ describe('Votes Routes', () => {
       const first = await dispatchRequest(app, {
         method: 'POST',
         url: '/api/votes',
+        headers: bearer(authToken),
         body: {
           billId,
           userId,
@@ -109,6 +104,7 @@ describe('Votes Routes', () => {
       const response = await dispatchRequest(app, {
         method: 'POST',
         url: '/api/votes',
+        headers: bearer(authToken),
         body: {
           billId,
           userId,
@@ -129,6 +125,7 @@ describe('Votes Routes', () => {
       const vote1 = await dispatchRequest(app, {
         method: 'POST',
         url: '/api/votes',
+        headers: bearer(authToken),
         body: {
           billId,
           userId: user1,
@@ -140,6 +137,7 @@ describe('Votes Routes', () => {
       const vote2 = await dispatchRequest(app, {
         method: 'POST',
         url: '/api/votes',
+        headers: bearer(authToken),
         body: {
           billId,
           userId: user2,
@@ -151,6 +149,7 @@ describe('Votes Routes', () => {
       const getResponse = await dispatchRequest(app, {
         method: 'GET',
         url: `/api/bills/${billId}/votes`,
+        headers: bearer(authToken),
       });
       assert.strictEqual(getResponse.status, 200);
       assert(Array.isArray(getResponse.body));

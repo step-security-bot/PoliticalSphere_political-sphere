@@ -23,8 +23,8 @@ export interface Proposal {
   description: string;
   proposerId: string;
   createdAt: string;
-  status: 'proposed' | 'debate' | 'voting' | 'enacted' | 'rejected';
-  debateId: string | null;
+  status: 'proposed' | 'debate' | 'voting' | 'enacted' | 'rejected' | 'flagged';
+  debateId?: string | null;
   moderationStatus?: string;
   flaggedReasons?: string[];
   reviewedAt?: string;
@@ -42,7 +42,7 @@ export interface Vote {
   proposalId: string;
   choice: 'for' | 'against' | 'abstain';
   timestamp: string;
-  createdAt: string;
+  createdAt: string; // Required field
 }
 
 /**
@@ -55,6 +55,7 @@ export interface Debate {
   currentSpeakerIndex: number;
   timeLimit: number;
   startedAt: string;
+  createdAt: string;
   status: 'active' | 'completed';
 }
 

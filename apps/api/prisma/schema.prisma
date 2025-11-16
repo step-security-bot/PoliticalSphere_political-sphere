@@ -1,146 +1,523 @@
-// Prisma Schema for Political Sphere API
-// Database schema definition for the political simulation platform
+// Prisma Schema for Political Sphere
+// Database: PostgreSQL
+// Generated: 2025-11-14
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../node_modules/.prisma/client"
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
 // ============================================================================
-// User Management
+// PARLIAMENT SYSTEM
 // ============================================================================
 
-model User {
+model Chamber {
+  id                String   @id @default(uuid())
+  gameId            String
+  type              String   // 'commons' | 'lords'
+  name              String
+  maxSeats          Int
+  quorumPercentage  Float    @default(50)
+  status            String   @default("active")
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  
+  motions           Motion[]
+  
+  @@index([gameId])
+  @@index([type])
+}
+
+model Motion {
+  id              String    @id @default(uuid())
+  gameId          String
+  chamberId       String
+  proposerId      String
+  type            String    // 'debate' | 'vote' | 'amendment' | 'procedural'
+  title           String
+  description     String    @db.Text
+  status          String    @default("proposed") // 'proposed' | 'debate' | 'voting' | 'completed'
+  votingStarted   DateTime?
+  votingEnded     DateTime?
+  result          String?   // 'passed' | 'failed'
+  debateId        String?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  
+  chamber         Chamber   @relation(fields: [chamberId], references: [id], onDelete: Cascade)
+  debate          Debate?   @relation(fields: [debateId], references: [id])
+  votes           Vote[]
+  
+  @@index([gameId])
+  @@index([chamberId])
+  @@index([status])
+}
+
+model Debate {
+  id                  String   @id @default(uuid())
+  motionId            String   @unique
+  startTime           DateTime
+  duration            Int      // seconds
+  speakingOrder       String[] // array of user IDs
+  timePerSpeaker      Int      @default(180)
+  status              String   @default("scheduled") // 'scheduled' | 'active' | 'completed'
+  currentSpeakerIndex Int      @default(0)
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+  
+  motion              Motion[]
+  speeches            Speech[]
+  
+  @@index([status])
+}
+
+model Speech {
   id        String   @id @default(uuid())
-  email     String   @unique
-  username  String   @unique
-  password  String   // Hashed password
-  role      UserRole @default(USER)
+  debateId  String
+  speakerId String
+  content   String   @db.Text
+  timestamp DateTime @default(now())
   
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  debate    Debate   @relation(fields: [debateId], references: [id], onDelete: Cascade)
   
-  // Relations
-  votes     Vote[]
-  party     Party?   @relation(fields: [partyId], references: [id])
-  partyId   String?
-  
-  @@map("users")
-}
-
-enum UserRole {
-  USER
-  MODERATOR
-  ADMIN
-}
-
-// ============================================================================
-// Political Parties
-// ============================================================================
-
-model Party {
-  id          String   @id @default(uuid())
-  name        String   @unique
-  description String?
-  ideology    String?
-  
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  
-  // Relations
-  members     User[]
-  
-  @@map("parties")
-}
-
-// ============================================================================
-// Voting & Governance
-// ============================================================================
-
-model Proposal {
-  id          String         @id @default(uuid())
-  title       String
-  description String
-  status      ProposalStatus @default(ACTIVE)
-  
-  createdAt   DateTime       @default(now())
-  updatedAt   DateTime       @updatedAt
-  expiresAt   DateTime?
-  
-  // Relations
-  votes       Vote[]
-  
-  @@map("proposals")
-}
-
-enum ProposalStatus {
-  DRAFT
-  ACTIVE
-  PASSED
-  REJECTED
-  EXPIRED
+  @@index([debateId])
 }
 
 model Vote {
-  id         String   @id @default(uuid())
-  choice     String   // YES, NO, ABSTAIN
-  
-  createdAt  DateTime @default(now())
-  
-  // Relations
-  user       User     @relation(fields: [userId], references: [id])
-  userId     String
-  
-  proposal   Proposal @relation(fields: [proposalId], references: [id])
-  proposalId String
-  
-  @@unique([userId, proposalId]) // One vote per user per proposal
-  @@map("votes")
-}
-
-// ============================================================================
-// News & Content
-// ============================================================================
-
-model NewsArticle {
-  id        String        @id @default(uuid())
-  title     String
-  excerpt   String?
-  content   String
-  category  String?
-  status    ContentStatus @default(DRAFT)
-  
-  createdAt DateTime      @default(now())
-  updatedAt DateTime      @updatedAt
-  
-  @@map("news_articles")
-}
-
-enum ContentStatus {
-  DRAFT
-  PUBLISHED
-  ARCHIVED
-  FLAGGED
-}
-
-// ============================================================================
-// Audit Trail
-// ============================================================================
-
-model AuditLog {
   id        String   @id @default(uuid())
-  action    String   // Action performed
-  entity    String   // Entity affected (User, Vote, etc.)
-  entityId  String   // ID of the affected entity
-  userId    String?  // User who performed the action
-  metadata  String?  // JSON string with additional context
-  
+  motionId  String
+  userId    String
+  vote      String   // 'aye' | 'no' | 'abstain'
   createdAt DateTime @default(now())
   
-  @@map("audit_logs")
+  motion    Motion   @relation(fields: [motionId], references: [id], onDelete: Cascade)
+  
+  @@unique([motionId, userId])
+  @@index([motionId])
+}
+
+// ============================================================================
+// GOVERNMENT SYSTEM
+// ============================================================================
+
+model Government {
+  id                String    @id @default(uuid())
+  gameId            String
+  name              String
+  type              String    // 'coalition' | 'majority' | 'minority'
+  leadPartyId       String
+  formedAt          DateTime  @default(now())
+  dissolvedAt       DateTime?
+  status            String    @default("active") // 'active' | 'dissolved'
+  confidenceVotes   Int       @default(0)
+  noConfidenceVotes Int       @default(0)
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  
+  ministers         Minister[]
+  executiveActions  ExecutiveAction[]
+  cabinetMeetings   CabinetMeeting[]
+  
+  @@index([gameId])
+  @@index([status])
+}
+
+model Minister {
+  id           String    @id @default(uuid())
+  governmentId String
+  userId       String
+  position     String    // 'prime_minister' | 'chancellor' | etc.
+  department   String?
+  appointedAt  DateTime  @default(now())
+  removedAt    DateTime?
+  status       String    @default("active")
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  
+  government   Government @relation(fields: [governmentId], references: [id], onDelete: Cascade)
+  
+  @@index([governmentId])
+  @@index([userId])
+  @@index([status])
+}
+
+model ExecutiveAction {
+  id           String   @id @default(uuid())
+  governmentId String
+  type         String   // 'order' | 'regulation' | 'treaty' | 'appointment'
+  title        String
+  description  String   @db.Text
+  issuedBy     String
+  status       String   @default("pending") // 'pending' | 'active' | 'revoked'
+  issuedAt     DateTime @default(now())
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  
+  government   Government @relation(fields: [governmentId], references: [id], onDelete: Cascade)
+  
+  @@index([governmentId])
+  @@index([status])
+}
+
+model CabinetMeeting {
+  id           String   @id @default(uuid())
+  governmentId String
+  scheduledAt  DateTime
+  agenda       String   @db.Text
+  attendees    String[] // array of user IDs
+  minutes      String?  @db.Text
+  status       String   @default("scheduled") // 'scheduled' | 'completed' | 'cancelled'
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  
+  government   Government @relation(fields: [governmentId], references: [id], onDelete: Cascade)
+  
+  @@index([governmentId])
+  @@index([status])
+}
+
+// ============================================================================
+// JUDICIARY SYSTEM
+// ============================================================================
+
+model LegalCase {
+  id              String    @id @default(uuid())
+  gameId          String
+  plaintiffId     String
+  defendantId     String?
+  caseType        String    // 'constitutional_review' | 'legal_challenge' | 'appeal' | 'judicial_review'
+  title           String
+  description     String    @db.Text
+  legalBasis      String    @db.Text
+  targetLawId     String?
+  targetActionId  String?
+  status          String    @default("filed") // 'filed' | 'scheduled' | 'decided'
+  filedAt         DateTime  @default(now())
+  hearingDate     DateTime?
+  closedAt        DateTime?
+  outcome         String?   // 'upheld' | 'overturned' | 'remanded' | 'dismissed'
+  assignedJudge   String?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  
+  rulings         Ruling[]
+  
+  @@index([gameId])
+  @@index([status])
+}
+
+model Judge {
+  id            String    @id @default(uuid())
+  gameId        String
+  userId        String
+  court         String    // 'supreme_court' | 'high_court' | 'appeals_court'
+  position      String
+  tenure        String    // 'life' | 'fixed_term' | 'renewable'
+  termYears     Int?
+  appointedAt   DateTime  @default(now())
+  retiredAt     DateTime?
+  status        String    @default("active")
+  casesHeard    Int       @default(0)
+  rulingsIssued Int       @default(0)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  rulings       Ruling[]
+  
+  @@index([gameId])
+  @@index([court])
+  @@index([status])
+}
+
+model Ruling {
+  id                    String   @id @default(uuid())
+  caseId                String
+  judgeId               String
+  decision              String   // 'upheld' | 'overturned' | 'remanded' | 'dismissed'
+  reasoning             String   @db.Text
+  precedentSetting      Boolean  @default(false)
+  constitutionalImpact  String   @default("none") // 'none' | 'minor' | 'major' | 'landmark'
+  issuedAt              DateTime @default(now())
+  appealable            Boolean  @default(true)
+  appealed              Boolean  @default(false)
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+  
+  case                  LegalCase @relation(fields: [caseId], references: [id], onDelete: Cascade)
+  judge                 Judge     @relation(fields: [judgeId], references: [id])
+  precedent             Precedent?
+  
+  @@index([caseId])
+  @@index([judgeId])
+}
+
+model ConstitutionalReview {
+  id             String    @id @default(uuid())
+  gameId         String
+  requesterId    String
+  targetType     String    // 'law' | 'executive_action' | 'parliamentary_procedure'
+  targetId       String
+  grounds        String    @db.Text
+  urgency        String    @default("routine") // 'routine' | 'expedited' | 'emergency'
+  status         String    @default("pending")
+  requestedAt    DateTime  @default(now())
+  assignedJudge  String?
+  decision       String?
+  decidedAt      DateTime?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  
+  @@index([gameId])
+  @@index([status])
+}
+
+model Precedent {
+  id            String   @id @default(uuid())
+  caseId        String
+  rulingId      String   @unique
+  title         String
+  principle     String   @db.Text
+  impact        String   // 'none' | 'minor' | 'major' | 'landmark'
+  establishedAt DateTime @default(now())
+  citations     Int      @default(0)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  
+  ruling        Ruling   @relation(fields: [rulingId], references: [id], onDelete: Cascade)
+  
+  @@index([impact])
+}
+
+// ============================================================================
+// MEDIA SYSTEM
+// ============================================================================
+
+model PressRelease {
+  id          String   @id @default(uuid())
+  gameId      String
+  authorId    String
+  authorType  String   // 'government' | 'party' | 'individual' | 'organization'
+  title       String
+  content     String   @db.Text
+  category    String   // 'policy' | 'announcement' | 'response' | 'statement' | 'emergency'
+  visibility  String   @default("public") // 'public' | 'restricted' | 'embargoed'
+  embargoUntil DateTime?
+  publishedAt DateTime @default(now())
+  views       Int      @default(0)
+  status      String   @default("published")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@index([gameId])
+  @@index([authorId])
+  @@index([category])
+  @@index([status])
+}
+
+model Poll {
+  id             String   @id @default(uuid())
+  gameId         String
+  creatorId      String
+  question       String
+  options        String[] // array of option strings
+  pollType       String   // 'approval' | 'preference' | 'issue' | 'election'
+  duration       Int      // seconds
+  targetAudience String   @default("all") // 'all' | 'voters' | 'members' | 'specific'
+  createdAt      DateTime @default(now())
+  closesAt       DateTime
+  status         String   @default("active") // 'active' | 'closed'
+  totalVotes     Int      @default(0)
+  updatedAt      DateTime @updatedAt
+  
+  votes          PollVote[]
+  
+  @@index([gameId])
+  @@index([status])
+}
+
+model PollVote {
+  id          String   @id @default(uuid())
+  pollId      String
+  userId      String
+  optionIndex Int
+  votedAt     DateTime @default(now())
+  
+  poll        Poll     @relation(fields: [pollId], references: [id], onDelete: Cascade)
+  
+  @@unique([pollId, userId])
+  @@index([pollId])
+}
+
+model MediaCoverage {
+  id         String   @id @default(uuid())
+  gameId     String
+  targetType String   // 'person' | 'party' | 'policy' | 'event'
+  targetId   String
+  sentiment  String   // 'very_negative' | 'negative' | 'neutral' | 'positive' | 'very_positive'
+  prominence String   // 'minor' | 'moderate' | 'major' | 'headline'
+  source     String
+  headline   String
+  summary    String?  @db.Text
+  impact     Int      // calculated impact score
+  recordedAt DateTime @default(now())
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  
+  @@index([gameId])
+  @@index([targetId])
+  @@index([targetType])
+}
+
+model Narrative {
+  id            String   @id @default(uuid())
+  gameId        String
+  title         String
+  description   String   @db.Text
+  narrativeType String   // 'scandal' | 'achievement' | 'controversy' | 'trend' | 'crisis'
+  participants  String[] // array of user IDs
+  sentiment     String   // 'negative' | 'neutral' | 'positive'
+  virality      Int      @default(0)
+  startedAt     DateTime @default(now())
+  status        String   @default("active")
+  mentions      Int      @default(1)
+  peakVirality  Int      @default(0)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  
+  @@index([gameId])
+  @@index([status])
+  @@index([virality])
+}
+
+model ApprovalRating {
+  id          String   @id @default(uuid())
+  gameId      String
+  targetId    String
+  approval    Float    @default(50)
+  disapproval Float    @default(50)
+  neutral     Float    @default(0)
+  trend       String   @default("stable") // 'rising' | 'falling' | 'stable'
+  lastUpdated DateTime @default(now())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@unique([gameId, targetId])
+  @@index([gameId])
+  @@index([targetId])
+}
+
+// ============================================================================
+// ELECTIONS SYSTEM
+// ============================================================================
+
+model Election {
+  id           String   @id @default(uuid())
+  gameId       String
+  name         String
+  electionType String   // 'general' | 'by_election' | 'local' | 'referendum'
+  startDate    DateTime
+  endDate      DateTime
+  description  String?  @db.Text
+  status       String   @default("scheduled") // 'scheduled' | 'active' | 'closed' | 'certified'
+  totalVotes   Int      @default(0)
+  turnout      Float    @default(0)
+  certifiedAt  DateTime?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  
+  campaigns      Campaign[]
+  constituencies Constituency[]
+  candidates     Candidate[]
+  votes          ElectionVote[]
+  
+  @@index([gameId])
+  @@index([status])
+}
+
+model Campaign {
+  id          String   @id @default(uuid())
+  electionId  String
+  partyId     String?
+  candidateId String
+  name        String
+  slogan      String?
+  platform    String   @db.Text
+  budget      Float    @default(0)
+  spending    Float    @default(0)
+  events      Int      @default(0)
+  endorsements String[] // array of endorser IDs
+  registeredAt DateTime @default(now())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  election    Election @relation(fields: [electionId], references: [id], onDelete: Cascade)
+  
+  @@index([electionId])
+  @@index([candidateId])
+}
+
+model Constituency {
+  id               String   @id @default(uuid())
+  electionId       String
+  name             String
+  population       Int
+  registeredVoters Int
+  region           String
+  votesCast        Int      @default(0)
+  turnoutPercentage Float   @default(0)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  
+  election         Election   @relation(fields: [electionId], references: [id], onDelete: Cascade)
+  candidates       Candidate[]
+  votes            ElectionVote[]
+  
+  @@index([electionId])
+  @@index([region])
+}
+
+model Candidate {
+  id             String   @id @default(uuid())
+  electionId     String
+  constituencyId String
+  userId         String
+  partyId        String?
+  independent    Boolean  @default(false)
+  deposit        Float    @default(500)
+  registeredAt   DateTime @default(now())
+  votesReceived  Int      @default(0)
+  votePercentage Float    @default(0)
+  status         String   @default("registered")
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  
+  election       Election     @relation(fields: [electionId], references: [id], onDelete: Cascade)
+  constituency   Constituency @relation(fields: [constituencyId], references: [id], onDelete: Cascade)
+  votes          ElectionVote[]
+  
+  @@index([electionId])
+  @@index([constituencyId])
+  @@index([userId])
+}
+
+model ElectionVote {
+  id             String   @id @default(uuid())
+  electionId     String
+  constituencyId String
+  candidateId    String
+  userId         String
+  votedAt        DateTime @default(now())
+  
+  election       Election     @relation(fields: [electionId], references: [id], onDelete: Cascade)
+  constituency   Constituency @relation(fields: [constituencyId], references: [id], onDelete: Cascade)
+  candidate      Candidate    @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+  
+  @@unique([electionId, constituencyId, userId])
+  @@index([electionId])
+  @@index([constituencyId])
+  @@index([candidateId])
 }

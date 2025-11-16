@@ -1,0 +1,39 @@
+{
+  "name": "@political-sphere/ai-system",
+  "version": "1.0.0",
+  "description": "Enterprise-grade AI orchestration with governance, validation, observability, accessibility, and privacy",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "lint": "eslint src/**/*.ts",
+    "lint:fix": "eslint src/**/*.ts --fix",
+    "example:complete-system": "node --loader ts-node/esm examples/complete-system.ts",
+    "setup-hooks": "bash scripts/setup-hooks.sh",
+    "validate:pre-commit": "node scripts/pre-commit-validation.mjs",
+    "validate:ci": "node scripts/ci-validation.mjs",
+    "demo": "node scripts/demo.mjs"
+  },
+  "keywords": [
+    "ai",
+    "orchestration",
+    "governance",
+    "nist-ai-rmf",
+    "wcag",
+    "gdpr",
+    "owasp",
+    "observability",
+    "political-neutrality"
+  ],
+  "author": "Political Sphere Team",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@vitest/coverage-v8": "^1.0.0",
+    "typescript": "^5.0.0",
+    "vitest": "^1.0.0"
+  }
+}

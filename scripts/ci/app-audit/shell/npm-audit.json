@@ -1,6 +1,0 @@
-{
-  "status": "not_run",
-  "generatedAt": "1970-01-01T00:00:00.000Z",
-  "summary": "This placeholder is overwritten when scripts/ci/app-audit/app-audit-shell.sh stores npm audit results.",
-  "findings": []
-}

@@ -240,8 +240,10 @@ if (require.main === module) {
         }
         
         hashPassword(password) {
-          // Implementation here
-          return crypto.createHash('sha256').update(password).digest('hex');
+          // ❌ NEVER USE SHA-256 for passwords - violates cryptographic standards
+          // ✅ Use bcrypt or argon2 for password hashing
+          // Example: return await bcrypt.hash(password, 12);
+          throw new Error('Password hashing must use bcrypt/argon2, not SHA-256');
         }
         
         generateToken(user) {

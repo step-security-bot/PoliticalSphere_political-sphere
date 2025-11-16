@@ -1,0 +1,377 @@
+{
+  "dashboard": {
+    "id": null,
+    "uid": "ai-system-metrics",
+    "title": "AI System Performance & Governance",
+    "tags": ["ai", "governance", "quality", "performance"],
+    "timezone": "browser",
+    "schemaVersion": 38,
+    "version": 1,
+    "refresh": "30s",
+    
+    "panels": [
+      {
+        "id": 1,
+        "gridPos": { "h": 8, "w": 12, "x": 0, "y": 0 },
+        "type": "timeseries",
+        "title": "AI Competence Score Trend",
+        "description": "Code quality score from AI competence monitor (target: >0.7)",
+        "targets": [
+          {
+            "expr": "ai_competence_score",
+            "legendFormat": "Competence Score",
+            "refId": "A"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "color": { "mode": "thresholds" },
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                { "value": 0, "color": "red" },
+                { "value": 0.5, "color": "yellow" },
+                { "value": 0.7, "color": "green" }
+              ]
+            },
+            "min": 0,
+            "max": 1
+          }
+        },
+        "options": {
+          "legend": { "displayMode": "list", "placement": "bottom" }
+        }
+      },
+      
+      {
+        "id": 2,
+        "gridPos": { "h": 8, "w": 12, "x": 12, "y": 0 },
+        "type": "gauge",
+        "title": "Current Competence Score",
+        "description": "Latest AI code quality assessment",
+        "targets": [
+          {
+            "expr": "ai_competence_score",
+            "instant": true,
+            "refId": "A"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                { "value": 0, "color": "red" },
+                { "value": 0.5, "color": "yellow" },
+                { "value": 0.7, "color": "green" }
+              ]
+            },
+            "min": 0,
+            "max": 1
+          }
+        },
+        "options": {
+          "showThresholdLabels": true,
+          "showThresholdMarkers": true
+        }
+      },
+      
+      {
+        "id": 3,
+        "gridPos": { "h": 8, "w": 8, "x": 0, "y": 8 },
+        "type": "timeseries",
+        "title": "AI Tool Execution Latency (p95)",
+        "description": "95th percentile latency for AI tools (target: <500ms)",
+        "targets": [
+          {
+            "expr": "histogram_quantile(0.95, ai_tool_execution_duration_seconds_bucket)",
+            "legendFormat": "{{tool}}",
+            "refId": "A"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "s",
+            "color": { "mode": "palette-classic" },
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                { "value": 0, "color": "green" },
+                { "value": 0.5, "color": "yellow" },
+                { "value": 1, "color": "red" }
+              ]
+            }
+          }
+        }
+      },
+      
+      {
+        "id": 4,
+        "gridPos": { "h": 8, "w": 8, "x": 8, "y": 8 },
+        "type": "timeseries",
+        "title": "AI Cache Hit Rate",
+        "description": "Percentage of requests served from cache (target: >80%)",
+        "targets": [
+          {
+            "expr": "rate(ai_cache_hits_total[5m]) / (rate(ai_cache_hits_total[5m]) + rate(ai_cache_misses_total[5m]))",
+            "legendFormat": "Cache Hit Rate",
+            "refId": "A"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "percentunit",
+            "color": { "mode": "thresholds" },
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                { "value": 0, "color": "red" },
+                { "value": 0.6, "color": "yellow" },
+                { "value": 0.8, "color": "green" }
+              ]
+            },
+            "min": 0,
+            "max": 1
+          }
+        }
+      },
+      
+      {
+        "id": 5,
+        "gridPos": { "h": 8, "w": 8, "x": 16, "y": 8 },
+        "type": "stat",
+        "title": "AI Workflow Success Rate (24h)",
+        "description": "Percentage of successful AI maintenance runs (target: >98%)",
+        "targets": [
+          {
+            "expr": "sum(increase(ai_workflow_success_total[24h])) / sum(increase(ai_workflow_total[24h]))",
+            "instant": true,
+            "refId": "A"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "percentunit",
+            "color": { "mode": "thresholds" },
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                { "value": 0, "color": "red" },
+                { "value": 0.95, "color": "yellow" },
+                { "value": 0.98, "color": "green" }
+              ]
+            }
+          }
+        },
+        "options": {
+          "graphMode": "none",
+          "colorMode": "background"
+        }
+      },
+      
+      {
+        "id": 6,
+        "gridPos": { "h": 8, "w": 12, "x": 0, "y": 16 },
+        "type": "bargauge",
+        "title": "Neutrality Violations by Category",
+        "description": "Political bias detections by type (target: 0 violations)",
+        "targets": [
+          {
+            "expr": "sum by(category) (ai_neutrality_violations_total)",
+            "refId": "A"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "color": { "mode": "thresholds" },
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                { "value": 0, "color": "green" },
+                { "value": 1, "color": "yellow" },
+                { "value": 5, "color": "red" }
+              ]
+            }
+          }
+        },
+        "options": {
+          "orientation": "horizontal",
+          "displayMode": "gradient"
+        }
+      },
+      
+      {
+        "id": 7,
+        "gridPos": { "h": 8, "w": 12, "x": 12, "y": 16 },
+        "type": "timeseries",
+        "title": "AI Index Size & Growth",
+        "description": "Size of searchable code index (MB)",
+        "targets": [
+          {
+            "expr": "ai_index_size_bytes / 1024 / 1024",
+            "legendFormat": "Index Size (MB)",
+            "refId": "A"
+          },
+          {
+            "expr": "ai_index_file_count",
+            "legendFormat": "Indexed Files",
+            "refId": "B"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "color": { "mode": "palette-classic" }
+          },
+          "overrides": [
+            {
+              "matcher": { "id": "byName", "options": "Indexed Files" },
+              "properties": [{ "id": "unit", "value": "short" }]
+            }
+          ]
+        }
+      },
+      
+      {
+        "id": 8,
+        "gridPos": { "h": 8, "w": 8, "x": 0, "y": 24 },
+        "type": "table",
+        "title": "Top AI Tool Errors (24h)",
+        "description": "Most frequently failing AI tools",
+        "targets": [
+          {
+            "expr": "topk(5, sum by(tool) (increase(ai_tool_errors_total[24h])))",
+            "format": "table",
+            "instant": true,
+            "refId": "A"
+          }
+        ],
+        "transformations": [
+          {
+            "id": "organize",
+            "options": {
+              "excludeByName": { "Time": true },
+              "indexByName": {},
+              "renameByName": {
+                "tool": "Tool",
+                "Value": "Error Count"
+              }
+            }
+          }
+        ]
+      },
+      
+      {
+        "id": 9,
+        "gridPos": { "h": 8, "w": 8, "x": 8, "y": 24 },
+        "type": "stat",
+        "title": "Smoke Test Pass Rate (7d)",
+        "description": "Percentage of passing smoke tests (target: 100%)",
+        "targets": [
+          {
+            "expr": "sum(increase(ai_smoke_test_success_total[7d])) / sum(increase(ai_smoke_test_total[7d]))",
+            "instant": true,
+            "refId": "A"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "percentunit",
+            "color": { "mode": "thresholds" },
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                { "value": 0, "color": "red" },
+                { "value": 0.95, "color": "yellow" },
+                { "value": 0.99, "color": "green" }
+              ]
+            }
+          }
+        },
+        "options": {
+          "graphMode": "area",
+          "colorMode": "background"
+        }
+      },
+      
+      {
+        "id": 10,
+        "gridPos": { "h": 8, "w": 8, "x": 16, "y": 24 },
+        "type": "stat",
+        "title": "Context Bundle Freshness",
+        "description": "Age of oldest context bundle (target: <24h)",
+        "targets": [
+          {
+            "expr": "(time() - ai_context_bundle_last_update_timestamp) / 3600",
+            "instant": true,
+            "refId": "A"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "h",
+            "color": { "mode": "thresholds" },
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                { "value": 0, "color": "green" },
+                { "value": 24, "color": "yellow" },
+                { "value": 72, "color": "red" }
+              ]
+            }
+          }
+        },
+        "options": {
+          "graphMode": "none",
+          "colorMode": "background"
+        }
+      }
+    ],
+    
+    "templating": {
+      "list": [
+        {
+          "name": "datasource",
+          "type": "datasource",
+          "query": "prometheus",
+          "current": {
+            "text": "Prometheus",
+            "value": "prometheus"
+          }
+        }
+      ]
+    },
+    
+    "annotations": {
+      "list": [
+        {
+          "name": "Deployments",
+          "datasource": "prometheus",
+          "expr": "changes(ai_deployment_timestamp[5m]) > 0",
+          "tagKeys": "version,environment",
+          "textFormat": "Deployment: {{version}}",
+          "iconColor": "blue"
+        },
+        {
+          "name": "AI Governance Violations",
+          "datasource": "prometheus",
+          "expr": "ai_neutrality_violations_total > 0",
+          "tagKeys": "category,severity",
+          "textFormat": "Neutrality violation: {{category}}",
+          "iconColor": "red"
+        }
+      ]
+    },
+    
+    "time": {
+      "from": "now-24h",
+      "to": "now"
+    },
+    
+    "timepicker": {
+      "refresh_intervals": ["10s", "30s", "1m", "5m", "15m"],
+      "time_options": ["5m", "15m", "1h", "6h", "12h", "24h", "7d", "30d"]
+    }
+  },
+  
+  "overwrite": true
+}

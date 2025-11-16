@@ -1,10 +1,12 @@
 import assert from 'node:assert';
 
 import express from 'express';
+import { afterEach, beforeEach, describe, it } from 'vitest';
 
 import authRoutes from '../../src/auth/auth.routes.ts';
 import { closeDatabase, getDatabase } from '../../src/modules/stores/index.ts';
 import usersRouter from '../../src/routes/users.js';
+import { bearer, getTestToken } from '../helpers/auth-token.mjs';
 import { dispatchRequest } from '../utils/express-request.js';
 
 describe('Users Routes', () => {
@@ -17,19 +19,9 @@ describe('Users Routes', () => {
     app.use('/api', usersRouter);
     app.use('/auth', authRoutes);
 
-    // Create a test user and get auth token
-    const timestamp = Date.now();
-    const createResponse = await dispatchRequest(app, {
-      method: 'POST',
-      url: '/auth/register',
-      body: {
-        username: `testuser${timestamp}`,
-        password: 'password123',
-        email: `test${timestamp}@example.com`,
-      },
-    });
-    assert.strictEqual(createResponse.status, 201);
-    authToken = createResponse.body.tokens.accessToken;
+    // Acquire test auth token via helper
+    const { token } = await getTestToken(app);
+    authToken = token;
   });
 
   afterEach(() => {
@@ -42,6 +34,7 @@ describe('Users Routes', () => {
       const response = await dispatchRequest(app, {
         method: 'POST',
         url: '/api/users',
+        headers: bearer(authToken),
         body: {
           username: `user${timestamp}`,
           email: `test-${timestamp}@example.com`,
@@ -59,6 +52,7 @@ describe('Users Routes', () => {
       const response = await dispatchRequest(app, {
         method: 'POST',
         url: '/api/users',
+        headers: bearer(authToken),
         body: {
           username: '',
           email: 'invalid-email',
@@ -73,6 +67,7 @@ describe('Users Routes', () => {
       const first = await dispatchRequest(app, {
         method: 'POST',
         url: '/api/users',
+        headers: bearer(authToken),
         body: {
           username: `user${timestamp}`,
           email: `test-${timestamp}@example.com`,
@@ -83,6 +78,7 @@ describe('Users Routes', () => {
       const response = await dispatchRequest(app, {
         method: 'POST',
         url: '/api/users',
+        headers: bearer(authToken),
         body: {
           username: `user${timestamp}`,
           email: `test2-${timestamp}@example.com`,
@@ -99,6 +95,7 @@ describe('Users Routes', () => {
       const createResponse = await dispatchRequest(app, {
         method: 'POST',
         url: '/api/users',
+        headers: bearer(authToken),
         body: {
           username: `user${timestamp}`,
           email: `test-${timestamp}@example.com`,
@@ -111,7 +108,7 @@ describe('Users Routes', () => {
       const getResponse = await dispatchRequest(app, {
         method: 'GET',
         url: `/api/users/${userId}`,
-        headers: authToken ? { Authorization: `Bearer ${authToken}` } : {},
+        headers: bearer(authToken),
       });
       assert.strictEqual(getResponse.status, 200);
       assert.deepStrictEqual(getResponse.body, createResponse.body.data);

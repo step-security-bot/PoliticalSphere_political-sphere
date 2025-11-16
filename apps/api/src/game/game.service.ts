@@ -3,13 +3,12 @@
  * Manages game state and actions using the game engine
  */
 
-import { advanceGameState } from '../../../../libs/game-engine/src/engine.js'; // eslint-disable-line @nx/enforce-module-boundaries, no-restricted-imports
+import type { GameState as EngineGameState } from '@political-sphere/game-engine';
+import { advanceGameState } from '@political-sphere/game-engine';
 
-export interface GameState {
-  id: string;
-  name: string;
-  createdAt: string;
-  currentTurn: number;
+// Extend engine's GameState with service-specific properties
+export interface GameState extends Omit<EngineGameState, 'players' | 'turn'> {
+  currentTurn: number; // Service uses currentTurn instead of turn object
   phase: 'lobby' | 'debate' | 'voting' | 'enacted';
   players: Array<{
     id: string;
@@ -17,15 +16,6 @@ export interface GameState {
     reputation: number;
     joinedAt: string;
   }>;
-  proposals: Array<unknown>;
-  votes: Array<unknown>;
-  debates: Array<unknown>;
-  speeches: Array<unknown>;
-  economy: {
-    treasury: number;
-    inflationRate: number;
-    unemploymentRate: number;
-  };
   settings: {
     maxPlayers: number;
     turnDuration: number; // seconds
@@ -55,6 +45,7 @@ export class GameService {
       id: gameId,
       name: name || 'New Game',
       createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
       currentTurn: 1,
       phase: 'lobby',
       players: [
@@ -80,6 +71,9 @@ export class GameService {
         debateDuration: 180, // 3 minutes
       },
       status: 'waiting',
+      contentRating: 'PG',
+      moderationEnabled: true,
+      ageVerificationRequired: false,
     };
 
     games.set(gameId, game);
@@ -201,18 +195,44 @@ export class GameService {
       enrichedAction.payload.proposerId = enrichedAction.playerId;
     }
 
+    // Convert service GameState to engine GameState format
+    const engineState: EngineGameState = {
+      ...game,
+      players: game.players.map(p => ({
+        id: p.id,
+        displayName: p.username,
+        createdAt: p.joinedAt,
+        verifiedAge: null,
+        contentRating: game.contentRating || 'PG',
+      })),
+      turn: {
+        turnNumber: game.currentTurn,
+        phase: game.phase,
+      },
+    };
+
     // Use game engine to advance state
     const seed = Date.now();
-    const newState = advanceGameState(game, [enrichedAction], seed);
+    const newState = advanceGameState(
+      engineState,
+      [enrichedAction as import('@political-sphere/game-engine').PlayerAction],
+      seed
+    );
 
     // Merge engine state back into game
     game.proposals = newState.proposals || [];
     game.votes = newState.votes || [];
     game.debates = newState.debates || [];
     game.speeches = newState.speeches || [];
+    game.updatedAt = newState.updatedAt;
 
     if (newState.economy) {
       game.economy = newState.economy;
+    }
+
+    if (newState.turn) {
+      game.currentTurn = newState.turn.turnNumber;
+      game.phase = newState.turn.phase;
     }
 
     return game;

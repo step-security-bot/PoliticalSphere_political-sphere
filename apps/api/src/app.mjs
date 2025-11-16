@@ -12,8 +12,13 @@ import ageVerificationRoutes from './routes/ageVerification.js';
 import authRoutes from './routes/auth.js';
 import billRoutes from './routes/bills.js';
 import complianceRoutes from './routes/compliance.js';
+import electionsRoutes from './routes/elections.js';
+import governmentRoutes from './routes/government.js';
+import judiciaryRoutes from './routes/judiciary.js';
+import mediaRoutes from './routes/media.js';
 import moderationRoutes from './routes/moderation.js';
 import newsRoutes from './routes/news.js';
+import parliamentRoutes from './routes/parliament.js';
 import partyRoutes from './routes/parties.js';
 import userRoutes from './routes/users.js';
 import voteRoutes from './routes/votes.js';
@@ -34,7 +39,7 @@ app.use(
         imgSrc: ["'self'", 'data:', 'https:'],
       },
     },
-  }),
+  })
 );
 
 // Configure CORS with secure origin allowlist
@@ -70,7 +75,7 @@ app.use(
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'X-CSRF-Token'],
-  }),
+  })
 );
 
 app.use(requestId);
@@ -173,6 +178,11 @@ app.use('/api/users', authenticate, userRoutes);
 app.use('/api/parties', authenticate, partyRoutes);
 app.use('/api/bills', authenticate, billRoutes);
 app.use('/api/votes', authenticate, voteRoutes);
+app.use('/api/parliament', authenticate, parliamentRoutes);
+app.use('/api/government', authenticate, governmentRoutes);
+app.use('/api/judiciary', authenticate, judiciaryRoutes);
+app.use('/api/media', authenticate, mediaRoutes);
+app.use('/api/elections', authenticate, electionsRoutes);
 app.use('/api/moderation', moderationRoutes);
 app.use('/api/compliance', authenticate, requireRole('admin'), complianceRoutes);
 app.use('/api/age-verification', authenticate, ageVerificationRoutes);

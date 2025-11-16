@@ -1,0 +1,47 @@
+# Gitleaks configuration file
+# See https://github.com/gitleaks/gitleaks#configuration for details
+#
+# This configuration consolidates allowlists from the previous tools/config/.gitleaks.toml
+# and adds path-based allowlists for documentation files to prevent false positives.
+
+title = "Political Sphere Gitleaks Configuration"
+
+# Allowlist for false positives
+[allowlist]
+  description = "Allowlist for known false positives"
+  
+  # Paths to ignore - dependency lock files and build artifacts
+  paths = [
+    '''go\.sum$''',
+    '''go\.mod$''',
+    '''vendor/''',
+    '''\.git/''',
+    '''node_modules/''',
+    '''package-lock\.json$''',
+    '''yarn\.lock$''',
+    '''pnpm-lock\.yaml$''',
+    '''Cargo\.lock$''',
+    '''Pipfile\.lock$''',
+    '''poetry\.lock$''',
+    '''Gemfile\.lock$''',
+    '''composer\.lock$''',
+    '''\.terraform\.lock\.hcl$''',
+    '''\.lock$''',
+    # Documentation files that may contain example security patterns
+    '''docs/.*\.md$''',
+    # Test files and fixtures
+    '''.*\.test\..*''',
+    '''.*\.spec\..*''',
+    '''.*/fixtures/.*''',
+    '''.*/mocks/.*''',
+  ]
+  
+  # Common false positives in development (test secrets, localhost references)
+  regexes = [
+    '''TEST_JWT_SECRET''',
+    '''test_jwt_secret''',
+    '''example\.com''',
+    '''localhost''',
+    '''127\.0\.0\.1''',
+    '''0\.0\.0\.0''',
+  ]

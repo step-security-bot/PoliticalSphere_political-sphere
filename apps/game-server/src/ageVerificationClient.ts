@@ -6,7 +6,10 @@
 import type { AxiosInstance } from 'axios';
 import axios from 'axios';
 
+import { getLogger } from '@political-sphere/shared';
 import { CircuitBreaker } from './utils/circuit-breaker';
+
+const logger = getLogger({ service: 'game-server' });
 
 interface VerificationStatus {
   verified: boolean;
@@ -63,8 +66,7 @@ class AgeVerificationClient {
       return result;
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-      // TODO(#11): Add structured logger - replace console.error with logger.error
-      console.error('Age verification status check failed:', errorMessage);
+      logger.error('Age verification status check failed', { error: errorMessage });
       // Fail safe - assume unverified
       return { verified: false, age: null };
     }
@@ -98,8 +100,7 @@ class AgeVerificationClient {
       return result;
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-      // TODO(#11): Add structured logger - replace console.error with logger.error
-      console.error('Content access check failed:', errorMessage);
+      logger.error('Content access check failed', { error: errorMessage });
       // Fail safe - deny access
       return { canAccess: false, userAge: null, contentRating };
     }
@@ -120,8 +121,7 @@ class AgeVerificationClient {
       return response.data.data as AgeRestrictions;
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-      // TODO(#11): Add structured logger - replace console.error with logger.error
-      console.error('Age restrictions check error:', errorMessage);
+      logger.error('Age restrictions check error', { error: errorMessage });
       return { verified: false, restrictions: { contentRating: 'U' } };
     }
   }
@@ -155,8 +155,7 @@ class AgeVerificationClient {
       return serviceToken;
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-      // TODO(#11): Add structured logger - replace console.error with logger.error
-      console.error('Token retrieval failed:', errorMessage);
+      logger.error('Token retrieval failed', { error: errorMessage });
       // Return a fallback token or throw error
       throw new Error('Unable to retrieve authentication token');
     }
@@ -189,8 +188,7 @@ class AgeVerificationClient {
       return token;
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-      // TODO(#11): Add structured logger - replace console.error with logger.error
-      console.error('Service authentication failed:', errorMessage);
+      logger.error('Service authentication failed', { error: errorMessage });
       // Fallback to environment token if available
       return process.env.GAME_SERVER_API_TOKEN || 'fallback-service-token';
     }

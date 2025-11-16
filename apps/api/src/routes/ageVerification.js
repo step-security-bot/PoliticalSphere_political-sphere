@@ -72,7 +72,7 @@ router.post('/verify', async (req, res) => {
 
     const result = await ageVerificationService.completeVerification(verificationId, req.body);
 
-    if (result.sucess) {
+    if (result.success) {
       // Log successful verification
       logger.audit('Age verification completed', {
         verificationId,

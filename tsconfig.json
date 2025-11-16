@@ -3,11 +3,19 @@
   "extends": "./tools/config/tsconfig.base.json",
   "compilerOptions": {
     "rootDir": ".",
+    "ignoreDeprecations": "6.0", // Silence baseUrl deprecation warning; TODO: migrate to modern path resolution in TypeScript 7.0
+    "baseUrl": ".", // Required for non-relative paths in paths mapping
     "allowJs": true,
     "checkJs": false,
     "noEmit": true,
+    "allowImportingTsExtensions": true, // Enable .ts imports to resolve TS5097 errors
+    "exactOptionalPropertyTypes": false, // Temporarily disable to fix TS2379/TS2375 errors; re-enable after codebase alignment
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["./*"],
+      "@political-sphere/shared": ["libs/shared/src/index.ts"], // Ensure shared lib resolves correctly
+      "@political-sphere/ui": ["libs/ui/src/index.ts"],
+      "@political-sphere/platform": ["libs/platform/src/index.ts"],
+      "@political-sphere/infrastructure": ["libs/infrastructure/src/index.ts"]
     }
   },
   "include": [

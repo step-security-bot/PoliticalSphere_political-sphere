@@ -1,0 +1,485 @@
+/**
+ * Government Dashboard Styles
+ * WCAG 2.2 AA Compliant
+ * Supports high contrast mode and reduced motion
+ */
+
+.government-dashboard {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+}
+
+/* Header */
+.government-header {
+  background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+  color: white;
+  padding: 2rem;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.government-header h1 {
+  margin: 0 0 1rem 0;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.government-meta {
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.government-type,
+.government-status {
+  padding: 0.5rem 1rem;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  font-weight: 500;
+}
+
+.confidence-tracker {
+  display: flex;
+  gap: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
+  flex-wrap: wrap;
+}
+
+.confidence-for,
+.confidence-against {
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+.confidence-for {
+  color: #86efac;
+}
+
+.confidence-against {
+  color: #fca5a5;
+}
+
+/* Tabs */
+.government-tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.government-tabs button {
+  padding: 1rem 2rem;
+  background: none;
+  border: none;
+  border-bottom: 3px solid transparent;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #6b7280;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.government-tabs button:hover {
+  color: #1f2937;
+  background: #f3f4f6;
+}
+
+.government-tabs button:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+.government-tabs button.active {
+  color: #1e3a8a;
+  border-bottom-color: #3b82f6;
+}
+
+.government-tabs button[aria-selected="true"] {
+  font-weight: 600;
+}
+
+/* Cabinet Section */
+.cabinet-section,
+.actions-section {
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.cabinet-section h2,
+.actions-section h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+  color: #1f2937;
+}
+
+/* Ministers List */
+.ministers-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 2rem 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.minister-card {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
+}
+
+.minister-card:hover {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+.minister-info h3 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.25rem;
+  color: #1e3a8a;
+}
+
+.minister-department {
+  color: #6b7280;
+  margin: 0 0 0.5rem 0;
+  font-size: 0.875rem;
+}
+
+.minister-meta {
+  color: #9ca3af;
+  font-size: 0.875rem;
+  margin-bottom: 0.5rem;
+}
+
+.minister-status {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.minister-status.status-active {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.minister-status.status-removed {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+/* Actions List */
+.actions-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 2rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.action-card {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-left: 4px solid #3b82f6;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.action-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  margin-bottom: 1rem;
+  gap: 1rem;
+}
+
+.action-header h3 {
+  margin: 0;
+  font-size: 1.125rem;
+  color: #1f2937;
+  flex: 1;
+}
+
+.action-type {
+  padding: 0.25rem 0.75rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.action-type.type-order {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.action-type.type-regulation {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.action-type.type-treaty {
+  background: #e0e7ff;
+  color: #3730a3;
+}
+
+.action-type.type-appointment {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.action-description {
+  color: #4b5563;
+  line-height: 1.6;
+  margin: 0 0 1rem 0;
+}
+
+.action-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 1rem;
+  border-top: 1px solid #f3f4f6;
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+.action-status {
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.action-status.status-pending {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.action-status.status-active {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.action-status.status-revoked {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+/* Forms */
+.appoint-minister-form,
+.issue-action-form {
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 2rem;
+  margin-top: 2rem;
+}
+
+.appoint-minister-form h3,
+.issue-action-form h3 {
+  margin: 0 0 1.5rem 0;
+  font-size: 1.25rem;
+  color: #1f2937;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: #374151;
+}
+
+.form-group label span[aria-label="required"] {
+  color: #dc2626;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-family: inherit;
+  transition: border-color 0.2s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.btn-primary {
+  background: #3b82f6;
+  color: white;
+  padding: 0.75rem 2rem;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-primary:hover {
+  background: #2563eb;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.btn-primary:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+/* Error State */
+.error {
+  color: #dc2626;
+  background: #fee2e2;
+  padding: 1rem;
+  border-radius: 4px;
+  border-left: 4px solid #dc2626;
+}
+
+/* Loading State */
+.government-dashboard[role="status"] {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+  font-size: 1.125rem;
+  color: #6b7280;
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+  .government-header {
+    background: #000;
+    border: 2px solid #fff;
+  }
+
+  .minister-card,
+  .action-card {
+    border-width: 2px;
+  }
+
+  .btn-primary {
+    border: 2px solid #fff;
+  }
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .minister-card:hover,
+  .btn-primary:hover {
+    transform: none;
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .government-dashboard {
+    padding: 1rem;
+  }
+
+  .government-header {
+    padding: 1.5rem;
+  }
+
+  .government-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .government-meta {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .government-tabs {
+    flex-direction: column;
+  }
+
+  .government-tabs button {
+    width: 100%;
+    text-align: left;
+  }
+
+  .ministers-list {
+    grid-template-columns: 1fr;
+  }
+
+  .action-header {
+    flex-direction: column;
+  }
+
+  .action-type {
+    align-self: flex-start;
+  }
+}
+
+/* Print Styles */
+@media print {
+  .government-tabs,
+  .appoint-minister-form,
+  .issue-action-form,
+  .btn-primary {
+    display: none;
+  }
+
+  .government-dashboard {
+    max-width: 100%;
+  }
+
+  .minister-card,
+  .action-card {
+    break-inside: avoid;
+  }
+}

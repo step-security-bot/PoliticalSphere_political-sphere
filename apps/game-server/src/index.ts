@@ -14,7 +14,7 @@ import express from 'express';
 import { v4 as uuidv4 } from 'uuid';
 
 import { advanceGameState } from '../../../libs/game-engine/src/engine';
-import { Logger, LOG_LEVELS } from '../../../libs/shared/src/logger';
+import { LOG_LEVELS, Logger } from '../../../libs/shared/src/logger';
 
 import complianceClient from './complianceClient';
 
@@ -55,7 +55,8 @@ interface Proposal {
   description: string;
   proposerId: string;
   createdAt: string;
-  status: string;
+  status: 'proposed' | 'debate' | 'voting' | 'enacted' | 'rejected' | 'flagged'; // Union type
+  debateId?: string | null;
   moderationStatus?: string;
   flaggedReasons?: string[];
   reviewedAt?: string;
@@ -68,8 +69,9 @@ interface Vote {
   id: string;
   proposalId: string;
   playerId: string;
-  choice: string;
-  createdAt: string;
+  choice: 'for' | 'against' | 'abstain'; // Union type to match engine
+  createdAt: string; // Required, not optional
+  timestamp: string; // Required to match engine
 }
 
 interface Economy {
@@ -80,7 +82,7 @@ interface Economy {
 
 interface Turn {
   turnNumber: number;
-  phase: string;
+  phase: 'lobby' | 'debate' | 'voting' | 'enacted';
 }
 
 interface Game {
@@ -103,7 +105,12 @@ interface Game {
 interface Debate {
   id: string;
   proposalId: string;
+  speakingOrder: string[];
+  currentSpeakerIndex: number;
+  timeLimit: number;
+  startedAt: string;
   createdAt: string;
+  status: 'active' | 'completed';
 }
 
 interface Speech {
@@ -111,7 +118,7 @@ interface Speech {
   debateId: string;
   speakerId: string;
   content: string;
-  createdAt: string;
+  timestamp: string; // Match engine interface
 }
 
 interface ModerationResult {
@@ -126,7 +133,8 @@ interface AgeVerificationStatus {
 }
 
 interface GameAction {
-  type: string;
+  type: 'propose' | 'start_debate' | 'speak' | 'vote' | 'advance_turn';
+  playerId?: string;
   payload?: Record<string, unknown>;
 }
 
@@ -629,10 +637,19 @@ app.post('/games/:id/action', async (req: Request, res: Response) => {
     }
 
     // Safe — apply via engine
-    const newState = advanceGameState(game, [action], Date.now());
+    const newState = advanceGameState(
+      game,
+      [action as import('../../../libs/game-engine/src/engine').PlayerAction],
+      Date.now()
+    );
     games.set(gameId, newState);
     if (db && typeof db.upsertGame === 'function') await db.upsertGame(gameId, newState);
     const newProposal = newState.proposals[newState.proposals.length - 1];
+
+    // Add null check for newProposal
+    if (!newProposal) {
+      return res.status(500).json({ error: 'Failed to create proposal' });
+    }
 
     // Log successful proposal creation
     await complianceClient.logProposalCreated(
@@ -652,7 +669,11 @@ app.post('/games/:id/action', async (req: Request, res: Response) => {
     const { proposalId } = (action.payload || {}) as { proposalId?: string };
     if (!proposalId) return res.status(400).json({ error: 'proposalId required' });
 
-    const newState = advanceGameState(game, [action], Date.now());
+    const newState = advanceGameState(
+      game,
+      [action as import('../../../libs/game-engine/src/engine').PlayerAction],
+      Date.now()
+    );
     games.set(gameId, newState);
     if (db && typeof db.upsertGame === 'function') await db.upsertGame(gameId, newState);
     const debate = (newState.debates || [])[
@@ -682,7 +703,11 @@ app.post('/games/:id/action', async (req: Request, res: Response) => {
       });
     }
 
-    const newState = advanceGameState(game, [action], Date.now());
+    const newState = advanceGameState(
+      game,
+      [action as import('../../../libs/game-engine/src/engine').PlayerAction],
+      Date.now()
+    );
     games.set(gameId, newState);
     if (db && typeof db.upsertGame === 'function') await db.upsertGame(gameId, newState);
     const speech = (newState.speeches || [])[
@@ -702,7 +727,11 @@ app.post('/games/:id/action', async (req: Request, res: Response) => {
     if (!proposalId || !playerId || !choice)
       return res.status(400).json({ error: 'proposalId, playerId and choice are required' });
 
-    const newState = advanceGameState(game, [action], Date.now());
+    const newState = advanceGameState(
+      game,
+      [action as import('../../../libs/game-engine/src/engine').PlayerAction],
+      Date.now()
+    );
     games.set(gameId, newState);
     if (db && typeof db.upsertGame === 'function') await db.upsertGame(gameId, newState);
     const vote = newState.votes[newState.votes.length - 1];
@@ -715,7 +744,11 @@ app.post('/games/:id/action', async (req: Request, res: Response) => {
 
   // Handle advance_turn
   if (action.type === 'advance_turn') {
-    const newState = advanceGameState(game, [action], Date.now());
+    const newState = advanceGameState(
+      game,
+      [action as import('../../../libs/game-engine/src/engine').PlayerAction],
+      Date.now()
+    );
     games.set(gameId, newState);
     if (db && typeof db.upsertGame === 'function') await db.upsertGame(gameId, newState);
 
@@ -773,7 +806,7 @@ async function start(): Promise<void> {
     const errorMessage = err instanceof Error ? err.message : String(err);
     logger.fatal('Failed to start server - DB initialization error', {
       error: errorMessage,
-      stack: error instanceof Error ? error.stack : undefined,
+      stack: err instanceof Error ? err.stack : undefined,
     });
     process.exit(1);
   }

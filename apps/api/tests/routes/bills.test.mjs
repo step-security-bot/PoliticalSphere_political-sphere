@@ -1,11 +1,13 @@
 import assert from 'node:assert';
 
 import express from 'express';
+import { afterEach, beforeEach, describe, it } from 'vitest';
 
 import authRoutes from '../../src/auth/auth.routes.ts';
 import { closeDatabase, getDatabase } from '../../src/modules/stores/index.ts';
 import billsRouter from '../../src/routes/bills.js';
 import usersRouter from '../../src/routes/users.js';
+import { bearer, getTestToken } from '../helpers/auth-token.mjs';
 import { dispatchRequest } from '../utils/express-request.js';
 
 describe('Bills Routes', () => {
@@ -19,19 +21,9 @@ describe('Bills Routes', () => {
     app.use('/api', billsRouter);
     app.use('/auth', authRoutes);
 
-    // Create a test user and get auth token
-    const timestamp = Date.now();
-    const createResponse = await dispatchRequest(app, {
-      method: 'POST',
-      url: '/auth/register',
-      body: {
-        username: `testuser${timestamp}`,
-        password: 'password123',
-        email: `test${timestamp}@example.com`,
-      },
-    });
-    assert.strictEqual(createResponse.status, 201);
-    authToken = createResponse.body.tokens.accessToken;
+    // Acquire test auth token
+    const { token } = await getTestToken(app);
+    authToken = token;
   });
 
   afterEach(() => {
@@ -42,6 +34,7 @@ describe('Bills Routes', () => {
     const response = await dispatchRequest(app, {
       method: 'POST',
       url: '/api/users',
+      headers: bearer(authToken),
       body: {
         username: `user${timestamp}`,
         email: `test-${timestamp}@example.com`,
@@ -59,7 +52,7 @@ describe('Bills Routes', () => {
       const response = await dispatchRequest(app, {
         method: 'POST',
         url: '/api/bills',
-        headers: authToken ? { Authorization: `Bearer ${authToken}` } : {},
+        headers: bearer(authToken),
         body: {
           title: `Test Bill ${timestamp}`,
           description: 'A test bill description',
@@ -81,6 +74,7 @@ describe('Bills Routes', () => {
       const response = await dispatchRequest(app, {
         method: 'POST',
         url: '/api/bills',
+        headers: bearer(authToken),
         body: {
           title: 'Test Bill',
           description: 'A test bill description',
@@ -101,6 +95,7 @@ describe('Bills Routes', () => {
       const billResponse = await dispatchRequest(app, {
         method: 'POST',
         url: '/api/bills',
+        headers: bearer(authToken),
         body: {
           title: `Test Bill ${timestamp}`,
           description: 'A test bill description',
@@ -112,6 +107,7 @@ describe('Bills Routes', () => {
       const getResponse = await dispatchRequest(app, {
         method: 'GET',
         url: `/api/bills/${billResponse.body.id}`,
+        headers: bearer(authToken),
       });
 
       assert.strictEqual(getResponse.status, 200);
@@ -122,6 +118,7 @@ describe('Bills Routes', () => {
       const response = await dispatchRequest(app, {
         method: 'GET',
         url: '/api/bills/non-existent-id',
+        headers: bearer(authToken),
       });
 
       assert.strictEqual(response.status, 404);
@@ -136,6 +133,7 @@ describe('Bills Routes', () => {
       const bill1Response = await dispatchRequest(app, {
         method: 'POST',
         url: '/api/bills',
+        headers: bearer(authToken),
         body: {
           title: 'Bill 1',
           description: 'First bill',
@@ -147,6 +145,7 @@ describe('Bills Routes', () => {
       const bill2Response = await dispatchRequest(app, {
         method: 'POST',
         url: '/api/bills',
+        headers: bearer(authToken),
         body: {
           title: 'Bill 2',
           description: 'Second bill',
@@ -158,6 +157,7 @@ describe('Bills Routes', () => {
       const getResponse = await dispatchRequest(app, {
         method: 'GET',
         url: '/api/bills',
+        headers: bearer(authToken),
       });
 
       assert.strictEqual(getResponse.status, 200);

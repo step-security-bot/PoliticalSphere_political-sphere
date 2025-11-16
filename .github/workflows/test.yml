@@ -10,7 +10,7 @@ on:
       - 'libs/**'
       - 'package.json'
       - 'package-lock.json'
-      - 'vitest.config.js'
+      - 'vitest.config.ts'
       - 'tsconfig*.json'
       - '.github/workflows/test.yml'
   push:

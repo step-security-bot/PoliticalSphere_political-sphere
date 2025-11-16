@@ -200,7 +200,7 @@ political-sphere/
 ├── package-lock.json           # Dependency lock file
 ├── nx.json                     # Nx workspace configuration
 ├── tsconfig.json               # TypeScript base configuration
-├── vitest.config.js            # Vitest test runner configuration
+├── vitest.config.ts            # Vitest test runner configuration
 ├── biome.json                  # Biome linter/formatter configuration
 ├── .gitignore                  # Git ignore patterns
 ├── .editorconfig               # Editor configuration
@@ -1573,7 +1573,7 @@ schemas/                              # ⚠️  TO MOVE to /libs/shared/schemas
 ✅ **Root-level standard files** (allowed):
 
 - `README.md`, `CHANGELOG.md`, `CONTRIBUTING.md`, `LICENSE`, `CODE_OF_CONDUCT.md`, `SECURITY.md`
-- `package.json`, `package-lock.json`, `nx.json`, `tsconfig.json`, `vitest.config.js`
+- `package.json`, `package-lock.json`, `nx.json`, `tsconfig.json`, `vitest.config.ts`
 - `biome.json`, `.gitignore`, `.editorconfig`, `.lefthook.yml`, `.npmrc`, `.nvmrc`
 - `.github/`, `.vscode/`, `.devcontainer/`
 

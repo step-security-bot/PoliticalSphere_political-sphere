@@ -226,10 +226,7 @@ export const GamePerformance = {
   /**
    * Track moderation check performance
    */
-  async trackModerationCheck<T>(
-    contentType: string,
-    operation: () => Promise<T>
-  ): Promise<T> {
+  async trackModerationCheck<T>(contentType: string, operation: () => Promise<T>): Promise<T> {
     return trackPerformance('moderation.check', operation, {
       contentType,
     });
@@ -238,10 +235,7 @@ export const GamePerformance = {
   /**
    * Track database operation performance
    */
-  async trackDatabaseOp<T>(
-    operationType: string,
-    operation: () => Promise<T>
-  ): Promise<T> {
+  async trackDatabaseOp<T>(operationType: string, operation: () => Promise<T>): Promise<T> {
     return trackPerformance('database.operation', operation, {
       operationType,
     });
@@ -255,10 +249,7 @@ export const WebSocketPerformance = {
   /**
    * Track message processing performance
    */
-  async trackMessageProcess<T>(
-    messageType: string,
-    operation: () => Promise<T>
-  ): Promise<T> {
+  async trackMessageProcess<T>(messageType: string, operation: () => Promise<T>): Promise<T> {
     return trackPerformance('websocket.message.process', operation, {
       messageType,
     });
@@ -267,11 +258,7 @@ export const WebSocketPerformance = {
   /**
    * Track broadcast performance
    */
-  trackBroadcast(
-    gameId: string,
-    recipientCount: number,
-    operation: () => void
-  ): void {
+  trackBroadcast(gameId: string, recipientCount: number, operation: () => void): void {
     trackSyncPerformance('websocket.broadcast', operation, {
       gameId,
       recipientCount,

@@ -1,0 +1,35 @@
+{
+  "name": "ai-system",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/ai-system/src",
+  "projectType": "library",
+  "tags": ["scope:ai", "type:library"],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/ai-system",
+        "main": "libs/ai-system/src/index.ts",
+        "tsConfig": "libs/ai-system/tsconfig.lib.json",
+        "assets": ["libs/ai-system/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/ai-system/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nx/vite:test",
+      "outputs": ["{options.reportsDirectory}"],
+      "options": {
+        "passWithNoTests": true,
+        "reportsDirectory": "../../coverage/libs/ai-system",
+        "testPathPattern": ["libs/ai-system"]
+      }
+    }
+  }
+}

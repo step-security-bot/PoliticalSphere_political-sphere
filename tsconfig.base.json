@@ -19,8 +19,12 @@
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
     "verbatimModuleSyntax": true,
+    "ignoreDeprecations": "6.0",
     "baseUrl": ".",
     "rootDir": ".",
+    "paths": {
+      "@political-sphere/game-engine": ["libs/game-engine/src/index.ts"]
+    },
     "allowJs": true,
     "checkJs": false
   },

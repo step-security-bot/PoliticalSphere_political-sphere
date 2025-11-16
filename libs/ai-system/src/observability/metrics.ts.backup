@@ -1,0 +1,161 @@
+/**
+ * Metrics Collection
+ *
+ * SLI/SLO tracking for AI systems.
+ *
+ * @module observability/metrics
+ */
+
+import type { SLOMetrics } from '../types';
+
+/**
+ * Metric data point
+ */
+interface MetricDataPoint {
+  timestamp: Date;
+  value: number;
+  labels?: Record<string, string>;
+}
+
+/**
+ * Metrics Collector
+ */
+export class MetricsCollector {
+  private metrics: Map<string, MetricDataPoint[]> = new Map();
+
+  /**
+   * Record metric
+   */
+  record(name: string, value: number, labels?: Record<string, string>): void {
+    const dataPoint: MetricDataPoint = {
+      timestamp: new Date(),
+      value,
+      labels,
+    };
+
+    const existing = this.metrics.get(name) || [];
+    existing.push(dataPoint);
+    this.metrics.set(name, existing);
+
+    // In production, export to Prometheus
+    this.exportMetric(name, dataPoint);
+  }
+
+  /**
+   * Record latency
+   */
+  recordLatency(operation: string, durationMs: number, labels?: Record<string, string>): void {
+    this.record(`latency_${operation}`, durationMs, labels);
+  }
+
+  /**
+   * Record error
+   */
+  recordError(operation: string, errorType: string): void {
+    this.record('errors_total', 1, { operation, errorType });
+  }
+
+  /**
+   * Record success
+   */
+  recordSuccess(operation: string): void {
+    this.record('success_total', 1, { operation });
+  }
+
+  /**
+   * Calculate SLO metrics for a service
+   */
+  calculateSLO(service: string, windowMs: number = 3600000): SLOMetrics {
+    const now = Date.now();
+    const windowStart = new Date(now - windowMs);
+
+    // Get metrics in window
+    const getMetricsInWindow = (metricName: string) => {
+      const data = this.metrics.get(metricName) || [];
+      return data.filter(d => d.timestamp >= windowStart);
+    };
+
+    // Calculate availability
+    const successes = getMetricsInWindow('success_total');
+    const errors = getMetricsInWindow('errors_total');
+    const total = successes.length + errors.length;
+    const availability = total > 0 ? successes.length / total : 1.0;
+
+    // Calculate latency percentiles
+    const latencies = getMetricsInWindow(`latency_${service}`)
+      .map(d => d.value)
+      .sort((a, b) => a - b);
+
+    const percentile = (arr: number[], p: number) => {
+      if (arr.length === 0) return 0;
+      const index = Math.ceil(arr.length * p) - 1;
+      return arr[index] || 0;
+    };
+
+    const latency = {
+      p50: percentile(latencies, 0.5),
+      p95: percentile(latencies, 0.95),
+      p99: percentile(latencies, 0.99),
+    };
+
+    // Calculate error rate
+    const errorRate = total > 0 ? errors.length / total : 0;
+
+    return {
+      service,
+      availability,
+      latency,
+      errorRate,
+      window: {
+        start: windowStart,
+        end: new Date(),
+      },
+    };
+  }
+
+  /**
+   * Export metric (placeholder for Prometheus)
+   */
+  private exportMetric(name: string, dataPoint: MetricDataPoint): void {
+    console.log(`[METRIC] ${name}:`, {
+      value: dataPoint.value,
+      labels: dataPoint.labels,
+      timestamp: dataPoint.timestamp.toISOString(),
+    });
+  }
+
+  /**
+   * Get error budget status
+   */
+  getErrorBudget(
+    service: string,
+    targetAvailability: number = 0.999
+  ): {
+    budget: number;
+    consumed: number;
+    remaining: number;
+    percentConsumed: number;
+  } {
+    const slo = this.calculateSLO(service);
+    const actualAvailability = slo.availability;
+
+    // Error budget = 1 - target availability
+    // e.g., 99.9% availability = 0.1% error budget
+    const budget = 1 - targetAvailability;
+    const consumed = 1 - actualAvailability;
+    const remaining = Math.max(0, budget - consumed);
+    const percentConsumed = budget > 0 ? (consumed / budget) * 100 : 0;
+
+    return {
+      budget,
+      consumed,
+      remaining,
+      percentConsumed,
+    };
+  }
+}
+
+/**
+ * Global metrics collector
+ */
+export const metrics = new MetricsCollector();

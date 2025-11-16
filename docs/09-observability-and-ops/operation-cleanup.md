@@ -231,7 +231,7 @@ Justification cites internal project standards (organization.md, copilot-instruc
 1. `/Users/morganlowman/GitHub/political-sphere/apps/api/src/auth/auth.service.ts` - Secret validation
 2. `/Users/morganlowman/GitHub/political-sphere/apps/api/src/index.ts` - Removed warning log
 3. `/Users/morganlowman/GitHub/political-sphere/tools/testing/test-env-setup.ts` - NEW unified test env
-4. `/Users/morganlowman/GitHub/political-sphere/vitest.config.js` - Updated setup file path
+4. `/Users/morganlowman/GitHub/political-sphere/vitest.config.ts` - Updated setup file path
 5. `/Users/morganlowman/GitHub/political-sphere/.eslintrc.json` - NEW symlink to tools/config
 6. `/Users/morganlowman/GitHub/political-sphere/tools/config/.eslintrc.json` - Added migrations override
 7. `/Users/morganlowman/GitHub/political-sphere/.github/copilot-instructions.md` - OWASP v5.0.0 updates (4 locations)

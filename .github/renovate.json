@@ -1,0 +1,74 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended",
+    ":dependencyDashboard",
+    ":semanticCommits",
+    ":preserveSemverRanges"
+  ],
+  "labels": ["dependencies", "automated"],
+  "assignees": ["@PoliticalSphere/platform-engineering"],
+  "reviewers": ["@PoliticalSphere/security-team"],
+  "schedule": ["before 9am on Monday"],
+  "timezone": "UTC",
+  "vulnerabilityAlerts": {
+    "labels": ["security", "dependencies"],
+    "assignees": ["@PoliticalSphere/security-team"],
+    "reviewers": ["@PoliticalSphere/security-team"],
+    "enabled": true
+  },
+  "npm": {
+    "enabled": true,
+    "rangeStrategy": "bump",
+    "lockFileMaintenance": {
+      "enabled": true,
+      "schedule": ["before 9am on the first day of the month"]
+    }
+  },
+  "github-actions": {
+    "enabled": true,
+    "pinDigests": true
+  },
+  "docker": {
+    "enabled": true,
+    "pinDigests": true
+  },
+  "packageRules": [
+    {
+      "matchUpdateTypes": ["minor", "patch"],
+      "matchCurrentVersion": "!/^0/",
+      "automerge": true,
+      "automergeType": "pr",
+      "automergeStrategy": "squash"
+    },
+    {
+      "matchDepTypes": ["devDependencies"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "automerge": true
+    },
+    {
+      "matchPackagePatterns": ["^@types/"],
+      "automerge": true
+    },
+    {
+      "matchDepTypes": ["peerDependencies"],
+      "enabled": false
+    },
+    {
+      "matchUpdateTypes": ["major"],
+      "labels": ["dependencies", "breaking-change"],
+      "automerge": false
+    },
+    {
+      "matchPackageNames": ["zod"],
+      "enabled": false,
+      "description": "Zod pinned to v3 until langchain ecosystem supports v4"
+    }
+  ],
+  "prConcurrentLimit": 5,
+  "prHourlyLimit": 2,
+  "stabilityDays": 3,
+  "prCreation": "not-pending",
+  "ignoreTests": false,
+  "updateNotScheduled": false
+}

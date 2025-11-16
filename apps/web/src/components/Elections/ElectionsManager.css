@@ -1,0 +1,475 @@
+/**
+ * Elections Manager Styles
+ * WCAG 2.2 AA Compliant
+ */
+
+.elections-manager {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2rem;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.elections-header {
+  margin-bottom: 2rem;
+}
+
+.elections-header h1 {
+  margin: 0 0 0.5rem 0;
+  font-size: 2rem;
+  color: #1f2937;
+}
+
+.elections-subtitle {
+  color: #6b7280;
+  margin: 0;
+}
+
+.elections-nav {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.elections-nav button {
+  padding: 1rem 2rem;
+  background: none;
+  border: none;
+  border-bottom: 3px solid transparent;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #6b7280;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.elections-nav button:hover:not(:disabled) {
+  color: #1f2937;
+  background: #f3f4f6;
+}
+
+.elections-nav button:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+.elections-nav button.active {
+  color: #1e3a8a;
+  border-bottom-color: #3b82f6;
+  font-weight: 600;
+}
+
+.elections-nav button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.elections-section h2,
+.constituencies-section h2,
+.results-section h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+  color: #1f2937;
+}
+
+.elections-list,
+.constituencies-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 2rem 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 1.5rem;
+}
+
+.election-card,
+.constituency-card {
+  background: white;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 1.5rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.election-card:hover,
+.constituency-card:hover {
+  border-color: #3b82f6;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+.election-card:focus,
+.constituency-card:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+.election-card.selected,
+.constituency-card.selected {
+  border-color: #3b82f6;
+  background: #eff6ff;
+}
+
+.election-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  margin-bottom: 1rem;
+  gap: 1rem;
+}
+
+.election-header h3,
+.constituency-card h3 {
+  margin: 0;
+  font-size: 1.25rem;
+  color: #1f2937;
+}
+
+.election-status {
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.election-status.status-upcoming {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.election-status.status-active {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.election-status.status-closed {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.election-status.status-certified {
+  background: #e0e7ff;
+  color: #3730a3;
+}
+
+.election-meta,
+.election-dates {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+.election-meta {
+  margin-bottom: 0.5rem;
+}
+
+.election-type {
+  text-transform: capitalize;
+  font-weight: 500;
+}
+
+.constituency-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 0.5rem;
+  margin-top: 1rem;
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+.constituency-stats .turnout {
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.candidates-section {
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 2px solid #e5e7eb;
+}
+
+.candidates-section h3 {
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+  color: #1f2937;
+}
+
+.candidates-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.candidate-card {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.candidate-info {
+  flex: 1;
+  min-width: 200px;
+}
+
+.candidate-info h4 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.125rem;
+  color: #1f2937;
+}
+
+.candidate-status {
+  padding: 0.25rem 0.75rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.candidate-status.status-registered {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.candidate-results {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.candidate-results .votes {
+  font-size: 1rem;
+  color: #6b7280;
+}
+
+.candidate-results .percentage {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1e3a8a;
+}
+
+.btn-vote {
+  background: #10b981;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-vote:hover {
+  background: #059669;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.btn-vote:focus {
+  outline: 2px solid #10b981;
+  outline-offset: 2px;
+}
+
+.results-summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.result-stat {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.stat-label {
+  display: block;
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin-bottom: 0.5rem;
+}
+
+.stat-value {
+  display: block;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1e3a8a;
+}
+
+.results-by-constituency h3 {
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+  color: #1f2937;
+}
+
+.constituency-result {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-left: 4px solid #3b82f6;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.constituency-result h4 {
+  margin: 0 0 0.75rem 0;
+  font-size: 1.125rem;
+  color: #1f2937;
+}
+
+.constituency-result-stats {
+  display: flex;
+  gap: 2rem;
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+.create-election-form {
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 2rem;
+  margin-top: 2rem;
+}
+
+.create-election-form h3 {
+  margin: 0 0 1.5rem 0;
+  font-size: 1.25rem;
+  color: #1f2937;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: #374151;
+}
+
+.form-group label span[aria-label="required"] {
+  color: #dc2626;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-family: inherit;
+  transition: border-color 0.2s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.btn-primary {
+  background: #3b82f6;
+  color: white;
+  padding: 0.75rem 2rem;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-primary:hover {
+  background: #2563eb;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.btn-primary:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+.error {
+  color: #dc2626;
+  background: #fee2e2;
+  padding: 1rem;
+  border-radius: 4px;
+  border-left: 4px solid #dc2626;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .election-card:hover,
+  .constituency-card:hover,
+  .btn-vote:hover,
+  .btn-primary:hover {
+    transform: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .elections-manager {
+    padding: 1rem;
+  }
+
+  .elections-nav {
+    flex-direction: column;
+  }
+
+  .elections-nav button {
+    width: 100%;
+    text-align: left;
+  }
+
+  .elections-list,
+  .constituencies-list {
+    grid-template-columns: 1fr;
+  }
+
+  .candidate-card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .results-summary {
+    grid-template-columns: 1fr;
+  }
+
+  .constituency-result-stats {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}

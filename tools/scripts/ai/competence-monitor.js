@@ -136,34 +136,45 @@ function assessCompetence() {
 
 function main() {
   const result = assessCompetence();
-  // Provide both a human-readable summary (for tests) and also persist
-  // metrics to the canonical metrics file so tests can assert on file existence.
-  const metricsOut = {
-    competenceScore: result.score,
-    recommendations: result.recommendations,
-    lastUpdated: new Date().toISOString(),
-  };
+
+  // Read existing metrics or create new structure
+  let metrics = {};
+  if (existsSync(METRICS_FILE)) {
+    metrics = JSON.parse(readFileSync(METRICS_FILE, 'utf8'));
+  }
+
+  // Update with competence assessment
+  metrics.competenceScore = result.score;
+  metrics.recommendations = result.recommendations;
+  metrics.lastAssessment = new Date().toISOString();
+  metrics.lastUpdated = new Date().toISOString();
+
+  // Initialize history array if it doesn't exist
+  if (!metrics.history) {
+    metrics.history = [];
+  }
+
+  // Add current assessment to history
+  metrics.history.push({
+    timestamp: metrics.lastAssessment,
+    score: result.score,
+    recommendationCount: result.recommendations.length,
+  });
+
+  // Keep only last 100 assessments
+  if (metrics.history.length > 100) {
+    metrics.history = metrics.history.slice(-100);
+  }
+
+  // Write updated metrics
+  writeFileSync(METRICS_FILE, JSON.stringify(metrics, null, 2));
 
   console.log(`Competence Score: ${result.score}`);
   console.log('Recommendations:');
   for (const rec of result.recommendations) {
     console.log(`- ${rec}`);
   }
-
-  try {
-    // Do not overwrite an existing canonical metrics file - tests expect
-    // the detailed metrics structure to remain. `assessCompetence` will
-    // create the initial metrics file if it was missing. Only write a
-    // summary file if the metrics file does not exist for some reason.
-    if (!existsSync(METRICS_FILE)) {
-      writeFileSync(METRICS_FILE, JSON.stringify(metricsOut, null, 2));
-      console.log(`Metrics written to: ${METRICS_FILE}`);
-    } else {
-      console.log(`Metrics present at: ${METRICS_FILE}`);
-    }
-  } catch (err) {
-    console.error('Failed to write metrics file:', err?.message ?? err);
-  }
+  console.log(`\nMetrics updated: ${METRICS_FILE}`);
 }
 
 main();

@@ -1,77 +1,157 @@
-# Data Directory
+# Data Directory README
 
-This directory contains runtime data, seed data, and test fixtures for the Political Sphere application.
+## 1. Directory Identity & Purpose
 
-## Structure
+**Directory Name:** data
 
-- **`seeds/`** - Seed data for initializing the application with default content
-  - `users.json` - Default user accounts
-  - `parties.json` - Political parties
-  - `scenarios.json` - Game scenarios
+**Short Description:** This directory contains runtime data, seed data, test fixtures, and datasets for the Political Sphere application.
 
-- **`fixtures/`** - Test fixtures for automated testing
-  - `test-users.json` - Test user data
-  - `test-scenarios.json` - Test scenario data
+**Role within the System:** Manages all data-related assets, including database files, seed data for initialization, test fixtures, and datasets for development and testing.
 
-- **`*.db`** - SQLite database files (gitignored, runtime artifacts)
-- **`*.db-shm`** - SQLite shared memory files (gitignored)
-- **`*.db-wal`** - SQLite write-ahead log files (gitignored)
+**Unique Value:** Centralizes data management, ensuring consistent seeding, testing, and data versioning across the platform.
 
-## Usage
+**Intended Audience:** Developers (for data setup), testers (for fixtures), data engineers (for datasets).
 
-### Seed Data
+**Classification/Category:** Data management (within central TODO list).
 
-Seed data files are used to populate the database with initial content during development or first-time setup:
+## 2. Scope, Boundaries, & Responsibilities
 
-```bash
-npm run db:seed
-```
+**Responsibilities:** Store seed data, test fixtures, runtime databases, and datasets. Support data seeding, testing, and versioning.
 
-### Test Fixtures
+**Not Responsible For:** Application code (in apps/), shared libraries (in libs/), documentation (in docs/), or assets (in assets/).
 
-Test fixtures are loaded during automated tests to provide consistent test data:
+**Functional Scope:** Data storage and management. Expected behavior: data loads correctly, databases initialize properly.
 
-```bash
-npm test
-```
+**Architectural Domain:** Data layer in the system architecture.
 
-## Database Files
+**Key Files and Subdirectories:**
 
-Database files (`.db`, `.db-shm`, `.db-wal`) are runtime artifacts and should **not** be committed to version control. They are automatically generated when the application runs.
+- `seeds/`: Seed data for initialization
+- `fixtures/`: Test fixtures
+- `datasets/`: Dataset files
+- `issues/`: Data issues tracking
+- Runtime .db files (gitignored)
 
-### Current Databases
+**Maturity Level:** Stable
 
-- `political_sphere.db` - Main application database
-- `test-debug.db` - Debug test database
-- `test-manual.db` - Manual test database
+**Current Limitations:** Some datasets may be outdated.
 
-### Dataset Catalog
+**Known Issues:** Data consistency.
 
-The file `data/datasets/catalog.json` is generated/maintained by the team so AI assistants and scripts can understand who owns each dataset, what tables it contains, and when it should be refreshed. Update this catalog whenever you add or remove `.db` files so tools such as the SQLite MCP server can surface accurate metadata.
+## 3. Criticality, Risk Profile, & Access Level
 
-## Gitignore
+**Criticality:** Medium (affects testing and seeding)
 
-All database files are excluded from version control via `.gitignore`:
+**Risk Level:** Low (data issues don't break core functionality)
 
-```
-data/*.db
-data/*.db-shm
-data/*.db-wal
-```
+**Volatility:** Moderately stable
 
-## DVC Tracking
+**Required Skill Levels:** Beginner to intermediate
 
-Dataset directories are described in `dvc.yaml` so engineers can opt into remote-tracked data without polluting Git history.
+**Required AI Personas:** Data-focused
 
-```bash
-# (inside devcontainer) ensure tooling is installed
-dvc --version
+**Access/Permission Restrictions:** Standard access; sensitive data review.
 
-# capture the latest state locally
-dvc repro track-datasets
+**Sensitive Areas:** PII in seeds/fixtures.
 
-# push to configured remote once added (see docs)
-dvc push
-```
+## 4. Dependencies, Interfaces, & Integration Contracts
 
-The helper script `scripts/data/dvc-track.sh` validates that required directories exist before DVC records metadata.
+**Internal Dependencies:** Scripts in scripts/data/
+
+**External Dependencies:** SQLite, DVC
+
+**Upstream:** Receives data from scripts/
+
+**Downstream:** Provides data to apps/
+
+**Integration Expectations:** Data loaded via npm scripts.
+
+**Public Interfaces:** Seed/test scripts
+
+**Contracts:** JSON schemas for fixtures
+
+**Data Flows:** Scripts → data → apps
+
+**Assumptions:** SQLite for databases
+
+**Volatile Dependencies:** External datasets
+
+## 5. Operational Standards, Practices, & Tooling
+
+**Languages:** JSON, SQL
+
+**Conventions:** JSON formatting
+
+**Operational Rules:** DVC for versioning
+
+**Tooling:** SQLite, DVC
+
+**Code Quality:** Valid JSON
+
+**Tests:** Data validation scripts
+
+**Logging:** N/A
+
+**Error Handling:** Script failures
+
+**Performance:** Fast loading
+
+**Patterns:** Structured JSON
+
+**References:** docs/04-architecture/data-architecture.md
+
+## 6. Future Direction, Roadmap, & Definition of Done
+
+**Long-term Purpose:** Expand datasets, improve versioning.
+
+**Roadmap:** Add more fixtures, automate seeding.
+
+**Definition of Done:** All data loads without errors.
+
+**Missing Components:** Some test fixtures.
+
+**Upcoming Integrations:** New datasets.
+
+**Test Coverage Goals:** 100% data validation
+
+**Automation Needs:** Auto-seeding
+
+**Upstream Work:** Update scripts
+
+**Risks/Blockers:** Data privacy
+
+## 7. Assumptions, Constraints, & Architectural Guarantees
+
+**Assumptions:** SQLite databases, JSON fixtures.
+
+**Constraints:** No large files in git.
+
+**Guarantees:** Data integrity.
+
+**Forbidden Patterns:** Committing .db files
+
+## 8. Common Pitfalls, Anti-Patterns, & Lessons Learned
+
+**Pitfalls:** Committing runtime files.
+
+**Anti-Patterns:** Hardcoded data.
+
+**Misunderstandings:** Assuming data availability.
+
+**Failure Modes:** Seeding failures.
+
+**Warnings:** Sensitive data.
+
+**Best Practices:** Use DVC for versioning.
+
+## 9. Maintenance, Ownership, & Review Cycle
+
+**Ownership:** Data team.
+
+**Review Processes:** Code review.
+
+**Review Cadence:** On changes.
+
+**Refactoring:** With tests.
+
+**Escalation:** To data lead.

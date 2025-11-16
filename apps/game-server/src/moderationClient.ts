@@ -6,7 +6,10 @@
 import type { AxiosInstance } from 'axios';
 import axios from 'axios';
 
+import { getLogger } from '@political-sphere/shared';
 import { CircuitBreaker } from './utils/circuit-breaker';
+
+const logger = getLogger({ service: 'game-server' });
 
 interface ModerationResult {
   isSafe: boolean;
@@ -60,8 +63,7 @@ class ModerationClient {
       return result;
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-      // TODO(#11): Add structured logger - replace console.error with logger.error
-      console.error('Moderation API failed:', errorMessage);
+      logger.error('Moderation API failed', { error: errorMessage });
       // Fail safe - assume unsafe on API failure
       return {
         isSafe: false,
@@ -82,7 +84,7 @@ class ModerationClient {
       return response.data.data;
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-      console.error('Report submission error:', errorMessage);
+      logger.error('Report submission error', { error: errorMessage });
       throw error;
     }
   }

@@ -44,7 +44,7 @@ While most project contents must live under structured directories, common top-l
 
 **Build & Tooling Config:**
 
-- `/nx.json`, `/tsconfig.json`, `/vitest.config.js`, `/biome.json`
+- `/nx.json`, `/tsconfig.json`, `/vitest.config.ts`, `/biome.json`
 - `/Tiltfile` (development orchestration)
 
 **Editor & Code Quality:**

@@ -30,3 +30,7 @@ npx nx run-many --target=build --all
 ```
 
 Refer to each library's README.md for specific usage and development instructions.
+**Maturity Level:** Stable
+**Current Limitations:** Some libraries may be evolving.
+
+**Known Issues:** Dependency management.

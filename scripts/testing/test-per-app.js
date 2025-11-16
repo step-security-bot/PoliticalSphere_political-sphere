@@ -13,7 +13,7 @@ if (!app) {
   process.exit(2);
 }
 
-// Align patterns with vitest.config.js default include (apps/*/src and apps/*/tests)
+// Align patterns with vitest.config.ts default include (apps/*/src and apps/*/tests)
 const patternSrc = `apps/${app}/src/**/*.{test,spec}.{js,mjs,ts,tsx,jsx}`;
 const patternTests = `apps/${app}/tests/**/*.{test,spec}.{js,mjs,ts,tsx,jsx}`;
 console.log(`Running tests for app: ${app} -> patterns: ${patternSrc} ${patternTests}`);

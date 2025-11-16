@@ -4,7 +4,7 @@
 [![Node.js](https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen)](package.json)
 [![License](https://img.shields.io/badge/license-All%20Rights%20Reserved-red.svg)](LICENSE)
 [![Tests](https://img.shields.io/badge/tests-in%20progress-yellow)](docs/TODO.md)
-[![Coverage](https://img.shields.io/badge/coverage-improving-yellow)](coverage/)
+[![Coverage](https://codecov.io/gh/political-sphere/political-sphere/branch/main/graph/badge.svg)](https://codecov.io/gh/political-sphere/political-sphere)
 [![Audit](https://img.shields.io/badge/audit-completed-green)](#project-status)
 
 Political Sphere is an online multiplayer political simulation platform modeled on the political institutions of the United Kingdom. Players engage in parliamentary-style decision-making: drafting bills, debating policy, forming coalitions, and voting on legislation. Every decision produces realistic simulated outcomes, influencing the virtual country’s economy, public opinion, and social dynamics over time.

@@ -1,6 +1,7 @@
 import express from 'express';
 
 import { authenticate } from '../auth/auth.middleware.ts';
+import { PartyService } from '../domain/party-service.ts';
 import logger from '../logger.js';
 import { getDatabase } from '../modules/stores/index.ts';
 import { CreatePartySchema } from '../utils/shared-shim.js';
@@ -49,24 +50,30 @@ router.get('/parties/:id', requireAuth, async (req, res) => {
 // POST /parties - Create new party (requires authentication)
 router.post('/parties', requireAuth, async (req, res) => {
   try {
-    // Validate input with schema
+    // Validate input early; parse will throw ZodError with .issues
     const input = CreatePartySchema.parse(req.body);
 
-    const store = getPartyStore();
-    const party = await store.create(input);
-    res.status(201).json({ success: true, data: party });
+    // Use service to enforce duplicate name check before hitting DB constraint
+    const partyService = new PartyService();
+    const party = await partyService.createParty(input);
+    return res.status(201).json({ success: true, data: party });
   } catch (error) {
-    // Handle validation errors
-    if (error.issues || error.message?.includes('Invalid')) {
+    const message = error?.message || 'Invalid input';
+    // Treat validation and duplicate errors as 400
+    if (
+      error?.issues ||
+      message.includes('Invalid') ||
+      message.includes('exists') ||
+      message.includes('Missing required field')
+    ) {
       return res.status(400).json({
         success: false,
-        error: error.message || 'Invalid input',
-        details: error.issues,
+        error: message,
+        details: error?.issues,
       });
     }
-
     logger.error('POST /parties failed', { error });
-    res.status(500).json({ success: false, error: 'Internal server error' });
+    return res.status(500).json({ success: false, error: 'Internal server error' });
   }
 });
 

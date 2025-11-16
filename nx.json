@@ -97,8 +97,8 @@
       "runner": "nx/tasks-runners/default",
       "options": {
         "cacheableOperations": ["build", "lint", "test", "e2e", "test:e2e", "lint:boundaries"],
-        "parallel": 6,
-        "maxParallel": 8,
+        "parallel": 1,
+        "maxParallel": 2,
         "runtimeCacheInputs": ["node -v"],
         "analytics": true
       }

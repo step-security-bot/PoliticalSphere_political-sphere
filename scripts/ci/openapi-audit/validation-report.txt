@@ -1,1 +1,0 @@
-openapi-audit/bundle.yaml is valid

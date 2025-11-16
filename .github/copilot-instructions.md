@@ -180,6 +180,7 @@ All technology-specific guidance is now integrated into the main `docs/` structu
 | [security.md](../docs/06-security-and-risk/security.md)                         | Zero-trust, secrets, encryption  | 1.7.0   | Security implementation              |
 | [strategy.md](../docs/01-strategy/strategy.md)                                  | Architecture, roadmap            | 2.0.0   | Strategic decisions                  |
 | [ux-accessibility.md](../docs/05-engineering-and-devops/ui/ux-accessibility.md) | WCAG, screen readers, a11y       | 2.0.0   | Accessible UX design                 |
+| [sops/](../docs/05-engineering-and-devops/sops/)                                | Standard Operating Procedures    | 1.0.0   | Routine task checklists and guides   |
 
 ### Project Documentation
 
