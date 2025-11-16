@@ -24,8 +24,8 @@ import { existsSync, mkdirSync, readdirSync, readFileSync, statSync, writeFileSy
 import { extname, join, relative } from 'path';
 
 const INDEX_FILE = 'ai-index/codebase-index.json';
-const METRICS_FILE = 'ai-index/quality-metrics.json';
-const GRAPH_FILE = 'ai-index/dependency-graph.json';
+const _METRICS_FILE = 'ai-index/quality-metrics.json';
+const _GRAPH_FILE = 'ai-index/dependency-graph.json';
 const SUPPORTED_EXTS = ['.js', '.ts', '.tsx', '.jsx', '.json', '.md'];
 const MAX_INDEX_SIZE = 20_000_000; // 20MB limit (increased for metrics)
 
@@ -154,7 +154,7 @@ async function buildIndex(rootDir = '.') {
   // Validate index before saving
   try {
     validateIndex(index);
-  } catch (error) {
+  } catch (_error) {
     console.error('Index validation failed:', error.message);
     throw error;
   }
@@ -280,7 +280,7 @@ function analyzeFileQuality(filePath) {
   metrics.longLines = lines.filter(line => line.length > 100).length;
 
   // Detect potential duplicates (simple hash-based)
-  const lineHashes = new Set();
+  const _lineHashes = new Set();
   const seen = new Set();
   for (const line of lines) {
     const trimmed = line.trim();
@@ -371,7 +371,7 @@ async function updateIndex(rootDir = '.') {
     changedFiles = [...gitStatus.split('\n'), ...untrackedFiles.split('\n')].filter(
       f => f && SUPPORTED_EXTS.includes(extname(f))
     );
-  } catch (e) {
+  } catch (_e) {
     console.log('Not a git repository or git not available. Checking all files...');
   }
 

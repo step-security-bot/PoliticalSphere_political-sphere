@@ -57,7 +57,7 @@ const campaigns = new Map();
 const constituencies = new Map();
 const candidates = new Map();
 const votes = new Map();
-const results = new Map();
+const _results = new Map();
 
 /**
  * Create an election

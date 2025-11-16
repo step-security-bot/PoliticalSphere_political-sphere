@@ -117,8 +117,8 @@ export default [
       '**/tests/**/*.test.{js,mjs,ts,tsx}',
       '**/tests/**/*.spec.{js,mjs,ts,tsx}',
       '**/tests/**/*.{js,mjs,ts,tsx}',
-      '**/*.test.{ts,tsx,js,jsx}',
-      '**/*.spec.{ts,tsx,js,jsx}',
+      '**/*.test.{ts,tsx,js,jsx,mjs}',
+      '**/*.spec.{ts,tsx,js,jsx,mjs}',
     ],
     languageOptions: {
       globals: {
@@ -135,6 +135,7 @@ export default [
         global: 'readonly',
         window: 'readonly',
         document: 'readonly',
+        cleanup: 'readonly',
       },
     },
     rules: {
@@ -163,6 +164,7 @@ export default [
       'docs/apps/.vitepress/cache/**',
       'docs/examples/**',
       'tools/tmp/**',
+      'vendor/**',
     ],
   },
 

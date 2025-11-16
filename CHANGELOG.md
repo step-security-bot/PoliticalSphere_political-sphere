@@ -6,6 +6,16 @@ The format follows Keep a Changelog (https://keepachangelog.com/en/1.0.0/) and t
 
 ## [2025-11-16] - Repository Cleanup and Organization
 
+### Changed
+
+- **File Relocations**: Moved 4 files to appropriate locations per organization.md standards
+  - `GAME-SETUP.md` → `docs/08-game-design-and-mechanics/setup-guide.md` (game documentation belongs in docs/)
+  - `security.md` → `docs/06-security-and-risk/infrastructure-security.md` (infrastructure security overview)
+  - `tests/accessibility/web.a11y.spec.ts` → `apps/e2e/accessibility/web.a11y.spec.ts` (consolidates test organization)
+  - `tests/visual/web.visual.spec.ts` → `apps/e2e/visual/web.visual.spec.ts` (consolidates test organization)
+  - Removed empty `/tests` directory after relocation
+  - **Rationale**: Improves repository organization, discoverability, and adherence to monorepo structure
+
 ### Removed
 
 - **Duplicate Scripts**: Merged 14 duplicate CI/CD scripts (kept organized subdirectory versions)

@@ -60,7 +60,7 @@ class ApiClient {
       const data = await response.json();
       this.saveTokens(data.accessToken, data.refreshToken);
       return true;
-    } catch (error) {
+    } catch {
       this.clearTokens();
       return false;
     }
@@ -116,10 +116,10 @@ class ApiClient {
         success: true,
         data: data.data || data,
       };
-    } catch (err) {
+    } catch {
       return {
         success: false,
-        error: err instanceof Error ? err.message : 'Network error',
+        error: 'Network error',
       };
     }
   }

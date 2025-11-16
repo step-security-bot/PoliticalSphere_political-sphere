@@ -1,21 +1,21 @@
-import { createOrchestrator, defineAgent, composePolicies, composeValidators } from '../src';
+import { composePolicies, composeValidators, createOrchestrator, defineAgent } from '../src';
 import type { Message } from '../src/types';
 
 const brainstormer = defineAgent({
   id: 'brainstormer',
-  async respond(messages) {
+  async respond(_messages) {
     return { message: { role: 'assistant', content: 'idea: build a prototype' } };
   },
 });
 const critic = defineAgent({
   id: 'critic',
-  async respond(messages) {
+  async respond(_messages) {
     return { message: { role: 'assistant', content: 'risk: timelines and QA' } };
   },
 });
 const summarizer = defineAgent({
   id: 'summarizer',
-  async respond(messages) {
+  async respond(_messages) {
     return {
       message: {
         role: 'assistant',

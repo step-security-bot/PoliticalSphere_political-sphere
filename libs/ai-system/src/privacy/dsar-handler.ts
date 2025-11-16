@@ -210,7 +210,7 @@ export class DSARHandler {
     // Update user data with corrections
     const updatedFields: string[] = [];
 
-    for (const [field, value] of Object.entries(corrections)) {
+    for (const [field, _value] of Object.entries(corrections)) {
       // In production, update database
       updatedFields.push(field);
       console.log(`[DSAR] Updated ${field} for user ${request.userId}`);
@@ -265,7 +265,7 @@ export class DSARHandler {
 
     // Calculate average processing time for completed requests
     const completed = all.filter(r => r.status === 'completed');
-    const totalProcessingTime = completed.reduce((sum, r) => {
+    const totalProcessingTime = completed.reduce((sum, _r) => {
       // Placeholder - in production, track actual completion time
       return sum + 7; // days
     }, 0);

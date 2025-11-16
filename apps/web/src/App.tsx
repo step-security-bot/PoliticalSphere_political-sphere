@@ -4,17 +4,17 @@
  */
 
 import { useState } from 'react';
-import { AuthProvider, useAuth } from './contexts/AuthContext';
+import './App.css';
 import Login from './components/Auth/Login';
 import Register from './components/Auth/Register';
 import { Lobby } from './components/Lobby';
 import MainGame from './components/MainGame';
-import './App.css';
+import { AuthProvider, useAuth } from './contexts/AuthContext';
 
 type Screen = 'login' | 'register' | 'lobby' | 'game';
 
 function AppContent() {
-  const { user, isAuthenticated, isLoading } = useAuth();
+  const { user: _user, isAuthenticated, isLoading } = useAuth();
   const [screen, setScreen] = useState<Screen>('login');
   const [currentGameId, setCurrentGameId] = useState<string>('demo-game-1');
 

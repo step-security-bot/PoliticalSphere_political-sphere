@@ -3,7 +3,8 @@
 ## 🎮 Quick Start
 
 ### Prerequisites
-- Node.js 18+ 
+
+- Node.js 18+
 - npm or pnpm
 - PostgreSQL (optional - SQLite used by default for development)
 
@@ -14,6 +15,7 @@
 ```
 
 This will:
+
 1. Install all dependencies
 2. Set up the database
 3. Generate Prisma client
@@ -27,18 +29,21 @@ This will:
 ### Option 1: Development Mode (Recommended)
 
 **Terminal 1 - API Server:**
+
 ```bash
 cd apps/api
 npm start
 ```
 
 **Terminal 2 - Web Application:**
+
 ```bash
 cd apps/web
 npm run dev
 ```
 
 **Terminal 3 - Game Server (WebSocket):**
+
 ```bash
 cd apps/game-server
 npm start
@@ -67,6 +72,7 @@ npm run start:prod
 Political Sphere includes 8 complete game systems:
 
 ### 1. **Parliament System** ⚖️
+
 - Create chambers (Commons, Lords)
 - Propose motions
 - Schedule debates
@@ -76,6 +82,7 @@ Political Sphere includes 8 complete game systems:
 **Access**: Main Game → Parliament
 
 ### 2. **Government System** 🏢
+
 - Form government
 - Appoint ministers
 - Issue executive actions
@@ -85,6 +92,7 @@ Political Sphere includes 8 complete game systems:
 **Access**: Main Game → Government
 
 ### 3. **Judiciary System** ⚖️
+
 - File legal cases
 - Appoint judges
 - Issue rulings
@@ -94,6 +102,7 @@ Political Sphere includes 8 complete game systems:
 **Access**: Main Game → Judiciary
 
 ### 4. **Media System** 📰
+
 - Publish press releases
 - Create opinion polls
 - Track media coverage
@@ -103,6 +112,7 @@ Political Sphere includes 8 complete game systems:
 **Access**: Main Game → Media
 
 ### 5. **Elections System** 🗳️
+
 - Create elections
 - Manage constituencies
 - Register candidates
@@ -112,6 +122,7 @@ Political Sphere includes 8 complete game systems:
 **Access**: Main Game → Elections
 
 ### 6. **Profile & Settings** 👤
+
 - Update profile
 - View statistics
 - Configure preferences
@@ -121,6 +132,7 @@ Political Sphere includes 8 complete game systems:
 **Access**: Main Game → Profile
 
 ### 7. **Party System** 🎭
+
 - Create parties
 - Manage members
 - Form coalitions
@@ -129,6 +141,7 @@ Political Sphere includes 8 complete game systems:
 **Access**: Integrated throughout
 
 ### 8. **Bills & Voting** 📜
+
 - Propose legislation
 - Debate bills
 - Vote on proposals
@@ -147,16 +160,19 @@ No additional setup required. The setup script creates a local SQLite database.
 ### Production (PostgreSQL)
 
 1. Create a PostgreSQL database:
+
 ```sql
 CREATE DATABASE political_sphere;
 ```
 
 2. Set environment variable:
+
 ```bash
 export DATABASE_URL="postgresql://user:password@localhost:5432/political_sphere"
 ```
 
 3. Run migrations:
+
 ```bash
 cd apps/api
 npx prisma migrate deploy
@@ -200,11 +216,13 @@ LOG_LEVEL="info"
 ## 🧪 Testing
 
 ### Run All Tests
+
 ```bash
 npm test
 ```
 
 ### Run Specific Test Suites
+
 ```bash
 # Unit tests
 npm run test:unit
@@ -220,6 +238,7 @@ npm run test:a11y
 ```
 
 ### Test Coverage
+
 ```bash
 npm run test:coverage
 ```
@@ -229,18 +248,21 @@ npm run test:coverage
 ## 📊 Database Management
 
 ### View Database
+
 ```bash
 cd apps/api
 npx prisma studio
 ```
 
 ### Reset Database
+
 ```bash
 cd apps/api
 npx prisma migrate reset
 ```
 
 ### Seed Database
+
 ```bash
 cd apps/api
 npx prisma db seed
@@ -299,11 +321,13 @@ npm run type-check
 ## 🔒 Security
 
 ### Development
+
 - Default JWT secrets are for development only
 - SQLite database is not encrypted
 - CORS allows localhost origins
 
 ### Production Checklist
+
 - [ ] Change all JWT secrets
 - [ ] Use PostgreSQL with encryption
 - [ ] Configure proper CORS origins
@@ -356,3 +380,4 @@ Political Sphere is now set up and ready to play. Enjoy the simulation!
 
 ```
 🏛️ Political Sphere - UK Political Simulation Game
+```

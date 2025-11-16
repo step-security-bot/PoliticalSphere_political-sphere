@@ -53,7 +53,7 @@ function listFiles() {
       encoding: 'utf8',
     });
     return out.split(/\r?\n/).filter(Boolean);
-  } catch (e) {
+  } catch (_e) {
     // fallback: walk directory (simple)
     function walk(dir) {
       const res = [];
@@ -73,7 +73,7 @@ function listFiles() {
           } else if (/\.(js|ts|jsx|tsx)$/.test(sanitizedName)) {
             res.push(path.relative(ROOT, full));
           }
-        } catch (error) {}
+        } catch (_error) {}
       }
       return res;
     }
@@ -100,7 +100,7 @@ for (const f of files) {
       }
       fs.appendFileSync(REPORT_FILE, '\n');
     }
-  } catch (e) {
+  } catch (_e) {
     // ignore parse errors
   }
 }

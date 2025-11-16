@@ -125,7 +125,7 @@ function main() {
             errors.push(error);
           }
         }
-      } catch (error) {}
+      } catch (_error) {}
     }
   }
 

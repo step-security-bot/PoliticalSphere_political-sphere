@@ -31,7 +31,9 @@ export class MockProvider implements ModelProvider {
       let args: unknown = rawArgs;
       try {
         args = JSON.parse(rawArgs);
-      } catch {}
+      } catch {
+        // Keep rawArgs if JSON parse fails
+      }
       return {
         content: `${prefix} Calling tool ${toolName}`,
         toolCalls: [{ id: `${Date.now()}`, name: toolName, arguments: args }],

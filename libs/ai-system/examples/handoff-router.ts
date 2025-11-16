@@ -1,15 +1,15 @@
-import { createOrchestrator, defineAgent, composePolicies, composeValidators } from '../src';
+import { composePolicies, composeValidators, createOrchestrator, defineAgent } from '../src';
 import type { Message } from '../src/types';
 
 const analyst = defineAgent({
   id: 'analyst',
-  async respond(messages) {
+  async respond(_messages) {
     return { message: { role: 'assistant', content: 'analysis done' } };
   },
 });
 const implementer = defineAgent({
   id: 'implementer',
-  async respond(messages) {
+  async respond(_messages) {
     return {
       message: {
         role: 'assistant',
@@ -26,7 +26,7 @@ async function main() {
     agents: [analyst, implementer],
     config: {
       maxTurns: 4,
-      router: (messages: Message[], agents: any[]) => {
+      router: (messages: Message[], _agents: any[]) => {
         const last = messages[messages.length - 1];
         if (last?.role === 'assistant' && last.content.includes('analysis')) return 'implementer';
         return 'analyst';

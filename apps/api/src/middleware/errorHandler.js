@@ -18,7 +18,7 @@ export const asyncHandler = fn => (req, res, next) => {
  * Global error handler middleware
  * Handles all errors and sends appropriate responses
  */
-export const errorHandler = (err, req, res, next) => {
+export const errorHandler = (err, req, res, _next) => {
   // Log error for debugging
   console.error('Error:', {
     message: err.message,

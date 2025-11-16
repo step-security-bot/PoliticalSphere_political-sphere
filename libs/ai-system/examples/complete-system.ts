@@ -43,7 +43,7 @@ async function analyzePoliticalContent() {
   });
 
   // Layer 2: Validation - Set up validation gates
-  const politicalNeutralityGate = constitutionalGates[0]; // Tier 0
+  const _politicalNeutralityGate = constitutionalGates[0]; // Tier 0
   const securityGate = mandatoryGates[0]; // Tier 1
 
   // Layer 3: Governance - Initialize NIST AI RMF
@@ -143,7 +143,7 @@ async function analyzePoliticalContent() {
         },
       },
       governance: {
-        requireApproval: async ctx => {
+        requireApproval: async _ctx => {
           // Political content always requires human review
           const requiresApproval = governance.govern.requiresApproval(
             'political-analysis-system',

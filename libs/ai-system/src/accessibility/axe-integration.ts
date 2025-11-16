@@ -71,7 +71,7 @@ export async function runAxeTest(container: HTMLElement, config?: AxeTestConfig)
  * });
  * ```
  */
-export async function analyzePageAccessibility(page: unknown): Promise<{
+export async function analyzePageAccessibility(_page: unknown): Promise<{
   violations: Array<{ id: string; impact: string; description: string }>;
   passes: number;
 }> {

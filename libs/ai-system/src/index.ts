@@ -91,6 +91,7 @@ export function createOrchestrator(init: OrchestratorInit): Orchestrator {
           startingTranscript,
           'input',
           mergedCtx.validators?.input ??
+            // eslint-disable-next-line @typescript-eslint/no-require-imports
             [require('./validation/validators').lengthValidator?.(4096)].filter(Boolean)
         )
       );
@@ -135,6 +136,7 @@ export function createOrchestrator(init: OrchestratorInit): Orchestrator {
           result.output ?? result.transcript[result.transcript.length - 1],
           'output',
           mergedCtx.validators?.output ??
+            // eslint-disable-next-line @typescript-eslint/no-require-imports
             [require('./validation/validators').lengthValidator?.(4096)].filter(Boolean)
         )
       );

@@ -18,7 +18,7 @@ let exitCode = 0;
 function fileExists(p) {
   try {
     return fs.existsSync(p);
-  } catch (e) {
+  } catch (_e) {
     return false;
   }
 }
@@ -70,7 +70,7 @@ if (fileExists(workflowsDir)) {
               ['-c', 'import sys,yaml; yaml.safe_load(open(sys.argv[1]));', fullPath],
               { stdio: 'ignore' }
             );
-          } catch (e) {
+          } catch (_e) {
             console.warn(
               `WARN: YAML parse failed for ${fullPath} (python3/yaml not available or syntax error)`
             );
@@ -88,7 +88,7 @@ if (fileExists(workflowsDir)) {
             ['-c', 'import sys,yaml; yaml.safe_load(open(sys.argv[1]));', fullPath],
             { stdio: 'ignore' }
           );
-        } catch (e) {
+        } catch (_e) {
           console.warn(
             `WARN: YAML parse failed for ${fullPath} (python3/yaml not available or syntax error)`
           );
@@ -122,7 +122,7 @@ if (fileExists(actionsDir)) {
           ['-c', 'import sys,yaml; yaml.safe_load(open(sys.argv[1]));', actionYml],
           { stdio: 'ignore' }
         );
-      } catch (e) {
+      } catch (_e) {
         console.warn(
           `WARN: YAML parse failed for ${actionYml} (python3/yaml not available or syntax error)`
         );

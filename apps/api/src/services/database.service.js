@@ -155,12 +155,7 @@ class DatabaseService {
   async transaction(callback) {
     // For in-memory storage, just execute the callback
     // In real implementation, this would use database transactions
-    try {
-      return await callback(this);
-    } catch (error) {
-      // In real implementation, rollback would happen here
-      throw error;
-    }
+    return await callback(this);
   }
 
   /**

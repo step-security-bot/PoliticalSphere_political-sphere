@@ -50,4 +50,3 @@ See `docs/runbooks/incident.md` for on-call procedures. PagerDuty integration pe
 - Terraform state stored in encrypted S3 bucket with DynamoDB locking (enable bucket versioning, lifecycle policies before prod cutover).
 - Enable CloudTrail and GuardDuty in AWS account (task `SEC-15`).
 - PodSecurity admission defaults to `baseline`/`restricted` across namespaces.
-

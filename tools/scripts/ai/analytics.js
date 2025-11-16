@@ -22,7 +22,7 @@ function resolveMetricsDir() {
         console.warn('[analytics] using legacy metrics directory', dir);
       }
       return dir;
-    } catch (error) {
+    } catch (_error) {
       console.warn('[analytics] unable to initialise metrics directory', dir, error.message);
     }
   }
@@ -53,7 +53,7 @@ async function getDatabaseHandle() {
       );
     `);
     return db;
-  } catch (error) {
+  } catch (_error) {
     sqliteAvailable = false;
     console.warn('[analytics] better-sqlite3 unavailable; using JSONL fallback.');
     return null;
@@ -92,7 +92,7 @@ export async function recordScriptEvent(script, { durationMs = null, payload = n
       duration_ms: durationMs,
       payload: payload ? JSON.stringify(payload) : null,
     });
-  } catch (error) {
+  } catch (_error) {
     console.warn('Failed to record script event:', error.message);
     writeJsonFallback(script, { durationMs, payload });
   } finally {

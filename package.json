@@ -69,6 +69,7 @@
     "perf:cleanup": "bash tools/scripts/vscode-performance-optimizer.sh",
     "perf:full": "npm run cleanup && npm run perf:optimize && npm run perf:cleanup",
     "test:smoke": "playwright test e2e/smoke",
+    "test:visual": "node tools/tests/run-visual-regression.mjs",
     "ai": "node tools/scripts/ai/ai-assistant.cjs assist",
     "ai:chat": "node tools/scripts/ai/ai-assistant.cjs interactive",
     "ai:improve": "node tools/scripts/ai/ai-assistant.cjs auto-improve",

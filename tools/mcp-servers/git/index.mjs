@@ -174,7 +174,7 @@ class GitServer extends Server {
 
   async listResources() {
     const branches = await runGit(['branch', '--show-current']);
-    const remotes = await runGit(['remote', '-v']);
+    const _remotes = await runGit(['remote', '-v']);
     return {
       resources: [
         {
@@ -202,7 +202,7 @@ class GitServer extends Server {
       };
     }
     if (uri === 'git://political-sphere/remotes') {
-      const remotes = await runGit(['remote', '-v']);
+      const _remotes = await runGit(['remote', '-v']);
       return { contents: [{ uri, mimeType: 'text/plain', text: remotes }] };
     }
     throw new McpError(ErrorCode.InvalidRequest, `Unknown resource: ${uri}`);

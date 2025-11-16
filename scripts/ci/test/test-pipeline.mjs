@@ -27,7 +27,7 @@ class PipelineTest {
       await testFn();
       this.passed = true;
       console.log(`  ✅ ${this.name}`);
-    } catch (error) {
+    } catch (_error) {
       this.passed = false;
       this.error = error.message;
       console.log(`  ❌ ${this.name}: ${error.message}`);
@@ -73,7 +73,7 @@ function executeCommand(cmd, args) {
       throw new Error(`Invalid command: ${cmd}`);
     }
     return execFileSync(cmd, args || [], { encoding: 'utf8', stdio: 'pipe' });
-  } catch (error) {
+  } catch (_error) {
     throw new Error(`Command failed: ${error.message}`);
   }
 }
@@ -108,7 +108,7 @@ suite.addTest('Workflow files exist', 'Checks that all required workflow files a
 suite.addTest('Workflow syntax validation', 'Validates YAML syntax of all workflow files', () => {
   try {
     executeCommand('node', ['scripts/ci/validate-pipelines.mjs']);
-  } catch (error) {
+  } catch (_error) {
     // The validator might exit with 1 for warnings, check actual error
     if (error.message.includes('parse') || error.message.includes('syntax')) {
       throw error;
@@ -120,7 +120,7 @@ suite.addTest('Workflow syntax validation', 'Validates YAML syntax of all workfl
 suite.addTest('Lint checks pass', 'Runs linting to ensure code quality', () => {
   try {
     executeCommand('npm', ['run', 'lint']);
-  } catch (error) {
+  } catch (_error) {
     throw new Error('Linting failed');
   }
 });
@@ -129,7 +129,7 @@ suite.addTest('Lint checks pass', 'Runs linting to ensure code quality', () => {
 suite.addTest('Type checking passes', 'Validates TypeScript types', () => {
   try {
     executeCommand('npm', ['run', 'typecheck']);
-  } catch (error) {
+  } catch (_error) {
     throw new Error('Type checking failed');
   }
 });
