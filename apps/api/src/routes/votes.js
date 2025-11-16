@@ -32,6 +32,16 @@ router.post('/votes', requireAuth, async (req, res) => {
     const vote = await db.votes.create(input);
     res.status(201).json(vote);
   } catch (error) {
+    logger.error('POST /votes failed', { error });
+    if (error.name === 'ZodError') {
+      return res.status(400).json({
+        error: 'Validation failed',
+        details: error.errors.map(e => ({
+          field: e.path.join('.'),
+          message: e.message,
+        })),
+      });
+    }
     const message = error instanceof Error ? error.message : 'Invalid request';
     res.status(400).json({ error: message });
   }

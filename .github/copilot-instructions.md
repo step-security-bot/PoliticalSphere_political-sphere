@@ -39,7 +39,7 @@ The following list is non-hiracrachial
 
 | Version | Date       | Author   | Key Changes                                                                                                    | Impact              |
 | ------- | ---------- | -------- | -------------------------------------------------------------------------------------------------------------- | ------------------- |
-| 2.6.0   | 2025-11-16 | AI Agent | Added GitHub Issues and Pull Request workflow sections; enhanced collaboration guidance                       | Major enhancement   |
+| 2.6.0   | 2025-11-16 | AI Agent | Added GitHub Issues and Pull Request workflow sections; enhanced collaboration guidance                        | Major enhancement   |
 | 2.3.0   | 2025-11-07 | AI Agent | Added AI Effectiveness Principles: effectiveness, efficiency, security-first, innovation, proactive, realistic | Major enhancement   |
 | 2.2.0   | 2025-11-07 | AI Agent | Updated project structure section to align with new file-structure.md Mermaid diagram design                   | Documentation       |
 | 2.1.0   | 2025-11-06 | AI Agent | Added Function Feasibility and Implementation Status rules; Added external source usage guidelines             | Quality enhancement |
@@ -1324,10 +1324,11 @@ Issues that work best with Copilot coding agents have:
 **Title**: Add input validation for user email addresses
 
 **Description**:
-The user registration form currently accepts invalid email formats, leading to failed 
+The user registration form currently accepts invalid email formats, leading to failed
 notifications and poor UX. We need to add proper email validation.
 
 **Acceptance Criteria**:
+
 - [ ] Validate email format on client-side (React component)
 - [ ] Validate email format on server-side (API endpoint)
 - [ ] Display clear error message for invalid emails
@@ -1337,11 +1338,13 @@ notifications and poor UX. We need to add proper email validation.
 - [ ] Ensure WCAG 2.2 AA compliance for error messages
 
 **Files Affected**:
+
 - `apps/web/src/components/RegistrationForm.tsx`
 - `apps/api/src/routes/auth/register.ts`
 - `libs/shared/utils/src/validation.ts`
 
 **Technical Notes**:
+
 - Use established email regex pattern from RFC 5322
 - Follow existing validation patterns in codebase
 - Ensure error messages are i18n-ready
@@ -1401,9 +1404,11 @@ Follow these practices when creating and iterating on pull requests:
 
 ```markdown
 ## Description
+
 Brief summary of the changes and motivation.
 
 ## Type of Change
+
 - [ ] Bug fix (non-breaking change which fixes an issue)
 - [ ] New feature (non-breaking change which adds functionality)
 - [ ] Breaking change (fix or feature that would cause existing functionality to not work as expected)
@@ -1413,16 +1418,19 @@ Brief summary of the changes and motivation.
 - [ ] Security fix
 
 ## Related Issues
+
 Closes #123
 Related to #456
 
 ## Changes Made
+
 - Added email validation to registration form
 - Implemented client-side and server-side validation
 - Added comprehensive test coverage
 - Updated API documentation
 
 ## Testing
+
 - [ ] Unit tests added/updated
 - [ ] Integration tests added/updated
 - [ ] E2E tests added/updated (if applicable)
@@ -1430,6 +1438,7 @@ Related to #456
 - [ ] Accessibility testing completed (WCAG 2.2 AA)
 
 ## Checklist
+
 - [ ] Code follows project style guidelines
 - [ ] Self-review completed
 - [ ] Comments added to complex code
@@ -1439,12 +1448,15 @@ Related to #456
 - [ ] Dependent changes merged and published
 
 ## Screenshots (if applicable)
+
 [Add screenshots for UI changes]
 
 ## Security Considerations
+
 [Describe any security implications]
 
 ## Performance Impact
+
 [Describe any performance implications]
 ```
 
@@ -1474,12 +1486,13 @@ Treat PRs as collaborative refinement:
 
 ```markdown
 **Initial PR Comment**:
-"I've implemented email validation as specified in #123. The approach uses 
-RFC 5322 compliant regex on both client and server. Tests are passing locally, 
+"I've implemented email validation as specified in #123. The approach uses
+RFC 5322 compliant regex on both client and server. Tests are passing locally,
 but I'd like feedback on the error message UX before finalizing."
 
 **After Feedback**:
 "Thanks @reviewer! I've addressed your comments:
+
 - ✅ Updated error message to be more user-friendly (commit abc123)
 - ✅ Added aria-live region for screen reader support (commit def456)
 - ✅ Extracted validation regex to shared utils (commit ghi789)

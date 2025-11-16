@@ -62,7 +62,7 @@ export class CacheService {
     }
   }
 
-  async set(key: string, value: any, ttlSeconds?: number): Promise<void> {
+  async set(key: string, value: unknown, ttlSeconds?: number): Promise<void> {
     try {
       const data = JSON.stringify(value);
       if (typeof ttlSeconds === 'number' && Number.isFinite(ttlSeconds)) {

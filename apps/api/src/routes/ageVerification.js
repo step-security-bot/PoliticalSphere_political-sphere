@@ -4,17 +4,15 @@
  * Implements Online Safety Act and COPPA compliance
  */
 
-const express = require('express');
+import express from 'express';
+import rateLimit from 'express-rate-limit';
+
+import ageVerificationService from '../ageVerificationService.js';
+import { authenticate, requireRole } from '../middleware/auth.js';
+import logger from '../utils/logger.js';
+import { CompleteVerificationSchema, InitiateVerificationSchema } from '../utils/shared-shim.js';
 
 const router = express.Router();
-const rateLimit = require('express-rate-limit');
-
-const ageVerificationService = require('../ageVerificationService');
-const { authenticate, requireRole } = require('../middleware/auth');
-const { _validate, _schemas } = require('../middleware/validation');
-const logger = require('../utils/logger.js');
-
-// Rate limiting for age verification endpoints
 const ageVerificationLimiter = rateLimit({
   windowMs: 60 * 60 * 1000, // 1 hour
   max: 5, // limit each IP to 5 verification attempts per hour
@@ -33,10 +31,10 @@ router.use('/verify', ageVerificationLimiter);
  */
 router.post('/initiate', async (req, res) => {
   try {
-    const { method = 'self_declaration' } = req.body;
+    const input = InitiateVerificationSchema.parse(req.body);
     const userId = req.user?.id || 'anonymous'; // Allow anonymous initiation
 
-    const result = await ageVerificationService.initiateVerification(userId, method);
+    const result = await ageVerificationService.initiateVerification(userId, input.method);
 
     if (result.success) {
       res.json({
@@ -50,6 +48,16 @@ router.post('/initiate', async (req, res) => {
       });
     }
   } catch (error) {
+    if (error.name === 'ZodError') {
+      return res.status(400).json({
+        success: false,
+        error: 'Validation failed',
+        details: error.errors.map(e => ({
+          field: e.path.join('.'),
+          message: e.message,
+        })),
+      });
+    }
     logger.error('Age verification initiation failed', {
       error: error.message,
     });
@@ -68,14 +76,14 @@ router.post('/initiate', async (req, res) => {
  */
 router.post('/verify', async (req, res) => {
   try {
-    const { verificationId } = req.body;
+    const input = CompleteVerificationSchema.parse(req.body);
 
-    const result = await ageVerificationService.completeVerification(verificationId, req.body);
+    const result = await ageVerificationService.completeVerification(input.verificationId, input);
 
     if (result.success) {
       // Log successful verification
       logger.audit('Age verification completed', {
-        verificationId,
+        verificationId: input.verificationId,
         age: result.age,
         confidence: result.confidence,
         ip: req.ip,
@@ -88,7 +96,7 @@ router.post('/verify', async (req, res) => {
     } else {
       // Log failed verification
       logger.audit('Age verification failed', {
-        verificationId,
+        verificationId: input.verificationId,
         error: result.error,
         ip: req.ip,
       });
@@ -99,13 +107,23 @@ router.post('/verify', async (req, res) => {
       });
     }
   } catch (error) {
+    if (error.name === 'ZodError') {
+      return res.status(400).json({
+        success: false,
+        error: 'Validation failed',
+        details: error.errors.map(e => ({
+          field: e.path.join('.'),
+          message: e.message,
+        })),
+      });
+    }
     logger.error('Age verification completion failed', {
       error: error.message,
     });
     res.status(500).json({
       success: false,
-      error: 'Verification processing failed',
-      message: 'Unable to complete verification at this time',
+      error: 'Verification failed',
+      message: 'Unable to complete verification',
     });
   }
 });
@@ -121,7 +139,7 @@ router.post('/parental-consent', async (req, res) => {
 
     const result = await ageVerificationService.processParentalConsent({
       parentEmail,
-      childAge: parseInt(childAge),
+      childAge: parseInt(childAge, 10),
       parentConsent: true, // Implied by request
     });
 
@@ -339,4 +357,4 @@ router.post('/admin/reverify/:userId', authenticate, requireRole('admin'), async
   }
 });
 
-module.exports = router;
+export default router;

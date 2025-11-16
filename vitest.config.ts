@@ -1,6 +1,7 @@
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
+import react from '@vitejs/plugin-react';
 import type { UserConfig } from 'vitest/config';
 import { defineConfig } from 'vitest/config';
 
@@ -68,6 +69,7 @@ const testFileExclude = [
 const watchExtraExclude = ['tools/**'];
 
 const config: UserConfig = {
+  plugins: [react()],
   test: {
     globals: false,
     environment,

@@ -1,6 +1,7 @@
 import express from 'express';
 
 import { FileNewsStore, NewsService } from '../news-service.js';
+import { CreateNewsSchema, UpdateNewsSchema } from '../utils/shared-shim.js';
 
 const router = express.Router();
 const newsService = new NewsService(new FileNewsStore());
@@ -64,9 +65,20 @@ router.get('/news', async (req, res) => {
 
 router.post('/news', async (req, res) => {
   try {
-    const newsItem = await newsService.create(req.body);
+    const input = CreateNewsSchema.parse(req.body);
+    const newsItem = await newsService.create(input);
     res.status(201).json({ success: true, data: newsItem });
   } catch (error) {
+    if (error.name === 'ZodError') {
+      return res.status(400).json({
+        success: false,
+        error: 'Validation failed',
+        details: error.errors.map(e => ({
+          field: e.path.join('.'),
+          message: e.message,
+        })),
+      });
+    }
     if (error?.code === 'VALIDATION_ERROR') {
       return handleValidationError(res, error);
     }
@@ -104,7 +116,8 @@ router.get('/news/:id', async (req, res) => {
 router.put('/news/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    const updatedItem = await newsService.update(id, req.body);
+    const input = UpdateNewsSchema.parse(req.body);
+    const updatedItem = await newsService.update(id, input);
     if (!updatedItem) {
       return res.status(404).json({
         success: false,
@@ -114,6 +127,16 @@ router.put('/news/:id', async (req, res) => {
     }
     res.json({ success: true, data: updatedItem });
   } catch (error) {
+    if (error.name === 'ZodError') {
+      return res.status(400).json({
+        success: false,
+        error: 'Validation failed',
+        details: error.errors.map(e => ({
+          field: e.path.join('.'),
+          message: e.message,
+        })),
+      });
+    }
     if (error?.code === 'VALIDATION_ERROR') {
       return handleValidationError(res, error);
     }

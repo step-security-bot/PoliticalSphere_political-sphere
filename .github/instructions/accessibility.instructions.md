@@ -1,10 +1,10 @@
 ---
 applies_to:
-  - "**/*.tsx"
-  - "**/*.jsx"
-  - "**/components/**"
-  - "**/ui/**"
-  - "**/pages/**"
+  - '**/*.tsx'
+  - '**/*.jsx'
+  - '**/components/**'
+  - '**/ui/**'
+  - '**/pages/**'
 ---
 
 # Accessibility Instructions for GitHub Copilot
@@ -60,7 +60,7 @@ function CustomButton({ onClick, children }: CustomButtonProps) {
   return (
     <button
       onClick={onClick}
-      onKeyDown={(e) => {
+      onKeyDown={e => {
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
           onClick();
@@ -76,14 +76,10 @@ function CustomButton({ onClick, children }: CustomButtonProps) {
 // ✅ Good: Keyboard accessible custom component
 function DropdownMenu({ items }: DropdownMenuProps) {
   const [isOpen, setIsOpen] = useState(false);
-  
+
   return (
     <div role="menu">
-      <button
-        aria-expanded={isOpen}
-        aria-haspopup="true"
-        onClick={() => setIsOpen(!isOpen)}
-      >
+      <button aria-expanded={isOpen} aria-haspopup="true" onClick={() => setIsOpen(!isOpen)}>
         Menu
       </button>
       {isOpen && (
@@ -114,7 +110,7 @@ function CustomButton({ onClick, children }: CustomButtonProps) {
 function SearchBox() {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
-  
+
   return (
     <div role="search">
       <label htmlFor="search-input">Search</label>
@@ -122,20 +118,16 @@ function SearchBox() {
         id="search-input"
         type="search"
         value={query}
-        onChange={(e) => setQuery(e.target.value)}
+        onChange={e => setQuery(e.target.value)}
         aria-label="Search site content"
         aria-describedby="search-help"
       />
       <span id="search-help" className="sr-only">
         Enter keywords to search the site
       </span>
-      
+
       {results.length > 0 && (
-        <div
-          role="region"
-          aria-live="polite"
-          aria-atomic="true"
-        >
+        <div role="region" aria-live="polite" aria-atomic="true">
           {results.length} results found
         </div>
       )}
@@ -146,7 +138,7 @@ function SearchBox() {
 // ❌ Bad: Redundant ARIA
 <button role="button" aria-label="Click me">
   Click me
-</button>
+</button>;
 // Button element already has button role; redundant ARIA
 ```
 
@@ -159,7 +151,7 @@ function SearchBox() {
 function RegistrationForm() {
   const [email, setEmail] = useState('');
   const [error, setError] = useState('');
-  
+
   const validateEmail = (value: string) => {
     if (!value.includes('@')) {
       setError('Please enter a valid email address');
@@ -167,19 +159,21 @@ function RegistrationForm() {
       setError('');
     }
   };
-  
+
   return (
     <form>
       <div>
         <label htmlFor="email">
           Email Address
-          <span aria-label="required" className="required">*</span>
+          <span aria-label="required" className="required">
+            *
+          </span>
         </label>
         <input
           id="email"
           type="email"
           value={email}
-          onChange={(e) => {
+          onChange={e => {
             setEmail(e.target.value);
             validateEmail(e.target.value);
           }}
@@ -219,7 +213,7 @@ function RegistrationForm() {
 function Modal({ isOpen, onClose, children }: ModalProps) {
   const modalRef = useRef<HTMLDivElement>(null);
   const previousFocusRef = useRef<HTMLElement | null>(null);
-  
+
   useEffect(() => {
     if (isOpen) {
       previousFocusRef.current = document.activeElement as HTMLElement;
@@ -228,16 +222,11 @@ function Modal({ isOpen, onClose, children }: ModalProps) {
       previousFocusRef.current.focus();
     }
   }, [isOpen]);
-  
+
   if (!isOpen) return null;
-  
+
   return (
-    <div
-      ref={modalRef}
-      role="dialog"
-      aria-modal="true"
-      tabIndex={-1}
-    >
+    <div ref={modalRef} role="dialog" aria-modal="true" tabIndex={-1}>
       {children}
       <button onClick={onClose} aria-label="Close modal">
         ×
@@ -305,9 +294,9 @@ function StatusBadge({ status }: StatusBadgeProps) {
         return { color: 'gray', icon: '○', text: 'Unknown' };
     }
   };
-  
+
   const { color, icon, text } = getStatusInfo(status);
-  
+
   return (
     <span style={{ color }} aria-label={text}>
       <span aria-hidden="true">{icon}</span>
@@ -403,22 +392,22 @@ function StatusBadge({ status }: StatusBadgeProps) {
 // ✅ Good: Respect prefers-reduced-motion
 const useReducedMotion = () => {
   const [reducedMotion, setReducedMotion] = useState(false);
-  
+
   useEffect(() => {
     const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
     setReducedMotion(mediaQuery.matches);
-    
+
     const listener = (e: MediaQueryListEvent) => setReducedMotion(e.matches);
     mediaQuery.addEventListener('change', listener);
     return () => mediaQuery.removeEventListener('change', listener);
   }, []);
-  
+
   return reducedMotion;
 };
 
 function AnimatedComponent() {
   const reducedMotion = useReducedMotion();
-  
+
   return (
     <div
       className={reducedMotion ? 'no-animation' : 'animated'}
@@ -522,7 +511,7 @@ describe('MyComponent accessibility', () => {
     const results = await axe(container);
     expect(results).toHaveNoViolations();
   });
-  
+
   it('should be keyboard navigable', () => {
     const { getByRole } = render(<MyComponent />);
     const button = getByRole('button');

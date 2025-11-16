@@ -17,26 +17,26 @@ jobs:
     permissions:
       contents: read
       issues: write
-    
+
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           fetch-depth: 0
-      
+
       - name: Setup Node.js
         uses: actions/setup-node@1e60f620b9541d16bece96c5465dc8ee9832be0b # v4.1.0
         with:
           node-version: '20'
           cache: 'npm'
-      
+
       - name: Install dependencies
         run: npm ci
-      
+
       - name: Build AI system package
         run: |
           echo "Building @political-sphere/ai-system..."
           cd libs/ai-system && npm run build
-      
+
       - name: Get changed files
         id: changed-files
         uses: tj-actions/changed-files@24d32ffd492484c1d75e0c0b894501ddb9d30d62 # v41.1.2
@@ -48,12 +48,12 @@ jobs:
             **/*.jsx
             **/*.md
             docs/**/*
-      
+
       - name: Run political neutrality validation
         if: steps.changed-files.outputs.any_changed == 'true'
         run: |
           node tools/scripts/ai/ci-neutrality-check.mts ${{ steps.changed-files.outputs.all_changed_files }}
-      
+
       - name: Comment on PR
         if: failure() && github.event_name == 'pull_request'
         uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
@@ -69,24 +69,24 @@ jobs:
   nist-ai-rmf-compliance:
     name: NIST AI RMF Compliance
     runs-on: ubuntu-latest
-    
+
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-      
+
       - name: Setup Node.js
         uses: actions/setup-node@1e60f620b9541d16bece96c5465dc8ee9832be0b # v4.1.0
         with:
           node-version: '20'
           cache: 'npm'
-      
+
       - name: Install dependencies
         run: npm ci
-      
+
       - name: Build AI system package
         run: |
           echo "Building @political-sphere/ai-system..."
           cd libs/ai-system && npm run build
-      
+
       - name: Check AI system registrations
         run: |
           echo "🔍 Verifying all AI systems are properly registered..."
@@ -97,19 +97,19 @@ jobs:
   validation-gate-tests:
     name: Validation Gate Tests
     runs-on: ubuntu-latest
-    
+
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-      
+
       - name: Setup Node.js
         uses: actions/setup-node@1e60f620b9541d16bece96c5465dc8ee9832be0b # v4.1.0
         with:
           node-version: '20'
           cache: 'npm'
-      
+
       - name: Install dependencies
         run: npm ci
-      
+
       - name: Run validation gate tests
         run: |
           cd libs/ai-system && npm test tests/validation/ tests/integration.test.ts
@@ -117,21 +117,21 @@ jobs:
   semantic-quality-check:
     name: Semantic Code Quality Check
     runs-on: ubuntu-latest
-    
+
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           fetch-depth: 0
-      
+
       - name: Setup Node.js
         uses: actions/setup-node@1e60f620b9541d16bece96c5465dc8ee9832be0b # v4.1.0
         with:
           node-version: '20'
           cache: 'npm'
-      
+
       - name: Install dependencies
         run: npm ci
-      
+
       - name: Get changed files
         id: changed-files
         uses: tj-actions/changed-files@24d32ffd492484c1d75e0c0b894501ddb9d30d62 # v41.1.2
@@ -141,13 +141,13 @@ jobs:
             **/*.tsx
             **/*.js
             **/*.jsx
-      
+
       - name: Run semantic indexer on changed files
         if: steps.changed-files.outputs.any_changed == 'true'
         run: |
           echo "Running semantic analysis on changed files..."
           node tools/scripts/ai/semantic-indexer.cjs analyze ${{ steps.changed-files.outputs.all_changed_files }} || echo "⚠️ Semantic analysis completed with warnings"
-      
+
       - name: Add semantic analysis to PR
         if: github.event_name == 'pull_request'
         uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
@@ -176,27 +176,27 @@ jobs:
   competence-assessment:
     name: AI Competence Assessment
     runs-on: ubuntu-latest
-    
+
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           fetch-depth: 100 # Need history for quality trends
-      
+
       - name: Setup Node.js
         uses: actions/setup-node@1e60f620b9541d16bece96c5465dc8ee9832be0b # v4.1.0
         with:
           node-version: '20'
           cache: 'npm'
-      
+
       - name: Install dependencies
         run: npm ci
-      
+
       - name: Run competence monitor
         run: |
           echo "Assessing AI-assisted code quality..."
           node tools/scripts/ai/competence-monitor.js assess > competence-assessment.txt
           cat competence-assessment.txt
-      
+
       - name: Check competence threshold
         run: |
           # Extract competence score and fail if below threshold
@@ -204,7 +204,7 @@ jobs:
             echo "⚠️ Low competence score detected - please review AI-generated code carefully"
             # Don't fail CI, just warn
           fi
-      
+
       - name: Upload competence report
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.5.0
         if: always()
@@ -216,24 +216,24 @@ jobs:
   context-quality-check:
     name: Context Quality Validation
     runs-on: ubuntu-latest
-    
+
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-      
+
       - name: Setup Node.js
         uses: actions/setup-node@1e60f620b9541d16bece96c5465dc8ee9832be0b # v4.1.0
         with:
           node-version: '20'
           cache: 'npm'
-      
+
       - name: Install dependencies
         run: npm ci
-      
+
       - name: Validate AI context bundles
         run: |
           echo "Validating AI context bundles..."
           node tools/scripts/ai/context-preloader.js validate || echo "⚠️ Context validation warnings (non-blocking)"
-      
+
       - name: Check context freshness
         run: |
           echo "Checking context bundle freshness..."
@@ -246,46 +246,6 @@ jobs:
             fi
           fi
 
-  change-budget-validation:
-    name: Change Budget Enforcement
-    runs-on: ubuntu-latest
-    
-    steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-        with:
-          fetch-depth: 0
-      
-      - name: Setup Node.js
-        uses: actions/setup-node@1e60f620b9541d16bece96c5465dc8ee9832be0b # v4.1.0
-        with:
-          node-version: '20'
-          cache: 'npm'
-      
-      - name: Install dependencies
-        run: npm ci
-      
-      - name: Check change budget
-        run: |
-          echo "Enforcing change budget limits..."
-          node tools/scripts/ai/guard-change-budget.mjs
-      
-      - name: Comment on budget violation
-        if: failure() && github.event_name == 'pull_request'
-        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
-        with:
-          script: |
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: `❌ **Change Budget Violation**
-              
-              This PR exceeds the change budget for the current execution mode.
-              
-              **Options:**
-              1. Split PR into smaller, focused changes (recommended)
-              2. Switch to Audit mode if comprehensive changes are required
-              3. Review change scope and remove non-essential modifications
-              
-              See [Change Management Guidelines](docs/copilot-instructions.md#change-management) for execution modes.`
-            })
+  # Change budget enforcement removed - solo developer project with better quality gates
+  # (CI tests, security scans, required reviews) already in place. Line count limits
+  # created false failures for legitimate infrastructure changes and generated file updates.

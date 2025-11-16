@@ -43,11 +43,7 @@ interface JudiciarySystemProps {
   onIssueRuling?: (data: { caseId: string; decision: string; reasoning: string }) => void;
 }
 
-const JudiciarySystem: React.FC<JudiciarySystemProps> = ({
-  gameId,
-  onFileCase,
-  onIssueRuling,
-}) => {
+const JudiciarySystem: React.FC<JudiciarySystemProps> = ({ gameId, onFileCase, onIssueRuling }) => {
   const [cases, setCases] = useState<LegalCase[]>([]);
   const [judges, setJudges] = useState<Judge[]>([]);
   const [rulings, setRulings] = useState<Ruling[]>([]);
@@ -220,7 +216,9 @@ const JudiciarySystem: React.FC<JudiciarySystemProps> = ({
                   aria-pressed={selectedCase?.id === legalCase.id}
                 >
                   <div className="case-header">
-                    <h3>{legalCase.caseNumber}: {legalCase.title}</h3>
+                    <h3>
+                      {legalCase.caseNumber}: {legalCase.title}
+                    </h3>
                     <span className={`case-status status-${legalCase.status}`}>
                       {legalCase.status}
                     </span>
@@ -360,9 +358,7 @@ const JudiciarySystem: React.FC<JudiciarySystemProps> = ({
                     <h3>{judge.court}</h3>
                     <p>Cases Heard: {judge.casesHeard}</p>
                     <p>Appointed: {new Date(judge.appointedAt).toLocaleDateString()}</p>
-                    <span className={`judge-status status-${judge.status}`}>
-                      {judge.status}
-                    </span>
+                    <span className={`judge-status status-${judge.status}`}>{judge.status}</span>
                   </div>
                 </li>
               ))}
@@ -388,9 +384,7 @@ const JudiciarySystem: React.FC<JudiciarySystemProps> = ({
                 <li key={ruling.id} className="ruling-card">
                   <div className="ruling-header">
                     <h3>Decision: {ruling.decision}</h3>
-                    {ruling.unanimous && (
-                      <span className="unanimous-badge">Unanimous</span>
-                    )}
+                    {ruling.unanimous && <span className="unanimous-badge">Unanimous</span>}
                   </div>
                   <p className="ruling-reasoning">{ruling.reasoning}</p>
                   <p className="ruling-meta">

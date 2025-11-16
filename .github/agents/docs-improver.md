@@ -47,31 +47,32 @@ const TIMEOUT = 5000;
 
 **JSDoc Comments**: Document public APIs
 
-```typescript
+````typescript
 /**
  * Validates user email addresses according to RFC 5322.
- * 
+ *
  * @param email - The email address to validate
  * @returns True if the email is valid, false otherwise
- * 
+ *
  * @example
  * ```typescript
  * validateEmail('user@example.com') // true
  * validateEmail('invalid-email')     // false
  * ```
- * 
+ *
  * @throws {ValidationError} If the email format is malformed
- * 
+ *
  * @see https://datatracker.ietf.org/doc/html/rfc5322
  */
 function validateEmail(email: string): boolean {
   // Implementation
 }
-```
+````
 
 ### README Files
 
 Ensure READMEs include:
+
 - Clear project description
 - Installation instructions
 - Usage examples
@@ -83,6 +84,7 @@ Ensure READMEs include:
 ### Technical Documentation
 
 Organize technical docs with:
+
 - **Overview**: What it is and why it exists
 - **Getting Started**: Quick start guide
 - **Detailed Guides**: In-depth explanations
@@ -99,30 +101,38 @@ Follow ADR format:
 # ADR-001: Choice of Database
 
 ## Status
+
 Accepted
 
 ## Context
+
 We need to choose a database that supports our requirements for:
+
 - High read/write throughput
 - ACID transactions
 - JSON document storage
 - Scalability
 
 ## Decision
+
 We will use PostgreSQL with JSONB columns.
 
 ## Consequences
+
 **Positive:**
+
 - ACID compliance ensures data integrity
 - JSONB provides flexible schema
 - Strong ecosystem and tooling
 - Good performance for our use case
 
 **Negative:**
+
 - Slightly more complex than NoSQL for JSON
 - Requires careful indexing for performance
 
 **Neutral:**
+
 - Need to learn PostgreSQL JSON features
 - Migration from MySQL will take 2-3 weeks
 ```
@@ -130,24 +140,28 @@ We will use PostgreSQL with JSONB columns.
 ## Documentation Quality Standards
 
 ### Clarity
+
 - Use simple, direct language
 - Avoid jargon (or explain it)
 - Break complex topics into smaller sections
 - Use examples liberally
 
 ### Completeness
+
 - Cover all important aspects
 - Include prerequisites
 - Explain edge cases
 - Document limitations
 
 ### Accuracy
+
 - Verify all information is correct
 - Keep documentation in sync with code
 - Update when things change
 - Test code examples
 
 ### Organization
+
 - Logical structure
 - Clear headings
 - Table of contents for long docs
@@ -158,6 +172,7 @@ We will use PostgreSQL with JSONB columns.
 ### Assessment Checklist
 
 When reviewing documentation, check:
+
 - [ ] Is it accurate?
 - [ ] Is it complete?
 - [ ] Is it clear?
@@ -186,7 +201,7 @@ Use the "Concept, Example, Practice" pattern:
 
 **Note:** In the examples below, code fence markers are shown with backslashes (`\````) to prevent rendering issues in this file. When copying these examples, remove the backslashes to use standard markdown code fences (` ``` `).
 
-```markdown
+````markdown
 ## Concept: React Hooks
 
 React Hooks are functions that let you use state and other React features
@@ -198,29 +213,30 @@ Here's how to use the useState hook:
 
 \```typescript
 function Counter() {
-  const [count, setCount] = useState(0);
-  
-  return (
-    <button onClick={() => setCount(count + 1)}>
-      Count: {count}
-    </button>
-  );
+const [count, setCount] = useState(0);
+
+return (
+<button onClick={() => setCount(count + 1)}>
+Count: {count}
+</button>
+);
 }
 \```
 
 ### Try It Yourself
 
 Modify the example above to:
+
 1. Start the counter at 10
 2. Add a reset button
 3. Increment by 2 instead of 1
-```
+````
 
 ### Documenting APIs
 
 Use consistent format:
 
-```markdown
+````markdown
 ## `functionName(param1, param2)`
 
 Brief description of what it does.
@@ -260,7 +276,7 @@ Additional information, caveats, or best practices.
 
 - [Related function](#related)
 - [External resource](https://example.com)
-```
+````
 
 ## Code Examples Best Practices
 
@@ -296,7 +312,7 @@ Additional information, caveats, or best practices.
 
 ### Show, Don't Just Tell
 
-```markdown
+````markdown
 ✅ Good:
 To configure the timeout, set the TIMEOUT environment variable:
 \```bash
@@ -305,13 +321,13 @@ TIMEOUT=5000 npm start
 
 ❌ Bad:
 You can configure the timeout using environment variables.
-```
+````
 
 ## Markdown Formatting
 
 Use consistent markdown:
 
-```markdown
+````markdown
 # Main Heading (H1) - Only one per document
 
 ## Section (H2)
@@ -322,7 +338,7 @@ Use consistent markdown:
 
 **Bold text** for emphasis
 
-*Italic text* for less emphasis
+_Italic text_ for less emphasis
 
 `inline code` for code snippets
 
@@ -344,13 +360,14 @@ code blocks
 ![Image alt text](url)
 
 | Table | Headers |
-|-------|---------|
+| ----- | ------- |
 | Data  | More    |
-```
+````
 
 ## Documentation Checklist
 
 Before submitting documentation:
+
 - [ ] Accurate and up-to-date
 - [ ] Clear and concise language
 - [ ] Logical organization
@@ -377,6 +394,7 @@ Before submitting documentation:
 ## Prioritizing Documentation Work
 
 Focus on:
+
 1. **Critical gaps**: Missing essential information
 2. **User pain points**: Areas where users struggle
 3. **High-impact areas**: Frequently accessed docs

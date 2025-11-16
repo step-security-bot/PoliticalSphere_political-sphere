@@ -5,6 +5,7 @@
 
 import type React from 'react';
 import { useCallback, useEffect, useState } from 'react';
+import { api } from '../../services/api';
 import './ParliamentChamber.css';
 
 interface Chamber {
@@ -68,22 +69,17 @@ export const ParliamentChamber: React.FC<ParliamentChamberProps> = ({
   const fetchChambers = useCallback(async () => {
     try {
       setLoading(true);
-      const response = await fetch(`/api/parliament/chambers?gameId=${gameId}`, {
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`,
-        },
-      });
+      const response = await api.getChambers(gameId);
 
-      if (!response.ok) {
-        throw new Error('Failed to fetch chambers');
+      if (!response.success) {
+        throw new Error(response.error || 'Failed to fetch chambers');
       }
 
-      const data = await response.json();
-      setChambers(data.data || []);
-      
+      setChambers(response.data || []);
+
       // Auto-select first chamber
-      if (data.data && data.data.length > 0) {
-        setSelectedChamber(data.data[0]);
+      if (response.data && response.data.length > 0) {
+        setSelectedChamber(response.data[0]);
       }
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Failed to fetch chambers';
@@ -93,45 +89,41 @@ export const ParliamentChamber: React.FC<ParliamentChamberProps> = ({
     }
   }, [gameId, onError]);
 
-  const fetchMotions = useCallback(async (chamberId: string) => {
-    try {
-      const response = await fetch(`/api/parliament/motions?chamberId=${chamberId}`, {
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`,
-        },
-      });
+  const fetchMotions = useCallback(
+    async (chamberId: string) => {
+      try {
+        const response = await api.getMotions(chamberId);
 
-      if (!response.ok) {
-        throw new Error('Failed to fetch motions');
+        if (!response.success) {
+          throw new Error(response.error || 'Failed to fetch motions');
+        }
+
+        setMotions(response.data || []);
+      } catch (error) {
+        const message = error instanceof Error ? error.message : 'Failed to fetch motions';
+        onError?.(message);
       }
+    },
+    [onError]
+  );
 
-      const data = await response.json();
-      setMotions(data.data || []);
-    } catch (error) {
-      const message = error instanceof Error ? error.message : 'Failed to fetch motions';
-      onError?.(message);
-    }
-  }, [onError]);
+  const fetchVoteResults = useCallback(
+    async (motionId: string) => {
+      try {
+        const response = await api.getVoteResults(motionId);
 
-  const fetchVoteResults = useCallback(async (motionId: string) => {
-    try {
-      const response = await fetch(`/api/parliament/votes/results/${motionId}`, {
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`,
-        },
-      });
+        if (!response.success) {
+          throw new Error(response.error || 'Failed to fetch vote results');
+        }
 
-      if (!response.ok) {
-        throw new Error('Failed to fetch vote results');
+        setVoteResults(response.data);
+      } catch (error) {
+        const message = error instanceof Error ? error.message : 'Failed to fetch vote results';
+        onError?.(message);
       }
-
-      const data = await response.json();
-      setVoteResults(data.data);
-    } catch (error) {
-      const message = error instanceof Error ? error.message : 'Failed to fetch vote results';
-      onError?.(message);
-    }
-  }, [onError]);
+    },
+    [onError]
+  );
 
   // Fetch chambers on mount
   useEffect(() => {
@@ -160,29 +152,22 @@ export const ParliamentChamber: React.FC<ParliamentChamberProps> = ({
 
   const handleCreateMotion = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!selectedChamber) {
       onError?.('Please select a chamber first');
       return;
     }
 
     try {
-      const response = await fetch('/api/parliament/motions', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`,
-        },
-        body: JSON.stringify({
-          gameId,
-          chamberId: selectedChamber.id,
-          proposerId: userId,
-          ...motionForm,
-        }),
+      const response = await api.createMotion({
+        gameId,
+        chamberId: selectedChamber.id,
+        proposerId: userId,
+        ...motionForm,
       });
 
-      if (!response.ok) {
-        throw new Error('Failed to create motion');
+      if (!response.success) {
+        throw new Error(response.error || 'Failed to create motion');
       }
 
       // Reset form and refresh motions
@@ -197,22 +182,10 @@ export const ParliamentChamber: React.FC<ParliamentChamberProps> = ({
 
   const handleCastVote = async (motionId: string, vote: 'aye' | 'no' | 'abstain') => {
     try {
-      const response = await fetch('/api/parliament/votes', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`,
-        },
-        body: JSON.stringify({
-          motionId,
-          vote,
-          userId,
-        }),
-      });
+      const response = await api.castVote(motionId, vote);
 
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.error || 'Failed to cast vote');
+      if (!response.success) {
+        throw new Error(response.error || 'Failed to cast vote');
       }
 
       // Refresh vote results
@@ -267,7 +240,9 @@ export const ParliamentChamber: React.FC<ParliamentChamberProps> = ({
               <dt>Type:</dt>
               <dd>{selectedChamber.type === 'commons' ? 'House of Commons' : 'House of Lords'}</dd>
               <dt>Seats:</dt>
-              <dd>{selectedChamber.seats.length} / {selectedChamber.maxSeats}</dd>
+              <dd>
+                {selectedChamber.seats.length} / {selectedChamber.maxSeats}
+              </dd>
               <dt>Quorum:</dt>
               <dd>{selectedChamber.quorumPercentage}%</dd>
             </dl>
@@ -293,7 +268,9 @@ export const ParliamentChamber: React.FC<ParliamentChamberProps> = ({
                   <select
                     id="motion-type"
                     value={motionForm.type}
-                    onChange={e => setMotionForm({ ...motionForm, type: e.target.value as Motion['type'] })}
+                    onChange={e =>
+                      setMotionForm({ ...motionForm, type: e.target.value as Motion['type'] })
+                    }
                     required
                   >
                     <option value="debate">Debate</option>

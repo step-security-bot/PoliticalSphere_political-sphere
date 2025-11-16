@@ -42,7 +42,12 @@ interface Candidate {
 
 interface ElectionsManagerProps {
   gameId: string;
-  onCreateElection?: (data: { name: string; electionType: string; startDate: string; endDate: string }) => void;
+  onCreateElection?: (data: {
+    name: string;
+    electionType: string;
+    startDate: string;
+    endDate: string;
+  }) => void;
   onCastVote?: (data: { electionId: string; constituencyId: string; candidateId: string }) => void;
 }
 
@@ -58,7 +63,9 @@ const ElectionsManager: React.FC<ElectionsManagerProps> = ({
   const [selectedConstituency, setSelectedConstituency] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [activeView, setActiveView] = useState<'elections' | 'constituencies' | 'results'>('elections');
+  const [activeView, setActiveView] = useState<'elections' | 'constituencies' | 'results'>(
+    'elections'
+  );
 
   const fetchElections = useCallback(async () => {
     try {
@@ -236,12 +243,12 @@ const ElectionsManager: React.FC<ElectionsManagerProps> = ({
             <p>No elections scheduled yet.</p>
           ) : (
             <ul className="elections-list" aria-label="List of elections">
-              {elections.map((election) => (
+              {elections.map(election => (
                 <li
                   key={election.id}
                   className={`election-card ${selectedElection?.id === election.id ? 'selected' : ''}`}
                   onClick={() => setSelectedElection(election)}
-                  onKeyPress={(e) => {
+                  onKeyPress={e => {
                     if (e.key === 'Enter' || e.key === ' ') {
                       e.preventDefault();
                       setSelectedElection(election);
@@ -253,7 +260,9 @@ const ElectionsManager: React.FC<ElectionsManagerProps> = ({
                 >
                   <div className="election-header">
                     <h3>{election.name}</h3>
-                    <span className={`election-status status-${getElectionStatus(election).toLowerCase()}`}>
+                    <span
+                      className={`election-status status-${getElectionStatus(election).toLowerCase()}`}
+                    >
                       {getElectionStatus(election)}
                     </span>
                   </div>
@@ -298,12 +307,7 @@ const ElectionsManager: React.FC<ElectionsManagerProps> = ({
                 <label htmlFor="election-type">
                   Election Type <span aria-label="required">*</span>
                 </label>
-                <select
-                  id="election-type"
-                  name="electionType"
-                  required
-                  aria-required="true"
-                >
+                <select id="election-type" name="electionType" required aria-required="true">
                   <option value="">Select type...</option>
                   <option value="general">General Election</option>
                   <option value="by_election">By-Election</option>
@@ -361,12 +365,12 @@ const ElectionsManager: React.FC<ElectionsManagerProps> = ({
             <p>No constituencies configured for this election.</p>
           ) : (
             <ul className="constituencies-list" aria-label="List of constituencies">
-              {constituencies.map((constituency) => (
+              {constituencies.map(constituency => (
                 <li
                   key={constituency.id}
                   className={`constituency-card ${selectedConstituency === constituency.id ? 'selected' : ''}`}
                   onClick={() => setSelectedConstituency(constituency.id)}
-                  onKeyPress={(e) => {
+                  onKeyPress={e => {
                     if (e.key === 'Enter' || e.key === ' ') {
                       e.preventDefault();
                       setSelectedConstituency(constituency.id);
@@ -395,7 +399,7 @@ const ElectionsManager: React.FC<ElectionsManagerProps> = ({
             <div className="candidates-section">
               <h3>Candidates</h3>
               <ul className="candidates-list" aria-label="List of candidates">
-                {candidates.map((candidate) => (
+                {candidates.map(candidate => (
                   <li key={candidate.id} className="candidate-card">
                     <div className="candidate-info">
                       <h4>
@@ -406,7 +410,9 @@ const ElectionsManager: React.FC<ElectionsManagerProps> = ({
                       </span>
                     </div>
                     <div className="candidate-results">
-                      <span className="votes">Votes: {candidate.votesReceived.toLocaleString()}</span>
+                      <span className="votes">
+                        Votes: {candidate.votesReceived.toLocaleString()}
+                      </span>
                       <span className="percentage">{candidate.votePercentage.toFixed(1)}%</span>
                     </div>
                     {onCastVote && getElectionStatus(selectedElection) === 'Active' && (
@@ -453,7 +459,7 @@ const ElectionsManager: React.FC<ElectionsManagerProps> = ({
           {constituencies.length > 0 && (
             <div className="results-by-constituency">
               <h3>Results by Constituency</h3>
-              {constituencies.map((constituency) => (
+              {constituencies.map(constituency => (
                 <div key={constituency.id} className="constituency-result">
                   <h4>{constituency.name}</h4>
                   <div className="constituency-result-stats">

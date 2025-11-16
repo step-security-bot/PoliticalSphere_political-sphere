@@ -72,10 +72,10 @@ describe('functionToTest', () => {
     it('should return expected result', () => {
       // Arrange
       const input = { value: 'test' };
-      
+
       // Act
       const result = functionToTest(input);
-      
+
       // Assert
       expect(result).toBe('expected');
     });
@@ -85,7 +85,7 @@ describe('functionToTest', () => {
     it('should throw an error', () => {
       // Arrange
       const invalidInput = null;
-      
+
       // Act & Assert
       expect(() => functionToTest(invalidInput)).toThrow('Invalid input');
     });
@@ -95,10 +95,10 @@ describe('functionToTest', () => {
     it('should handle empty input', () => {
       // Arrange
       const emptyInput = { value: '' };
-      
+
       // Act
       const result = functionToTest(emptyInput);
-      
+
       // Assert
       expect(result).toBe('');
     });
@@ -106,10 +106,10 @@ describe('functionToTest', () => {
     it('should handle maximum length input', () => {
       // Arrange
       const longInput = { value: 'a'.repeat(1000) };
-      
+
       // Act
       const result = functionToTest(longInput);
-      
+
       // Assert
       expect(result).toBeDefined();
     });
@@ -145,24 +145,24 @@ describe('MyComponent', () => {
     it('should call onClick when clicked', async () => {
       const user = userEvent.setup();
       const onClick = vi.fn();
-      
+
       render(<MyComponent onClick={onClick} />);
-      
+
       await user.click(screen.getByRole('button'));
-      
+
       expect(onClick).toHaveBeenCalledTimes(1);
     });
 
     it('should handle keyboard interaction', async () => {
       const user = userEvent.setup();
       const onClick = vi.fn();
-      
+
       render(<MyComponent onClick={onClick} />);
-      
+
       const button = screen.getByRole('button');
       button.focus();
       await user.keyboard('{Enter}');
-      
+
       expect(onClick).toHaveBeenCalled();
     });
   });
@@ -185,9 +185,9 @@ describe('MyComponent', () => {
   describe('error handling', () => {
     it('should handle errors gracefully', () => {
       const consoleError = vi.spyOn(console, 'error').mockImplementation(() => {});
-      
+
       render(<MyComponent onError={() => { throw new Error('Test error'); }} />);
-      
+
       expect(consoleError).toHaveBeenCalled();
       consoleError.mockRestore();
     });
@@ -219,10 +219,7 @@ describe('POST /api/users', () => {
         name: 'Test User',
       };
 
-      const response = await request(app)
-        .post('/api/users')
-        .send(userData)
-        .expect(201);
+      const response = await request(app).post('/api/users').send(userData).expect(201);
 
       expect(response.body).toMatchObject({
         email: userData.email,
@@ -239,10 +236,7 @@ describe('POST /api/users', () => {
         name: 'Test User',
       };
 
-      await request(app)
-        .post('/api/users')
-        .send(invalidData)
-        .expect(400);
+      await request(app).post('/api/users').send(invalidData).expect(400);
     });
 
     it('should reject missing required fields', async () => {
@@ -250,10 +244,7 @@ describe('POST /api/users', () => {
         email: 'test@example.com',
       };
 
-      await request(app)
-        .post('/api/users')
-        .send(incompleteData)
-        .expect(400);
+      await request(app).post('/api/users').send(incompleteData).expect(400);
     });
   });
 
@@ -264,16 +255,11 @@ describe('POST /api/users', () => {
         name: 'Test',
       };
 
-      await request(app)
-        .post('/api/users')
-        .send(maliciousData)
-        .expect(400);
+      await request(app).post('/api/users').send(maliciousData).expect(400);
     });
 
     it('should require authentication', async () => {
-      await request(app)
-        .post('/api/users/protected')
-        .expect(401);
+      await request(app).post('/api/users/protected').expect(401);
     });
   });
 
@@ -290,10 +276,7 @@ describe('POST /api/users', () => {
       }
 
       // Next request should be rate limited
-      await request(app)
-        .post('/api/users')
-        .send(userData)
-        .expect(429);
+      await request(app).post('/api/users').send(userData).expect(429);
     });
   });
 });
@@ -302,6 +285,7 @@ describe('POST /api/users', () => {
 ## Test Coverage Targets
 
 Generate tests to achieve:
+
 - **80%+ overall coverage** for critical code
 - **100% coverage** for:
   - Authentication/authorization logic
@@ -355,6 +339,7 @@ Generate tests to achieve:
 ## Quality Checklist
 
 When generating tests:
+
 - [ ] Clear, descriptive test names
 - [ ] AAA pattern used
 - [ ] Success scenarios covered

@@ -20,18 +20,20 @@ These `.instructions.md` files use YAML frontmatter to specify which files they 
 ```yaml
 ---
 applies_to:
-  - "**/*.test.{ts,tsx,js,jsx}"
-  - "**/*.spec.{ts,tsx,js,jsx}"
-  - "**/tests/**"
+  - '**/*.test.{ts,tsx,js,jsx}'
+  - '**/*.spec.{ts,tsx,js,jsx}'
+  - '**/tests/**'
 ---
 ```
 
 ## Instruction Files
 
 ### accessibility.instructions.md
+
 **Applies to**: React/JSX files, UI components, pages
 **Purpose**: Ensures WCAG 2.2 AA compliance in all UI code
 **Key Topics**:
+
 - Semantic HTML usage
 - Keyboard navigation
 - ARIA attributes (when needed)
@@ -41,9 +43,11 @@ applies_to:
 - Accessibility testing with axe-core
 
 ### security.instructions.md
+
 **Applies to**: Authentication, security, validation, crypto, API files
 **Purpose**: Enforces security best practices and prevents vulnerabilities
 **Key Topics**:
+
 - Zero-trust principles
 - Authentication & authorization
 - Input validation & sanitization
@@ -55,9 +59,11 @@ applies_to:
 - OWASP Top 10 prevention
 
 ### testing.instructions.md
+
 **Applies to**: Test files (`*.test.*`, `*.spec.*`, test directories)
 **Purpose**: Ensures comprehensive, high-quality test coverage
 **Key Topics**:
+
 - Arrange-Act-Assert (AAA) pattern
 - Vitest configuration and usage
 - Unit, integration, and E2E testing
@@ -80,7 +86,7 @@ applies_to:
 These files work automatically when using GitHub Copilot:
 
 1. Open a test file → Testing instructions are active
-2. Open a React component → Accessibility instructions are active  
+2. Open a React component → Accessibility instructions are active
 3. Open an authentication file → Security instructions are active
 
 No manual activation needed - Copilot automatically includes relevant guidance.
@@ -88,6 +94,7 @@ No manual activation needed - Copilot automatically includes relevant guidance.
 ## Maintenance
 
 When updating these files:
+
 - Keep instructions clear and actionable
 - Include concrete code examples
 - Reference official standards (WCAG, OWASP, etc.)

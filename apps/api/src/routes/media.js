@@ -71,7 +71,7 @@ const approvalRatings = new Map();
 router.post('/press-releases', async (req, res) => {
   try {
     const validated = PublishPressReleaseSchema.parse(req.body);
-    
+
     const releaseId = `release-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
     const pressRelease = {
       id: releaseId,
@@ -85,9 +85,9 @@ router.post('/press-releases', async (req, res) => {
       },
       status: validated.visibility === 'embargoed' ? 'embargoed' : 'published',
     };
-    
+
     pressReleases.set(releaseId, pressRelease);
-    
+
     res.status(201).json({
       success: true,
       data: pressRelease,
@@ -100,7 +100,7 @@ router.post('/press-releases', async (req, res) => {
         details: error.errors,
       });
     }
-    
+
     res.status(500).json({
       success: false,
       error: 'Failed to publish press release',
@@ -115,17 +115,17 @@ router.post('/press-releases', async (req, res) => {
  */
 router.get('/press-releases/:id', (req, res) => {
   const pressRelease = pressReleases.get(req.params.id);
-  
+
   if (!pressRelease) {
     return res.status(404).json({
       success: false,
       error: 'Press release not found',
     });
   }
-  
+
   // Increment views
   pressRelease.views += 1;
-  
+
   res.json({
     success: true,
     data: pressRelease,
@@ -138,28 +138,29 @@ router.get('/press-releases/:id', (req, res) => {
  */
 router.get('/press-releases', (req, res) => {
   const { gameId, authorId, category } = req.query;
-  
+
   if (!gameId) {
     return res.status(400).json({
       success: false,
       error: 'gameId query parameter required',
     });
   }
-  
-  let filtered = Array.from(pressReleases.values())
-    .filter(pr => pr.gameId === gameId && pr.status === 'published');
-  
+
+  let filtered = Array.from(pressReleases.values()).filter(
+    pr => pr.gameId === gameId && pr.status === 'published'
+  );
+
   if (authorId) {
     filtered = filtered.filter(pr => pr.authorId === authorId);
   }
-  
+
   if (category) {
     filtered = filtered.filter(pr => pr.category === category);
   }
-  
+
   // Sort by most recent
   filtered.sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime());
-  
+
   res.json({
     success: true,
     data: filtered,
@@ -173,7 +174,7 @@ router.get('/press-releases', (req, res) => {
 router.post('/polls', async (req, res) => {
   try {
     const validated = CreatePollSchema.parse(req.body);
-    
+
     const pollId = `poll-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
     const poll = {
       id: pollId,
@@ -188,9 +189,9 @@ router.post('/polls', async (req, res) => {
         percentage: 0,
       })),
     };
-    
+
     polls.set(pollId, poll);
-    
+
     res.status(201).json({
       success: true,
       data: poll,
@@ -203,7 +204,7 @@ router.post('/polls', async (req, res) => {
         details: error.errors,
       });
     }
-    
+
     res.status(500).json({
       success: false,
       error: 'Failed to create poll',
@@ -218,19 +219,19 @@ router.post('/polls', async (req, res) => {
  */
 router.get('/polls/:id', (req, res) => {
   const poll = polls.get(req.params.id);
-  
+
   if (!poll) {
     return res.status(404).json({
       success: false,
       error: 'Poll not found',
     });
   }
-  
+
   // Check if poll has closed
   if (new Date() > new Date(poll.closesAt) && poll.status === 'active') {
     poll.status = 'closed';
   }
-  
+
   res.json({
     success: true,
     data: poll,
@@ -245,14 +246,14 @@ router.post('/polls/:id/vote', async (req, res) => {
   try {
     const validated = CastPollVoteSchema.parse({ ...req.body, pollId: req.params.id });
     const userId = req.user?.id || req.body.userId;
-    
+
     if (!userId) {
       return res.status(401).json({
         success: false,
         error: 'Authentication required',
       });
     }
-    
+
     const poll = polls.get(req.params.id);
     if (!poll) {
       return res.status(404).json({
@@ -260,7 +261,7 @@ router.post('/polls/:id/vote', async (req, res) => {
         error: 'Poll not found',
       });
     }
-    
+
     // Check if poll is still active
     if (poll.status !== 'active' || new Date() > new Date(poll.closesAt)) {
       return res.status(400).json({
@@ -268,7 +269,7 @@ router.post('/polls/:id/vote', async (req, res) => {
         error: 'Poll is closed',
       });
     }
-    
+
     // Check if user already voted
     const voteKey = `${req.params.id}-${userId}`;
     if (pollVotes.has(voteKey)) {
@@ -277,7 +278,7 @@ router.post('/polls/:id/vote', async (req, res) => {
         error: 'You have already voted in this poll',
       });
     }
-    
+
     // Validate option index
     if (validated.optionIndex >= poll.options.length) {
       return res.status(400).json({
@@ -285,7 +286,7 @@ router.post('/polls/:id/vote', async (req, res) => {
         error: 'Invalid option index',
       });
     }
-    
+
     // Record vote
     pollVotes.set(voteKey, {
       pollId: req.params.id,
@@ -293,18 +294,17 @@ router.post('/polls/:id/vote', async (req, res) => {
       optionIndex: validated.optionIndex,
       votedAt: new Date().toISOString(),
     });
-    
+
     // Update poll results
     poll.totalVotes += 1;
     poll.results[validated.optionIndex].votes += 1;
-    
+
     // Recalculate percentages
     poll.results.forEach(result => {
-      result.percentage = poll.totalVotes > 0 
-        ? Math.round((result.votes / poll.totalVotes) * 100) 
-        : 0;
+      result.percentage =
+        poll.totalVotes > 0 ? Math.round((result.votes / poll.totalVotes) * 100) : 0;
     });
-    
+
     res.status(201).json({
       success: true,
       data: {
@@ -321,7 +321,7 @@ router.post('/polls/:id/vote', async (req, res) => {
         details: error.errors,
       });
     }
-    
+
     res.status(500).json({
       success: false,
       error: 'Failed to cast vote',
@@ -336,24 +336,23 @@ router.post('/polls/:id/vote', async (req, res) => {
  */
 router.get('/polls', (req, res) => {
   const { gameId, status } = req.query;
-  
+
   if (!gameId) {
     return res.status(400).json({
       success: false,
       error: 'gameId query parameter required',
     });
   }
-  
-  let filtered = Array.from(polls.values())
-    .filter(p => p.gameId === gameId);
-  
+
+  let filtered = Array.from(polls.values()).filter(p => p.gameId === gameId);
+
   if (status) {
     filtered = filtered.filter(p => p.status === status);
   }
-  
+
   // Sort by most recent
   filtered.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
-  
+
   res.json({
     success: true,
     data: filtered,
@@ -367,7 +366,7 @@ router.get('/polls', (req, res) => {
 router.post('/coverage', async (req, res) => {
   try {
     const validated = TrackCoverageSchema.parse(req.body);
-    
+
     const coverageId = `coverage-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
     const mediaCoverage = {
       id: coverageId,
@@ -375,14 +374,14 @@ router.post('/coverage', async (req, res) => {
       recordedAt: new Date().toISOString(),
       impact: calculateImpact(validated.sentiment, validated.prominence),
     };
-    
+
     coverage.set(coverageId, mediaCoverage);
-    
+
     // Update approval ratings if targeting a person
     if (validated.targetType === 'person') {
       updateApprovalRating(validated.gameId, validated.targetId, validated.sentiment);
     }
-    
+
     res.status(201).json({
       success: true,
       data: mediaCoverage,
@@ -395,7 +394,7 @@ router.post('/coverage', async (req, res) => {
         details: error.errors,
       });
     }
-    
+
     res.status(500).json({
       success: false,
       error: 'Failed to track coverage',
@@ -410,28 +409,27 @@ router.post('/coverage', async (req, res) => {
  */
 router.get('/coverage', (req, res) => {
   const { gameId, targetId, targetType } = req.query;
-  
+
   if (!gameId) {
     return res.status(400).json({
       success: false,
       error: 'gameId query parameter required',
     });
   }
-  
-  let filtered = Array.from(coverage.values())
-    .filter(c => c.gameId === gameId);
-  
+
+  let filtered = Array.from(coverage.values()).filter(c => c.gameId === gameId);
+
   if (targetId) {
     filtered = filtered.filter(c => c.targetId === targetId);
   }
-  
+
   if (targetType) {
     filtered = filtered.filter(c => c.targetType === targetType);
   }
-  
+
   // Sort by most recent
   filtered.sort((a, b) => new Date(b.recordedAt).getTime() - new Date(a.recordedAt).getTime());
-  
+
   res.json({
     success: true,
     data: filtered,
@@ -445,7 +443,7 @@ router.get('/coverage', (req, res) => {
 router.post('/narratives', async (req, res) => {
   try {
     const validated = TrackNarrativeSchema.parse(req.body);
-    
+
     const narrativeId = `narrative-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
     const narrative = {
       id: narrativeId,
@@ -455,9 +453,9 @@ router.post('/narratives', async (req, res) => {
       mentions: 1,
       peakVirality: validated.virality,
     };
-    
+
     narratives.set(narrativeId, narrative);
-    
+
     res.status(201).json({
       success: true,
       data: narrative,
@@ -470,7 +468,7 @@ router.post('/narratives', async (req, res) => {
         details: error.errors,
       });
     }
-    
+
     res.status(500).json({
       success: false,
       error: 'Failed to track narrative',
@@ -485,14 +483,14 @@ router.post('/narratives', async (req, res) => {
  */
 router.get('/narratives/:id', (req, res) => {
   const narrative = narratives.get(req.params.id);
-  
+
   if (!narrative) {
     return res.status(404).json({
       success: false,
       error: 'Narrative not found',
     });
   }
-  
+
   res.json({
     success: true,
     data: narrative,
@@ -505,24 +503,23 @@ router.get('/narratives/:id', (req, res) => {
  */
 router.get('/narratives', (req, res) => {
   const { gameId, status } = req.query;
-  
+
   if (!gameId) {
     return res.status(400).json({
       success: false,
       error: 'gameId query parameter required',
     });
   }
-  
-  let filtered = Array.from(narratives.values())
-    .filter(n => n.gameId === gameId);
-  
+
+  let filtered = Array.from(narratives.values()).filter(n => n.gameId === gameId);
+
   if (status) {
     filtered = filtered.filter(n => n.status === status);
   }
-  
+
   // Sort by virality
   filtered.sort((a, b) => b.virality - a.virality);
-  
+
   res.json({
     success: true,
     data: filtered,
@@ -535,21 +532,20 @@ router.get('/narratives', (req, res) => {
  */
 router.get('/approval-ratings', (req, res) => {
   const { gameId, targetId } = req.query;
-  
+
   if (!gameId) {
     return res.status(400).json({
       success: false,
       error: 'gameId query parameter required',
     });
   }
-  
-  let filtered = Array.from(approvalRatings.values())
-    .filter(ar => ar.gameId === gameId);
-  
+
+  let filtered = Array.from(approvalRatings.values()).filter(ar => ar.gameId === gameId);
+
   if (targetId) {
     filtered = filtered.filter(ar => ar.targetId === targetId);
   }
-  
+
   res.json({
     success: true,
     data: filtered,
@@ -565,21 +561,21 @@ function calculateImpact(sentiment, prominence) {
     positive: 1,
     very_positive: 2,
   };
-  
+
   const prominenceMultipliers = {
     minor: 1,
     moderate: 2,
     major: 3,
     headline: 4,
   };
-  
+
   return sentimentScores[sentiment] * prominenceMultipliers[prominence];
 }
 
 function updateApprovalRating(gameId, targetId, sentiment) {
   const ratingKey = `${gameId}-${targetId}`;
   let rating = approvalRatings.get(ratingKey);
-  
+
   if (!rating) {
     rating = {
       gameId,
@@ -591,7 +587,7 @@ function updateApprovalRating(gameId, targetId, sentiment) {
       lastUpdated: new Date().toISOString(),
     };
   }
-  
+
   // Adjust ratings based on sentiment
   const adjustments = {
     very_negative: { approval: -3, disapproval: 3 },
@@ -600,12 +596,12 @@ function updateApprovalRating(gameId, targetId, sentiment) {
     positive: { approval: 1.5, disapproval: -1.5 },
     very_positive: { approval: 3, disapproval: -3 },
   };
-  
+
   const adjustment = adjustments[sentiment];
   rating.approval = Math.max(0, Math.min(100, rating.approval + adjustment.approval));
   rating.disapproval = Math.max(0, Math.min(100, rating.disapproval + adjustment.disapproval));
   rating.lastUpdated = new Date().toISOString();
-  
+
   // Determine trend
   if (adjustment.approval > 0) {
     rating.trend = 'rising';
@@ -614,7 +610,7 @@ function updateApprovalRating(gameId, targetId, sentiment) {
   } else {
     rating.trend = 'stable';
   }
-  
+
   approvalRatings.set(ratingKey, rating);
 }
 

@@ -285,12 +285,7 @@ const MediaSystem: React.FC<MediaSystemProps> = ({
                 <label htmlFor="release-category">
                   Category <span aria-label="required">*</span>
                 </label>
-                <select
-                  id="release-category"
-                  name="releaseCategory"
-                  required
-                  aria-required="true"
-                >
+                <select id="release-category" name="releaseCategory" required aria-required="true">
                   <option value="">Select category...</option>
                   <option value="policy">Policy Announcement</option>
                   <option value="statement">Official Statement</option>
@@ -339,9 +334,7 @@ const MediaSystem: React.FC<MediaSystemProps> = ({
                 <li key={poll.id} className="poll-card">
                   <div className="poll-header">
                     <h3>{poll.question}</h3>
-                    <span className={`poll-status status-${poll.status}`}>
-                      {poll.status}
-                    </span>
+                    <span className={`poll-status status-${poll.status}`}>{poll.status}</span>
                   </div>
                   <div className="poll-options">
                     {poll.options.map((option, index) => (
@@ -467,8 +460,11 @@ const MediaSystem: React.FC<MediaSystemProps> = ({
                   <div className="approval-entity">{rating.entity}</div>
                   <div className="approval-rating">
                     <span className="rating-value">{rating.rating}%</span>
-                    <span className={`rating-change ${rating.change >= 0 ? 'positive' : 'negative'}`}>
-                      {rating.change >= 0 ? '+' : ''}{rating.change}%
+                    <span
+                      className={`rating-change ${rating.change >= 0 ? 'positive' : 'negative'}`}
+                    >
+                      {rating.change >= 0 ? '+' : ''}
+                      {rating.change}%
                     </span>
                   </div>
                   <div className="approval-bar">

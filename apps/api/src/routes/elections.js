@@ -66,7 +66,7 @@ const results = new Map();
 router.post('/', async (req, res) => {
   try {
     const validated = CreateElectionSchema.parse(req.body);
-    
+
     // Validate dates
     if (new Date(validated.endDate) <= new Date(validated.startDate)) {
       return res.status(400).json({
@@ -74,7 +74,7 @@ router.post('/', async (req, res) => {
         error: 'End date must be after start date',
       });
     }
-    
+
     const electionId = `election-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
     const election = {
       id: electionId,
@@ -84,9 +84,9 @@ router.post('/', async (req, res) => {
       totalVotes: 0,
       turnout: 0,
     };
-    
+
     elections.set(electionId, election);
-    
+
     res.status(201).json({
       success: true,
       data: election,
@@ -99,7 +99,7 @@ router.post('/', async (req, res) => {
         details: error.errors,
       });
     }
-    
+
     res.status(500).json({
       success: false,
       error: 'Failed to create election',
@@ -114,19 +114,19 @@ router.post('/', async (req, res) => {
  */
 router.get('/:id', (req, res) => {
   const election = elections.get(req.params.id);
-  
+
   if (!election) {
     return res.status(404).json({
       success: false,
       error: 'Election not found',
     });
   }
-  
+
   // Update status based on dates
   const now = new Date();
   const startDate = new Date(election.startDate);
   const endDate = new Date(election.endDate);
-  
+
   if (now < startDate) {
     election.status = 'scheduled';
   } else if (now >= startDate && now <= endDate) {
@@ -134,7 +134,7 @@ router.get('/:id', (req, res) => {
   } else if (now > endDate && election.status !== 'certified') {
     election.status = 'closed';
   }
-  
+
   res.json({
     success: true,
     data: election,
@@ -147,24 +147,23 @@ router.get('/:id', (req, res) => {
  */
 router.get('/', (req, res) => {
   const { gameId, status } = req.query;
-  
+
   if (!gameId) {
     return res.status(400).json({
       success: false,
       error: 'gameId query parameter required',
     });
   }
-  
-  let filtered = Array.from(elections.values())
-    .filter(e => e.gameId === gameId);
-  
+
+  let filtered = Array.from(elections.values()).filter(e => e.gameId === gameId);
+
   if (status) {
     filtered = filtered.filter(e => e.status === status);
   }
-  
+
   // Sort by most recent
   filtered.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
-  
+
   res.json({
     success: true,
     data: filtered,
@@ -178,7 +177,7 @@ router.get('/', (req, res) => {
 router.post('/:id/campaigns', async (req, res) => {
   try {
     const validated = RegisterCampaignSchema.parse({ ...req.body, electionId: req.params.id });
-    
+
     // Verify election exists
     const election = elections.get(req.params.id);
     if (!election) {
@@ -187,7 +186,7 @@ router.post('/:id/campaigns', async (req, res) => {
         error: 'Election not found',
       });
     }
-    
+
     const campaignId = `campaign-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
     const campaign = {
       id: campaignId,
@@ -197,9 +196,9 @@ router.post('/:id/campaigns', async (req, res) => {
       events: 0,
       endorsements: [],
     };
-    
+
     campaigns.set(campaignId, campaign);
-    
+
     res.status(201).json({
       success: true,
       data: campaign,
@@ -212,7 +211,7 @@ router.post('/:id/campaigns', async (req, res) => {
         details: error.errors,
       });
     }
-    
+
     res.status(500).json({
       success: false,
       error: 'Failed to register campaign',
@@ -226,9 +225,10 @@ router.post('/:id/campaigns', async (req, res) => {
  * GET /api/elections/:id/campaigns
  */
 router.get('/:id/campaigns', (req, res) => {
-  const electionCampaigns = Array.from(campaigns.values())
-    .filter(c => c.electionId === req.params.id);
-  
+  const electionCampaigns = Array.from(campaigns.values()).filter(
+    c => c.electionId === req.params.id
+  );
+
   res.json({
     success: true,
     data: electionCampaigns,
@@ -242,7 +242,7 @@ router.get('/:id/campaigns', (req, res) => {
 router.post('/:id/constituencies', async (req, res) => {
   try {
     const validated = CreateConstituencySchema.parse({ ...req.body, electionId: req.params.id });
-    
+
     // Verify election exists
     const election = elections.get(req.params.id);
     if (!election) {
@@ -251,7 +251,7 @@ router.post('/:id/constituencies', async (req, res) => {
         error: 'Election not found',
       });
     }
-    
+
     const constituencyId = `constituency-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
     const constituency = {
       id: constituencyId,
@@ -260,9 +260,9 @@ router.post('/:id/constituencies', async (req, res) => {
       votesCast: 0,
       turnoutPercentage: 0,
     };
-    
+
     constituencies.set(constituencyId, constituency);
-    
+
     res.status(201).json({
       success: true,
       data: constituency,
@@ -275,7 +275,7 @@ router.post('/:id/constituencies', async (req, res) => {
         details: error.errors,
       });
     }
-    
+
     res.status(500).json({
       success: false,
       error: 'Failed to create constituency',
@@ -289,9 +289,10 @@ router.post('/:id/constituencies', async (req, res) => {
  * GET /api/elections/:id/constituencies
  */
 router.get('/:id/constituencies', (req, res) => {
-  const electionConstituencies = Array.from(constituencies.values())
-    .filter(c => c.electionId === req.params.id);
-  
+  const electionConstituencies = Array.from(constituencies.values()).filter(
+    c => c.electionId === req.params.id
+  );
+
   res.json({
     success: true,
     data: electionConstituencies,
@@ -305,7 +306,7 @@ router.get('/:id/constituencies', (req, res) => {
 router.post('/:id/candidates', async (req, res) => {
   try {
     const validated = RegisterCandidateSchema.parse({ ...req.body, electionId: req.params.id });
-    
+
     // Verify election and constituency exist
     const election = elections.get(req.params.id);
     if (!election) {
@@ -314,7 +315,7 @@ router.post('/:id/candidates', async (req, res) => {
         error: 'Election not found',
       });
     }
-    
+
     const constituency = constituencies.get(validated.constituencyId);
     if (!constituency || constituency.electionId !== req.params.id) {
       return res.status(404).json({
@@ -322,7 +323,7 @@ router.post('/:id/candidates', async (req, res) => {
         error: 'Constituency not found or not part of this election',
       });
     }
-    
+
     const candidateId = `candidate-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
     const candidate = {
       id: candidateId,
@@ -332,9 +333,9 @@ router.post('/:id/candidates', async (req, res) => {
       votePercentage: 0,
       status: 'registered',
     };
-    
+
     candidates.set(candidateId, candidate);
-    
+
     res.status(201).json({
       success: true,
       data: candidate,
@@ -347,7 +348,7 @@ router.post('/:id/candidates', async (req, res) => {
         details: error.errors,
       });
     }
-    
+
     res.status(500).json({
       success: false,
       error: 'Failed to register candidate',
@@ -362,14 +363,13 @@ router.post('/:id/candidates', async (req, res) => {
  */
 router.get('/:id/candidates', (req, res) => {
   const { constituencyId } = req.query;
-  
-  let filtered = Array.from(candidates.values())
-    .filter(c => c.electionId === req.params.id);
-  
+
+  let filtered = Array.from(candidates.values()).filter(c => c.electionId === req.params.id);
+
   if (constituencyId) {
     filtered = filtered.filter(c => c.constituencyId === constituencyId);
   }
-  
+
   res.json({
     success: true,
     data: filtered,
@@ -384,14 +384,14 @@ router.post('/:id/vote', async (req, res) => {
   try {
     const validated = CastVoteSchema.parse({ ...req.body, electionId: req.params.id });
     const userId = req.user?.id || req.body.userId;
-    
+
     if (!userId) {
       return res.status(401).json({
         success: false,
         error: 'Authentication required',
       });
     }
-    
+
     // Verify election is active
     const election = elections.get(req.params.id);
     if (!election) {
@@ -400,7 +400,7 @@ router.post('/:id/vote', async (req, res) => {
         error: 'Election not found',
       });
     }
-    
+
     const now = new Date();
     if (now < new Date(election.startDate) || now > new Date(election.endDate)) {
       return res.status(400).json({
@@ -408,7 +408,7 @@ router.post('/:id/vote', async (req, res) => {
         error: 'Election is not currently active',
       });
     }
-    
+
     // Check if user already voted in this constituency
     const voteKey = `${req.params.id}-${validated.constituencyId}-${userId}`;
     if (votes.has(voteKey)) {
@@ -417,7 +417,7 @@ router.post('/:id/vote', async (req, res) => {
         error: 'You have already voted in this constituency',
       });
     }
-    
+
     // Verify candidate exists and is in the correct constituency
     const candidate = candidates.get(validated.candidateId);
     if (!candidate || candidate.constituencyId !== validated.constituencyId) {
@@ -426,7 +426,7 @@ router.post('/:id/vote', async (req, res) => {
         error: 'Invalid candidate for this constituency',
       });
     }
-    
+
     // Record vote
     votes.set(voteKey, {
       electionId: req.params.id,
@@ -435,18 +435,18 @@ router.post('/:id/vote', async (req, res) => {
       userId,
       votedAt: new Date().toISOString(),
     });
-    
+
     // Update counts
     election.totalVotes += 1;
     candidate.votesReceived += 1;
-    
+
     const constituency = constituencies.get(validated.constituencyId);
     if (constituency) {
       constituency.votesCast += 1;
-      constituency.turnoutPercentage = 
+      constituency.turnoutPercentage =
         (constituency.votesCast / constituency.registeredVoters) * 100;
     }
-    
+
     res.status(201).json({
       success: true,
       data: {
@@ -463,7 +463,7 @@ router.post('/:id/vote', async (req, res) => {
         details: error.errors,
       });
     }
-    
+
     res.status(500).json({
       success: false,
       error: 'Failed to cast vote',
@@ -479,31 +479,32 @@ router.post('/:id/vote', async (req, res) => {
 router.get('/:id/results', (req, res) => {
   const { constituencyId } = req.query;
   const election = elections.get(req.params.id);
-  
+
   if (!election) {
     return res.status(404).json({
       success: false,
       error: 'Election not found',
     });
   }
-  
+
   // Calculate results
-  let electionCandidates = Array.from(candidates.values())
-    .filter(c => c.electionId === req.params.id);
-  
+  let electionCandidates = Array.from(candidates.values()).filter(
+    c => c.electionId === req.params.id
+  );
+
   if (constituencyId) {
     electionCandidates = electionCandidates.filter(c => c.constituencyId === constituencyId);
   }
-  
+
   // Calculate percentages
   const totalVotes = electionCandidates.reduce((sum, c) => sum + c.votesReceived, 0);
   electionCandidates.forEach(c => {
     c.votePercentage = totalVotes > 0 ? (c.votesReceived / totalVotes) * 100 : 0;
   });
-  
+
   // Sort by votes received
   electionCandidates.sort((a, b) => b.votesReceived - a.votesReceived);
-  
+
   // Determine winners by constituency
   const constituencyResults = new Map();
   electionCandidates.forEach(candidate => {
@@ -511,7 +512,7 @@ router.get('/:id/results', (req, res) => {
       constituencyResults.set(candidate.constituencyId, candidate);
     }
   });
-  
+
   res.json({
     success: true,
     data: {
@@ -529,24 +530,24 @@ router.get('/:id/results', (req, res) => {
  */
 router.post('/:id/certify', (req, res) => {
   const election = elections.get(req.params.id);
-  
+
   if (!election) {
     return res.status(404).json({
       success: false,
       error: 'Election not found',
     });
   }
-  
+
   if (election.status !== 'closed') {
     return res.status(400).json({
       success: false,
       error: 'Election must be closed before certification',
     });
   }
-  
+
   election.status = 'certified';
   election.certifiedAt = new Date().toISOString();
-  
+
   res.json({
     success: true,
     data: election,

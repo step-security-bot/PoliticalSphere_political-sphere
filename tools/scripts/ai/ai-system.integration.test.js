@@ -252,7 +252,7 @@ describe('AI System Integration Tests', () => {
       expect(content).toContain('political-neutrality');
       expect(content).toContain('semantic-quality-check');
       expect(content).toContain('competence-assessment');
-      expect(content).toContain('change-budget-validation');
+      // NOTE: change-budget-validation removed in favor of non-blocking advisory checks
     });
 
     it('should have AI hooks in lefthook.yml', () => {

@@ -15,13 +15,11 @@ let testMotionId;
 describe('Parliament API', () => {
   beforeAll(async () => {
     // Login to get auth token
-    const loginRes = await request(API_URL)
-      .post('/api/auth/login')
-      .send({
-        email: 'test@example.com',
-        password: 'testpassword123',
-      });
-    
+    const loginRes = await request(API_URL).post('/api/auth/login').send({
+      email: 'test@example.com',
+      password: 'testpassword123',
+    });
+
     authToken = loginRes.body.token;
     testGameId = 'test-game-' + Date.now();
   });
@@ -43,7 +41,7 @@ describe('Parliament API', () => {
       expect(res.body.success).toBe(true);
       expect(res.body.data).toHaveProperty('id');
       expect(res.body.data.type).toBe('commons');
-      
+
       testChamberId = res.body.data.id;
     });
 
@@ -63,14 +61,12 @@ describe('Parliament API', () => {
     });
 
     it('should require authentication', async () => {
-      const res = await request(API_URL)
-        .post('/api/parliament/chambers')
-        .send({
-          gameId: testGameId,
-          type: 'commons',
-          name: 'Test Chamber',
-          maxSeats: 100,
-        });
+      const res = await request(API_URL).post('/api/parliament/chambers').send({
+        gameId: testGameId,
+        type: 'commons',
+        name: 'Test Chamber',
+        maxSeats: 100,
+      });
 
       expect(res.status).toBe(401);
     });
@@ -136,7 +132,7 @@ describe('Parliament API', () => {
       expect(res.body.success).toBe(true);
       expect(res.body.data).toHaveProperty('id');
       expect(res.body.data.status).toBe('proposed');
-      
+
       testMotionId = res.body.data.id;
     });
 

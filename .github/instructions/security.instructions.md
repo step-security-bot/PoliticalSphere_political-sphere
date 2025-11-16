@@ -1,10 +1,10 @@
 ---
 applies_to:
-  - "**/*auth*/**"
-  - "**/*security*/**"
-  - "**/*validation*/**"
-  - "**/*crypto*/**"
-  - "**/api/**"
+  - '**/*auth*/**'
+  - '**/*security*/**'
+  - '**/*validation*/**'
+  - '**/*crypto*/**'
+  - '**/api/**'
 ---
 
 # Security Instructions for GitHub Copilot
@@ -69,7 +69,11 @@ import { z } from 'zod';
 const EmailSchema = z.string().email().max(255);
 const UserInputSchema = z.object({
   email: EmailSchema,
-  name: z.string().min(1).max(100).regex(/^[a-zA-Z\s]+$/),
+  name: z
+    .string()
+    .min(1)
+    .max(100)
+    .regex(/^[a-zA-Z\s]+$/),
   age: z.number().int().min(13).max(120),
 });
 
@@ -106,15 +110,10 @@ element.innerHTML = userContent; // XSS vulnerability!
 
 ```typescript
 // ✅ Good: Parameterized query
-const users = await db.query(
-  'SELECT * FROM users WHERE email = $1',
-  [userEmail]
-);
+const users = await db.query('SELECT * FROM users WHERE email = $1', [userEmail]);
 
 // ❌ Bad: String concatenation
-const users = await db.query(
-  `SELECT * FROM users WHERE email = '${userEmail}'`
-); // SQL injection vulnerability!
+const users = await db.query(`SELECT * FROM users WHERE email = '${userEmail}'`); // SQL injection vulnerability!
 ```
 
 ### Secrets Management
@@ -171,6 +170,7 @@ function hashPassword(password: string): string {
 ```
 
 **Never roll your own crypto:**
+
 - Use bcrypt, scrypt, or Argon2 for password hashing
 - Use TLS 1.3+ for transport encryption
 - Use AES-256-GCM for data encryption
@@ -290,21 +290,23 @@ app.use(cors({ origin: '*' })); // Allows all origins!
 import helmet from 'helmet';
 
 // ✅ Good: Security headers
-app.use(helmet({
-  contentSecurityPolicy: {
-    directives: {
-      defaultSrc: ["'self'"],
-      scriptSrc: ["'self'", "'unsafe-inline'"],
-      styleSrc: ["'self'", "'unsafe-inline'"],
-      imgSrc: ["'self'", 'data:', 'https:'],
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        scriptSrc: ["'self'", "'unsafe-inline'"],
+        styleSrc: ["'self'", "'unsafe-inline'"],
+        imgSrc: ["'self'", 'data:', 'https:'],
+      },
     },
-  },
-  hsts: {
-    maxAge: 31536000,
-    includeSubDomains: true,
-    preload: true,
-  },
-}));
+    hsts: {
+      maxAge: 31536000,
+      includeSubDomains: true,
+      preload: true,
+    },
+  })
+);
 ```
 
 ### Security Testing Requirements
@@ -334,17 +336,12 @@ describe('Security tests', () => {
   });
 
   it('should require authentication', async () => {
-    await request(app)
-      .get('/api/protected')
-      .expect(401);
+    await request(app).get('/api/protected').expect(401);
   });
 
   it('should require proper authorization', async () => {
     const token = generateToken({ role: 'user' });
-    await request(app)
-      .get('/api/admin-only')
-      .set('Authorization', `Bearer ${token}`)
-      .expect(403);
+    await request(app).get('/api/admin-only').set('Authorization', `Bearer ${token}`).expect(403);
   });
 });
 ```

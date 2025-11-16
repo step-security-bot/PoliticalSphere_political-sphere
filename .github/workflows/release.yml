@@ -19,6 +19,10 @@ on:
   workflow_dispatch:
 
 permissions:
+  # Least-privilege:
+  # contents: write -> create tags/releases via semantic-release
+  # id-token: write -> OIDC token for provenance/attestation generation
+  # attestations: write -> actions/attest-build-provenance
   contents: write
   id-token: write
   attestations: write

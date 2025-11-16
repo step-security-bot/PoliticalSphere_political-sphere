@@ -51,7 +51,7 @@ class DatabaseService {
       id,
       createdAt: data.createdAt || new Date().toISOString(),
     };
-    
+
     storage[collection].set(id, record);
     return record;
   }
@@ -75,12 +75,12 @@ class DatabaseService {
    */
   async findMany(collection, where = {}, options = {}) {
     let records = Array.from(storage[collection].values());
-    
+
     // Apply filters
     for (const [key, value] of Object.entries(where)) {
       records = records.filter(r => r[key] === value);
     }
-    
+
     // Apply sorting
     if (options.orderBy) {
       const [field, direction] = Object.entries(options.orderBy)[0];
@@ -93,7 +93,7 @@ class DatabaseService {
         return aVal < bVal ? 1 : -1;
       });
     }
-    
+
     // Apply pagination
     if (options.skip) {
       records = records.slice(options.skip);
@@ -101,7 +101,7 @@ class DatabaseService {
     if (options.take) {
       records = records.slice(0, options.take);
     }
-    
+
     return records;
   }
 
@@ -126,13 +126,13 @@ class DatabaseService {
   async update(collection, id, data) {
     const record = storage[collection].get(id);
     if (!record) return null;
-    
+
     const updated = {
       ...record,
       ...data,
       updatedAt: new Date().toISOString(),
     };
-    
+
     storage[collection].set(id, updated);
     return updated;
   }
@@ -180,113 +180,113 @@ export const db = new DatabaseService();
 
 // Export collection-specific helpers
 export const ParliamentDB = {
-  createChamber: (data) => db.create('chambers', data),
-  getChamber: (id) => db.findById('chambers', id),
+  createChamber: data => db.create('chambers', data),
+  getChamber: id => db.findById('chambers', id),
   listChambers: (where, options) => db.findMany('chambers', where, options),
-  
-  createMotion: (data) => db.create('motions', data),
-  getMotion: (id) => db.findById('motions', id),
+
+  createMotion: data => db.create('motions', data),
+  getMotion: id => db.findById('motions', id),
   listMotions: (where, options) => db.findMany('motions', where, options),
   updateMotion: (id, data) => db.update('motions', id, data),
-  
-  createDebate: (data) => db.create('debates', data),
-  getDebate: (id) => db.findById('debates', id),
-  
-  createVote: (data) => db.create('votes', data),
-  listVotes: (where) => db.findMany('votes', where),
-  voteExists: (where) => db.exists('votes', where),
+
+  createDebate: data => db.create('debates', data),
+  getDebate: id => db.findById('debates', id),
+
+  createVote: data => db.create('votes', data),
+  listVotes: where => db.findMany('votes', where),
+  voteExists: where => db.exists('votes', where),
 };
 
 export const GovernmentDB = {
-  createGovernment: (data) => db.create('governments', data),
-  getGovernment: (id) => db.findById('governments', id),
+  createGovernment: data => db.create('governments', data),
+  getGovernment: id => db.findById('governments', id),
   listGovernments: (where, options) => db.findMany('governments', where, options),
   updateGovernment: (id, data) => db.update('governments', id, data),
-  
-  createMinister: (data) => db.create('ministers', data),
-  getMinister: (id) => db.findById('ministers', id),
-  listMinisters: (where) => db.findMany('ministers', where),
+
+  createMinister: data => db.create('ministers', data),
+  getMinister: id => db.findById('ministers', id),
+  listMinisters: where => db.findMany('ministers', where),
   updateMinister: (id, data) => db.update('ministers', id, data),
-  
-  createExecutiveAction: (data) => db.create('executiveActions', data),
-  getExecutiveAction: (id) => db.findById('executiveActions', id),
-  listExecutiveActions: (where) => db.findMany('executiveActions', where),
-  
-  createCabinetMeeting: (data) => db.create('cabinetMeetings', data),
-  getCabinetMeeting: (id) => db.findById('cabinetMeetings', id),
+
+  createExecutiveAction: data => db.create('executiveActions', data),
+  getExecutiveAction: id => db.findById('executiveActions', id),
+  listExecutiveActions: where => db.findMany('executiveActions', where),
+
+  createCabinetMeeting: data => db.create('cabinetMeetings', data),
+  getCabinetMeeting: id => db.findById('cabinetMeetings', id),
 };
 
 export const JudiciaryDB = {
-  createCase: (data) => db.create('cases', data),
-  getCase: (id) => db.findById('cases', id),
+  createCase: data => db.create('cases', data),
+  getCase: id => db.findById('cases', id),
   listCases: (where, options) => db.findMany('cases', where, options),
   updateCase: (id, data) => db.update('cases', id, data),
-  
-  createJudge: (data) => db.create('judges', data),
-  getJudge: (id) => db.findById('judges', id),
-  listJudges: (where) => db.findMany('judges', where),
+
+  createJudge: data => db.create('judges', data),
+  getJudge: id => db.findById('judges', id),
+  listJudges: where => db.findMany('judges', where),
   updateJudge: (id, data) => db.update('judges', id, data),
-  
-  createRuling: (data) => db.create('rulings', data),
-  getRuling: (id) => db.findById('rulings', id),
-  listRulings: (where) => db.findMany('rulings', where),
-  
-  createReview: (data) => db.create('reviews', data),
-  getReview: (id) => db.findById('reviews', id),
+
+  createRuling: data => db.create('rulings', data),
+  getRuling: id => db.findById('rulings', id),
+  listRulings: where => db.findMany('rulings', where),
+
+  createReview: data => db.create('reviews', data),
+  getReview: id => db.findById('reviews', id),
   listReviews: (where, options) => db.findMany('reviews', where, options),
-  
-  createPrecedent: (data) => db.create('precedents', data),
-  listPrecedents: (where) => db.findMany('precedents', where),
+
+  createPrecedent: data => db.create('precedents', data),
+  listPrecedents: where => db.findMany('precedents', where),
 };
 
 export const MediaDB = {
-  createPressRelease: (data) => db.create('pressReleases', data),
-  getPressRelease: (id) => db.findById('pressReleases', id),
+  createPressRelease: data => db.create('pressReleases', data),
+  getPressRelease: id => db.findById('pressReleases', id),
   listPressReleases: (where, options) => db.findMany('pressReleases', where, options),
   updatePressRelease: (id, data) => db.update('pressReleases', id, data),
-  
-  createPoll: (data) => db.create('polls', data),
-  getPoll: (id) => db.findById('polls', id),
+
+  createPoll: data => db.create('polls', data),
+  getPoll: id => db.findById('polls', id),
   listPolls: (where, options) => db.findMany('polls', where, options),
   updatePoll: (id, data) => db.update('polls', id, data),
-  
-  createPollVote: (data) => db.create('pollVotes', data),
-  pollVoteExists: (where) => db.exists('pollVotes', where),
-  
-  createCoverage: (data) => db.create('coverage', data),
+
+  createPollVote: data => db.create('pollVotes', data),
+  pollVoteExists: where => db.exists('pollVotes', where),
+
+  createCoverage: data => db.create('coverage', data),
   listCoverage: (where, options) => db.findMany('coverage', where, options),
-  
-  createNarrative: (data) => db.create('narratives', data),
-  getNarrative: (id) => db.findById('narratives', id),
+
+  createNarrative: data => db.create('narratives', data),
+  getNarrative: id => db.findById('narratives', id),
   listNarratives: (where, options) => db.findMany('narratives', where, options),
-  
-  getApprovalRating: (key) => db.findById('approvalRatings', key),
+
+  getApprovalRating: key => db.findById('approvalRatings', key),
   setApprovalRating: (key, data) => {
     storage.approvalRatings.set(key, data);
     return data;
   },
-  listApprovalRatings: (where) => db.findMany('approvalRatings', where),
+  listApprovalRatings: where => db.findMany('approvalRatings', where),
 };
 
 export const ElectionsDB = {
-  createElection: (data) => db.create('elections', data),
-  getElection: (id) => db.findById('elections', id),
+  createElection: data => db.create('elections', data),
+  getElection: id => db.findById('elections', id),
   listElections: (where, options) => db.findMany('elections', where, options),
   updateElection: (id, data) => db.update('elections', id, data),
-  
-  createCampaign: (data) => db.create('campaigns', data),
-  listCampaigns: (where) => db.findMany('campaigns', where),
-  
-  createConstituency: (data) => db.create('constituencies', data),
-  getConstituency: (id) => db.findById('constituencies', id),
-  listConstituencies: (where) => db.findMany('constituencies', where),
+
+  createCampaign: data => db.create('campaigns', data),
+  listCampaigns: where => db.findMany('campaigns', where),
+
+  createConstituency: data => db.create('constituencies', data),
+  getConstituency: id => db.findById('constituencies', id),
+  listConstituencies: where => db.findMany('constituencies', where),
   updateConstituency: (id, data) => db.update('constituencies', id, data),
-  
-  createCandidate: (data) => db.create('candidates', data),
-  getCandidate: (id) => db.findById('candidates', id),
-  listCandidates: (where) => db.findMany('candidates', where),
+
+  createCandidate: data => db.create('candidates', data),
+  getCandidate: id => db.findById('candidates', id),
+  listCandidates: where => db.findMany('candidates', where),
   updateCandidate: (id, data) => db.update('candidates', id, data),
-  
-  createVote: (data) => db.create('electionVotes', data),
-  voteExists: (where) => db.exists('electionVotes', where),
+
+  createVote: data => db.create('electionVotes', data),
+  voteExists: where => db.exists('electionVotes', where),
 };

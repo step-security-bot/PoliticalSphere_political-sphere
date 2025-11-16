@@ -9,8 +9,7 @@ describe('Competence Monitor', () => {
     join(process.cwd(), 'ai-metrics', 'stats.json'),
   ];
 
-  const resolveMetricsFile = () =>
-    metricsFiles.find(file => existsSync(file)) || metricsFiles[0];
+  const resolveMetricsFile = () => metricsFiles.find(file => existsSync(file)) || metricsFiles[0];
 
   beforeEach(() => {
     // Clean up any existing metrics

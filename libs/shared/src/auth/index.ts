@@ -5,9 +5,12 @@
  */
 
 export {
+  initializeJWT,
   initializeJWTFromEnv,
+  verifyAccessToken,
+  verifyRefreshToken,
   verifyAuthHeader,
-  verifyToken,
+  extractBearerToken,
   type TokenPayload,
   type VerificationResult,
 } from './jwt';

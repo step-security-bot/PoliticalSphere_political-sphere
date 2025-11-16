@@ -30,8 +30,9 @@ concurrency:
 
 # Restrict permissions to minimum required
 permissions:
+  # Global least-privilege: removed security-events: write (scoped to security-scan job only).
+  # contents: read for checkout; pull-requests: write for PR commenting.
   contents: read
-  security-events: write
   pull-requests: write
 
 env:
@@ -206,7 +207,7 @@ jobs:
       - name: Run tests (shard ${{ matrix.shard }}/3)
         env:
           SHARD_INDEX: ${{ matrix.shard }}
-        run: npm run test -- --shard="${SHARD_INDEX}"/3 --maxWorkers=2 --coverage --coverageDirectory="coverage-shard-${SHARD_INDEX}"
+        run: npm run test -- --shard="${SHARD_INDEX}"/3 --maxWorkers=2 --coverage --coverage.reportsDirectory="coverage-shard-${SHARD_INDEX}"
       - name: Upload shard coverage
         uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
         with:

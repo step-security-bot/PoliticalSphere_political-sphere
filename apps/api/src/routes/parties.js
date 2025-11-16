@@ -4,7 +4,7 @@ import { authenticate } from '../auth/auth.middleware.ts';
 import { PartyService } from '../domain/party-service.ts';
 import logger from '../logger.js';
 import { getDatabase } from '../modules/stores/index.ts';
-import { CreatePartySchema } from '../utils/shared-shim.js';
+import { CreatePartySchema, UpdatePartySchema } from '../utils/shared-shim.js';
 
 const router = express.Router();
 
@@ -80,13 +80,28 @@ router.post('/parties', requireAuth, async (req, res) => {
 // PUT /parties/:id - Update party (requires authentication)
 router.put('/parties/:id', requireAuth, async (req, res) => {
   try {
+    // Validate input with UpdatePartySchema
+    const validated = UpdatePartySchema.parse(req.body);
+
     const store = getPartyStore();
-    const party = await store.update(req.params.id, req.body);
+    const party = await store.update(req.params.id, validated);
     if (!party) {
       return res.status(404).json({ error: 'Party not found' });
     }
     res.json({ party });
   } catch (error) {
+    // Handle Zod validation errors
+    if (error.issues) {
+      return res.status(400).json({
+        success: false,
+        error: 'Validation failed',
+        details: error.issues.map((e) => ({
+          field: e.path.join('.'),
+          message: e.message,
+        })),
+      });
+    }
+
     logger.error('PUT /parties/:id failed', { error, id: req.params.id });
     res.status(500).json({ error: 'Internal server error' });
   }

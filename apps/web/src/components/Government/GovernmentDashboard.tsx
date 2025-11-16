@@ -176,12 +176,8 @@ const GovernmentDashboard: React.FC<GovernmentDashboardProps> = ({
           </span>
         </div>
         <div className="confidence-tracker" aria-label="Confidence votes">
-          <span className="confidence-for">
-            Confidence: {government.confidenceVotes}
-          </span>
-          <span className="confidence-against">
-            No Confidence: {government.noConfidenceVotes}
-          </span>
+          <span className="confidence-for">Confidence: {government.confidenceVotes}</span>
+          <span className="confidence-against">No Confidence: {government.noConfidenceVotes}</span>
         </div>
       </header>
 
@@ -218,12 +214,12 @@ const GovernmentDashboard: React.FC<GovernmentDashboardProps> = ({
           className="cabinet-section"
         >
           <h2>Cabinet Members</h2>
-          
+
           {ministers.length === 0 ? (
             <p>No ministers appointed yet.</p>
           ) : (
             <ul className="ministers-list" aria-label="List of cabinet ministers">
-              {ministers.map((minister) => (
+              {ministers.map(minister => (
                 <li key={minister.id} className="minister-card">
                   <div className="minister-info">
                     <h3>{minister.position}</h3>
@@ -249,17 +245,12 @@ const GovernmentDashboard: React.FC<GovernmentDashboardProps> = ({
               aria-labelledby="appoint-minister-heading"
             >
               <h3 id="appoint-minister-heading">Appoint New Minister</h3>
-              
+
               <div className="form-group">
                 <label htmlFor="minister-position">
                   Position <span aria-label="required">*</span>
                 </label>
-                <select
-                  id="minister-position"
-                  name="position"
-                  required
-                  aria-required="true"
-                >
+                <select id="minister-position" name="position" required aria-required="true">
                   <option value="">Select position...</option>
                   <option value="prime_minister">Prime Minister</option>
                   <option value="chancellor">Chancellor of the Exchequer</option>
@@ -306,12 +297,12 @@ const GovernmentDashboard: React.FC<GovernmentDashboardProps> = ({
           className="actions-section"
         >
           <h2>Executive Actions</h2>
-          
+
           {actions.length === 0 ? (
             <p>No executive actions issued yet.</p>
           ) : (
             <ul className="actions-list" aria-label="List of executive actions">
-              {actions.map((action) => (
+              {actions.map(action => (
                 <li key={action.id} className="action-card">
                   <div className="action-header">
                     <h3>{action.title}</h3>
@@ -322,9 +313,7 @@ const GovernmentDashboard: React.FC<GovernmentDashboardProps> = ({
                   <p className="action-description">{action.description}</p>
                   <div className="action-meta">
                     <span>Issued: {new Date(action.issuedAt).toLocaleDateString()}</span>
-                    <span className={`action-status status-${action.status}`}>
-                      {action.status}
-                    </span>
+                    <span className={`action-status status-${action.status}`}>{action.status}</span>
                   </div>
                 </li>
               ))}
@@ -338,17 +327,12 @@ const GovernmentDashboard: React.FC<GovernmentDashboardProps> = ({
               aria-labelledby="issue-action-heading"
             >
               <h3 id="issue-action-heading">Issue Executive Action</h3>
-              
+
               <div className="form-group">
                 <label htmlFor="action-type">
                   Action Type <span aria-label="required">*</span>
                 </label>
-                <select
-                  id="action-type"
-                  name="actionType"
-                  required
-                  aria-required="true"
-                >
+                <select id="action-type" name="actionType" required aria-required="true">
                   <option value="">Select type...</option>
                   <option value="order">Executive Order</option>
                   <option value="regulation">Regulation</option>

@@ -66,7 +66,7 @@ const cabinetMeetings = new Map();
 router.post('/', async (req, res) => {
   try {
     const validated = CreateGovernmentSchema.parse(req.body);
-    
+
     const governmentId = `gov-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
     const government = {
       id: governmentId,
@@ -76,9 +76,9 @@ router.post('/', async (req, res) => {
       createdAt: new Date().toISOString(),
       dissolvedAt: null,
     };
-    
+
     governments.set(governmentId, government);
-    
+
     res.status(201).json({
       success: true,
       data: government,
@@ -91,7 +91,7 @@ router.post('/', async (req, res) => {
         details: error.errors,
       });
     }
-    
+
     res.status(500).json({
       success: false,
       error: 'Failed to create government',
@@ -106,18 +106,19 @@ router.post('/', async (req, res) => {
  */
 router.get('/:id', (req, res) => {
   const government = governments.get(req.params.id);
-  
+
   if (!government) {
     return res.status(404).json({
       success: false,
       error: 'Government not found',
     });
   }
-  
+
   // Get all ministers for this government
-  const governmentMinisters = Array.from(ministers.values())
-    .filter(m => m.governmentId === government.id);
-  
+  const governmentMinisters = Array.from(ministers.values()).filter(
+    m => m.governmentId === government.id
+  );
+
   res.json({
     success: true,
     data: {
@@ -133,17 +134,16 @@ router.get('/:id', (req, res) => {
  */
 router.get('/', (req, res) => {
   const { gameId } = req.query;
-  
+
   if (!gameId) {
     return res.status(400).json({
       success: false,
       error: 'gameId query parameter required',
     });
   }
-  
-  const gameGovernments = Array.from(governments.values())
-    .filter(g => g.gameId === gameId);
-  
+
+  const gameGovernments = Array.from(governments.values()).filter(g => g.gameId === gameId);
+
   res.json({
     success: true,
     data: gameGovernments,
@@ -157,7 +157,7 @@ router.get('/', (req, res) => {
 router.post('/ministers', async (req, res) => {
   try {
     const validated = AppointMinisterSchema.parse(req.body);
-    
+
     // Verify government exists
     const government = governments.get(validated.governmentId);
     if (!government) {
@@ -166,11 +166,12 @@ router.post('/ministers', async (req, res) => {
         error: 'Government not found',
       });
     }
-    
+
     // Check if position already filled
-    const existingMinister = Array.from(ministers.values())
-      .find(m => m.governmentId === validated.governmentId && m.position === validated.position);
-    
+    const existingMinister = Array.from(ministers.values()).find(
+      m => m.governmentId === validated.governmentId && m.position === validated.position
+    );
+
     if (existingMinister) {
       return res.status(400).json({
         success: false,
@@ -178,7 +179,7 @@ router.post('/ministers', async (req, res) => {
         currentMinister: existingMinister,
       });
     }
-    
+
     const ministerId = `minister-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
     const minister = {
       id: ministerId,
@@ -187,9 +188,9 @@ router.post('/ministers', async (req, res) => {
       resignedAt: null,
       status: 'active',
     };
-    
+
     ministers.set(ministerId, minister);
-    
+
     res.status(201).json({
       success: true,
       data: minister,
@@ -202,7 +203,7 @@ router.post('/ministers', async (req, res) => {
         details: error.errors,
       });
     }
-    
+
     res.status(500).json({
       success: false,
       error: 'Failed to appoint minister',
@@ -217,17 +218,17 @@ router.post('/ministers', async (req, res) => {
  */
 router.delete('/ministers/:id', (req, res) => {
   const minister = ministers.get(req.params.id);
-  
+
   if (!minister) {
     return res.status(404).json({
       success: false,
       error: 'Minister not found',
     });
   }
-  
+
   minister.status = 'resigned';
   minister.resignedAt = new Date().toISOString();
-  
+
   res.json({
     success: true,
     data: minister,
@@ -239,9 +240,10 @@ router.delete('/ministers/:id', (req, res) => {
  * GET /api/government/:governmentId/ministers
  */
 router.get('/:governmentId/ministers', (req, res) => {
-  const governmentMinisters = Array.from(ministers.values())
-    .filter(m => m.governmentId === req.params.governmentId && m.status === 'active');
-  
+  const governmentMinisters = Array.from(ministers.values()).filter(
+    m => m.governmentId === req.params.governmentId && m.status === 'active'
+  );
+
   res.json({
     success: true,
     data: governmentMinisters,
@@ -255,7 +257,7 @@ router.get('/:governmentId/ministers', (req, res) => {
 router.post('/actions', async (req, res) => {
   try {
     const validated = ExecutiveActionSchema.parse(req.body);
-    
+
     // Verify government and minister exist
     const government = governments.get(validated.governmentId);
     if (!government) {
@@ -264,7 +266,7 @@ router.post('/actions', async (req, res) => {
         error: 'Government not found',
       });
     }
-    
+
     const minister = ministers.get(validated.ministerId);
     if (!minister || minister.governmentId !== validated.governmentId) {
       return res.status(404).json({
@@ -272,7 +274,7 @@ router.post('/actions', async (req, res) => {
         error: 'Minister not found or not part of this government',
       });
     }
-    
+
     const actionId = `action-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
     const action = {
       id: actionId,
@@ -281,9 +283,9 @@ router.post('/actions', async (req, res) => {
       createdAt: new Date().toISOString(),
       enactedAt: validated.requiresParliamentApproval ? null : new Date().toISOString(),
     };
-    
+
     executiveActions.set(actionId, action);
-    
+
     res.status(201).json({
       success: true,
       data: action,
@@ -296,7 +298,7 @@ router.post('/actions', async (req, res) => {
         details: error.errors,
       });
     }
-    
+
     res.status(500).json({
       success: false,
       error: 'Failed to create executive action',
@@ -311,14 +313,14 @@ router.post('/actions', async (req, res) => {
  */
 router.get('/actions/:id', (req, res) => {
   const action = executiveActions.get(req.params.id);
-  
+
   if (!action) {
     return res.status(404).json({
       success: false,
       error: 'Executive action not found',
     });
   }
-  
+
   res.json({
     success: true,
     data: action,
@@ -330,9 +332,10 @@ router.get('/actions/:id', (req, res) => {
  * GET /api/government/:governmentId/actions
  */
 router.get('/:governmentId/actions', (req, res) => {
-  const governmentActions = Array.from(executiveActions.values())
-    .filter(a => a.governmentId === req.params.governmentId);
-  
+  const governmentActions = Array.from(executiveActions.values()).filter(
+    a => a.governmentId === req.params.governmentId
+  );
+
   res.json({
     success: true,
     data: governmentActions,
@@ -346,7 +349,7 @@ router.get('/:governmentId/actions', (req, res) => {
 router.post('/cabinet-meetings', async (req, res) => {
   try {
     const validated = CabinetMeetingSchema.parse(req.body);
-    
+
     // Verify government exists
     const government = governments.get(validated.governmentId);
     if (!government) {
@@ -355,7 +358,7 @@ router.post('/cabinet-meetings', async (req, res) => {
         error: 'Government not found',
       });
     }
-    
+
     const meetingId = `meeting-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
     const meeting = {
       id: meetingId,
@@ -364,9 +367,9 @@ router.post('/cabinet-meetings', async (req, res) => {
       decisions: [],
       createdAt: new Date().toISOString(),
     };
-    
+
     cabinetMeetings.set(meetingId, meeting);
-    
+
     res.status(201).json({
       success: true,
       data: meeting,
@@ -379,7 +382,7 @@ router.post('/cabinet-meetings', async (req, res) => {
         details: error.errors,
       });
     }
-    
+
     res.status(500).json({
       success: false,
       error: 'Failed to schedule cabinet meeting',
@@ -394,14 +397,14 @@ router.post('/cabinet-meetings', async (req, res) => {
  */
 router.get('/cabinet-meetings/:id', (req, res) => {
   const meeting = cabinetMeetings.get(req.params.id);
-  
+
   if (!meeting) {
     return res.status(404).json({
       success: false,
       error: 'Cabinet meeting not found',
     });
   }
-  
+
   res.json({
     success: true,
     data: meeting,
@@ -414,24 +417,24 @@ router.get('/cabinet-meetings/:id', (req, res) => {
  */
 router.post('/:id/dissolve', (req, res) => {
   const government = governments.get(req.params.id);
-  
+
   if (!government) {
     return res.status(404).json({
       success: false,
       error: 'Government not found',
     });
   }
-  
+
   if (government.status !== 'active') {
     return res.status(400).json({
       success: false,
       error: 'Government is not active',
     });
   }
-  
+
   government.status = 'dissolved';
   government.dissolvedAt = new Date().toISOString();
-  
+
   // Resign all ministers
   Array.from(ministers.values())
     .filter(m => m.governmentId === government.id && m.status === 'active')
@@ -439,7 +442,7 @@ router.post('/:id/dissolve', (req, res) => {
       m.status = 'resigned';
       m.resignedAt = new Date().toISOString();
     });
-  
+
   res.json({
     success: true,
     data: government,
@@ -452,23 +455,23 @@ router.post('/:id/dissolve', (req, res) => {
  */
 router.post('/:id/no-confidence', (req, res) => {
   const government = governments.get(req.params.id);
-  
+
   if (!government) {
     return res.status(404).json({
       success: false,
       error: 'Government not found',
     });
   }
-  
+
   // Reduce confidence
   government.confidence = Math.max(0, government.confidence - 10);
-  
+
   // If confidence drops below threshold, dissolve
   if (government.confidence < 50) {
     government.status = 'dissolved';
     government.dissolvedAt = new Date().toISOString();
   }
-  
+
   res.json({
     success: true,
     data: government,

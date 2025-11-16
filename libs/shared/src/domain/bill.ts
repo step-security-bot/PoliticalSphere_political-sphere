@@ -24,3 +24,15 @@ export const CreateBillSchema = z.object({
 });
 
 export type CreateBillInput = z.infer<typeof CreateBillSchema>;
+
+export const UpdateBillSchema = z
+  .object({
+    title: z.string().min(1).max(200).optional(),
+    description: z.string().max(2000).optional(),
+    status: BillStatusSchema.optional(),
+  })
+  .refine(data => Object.keys(data).length > 0, {
+    message: 'At least one field must be provided for update',
+  });
+
+export type UpdateBillInput = z.infer<typeof UpdateBillSchema>;

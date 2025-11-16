@@ -59,12 +59,7 @@ function AppContent() {
   }
 
   if (screen === 'game') {
-    return (
-      <MainGame
-        gameId={currentGameId}
-        onLeaveGame={() => setScreen('lobby')}
-      />
-    );
+    return <MainGame gameId={currentGameId} onLeaveGame={() => setScreen('lobby')} />;
   }
 
   return <div>Error: Invalid state</div>;

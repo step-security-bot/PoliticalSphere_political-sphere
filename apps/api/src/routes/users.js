@@ -4,7 +4,7 @@ import express from 'express';
 import { authenticate } from '../auth/auth.middleware.ts';
 import logger from '../logger.js';
 import { getDatabase } from '../modules/stores/index.ts';
-import { CreateUserSchema } from '../utils/shared-shim.js';
+import { CreateUserSchema, UpdateUserSchema } from '../utils/shared-shim.js';
 
 const router = express.Router();
 // Enforce auth always for security
@@ -102,13 +102,41 @@ router.put('/users/:id', requireAuth, async (req, res) => {
     if (!req.user || req.user.userId !== req.params.id) {
       return res.status(403).json({ success: false, error: 'Access denied' });
     }
+
+    // Validate input with UpdateUserSchema
+    const validated = UpdateUserSchema.parse(req.body);
+
+    // If password is provided, hash it before updating
+    if (validated.password) {
+      if (typeof validated.password !== 'string' || validated.password.length < 8) {
+        return res
+          .status(400)
+          .json({ success: false, error: 'Password must be at least 8 characters' });
+      }
+      const passwordHash = await bcrypt.hash(validated.password, 10);
+      validated.passwordHash = passwordHash;
+      delete validated.password;
+    }
+
     const store = getUserStore();
-    const user = await store.update(req.params.id, req.body);
+    const user = await store.update(req.params.id, validated);
     if (!user) {
       return res.status(404).json({ success: false, error: 'User not found' });
     }
     res.json({ success: true, data: user });
   } catch (error) {
+    // Handle Zod validation errors
+    if (error.issues) {
+      return res.status(400).json({
+        success: false,
+        error: 'Validation failed',
+        details: error.issues.map((e) => ({
+          field: e.path.join('.'),
+          message: e.message,
+        })),
+      });
+    }
+
     logger.error('Error updating user:', error);
     res.status(500).json({ error: 'Internal server error' });
   }

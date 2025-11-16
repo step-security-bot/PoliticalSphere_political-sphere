@@ -14,6 +14,7 @@ This directory contains custom agent profiles that provide specialized assistanc
 ## What Are Custom Agents?
 
 Custom agents are specialized AI assistants with focused expertise in specific domains. Each agent has:
+
 - A clear area of focus
 - Specialized knowledge and best practices
 - Task-specific templates and patterns
@@ -22,9 +23,11 @@ Custom agents are specialized AI assistants with focused expertise in specific d
 ## Available Agents
 
 ### 📚 docs-improver.md
+
 **Specialization**: Documentation Quality Enhancement
 
 **Use When**:
+
 - Improving existing documentation
 - Writing technical documentation
 - Creating API documentation
@@ -32,6 +35,7 @@ Custom agents are specialized AI assistants with focused expertise in specific d
 - Enhancing code comments
 
 **Capabilities**:
+
 - Clarifies ambiguous explanations
 - Improves organization and structure
 - Adds missing information
@@ -40,14 +44,17 @@ Custom agents are specialized AI assistants with focused expertise in specific d
 - Follows documentation best practices
 
 **Example Usage**:
+
 ```
 @copilot using @docs-improver, please improve the documentation in this file
 ```
 
 ### 📖 readme-expert.md
+
 **Specialization**: README Creation and Maintenance
 
 **Use When**:
+
 - Creating new README files
 - Updating existing READMEs
 - Documenting new features
@@ -55,6 +62,7 @@ Custom agents are specialized AI assistants with focused expertise in specific d
 - Creating usage examples
 
 **Capabilities**:
+
 - Creates well-structured README files
 - Includes all essential sections
 - Provides clear installation steps
@@ -63,14 +71,17 @@ Custom agents are specialized AI assistants with focused expertise in specific d
 - Adds appropriate badges and links
 
 **Example Usage**:
+
 ```
 @copilot using @readme-expert, create a comprehensive README for this library
 ```
 
 ### 🧪 test-generator.md
+
 **Specialization**: Comprehensive Test Generation
 
 **Use When**:
+
 - Creating test suites for new code
 - Improving test coverage
 - Adding missing test cases
@@ -79,6 +90,7 @@ Custom agents are specialized AI assistants with focused expertise in specific d
 - Creating security tests
 
 **Capabilities**:
+
 - Generates comprehensive test suites
 - Follows AAA (Arrange-Act-Assert) pattern
 - Includes success and failure scenarios
@@ -88,6 +100,7 @@ Custom agents are specialized AI assistants with focused expertise in specific d
 - Targets 80%+ coverage
 
 **Example Usage**:
+
 ```
 @copilot using @test-generator, create a comprehensive test suite for this component
 ```
@@ -97,6 +110,7 @@ Custom agents are specialized AI assistants with focused expertise in specific d
 ### In GitHub Issues/PRs
 
 Mention the agent in comments:
+
 ```
 @copilot using @readme-expert, please update the README to include the new configuration options
 ```
@@ -104,25 +118,27 @@ Mention the agent in comments:
 ### In IDE (VS Code, etc.)
 
 Use the agent in chat:
+
 ```
 Using the test-generator agent, create tests for the validateEmail function
 ```
 
 ## Agent Selection Guide
 
-| Task | Recommended Agent | Alternative |
-|------|-------------------|-------------|
-| Create/update README | `readme-expert` | `docs-improver` |
-| Write API docs | `docs-improver` | - |
-| Generate tests | `test-generator` | - |
-| Improve comments | `docs-improver` | - |
-| Create ADR | `docs-improver` | - |
-| Add test coverage | `test-generator` | - |
-| Document architecture | `docs-improver` | - |
+| Task                  | Recommended Agent | Alternative     |
+| --------------------- | ----------------- | --------------- |
+| Create/update README  | `readme-expert`   | `docs-improver` |
+| Write API docs        | `docs-improver`   | -               |
+| Generate tests        | `test-generator`  | -               |
+| Improve comments      | `docs-improver`   | -               |
+| Create ADR            | `docs-improver`   | -               |
+| Add test coverage     | `test-generator`  | -               |
+| Document architecture | `docs-improver`   | -               |
 
 ## Quality Standards
 
 All agents follow these standards:
+
 - Clear, actionable output
 - Concrete code examples
 - Best practices alignment
@@ -158,6 +174,7 @@ When adding new agents:
 ## Maintenance
 
 When updating agents:
+
 - Keep focus narrow and specific
 - Update examples when standards change
 - Test that examples work

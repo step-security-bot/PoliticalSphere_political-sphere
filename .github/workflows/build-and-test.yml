@@ -43,9 +43,10 @@ on:
         description: Full ECR registry URI (e.g. 123.dkr.ecr.us-east-1.amazonaws.com)
 
 permissions:
+  # Least-privilege: id-token: write needed only if assuming AWS role via OIDC.
+  # Removed packages: write (no GH Packages publishing in this reusable workflow).
   contents: read
   id-token: write
-  packages: write
 
 jobs:
   build:

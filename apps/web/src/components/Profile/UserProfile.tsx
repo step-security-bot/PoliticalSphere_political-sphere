@@ -119,7 +119,10 @@ const UserProfile: React.FC<UserProfileProps> = ({
     }
   };
 
-  const handleAccessibilityChange = (key: keyof UserPreferences['accessibility'], value: boolean) => {
+  const handleAccessibilityChange = (
+    key: keyof UserPreferences['accessibility'],
+    value: boolean
+  ) => {
     const newPreferences = {
       ...preferences,
       accessibility: {
@@ -243,11 +246,7 @@ const UserProfile: React.FC<UserProfileProps> = ({
                   <span>{userData.contentRating}</span>
                 </div>
               )}
-              <button
-                type="button"
-                onClick={() => setIsEditing(true)}
-                className="btn-primary"
-              >
+              <button type="button" onClick={() => setIsEditing(true)} className="btn-primary">
                 Edit Profile
               </button>
             </div>
@@ -268,11 +267,7 @@ const UserProfile: React.FC<UserProfileProps> = ({
                 <button type="submit" className="btn-primary">
                   Save Changes
                 </button>
-                <button
-                  type="button"
-                  onClick={() => setIsEditing(false)}
-                  className="btn-secondary"
-                >
+                <button type="button" onClick={() => setIsEditing(false)} className="btn-secondary">
                   Cancel
                 </button>
               </div>

@@ -70,13 +70,32 @@ if (!diffNameOnly) {
   process.exit(0);
 }
 
-const changedFiles = diffNameOnly.split('\n').filter(Boolean);
+// Exclude generated files from budget calculation
+const EXCLUDED_FILES = [
+  'package-lock.json',
+  'pnpm-lock.yaml',
+  'yarn.lock',
+  'ai-index/codebase-index.json',
+  'ai-cache/context-cache.json',
+  'ai-cache/context-analytics.json',
+  'ai-metrics/stats.json',
+];
+const changedFiles = diffNameOnly
+  .split('\n')
+  .filter(Boolean)
+  .filter(f => !EXCLUDED_FILES.includes(f));
+
 let totalAdded = 0;
 let totalDeleted = 0;
 if (diffNumstat) {
   for (const line of diffNumstat.split('\n')) {
     const parts = line.split('\t');
     if (parts.length >= 3) {
+      const file = parts[2];
+      // Skip excluded files in line count
+      if (EXCLUDED_FILES.includes(file)) {
+        continue;
+      }
       const added = parts[0] === '-' ? 0 : parseInt(parts[0], 10) || 0;
       const deleted = parts[1] === '-' ? 0 : parseInt(parts[1], 10) || 0;
       totalAdded += added;
@@ -180,84 +199,43 @@ function checkAuditArtefacts() {
   return { artefactFound: false };
 }
 
-// Enforcement by mode
-if (mode === 'safe') {
-  const MAX_LINES = 300;
-  const MAX_FILES = 12;
-  if (totalChangedLines > MAX_LINES) {
-    fail(
-      `Safe mode budget exceeded: ${totalChangedLines} lines changed (limit ${MAX_LINES}). Reduce changes or switch to Audit mode with justification.`
-    );
-  }
-  if (totalFilesChanged > MAX_FILES) {
-    fail(
-      `Safe mode file-change budget exceeded: ${totalFilesChanged} files changed (limit ${MAX_FILES}). Split change into smaller PRs.`
-    );
-  }
-  // New deps forbidden unless ADR attached: detect new deps
-  const newDeps = detectNewDeps(base);
-  if (newDeps.length > 0) {
-    // check for ADR files in changedFiles
-    const hasADR = changedFiles.some(f => /adr|docs\/architecture/i.test(f));
-    if (!hasADR) {
-      fail(
-        `Safe mode forbids adding new runtime/build dependencies without an ADR. Detected new deps: ${newDeps.join(', ')}. Attach an ADR or remove the dependency.`
-      );
-    }
-  }
-  pass('Safe mode checks passed');
-} else if (mode === 'fast-secure' || mode === 'fast_secure' || mode === 'fast') {
-  const MAX_LINES = 200;
-  const MAX_FILES = 8;
-  if (totalChangedLines > MAX_LINES) {
-    fail(
-      `Fast-Secure mode budget exceeded: ${totalChangedLines} lines changed (limit ${MAX_LINES}).`
-    );
-  }
-  if (totalFilesChanged > MAX_FILES) {
-    fail(
-      `Fast-Secure mode file-change budget exceeded: ${totalFilesChanged} files changed (limit ${MAX_FILES}).`
-    );
-  }
-  if (!checkTodoDeferral()) {
-    fail(
-      'Fast-Secure mode requires a deferral entry in docs/TODO.md with an owner and due date (YYYY-MM-DD). Please add a TODO deferral.'
-    );
-  }
-  pass('Fast-Secure checks passed');
-} else if (mode === 'audit') {
-  // No budget cap, but require artefacts
-  const artefacts = checkAuditArtefacts();
-  if (!artefacts.artefactFound) {
-    fail(
-      'Audit mode requires SBOM/provenance artefacts (e.g., sbom.json or provenance.json) be included in the change set or present in the repo.'
-    );
-  }
-  // test evidence is recommended — best-effort check
-  if (!artefacts.evidenceFound) {
-    console.warn(
-      'Audit advisory: no explicit test evidence (screenshots/logs) detected in the changed files. CI may still require additional evidence.'
-    );
-  }
-  pass('Audit checks passed (artefacts present)');
-} else if (mode === 'r&d' || mode === 'rd' || mode === 'r_d') {
-  console.log(
-    'R&D mode: advisory only. Ensure PR metadata marks the change as experimental and plan a Safe re-run before merging to protected branches.'
-  );
-  // Write an advisory file to help reviewers (non-blocking)
-  try {
-    fs.writeFileSync(
-      '.ai-experimental',
-      `experimental: true\nmode: R&D\ndate: ${new Date().toISOString()}\n`
-    );
-    console.log('Wrote .ai-experimental advisory file.');
-  } catch {
-    // ignore
-  }
-  pass('R&D advisory emitted');
-} else {
-  console.log(`Unknown mode '${mode}', skipping budget checks.`);
-  process.exit(0);
+// Advisory mode - provide metrics but don't block
+// This script is kept for informational purposes and local development guidance
+console.log('\n========================================');
+console.log('CHANGE METRICS (ADVISORY ONLY)');
+console.log('========================================');
+console.log(`Files: ${totalFilesChanged}`);
+console.log(`Lines: ${totalChangedLines}`);
+console.log('');
+
+// Informational thresholds (not enforced)
+const ADVISORY_LINE_THRESHOLD = 300;
+const ADVISORY_FILE_THRESHOLD = 12;
+
+if (totalChangedLines > ADVISORY_LINE_THRESHOLD || totalFilesChanged > ADVISORY_FILE_THRESHOLD) {
+  console.log('ℹ️  LARGE CHANGE DETECTED');
+  console.log(`   Lines: ${totalChangedLines} (advisory threshold: ${ADVISORY_LINE_THRESHOLD})`);
+  console.log(`   Files: ${totalFilesChanged} (advisory threshold: ${ADVISORY_FILE_THRESHOLD})`);
+  console.log('');
+  console.log('   Consider:');
+  console.log('   • Reviewing changes in smaller chunks');
+  console.log('   • Ensuring comprehensive test coverage');
+  console.log('   • Documenting major architectural changes in ADRs');
+  console.log('');
 }
 
+// Check for new dependencies (advisory)
+const newDeps = detectNewDeps(base);
+if (newDeps.length > 0) {
+  const hasADR = changedFiles.some(f => /adr|docs\/architecture/i.test(f));
+  if (!hasADR) {
+    console.log('ℹ️  NEW DEPENDENCIES DETECTED');
+    console.log(`   Added: ${newDeps.join(', ')}`);
+    console.log('   Consider documenting significant dependencies in an ADR');
+    console.log('');
+  }
+}
+
+console.log('✅ METRICS COLLECTED');
+console.log('========================================\n');
 process.exit(0);

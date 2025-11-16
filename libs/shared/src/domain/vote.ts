@@ -21,3 +21,13 @@ export const CreateVoteSchema = z.object({
 });
 
 export type CreateVoteInput = z.infer<typeof CreateVoteSchema>;
+
+export const UpdateVoteSchema = z
+  .object({
+    vote: VoteTypeSchema.optional(),
+  })
+  .refine(data => Object.keys(data).length > 0, {
+    message: 'At least one field must be provided for update',
+  });
+
+export type UpdateVoteInput = z.infer<typeof UpdateVoteSchema>;

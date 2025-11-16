@@ -62,7 +62,7 @@ const precedents = new Map();
 router.post('/cases', async (req, res) => {
   try {
     const validated = FileCaseSchema.parse(req.body);
-    
+
     const caseId = `case-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
     const legalCase = {
       id: caseId,
@@ -73,9 +73,9 @@ router.post('/cases', async (req, res) => {
       closedAt: null,
       outcome: null,
     };
-    
+
     cases.set(caseId, legalCase);
-    
+
     res.status(201).json({
       success: true,
       data: legalCase,
@@ -88,7 +88,7 @@ router.post('/cases', async (req, res) => {
         details: error.errors,
       });
     }
-    
+
     res.status(500).json({
       success: false,
       error: 'Failed to file case',
@@ -103,18 +103,17 @@ router.post('/cases', async (req, res) => {
  */
 router.get('/cases/:id', (req, res) => {
   const legalCase = cases.get(req.params.id);
-  
+
   if (!legalCase) {
     return res.status(404).json({
       success: false,
       error: 'Case not found',
     });
   }
-  
+
   // Get associated rulings
-  const caseRulings = Array.from(rulings.values())
-    .filter(r => r.caseId === legalCase.id);
-  
+  const caseRulings = Array.from(rulings.values()).filter(r => r.caseId === legalCase.id);
+
   res.json({
     success: true,
     data: {
@@ -130,21 +129,20 @@ router.get('/cases/:id', (req, res) => {
  */
 router.get('/cases', (req, res) => {
   const { gameId, status } = req.query;
-  
+
   if (!gameId) {
     return res.status(400).json({
       success: false,
       error: 'gameId query parameter required',
     });
   }
-  
-  let filtered = Array.from(cases.values())
-    .filter(c => c.gameId === gameId);
-  
+
+  let filtered = Array.from(cases.values()).filter(c => c.gameId === gameId);
+
   if (status) {
     filtered = filtered.filter(c => c.status === status);
   }
-  
+
   res.json({
     success: true,
     data: filtered,
@@ -158,7 +156,7 @@ router.get('/cases', (req, res) => {
 router.post('/judges', async (req, res) => {
   try {
     const validated = AppointJudgeSchema.parse(req.body);
-    
+
     const judgeId = `judge-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
     const judge = {
       id: judgeId,
@@ -169,9 +167,9 @@ router.post('/judges', async (req, res) => {
       casesHeard: 0,
       rulingsIssued: 0,
     };
-    
+
     judges.set(judgeId, judge);
-    
+
     res.status(201).json({
       success: true,
       data: judge,
@@ -184,7 +182,7 @@ router.post('/judges', async (req, res) => {
         details: error.errors,
       });
     }
-    
+
     res.status(500).json({
       success: false,
       error: 'Failed to appoint judge',
@@ -199,14 +197,14 @@ router.post('/judges', async (req, res) => {
  */
 router.get('/judges/:id', (req, res) => {
   const judge = judges.get(req.params.id);
-  
+
   if (!judge) {
     return res.status(404).json({
       success: false,
       error: 'Judge not found',
     });
   }
-  
+
   res.json({
     success: true,
     data: judge,
@@ -219,21 +217,22 @@ router.get('/judges/:id', (req, res) => {
  */
 router.get('/judges', (req, res) => {
   const { gameId, court } = req.query;
-  
+
   if (!gameId) {
     return res.status(400).json({
       success: false,
       error: 'gameId query parameter required',
     });
   }
-  
-  let filtered = Array.from(judges.values())
-    .filter(j => j.gameId === gameId && j.status === 'active');
-  
+
+  let filtered = Array.from(judges.values()).filter(
+    j => j.gameId === gameId && j.status === 'active'
+  );
+
   if (court) {
     filtered = filtered.filter(j => j.court === court);
   }
-  
+
   res.json({
     success: true,
     data: filtered,
@@ -247,7 +246,7 @@ router.get('/judges', (req, res) => {
 router.post('/rulings', async (req, res) => {
   try {
     const validated = IssueRulingSchema.parse(req.body);
-    
+
     // Verify case exists
     const legalCase = cases.get(validated.caseId);
     if (!legalCase) {
@@ -256,7 +255,7 @@ router.post('/rulings', async (req, res) => {
         error: 'Case not found',
       });
     }
-    
+
     // Verify judge exists
     const judge = judges.get(validated.judgeId);
     if (!judge) {
@@ -265,7 +264,7 @@ router.post('/rulings', async (req, res) => {
         error: 'Judge not found',
       });
     }
-    
+
     const rulingId = `ruling-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
     const ruling = {
       id: rulingId,
@@ -274,18 +273,18 @@ router.post('/rulings', async (req, res) => {
       appealable: true,
       appealed: false,
     };
-    
+
     rulings.set(rulingId, ruling);
-    
+
     // Update case status
     legalCase.status = 'decided';
     legalCase.outcome = validated.decision;
     legalCase.closedAt = new Date().toISOString();
-    
+
     // Update judge statistics
     judge.casesHeard += 1;
     judge.rulingsIssued += 1;
-    
+
     // Create precedent if ruling is precedent-setting
     if (validated.precedentSetting) {
       const precedentId = `precedent-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
@@ -301,7 +300,7 @@ router.post('/rulings', async (req, res) => {
       };
       precedents.set(precedentId, precedent);
     }
-    
+
     res.status(201).json({
       success: true,
       data: ruling,
@@ -314,7 +313,7 @@ router.post('/rulings', async (req, res) => {
         details: error.errors,
       });
     }
-    
+
     res.status(500).json({
       success: false,
       error: 'Failed to issue ruling',
@@ -329,14 +328,14 @@ router.post('/rulings', async (req, res) => {
  */
 router.get('/rulings/:id', (req, res) => {
   const ruling = rulings.get(req.params.id);
-  
+
   if (!ruling) {
     return res.status(404).json({
       success: false,
       error: 'Ruling not found',
     });
   }
-  
+
   res.json({
     success: true,
     data: ruling,
@@ -350,7 +349,7 @@ router.get('/rulings/:id', (req, res) => {
 router.post('/reviews', async (req, res) => {
   try {
     const validated = RequestReviewSchema.parse(req.body);
-    
+
     const reviewId = `review-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
     const review = {
       id: reviewId,
@@ -361,9 +360,9 @@ router.post('/reviews', async (req, res) => {
       decision: null,
       decidedAt: null,
     };
-    
+
     reviews.set(reviewId, review);
-    
+
     res.status(201).json({
       success: true,
       data: review,
@@ -376,7 +375,7 @@ router.post('/reviews', async (req, res) => {
         details: error.errors,
       });
     }
-    
+
     res.status(500).json({
       success: false,
       error: 'Failed to request review',
@@ -391,14 +390,14 @@ router.post('/reviews', async (req, res) => {
  */
 router.get('/reviews/:id', (req, res) => {
   const review = reviews.get(req.params.id);
-  
+
   if (!review) {
     return res.status(404).json({
       success: false,
       error: 'Review not found',
     });
   }
-  
+
   res.json({
     success: true,
     data: review,
@@ -411,21 +410,20 @@ router.get('/reviews/:id', (req, res) => {
  */
 router.get('/reviews', (req, res) => {
   const { gameId, status } = req.query;
-  
+
   if (!gameId) {
     return res.status(400).json({
       success: false,
       error: 'gameId query parameter required',
     });
   }
-  
-  let filtered = Array.from(reviews.values())
-    .filter(r => r.gameId === gameId);
-  
+
+  let filtered = Array.from(reviews.values()).filter(r => r.gameId === gameId);
+
   if (status) {
     filtered = filtered.filter(r => r.status === status);
   }
-  
+
   res.json({
     success: true,
     data: filtered,
@@ -438,24 +436,23 @@ router.get('/reviews', (req, res) => {
  */
 router.get('/precedents', (req, res) => {
   const { gameId } = req.query;
-  
+
   if (!gameId) {
     return res.status(400).json({
       success: false,
       error: 'gameId query parameter required',
     });
   }
-  
+
   // Get all precedents for cases in this game
   const gameCaseIds = new Set(
     Array.from(cases.values())
       .filter(c => c.gameId === gameId)
       .map(c => c.id)
   );
-  
-  const gamePrecedents = Array.from(precedents.values())
-    .filter(p => gameCaseIds.has(p.caseId));
-  
+
+  const gamePrecedents = Array.from(precedents.values()).filter(p => gameCaseIds.has(p.caseId));
+
   res.json({
     success: true,
     data: gamePrecedents,
@@ -468,27 +465,27 @@ router.get('/precedents', (req, res) => {
  */
 router.post('/cases/:id/schedule', (req, res) => {
   const legalCase = cases.get(req.params.id);
-  
+
   if (!legalCase) {
     return res.status(404).json({
       success: false,
       error: 'Case not found',
     });
   }
-  
+
   const { hearingDate, assignedJudge } = req.body;
-  
+
   if (!hearingDate) {
     return res.status(400).json({
       success: false,
       error: 'hearingDate required',
     });
   }
-  
+
   legalCase.status = 'scheduled';
   legalCase.hearingDate = hearingDate;
   legalCase.assignedJudge = assignedJudge || null;
-  
+
   res.json({
     success: true,
     data: legalCase,
@@ -501,17 +498,17 @@ router.post('/cases/:id/schedule', (req, res) => {
  */
 router.post('/judges/:id/retire', (req, res) => {
   const judge = judges.get(req.params.id);
-  
+
   if (!judge) {
     return res.status(404).json({
       success: false,
       error: 'Judge not found',
     });
   }
-  
+
   judge.status = 'retired';
   judge.retiredAt = new Date().toISOString();
-  
+
   res.json({
     success: true,
     data: judge,

@@ -201,7 +201,6 @@ const REPO_STRUCTURE = {
   'reports/audits': { type: 'dir', required: true },
   'reports/coverage': { type: 'dir', required: true },
   'reports/performance': { type: 'dir', required: true },
-
 };
 
 // Apps detailed structure

@@ -10,7 +10,7 @@ import { z } from 'zod';
  * @param {Function} fn - Async route handler function
  * @returns {Function} Express middleware function
  */
-export const asyncHandler = (fn) => (req, res, next) => {
+export const asyncHandler = fn => (req, res, next) => {
   Promise.resolve(fn(req, res, next)).catch(next);
 };
 
@@ -53,9 +53,7 @@ export const errorHandler = (err, req, res, next) => {
   const statusCode = err.status || 500;
   res.status(statusCode).json({
     success: false,
-    error: process.env.NODE_ENV === 'production' 
-      ? 'Internal server error' 
-      : err.message,
+    error: process.env.NODE_ENV === 'production' ? 'Internal server error' : err.message,
     ...(process.env.NODE_ENV === 'development' && { stack: err.stack }),
   });
 };

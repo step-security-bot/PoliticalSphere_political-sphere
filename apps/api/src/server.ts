@@ -4,31 +4,41 @@ import process from 'node:process';
 import { URL } from 'node:url';
 
 import {
-  checkRateLimit,
-  getCorsHeaders,
-  getLogger,
-  getRateLimitInfo,
-  isIpAllowed,
-  SECURITY_HEADERS,
+    checkRateLimit,
+    getCorsHeaders,
+    getLogger,
+    getRateLimitInfo,
+    isIpAllowed,
+    SECURITY_HEADERS,
 } from '@political-sphere/shared';
 
+/**
+ * User authentication payload interface.
+ * Defines the shape of user objects returned from auth operations.
+ */
+interface UserAuthPayload {
+  id: string;
+  email: string;
+  role?: string;
+}
+
 import {
-  authenticateUser,
-  createUser,
-  generateAccessToken,
-  generateRefreshToken,
-  getUserById,
-  initiatePasswordReset,
-  resetPassword,
-  revokeRefreshToken,
-  verifyRefreshToken,
+    authenticateUser,
+    createUser,
+    generateAccessToken,
+    generateRefreshToken,
+    getUserById,
+    initiatePasswordReset,
+    resetPassword,
+    revokeRefreshToken,
+    verifyRefreshToken,
 } from './modules/auth.js';
 import {
-  methodNotAllowed,
-  notFound,
-  readJsonBody,
-  sendError,
-  sendJson,
+    methodNotAllowed,
+    notFound,
+    readJsonBody,
+    sendError,
+    sendJson,
 } from './utils/http-utils.mjs';
 
 function parsePositiveInt(value: string | undefined | null, fallback: number): number {
@@ -431,11 +441,12 @@ async function handleRequest(
         const accessToken = generateAccessToken(user);
         const refreshToken = generateRefreshToken(user);
 
+        const userPayload = user as UserAuthPayload;
         sendJson(res, 201, {
           user: {
-            id: (user as any).id,
-            email: (user as any).email,
-            role: (user as any).role,
+            id: userPayload.id,
+            email: userPayload.email,
+            role: userPayload.role,
           },
           accessToken,
           refreshToken,
@@ -485,11 +496,12 @@ async function handleRequest(
       const accessToken = generateAccessToken(user);
       const refreshToken = generateRefreshToken(user);
 
+      const userPayload = user as UserAuthPayload;
       sendJson(res, 200, {
         user: {
-          id: (user as any).id,
-          email: (user as any).email,
-          role: (user as any).role,
+          id: userPayload.id,
+          email: userPayload.email,
+          role: userPayload.role,
         },
         accessToken,
         refreshToken,
@@ -532,7 +544,7 @@ async function handleRequest(
         typeof decoded === 'object' &&
         decoded !== null &&
         'userId' in decoded &&
-        typeof (decoded as any).userId === 'string'
+        typeof (decoded as { userId: unknown }).userId === 'string'
       ) {
         const user = getUserById((decoded as { userId: string }).userId);
         if (!user) {

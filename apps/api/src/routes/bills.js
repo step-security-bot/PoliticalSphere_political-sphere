@@ -4,7 +4,7 @@ import { authenticate } from '../auth/auth.middleware.ts';
 import logger from '../logger.js';
 import { getDatabase } from '../modules/stores/index.js';
 // Use local CJS shim for shared schemas in test/runtime
-import { CreateBillSchema } from '../utils/shared-shim.js';
+import { CreateBillSchema, UpdateBillSchema } from '../utils/shared-shim.js';
 
 const router = express.Router();
 
@@ -65,6 +65,35 @@ router.get('/bills', requireAuth, async (req, res) => {
   } catch (error) {
     logger.error('GET /bills failed', { error, query: req.query });
     res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+router.put('/bills/:id', requireAuth, async (req, res) => {
+  try {
+    const input = UpdateBillSchema.parse(req.body);
+    const db = getDatabase();
+
+    // Check if bill exists
+    const existingBill = await db.bills.getById(req.params.id);
+    if (!existingBill) {
+      return res.status(404).json({ error: 'Bill not found' });
+    }
+
+    const updatedBill = await db.bills.update(req.params.id, input);
+    res.json(updatedBill);
+  } catch (error) {
+    logger.error('PUT /bills/:id failed', { error, id: req.params.id });
+    if (error.name === 'ZodError') {
+      return res.status(400).json({
+        error: 'Validation failed',
+        details: error.errors.map(e => ({
+          field: e.path.join('.'),
+          message: e.message,
+        })),
+      });
+    }
+    const message = error instanceof Error ? error.message : 'Internal server error';
+    res.status(500).json({ error: message });
   }
 });
 

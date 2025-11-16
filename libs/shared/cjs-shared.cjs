@@ -3,12 +3,134 @@
 // minimal schema stubs for API route validation used in tests.
 
 const logger = require('./src/logger.js');
+const jwt = require('jsonwebtoken');
 
 // Module-scoped rate limiter state used by helpers below. We expose
 // a reference via exports for compatibility with tests that may
 // inspect or reset it, but implementation functions should use
 // this module-scoped variable to avoid relying on `this` binding.
 const _rateState = new Map();
+
+// JWT secrets used for token validation in tests.
+let _accessSecret = null;
+let _refreshSecret = null;
+
+function assertSecret(secret, label) {
+  if (!secret || typeof secret !== 'string' || secret.length < 32) {
+    throw new Error(`${label} must be at least 32 characters`);
+  }
+}
+
+function initializeJWT(config = {}) {
+  const { accessSecret, refreshSecret } = config;
+  assertSecret(accessSecret, 'JWT access secret');
+  assertSecret(refreshSecret, 'JWT refresh secret');
+  if (accessSecret === refreshSecret) {
+    throw new Error('Access and refresh secrets must be different');
+  }
+  _accessSecret = accessSecret;
+  _refreshSecret = refreshSecret;
+}
+
+function initializeJWTFromEnv() {
+  const accessSecret = process.env.JWT_SECRET;
+  const refreshSecret = process.env.JWT_REFRESH_SECRET;
+  if (!accessSecret) {
+    throw new Error('JWT_SECRET environment variable not set');
+  }
+  if (!refreshSecret) {
+    throw new Error('JWT_REFRESH_SECRET environment variable not set');
+  }
+  initializeJWT({ accessSecret, refreshSecret });
+}
+
+function verifyAccessToken(token) {
+  if (!_accessSecret) {
+    return {
+      valid: false,
+      error: 'JWT configuration not initialized. Call initializeJWT() first',
+    };
+  }
+  try {
+    const decoded = jwt.verify(token, _accessSecret);
+    if (decoded && typeof decoded === 'object' && 'type' in decoded && decoded.type !== 'access') {
+      return {
+        valid: false,
+        error: 'Invalid token type - expected access token',
+      };
+    }
+    return {
+      valid: true,
+      payload: typeof decoded === 'string' ? { token: decoded } : decoded,
+    };
+  } catch (error) {
+    if (error instanceof jwt.TokenExpiredError) {
+      return { valid: false, error: 'Token expired' };
+    }
+    if (error instanceof jwt.JsonWebTokenError) {
+      return { valid: false, error: 'Invalid token' };
+    }
+    return {
+      valid: false,
+      error: error instanceof Error ? error.message : 'Token verification failed',
+    };
+  }
+}
+
+function verifyRefreshToken(token) {
+  if (!_refreshSecret) {
+    return {
+      valid: false,
+      error: 'JWT configuration not initialized. Call initializeJWT() first',
+    };
+  }
+  try {
+    const decoded = jwt.verify(token, _refreshSecret);
+    if (decoded && typeof decoded === 'object' && 'type' in decoded && decoded.type !== 'refresh') {
+      return {
+        valid: false,
+        error: 'Invalid token type - expected refresh token',
+      };
+    }
+    return {
+      valid: true,
+      payload: typeof decoded === 'string' ? { token: decoded } : decoded,
+    };
+  } catch (error) {
+    if (error instanceof jwt.TokenExpiredError) {
+      return { valid: false, error: 'Token expired' };
+    }
+    if (error instanceof jwt.JsonWebTokenError) {
+      return { valid: false, error: 'Invalid token' };
+    }
+    return {
+      valid: false,
+      error: error instanceof Error ? error.message : 'Token verification failed',
+    };
+  }
+}
+
+function extractBearerToken(authHeader) {
+  if (!authHeader || typeof authHeader !== 'string') {
+    return null;
+  }
+  const parts = authHeader.split(' ');
+  if (parts.length !== 2 || parts[0] !== 'Bearer') {
+    return null;
+  }
+  return parts[1] || null;
+}
+
+function verifyAuthHeader(authHeader) {
+  const token = extractBearerToken(authHeader);
+  if (!token) {
+    return {
+      valid: false,
+      error: 'Invalid authorization format. Use: Bearer <token>',
+    };
+  }
+  return verifyAccessToken(token);
+}
 
 // Improved schema stubs with basic validation for test compatibility
 function createSchema(requiredFields = []) {
@@ -122,12 +244,29 @@ module.exports = {
   // Re-export logger APIs used across tests
   createLogger: logger.createLogger,
   getLogger: logger.getLogger,
+  initializeJWT,
+  initializeJWTFromEnv,
+  verifyAccessToken,
+  verifyRefreshToken,
+  verifyAuthHeader,
+  extractBearerToken,
 
   // Provide validation schemas for API routes with basic required field checks
   CreateUserSchema: createSchema(['username', 'email']),
+  UpdateUserSchema: createSchema([]), // Allow optional updates with at least one field
   CreateBillSchema: createSchema(['title', 'proposerId']),
+  UpdateBillSchema: createSchema([]), // Allow optional updates with at least one field
   CreateVoteSchema: createSchema(['billId', 'userId', 'vote']),
+  UpdateVoteSchema: createSchema([]), // Allow optional updates with at least one field
   CreatePartySchema: createSchema(['name']),
+  UpdatePartySchema: createSchema([]), // Allow optional updates with at least one field
+  AnalyzeContentSchema: createSchema(['content']),
+  CreateReportSchema: createSchema(['contentId', 'reason', 'category']),
+  ReviewContentSchema: createSchema(['decision']),
+  CreateNewsSchema: createSchema(['title', 'content', 'category']),
+  UpdateNewsSchema: createSchema([]), // Allow optional updates with at least one field
+  InitiateVerificationSchema: createSchema([]),
+  CompleteVerificationSchema: createSchema(['verificationId']),
 
   // Security/validation helpers
   sanitizeHtml,

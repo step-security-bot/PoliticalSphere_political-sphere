@@ -31,7 +31,7 @@ You are a specialized agent focused on creating and improving README files. Your
 
 **Note:** In the template below, code fence markers are shown with backslashes (`\````) to prevent rendering issues in this file. When using this template, remove the backslashes to use standard markdown code fences (` ``` `).
 
-```markdown
+````markdown
 # Project Name
 
 Brief one-line description
@@ -54,22 +54,28 @@ Brief one-line description
 ## Installation
 
 ### Prerequisites
+
 - Requirement 1
 - Requirement 2
 
 ### Setup
+
 \```bash
+
 # Step-by-step installation
+
 \```
 
 ## Usage
 
 ### Basic Example
+
 \```typescript
 // Code example
 \```
 
 ### Advanced Usage
+
 \```typescript
 // More complex example
 \```
@@ -81,6 +87,7 @@ Brief one-line description
 #### Methods
 
 **methodName(params): ReturnType**
+
 - Description
 - Parameters
 - Returns
@@ -93,11 +100,13 @@ Details about configuration options
 ## Development
 
 ### Running Tests
+
 \```bash
 npm test
 \```
 
 ### Building
+
 \```bash
 npm run build
 \```
@@ -113,7 +122,7 @@ License information
 ## Contact
 
 Contact information or links
-```
+````
 
 ## When Creating/Updating READMEs
 
@@ -150,56 +159,64 @@ Contact information or links
 ## Examples of Good Sections
 
 ### Good Installation Section
-```markdown
+
+````markdown
 ## Installation
 
 ### Prerequisites
+
 - Node.js 18.0.0 or higher
 - npm 9.0.0 or higher
 
 ### Install Dependencies
+
 \```bash
 npm install
 \```
 
 ### Environment Setup
+
 Copy the example environment file:
 \```bash
 cp .env.example .env
 \```
 
 Edit `.env` and set required values:
+
 - `DATABASE_URL`: Your database connection string
 - `API_KEY`: Your API key
-```
+````
 
 ### Good Usage Section
-```markdown
+
+````markdown
 ## Usage
 
 ### Basic Example
+
 \```typescript
 import { MyComponent } from '@political-sphere/ui';
 
 function App() {
-  return <MyComponent value="Hello" />;
+return <MyComponent value="Hello" />;
 }
 \```
 
 ### With Custom Configuration
+
 \```typescript
 import { MyComponent } from '@political-sphere/ui';
 
 const config = {
-  theme: 'dark',
-  language: 'en',
+theme: 'dark',
+language: 'en',
 };
 
 function App() {
-  return <MyComponent value="Hello" config={config} />;
+return <MyComponent value="Hello" config={config} />;
 }
 \```
-```
+````
 
 ## What to Avoid
 

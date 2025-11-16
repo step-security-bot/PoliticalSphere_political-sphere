@@ -61,7 +61,9 @@ if (typeof gAny.matchMedia !== 'function') {
       removeEventListener: () => {},
       dispatchEvent: () => {
         // Invoke listeners without returning their values to satisfy lint rule
-        listeners.forEach(l => { l(); });
+        listeners.forEach(l => {
+          l();
+        });
         return true;
       },
     };

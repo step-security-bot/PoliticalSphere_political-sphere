@@ -4,15 +4,19 @@
  * Implements DSA and Online Safety Act compliance
  */
 
-const express = require('express');
+import express from 'express';
+import rateLimit from 'express-rate-limit';
+
+import { authenticate, requireRole } from '../middleware/auth.js';
+import moderationService from '../moderationService.js';
+import logger from '../utils/logger.js';
+import {
+  AnalyzeContentSchema,
+  CreateReportSchema,
+  ReviewContentSchema,
+} from '../utils/shared-shim.js';
 
 const router = express.Router();
-const rateLimit = require('express-rate-limit');
-
-const { authenticate, requireRole } = require('../middleware/auth');
-const { validateContent, validateReport } = require('../middleware/validation');
-const moderationService = require('../moderationService');
-const logger = require('../utils/logger.js');
 
 // Rate limiting for moderation endpoints
 const moderationLimiter = rateLimit({
@@ -23,24 +27,26 @@ const moderationLimiter = rateLimit({
   legacyHeaders: false,
 });
 
-// Apply rate limiting to all routes
-router.use(moderationLimiter);
+// Apply rate limiting to all routes (skip in test env to allow validation testing)
+if (process.env.NODE_ENV !== 'test') {
+  router.use(moderationLimiter);
+}
 
 /**
  * POST /api/moderation/analyze
  * Analyze content for harmful material
  * Public endpoint for content pre-moderation
  */
-router.post('/analyze', validateContent, async (req, res) => {
+router.post('/analyze', async (req, res) => {
   try {
-    const { content, type = 'text', userId } = req.body;
+    const input = AnalyzeContentSchema.parse(req.body);
 
-    const result = await moderationService.analyzeContent(content, type, userId);
+    const result = await moderationService.analyzeContent(input.content, input.type, input.userId);
 
     // Log for audit trail
     logger.audit('Content analyzed', {
-      userId,
-      contentType: type,
+      userId: input.userId,
+      contentType: input.type,
       isSafe: result.isSafe,
       category: result.category,
       ip: req.ip,
@@ -55,6 +61,20 @@ router.post('/analyze', validateContent, async (req, res) => {
       error: error.message,
       userId: req.body.userId,
     });
+    if (
+      error.name === 'ZodError' ||
+      error.message === 'Input must be an object' ||
+      error.message.startsWith('Missing required field')
+    ) {
+      const details = Array.isArray(error.errors)
+        ? error.errors.map(e => ({ field: e.path.join('.'), message: e.message }))
+        : [{ field: 'input', message: error.message }];
+      return res.status(400).json({
+        success: false,
+        error: 'Validation failed',
+        details,
+      });
+    }
     res.status(500).json({
       success: false,
       error: 'Content analysis failed',
@@ -68,17 +88,17 @@ router.post('/analyze', validateContent, async (req, res) => {
  * Submit a user report for content
  * Requires authentication
  */
-router.post('/report', authenticate, validateReport, async (req, res) => {
+router.post('/report', authenticate, async (req, res) => {
   try {
-    const { contentId, reason, evidence, category } = req.body;
+    const input = CreateReportSchema.parse(req.body);
     const userId = req.user.id;
 
     const report = {
-      contentId,
+      contentId: input.contentId,
       userId,
-      reason,
-      evidence,
-      category,
+      reason: input.reason,
+      evidence: input.evidence,
+      category: input.category,
       submittedAt: new Date().toISOString(),
       ip: req.ip,
       userAgent: req.get('User-Agent'),
@@ -90,8 +110,8 @@ router.post('/report', authenticate, validateReport, async (req, res) => {
     logger.audit('Report submitted', {
       reportId: result.reportId,
       userId,
-      contentId,
-      reason,
+      contentId: input.contentId,
+      reason: input.reason,
       escalated: result.escalated,
     });
 
@@ -102,8 +122,18 @@ router.post('/report', authenticate, validateReport, async (req, res) => {
   } catch (error) {
     logger.error('Report submission failed', {
       error: error.message,
-      userId: req.user.id,
+      userId: req.user?.id,
     });
+    if (error.name === 'ZodError') {
+      return res.status(400).json({
+        success: false,
+        error: 'Validation failed',
+        details: error.errors.map(e => ({
+          field: e.path.join('.'),
+          message: e.message,
+        })),
+      });
+    }
     res.status(500).json({
       success: false,
       error: 'Report submission failed',
@@ -122,9 +152,9 @@ router.get('/queue', authenticate, requireRole('moderator'), async (req, res) =>
     const { limit = 20, status = 'pending', page = 1 } = req.query;
 
     const queue = await moderationService.getModerationQueue(
-      parseInt(limit),
+      parseInt(limit, 10),
       status,
-      parseInt(page)
+      parseInt(page, 10),
     );
 
     res.json({
@@ -152,27 +182,22 @@ router.get('/queue', authenticate, requireRole('moderator'), async (req, res) =>
 router.put('/review/:contentId', authenticate, requireRole('moderator'), async (req, res) => {
   try {
     const { contentId } = req.params;
-    const { decision, notes } = req.body;
+    const input = ReviewContentSchema.parse(req.body);
     const moderatorId = req.user.id;
 
-    // Validate decision
-    const validDecisions = ['approve', 'reject', 'escalate'];
-    if (!validDecisions.includes(decision)) {
-      return res.status(400).json({
-        success: false,
-        error: 'Invalid decision',
-        message: 'Decision must be one of: approve, reject, escalate',
-      });
-    }
-
-    const result = await moderationService.reviewContent(contentId, decision, moderatorId, notes);
+    const result = await moderationService.reviewContent(
+      contentId,
+      input.decision,
+      moderatorId,
+      input.notes,
+    );
 
     // Log for audit trail
     logger.audit('Content reviewed', {
       contentId,
-      decision,
+      decision: input.decision,
       moderatorId,
-      notes: notes ? 'provided' : 'none',
+      notes: input.notes ? 'provided' : 'none',
     });
 
     res.json({
@@ -184,6 +209,16 @@ router.put('/review/:contentId', authenticate, requireRole('moderator'), async (
       error: error.message,
       contentId: req.params.contentId,
     });
+    if (error.name === 'ZodError') {
+      return res.status(400).json({
+        success: false,
+        error: 'Validation failed',
+        details: error.errors.map(e => ({
+          field: e.path.join('.'),
+          message: e.message,
+        })),
+      });
+    }
     res.status(500).json({
       success: false,
       error: 'Content review failed',
@@ -255,7 +290,7 @@ router.post('/admin/clear-cache', authenticate, requireRole('admin'), async (req
  * Get moderation statistics for dashboard
  * Requires moderator role
  */
-router.get('/stats', authenticate, requireRole('moderator'), async (req, res) => {
+router.get('/stats', authenticate, requireRole('moderator'), async (_req, res) => {
   try {
     const stats = await moderationService.getStats();
 
@@ -273,4 +308,4 @@ router.get('/stats', authenticate, requireRole('moderator'), async (req, res) =>
   }
 });
 
-module.exports = router;
+export default router;

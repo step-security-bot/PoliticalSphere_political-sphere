@@ -1,10 +1,10 @@
 ---
 applies_to:
-  - "**/*.test.{ts,tsx,js,jsx}"
-  - "**/*.spec.{ts,tsx,js,jsx}"
-  - "**/tests/**"
-  - "**/test/**"
-  - "**/__tests__/**"
+  - '**/*.test.{ts,tsx,js,jsx}'
+  - '**/*.spec.{ts,tsx,js,jsx}'
+  - '**/tests/**'
+  - '**/test/**'
+  - '**/__tests__/**'
 ---
 
 # Testing Instructions for GitHub Copilot
@@ -14,6 +14,7 @@ applies_to:
 When creating or modifying test files in this repository:
 
 ### File Naming
+
 - Unit tests: `*.test.ts` or `*.spec.ts`
 - Integration tests: `*.integration.test.ts`
 - E2E tests: `*.e2e.test.ts`
@@ -29,10 +30,10 @@ describe('Component/Function name', () => {
     // Arrange: Set up test data and mocks
     const input = { value: 'test' };
     const mockFn = vi.fn();
-    
+
     // Act: Execute the code under test
     const result = functionToTest(input, mockFn);
-    
+
     // Assert: Verify the results
     expect(result).toBe(expected);
     expect(mockFn).toHaveBeenCalledWith(input);
@@ -82,9 +83,9 @@ describe('MyComponent', () => {
   it('should handle user interaction', async () => {
     const user = userEvent.setup();
     render(<MyComponent />);
-    
+
     await user.click(screen.getByRole('button'));
-    
+
     expect(screen.getByText('Clicked')).toBeInTheDocument();
   });
 });
@@ -128,6 +129,7 @@ describe('Input validation', () => {
 ### Common Test Patterns
 
 **Testing async code:**
+
 ```typescript
 it('should fetch data successfully', async () => {
   const data = await fetchData();
@@ -136,6 +138,7 @@ it('should fetch data successfully', async () => {
 ```
 
 **Testing errors:**
+
 ```typescript
 it('should throw error for invalid input', () => {
   expect(() => process(invalidInput)).toThrow('Invalid input');
@@ -143,16 +146,17 @@ it('should throw error for invalid input', () => {
 ```
 
 **Testing React hooks:**
+
 ```typescript
 import { renderHook } from '@testing-library/react';
 
 it('should update state', () => {
   const { result } = renderHook(() => useMyHook());
-  
+
   act(() => {
     result.current.updateValue('new value');
   });
-  
+
   expect(result.current.value).toBe('new value');
 });
 ```
@@ -177,6 +181,7 @@ const user = createTestUser({ email: 'custom@example.com' });
 ### When Creating Tests
 
 Always include:
+
 - [ ] Success scenarios
 - [ ] Failure scenarios
 - [ ] Edge cases (empty input, null, undefined, boundary values)
@@ -194,6 +199,7 @@ Always include:
 ### Test Quality Checklist
 
 Before submitting tests:
+
 - [ ] Tests have clear, descriptive names
 - [ ] Tests follow AAA pattern
 - [ ] All mocks are properly cleaned up

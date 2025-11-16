@@ -216,4 +216,3 @@ function advanceGameState(game, actions = [], seed = 1) {
 }
 
 export { advanceGameState, deterministicId, mulberry32 };
-

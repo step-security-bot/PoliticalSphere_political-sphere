@@ -18,6 +18,8 @@ on:
   workflow_dispatch:
 
 permissions:
+  # Least-privilege: PR comment requires pull-requests: write; checkout needs contents: read.
+  # Retaining statuses: write because Lighthouse action posts commit status checks.
   contents: read
   pull-requests: write
   statuses: write

@@ -4,14 +4,14 @@
  * Supports DSA, GDPR, and ISO 27001 compliance requirements
  */
 
-const express = require('express');
+import express from 'express';
+import rateLimit from 'express-rate-limit';
+
+import complianceService from '../complianceService.js';
+import { authenticate, requireRole } from '../middleware/auth.js';
+import logger from '../utils/logger.js';
 
 const router = express.Router();
-const rateLimit = require('express-rate-limit');
-
-const complianceService = require('../complianceService');
-const { authenticate, requireRole } = require('../middleware/auth');
-const logger = require('../utils/logger.js');
 
 // Rate limiting for compliance endpoints
 const complianceLimiter = rateLimit({
@@ -102,15 +102,18 @@ router.get('/alerts', authenticate, requireRole('moderator'), async (req, res) =
     const alerts = complianceService.getComplianceAlerts(filters);
 
     // Apply pagination
-    const paginatedAlerts = alerts.slice(parseInt(offset), parseInt(offset) + parseInt(limit));
+    const paginatedAlerts = alerts.slice(
+      parseInt(offset, 10),
+      parseInt(offset, 10) + parseInt(limit, 10)
+    );
 
     res.json({
       success: true,
       data: {
         alerts: paginatedAlerts,
         total: alerts.length,
-        limit: parseInt(limit),
-        offset: parseInt(offset),
+        limit: parseInt(limit, 10),
+        offset: parseInt(offset, 10),
       },
     });
   } catch (error) {
@@ -149,7 +152,7 @@ router.put('/alerts/:alertId/resolve', authenticate, requireRole('admin'), async
     logger.audit('Compliance alert resolved via API', {
       alertId,
       resolvedBy: req.user.id,
-      resolution: resolution.substring(0, 100) + '...',
+      resolution: `${resolution.substring(0, 100)}...`,
     });
 
     res.json({
@@ -230,7 +233,7 @@ router.get('/audit-log', authenticate, requireRole('admin'), async (req, res) =>
     const auditLog = complianceService.exportAuditLog(filters);
 
     // Apply limit
-    const limitedLog = auditLog.slice(0, parseInt(limit));
+    const limitedLog = auditLog.slice(0, parseInt(limit, 10));
 
     if (format === 'csv') {
       // Convert to CSV format
@@ -323,11 +326,11 @@ router.post('/admin/cleanup-audit', authenticate, requireRole('admin'), async (r
   try {
     const { daysOld = 90 } = req.body;
 
-    complianceService.cleanupAuditLog(parseInt(daysOld));
+    complianceService.cleanupAuditLog(parseInt(daysOld, 10));
 
     logger.audit('Audit log cleaned up via API', {
       cleanedBy: req.user.id,
-      daysOld: parseInt(daysOld),
+      daysOld: parseInt(daysOld, 10),
     });
 
     res.json({
@@ -402,4 +405,4 @@ function convertToCSV(data) {
   return csvRows.join('\n');
 }
 
-module.exports = router;
+export default router;

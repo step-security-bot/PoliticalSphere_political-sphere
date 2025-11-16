@@ -1,14 +1,14 @@
 /**
  * @vitest-environment jsdom
  */
-import { beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
 
 // Mock window.matchMedia BEFORE any imports
 Object.defineProperty(window, 'matchMedia', {
   writable: true,
   configurable: true,
   value: vi.fn().mockImplementation(query => ({
-    matches: query === '(prefers-reduced-motion: reduce)' ? false : false,
+    matches: false,
     media: query,
     onchange: null,
     addListener: vi.fn(),
@@ -19,7 +19,7 @@ Object.defineProperty(window, 'matchMedia', {
   })),
 });
 
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 // Mock the accessibility hook BEFORE importing the component under test
@@ -92,6 +92,10 @@ describe('GameBoard Component', () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
+  });
+
+  afterEach(() => {
+    cleanup();
   });
 
   describe('Rendering', () => {

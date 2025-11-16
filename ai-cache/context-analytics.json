@@ -1,0 +1,45 @@
+{
+  "contextUsage": {
+    "api-routes": {
+      "count": 0,
+      "lastAccessed": null,
+      "totalBytes": 265427
+    },
+    "frontend-components": {
+      "count": 0,
+      "lastAccessed": null,
+      "totalBytes": 154974
+    },
+    "config": {
+      "count": 6,
+      "lastAccessed": "2025-11-16T18:17:16.504Z",
+      "totalBytes": 84712
+    },
+    "rules-awareness": {
+      "count": 0,
+      "lastAccessed": null,
+      "totalBytes": 66766
+    },
+    "tests": {
+      "count": 0,
+      "lastAccessed": null,
+      "totalBytes": 3225178
+    },
+    "docs": {
+      "count": 0,
+      "lastAccessed": null,
+      "totalBytes": 3995459
+    },
+    "patterns": {
+      "count": 0,
+      "lastAccessed": null,
+      "totalBytes": 25790
+    }
+  },
+  "lruCache": [
+    "config"
+  ],
+  "cacheHits": 6,
+  "cacheMisses": 0,
+  "lastOptimization": null
+}

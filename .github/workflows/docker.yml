@@ -24,10 +24,11 @@ env:
   IMAGE_NAME: ${{ github.repository }}
 
 permissions:
+  # Least-privilege global permissions:
+  # packages: write required to push images to GHCR (non-PR events only)
+  # Removed id-token: write (not using OIDC here) and security-events: write (scoped to job below)
   contents: read
   packages: write
-  id-token: write
-  security-events: write
 
 jobs:
   build-and-push:
@@ -85,7 +86,7 @@ jobs:
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
             type=semver,pattern={{major}}
-            type=sha,prefix={{branch}}-
+            type=sha
             type=raw,value=latest,enable={{is_default_branch}}
 
       - name: Check if Dockerfile exists

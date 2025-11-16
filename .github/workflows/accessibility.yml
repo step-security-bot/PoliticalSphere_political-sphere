@@ -23,9 +23,10 @@ concurrency:
   cancel-in-progress: true
 
 permissions:
+  # Least-privilege: checkout needs contents:read; PR comment requires pull-requests:write.
+  # Removed checks: write (no check-run API usage) per OSSF Scorecard recommendation.
   contents: read
   pull-requests: write
-  checks: write
 
 env:
   NODE_VERSION: '22'
