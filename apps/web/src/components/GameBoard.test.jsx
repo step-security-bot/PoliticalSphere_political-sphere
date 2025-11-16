@@ -19,7 +19,6 @@ Object.defineProperty(window, 'matchMedia', {
   })),
 });
 
-import React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
@@ -346,7 +345,9 @@ describe('GameBoard Component', () => {
     it('should render with empty proposals list', () => {
       render(<GameBoard gameId="game-123" proposals={[]} {...mockCallbacks} />);
 
-      expect(screen.getByText('Political Sphere Game')).toBeInTheDocument();
+      // Use getAllByText for heading that appears multiple times
+      const headings = screen.getAllByText('Political Sphere Game');
+      expect(headings.length).toBeGreaterThan(0);
       expect(screen.getByText('Current Proposals')).toBeInTheDocument();
     });
   });

@@ -12,8 +12,8 @@ FROM node:25-alpine@sha256:7e467cc5aa91c87e94f93c4608cf234ca24aac3ec941f7f3db207
 ARG REVISION="unknown"
 ARG CREATED=""
 
-# Install dumb-init only (no apk upgrade for reproducibility)
-RUN apk add --no-cache dumb-init
+# Install dumb-init and build dependencies for native modules
+RUN apk add --no-cache dumb-init python3 make g++
 
 # Create non-root user with fixed UID/GID
 RUN addgroup -g 1001 -S nodejs && \
