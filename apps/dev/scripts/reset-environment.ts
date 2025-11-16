@@ -154,6 +154,7 @@ function clearCache(warnings: string[]): void {
     'node_modules/.cache',
     'node_modules/.vite',
     '.vitest',
+    'ai/cache',
     'ai-cache',
     'ai/ai-cache',
   ];

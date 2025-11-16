@@ -4,6 +4,43 @@ This file is the canonical, repository-root changelog for Political Sphere. It c
 
 The format follows Keep a Changelog (https://keepachangelog.com/en/1.0.0/) and the project follows Semantic Versioning (https://semver.org/).
 
+## [2025-11-16] - Database Setup Standardization
+
+### Fixed
+
+**PostgreSQL Setup and Seed Script**:
+- **Fixed Prisma seed foreign key error** by creating Election before Constituency (FK constraint satisfaction)
+- **Standardized local PostgreSQL port to 5433** (fallback when default 5432 is occupied)
+- **Removed duplicate DATABASE_URL** from root `.env` to resolve Prisma client conflict
+- **Updated database paths** in api utilities to use `data/runtime/` directory structure
+- **Added comprehensive setup documentation** to `apps/api/README.md`:
+  - Docker and Homebrew installation instructions
+  - Database creation and seeding steps
+  - Troubleshooting guide for common connection/auth issues
+  - Security warnings for credential rotation in non-dev environments
+- **Code quality improvements** in seed script:
+  - Replaced `any[]` with `unknown[]` for Party placeholder (lint compliance)
+  - Added descriptive comments for missing Game/Party models
+
+**Asset Reorganization**:
+- **Moved web application assets** from root `assets/` to proper locations:
+  - Source assets: `assets/*` → `apps/web/src/assets/`
+  - JSON configs: `assets/config/*` → `apps/web/config/`
+- **Added directory READMEs** explaining purpose and maintenance for `apps/web/src/assets/` and `apps/web/config/`
+- **Updated .gitignore** to reflect new AI directory structure (`ai/index/`, `ai/cache/`, `ai/metrics/`)
+
+**Test Fixes**:
+- **Fixed GameBoard.test.jsx** window.matchMedia mock race condition by hoisting mock definition before React imports
+
+**Impact**:
+- ✅ Database seeding now completes successfully without FK violations
+- ✅ Development environment reproducible across Docker and Homebrew PostgreSQL
+- ✅ Eliminated Prisma client initialization errors from duplicate env vars
+- ✅ Asset organization follows Nx monorepo best practices
+- ✅ Tests pass consistently without timing-dependent failures
+
+Closes #102
+
 ## [2025-11-16] - Security Vulnerability Resolution and Workflow Hardening
 
 ### Security

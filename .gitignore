@@ -72,10 +72,8 @@ temp/
 graph.json
 
 # AI indexes and generated artifacts
-ai-index/
-ai/ai-index/
-ai-cache/
-ai/ai-cache/
+ai/index/
+ai/cache/
 ai-assets.json
 ai-controls.json
 ai-metrics.json
@@ -88,7 +86,7 @@ ai-metrics.json
 .turbo/
 node_modules/.cache/
 node_modules/.vite/
-ai-metrics/
+ai/metrics/
 ai/ai-knowledge/semantic-index.json
 ai/ai-knowledge/semantic-index-*.json
 .temp/

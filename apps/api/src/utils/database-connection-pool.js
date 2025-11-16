@@ -4,7 +4,7 @@ const Database = require('better-sqlite3');
 
 const logger = require('./logger');
 
-const DB_PATH = path.join(__dirname, '../../../data/political_sphere.db');
+const DB_PATH = path.join(__dirname, '../../../data/runtime/political_sphere.db');
 
 // Connection pool configuration
 const POOL_CONFIG = {

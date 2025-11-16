@@ -9,12 +9,12 @@ import Database from 'better-sqlite3';
 const getDbPath = () => {
   if (typeof __dirname !== 'undefined') {
     // CommonJS or transformed code
-    return path.join(__dirname, '../../../data/political_sphere.db');
+    return path.join(__dirname, '../../../data/runtime/political_sphere.db');
   } else {
     // Pure ESM
     const __filename = fileURLToPath(import.meta.url);
     const __dirname = path.dirname(__filename);
-    return path.join(__dirname, '../../../data/political_sphere.db');
+    return path.join(__dirname, '../../../data/runtime/political_sphere.db');
   }
 };
 

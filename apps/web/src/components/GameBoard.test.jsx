@@ -1,16 +1,14 @@
 /**
  * @vitest-environment jsdom
  */
-import React from 'react';
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 import { beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
 
-// Mock window.matchMedia
+// Mock window.matchMedia BEFORE any imports
 Object.defineProperty(window, 'matchMedia', {
   writable: true,
+  configurable: true,
   value: vi.fn().mockImplementation(query => ({
-    matches: false,
+    matches: query === '(prefers-reduced-motion: reduce)' ? false : false,
     media: query,
     onchange: null,
     addListener: vi.fn(),
@@ -20,6 +18,10 @@ Object.defineProperty(window, 'matchMedia', {
     dispatchEvent: vi.fn(),
   })),
 });
+
+import React from 'react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 
 // Mock the accessibility hook BEFORE importing the component under test
 const announceMock = vi.fn();

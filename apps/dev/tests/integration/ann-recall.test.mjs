@@ -29,8 +29,8 @@ function findRepoRoot(startDir) {
 
 const REPO_ROOT = findRepoRoot(__dirname);
 
-const INDEX_FILE = path.join(REPO_ROOT, 'ai-index', 'codebase-index.json');
-const VECTORS_FILE = path.join(REPO_ROOT, 'ai-index', 'semantic-vectors.json');
+const INDEX_FILE = path.join(REPO_ROOT, 'ai', 'index', 'codebase-index.json');
+const VECTORS_FILE = path.join(REPO_ROOT, 'ai', 'index', 'semantic-vectors.json');
 
 // Helpers
 function wait(ms) {

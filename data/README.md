@@ -30,7 +30,8 @@
 - `fixtures/`: Test fixtures
 - `datasets/`: Dataset files
 - `issues/`: Data issues tracking
-- Runtime .db files (gitignored)
+- `runtime/`: Ephemeral SQLite databases created locally (gitignored)
+- Runtime databases outside `runtime/` are forbidden
 
 **Maturity Level:** Stable
 

@@ -1,0 +1,12 @@
+{
+  "features": {
+    "betaDashboard": false,
+    "civicEducation": true,
+    "experimentalGameModes": false,
+    "localization": true,
+    "predictiveInsights": false,
+    "realtimeNotifications": false
+  },
+  "lastUpdated": "2025-01-01T00:00:00.000Z",
+  "notes": "Update these flags via the deployment pipeline rather than editing them manually."
+}

@@ -6,7 +6,7 @@ import Database from 'better-sqlite3';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const DB_PATH = path.join(__dirname, '../../../data/political_sphere.db');
+const DB_PATH = path.join(__dirname, '../../../data/runtime/political_sphere.db');
 
 class DatabaseConnection {
   constructor() {

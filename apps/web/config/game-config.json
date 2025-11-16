@@ -1,0 +1,19 @@
+{
+  "roundDurationSeconds": 300,
+  "maxPlayersPerMatch": 8,
+  "minPlayersToStart": 2,
+  "scoreWeights": {
+    "policyAccuracy": 0.6,
+    "civicEngagement": 0.3,
+    "teamSupport": 0.1
+  },
+  "cooldowns": {
+    "policyPlaySeconds": 30,
+    "factCheckSeconds": 45
+  },
+  "leaderboard": {
+    "maxEntries": 100,
+    "resetCron": "0 0 * * MON"
+  },
+  "version": 1
+}
