@@ -32,6 +32,7 @@ echo "   - tree-sitter (multi-language AST parsing)"
 echo "   - @xenova/transformers (local AI embeddings)"
 echo ""
 
+# Pin versions for security - update via security review process only
 npm install --save-dev \
   tree-sitter@0.21.0 \
   tree-sitter-javascript@0.21.0 \
@@ -53,6 +54,7 @@ read -p "Install Phase 2 dependencies? (y/N) " -n 1 -r
 echo ""
 
 if [[ $REPLY =~ ^[Yy]$ ]]; then
+  # Pin versions for security - update via security review process only
   npm install --save-dev chokidar@3.5.3 vectordb@0.4.0
   echo ""
   echo "${GREEN}✅ Phase 2 complete${NC}"

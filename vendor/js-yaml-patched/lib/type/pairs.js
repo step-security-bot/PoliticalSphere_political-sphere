@@ -7,8 +7,12 @@ var _toString = Object.prototype.toString;
 function resolveYamlPairs(data) {
   if (data === null) return true;
 
-  var index, length, pair, keys, result,
-      object = data;
+  var index,
+    length,
+    pair,
+    keys,
+    result,
+    object = data;
 
   result = new Array(object.length);
 
@@ -21,7 +25,7 @@ function resolveYamlPairs(data) {
 
     if (keys.length !== 1) return false;
 
-    result[index] = [ keys[0], pair[keys[0]] ];
+    result[index] = [keys[0], pair[keys[0]]];
   }
 
   return true;
@@ -30,8 +34,12 @@ function resolveYamlPairs(data) {
 function constructYamlPairs(data) {
   if (data === null) return [];
 
-  var index, length, pair, keys, result,
-      object = data;
+  var index,
+    length,
+    pair,
+    keys,
+    result,
+    object = data;
 
   result = new Array(object.length);
 
@@ -40,7 +48,7 @@ function constructYamlPairs(data) {
 
     keys = Object.keys(pair);
 
-    result[index] = [ keys[0], pair[keys[0]] ];
+    result[index] = [keys[0], pair[keys[0]]];
   }
 
   return result;
@@ -49,5 +57,5 @@ function constructYamlPairs(data) {
 module.exports = new Type('tag:yaml.org,2002:pairs', {
   kind: 'sequence',
   resolve: resolveYamlPairs,
-  construct: constructYamlPairs
+  construct: constructYamlPairs,
 });

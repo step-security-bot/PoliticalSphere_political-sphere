@@ -7,8 +7,10 @@ function resolveYamlNull(data) {
 
   var max = data.length;
 
-  return (max === 1 && data === '~') ||
-         (max === 4 && (data === 'null' || data === 'Null' || data === 'NULL'));
+  return (
+    (max === 1 && data === '~') ||
+    (max === 4 && (data === 'null' || data === 'Null' || data === 'NULL'))
+  );
 }
 
 function constructYamlNull() {
@@ -25,11 +27,21 @@ module.exports = new Type('tag:yaml.org,2002:null', {
   construct: constructYamlNull,
   predicate: isNull,
   represent: {
-    canonical: function () { return '~';    },
-    lowercase: function () { return 'null'; },
-    uppercase: function () { return 'NULL'; },
-    camelcase: function () { return 'Null'; },
-    empty:     function () { return '';     }
+    canonical: function () {
+      return '~';
+    },
+    lowercase: function () {
+      return 'null';
+    },
+    uppercase: function () {
+      return 'NULL';
+    },
+    camelcase: function () {
+      return 'Null';
+    },
+    empty: function () {
+      return '';
+    },
   },
-  defaultStyle: 'lowercase'
+  defaultStyle: 'lowercase',
 });

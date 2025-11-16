@@ -1,29 +1,31 @@
 'use strict';
 
 var common = require('../common');
-var Type   = require('../type');
+var Type = require('../type');
 
 function isHexCode(c) {
-  return ((0x30/* 0 */ <= c) && (c <= 0x39/* 9 */)) ||
-         ((0x41/* A */ <= c) && (c <= 0x46/* F */)) ||
-         ((0x61/* a */ <= c) && (c <= 0x66/* f */));
+  return (
+    (0x30 /* 0 */ <= c && c <= 0x39) /* 9 */ ||
+    (0x41 /* A */ <= c && c <= 0x46) /* F */ ||
+    (0x61 /* a */ <= c && c <= 0x66) /* f */
+  );
 }
 
 function isOctCode(c) {
-  return ((0x30/* 0 */ <= c) && (c <= 0x37/* 7 */));
+  return 0x30 /* 0 */ <= c && c <= 0x37 /* 7 */;
 }
 
 function isDecCode(c) {
-  return ((0x30/* 0 */ <= c) && (c <= 0x39/* 9 */));
+  return 0x30 /* 0 */ <= c && c <= 0x39 /* 9 */;
 }
 
 function resolveYamlInteger(data) {
   if (data === null) return false;
 
   var max = data.length,
-      index = 0,
-      hasDigits = false,
-      ch;
+    index = 0,
+    hasDigits = false,
+    ch;
 
   if (!max) return false;
 
@@ -54,7 +56,6 @@ function resolveYamlInteger(data) {
       return hasDigits && ch !== '_';
     }
 
-
     if (ch === 'x') {
       // base 16
       index++;
@@ -67,7 +68,6 @@ function resolveYamlInteger(data) {
       }
       return hasDigits && ch !== '_';
     }
-
 
     if (ch === 'o') {
       // base 8
@@ -104,7 +104,9 @@ function resolveYamlInteger(data) {
 }
 
 function constructYamlInteger(data) {
-  var value = data, sign = 1, ch;
+  var value = data,
+    sign = 1,
+    ch;
 
   if (value.indexOf('_') !== -1) {
     value = value.replace(/_/g, '');
@@ -130,8 +132,11 @@ function constructYamlInteger(data) {
 }
 
 function isInteger(object) {
-  return (Object.prototype.toString.call(object)) === '[object Number]' &&
-         (object % 1 === 0 && !common.isNegativeZero(object));
+  return (
+    Object.prototype.toString.call(object) === '[object Number]' &&
+    object % 1 === 0 &&
+    !common.isNegativeZero(object)
+  );
 }
 
 module.exports = new Type('tag:yaml.org,2002:int', {
@@ -140,17 +145,27 @@ module.exports = new Type('tag:yaml.org,2002:int', {
   construct: constructYamlInteger,
   predicate: isInteger,
   represent: {
-    binary:      function (obj) { return obj >= 0 ? '0b' + obj.toString(2) : '-0b' + obj.toString(2).slice(1); },
-    octal:       function (obj) { return obj >= 0 ? '0o'  + obj.toString(8) : '-0o'  + obj.toString(8).slice(1); },
-    decimal:     function (obj) { return obj.toString(10); },
+    binary: function (obj) {
+      return obj >= 0 ? '0b' + obj.toString(2) : '-0b' + obj.toString(2).slice(1);
+    },
+    octal: function (obj) {
+      return obj >= 0 ? '0o' + obj.toString(8) : '-0o' + obj.toString(8).slice(1);
+    },
+    decimal: function (obj) {
+      return obj.toString(10);
+    },
     /* eslint-disable max-len */
-    hexadecimal: function (obj) { return obj >= 0 ? '0x' + obj.toString(16).toUpperCase() :  '-0x' + obj.toString(16).toUpperCase().slice(1); }
+    hexadecimal: function (obj) {
+      return obj >= 0
+        ? '0x' + obj.toString(16).toUpperCase()
+        : '-0x' + obj.toString(16).toUpperCase().slice(1);
+    },
   },
   defaultStyle: 'decimal',
   styleAliases: {
-    binary:      [ 2,  'bin' ],
-    octal:       [ 8,  'oct' ],
-    decimal:     [ 10, 'dec' ],
-    hexadecimal: [ 16, 'hex' ]
-  }
+    binary: [2, 'bin'],
+    octal: [8, 'oct'],
+    decimal: [10, 'dec'],
+    hexadecimal: [16, 'hex'],
+  },
 });

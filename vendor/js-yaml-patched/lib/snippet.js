@@ -1,8 +1,6 @@
 'use strict';
 
-
 var common = require('./common');
-
 
 // get snippet for a single line, respecting maxLength
 function getLine(buffer, lineStart, lineEnd, position, maxLineLength) {
@@ -22,15 +20,13 @@ function getLine(buffer, lineStart, lineEnd, position, maxLineLength) {
 
   return {
     str: head + buffer.slice(lineStart, lineEnd).replace(/\t/g, '→') + tail,
-    pos: position - lineStart + head.length // relative position
+    pos: position - lineStart + head.length, // relative position
   };
 }
-
 
 function padStart(string, max) {
   return common.repeat(' ', max - string.length) + string;
 }
-
 
 function makeSnippet(mark, options) {
   options = Object.create(options || null);
@@ -38,12 +34,12 @@ function makeSnippet(mark, options) {
   if (!mark.buffer) return null;
 
   if (!options.maxLength) options.maxLength = 79;
-  if (typeof options.indent      !== 'number') options.indent      = 1;
+  if (typeof options.indent !== 'number') options.indent = 1;
   if (typeof options.linesBefore !== 'number') options.linesBefore = 3;
-  if (typeof options.linesAfter  !== 'number') options.linesAfter  = 2;
+  if (typeof options.linesAfter !== 'number') options.linesAfter = 2;
 
   var re = /\r?\n|\r|\0/g;
-  var lineStarts = [ 0 ];
+  var lineStarts = [0];
   var lineEnds = [];
   var match;
   var foundLineNo = -1;
@@ -59,7 +55,9 @@ function makeSnippet(mark, options) {
 
   if (foundLineNo < 0) foundLineNo = lineStarts.length - 1;
 
-  var result = '', i, line;
+  var result = '',
+    i,
+    line;
   var lineNoLength = Math.min(mark.line + options.linesAfter, lineEnds.length).toString().length;
   var maxLineLength = options.maxLength - (options.indent + lineNoLength + 3);
 
@@ -72,13 +70,28 @@ function makeSnippet(mark, options) {
       mark.position - (lineStarts[foundLineNo] - lineStarts[foundLineNo - i]),
       maxLineLength
     );
-    result = common.repeat(' ', options.indent) + padStart((mark.line - i + 1).toString(), lineNoLength) +
-      ' | ' + line.str + '\n' + result;
+    result =
+      common.repeat(' ', options.indent) +
+      padStart((mark.line - i + 1).toString(), lineNoLength) +
+      ' | ' +
+      line.str +
+      '\n' +
+      result;
   }
 
-  line = getLine(mark.buffer, lineStarts[foundLineNo], lineEnds[foundLineNo], mark.position, maxLineLength);
-  result += common.repeat(' ', options.indent) + padStart((mark.line + 1).toString(), lineNoLength) +
-    ' | ' + line.str + '\n';
+  line = getLine(
+    mark.buffer,
+    lineStarts[foundLineNo],
+    lineEnds[foundLineNo],
+    mark.position,
+    maxLineLength
+  );
+  result +=
+    common.repeat(' ', options.indent) +
+    padStart((mark.line + 1).toString(), lineNoLength) +
+    ' | ' +
+    line.str +
+    '\n';
   result += common.repeat('-', options.indent + lineNoLength + 3 + line.pos) + '^' + '\n';
 
   for (i = 1; i <= options.linesAfter; i++) {
@@ -90,12 +103,15 @@ function makeSnippet(mark, options) {
       mark.position - (lineStarts[foundLineNo] - lineStarts[foundLineNo + i]),
       maxLineLength
     );
-    result += common.repeat(' ', options.indent) + padStart((mark.line + i + 1).toString(), lineNoLength) +
-      ' | ' + line.str + '\n';
+    result +=
+      common.repeat(' ', options.indent) +
+      padStart((mark.line + i + 1).toString(), lineNoLength) +
+      ' | ' +
+      line.str +
+      '\n';
   }
 
   return result.replace(/\n$/, '');
 }
-
 
 module.exports = makeSnippet;

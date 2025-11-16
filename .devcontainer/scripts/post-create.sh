@@ -3,6 +3,7 @@ set -euo pipefail
 
 echo "📦 Installing Python tooling (DVC & friends)..."
 if [[ -f requirements-dev.txt ]]; then
+  # Pin pip version for supply chain security
   PYTHON_TOOLS_PIP_VERSION="24.3.1"
   python3 -m pip install --user --upgrade "pip==${PYTHON_TOOLS_PIP_VERSION}"
 

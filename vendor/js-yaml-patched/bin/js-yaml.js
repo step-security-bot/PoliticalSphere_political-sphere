@@ -1,59 +1,52 @@
 #!/usr/bin/env node
 
-
 'use strict';
 
 /*eslint-disable no-console*/
 
-
-var fs       = require('fs');
+var fs = require('fs');
 var argparse = require('argparse');
-var yaml     = require('..');
-
+var yaml = require('..');
 
 ////////////////////////////////////////////////////////////////////////////////
 
-
 var cli = new argparse.ArgumentParser({
-  prog:     'js-yaml',
-  add_help:  true
+  prog: 'js-yaml',
+  add_help: true,
 });
 
 cli.add_argument('-v', '--version', {
   action: 'version',
-  version: require('../package.json').version
+  version: require('../package.json').version,
 });
 
 cli.add_argument('-c', '--compact', {
-  help:   'Display errors in compact mode',
-  action: 'store_true'
+  help: 'Display errors in compact mode',
+  action: 'store_true',
 });
 
 // deprecated (not needed after we removed output colors)
 // option suppressed, but not completely removed for compatibility
 cli.add_argument('-j', '--to-json', {
-  help:   argparse.SUPPRESS,
-  dest:   'json',
-  action: 'store_true'
+  help: argparse.SUPPRESS,
+  dest: 'json',
+  action: 'store_true',
 });
 
 cli.add_argument('-t', '--trace', {
-  help:   'Show stack trace on error',
-  action: 'store_true'
+  help: 'Show stack trace on error',
+  action: 'store_true',
 });
 
 cli.add_argument('file', {
-  help:   'File to read, utf-8 encoded without BOM',
-  nargs:  '?',
-  default: '-'
+  help: 'File to read, utf-8 encoded without BOM',
+  nargs: '?',
+  default: '-',
 });
-
 
 ////////////////////////////////////////////////////////////////////////////////
 
-
 var options = cli.parse_args();
-
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -84,10 +77,7 @@ readFile(options.file, 'utf8', function (error, input) {
       process.exit(2);
     }
 
-    console.error(
-      options.trace && error.stack ||
-      error.message ||
-      String(error));
+    console.error((options.trace && error.stack) || error.message || String(error));
 
     process.exit(1);
   }
@@ -99,12 +89,17 @@ readFile(options.file, 'utf8', function (error, input) {
     if (err instanceof SyntaxError) {
       try {
         output = [];
-        yaml.loadAll(input, function (doc) { output.push(doc); }, {});
+        yaml.loadAll(
+          input,
+          function (doc) {
+            output.push(doc);
+          },
+          {}
+        );
         isYaml = true;
 
         if (output.length === 0) output = null;
         else if (output.length === 1) output = output[0];
-
       } catch (e) {
         if (options.trace && err.stack) console.error(e.stack);
         else console.error(e.toString(options.compact));
@@ -112,10 +107,7 @@ readFile(options.file, 'utf8', function (error, input) {
         process.exit(1);
       }
     } else {
-      console.error(
-        options.trace && err.stack ||
-        err.message ||
-        String(err));
+      console.error((options.trace && err.stack) || err.message || String(err));
 
       process.exit(1);
     }

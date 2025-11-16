@@ -100,6 +100,7 @@ log_info "Step 2: Installing project dependencies..."
 
 if [ ! -d "node_modules" ]; then
   log_info "Running npm install..."
+  # Install dependencies - package-lock.json pins exact versions for security
   npm install
   log_success "Dependencies installed"
 else

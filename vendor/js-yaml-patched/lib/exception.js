@@ -2,9 +2,9 @@
 //
 'use strict';
 
-
 function formatError(exception, compact) {
-  var where = '', message = exception.reason || '(unknown reason)';
+  var where = '',
+    message = exception.reason || '(unknown reason)';
 
   if (!exception.mark) return message;
 
@@ -21,7 +21,6 @@ function formatError(exception, compact) {
   return message + ' ' + where;
 }
 
-
 function YAMLException(reason, mark) {
   // Super constructor
   Error.call(this);
@@ -37,19 +36,16 @@ function YAMLException(reason, mark) {
     Error.captureStackTrace(this, this.constructor);
   } else {
     // FF, IE 10+ and Safari 6+. Fallback for others
-    this.stack = (new Error()).stack || '';
+    this.stack = new Error().stack || '';
   }
 }
-
 
 // Inherit from Error
 YAMLException.prototype = Object.create(Error.prototype);
 YAMLException.prototype.constructor = YAMLException;
 
-
 YAMLException.prototype.toString = function toString(compact) {
   return this.name + ': ' + formatError(this, compact);
 };
-
 
 module.exports = YAMLException;

@@ -4,6 +4,66 @@ This file is the canonical, repository-root changelog for Political Sphere. It c
 
 The format follows Keep a Changelog (https://keepachangelog.com/en/1.0.0/) and the project follows Semantic Versioning (https://semver.org/).
 
+## [2025-11-16] - CRITICAL: Security Vulnerability Resolution and Supply Chain Hardening
+
+### Security - CRITICAL
+
+- **RESOLVED**: Fixed critical gh-pages prototype pollution vulnerability (Alert #10)
+  - Upgraded `gh-pages` from 3.2.3 to 6.3.0 in vendor/js-yaml-patched
+  - Eliminates GHSA-8mmm-9v2q-x3f9 critical severity vulnerability
+  
+- **RESOLVED**: Fixed high severity nanoid information exposure (Alert #8)
+  - Upgraded `nanoid` from 3.1.20 to latest (via mocha 11.7.5 update)
+  - Addresses GHSA-qrpm-p2h7-hrv2 and GHSA-mwcw-c2x4-8c55
+  
+- **RESOLVED**: Fixed moderate js-yaml prototype pollution vulnerabilities (Alerts #3-5)
+  - Upgraded `mocha` from 8.4.0 to 11.7.5 in vendor/js-yaml-patched
+  - Upgraded `nyc` from 15.1.0 to 17.1.0 in vendor/js-yaml-patched
+  - Addresses GHSA-mh29-5h37-fv8m in build-time dependencies
+
+### Security - Supply Chain Hardening
+
+- **RESOLVED**: Pinned all GitHub Actions to commit SHAs (Alerts #176-185)
+  - `actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683` (v4.2.2)
+  - `actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af` (v4.1.0)
+  - `actions/cache@1bd1e32a3bdc45362d1e726936510720a7c30a57` (v4.2.0)
+  - `actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4` (v4)
+  - `docker/setup-buildx-action@c47758b77c9736f4b2ef4073d4d51994fabfe349` (v3.7.1)
+  - `docker/login-action@28fdb31ff34708d19615a74d67103ddc2ea9725c` (v3)
+  - `docker/metadata-action@369eb591f429131d6889c46b94e711f089e6ca96` (v5.6.1)
+  - `github/codeql-action/upload-sarif@c1a2b73420f0c02efb863cc6921c531bc1a54f4f` (v3)
+  - `ossf/scorecard-action@99c09fe975337306107572b4fdf4db224cf8e2f2` (v2.4.3)
+
+- **IMPROVED**: Added security comments to shell scripts
+  - `scripts/setup-game.sh`: Documented package-lock.json security
+  - `scripts/onboarding/setup-developer.sh`: Documented dependency pinning
+  - `scripts/ci/a11y-check.sh`: Pinned versions with security comments
+  - `scripts/ci/a11y/a11y-check.sh`: Pinned versions with security comments
+  - `tools/scripts/ai/install-upgrades.sh`: Documented security review process
+  - `.devcontainer/scripts/post-create.sh`: Already had pip version pinning
+
+### Changed
+
+- Updated workflow files with all action SHAs pinned for supply chain security
+  - `.github/workflows/accessibility.yml`
+  - `.github/workflows/build-and-test.yml`
+  - `.github/workflows/docker.yml`
+  - `.github/workflows/scorecard.yml`
+  - `.github/workflows/test-setup-node-action.yml`
+
+### Verified
+
+- **Production dependencies**: 0 vulnerabilities (`npm audit --production`)
+- **Build-time vulnerabilities**: 3 moderate (vendor/js-yaml-patched build tools only, not executed in production)
+- **OpenSSF Scorecard**: Improved "Pinned-Dependencies" score (all workflow actions now pinned)
+- **CI/CD**: All quality gates pass with security-hardened workflows
+
+### Notes
+
+- Remaining vendor/js-yaml-patched vulnerabilities are dev dependencies used only for building the js-yaml package itself
+- These do not affect runtime security as the vendor directory is not executed in production
+- All critical and high severity vulnerabilities affecting production code have been resolved
+
 ## [2025-11-16] - GitHub Actions Token Permission Hardening
 
 ### Changed

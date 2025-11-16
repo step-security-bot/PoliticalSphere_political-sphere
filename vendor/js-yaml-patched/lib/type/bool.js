@@ -7,14 +7,14 @@ function resolveYamlBoolean(data) {
 
   var max = data.length;
 
-  return (max === 4 && (data === 'true' || data === 'True' || data === 'TRUE')) ||
-         (max === 5 && (data === 'false' || data === 'False' || data === 'FALSE'));
+  return (
+    (max === 4 && (data === 'true' || data === 'True' || data === 'TRUE')) ||
+    (max === 5 && (data === 'false' || data === 'False' || data === 'FALSE'))
+  );
 }
 
 function constructYamlBoolean(data) {
-  return data === 'true' ||
-         data === 'True' ||
-         data === 'TRUE';
+  return data === 'true' || data === 'True' || data === 'TRUE';
 }
 
 function isBoolean(object) {
@@ -27,9 +27,15 @@ module.exports = new Type('tag:yaml.org,2002:bool', {
   construct: constructYamlBoolean,
   predicate: isBoolean,
   represent: {
-    lowercase: function (object) { return object ? 'true' : 'false'; },
-    uppercase: function (object) { return object ? 'TRUE' : 'FALSE'; },
-    camelcase: function (object) { return object ? 'True' : 'False'; }
+    lowercase: function (object) {
+      return object ? 'true' : 'false';
+    },
+    uppercase: function (object) {
+      return object ? 'TRUE' : 'FALSE';
+    },
+    camelcase: function (object) {
+      return object ? 'True' : 'False';
+    },
   },
-  defaultStyle: 'lowercase'
+  defaultStyle: 'lowercase',
 });

@@ -7,7 +7,8 @@ var _hasOwnProperty = Object.prototype.hasOwnProperty;
 function resolveYamlSet(data) {
   if (data === null) return true;
 
-  var key, object = data;
+  var key,
+    object = data;
 
   for (key in object) {
     if (_hasOwnProperty.call(object, key)) {
@@ -25,5 +26,5 @@ function constructYamlSet(data) {
 module.exports = new Type('tag:yaml.org,2002:set', {
   kind: 'mapping',
   resolve: resolveYamlSet,
-  construct: constructYamlSet
+  construct: constructYamlSet,
 });
