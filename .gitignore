@@ -74,6 +74,10 @@ graph.json
 # AI indexes and generated artifacts
 ai/index/
 ai/cache/
+ai/context-bundles/
+ai-index/
+ai-cache/
+ai-metrics/
 ai-assets.json
 ai-controls.json
 ai-metrics.json
