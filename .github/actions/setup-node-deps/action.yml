@@ -39,6 +39,8 @@ runs:
 
     - name: Install dependencies
       shell: bash
+      env:
+        INSTALL_CMD: ${{ inputs.install-command }}
       run: |
         echo "📦 Installing dependencies..."
 
@@ -50,7 +52,7 @@ runs:
           npm install --package-lock-only
         fi
 
-        eval "${{ inputs.install-command }}"
+        eval "${INSTALL_CMD}"
         echo "✅ Dependencies installed successfully"
 
     - name: Verify installation

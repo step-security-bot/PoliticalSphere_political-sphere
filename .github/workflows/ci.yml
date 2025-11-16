@@ -735,25 +735,34 @@ jobs:
     if: always()
     steps:
       - name: Check if all jobs passed
+        env:
+          LINT_RESULT: ${{ needs.lint-and-typecheck.result }}
+          SECURITY_RESULT: ${{ needs.security-scan.result }}
+          TEST_RESULT: ${{ needs.test.result }}
+          BUILD_RESULT: ${{ needs.build.result }}
+          INTEGRATION_TEST_RESULT: ${{ needs.integration-test.result }}
+          E2E_TEST_RESULT: ${{ needs.e2e-test.result }}
+          ACCESSIBILITY_TEST_RESULT: ${{ needs.accessibility-test.result }}
+          CI_PERF_RESULT: ${{ needs.ci-performance-monitoring.result }}
+          EVENT_NAME: ${{ github.event_name }}
+          PR_HEAD_REPO: ${{ github.event.pull_request.head.repo.full_name }}
+          CURRENT_REPO: ${{ github.repository }}
         run: |
           # Debug: Print all job results
           echo "=== Job Results Debug ==="
-          echo "lint-and-typecheck: ${{ needs.lint-and-typecheck.result }}"
-          echo "security-scan: ${{ needs.security-scan.result }}"
-          echo "test: ${{ needs.test.result }}"
-          echo "build: ${{ needs.build.result }}"
-          echo "integration-test: ${{ needs.integration-test.result }}"
-          echo "e2e-test: ${{ needs.e2e-test.result }}"
-          echo "accessibility-test: ${{ needs.accessibility-test.result }}"
-          echo "ci-performance-monitoring: ${{ needs.ci-performance-monitoring.result }}"
+          echo "lint-and-typecheck: ${LINT_RESULT}"
+          echo "security-scan: ${SECURITY_RESULT}"
+          echo "test: ${TEST_RESULT}"
+          echo "build: ${BUILD_RESULT}"
+          echo "integration-test: ${INTEGRATION_TEST_RESULT}"
+          echo "e2e-test: ${E2E_TEST_RESULT}"
+          echo "accessibility-test: ${ACCESSIBILITY_TEST_RESULT}"
+          echo "ci-performance-monitoring: ${CI_PERF_RESULT}"
           echo "======================="
 
           # For fork PRs, allow skipped jobs that require secrets
           IS_FORK_PR=false
-          EVENT_NAME="${{ github.event_name }}"
-          PR_HEAD_REPO="${{ github.event.pull_request.head.repo.full_name }}"
-          CURRENT_REPO="${{ github.repository }}"
-          if [[ "$EVENT_NAME" == "pull_request" ]] && [[ "$PR_HEAD_REPO" != "$CURRENT_REPO" ]]; then
+          if [[ "${EVENT_NAME}" == "pull_request" ]] && [[ "${PR_HEAD_REPO}" != "${CURRENT_REPO}" ]]; then
             IS_FORK_PR=true
             echo "Detected fork PR - allowing skipped jobs for secret-dependent tasks"
           fi
@@ -761,26 +770,26 @@ jobs:
           # Check required jobs (these should never be skipped)
           FAILED=false
 
-          if [[ "${{ needs.lint-and-typecheck.result }}" != "success" ]]; then
+          if [[ "${LINT_RESULT}" != "success" ]]; then
             echo "❌ lint-and-typecheck failed or was skipped"
             FAILED=true
           fi
 
-          if [[ "${{ needs.security-scan.result }}" != "success" ]]; then
+          if [[ "${SECURITY_RESULT}" != "success" ]]; then
             echo "❌ security-scan failed or was skipped"
             FAILED=true
           fi
 
           # For fork PRs, allow skipped for jobs requiring secrets
-          if [[ "$IS_FORK_PR" == "true" ]]; then
+          if [[ "${IS_FORK_PR}" == "true" ]]; then
             # Check if jobs are either success or skipped
             for job in test build integration-test e2e-test accessibility-test; do
               case $job in
-                test) result="${{ needs.test.result }}" ;;
-                build) result="${{ needs.build.result }}" ;;
-                integration-test) result="${{ needs.integration-test.result }}" ;;
-                e2e-test) result="${{ needs.e2e-test.result }}" ;;
-                accessibility-test) result="${{ needs.accessibility-test.result }}" ;;
+                test) result="${TEST_RESULT}" ;;
+                build) result="${BUILD_RESULT}" ;;
+                integration-test) result="${INTEGRATION_TEST_RESULT}" ;;
+                e2e-test) result="${E2E_TEST_RESULT}" ;;
+                accessibility-test) result="${ACCESSIBILITY_TEST_RESULT}" ;;
               esac
               
               if [[ "${result}" != "success" && "${result}" != "skipped" ]]; then
@@ -790,36 +799,35 @@ jobs:
             done
           else
             # For non-fork PRs and pushes, require all jobs to succeed
-            if [[ "${{ needs.test.result }}" != "success" ]]; then
-              echo "❌ test failed or was skipped (result: ${{ needs.test.result }})"
+            if [[ "${TEST_RESULT}" != "success" ]]; then
+              echo "❌ test failed or was skipped (result: ${TEST_RESULT})"
               FAILED=true
             fi
             
-            if [[ "${{ needs.build.result }}" != "success" ]]; then
-              echo "❌ build failed or was skipped (result: ${{ needs.build.result }})"
+            if [[ "${BUILD_RESULT}" != "success" ]]; then
+              echo "❌ build failed or was skipped (result: ${BUILD_RESULT})"
               FAILED=true
             fi
             
-            if [[ "${{ needs.integration-test.result }}" != "success" ]]; then
-              echo "❌ integration-test failed or was skipped (result: ${{ needs.integration-test.result }})"
+            if [[ "${INTEGRATION_TEST_RESULT}" != "success" ]]; then
+              echo "❌ integration-test failed or was skipped (result: ${INTEGRATION_TEST_RESULT})"
               FAILED=true
             fi
             
-            if [[ "${{ needs.e2e-test.result }}" != "success" ]]; then
-              echo "❌ e2e-test failed or was skipped (result: ${{ needs.e2e-test.result }})"
+            if [[ "${E2E_TEST_RESULT}" != "success" ]]; then
+              echo "❌ e2e-test failed or was skipped (result: ${E2E_TEST_RESULT})"
               FAILED=true
             fi
             
-            if [[ "${{ needs.accessibility-test.result }}" != "success" ]]; then
-              echo "❌ accessibility-test failed or was skipped (result: ${{ needs.accessibility-test.result }})"
+            if [[ "${ACCESSIBILITY_TEST_RESULT}" != "success" ]]; then
+              echo "❌ accessibility-test failed or was skipped (result: ${ACCESSIBILITY_TEST_RESULT})"
               FAILED=true
             fi
           fi
 
           # ci-performance-monitoring can be skipped
-          PERF_MONITOR_RESULT="${{ needs.ci-performance-monitoring.result }}"
-          if [[ "${PERF_MONITOR_RESULT}" != "success" && "${PERF_MONITOR_RESULT}" != "skipped" ]]; then
-            echo "⚠️  ci-performance-monitoring failed (result: \"${PERF_MONITOR_RESULT}\")"
+          if [[ "${CI_PERF_RESULT}" != "success" && "${CI_PERF_RESULT}" != "skipped" ]]; then
+            echo "⚠️  ci-performance-monitoring failed (result: \"${CI_PERF_RESULT}\")"
             # Not failing the build for monitoring issues
           fi
 

@@ -73,9 +73,11 @@ jobs:
             ai-index-
       
       - name: Build code index
+        env:
+          FULL_REBUILD: ${{ inputs.full_rebuild }}
         run: |
           echo "Building AI code index..."
-          if [[ "${{ inputs.full_rebuild }}" == "true" ]]; then
+          if [[ "${FULL_REBUILD}" == "true" ]]; then
             echo "Full rebuild requested"
             node tools/scripts/ai/code-indexer.js build --full
           else

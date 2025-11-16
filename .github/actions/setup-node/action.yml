@@ -71,12 +71,15 @@ runs:
       name: Prepare cache variables
       if: ${{ steps.detect-pm.outputs.pm != 'none' }}
       shell: bash
+      env:
+        PM: ${{ steps.detect-pm.outputs.pm }}
+        DEP_PATH: ${{ inputs.cache-dependency-path }}
       run: |
         set -euo pipefail
-        pm="${{ steps.detect-pm.outputs.pm }}"
-        depPath="${{ inputs.cache-dependency-path }}"
-        if [[ -z "$depPath" ]]; then
-          case "$pm" in
+        pm="${PM}"
+        depPath="${DEP_PATH}"
+        if [[ -z "${depPath}" ]]; then
+          case "${pm}" in
             npm) depPath="**/package-lock.json **/npm-shrinkwrap.json" ;;
             yarn) depPath="**/yarn.lock" ;;
             pnpm) depPath="**/pnpm-lock.yaml" ;;
@@ -86,7 +89,7 @@ runs:
         # Cache paths per OS
         case "$RUNNER_OS" in
           Linux|macOS)
-            case "$pm" in
+            case "${pm}" in
               npm) cachePath="$HOME/.npm" ;;
               yarn) cachePath="$HOME/.cache/yarn" ;;
               pnpm) cachePath="$HOME/.pnpm-store" ;;
@@ -113,17 +116,19 @@ runs:
       name: Compute dependency hash
       if: ${{ steps.cache-vars.outputs.cache-path != '' }}
       shell: bash
+      env:
+        DEP_PATH: ${{ steps.cache-vars.outputs.dep-path }}
       run: |
         set -euo pipefail
-        depPath="${{ steps.cache-vars.outputs.dep-path }}"
-        if [[ -z "$depPath" ]]; then
+        depPath="${DEP_PATH}"
+        if [[ -z "${depPath}" ]]; then
           echo "hash=none" >> "${GITHUB_OUTPUT}"
           exit 0
         fi
         shopt -s globstar nullglob
         files=()
         # depPath may contain space-separated patterns
-        for pat in $depPath; do
+        for pat in ${depPath}; do
           for f in $pat; do
             if [[ -f "$f" ]]; then files+=("$f"); fi
           done
