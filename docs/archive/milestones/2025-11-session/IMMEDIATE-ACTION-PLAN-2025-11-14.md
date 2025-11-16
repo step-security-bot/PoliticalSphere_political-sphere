@@ -1,4 +1,5 @@
 # Immediate Action Plan - Political Sphere
+
 **Date**: 2025-11-14  
 **Priority**: CRITICAL  
 **Estimated Time**: 4-6 hours
@@ -6,14 +7,17 @@
 ## 🔴 Critical Blockers (Fix Today)
 
 ### 1. TypeScript Compilation Errors (16 errors) - 2 hours
+
 **Impact**: Prevents clean builds, blocks deployment  
 **Files Affected**:
+
 - `apps/api/src/game/game.service.ts` (1 error)
 - `apps/game-server/src/index.ts` (15 errors)
 
 **Root Cause**: Game/GameState interface mismatches
 
 **Action Items**:
+
 ```typescript
 // Fix 1: Update GameState interface in libs/game-engine/src/engine.d.ts
 interface GameState {
@@ -49,6 +53,7 @@ if (!newProposal) {
 ```
 
 **Verification**:
+
 ```bash
 npm run type-check
 # Should show 0 errors
@@ -57,13 +62,16 @@ npm run type-check
 ---
 
 ### 2. WebSocket Test Failures (13 tests) - 1 hour
+
 **Impact**: Real-time game features untested, potential production issues  
 **Files Affected**: `apps/game-server/src/websocket/WebSocketServer.test.ts`
 
 **Root Cause**: JWT initialization failing in test environment
 
 **Action Items**:
+
 1. Update test setup to properly initialize JWT:
+
 ```typescript
 // In beforeEach
 process.env.JWT_SECRET = TEST_JWT_SECRET;
@@ -75,6 +83,7 @@ initializeJWTFromEnv();
 ```
 
 2. Mock JWT functions if initialization fails:
+
 ```typescript
 import { vi } from 'vitest';
 
@@ -89,6 +98,7 @@ vi.mock('@political-sphere/shared', async () => {
 ```
 
 **Verification**:
+
 ```bash
 npm test -- apps/game-server/src/websocket/WebSocketServer.test.ts
 # Should show 13/13 passing
@@ -97,8 +107,10 @@ npm test -- apps/game-server/src/websocket/WebSocketServer.test.ts
 ---
 
 ### 3. Remaining ESLint Errors (29 errors) - 1 hour
+
 **Impact**: Code quality issues, potential bugs  
 **Categories**:
+
 - Unused variables (15 errors)
 - Import restrictions (5 errors)
 - Empty blocks (3 errors)
@@ -107,6 +119,7 @@ npm test -- apps/game-server/src/websocket/WebSocketServer.test.ts
 **Action Items**:
 
 **Quick Fixes** (prefix unused vars with underscore):
+
 ```bash
 # Find all unused variable errors
 npm run lint 2>&1 | grep "is defined but never used"
@@ -115,6 +128,7 @@ npm run lint 2>&1 | grep "is defined but never used"
 ```
 
 **Import Restrictions** (libs/ai-system patterns):
+
 ```typescript
 // Current (restricted):
 import { types } from '../../types';
@@ -124,6 +138,7 @@ import { types } from '@political-sphere/ai-system/types';
 ```
 
 **Empty Blocks**:
+
 ```typescript
 // Current:
 try {
@@ -139,6 +154,7 @@ try {
 ```
 
 **Verification**:
+
 ```bash
 npm run lint
 # Should show 0 errors, only warnings acceptable
@@ -149,17 +165,21 @@ npm run lint
 ## 🟡 High Priority (Fix This Week)
 
 ### 4. Input Validation Audit - 3 hours
+
 **Security Impact**: HIGH - Potential XSS, SQL injection  
 **Scope**: All API routes (users, bills, votes, parties, moderation)
 
 **Action Items**:
+
 1. Audit each route handler:
+
 ```bash
 # Check for missing validation
 grep -r "router.post\|router.put" apps/api/src/routes/
 ```
 
 2. Add Zod schemas for all endpoints:
+
 ```typescript
 import { z } from 'zod';
 
@@ -175,6 +195,7 @@ const validated = CreateBillSchema.parse(req.body);
 ```
 
 3. Add validation tests:
+
 ```typescript
 describe('Input Validation', () => {
   it('should reject XSS attempts', async () => {
@@ -182,7 +203,7 @@ describe('Input Validation', () => {
     const res = await request(app).post('/bills').send(malicious);
     expect(res.status).toBe(400);
   });
-  
+
   it('should reject SQL injection', async () => {
     const malicious = { title: "'; DROP TABLE bills; --" };
     const res = await request(app).post('/bills').send(malicious);
@@ -192,6 +213,7 @@ describe('Input Validation', () => {
 ```
 
 **Verification**:
+
 ```bash
 npm test -- apps/api/tests/integration/security.test.mjs
 # All validation tests should pass
@@ -200,14 +222,17 @@ npm test -- apps/api/tests/integration/security.test.mjs
 ---
 
 ### 5. Install Missing Type Definitions - 5 minutes
+
 **Impact**: TypeScript warnings, reduced type safety
 
 **Action Items**:
+
 ```bash
 npm install --save-dev @types/ws
 ```
 
 **Verification**:
+
 ```bash
 npm run type-check
 # Should show no warnings about 'ws' module
@@ -216,25 +241,31 @@ npm run type-check
 ---
 
 ### 6. Fix Remaining Test Failures (5 tests) - 2 hours
+
 **Impact**: Incomplete test coverage, potential bugs
 
 **Action Items**:
+
 1. Identify failing tests:
+
 ```bash
 npm test 2>&1 | grep "FAIL"
 ```
 
 2. Debug each failure:
+
 ```bash
 npm test -- <failing-test-file> --reporter=verbose
 ```
 
 3. Fix or document:
+
 - Fix if bug in code
 - Update test if expectations wrong
 - Skip if flaky (document in test file)
 
 **Verification**:
+
 ```bash
 npm test
 # Should show 290/290 passing (100%)
@@ -244,28 +275,27 @@ npm test
 
 ## 📊 Success Metrics
 
-| Metric | Current | Target | Status |
-|--------|---------|--------|--------|
-| TypeScript Errors | 16 | 0 | 🔴 Critical |
-| Test Pass Rate | 93.8% | 100% | 🟡 Good |
-| ESLint Errors | 29 | 0 | 🟡 Fixable |
-| WebSocket Tests | 0/13 | 13/13 | 🔴 Critical |
-| Input Validation | Incomplete | Complete | 🟡 In Progress |
+| Metric            | Current    | Target   | Status         |
+| ----------------- | ---------- | -------- | -------------- |
+| TypeScript Errors | 16         | 0        | 🔴 Critical    |
+| Test Pass Rate    | 93.8%      | 100%     | 🟡 Good        |
+| ESLint Errors     | 29         | 0        | 🟡 Fixable     |
+| WebSocket Tests   | 0/13       | 13/13    | 🔴 Critical    |
+| Input Validation  | Incomplete | Complete | 🟡 In Progress |
 
 ---
 
 ## 🎯 Today's Goals (4-6 hours)
 
 **Morning (2-3 hours)**:
+
 1. ✅ Fix TypeScript errors (2 hours)
 2. ✅ Fix WebSocket tests (1 hour)
 
-**Afternoon (2-3 hours)**:
-3. ✅ Fix ESLint errors (1 hour)
-4. ✅ Install @types/ws (5 min)
-5. ✅ Start input validation audit (1-2 hours)
+**Afternoon (2-3 hours)**: 3. ✅ Fix ESLint errors (1 hour) 4. ✅ Install @types/ws (5 min) 5. ✅ Start input validation audit (1-2 hours)
 
 **End of Day**:
+
 - TypeScript: 0 errors ✅
 - Tests: 100% passing ✅
 - ESLint: 0 errors ✅
@@ -276,18 +306,22 @@ npm test
 ## 📝 Notes
 
 **Blockers**:
+
 - None identified
 
 **Dependencies**:
+
 - All fixes can be done independently
 - No external dependencies required
 
 **Risks**:
+
 - Type fixes may reveal additional issues
 - WebSocket test fixes may require architecture changes
 - Input validation audit may uncover security issues
 
 **Mitigation**:
+
 - Test thoroughly after each fix
 - Document any new issues found
 - Create follow-up tasks for complex issues

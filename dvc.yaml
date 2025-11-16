@@ -1,8 +1,0 @@
-stages:
-  track-datasets:
-    cmd: bash scripts/data/dvc-track.sh
-    deps:
-      - scripts/data/dvc-track.sh
-    outs_no_cache:
-      - data/seeds
-      - data/fixtures

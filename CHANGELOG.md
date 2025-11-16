@@ -4,6 +4,34 @@ This file is the canonical, repository-root changelog for Political Sphere. It c
 
 The format follows Keep a Changelog (https://keepachangelog.com/en/1.0.0/) and the project follows Semantic Versioning (https://semver.org/).
 
+## [2025-11-16] - Repository Cleanup and Organization
+
+### Removed
+
+- **Unused Infrastructure**: Removed GraphQL configuration and schema files (`.graphqlrc.yml`, `apps/api/graphql/schema.graphql`)
+  - GraphQL not actively implemented; configuration was placeholder only
+  - Reduces complexity and maintenance burden
+  
+- **Unused Dependencies**: Removed DVC and Python dependency files (`dvc.yaml`, `requirements-dev.txt`)
+  - Data Version Control not actively used in TypeScript/Node.js project
+  - Python tooling not required for current stack
+
+### Changed
+
+- **Documentation Organization**: Moved 16 historical session documents to archive
+  - Relocated point-in-time status reports from November 2025 session to `docs/archive/milestones/2025-11-session/`
+  - Moved completed `implementation_plan.md` to `docs/archive/deprecated/`
+  - Active status now consolidated in `CHANGELOG.md` and `docs/TODO.md`
+  - Improves discoverability and reduces confusion for new contributors
+
+### Rationale
+
+This cleanup removes files that don't add value to the project:
+- Build artifacts and diagnostics should be gitignored, not committed
+- Historical session reports have value preserved in CHANGELOG and actual implementation
+- Unused infrastructure (GraphQL, DVC) creates maintenance burden without benefit
+- Clearer separation between active documentation and historical archives
+
 ## [2025-11-16] - CRITICAL: Security Vulnerability Resolution and Supply Chain Hardening
 
 ### Security - CRITICAL
