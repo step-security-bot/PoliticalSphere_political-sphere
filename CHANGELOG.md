@@ -4,6 +4,43 @@ This file is the canonical, repository-root changelog for Political Sphere. It c
 
 The format follows Keep a Changelog (https://keepachangelog.com/en/1.0.0/) and the project follows Semantic Versioning (https://semver.org/).
 
+## [2025-11-16] - Security Vulnerability Resolution and Workflow Hardening
+
+### Security
+
+**GitHub Actions Supply Chain Security (OSSF Scorecard)**:
+- **Pinned Actions to Commit SHAs**: All GitHub Actions in 4 workflow files now use immutable commit SHA references instead of mutable version tags to prevent tag manipulation attacks:
+  - `accessibility.yml`: Pinned 4 actions (checkout, setup-node, upload-artifact, github-script)
+  - `ai-governance.yml`: Pinned 9 actions (checkout, setup-node, github-script, changed-files, upload-artifact)
+  - `ai-maintenance.yml`: Pinned 9 actions (checkout, setup-node, cache/restore, cache/save, upload-artifact, download-artifact, github-script)
+  - `visual-regression.yml`: Pinned 5 actions (checkout, setup-node, upload-artifact x2, github-script)
+- **Version Comments**: Added inline version comments (e.g., `# v4.2.2`) for traceability and maintainability
+- **Reproducible Builds**: Ensures exact action versions are used across all workflow runs
+
+**Dependency Vulnerability Fixes (npm audit)**:
+- **Fixed js-yaml Prototype Pollution (GHSA-mh29-5h37-fv8m, CVE-2024-12751)**:
+  - **Severity**: Moderate (CVSS 5.3)
+  - **CWE**: CWE-1321 (Prototype Pollution)
+  - **Affected versions**: js-yaml < 4.1.1
+  - **Transitive dependencies affected**: codecov → js-yaml@3.14.1, nx → @yarnpkg/parsers → js-yaml@3.14.1, nx → front-matter → js-yaml@3.14.1
+- **Added npm Package Overrides**: Force all transitive dependencies to use js-yaml >= 4.1.1:
+  ```json
+  "overrides": {
+    "codecov": { "js-yaml": "^4.1.1" },
+    "nx": { "js-yaml": "^4.1.1" },
+    "@yarnpkg/parsers": { "js-yaml": "^4.1.1" },
+    "front-matter": { "js-yaml": "^4.1.1" }
+  }
+  ```
+- **Verification**: Eliminated all 10 moderate severity vulnerabilities (npm audit now shows 0 vulnerabilities)
+
+**Impact**:
+- ✅ OSSF Scorecard: Improved score by pinning all GitHub Actions to immutable commits
+- ✅ Dependabot: Resolved all moderate severity npm vulnerabilities
+- ✅ Attack Surface: Eliminated prototype pollution vulnerability in YAML parsing
+- ✅ Supply Chain: Protected against malicious action tag updates
+- ✅ Reproducibility: Guaranteed consistent action behavior across workflow runs
+
 ## [2025-11-16] - Accessibility and Security Scanner Improvements
 
 ### Fixed
