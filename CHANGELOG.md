@@ -8,6 +8,12 @@ The format follows Keep a Changelog (https://keepachangelog.com/en/1.0.0/) and t
 
 ### Removed
 
+- **Duplicate Scripts**: Merged 14 duplicate CI/CD scripts (kept organized subdirectory versions)
+  - Removed 9 duplicate .mjs files from `scripts/ci/` root (kept versions in `check/`, `test/`, `validate/`, `metrics/`)
+  - Removed 4 duplicate .sh files from `scripts/ci/` root (kept versions in `check/`, `a11y/`, `test/`, `monitor/`)
+  - Removed duplicate `scripts/tools/adr-tool.mjs` (kept `scripts/adr-tool.mjs` referenced in package.json)
+  - **Rationale**: Eliminates fragmented responsibility and maintenance burden; organized structure improves discoverability
+
 - **Unused Infrastructure**: Removed GraphQL configuration and schema files (`.graphqlrc.yml`, `apps/api/graphql/schema.graphql`)
   - GraphQL not actively implemented; configuration was placeholder only
   - Reduces complexity and maintenance burden
