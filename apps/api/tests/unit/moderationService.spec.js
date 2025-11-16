@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import ModerationService from '../../src/moderationService.js';
+import ModerationService from '../../src/services/moderation.service.js';
 
 // Mock dependencies
 vi.mock('../../src/logger.js', () => ({

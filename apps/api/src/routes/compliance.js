@@ -7,7 +7,7 @@
 import express from 'express';
 import rateLimit from 'express-rate-limit';
 
-import complianceService from '../complianceService.js';
+import complianceService from '../services/compliance.service.js';
 import { authenticate, requireRole } from '../middleware/auth.js';
 import logger from '../utils/logger.js';
 

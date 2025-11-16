@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import AgeVerificationService from '../../src/modules/ageVerificationService.js';
+import AgeVerificationService from '../../src/services/age-verification.service.js';
 
 // Mock dependencies
 vi.mock('../../src/logger.js', () => ({

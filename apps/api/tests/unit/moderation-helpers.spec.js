@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 
-import ModerationService from '../../src/moderationService.js';
+import ModerationService from '../../src/services/moderation.service.js';
 
 // The moderationService now uses ESM dynamic imports instead of require,
 // so we can import it directly without module patching

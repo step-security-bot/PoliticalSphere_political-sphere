@@ -4,6 +4,18 @@ This file is the canonical, repository-root changelog for Political Sphere. It c
 
 The format follows Keep a Changelog (https://keepachangelog.com/en/1.0.0/) and the project follows Semantic Versioning (https://semver.org/).
 
+## [2025-11-16] - Naming Convention Compliance
+
+### Changed
+
+- **Service Files**: Renamed and relocated service files to comply with kebab-case naming convention
+  - `ageVerificationService.js` → `services/age-verification.service.js`
+  - `complianceService.js` → `services/compliance.service.js`
+  - `moderationService.js` → `services/moderation.service.js`
+  - `newsStore.js` → `stores/news-store.js`
+  - Updated all imports in routes and test files
+  - **Rationale**: Enforces kebab-case file naming standard and consolidates services into services/ directory
+
 ## [2025-11-16] - Repository Cleanup and Organization
 
 ### Changed

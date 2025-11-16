@@ -8,7 +8,7 @@ import express from 'express';
 import rateLimit from 'express-rate-limit';
 
 import { authenticate, requireRole } from '../middleware/auth.js';
-import moderationService from '../moderationService.js';
+import moderationService from '../services/moderation.service.js';
 import logger from '../utils/logger.js';
 import {
   AnalyzeContentSchema,
