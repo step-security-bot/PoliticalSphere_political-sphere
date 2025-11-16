@@ -14,7 +14,7 @@ const PatternMatcher = require('./pattern-matcher.cjs');
 
 const AI_DIR = path.join(__dirname, '../../../ai');
 const CONTEXT_DIR = path.join(__dirname, '../../../tools/ai/context-bundles');
-const CACHE_FILE = path.join(AI_DIR, 'ai-cache/cache.json');
+const CACHE_FILE = path.join(AI_DIR, 'cache/cache.json');
 
 class AIHub {
   constructor() {

@@ -9,7 +9,9 @@
 
 function mulberry32(a) {
   return () => {
-    var t = (a += 0x6d2b79f5);
+    // Advance state separately to satisfy lint rule about assignment within expressions
+    a += 0x6d2b79f5;
+    let t = a;
     t = Math.imul(t ^ (t >>> 15), t | 1);
     t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
     return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
@@ -66,6 +68,9 @@ function simulateEconomy(economy, enactedPolicies) {
  * @param {Array<Object>} actions - array of PlayerAction objects
  * @param {number} seed - numeric seed for RNG (optional)
  */
+// STATUS: OPERATIONAL
+// RATIONALE: Implements deterministic state advancement matching engine.d.ts definitions.
+// Alignment: Ensures required fields (id, createdAt) exist on Vote and Debate for type safety.
 function advanceGameState(game, actions = [], seed = 1) {
   const rng = mulberry32(Number(seed) || 1);
   // Deep clone simple JSON-serializable state
@@ -112,6 +117,7 @@ function advanceGameState(game, actions = [], seed = 1) {
           currentSpeakerIndex: 0,
           timeLimit: 300000, // 5 minutes per speaker
           startedAt: new Date(1000 * counter + Math.floor(rng() * 1000)).toISOString(),
+          createdAt: new Date(1000 * counter + Math.floor(rng() * 1000)).toISOString(),
           status: 'active',
         };
         state.debates.push(debate);
@@ -147,10 +153,12 @@ function advanceGameState(game, actions = [], seed = 1) {
           break;
         }
         const vote = {
+          id: deterministicId('vote', rng),
           playerId,
           proposalId: payload.proposalId,
           choice: payload.choice,
           timestamp: new Date(1000 * counter + Math.floor(rng() * 1000)).toISOString(),
+          createdAt: new Date(1000 * counter + Math.floor(rng() * 1000)).toISOString(),
         };
         state.votes.push(vote);
         break;
@@ -207,4 +215,5 @@ function advanceGameState(game, actions = [], seed = 1) {
   return state;
 }
 
-export { advanceGameState, mulberry32, deterministicId };
+export { advanceGameState, deterministicId, mulberry32 };
+

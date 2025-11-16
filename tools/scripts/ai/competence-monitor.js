@@ -4,20 +4,31 @@
   Usage: node scripts/ai/competence-monitor.js assess
 */
 
-import { existsSync, readFileSync, writeFileSync } from 'fs';
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs';
 import { dirname, resolve } from 'path';
 import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-// Metrics live at <repo-root>/ai-metrics/stats.json (tests expect this path)
-const METRICS_FILE = resolve(__dirname, '../../../ai-metrics/stats.json');
+// Metrics live at <repo-root>/ai/metrics/stats.json (legacy ai-metrics/ supported for migration)
+const METRICS_PATHS = [
+  resolve(__dirname, '../../../ai/metrics/stats.json'),
+  resolve(__dirname, '../../../ai-metrics/stats.json'),
+];
+function resolveMetricsFile() {
+  return METRICS_PATHS.find(file => existsSync(file)) || METRICS_PATHS[0];
+}
+const METRICS_FILE = resolveMetricsFile();
 const PATTERNS_FILE = resolve(__dirname, '../../../ai/ai-learning/patterns.json');
 
 function assessCompetence() {
   if (!existsSync(METRICS_FILE)) {
     console.log('No metrics available. Creating initial metrics file.');
+    const dir = dirname(METRICS_FILE);
+    if (!existsSync(dir)) {
+      mkdirSync(dir, { recursive: true });
+    }
     const initialMetrics = {
       responseTimes: [],
       cacheHits: 0,

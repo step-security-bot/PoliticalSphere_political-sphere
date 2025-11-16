@@ -202,11 +202,6 @@ const REPO_STRUCTURE = {
   'reports/coverage': { type: 'dir', required: true },
   'reports/performance': { type: 'dir', required: true },
 
-  // Assets structure
-  'assets/images': { type: 'dir', required: true },
-  'assets/fonts': { type: 'dir', required: true },
-  'assets/icons': { type: 'dir', required: true },
-  'assets/audio': { type: 'dir', required: true },
 };
 
 // Apps detailed structure

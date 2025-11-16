@@ -6,7 +6,7 @@
 
 ## Methodology
 
-Phase 1 performed a breadth-first structural scan of top-level directories (`apps/`, `libs/`, `docs/`, `scripts/`, `tools/`, `config/`, `assets/`), targeted pattern searches (secrets, ESLint configs, workflows), and cross-referenced with authoritative standards:
+Phase 1 performed a breadth-first structural scan of top-level directories (`apps/`, `libs/`, `docs/`, `scripts/`, `tools/`, `config/`) plus high-churn application subtrees like `apps/web/src/assets/`, targeted pattern searches (secrets, ESLint configs, workflows), and cross-referenced with authoritative standards:
 
 - 12-Factor App (Config, Dependencies, Logs, Build/Release/Run)
 - OWASP ASVS v5.0.0 (updated stable release – project docs currently cite 4.0.3)

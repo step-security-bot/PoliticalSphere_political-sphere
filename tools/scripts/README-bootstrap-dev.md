@@ -23,9 +23,9 @@ You can also add this to your onboarding instructions, Makefile, or as a pre-hoo
 
 For troubleshooting, check the logs in:
 
-- `ai-cache/index-server.log`
-- `ai-cache/context-preloader.log`
-- `ai-metrics/metrics-server.log`
+- `ai/cache/index-server.log`
+- `ai/cache/context-preloader.log`
+- `ai/metrics/metrics-server.log`
 - `nx-daemon.log`
 
 If you encounter issues with Docker, ensure Docker Desktop is installed and running.

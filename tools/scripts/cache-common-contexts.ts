@@ -7,7 +7,7 @@
 import { readFileSync, writeFileSync, existsSync, statSync } from 'fs';
 import { join } from 'path';
 
-const CACHE_FILE = 'ai-cache/common-contexts.json';
+const CACHE_FILE = 'ai/cache/common-contexts.json';
 
 interface CachedContext {
   name: string;

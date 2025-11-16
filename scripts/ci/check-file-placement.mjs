@@ -27,7 +27,6 @@ const rules = {
     '.npmrc',
     '.yamllint',
     'ai-controls.json',
-    'ai-metrics.json',
     'package-lock.json',
     'TODO-STEPS.md',
     'TODO.md',
@@ -55,15 +54,11 @@ const rules = {
     'docs/': ['docs'],
     'scripts/': ['scripts'], // Note: scripts are allowed at root per governance
     'ai/': ['ai'],
-    'assets/': ['assets'],
     'reports/': ['reports'],
     'data/': ['data'], // Data directory allowed at root
     'static/': ['static'], // Static assets allowed at root
     'coverage/': ['coverage'], // Test coverage reports
     'logs/': ['logs'], // Application logs
-    'ai-cache/': ['ai-cache'], // AI cache (legacy, should move to ai/)
-    'ai-index/': ['ai-index'], // AI index (legacy, should move to ai/)
-    'ai-metrics/': ['ai-metrics'], // AI metrics (legacy, should move to ai/)
     '.vitest/': ['.vitest'], // Vitest cache directory
   },
 };

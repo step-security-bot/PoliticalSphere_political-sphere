@@ -48,7 +48,7 @@ const MIGRATION_PLAN = {
   // Phase 2: Consolidate audit reports into reports/
   auditReports: [
     {
-      source: 'ai-index',
+      source: 'ai/index',
       target: 'reports/ai-index',
       type: 'directory',
       priority: 2,

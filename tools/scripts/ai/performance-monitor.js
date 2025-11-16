@@ -16,17 +16,23 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const REPO_ROOT = path.resolve(__dirname, '../../..');
-const METRICS_FILE = path.join(REPO_ROOT, 'ai-metrics.json');
-const CACHE_FILE = path.join(REPO_ROOT, 'ai', 'ai-cache', 'cache.json');
+const METRICS_FILES = [
+  path.join(REPO_ROOT, 'ai', 'metrics', 'performance.json'),
+  path.join(REPO_ROOT, 'ai-metrics.json'),
+];
+const CACHE_FILE = path.join(REPO_ROOT, 'ai', 'cache', 'cache.json');
 const PATTERNS_FILE = path.join(REPO_ROOT, 'ai', 'ai-learning', 'patterns.json');
 
 function loadMetrics() {
-  try {
-    return JSON.parse(fs.readFileSync(METRICS_FILE, 'utf8'));
-  } catch (error) {
-    console.error('Failed to load metrics:', error.message);
-    return null;
+  for (const file of METRICS_FILES) {
+    try {
+      return JSON.parse(fs.readFileSync(file, 'utf8'));
+    } catch (_) {
+      // try next
+    }
   }
+  console.error('Failed to load metrics from any known location');
+  return null;
 }
 
 function loadCache() {

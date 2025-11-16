@@ -1,6 +1,7 @@
 // Security utility functions for the Political Sphere API
 // Implements OWASP best practices for input validation and sanitization
 
+import { compare, hash } from 'bcrypt';
 import { createHash, randomBytes, timingSafeEqual } from 'node:crypto';
 import { env } from 'node:process';
 

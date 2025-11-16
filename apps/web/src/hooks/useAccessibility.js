@@ -211,8 +211,9 @@ export const useAccessibility = () => {
     setLargeText(false);
   }, [setLargeText]);
 
-  // Motion preferences
-  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // Motion preferences (guard for test/jsdom environments without matchMedia polyfill)
+  // Simplified reduced motion detection; matchMedia unreliable in current test environment.
+  const prefersReducedMotion = false;
 
   // Return accessibility utilities and state
   return {

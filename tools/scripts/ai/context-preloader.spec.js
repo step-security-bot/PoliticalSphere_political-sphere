@@ -4,20 +4,31 @@ import { existsSync, readFileSync, unlinkSync } from 'fs';
 import { join } from 'path';
 
 describe('Context Preloader', () => {
-  const cacheFile = join(process.cwd(), 'ai-cache', 'context-cache.json');
+  const cacheCandidates = [
+    join(process.cwd(), 'ai', 'cache', 'context-cache.json'),
+    join(process.cwd(), 'ai-cache', 'context-cache.json'),
+    join(process.cwd(), 'ai', 'ai-cache', 'context-cache.json'),
+  ];
+
+  const resolveCacheFile = () =>
+    cacheCandidates.find(candidate => existsSync(candidate)) || cacheCandidates[0];
 
   beforeEach(() => {
     // Clean up any existing cache
-    if (existsSync(cacheFile)) {
-      unlinkSync(cacheFile);
-    }
+    cacheCandidates.forEach(candidate => {
+      if (existsSync(candidate)) {
+        unlinkSync(candidate);
+      }
+    });
   });
 
   afterEach(() => {
     // Clean up after tests
-    if (existsSync(cacheFile)) {
-      unlinkSync(cacheFile);
-    }
+    cacheCandidates.forEach(candidate => {
+      if (existsSync(candidate)) {
+        unlinkSync(candidate);
+      }
+    });
   });
 
   it('should preload contexts successfully', () => {
@@ -25,9 +36,9 @@ describe('Context Preloader', () => {
       stdio: 'pipe',
     });
 
-    expect(existsSync(cacheFile)).toBe(true);
+    expect(cacheCandidates.some(candidate => existsSync(candidate))).toBe(true);
 
-    const cache = JSON.parse(readFileSync(cacheFile, 'utf8'));
+    const cache = JSON.parse(readFileSync(resolveCacheFile(), 'utf8'));
     expect(cache).toHaveProperty('contexts');
     expect(typeof cache.contexts).toBe('object');
     expect(cache).toHaveProperty('lastUpdated');
@@ -77,7 +88,7 @@ describe('Context Preloader', () => {
       stdio: 'pipe',
     });
 
-    const cache = JSON.parse(readFileSync(cacheFile, 'utf8'));
+    const cache = JSON.parse(readFileSync(resolveCacheFile(), 'utf8'));
     expect(cache.contexts).toHaveProperty('rules-awareness');
     expect(cache.contexts).toHaveProperty('patterns');
 

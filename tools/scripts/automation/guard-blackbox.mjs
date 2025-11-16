@@ -86,7 +86,7 @@ const checks = [
   },
 ];
 
-const metricsDir = join(repoRoot, 'ai-metrics');
+const metricsDir = join(repoRoot, 'ai', 'metrics');
 const guardHistoryPath = join(metricsDir, 'guard-history.json');
 
 const persistGuardRun = async entry => {

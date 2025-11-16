@@ -6,7 +6,30 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const REPO_ROOT = path.resolve(__dirname, '../../..');
-const DB_DIR = path.join(REPO_ROOT, 'ai/ai-metrics');
+const METRICS_DIR_CANDIDATES = [
+  path.join(REPO_ROOT, 'ai', 'metrics'),
+  path.join(REPO_ROOT, 'ai-metrics'),
+  path.join(REPO_ROOT, 'ai', 'ai-metrics'),
+];
+
+function resolveMetricsDir() {
+  for (const dir of METRICS_DIR_CANDIDATES) {
+    try {
+      if (!fs.existsSync(dir)) {
+        fs.mkdirSync(dir, { recursive: true });
+      }
+      if (dir !== METRICS_DIR_CANDIDATES[0]) {
+        console.warn('[analytics] using legacy metrics directory', dir);
+      }
+      return dir;
+    } catch (error) {
+      console.warn('[analytics] unable to initialise metrics directory', dir, error.message);
+    }
+  }
+  throw new Error('Unable to initialise AI metrics directory');
+}
+
+const DB_DIR = resolveMetricsDir();
 const DB_PATH = path.join(DB_DIR, 'analytics.db');
 let sqliteAvailable = true;
 

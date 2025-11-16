@@ -37,6 +37,7 @@ class EmbeddingEngine {
     this.cacheDir =
       options.cacheDir ||
       this.resolveCacheDir(
+        path.join(__dirname, '../../../ai/cache'),
         path.join(__dirname, '../../../ai-cache'),
         path.join(__dirname, '../../../ai/ai-cache')
       );
@@ -53,21 +54,20 @@ class EmbeddingEngine {
     this.ensureCacheDir();
   }
 
-  resolveCacheDir(primary, fallback) {
-    try {
-      if (!fs.existsSync(primary)) {
-        fs.mkdirSync(primary, { recursive: true });
+  resolveCacheDir(...candidates) {
+    for (const candidate of candidates) {
+      try {
+        if (!fs.existsSync(candidate)) {
+          fs.mkdirSync(candidate, { recursive: true });
+        }
+        return candidate;
+      } catch (error) {
+        console.warn(
+          `Embedding engine: unable to initialise ${candidate}, checking next fallback (${error.message})`
+        );
       }
-      return primary;
-    } catch (error) {
-      console.warn(
-        `Embedding engine: unable to initialise ${primary}, falling back to ${fallback} (${error.message})`
-      );
-      if (!fs.existsSync(fallback)) {
-        fs.mkdirSync(fallback, { recursive: true });
-      }
-      return fallback;
     }
+    throw new Error('Unable to initialize any cache directory for embeddings');
   }
 
   ensureCacheDir() {

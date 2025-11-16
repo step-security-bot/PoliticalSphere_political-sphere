@@ -5,9 +5,9 @@
  * @fileoverview Pre-caches frequently used queries to improve response times
  */
 
-import { promises as fsp } from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
+import { promises as fsp } from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 import { recordScriptEvent } from './analytics.js';
 import { updateRecentChanges } from './update-recent-changes.js';
@@ -16,10 +16,40 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const REPO_ROOT = path.resolve(__dirname, '../../..');
-const CACHE_DIR = path.join(REPO_ROOT, 'ai', 'ai-cache');
+const CACHE_DIR = path.join(REPO_ROOT, 'ai', 'cache');
 const CACHE_FILE = path.join(CACHE_DIR, 'cache.json');
 const PATTERNS_FILE = path.join(REPO_ROOT, 'ai', 'ai-learning', 'patterns.json');
-const METRICS_FILE = path.join(REPO_ROOT, 'ai-metrics.json');
+const METRICS_FILE_PRIMARY = path.join(REPO_ROOT, 'ai', 'metrics', 'performance.json');
+const METRICS_FILE_FALLBACK = path.join(REPO_ROOT, 'ai-metrics.json');
+const METRICS_FILES = [METRICS_FILE_PRIMARY, METRICS_FILE_FALLBACK];
+
+async function readMetricsSnapshot() {
+  for (const file of METRICS_FILES) {
+    const raw = await fsp.readFile(file, 'utf8').catch(() => null);
+    if (raw) {
+      return { raw, path: file };
+    }
+  }
+  return { raw: null, path: METRICS_FILE_PRIMARY };
+}
+
+async function persistMetricsSnapshot(content) {
+  try {
+    await fsp.mkdir(path.dirname(METRICS_FILE_PRIMARY), { recursive: true });
+    await fsp.writeFile(METRICS_FILE_PRIMARY, content);
+    return METRICS_FILE_PRIMARY;
+  } catch (error) {
+    for (const fallback of METRICS_FILES.slice(1)) {
+      try {
+        await fsp.writeFile(fallback, content);
+        return fallback;
+      } catch {
+        // try next fallback
+      }
+    }
+    throw error;
+  }
+}
 
 // Configurable cache settings
 const DEFAULT_MAX_ENTRIES = parseInt(process.env.PRE_CACHE_MAX_ENTRIES || '200', 10);
@@ -232,7 +262,9 @@ async function enforceCacheSize(cache) {
         (a, b) => getTimestamp(cache.queries[a]) - getTimestamp(cache.queries[b])
       );
       const toRemove = sorted.slice(0, sorted.length - maxEntries);
-      toRemove.forEach(k => delete cache.queries[k]);
+      toRemove.forEach(k => {
+        delete cache.queries[k];
+      });
       evictedCount = toRemove.length;
     } else {
       evictedCount = 0;
@@ -243,7 +275,9 @@ async function enforceCacheSize(cache) {
       const now = Date.now();
       const currentKeys = Object.keys(cache.queries || {});
       const expiredKeys = currentKeys.filter(k => now - getTimestamp(cache.queries[k]) > ttl);
-      expiredKeys.forEach(k => delete cache.queries[k]);
+      expiredKeys.forEach(k => {
+        delete cache.queries[k];
+      });
       expiredCount = expiredKeys.length;
     } else {
       expiredCount = 0;
@@ -309,7 +343,7 @@ async function main() {
   } finally {
     try {
       const duration = Date.now() - startedAt;
-      const raw = await fsp.readFile(METRICS_FILE, 'utf8').catch(() => null);
+      const { raw } = await readMetricsSnapshot();
       const metrics = raw ? JSON.parse(raw) : { scriptRuns: [] };
       metrics.scriptRuns = metrics.scriptRuns || [];
       metrics.scriptRuns.push({
@@ -318,7 +352,7 @@ async function main() {
         durationMs: duration,
         success,
       });
-      await fsp.writeFile(METRICS_FILE, JSON.stringify(metrics, null, 2));
+      await persistMetricsSnapshot(JSON.stringify(metrics, null, 2));
       await recordScriptEvent('pre-cache', {
         durationMs: duration,
         payload: {

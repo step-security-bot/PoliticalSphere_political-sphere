@@ -3,7 +3,7 @@
   "datasets": [
     {
       "name": "political_sphere",
-      "path": "data/political_sphere.db",
+      "path": "data/runtime/political_sphere.db",
       "description": "Primary application datastore replicating the production schema for users, parties, issues, news, votes, and moderation activity.",
       "owner": "Platform Engineering",
       "refreshPolicy": "Created on demand via scripts/ops/init-database.js or npm run db:seed.",

@@ -2,7 +2,7 @@
 
 /**
  * Incremental codebase indexer (delta indexing using git)
- * Updates existing ai-index/codebase-index.json with only changed files since last commit.
+ * Updates existing ai/index/codebase-index.json with only changed files since last commit.
  */
 import { execSync } from 'child_process';
 import crypto from 'crypto';
@@ -13,7 +13,7 @@ import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const INDEX_DIR = path.join(__dirname, '../../ai-index');
+const INDEX_DIR = path.join(__dirname, '../../ai/index');
 const INDEX_FILE = path.join(INDEX_DIR, 'codebase-index.json');
 
 async function loadIndex() {
@@ -28,7 +28,7 @@ async function loadIndex() {
 
 function shouldIncludeFile(filePath) {
   const rel = path.relative(process.cwd(), filePath);
-  if (rel.includes('node_modules') || rel.includes('ai-cache') || rel.includes('ai-metrics'))
+  if (rel.includes('node_modules') || rel.includes('ai/cache') || rel.includes('ai/metrics'))
     return false;
   return /\.(js|ts|jsx|tsx|py|java|go|rs|md|json|ya?ml)$/i.test(rel);
 }

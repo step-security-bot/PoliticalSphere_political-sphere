@@ -12,7 +12,7 @@ const ExpertKnowledge = require('./expert-knowledge.cjs');
 const PatternMatcher = require('./pattern-matcher.cjs');
 
 const AI_DIR = path.join(__dirname, '../../../ai');
-const SEMANTIC_INDEX = path.join(AI_DIR, 'ai-index/codebase-index.json');
+const SEMANTIC_INDEX = path.join(AI_DIR, 'index/codebase-index.json');
 
 class CodeAnalyzer {
   constructor() {

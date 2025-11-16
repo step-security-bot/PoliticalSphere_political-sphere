@@ -6,7 +6,7 @@
 
 import { readFileSync, writeFileSync, existsSync } from 'fs';
 
-const LOG_FILE = 'ai-metrics/context-switches.json';
+const LOG_FILE = 'ai/metrics/context-switches.json';
 
 interface ContextSwitch {
   timestamp: string;

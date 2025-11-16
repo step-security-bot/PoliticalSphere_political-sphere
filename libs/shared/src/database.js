@@ -13,7 +13,7 @@ const logger = getLogger({ service: 'database' });
 
 // Database configuration
 const DB_PATH =
-  process.env.SQLITE_DB_PATH || path.join(process.cwd(), 'data', 'political_sphere.db');
+  process.env.SQLITE_DB_PATH || path.join(process.cwd(), 'data', 'runtime', 'political_sphere.db');
 
 // Connection cache
 let dbInstance = null;

@@ -2,7 +2,7 @@
 
 /**
  * Lightweight embedding generator (hashing trick + TF normalization)
- * Produces fixed-size vectors for files and saves to ai-index/semantic-vectors.json
+ * Produces fixed-size vectors for files and saves to ai/index/semantic-vectors.json
  */
 import crypto from 'crypto';
 import { promises as fsp } from 'fs';
@@ -11,7 +11,7 @@ import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const INDEX_DIR = path.join(__dirname, '../../ai-index');
+const INDEX_DIR = path.join(__dirname, '../../ai/index');
 const VECTOR_FILE = path.join(INDEX_DIR, 'semantic-vectors.json');
 console.log('embeddings script start');
 console.log('argv=', process.argv.slice(0, 4).join(' | '));
@@ -58,7 +58,7 @@ function vectorizeText(text, dims = 128) {
 
 async function buildEmbeddings({ dims = 128 } = {}) {
   // load index to know files
-  const indexPath = path.join(__dirname, '../../ai-index/codebase-index.json');
+  const indexPath = path.join(__dirname, '../../ai/index/codebase-index.json');
   console.log('reading index at', indexPath);
   const raw = await fsp.readFile(indexPath, 'utf8').catch(e => {
     console.warn('read index error', e?.message);

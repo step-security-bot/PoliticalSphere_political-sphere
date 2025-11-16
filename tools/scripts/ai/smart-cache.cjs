@@ -26,7 +26,7 @@ class SmartCache {
     this.ttl = options.ttl || 3600000; // 1 hour default
     this.cache = new Map();
     this.accessOrder = new Map(); // key -> timestamp
-    this.persistPath = options.persistPath || 'ai-cache/smart-cache.json';
+    this.persistPath = options.persistPath || 'ai/cache/smart-cache.json';
 
     // Statistics
     this.stats = {

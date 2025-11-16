@@ -23,11 +23,11 @@
       "!{projectRoot}/eslint.config.js"
     ],
     "sharedGlobals": [
-      "!{workspaceRoot}/ai-cache/**/*",
+      "!{workspaceRoot}/ai/cache/**/*",
       "!{workspaceRoot}/ai-logs/**/*",
-      "!{workspaceRoot}/ai-metrics/**/*",
+      "!{workspaceRoot}/ai/metrics/**/*",
       "!{workspaceRoot}/ai-learning/**/*",
-      "!{workspaceRoot}/ai-index/**/*",
+      "!{workspaceRoot}/ai/index/**/*",
       "!{workspaceRoot}/ai-knowledge/**/*",
       "!{workspaceRoot}/.ps/**/*",
       "!{workspaceRoot}/tmp/**/*",
@@ -157,11 +157,11 @@
   "watch": {
     "ignoreDotfiles": true,
     "ignore": [
-      "**/ai-cache/**",
+      "**/ai/cache/**",
       "**/ai-logs/**",
-      "**/ai-metrics/**",
+      "**/ai/metrics/**",
       "**/ai-learning/**",
-      "**/ai-index/**",
+      "**/ai/index/**",
       "**/ai-knowledge/**",
       "**/.ps/**",
       "**/tmp/**",

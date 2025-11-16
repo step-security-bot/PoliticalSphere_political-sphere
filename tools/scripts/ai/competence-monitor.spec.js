@@ -4,20 +4,30 @@ import { existsSync, readFileSync, unlinkSync, writeFileSync } from 'fs';
 import { join } from 'path';
 
 describe('Competence Monitor', () => {
-  const metricsFile = join(process.cwd(), 'ai-metrics', 'stats.json');
+  const metricsFiles = [
+    join(process.cwd(), 'ai', 'metrics', 'stats.json'),
+    join(process.cwd(), 'ai-metrics', 'stats.json'),
+  ];
+
+  const resolveMetricsFile = () =>
+    metricsFiles.find(file => existsSync(file)) || metricsFiles[0];
 
   beforeEach(() => {
     // Clean up any existing metrics
-    if (existsSync(metricsFile)) {
-      unlinkSync(metricsFile);
-    }
+    metricsFiles.forEach(file => {
+      if (existsSync(file)) {
+        unlinkSync(file);
+      }
+    });
   });
 
   afterEach(() => {
     // Clean up after tests
-    if (existsSync(metricsFile)) {
-      unlinkSync(metricsFile);
-    }
+    metricsFiles.forEach(file => {
+      if (existsSync(file)) {
+        unlinkSync(file);
+      }
+    });
   });
 
   it('should assess competence and generate metrics', () => {
@@ -25,9 +35,9 @@ describe('Competence Monitor', () => {
       stdio: 'pipe',
     });
 
-    expect(existsSync(metricsFile)).toBe(true);
+    expect(metricsFiles.some(file => existsSync(file))).toBe(true);
 
-    const metrics = JSON.parse(readFileSync(metricsFile, 'utf8'));
+    const metrics = JSON.parse(readFileSync(resolveMetricsFile(), 'utf8'));
     expect(metrics).toHaveProperty('responseTimes');
     expect(metrics).toHaveProperty('cacheHits');
     expect(metrics).toHaveProperty('qualityGatesPassed');
@@ -64,7 +74,7 @@ describe('Competence Monitor', () => {
       userSatisfaction: [0.2, 0.1, 0.3],
       lastUpdated: new Date().toISOString(),
     };
-    writeFileSync(metricsFile, JSON.stringify(lowMetrics, null, 2));
+    writeFileSync(resolveMetricsFile(), JSON.stringify(lowMetrics, null, 2));
 
     const output = execSync('node tools/scripts/ai/competence-monitor.js assess', {
       encoding: 'utf8',

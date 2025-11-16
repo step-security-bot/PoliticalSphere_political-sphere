@@ -158,7 +158,7 @@ export default [
       '.nx/**',
       'apps/**/dist/**',
       'libs/**/dist/**',
-      'assets/public/**',
+      'apps/web/public/legacy/**',
       '**/*.min.js',
       'docs/apps/.vitepress/cache/**',
       'docs/examples/**',

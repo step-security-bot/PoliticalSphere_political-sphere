@@ -34,7 +34,7 @@ INDEXER_CONCURRENCY=30 node ./scripts/ai/code-indexer.js build
 
 Notes:
 
-- The CI workflow `.github/workflows/ai-maintenance.yml` runs these scripts nightly and on pushes to `main`, and uploads `ai-cache/` and `ai-index/` as artifacts.
+- The CI workflow `.github/workflows/ai-maintenance.yml` runs these scripts nightly and on pushes to `main`, and uploads `ai/cache/` and `ai/index/` as artifacts.
 - For improved semantic relevance, consider adding an embeddings/vector store step and optional vector DB (Milvus, Weaviate, or SQLite + open-source vector libraries) — this is a recommended next step.
 
 - Fast local search server: start a small in-memory index server to avoid repeated disk reads and speed up interactive queries:

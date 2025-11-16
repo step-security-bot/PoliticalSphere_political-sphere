@@ -15,20 +15,30 @@ const { validateFilename, safeJoin } = require('../../../libs/shared/src/path-se
 const AIHub = require('./ai-hub.cjs');
 
 const ROOT = path.join(__dirname, '../../..');
-const WORKSPACE_CACHE_PRIMARY = path.join(ROOT, 'ai-cache/workspace-state.json');
-const WORKSPACE_CACHE_LEGACY = path.join(ROOT, 'ai/ai-cache/workspace-state.json');
+const WORKSPACE_CACHE_PRIMARY = path.join(ROOT, 'ai', 'cache', 'workspace-state.json');
+const WORKSPACE_CACHE_LEGACY = path.join(ROOT, 'ai-cache', 'workspace-state.json');
+const WORKSPACE_CACHE_SECOND_LEGACY = path.join(ROOT, 'ai', 'ai-cache', 'workspace-state.json');
 
 function resolveWorkspaceCache() {
-  try {
-    fs.mkdirSync(path.dirname(WORKSPACE_CACHE_PRIMARY), { recursive: true });
-    return WORKSPACE_CACHE_PRIMARY;
-  } catch (error) {
-    console.warn(
-      `AI assistant: unable to initialise ${WORKSPACE_CACHE_PRIMARY}, falling back to ${WORKSPACE_CACHE_LEGACY} (${error.message})`
-    );
-    fs.mkdirSync(path.dirname(WORKSPACE_CACHE_LEGACY), { recursive: true });
-    return WORKSPACE_CACHE_LEGACY;
+  const candidates = [
+    WORKSPACE_CACHE_PRIMARY,
+    WORKSPACE_CACHE_LEGACY,
+    WORKSPACE_CACHE_SECOND_LEGACY,
+  ];
+
+  for (const candidate of candidates) {
+    try {
+      fs.mkdirSync(path.dirname(candidate), { recursive: true });
+      if (candidate !== WORKSPACE_CACHE_PRIMARY) {
+        console.warn('AI assistant: using legacy workspace cache at', candidate);
+      }
+      return candidate;
+    } catch (error) {
+      console.warn(`AI assistant: unable to initialise ${candidate} (${error.message})`);
+    }
   }
+
+  throw new Error('Unable to initialise workspace cache directory');
 }
 
 const WORKSPACE_CACHE = resolveWorkspaceCache();

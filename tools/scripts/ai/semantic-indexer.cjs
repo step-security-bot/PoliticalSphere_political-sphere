@@ -11,7 +11,7 @@ const fs = require('fs');
 const path = require('path');
 
 const PROJECT_ROOT = path.join(__dirname, '../../..');
-const INDEX_DIR = path.join(PROJECT_ROOT, 'ai/ai-index');
+const INDEX_DIR = path.join(PROJECT_ROOT, 'ai/index');
 const INDEX_FILE = path.join(INDEX_DIR, 'semantic-index.json');
 
 const PATTERNS = {
@@ -60,8 +60,9 @@ class SemanticIndexer {
       'dist',
       'coverage',
       '.nx',
-      'ai-cache',
-      'ai-index',
+      'ai/cache',
+      'ai/index',
+      'ai/metrics',
       '.cache',
       'logs',
       'reports',

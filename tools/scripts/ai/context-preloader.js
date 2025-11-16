@@ -21,25 +21,31 @@ import { createHash } from 'crypto';
 import { existsSync, mkdirSync, readdirSync, readFileSync, statSync, writeFileSync } from 'fs';
 import { extname, join } from 'path';
 
-// Prefer repository-root `ai-cache/`, fall back to `ai/ai-cache/` if present or needed.
-const ROOT_CACHE_DIR = 'ai-cache';
-const FALLBACK_CACHE_DIR = join('ai', 'ai-cache');
+const PRIMARY_CACHE_DIR = join('ai', 'cache');
+const LEGACY_CACHE_DIRS = ['ai-cache', join('ai', 'ai-cache')];
 
-let CACHE_DIR = ROOT_CACHE_DIR;
+let CACHE_DIR = PRIMARY_CACHE_DIR;
 
-// Always prefer the repository-root `ai-cache`. Create it if missing.
+// Always prefer the canonical ai/cache directory, but allow legacy fallbacks.
 try {
   if (!existsSync(CACHE_DIR)) mkdirSync(CACHE_DIR, { recursive: true });
 } catch (err) {
   console.warn(
-    'Warning: failed to create root cache dir at',
+    'Warning: failed to create canonical cache dir at',
     CACHE_DIR,
-    '- falling back to ai/ai-cache:',
+    '- evaluating legacy fallbacks:',
     err?.message
   );
-  // Fall back to `ai/ai-cache` if root creation fails for any reason.
-  if (!existsSync(FALLBACK_CACHE_DIR)) mkdirSync(FALLBACK_CACHE_DIR, { recursive: true });
-  CACHE_DIR = FALLBACK_CACHE_DIR;
+  for (const legacyDir of LEGACY_CACHE_DIRS) {
+    try {
+      if (!existsSync(legacyDir)) mkdirSync(legacyDir, { recursive: true });
+      CACHE_DIR = legacyDir;
+      console.warn('Using legacy cache dir', legacyDir);
+      break;
+    } catch (legacyError) {
+      console.warn('Unable to use legacy cache dir', legacyDir, legacyError?.message);
+    }
+  }
 }
 
 const CACHE_FILE = join(CACHE_DIR, 'context-cache.json');

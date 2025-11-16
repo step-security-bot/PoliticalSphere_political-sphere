@@ -1,5 +1,7 @@
 import * as React from 'react';
-import { afterAll, afterEach, beforeAll, beforeEach, expect, vi } from 'vitest';
+import { afterAll, afterEach, beforeAll, beforeEach, vi, expect as vitestExpect } from 'vitest';
+// Attach vitest's expect to global before importing jest-dom (globals disabled configuration)
+(globalThis as unknown as { expect?: typeof vitestExpect }).expect = vitestExpect;
 // Use the canonical jest-dom matchers to provide rich DOM assertions
 // (replaces minimal custom expect.extend implementations).
 import '@testing-library/jest-dom';
@@ -39,16 +41,36 @@ const gAny = globalThis as unknown as {
   matchMedia?: (query: string) => MatchMediaLike;
 };
 if (typeof gAny.matchMedia !== 'function') {
-  gAny.matchMedia = (query: string) => ({
-    matches: false,
-    media: query,
-    onchange: null,
-    addListener: () => {},
-    removeListener: () => {},
-    addEventListener: () => {},
-    removeEventListener: () => {},
-    dispatchEvent: () => false,
-  });
+  // Provide a matchMedia polyfill aligned with modern browser API surface.
+  // Returns an object with .matches and listener management; reduced-motion queries
+  // intentionally return false by default in test environment.
+  gAny.matchMedia = (query: string) => {
+    const listeners: Array<() => void> = [];
+    return {
+      matches: /prefers-reduced-motion:\s*reduce/.test(query) ? false : false,
+      media: query,
+      onchange: null,
+      addListener: (cb: () => void) => {
+        listeners.push(cb);
+      },
+      removeListener: (cb: () => void) => {
+        const idx = listeners.indexOf(cb);
+        if (idx >= 0) listeners.splice(idx, 1);
+      },
+      addEventListener: () => {},
+      removeEventListener: () => {},
+      dispatchEvent: () => {
+        // Invoke listeners without returning their values to satisfy lint rule
+        listeners.forEach(l => { l(); });
+        return true;
+      },
+    };
+  };
+}
+// Ensure window.matchMedia is also defined after jsdom creates window object
+if (typeof window !== 'undefined' && typeof window.matchMedia !== 'function' && gAny.matchMedia) {
+  // Assign without non-null assertion; guard ensures function existence
+  (window as unknown as { matchMedia: typeof gAny.matchMedia }).matchMedia = gAny.matchMedia;
 }
 
 // Ensure critical env is present before any module under test is imported

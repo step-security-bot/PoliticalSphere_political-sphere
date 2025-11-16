@@ -8,24 +8,26 @@ const crypto = require('crypto');
 const fs = require('fs');
 const path = require('path');
 
-const ROOT_CACHE_DIR = path.join(__dirname, '../../../ai-cache');
-const LEGACY_CACHE_DIR = path.join(__dirname, '../../../ai/ai-cache');
+const ROOT_CACHE_DIR = path.join(__dirname, '../../../ai', 'cache');
+const LEGACY_CACHE_DIR = path.join(__dirname, '../../../ai-cache');
+const SECOND_LEGACY_CACHE_DIR = path.join(__dirname, '../../../ai', 'ai-cache');
 
 function resolveCacheDir() {
-  try {
-    if (!fs.existsSync(ROOT_CACHE_DIR)) {
-      fs.mkdirSync(ROOT_CACHE_DIR, { recursive: true });
+  const candidates = [ROOT_CACHE_DIR, LEGACY_CACHE_DIR, SECOND_LEGACY_CACHE_DIR];
+  for (const candidate of candidates) {
+    try {
+      if (!fs.existsSync(candidate)) {
+        fs.mkdirSync(candidate, { recursive: true });
+      }
+      if (candidate !== ROOT_CACHE_DIR) {
+        console.warn('Cache manager: using legacy cache dir', candidate);
+      }
+      return candidate;
+    } catch (error) {
+      console.warn(`Cache manager: unable to initialise ${candidate} (${error.message})`);
     }
-    return ROOT_CACHE_DIR;
-  } catch (error) {
-    console.warn(
-      `Cache manager: unable to initialise ${ROOT_CACHE_DIR}, falling back to ${LEGACY_CACHE_DIR} (${error.message})`
-    );
-    if (!fs.existsSync(LEGACY_CACHE_DIR)) {
-      fs.mkdirSync(LEGACY_CACHE_DIR, { recursive: true });
-    }
-    return LEGACY_CACHE_DIR;
   }
+  throw new Error('Unable to initialise cache directory');
 }
 
 const CACHE_DIR = resolveCacheDir();

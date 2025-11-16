@@ -51,11 +51,12 @@ echo -e "${GREEN}  ✓ Test artifacts cleaned${NC}"
 
 echo ""
 echo -e "${BLUE}4. Cleaning AI caches...${NC}"
-# Clean AI index and cache (safe - will be regenerated)
-rm -rf ai-cache ai-index ai/cache 2>/dev/null || true
-# Keep ai/ai-cache and ai/ai-index but clean old entries
-find ai/ai-cache -type f -mtime +7 -delete 2>/dev/null || true
-find ai/ai-index -type f -mtime +7 -delete 2>/dev/null || true
+# Clean AI cache/index/metrics that now live under ai/
+rm -rf ai/cache ai/index ai/metrics 2>/dev/null || true
+mkdir -p ai/cache ai/index ai/metrics
+find ai/cache -type f -mtime +7 -delete 2>/dev/null || true
+find ai/index -type f -mtime +7 -delete 2>/dev/null || true
+find ai/metrics -type f -mtime +7 -delete 2>/dev/null || true
 echo -e "${GREEN}  ✓ AI caches cleaned${NC}"
 
 echo ""

@@ -13,7 +13,7 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const METRICS_FILE = path.join(__dirname, '../../ai-metrics/ci-metrics.json');
+const METRICS_FILE = path.join(__dirname, '../../ai/metrics/ci-metrics.json');
 const METRICS_DIR = path.dirname(METRICS_FILE);
 
 // Ensure metrics directory exists

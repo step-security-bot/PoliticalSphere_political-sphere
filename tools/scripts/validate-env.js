@@ -196,7 +196,7 @@ function validateAISpecificConfigurations() {
   }
 
   // Check for AI tooling directories
-  const aiDirs = ['ai-cache', 'ai-index', 'ai-knowledge', 'ai-learning', 'ai-metrics'];
+  const aiDirs = ['ai/cache', 'ai/index', 'ai/knowledge', 'ai/learning', 'ai/metrics'];
   const missingDirs = aiDirs.filter(dir => !require('fs').existsSync(dir));
   if (missingDirs.length > 0) {
     logWarning(`Missing AI directories: ${missingDirs.join(', ')} - run bootstrap to initialize`);

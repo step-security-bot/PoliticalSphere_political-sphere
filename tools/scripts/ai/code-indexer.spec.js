@@ -4,7 +4,7 @@ import { existsSync, readFileSync, unlinkSync } from 'fs';
 import { join } from 'path';
 
 describe('Code Indexer', () => {
-  const indexFile = join(process.cwd(), 'ai-index', 'codebase-index.json');
+  const indexFile = join(process.cwd(), 'ai', 'index', 'codebase-index.json');
 
   beforeEach(() => {
     // Clean up any existing index

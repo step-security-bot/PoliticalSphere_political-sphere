@@ -7,7 +7,7 @@
 import { existsSync, readFileSync } from 'fs';
 import http from 'http';
 
-const INDEX_FILE = 'ai-index/codebase-index.json';
+const INDEX_FILE = 'ai/index/codebase-index.json';
 const PORT = process.env.AI_INDEX_PORT || 3001;
 
 let index = null;

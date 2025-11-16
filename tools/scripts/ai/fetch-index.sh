@@ -14,11 +14,11 @@ git fetch ${REMOTE} ${BRANCH} --no-tags || { echo "Branch ${BRANCH} not found on
 TMPDIR=$(mktemp -d)
 trap 'rm -rf "$TMPDIR"' EXIT
 
-# Checkout the ai-index directory from the remote branch
-git --work-tree="$TMPDIR" checkout ${REMOTE}/${BRANCH} -- ai-index || { echo "No ai-index artifacts in branch"; exit 1; }
+# Checkout the ai/index directory from the remote branch
+git --work-tree="$TMPDIR" checkout ${REMOTE}/${BRANCH} -- ai/index || { echo "No ai/index artifacts in branch"; exit 1; }
 
 mkdir -p ai/index
-rsync -a --delete "$TMPDIR/ai-index/" ai/index/
+rsync -a --delete "$TMPDIR/ai/index/" ai/index/
 
 echo "ai/index fetched and populated. Size:" 
 du -sh ai/index || true

@@ -2096,7 +2096,7 @@ window.taskGraphResponse = {
   },
   plans: {
     '@political-sphere/shared:lint': [
-      'workspace:[!{workspaceRoot}/ai-cache/**/*,!{workspaceRoot}/ai-logs/**/*,!{workspaceRoot}/ai-metrics/**/*,!{workspaceRoot}/ai-learning/**/*,!{workspaceRoot}/ai-index/**/*,!{workspaceRoot}/ai-knowledge/**/*,!{workspaceRoot}/.ps/**/*,!{workspaceRoot}/tmp/**/*,!{workspaceRoot}/artifacts/**/*,!{workspaceRoot}/monitoring/data/**/*,{workspaceRoot}/.eslintrc.json,{workspaceRoot}/.eslintignore,{workspaceRoot}/eslint.config.js]',
+      'workspace:[!{workspaceRoot}/ai/cache/**/*,!{workspaceRoot}/ai-logs/**/*,!{workspaceRoot}/ai/metrics/**/*,!{workspaceRoot}/ai-learning/**/*,!{workspaceRoot}/ai/index/**/*,!{workspaceRoot}/ai-knowledge/**/*,!{workspaceRoot}/.ps/**/*,!{workspaceRoot}/tmp/**/*,!{workspaceRoot}/artifacts/**/*,!{workspaceRoot}/monitoring/data/**/*,{workspaceRoot}/.eslintrc.json,{workspaceRoot}/.eslintignore,{workspaceRoot}/eslint.config.js]',
       'workspace:[{workspaceRoot}/nx.json,{workspaceRoot}/.gitignore,{workspaceRoot}/.nxignore]',
       'env:NX_CLOUD_ENCRYPTION_KEY',
       '@political-sphere/shared:{projectRoot}/**/*',
@@ -2104,7 +2104,7 @@ window.taskGraphResponse = {
       '@political-sphere/shared:TsConfig',
     ],
     'e2e:test:e2e': [
-      'workspace:[!{workspaceRoot}/ai-cache/**/*,!{workspaceRoot}/ai-logs/**/*,!{workspaceRoot}/ai-metrics/**/*,!{workspaceRoot}/ai-learning/**/*,!{workspaceRoot}/ai-index/**/*,!{workspaceRoot}/ai-knowledge/**/*,!{workspaceRoot}/.ps/**/*,!{workspaceRoot}/tmp/**/*,!{workspaceRoot}/artifacts/**/*,!{workspaceRoot}/monitoring/data/**/*]',
+      'workspace:[!{workspaceRoot}/ai/cache/**/*,!{workspaceRoot}/ai-logs/**/*,!{workspaceRoot}/ai/metrics/**/*,!{workspaceRoot}/ai-learning/**/*,!{workspaceRoot}/ai/index/**/*,!{workspaceRoot}/ai-knowledge/**/*,!{workspaceRoot}/.ps/**/*,!{workspaceRoot}/tmp/**/*,!{workspaceRoot}/artifacts/**/*,!{workspaceRoot}/monitoring/data/**/*]',
       'workspace:[{workspaceRoot}/nx.json,{workspaceRoot}/.gitignore,{workspaceRoot}/.nxignore]',
       'env:NX_CLOUD_ENCRYPTION_KEY',
       'e2e:{projectRoot}/**/*',
@@ -2129,7 +2129,7 @@ window.taskGraphResponse = {
       'AllExternalDependencies',
     ],
     'web:lint': [
-      'workspace:[!{workspaceRoot}/ai-cache/**/*,!{workspaceRoot}/ai-logs/**/*,!{workspaceRoot}/ai-metrics/**/*,!{workspaceRoot}/ai-learning/**/*,!{workspaceRoot}/ai-index/**/*,!{workspaceRoot}/ai-knowledge/**/*,!{workspaceRoot}/.ps/**/*,!{workspaceRoot}/tmp/**/*,!{workspaceRoot}/artifacts/**/*,!{workspaceRoot}/monitoring/data/**/*,{workspaceRoot}/.eslintrc.json,{workspaceRoot}/.eslintignore,{workspaceRoot}/eslint.config.js]',
+      'workspace:[!{workspaceRoot}/ai/cache/**/*,!{workspaceRoot}/ai-logs/**/*,!{workspaceRoot}/ai/metrics/**/*,!{workspaceRoot}/ai-learning/**/*,!{workspaceRoot}/ai/index/**/*,!{workspaceRoot}/ai-knowledge/**/*,!{workspaceRoot}/.ps/**/*,!{workspaceRoot}/tmp/**/*,!{workspaceRoot}/artifacts/**/*,!{workspaceRoot}/monitoring/data/**/*,{workspaceRoot}/.eslintrc.json,{workspaceRoot}/.eslintignore,{workspaceRoot}/eslint.config.js]',
       'workspace:[{workspaceRoot}/nx.json,{workspaceRoot}/.gitignore,{workspaceRoot}/.nxignore]',
       'env:NX_CLOUD_ENCRYPTION_KEY',
       'web:{projectRoot}/**/*',
@@ -2146,7 +2146,7 @@ window.taskGraphResponse = {
       'AllExternalDependencies',
     ],
     'shell:build': [
-      'workspace:[!{workspaceRoot}/ai-cache/**/*,!{workspaceRoot}/ai-logs/**/*,!{workspaceRoot}/ai-metrics/**/*,!{workspaceRoot}/ai-learning/**/*,!{workspaceRoot}/ai-index/**/*,!{workspaceRoot}/ai-knowledge/**/*,!{workspaceRoot}/.ps/**/*,!{workspaceRoot}/tmp/**/*,!{workspaceRoot}/artifacts/**/*,!{workspaceRoot}/monitoring/data/**/*]',
+      'workspace:[!{workspaceRoot}/ai/cache/**/*,!{workspaceRoot}/ai-logs/**/*,!{workspaceRoot}/ai/metrics/**/*,!{workspaceRoot}/ai-learning/**/*,!{workspaceRoot}/ai/index/**/*,!{workspaceRoot}/ai-knowledge/**/*,!{workspaceRoot}/.ps/**/*,!{workspaceRoot}/tmp/**/*,!{workspaceRoot}/artifacts/**/*,!{workspaceRoot}/monitoring/data/**/*]',
       'workspace:[{workspaceRoot}/nx.json,{workspaceRoot}/.gitignore,{workspaceRoot}/.nxignore]',
       'env:NX_CLOUD_ENCRYPTION_KEY',
       'shell:{projectRoot}/**/*,!{projectRoot}/**/?(*.)+(spec|test).[jt]s?(x)?(.snap),!{projectRoot}/tsconfig.spec.json,!{projectRoot}/jest.config.[jt]s,!{projectRoot}/src/test-setup.[jt]s,!{projectRoot}/test-setup.[jt]s,!{projectRoot}/.eslintrc.json,!{projectRoot}/eslint.config.js',
@@ -2155,7 +2155,7 @@ window.taskGraphResponse = {
       'AllExternalDependencies',
     ],
     '@political-sphere/shared:build': [
-      'workspace:[!{workspaceRoot}/ai-cache/**/*,!{workspaceRoot}/ai-logs/**/*,!{workspaceRoot}/ai-metrics/**/*,!{workspaceRoot}/ai-learning/**/*,!{workspaceRoot}/ai-index/**/*,!{workspaceRoot}/ai-knowledge/**/*,!{workspaceRoot}/.ps/**/*,!{workspaceRoot}/tmp/**/*,!{workspaceRoot}/artifacts/**/*,!{workspaceRoot}/monitoring/data/**/*]',
+      'workspace:[!{workspaceRoot}/ai/cache/**/*,!{workspaceRoot}/ai-logs/**/*,!{workspaceRoot}/ai/metrics/**/*,!{workspaceRoot}/ai-learning/**/*,!{workspaceRoot}/ai/index/**/*,!{workspaceRoot}/ai-knowledge/**/*,!{workspaceRoot}/.ps/**/*,!{workspaceRoot}/tmp/**/*,!{workspaceRoot}/artifacts/**/*,!{workspaceRoot}/monitoring/data/**/*]',
       'workspace:[{workspaceRoot}/nx.json,{workspaceRoot}/.gitignore,{workspaceRoot}/.nxignore]',
       'env:NX_CLOUD_ENCRYPTION_KEY',
       '@political-sphere/shared:{projectRoot}/**/*,!{projectRoot}/**/?(*.)+(spec|test).[jt]s?(x)?(.snap),!{projectRoot}/tsconfig.spec.json,!{projectRoot}/jest.config.[jt]s,!{projectRoot}/src/test-setup.[jt]s,!{projectRoot}/test-setup.[jt]s,!{projectRoot}/.eslintrc.json,!{projectRoot}/eslint.config.js',
@@ -2171,7 +2171,7 @@ window.taskGraphResponse = {
       'AllExternalDependencies',
     ],
     'api:lint': [
-      'workspace:[!{workspaceRoot}/ai-cache/**/*,!{workspaceRoot}/ai-logs/**/*,!{workspaceRoot}/ai-metrics/**/*,!{workspaceRoot}/ai-learning/**/*,!{workspaceRoot}/ai-index/**/*,!{workspaceRoot}/ai-knowledge/**/*,!{workspaceRoot}/.ps/**/*,!{workspaceRoot}/tmp/**/*,!{workspaceRoot}/artifacts/**/*,!{workspaceRoot}/monitoring/data/**/*,{workspaceRoot}/.eslintrc.json,{workspaceRoot}/.eslintignore,{workspaceRoot}/eslint.config.js]',
+      'workspace:[!{workspaceRoot}/ai/cache/**/*,!{workspaceRoot}/ai-logs/**/*,!{workspaceRoot}/ai/metrics/**/*,!{workspaceRoot}/ai-learning/**/*,!{workspaceRoot}/ai/index/**/*,!{workspaceRoot}/ai-knowledge/**/*,!{workspaceRoot}/.ps/**/*,!{workspaceRoot}/tmp/**/*,!{workspaceRoot}/artifacts/**/*,!{workspaceRoot}/monitoring/data/**/*,{workspaceRoot}/.eslintrc.json,{workspaceRoot}/.eslintignore,{workspaceRoot}/eslint.config.js]',
       'workspace:[{workspaceRoot}/nx.json,{workspaceRoot}/.gitignore,{workspaceRoot}/.nxignore]',
       'env:NX_CLOUD_ENCRYPTION_KEY',
       'api:{projectRoot}/**/*',
@@ -2187,7 +2187,7 @@ window.taskGraphResponse = {
       'AllExternalDependencies',
     ],
     'ci-automation:test': [
-      'workspace:[!{workspaceRoot}/ai-cache/**/*,!{workspaceRoot}/ai-logs/**/*,!{workspaceRoot}/ai-metrics/**/*,!{workspaceRoot}/ai-learning/**/*,!{workspaceRoot}/ai-index/**/*,!{workspaceRoot}/ai-knowledge/**/*,!{workspaceRoot}/.ps/**/*,!{workspaceRoot}/tmp/**/*,!{workspaceRoot}/artifacts/**/*,!{workspaceRoot}/monitoring/data/**/*,{workspaceRoot}/jest.preset.js]',
+      'workspace:[!{workspaceRoot}/ai/cache/**/*,!{workspaceRoot}/ai-logs/**/*,!{workspaceRoot}/ai/metrics/**/*,!{workspaceRoot}/ai-learning/**/*,!{workspaceRoot}/ai/index/**/*,!{workspaceRoot}/ai-knowledge/**/*,!{workspaceRoot}/.ps/**/*,!{workspaceRoot}/tmp/**/*,!{workspaceRoot}/artifacts/**/*,!{workspaceRoot}/monitoring/data/**/*,{workspaceRoot}/jest.preset.js]',
       'workspace:[{workspaceRoot}/nx.json,{workspaceRoot}/.gitignore,{workspaceRoot}/.nxignore]',
       'env:NX_CLOUD_ENCRYPTION_KEY',
       'ci-automation:{projectRoot}/**/*',
@@ -2196,7 +2196,7 @@ window.taskGraphResponse = {
       'AllExternalDependencies',
     ],
     'worker:build': [
-      'workspace:[!{workspaceRoot}/ai-cache/**/*,!{workspaceRoot}/ai-logs/**/*,!{workspaceRoot}/ai-metrics/**/*,!{workspaceRoot}/ai-learning/**/*,!{workspaceRoot}/ai-index/**/*,!{workspaceRoot}/ai-knowledge/**/*,!{workspaceRoot}/.ps/**/*,!{workspaceRoot}/tmp/**/*,!{workspaceRoot}/artifacts/**/*,!{workspaceRoot}/monitoring/data/**/*]',
+      'workspace:[!{workspaceRoot}/ai/cache/**/*,!{workspaceRoot}/ai-logs/**/*,!{workspaceRoot}/ai/metrics/**/*,!{workspaceRoot}/ai-learning/**/*,!{workspaceRoot}/ai/index/**/*,!{workspaceRoot}/ai-knowledge/**/*,!{workspaceRoot}/.ps/**/*,!{workspaceRoot}/tmp/**/*,!{workspaceRoot}/artifacts/**/*,!{workspaceRoot}/monitoring/data/**/*]',
       'workspace:[{workspaceRoot}/nx.json,{workspaceRoot}/.gitignore,{workspaceRoot}/.nxignore]',
       'env:NX_CLOUD_ENCRYPTION_KEY',
       'worker:{projectRoot}/**/*,!{projectRoot}/**/?(*.)+(spec|test).[jt]s?(x)?(.snap),!{projectRoot}/tsconfig.spec.json,!{projectRoot}/jest.config.[jt]s,!{projectRoot}/src/test-setup.[jt]s,!{projectRoot}/test-setup.[jt]s,!{projectRoot}/.eslintrc.json,!{projectRoot}/eslint.config.js',
@@ -2229,7 +2229,7 @@ window.taskGraphResponse = {
       'AllExternalDependencies',
     ],
     'feature-dashboard-remote:build': [
-      'workspace:[!{workspaceRoot}/ai-cache/**/*,!{workspaceRoot}/ai-logs/**/*,!{workspaceRoot}/ai-metrics/**/*,!{workspaceRoot}/ai-learning/**/*,!{workspaceRoot}/ai-index/**/*,!{workspaceRoot}/ai-knowledge/**/*,!{workspaceRoot}/.ps/**/*,!{workspaceRoot}/tmp/**/*,!{workspaceRoot}/artifacts/**/*,!{workspaceRoot}/monitoring/data/**/*]',
+      'workspace:[!{workspaceRoot}/ai/cache/**/*,!{workspaceRoot}/ai-logs/**/*,!{workspaceRoot}/ai/metrics/**/*,!{workspaceRoot}/ai-learning/**/*,!{workspaceRoot}/ai/index/**/*,!{workspaceRoot}/ai-knowledge/**/*,!{workspaceRoot}/.ps/**/*,!{workspaceRoot}/tmp/**/*,!{workspaceRoot}/artifacts/**/*,!{workspaceRoot}/monitoring/data/**/*]',
       'workspace:[{workspaceRoot}/nx.json,{workspaceRoot}/.gitignore,{workspaceRoot}/.nxignore]',
       'env:NX_CLOUD_ENCRYPTION_KEY',
       'feature-dashboard-remote:{projectRoot}/**/*,!{projectRoot}/**/?(*.)+(spec|test).[jt]s?(x)?(.snap),!{projectRoot}/tsconfig.spec.json,!{projectRoot}/jest.config.[jt]s,!{projectRoot}/src/test-setup.[jt]s,!{projectRoot}/test-setup.[jt]s,!{projectRoot}/.eslintrc.json,!{projectRoot}/eslint.config.js',
@@ -2238,7 +2238,7 @@ window.taskGraphResponse = {
       'AllExternalDependencies',
     ],
     'feature-auth-remote:build': [
-      'workspace:[!{workspaceRoot}/ai-cache/**/*,!{workspaceRoot}/ai-logs/**/*,!{workspaceRoot}/ai-metrics/**/*,!{workspaceRoot}/ai-learning/**/*,!{workspaceRoot}/ai-index/**/*,!{workspaceRoot}/ai-knowledge/**/*,!{workspaceRoot}/.ps/**/*,!{workspaceRoot}/tmp/**/*,!{workspaceRoot}/artifacts/**/*,!{workspaceRoot}/monitoring/data/**/*]',
+      'workspace:[!{workspaceRoot}/ai/cache/**/*,!{workspaceRoot}/ai-logs/**/*,!{workspaceRoot}/ai/metrics/**/*,!{workspaceRoot}/ai-learning/**/*,!{workspaceRoot}/ai/index/**/*,!{workspaceRoot}/ai-knowledge/**/*,!{workspaceRoot}/.ps/**/*,!{workspaceRoot}/tmp/**/*,!{workspaceRoot}/artifacts/**/*,!{workspaceRoot}/monitoring/data/**/*]',
       'workspace:[{workspaceRoot}/nx.json,{workspaceRoot}/.gitignore,{workspaceRoot}/.nxignore]',
       'env:NX_CLOUD_ENCRYPTION_KEY',
       'feature-auth-remote:{projectRoot}/**/*,!{projectRoot}/**/?(*.)+(spec|test).[jt]s?(x)?(.snap),!{projectRoot}/tsconfig.spec.json,!{projectRoot}/jest.config.[jt]s,!{projectRoot}/src/test-setup.[jt]s,!{projectRoot}/test-setup.[jt]s,!{projectRoot}/.eslintrc.json,!{projectRoot}/eslint.config.js',
@@ -2247,7 +2247,7 @@ window.taskGraphResponse = {
       'AllExternalDependencies',
     ],
     'platform:lint': [
-      'workspace:[!{workspaceRoot}/ai-cache/**/*,!{workspaceRoot}/ai-logs/**/*,!{workspaceRoot}/ai-metrics/**/*,!{workspaceRoot}/ai-learning/**/*,!{workspaceRoot}/ai-index/**/*,!{workspaceRoot}/ai-knowledge/**/*,!{workspaceRoot}/.ps/**/*,!{workspaceRoot}/tmp/**/*,!{workspaceRoot}/artifacts/**/*,!{workspaceRoot}/monitoring/data/**/*,{workspaceRoot}/.eslintrc.json,{workspaceRoot}/.eslintignore,{workspaceRoot}/eslint.config.js]',
+      'workspace:[!{workspaceRoot}/ai/cache/**/*,!{workspaceRoot}/ai-logs/**/*,!{workspaceRoot}/ai/metrics/**/*,!{workspaceRoot}/ai-learning/**/*,!{workspaceRoot}/ai/index/**/*,!{workspaceRoot}/ai-knowledge/**/*,!{workspaceRoot}/.ps/**/*,!{workspaceRoot}/tmp/**/*,!{workspaceRoot}/artifacts/**/*,!{workspaceRoot}/monitoring/data/**/*,{workspaceRoot}/.eslintrc.json,{workspaceRoot}/.eslintignore,{workspaceRoot}/eslint.config.js]',
       'workspace:[{workspaceRoot}/nx.json,{workspaceRoot}/.gitignore,{workspaceRoot}/.nxignore]',
       'env:NX_CLOUD_ENCRYPTION_KEY',
       'platform:{projectRoot}/**/*',
@@ -2264,7 +2264,7 @@ window.taskGraphResponse = {
       'AllExternalDependencies',
     ],
     'api:test': [
-      'workspace:[!{workspaceRoot}/ai-cache/**/*,!{workspaceRoot}/ai-logs/**/*,!{workspaceRoot}/ai-metrics/**/*,!{workspaceRoot}/ai-learning/**/*,!{workspaceRoot}/ai-index/**/*,!{workspaceRoot}/ai-knowledge/**/*,!{workspaceRoot}/.ps/**/*,!{workspaceRoot}/tmp/**/*,!{workspaceRoot}/artifacts/**/*,!{workspaceRoot}/monitoring/data/**/*,{workspaceRoot}/jest.preset.js]',
+      'workspace:[!{workspaceRoot}/ai/cache/**/*,!{workspaceRoot}/ai-logs/**/*,!{workspaceRoot}/ai/metrics/**/*,!{workspaceRoot}/ai-learning/**/*,!{workspaceRoot}/ai/index/**/*,!{workspaceRoot}/ai-knowledge/**/*,!{workspaceRoot}/.ps/**/*,!{workspaceRoot}/tmp/**/*,!{workspaceRoot}/artifacts/**/*,!{workspaceRoot}/monitoring/data/**/*,{workspaceRoot}/jest.preset.js]',
       'workspace:[{workspaceRoot}/nx.json,{workspaceRoot}/.gitignore,{workspaceRoot}/.nxignore]',
       'env:NX_CLOUD_ENCRYPTION_KEY',
       'api:{projectRoot}/**/*',
@@ -2289,7 +2289,7 @@ window.taskGraphResponse = {
       'AllExternalDependencies',
     ],
     'ci-automation:lint': [
-      'workspace:[!{workspaceRoot}/ai-cache/**/*,!{workspaceRoot}/ai-logs/**/*,!{workspaceRoot}/ai-metrics/**/*,!{workspaceRoot}/ai-learning/**/*,!{workspaceRoot}/ai-index/**/*,!{workspaceRoot}/ai-knowledge/**/*,!{workspaceRoot}/.ps/**/*,!{workspaceRoot}/tmp/**/*,!{workspaceRoot}/artifacts/**/*,!{workspaceRoot}/monitoring/data/**/*,{workspaceRoot}/.eslintrc.json,{workspaceRoot}/.eslintignore,{workspaceRoot}/eslint.config.js]',
+      'workspace:[!{workspaceRoot}/ai/cache/**/*,!{workspaceRoot}/ai-logs/**/*,!{workspaceRoot}/ai/metrics/**/*,!{workspaceRoot}/ai-learning/**/*,!{workspaceRoot}/ai/index/**/*,!{workspaceRoot}/ai-knowledge/**/*,!{workspaceRoot}/.ps/**/*,!{workspaceRoot}/tmp/**/*,!{workspaceRoot}/artifacts/**/*,!{workspaceRoot}/monitoring/data/**/*,{workspaceRoot}/.eslintrc.json,{workspaceRoot}/.eslintignore,{workspaceRoot}/eslint.config.js]',
       'workspace:[{workspaceRoot}/nx.json,{workspaceRoot}/.gitignore,{workspaceRoot}/.nxignore]',
       'env:NX_CLOUD_ENCRYPTION_KEY',
       'ci-automation:{projectRoot}/**/*',
@@ -2298,7 +2298,7 @@ window.taskGraphResponse = {
       'AllExternalDependencies',
     ],
     'docs:lint': [
-      'workspace:[!{workspaceRoot}/ai-cache/**/*,!{workspaceRoot}/ai-logs/**/*,!{workspaceRoot}/ai-metrics/**/*,!{workspaceRoot}/ai-learning/**/*,!{workspaceRoot}/ai-index/**/*,!{workspaceRoot}/ai-knowledge/**/*,!{workspaceRoot}/.ps/**/*,!{workspaceRoot}/tmp/**/*,!{workspaceRoot}/artifacts/**/*,!{workspaceRoot}/monitoring/data/**/*,{workspaceRoot}/.eslintrc.json,{workspaceRoot}/.eslintignore,{workspaceRoot}/eslint.config.js]',
+      'workspace:[!{workspaceRoot}/ai/cache/**/*,!{workspaceRoot}/ai-logs/**/*,!{workspaceRoot}/ai/metrics/**/*,!{workspaceRoot}/ai-learning/**/*,!{workspaceRoot}/ai/index/**/*,!{workspaceRoot}/ai-knowledge/**/*,!{workspaceRoot}/.ps/**/*,!{workspaceRoot}/tmp/**/*,!{workspaceRoot}/artifacts/**/*,!{workspaceRoot}/monitoring/data/**/*,{workspaceRoot}/.eslintrc.json,{workspaceRoot}/.eslintignore,{workspaceRoot}/eslint.config.js]',
       'workspace:[{workspaceRoot}/nx.json,{workspaceRoot}/.gitignore,{workspaceRoot}/.nxignore]',
       'env:NX_CLOUD_ENCRYPTION_KEY',
       'docs:{projectRoot}/**/*',
@@ -2307,7 +2307,7 @@ window.taskGraphResponse = {
       'AllExternalDependencies',
     ],
     'web:build': [
-      'workspace:[!{workspaceRoot}/ai-cache/**/*,!{workspaceRoot}/ai-logs/**/*,!{workspaceRoot}/ai-metrics/**/*,!{workspaceRoot}/ai-learning/**/*,!{workspaceRoot}/ai-index/**/*,!{workspaceRoot}/ai-knowledge/**/*,!{workspaceRoot}/.ps/**/*,!{workspaceRoot}/tmp/**/*,!{workspaceRoot}/artifacts/**/*,!{workspaceRoot}/monitoring/data/**/*]',
+      'workspace:[!{workspaceRoot}/ai/cache/**/*,!{workspaceRoot}/ai-logs/**/*,!{workspaceRoot}/ai/metrics/**/*,!{workspaceRoot}/ai-learning/**/*,!{workspaceRoot}/ai/index/**/*,!{workspaceRoot}/ai-knowledge/**/*,!{workspaceRoot}/.ps/**/*,!{workspaceRoot}/tmp/**/*,!{workspaceRoot}/artifacts/**/*,!{workspaceRoot}/monitoring/data/**/*]',
       'workspace:[{workspaceRoot}/nx.json,{workspaceRoot}/.gitignore,{workspaceRoot}/.nxignore]',
       'env:NX_CLOUD_ENCRYPTION_KEY',
       'web:{projectRoot}/**/*,!{projectRoot}/**/?(*.)+(spec|test).[jt]s?(x)?(.snap),!{projectRoot}/tsconfig.spec.json,!{projectRoot}/jest.config.[jt]s,!{projectRoot}/src/test-setup.[jt]s,!{projectRoot}/test-setup.[jt]s,!{projectRoot}/.eslintrc.json,!{projectRoot}/eslint.config.js',
@@ -2316,7 +2316,7 @@ window.taskGraphResponse = {
       'AllExternalDependencies',
     ],
     'ci-utils:lint': [
-      'workspace:[!{workspaceRoot}/ai-cache/**/*,!{workspaceRoot}/ai-logs/**/*,!{workspaceRoot}/ai-metrics/**/*,!{workspaceRoot}/ai-learning/**/*,!{workspaceRoot}/ai-index/**/*,!{workspaceRoot}/ai-knowledge/**/*,!{workspaceRoot}/.ps/**/*,!{workspaceRoot}/tmp/**/*,!{workspaceRoot}/artifacts/**/*,!{workspaceRoot}/monitoring/data/**/*,{workspaceRoot}/.eslintrc.json,{workspaceRoot}/.eslintignore,{workspaceRoot}/eslint.config.js]',
+      'workspace:[!{workspaceRoot}/ai/cache/**/*,!{workspaceRoot}/ai-logs/**/*,!{workspaceRoot}/ai/metrics/**/*,!{workspaceRoot}/ai-learning/**/*,!{workspaceRoot}/ai/index/**/*,!{workspaceRoot}/ai-knowledge/**/*,!{workspaceRoot}/.ps/**/*,!{workspaceRoot}/tmp/**/*,!{workspaceRoot}/artifacts/**/*,!{workspaceRoot}/monitoring/data/**/*,{workspaceRoot}/.eslintrc.json,{workspaceRoot}/.eslintignore,{workspaceRoot}/eslint.config.js]',
       'workspace:[{workspaceRoot}/nx.json,{workspaceRoot}/.gitignore,{workspaceRoot}/.nxignore]',
       'env:NX_CLOUD_ENCRYPTION_KEY',
       'ci-utils:{projectRoot}/**/*',
@@ -2325,7 +2325,7 @@ window.taskGraphResponse = {
       'AllExternalDependencies',
     ],
     'ci-utils:test': [
-      'workspace:[!{workspaceRoot}/ai-cache/**/*,!{workspaceRoot}/ai-logs/**/*,!{workspaceRoot}/ai-metrics/**/*,!{workspaceRoot}/ai-learning/**/*,!{workspaceRoot}/ai-index/**/*,!{workspaceRoot}/ai-knowledge/**/*,!{workspaceRoot}/.ps/**/*,!{workspaceRoot}/tmp/**/*,!{workspaceRoot}/artifacts/**/*,!{workspaceRoot}/monitoring/data/**/*,{workspaceRoot}/jest.preset.js]',
+      'workspace:[!{workspaceRoot}/ai/cache/**/*,!{workspaceRoot}/ai-logs/**/*,!{workspaceRoot}/ai/metrics/**/*,!{workspaceRoot}/ai-learning/**/*,!{workspaceRoot}/ai/index/**/*,!{workspaceRoot}/ai-knowledge/**/*,!{workspaceRoot}/.ps/**/*,!{workspaceRoot}/tmp/**/*,!{workspaceRoot}/artifacts/**/*,!{workspaceRoot}/monitoring/data/**/*,{workspaceRoot}/jest.preset.js]',
       'workspace:[{workspaceRoot}/nx.json,{workspaceRoot}/.gitignore,{workspaceRoot}/.nxignore]',
       'env:NX_CLOUD_ENCRYPTION_KEY',
       'ci-utils:{projectRoot}/**/*',
@@ -2334,7 +2334,7 @@ window.taskGraphResponse = {
       'AllExternalDependencies',
     ],
     'ui:build': [
-      'workspace:[!{workspaceRoot}/ai-cache/**/*,!{workspaceRoot}/ai-logs/**/*,!{workspaceRoot}/ai-metrics/**/*,!{workspaceRoot}/ai-learning/**/*,!{workspaceRoot}/ai-index/**/*,!{workspaceRoot}/ai-knowledge/**/*,!{workspaceRoot}/.ps/**/*,!{workspaceRoot}/tmp/**/*,!{workspaceRoot}/artifacts/**/*,!{workspaceRoot}/monitoring/data/**/*]',
+      'workspace:[!{workspaceRoot}/ai/cache/**/*,!{workspaceRoot}/ai-logs/**/*,!{workspaceRoot}/ai/metrics/**/*,!{workspaceRoot}/ai-learning/**/*,!{workspaceRoot}/ai/index/**/*,!{workspaceRoot}/ai-knowledge/**/*,!{workspaceRoot}/.ps/**/*,!{workspaceRoot}/tmp/**/*,!{workspaceRoot}/artifacts/**/*,!{workspaceRoot}/monitoring/data/**/*]',
       'workspace:[{workspaceRoot}/nx.json,{workspaceRoot}/.gitignore,{workspaceRoot}/.nxignore]',
       'env:NX_CLOUD_ENCRYPTION_KEY',
       'ui:{projectRoot}/**/*,!{projectRoot}/**/?(*.)+(spec|test).[jt]s?(x)?(.snap),!{projectRoot}/tsconfig.spec.json,!{projectRoot}/jest.config.[jt]s,!{projectRoot}/src/test-setup.[jt]s,!{projectRoot}/test-setup.[jt]s,!{projectRoot}/.eslintrc.json,!{projectRoot}/eslint.config.js',
@@ -2351,7 +2351,7 @@ window.taskGraphResponse = {
       'AllExternalDependencies',
     ],
     'infrastructure:test': [
-      'workspace:[!{workspaceRoot}/ai-cache/**/*,!{workspaceRoot}/ai-logs/**/*,!{workspaceRoot}/ai-metrics/**/*,!{workspaceRoot}/ai-learning/**/*,!{workspaceRoot}/ai-index/**/*,!{workspaceRoot}/ai-knowledge/**/*,!{workspaceRoot}/.ps/**/*,!{workspaceRoot}/tmp/**/*,!{workspaceRoot}/artifacts/**/*,!{workspaceRoot}/monitoring/data/**/*,{workspaceRoot}/jest.preset.js]',
+      'workspace:[!{workspaceRoot}/ai/cache/**/*,!{workspaceRoot}/ai-logs/**/*,!{workspaceRoot}/ai/metrics/**/*,!{workspaceRoot}/ai-learning/**/*,!{workspaceRoot}/ai/index/**/*,!{workspaceRoot}/ai-knowledge/**/*,!{workspaceRoot}/.ps/**/*,!{workspaceRoot}/tmp/**/*,!{workspaceRoot}/artifacts/**/*,!{workspaceRoot}/monitoring/data/**/*,{workspaceRoot}/jest.preset.js]',
       'workspace:[{workspaceRoot}/nx.json,{workspaceRoot}/.gitignore,{workspaceRoot}/.nxignore]',
       'env:NX_CLOUD_ENCRYPTION_KEY',
       'infrastructure:{projectRoot}/**/*',
@@ -2368,7 +2368,7 @@ window.taskGraphResponse = {
       'AllExternalDependencies',
     ],
     'docs:build': [
-      'workspace:[!{workspaceRoot}/ai-cache/**/*,!{workspaceRoot}/ai-logs/**/*,!{workspaceRoot}/ai-metrics/**/*,!{workspaceRoot}/ai-learning/**/*,!{workspaceRoot}/ai-index/**/*,!{workspaceRoot}/ai-knowledge/**/*,!{workspaceRoot}/.ps/**/*,!{workspaceRoot}/tmp/**/*,!{workspaceRoot}/artifacts/**/*,!{workspaceRoot}/monitoring/data/**/*]',
+      'workspace:[!{workspaceRoot}/ai/cache/**/*,!{workspaceRoot}/ai-logs/**/*,!{workspaceRoot}/ai/metrics/**/*,!{workspaceRoot}/ai-learning/**/*,!{workspaceRoot}/ai/index/**/*,!{workspaceRoot}/ai-knowledge/**/*,!{workspaceRoot}/.ps/**/*,!{workspaceRoot}/tmp/**/*,!{workspaceRoot}/artifacts/**/*,!{workspaceRoot}/monitoring/data/**/*]',
       'workspace:[{workspaceRoot}/nx.json,{workspaceRoot}/.gitignore,{workspaceRoot}/.nxignore]',
       'env:NX_CLOUD_ENCRYPTION_KEY',
       'docs:{projectRoot}/**/*,!{projectRoot}/**/?(*.)+(spec|test).[jt]s?(x)?(.snap),!{projectRoot}/tsconfig.spec.json,!{projectRoot}/jest.config.[jt]s,!{projectRoot}/src/test-setup.[jt]s,!{projectRoot}/test-setup.[jt]s,!{projectRoot}/.eslintrc.json,!{projectRoot}/eslint.config.js',
@@ -2377,7 +2377,7 @@ window.taskGraphResponse = {
       'AllExternalDependencies',
     ],
     'ui:test': [
-      'workspace:[!{workspaceRoot}/ai-cache/**/*,!{workspaceRoot}/ai-logs/**/*,!{workspaceRoot}/ai-metrics/**/*,!{workspaceRoot}/ai-learning/**/*,!{workspaceRoot}/ai-index/**/*,!{workspaceRoot}/ai-knowledge/**/*,!{workspaceRoot}/.ps/**/*,!{workspaceRoot}/tmp/**/*,!{workspaceRoot}/artifacts/**/*,!{workspaceRoot}/monitoring/data/**/*,{workspaceRoot}/jest.preset.js]',
+      'workspace:[!{workspaceRoot}/ai/cache/**/*,!{workspaceRoot}/ai-logs/**/*,!{workspaceRoot}/ai/metrics/**/*,!{workspaceRoot}/ai-learning/**/*,!{workspaceRoot}/ai/index/**/*,!{workspaceRoot}/ai-knowledge/**/*,!{workspaceRoot}/.ps/**/*,!{workspaceRoot}/tmp/**/*,!{workspaceRoot}/artifacts/**/*,!{workspaceRoot}/monitoring/data/**/*,{workspaceRoot}/jest.preset.js]',
       'workspace:[{workspaceRoot}/nx.json,{workspaceRoot}/.gitignore,{workspaceRoot}/.nxignore]',
       'env:NX_CLOUD_ENCRYPTION_KEY',
       'ui:{projectRoot}/**/*',
@@ -2386,7 +2386,7 @@ window.taskGraphResponse = {
       'AllExternalDependencies',
     ],
     'api:build': [
-      'workspace:[!{workspaceRoot}/ai-cache/**/*,!{workspaceRoot}/ai-logs/**/*,!{workspaceRoot}/ai-metrics/**/*,!{workspaceRoot}/ai-learning/**/*,!{workspaceRoot}/ai-index/**/*,!{workspaceRoot}/ai-knowledge/**/*,!{workspaceRoot}/.ps/**/*,!{workspaceRoot}/tmp/**/*,!{workspaceRoot}/artifacts/**/*,!{workspaceRoot}/monitoring/data/**/*]',
+      'workspace:[!{workspaceRoot}/ai/cache/**/*,!{workspaceRoot}/ai-logs/**/*,!{workspaceRoot}/ai/metrics/**/*,!{workspaceRoot}/ai-learning/**/*,!{workspaceRoot}/ai/index/**/*,!{workspaceRoot}/ai-knowledge/**/*,!{workspaceRoot}/.ps/**/*,!{workspaceRoot}/tmp/**/*,!{workspaceRoot}/artifacts/**/*,!{workspaceRoot}/monitoring/data/**/*]',
       'workspace:[{workspaceRoot}/nx.json,{workspaceRoot}/.gitignore,{workspaceRoot}/.nxignore]',
       'env:NX_CLOUD_ENCRYPTION_KEY',
       'api:{projectRoot}/**/*,!{projectRoot}/**/?(*.)+(spec|test).[jt]s?(x)?(.snap),!{projectRoot}/tsconfig.spec.json,!{projectRoot}/jest.config.[jt]s,!{projectRoot}/src/test-setup.[jt]s,!{projectRoot}/test-setup.[jt]s,!{projectRoot}/.eslintrc.json,!{projectRoot}/eslint.config.js',
@@ -2418,7 +2418,7 @@ window.taskGraphResponse = {
       'AllExternalDependencies',
     ],
     'platform:test': [
-      'workspace:[!{workspaceRoot}/ai-cache/**/*,!{workspaceRoot}/ai-logs/**/*,!{workspaceRoot}/ai-metrics/**/*,!{workspaceRoot}/ai-learning/**/*,!{workspaceRoot}/ai-index/**/*,!{workspaceRoot}/ai-knowledge/**/*,!{workspaceRoot}/.ps/**/*,!{workspaceRoot}/tmp/**/*,!{workspaceRoot}/artifacts/**/*,!{workspaceRoot}/monitoring/data/**/*,{workspaceRoot}/jest.preset.js]',
+      'workspace:[!{workspaceRoot}/ai/cache/**/*,!{workspaceRoot}/ai-logs/**/*,!{workspaceRoot}/ai/metrics/**/*,!{workspaceRoot}/ai-learning/**/*,!{workspaceRoot}/ai/index/**/*,!{workspaceRoot}/ai-knowledge/**/*,!{workspaceRoot}/.ps/**/*,!{workspaceRoot}/tmp/**/*,!{workspaceRoot}/artifacts/**/*,!{workspaceRoot}/monitoring/data/**/*,{workspaceRoot}/jest.preset.js]',
       'workspace:[{workspaceRoot}/nx.json,{workspaceRoot}/.gitignore,{workspaceRoot}/.nxignore]',
       'env:NX_CLOUD_ENCRYPTION_KEY',
       'platform:{projectRoot}/**/*',
@@ -2427,7 +2427,7 @@ window.taskGraphResponse = {
       'AllExternalDependencies',
     ],
     '@political-sphere/shared:test': [
-      'workspace:[!{workspaceRoot}/ai-cache/**/*,!{workspaceRoot}/ai-logs/**/*,!{workspaceRoot}/ai-metrics/**/*,!{workspaceRoot}/ai-learning/**/*,!{workspaceRoot}/ai-index/**/*,!{workspaceRoot}/ai-knowledge/**/*,!{workspaceRoot}/.ps/**/*,!{workspaceRoot}/tmp/**/*,!{workspaceRoot}/artifacts/**/*,!{workspaceRoot}/monitoring/data/**/*,{workspaceRoot}/jest.preset.js]',
+      'workspace:[!{workspaceRoot}/ai/cache/**/*,!{workspaceRoot}/ai-logs/**/*,!{workspaceRoot}/ai/metrics/**/*,!{workspaceRoot}/ai-learning/**/*,!{workspaceRoot}/ai/index/**/*,!{workspaceRoot}/ai-knowledge/**/*,!{workspaceRoot}/.ps/**/*,!{workspaceRoot}/tmp/**/*,!{workspaceRoot}/artifacts/**/*,!{workspaceRoot}/monitoring/data/**/*,{workspaceRoot}/jest.preset.js]',
       'workspace:[{workspaceRoot}/nx.json,{workspaceRoot}/.gitignore,{workspaceRoot}/.nxignore]',
       'env:NX_CLOUD_ENCRYPTION_KEY',
       '@political-sphere/shared:{projectRoot}/**/*',
@@ -2436,7 +2436,7 @@ window.taskGraphResponse = {
       'AllExternalDependencies',
     ],
     'dev:test': [
-      'workspace:[!{workspaceRoot}/ai-cache/**/*,!{workspaceRoot}/ai-logs/**/*,!{workspaceRoot}/ai-metrics/**/*,!{workspaceRoot}/ai-learning/**/*,!{workspaceRoot}/ai-index/**/*,!{workspaceRoot}/ai-knowledge/**/*,!{workspaceRoot}/.ps/**/*,!{workspaceRoot}/tmp/**/*,!{workspaceRoot}/artifacts/**/*,!{workspaceRoot}/monitoring/data/**/*,{workspaceRoot}/jest.preset.js]',
+      'workspace:[!{workspaceRoot}/ai/cache/**/*,!{workspaceRoot}/ai-logs/**/*,!{workspaceRoot}/ai/metrics/**/*,!{workspaceRoot}/ai-learning/**/*,!{workspaceRoot}/ai/index/**/*,!{workspaceRoot}/ai-knowledge/**/*,!{workspaceRoot}/.ps/**/*,!{workspaceRoot}/tmp/**/*,!{workspaceRoot}/artifacts/**/*,!{workspaceRoot}/monitoring/data/**/*,{workspaceRoot}/jest.preset.js]',
       'workspace:[{workspaceRoot}/nx.json,{workspaceRoot}/.gitignore,{workspaceRoot}/.nxignore]',
       'env:NX_CLOUD_ENCRYPTION_KEY',
       'dev:{projectRoot}/**/*',
@@ -2445,7 +2445,7 @@ window.taskGraphResponse = {
       'AllExternalDependencies',
     ],
     'worker:test': [
-      'workspace:[!{workspaceRoot}/ai-cache/**/*,!{workspaceRoot}/ai-logs/**/*,!{workspaceRoot}/ai-metrics/**/*,!{workspaceRoot}/ai-learning/**/*,!{workspaceRoot}/ai-index/**/*,!{workspaceRoot}/ai-knowledge/**/*,!{workspaceRoot}/.ps/**/*,!{workspaceRoot}/tmp/**/*,!{workspaceRoot}/artifacts/**/*,!{workspaceRoot}/monitoring/data/**/*,{workspaceRoot}/jest.preset.js]',
+      'workspace:[!{workspaceRoot}/ai/cache/**/*,!{workspaceRoot}/ai-logs/**/*,!{workspaceRoot}/ai/metrics/**/*,!{workspaceRoot}/ai-learning/**/*,!{workspaceRoot}/ai/index/**/*,!{workspaceRoot}/ai-knowledge/**/*,!{workspaceRoot}/.ps/**/*,!{workspaceRoot}/tmp/**/*,!{workspaceRoot}/artifacts/**/*,!{workspaceRoot}/monitoring/data/**/*,{workspaceRoot}/jest.preset.js]',
       'workspace:[{workspaceRoot}/nx.json,{workspaceRoot}/.gitignore,{workspaceRoot}/.nxignore]',
       'env:NX_CLOUD_ENCRYPTION_KEY',
       'worker:{projectRoot}/**/*',
@@ -2454,7 +2454,7 @@ window.taskGraphResponse = {
       'AllExternalDependencies',
     ],
     'dev:build': [
-      'workspace:[!{workspaceRoot}/ai-cache/**/*,!{workspaceRoot}/ai-logs/**/*,!{workspaceRoot}/ai-metrics/**/*,!{workspaceRoot}/ai-learning/**/*,!{workspaceRoot}/ai-index/**/*,!{workspaceRoot}/ai-knowledge/**/*,!{workspaceRoot}/.ps/**/*,!{workspaceRoot}/tmp/**/*,!{workspaceRoot}/artifacts/**/*,!{workspaceRoot}/monitoring/data/**/*]',
+      'workspace:[!{workspaceRoot}/ai/cache/**/*,!{workspaceRoot}/ai-logs/**/*,!{workspaceRoot}/ai/metrics/**/*,!{workspaceRoot}/ai-learning/**/*,!{workspaceRoot}/ai/index/**/*,!{workspaceRoot}/ai-knowledge/**/*,!{workspaceRoot}/.ps/**/*,!{workspaceRoot}/tmp/**/*,!{workspaceRoot}/artifacts/**/*,!{workspaceRoot}/monitoring/data/**/*]',
       'workspace:[{workspaceRoot}/nx.json,{workspaceRoot}/.gitignore,{workspaceRoot}/.nxignore]',
       'env:NX_CLOUD_ENCRYPTION_KEY',
       'dev:{projectRoot}/**/*,!{projectRoot}/**/?(*.)+(spec|test).[jt]s?(x)?(.snap),!{projectRoot}/tsconfig.spec.json,!{projectRoot}/jest.config.[jt]s,!{projectRoot}/src/test-setup.[jt]s,!{projectRoot}/test-setup.[jt]s,!{projectRoot}/.eslintrc.json,!{projectRoot}/eslint.config.js',
@@ -2479,7 +2479,7 @@ window.taskGraphResponse = {
       'AllExternalDependencies',
     ],
     'infrastructure:lint': [
-      'workspace:[!{workspaceRoot}/ai-cache/**/*,!{workspaceRoot}/ai-logs/**/*,!{workspaceRoot}/ai-metrics/**/*,!{workspaceRoot}/ai-learning/**/*,!{workspaceRoot}/ai-index/**/*,!{workspaceRoot}/ai-knowledge/**/*,!{workspaceRoot}/.ps/**/*,!{workspaceRoot}/tmp/**/*,!{workspaceRoot}/artifacts/**/*,!{workspaceRoot}/monitoring/data/**/*,{workspaceRoot}/.eslintrc.json,{workspaceRoot}/.eslintignore,{workspaceRoot}/eslint.config.js]',
+      'workspace:[!{workspaceRoot}/ai/cache/**/*,!{workspaceRoot}/ai-logs/**/*,!{workspaceRoot}/ai/metrics/**/*,!{workspaceRoot}/ai-learning/**/*,!{workspaceRoot}/ai/index/**/*,!{workspaceRoot}/ai-knowledge/**/*,!{workspaceRoot}/.ps/**/*,!{workspaceRoot}/tmp/**/*,!{workspaceRoot}/artifacts/**/*,!{workspaceRoot}/monitoring/data/**/*,{workspaceRoot}/.eslintrc.json,{workspaceRoot}/.eslintignore,{workspaceRoot}/eslint.config.js]',
       'workspace:[{workspaceRoot}/nx.json,{workspaceRoot}/.gitignore,{workspaceRoot}/.nxignore]',
       'env:NX_CLOUD_ENCRYPTION_KEY',
       'infrastructure:{projectRoot}/**/*',
@@ -2496,7 +2496,7 @@ window.taskGraphResponse = {
       'AllExternalDependencies',
     ],
     'worker:lint': [
-      'workspace:[!{workspaceRoot}/ai-cache/**/*,!{workspaceRoot}/ai-logs/**/*,!{workspaceRoot}/ai-metrics/**/*,!{workspaceRoot}/ai-learning/**/*,!{workspaceRoot}/ai-index/**/*,!{workspaceRoot}/ai-knowledge/**/*,!{workspaceRoot}/.ps/**/*,!{workspaceRoot}/tmp/**/*,!{workspaceRoot}/artifacts/**/*,!{workspaceRoot}/monitoring/data/**/*,{workspaceRoot}/.eslintrc.json,{workspaceRoot}/.eslintignore,{workspaceRoot}/eslint.config.js]',
+      'workspace:[!{workspaceRoot}/ai/cache/**/*,!{workspaceRoot}/ai-logs/**/*,!{workspaceRoot}/ai/metrics/**/*,!{workspaceRoot}/ai-learning/**/*,!{workspaceRoot}/ai/index/**/*,!{workspaceRoot}/ai-knowledge/**/*,!{workspaceRoot}/.ps/**/*,!{workspaceRoot}/tmp/**/*,!{workspaceRoot}/artifacts/**/*,!{workspaceRoot}/monitoring/data/**/*,{workspaceRoot}/.eslintrc.json,{workspaceRoot}/.eslintignore,{workspaceRoot}/eslint.config.js]',
       'workspace:[{workspaceRoot}/nx.json,{workspaceRoot}/.gitignore,{workspaceRoot}/.nxignore]',
       'env:NX_CLOUD_ENCRYPTION_KEY',
       'worker:{projectRoot}/**/*',

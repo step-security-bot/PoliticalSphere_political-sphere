@@ -45,7 +45,7 @@ This comprehensive end-to-end audit evaluates the Political Sphere project again
 - Proper separation: `/apps`, `/libs`, `/docs`, `/scripts`, `/tools`
 - NO files improperly placed in root (rule compliant)
 - Clear organizational hierarchy with domain-driven structure
-- AI-specific directories: `/ai-cache`, `/ai-learning`, `/ai-metrics`, `/ai-knowledge`
+- AI-specific directories: `/ai/cache`, `/ai-learning`, `/ai/metrics`, `/ai-knowledge`
 
 **Naming Conventions** (ORG-02):
 
@@ -380,9 +380,9 @@ AWS_ROLE_TO_ASSUME: ${{ secrets.AWS_ROLE_TO_ASSUME }}
 
 **Performance Monitoring** (AIGOV-06):
 
-- ✅ Metrics tracking: `ai-metrics.json` and `ai-metrics/stats.json`
+- ✅ Metrics tracking: `ai/metrics/performance.json` and `ai/metrics/stats.json`
 - ✅ Performance monitoring script: `scripts/ai/performance-monitor.js`
-- ✅ Cache management: `ai-cache/cache.json`
+- ✅ Cache management: `ai/cache/cache.json`
 - ✅ Rate limiting: 200 requests/hour for code generation
 
 ### 🟡 Medium Priority Issues

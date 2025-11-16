@@ -69,16 +69,26 @@ else
 fi
 
 print_status "Checking cache status..."
-if [ -f "ai-cache/cache.json" ]; then
-    CACHE_SIZE=$(node -p "Object.keys(JSON.parse(require('fs').readFileSync('ai-cache/cache.json', 'utf8')).queries).length")
+CACHE_FILE="ai/cache/cache.json"
+if [ ! -f "$CACHE_FILE" ] && [ -f "ai-cache/cache.json" ]; then
+    CACHE_FILE="ai-cache/cache.json"
+fi
+
+if [ -f "$CACHE_FILE" ]; then
+    CACHE_SIZE=$(node -p "Object.keys(JSON.parse(require('fs').readFileSync('$CACHE_FILE', 'utf8')).queries).length")
     print_success "Cache contains $CACHE_SIZE queries"
 else
     print_warning "Cache file not found"
 fi
 
 print_status "Checking metrics..."
-if [ -f "ai-metrics.json" ]; then
-    AVG_RESPONSE_TIME=$(node -p "JSON.parse(require('fs').readFileSync('ai-metrics.json', 'utf8')).averageResponseTime")
+METRICS_FILE="ai/metrics/performance.json"
+if [ ! -f "$METRICS_FILE" ] && [ -f "ai-metrics.json" ]; then
+    METRICS_FILE="ai-metrics.json"
+fi
+
+if [ -f "$METRICS_FILE" ]; then
+    AVG_RESPONSE_TIME=$(node -p "JSON.parse(require('fs').readFileSync('$METRICS_FILE', 'utf8')).averageResponseTime")
     if [ "$AVG_RESPONSE_TIME" != "0" ]; then
         print_success "Average response time: ${AVG_RESPONSE_TIME}ms"
     else
@@ -93,7 +103,7 @@ echo "  • Run 'FAST_AI=1 <command>' for faster responses during development"
 echo "  • Use 'node tools/scripts/ai/pre-cache.js' to populate cache with common queries"
 echo "  • Monitor performance with 'node tools/scripts/ai/performance-monitor.js'"
 echo "  • Review ai-learning/patterns.json for optimization tips"
-echo "  • Check ai-metrics.json for performance trends"
+echo "  • Check $METRICS_FILE for performance trends"
 
 print_success "AI Performance Optimization completed!"
 echo ""
