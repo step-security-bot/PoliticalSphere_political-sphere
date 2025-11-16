@@ -436,42 +436,44 @@
 ## 🚨 CRITICAL BLOCKERS (Must Complete First)
 
 ### 1. Database Setup (HIGHEST PRIORITY)
-**Status**: ❌ BLOCKING ALL PROGRESS
-**Impact**: Nothing persists, game is non-functional
+**Status**: ✅ COMPLETED (2025-11-16)
+**Impact**: Persistence active; game seed data available
 
-- [ ] **Install PostgreSQL** (or use Docker)
+- [x] **Set up PostgreSQL using Docker**
   ```bash
-  # macOS
-  brew install postgresql@16
-  brew services start postgresql@16
-  
-  # Or use Docker
-  docker run --name political-sphere-db -e POSTGRES_PASSWORD=postgres -p 5432:5432 -d postgres:16
+  # Port 5432 was occupied; mapped container to 5433
+  docker run --name political-sphere-db \
+    -e POSTGRES_PASSWORD=postgres \
+    -e POSTGRES_USER=postgres \
+    -e POSTGRES_DB=political_sphere_dev \
+    -p 5433:5432 -d postgres:16
   ```
 
-- [ ] **Create Database**
-  ```bash
-  createdb political_sphere_dev
-  ```
+- [x] **Create Database** (handled via `POSTGRES_DB` env during container start)
 
-- [ ] **Update .env with PostgreSQL URL**
+- [x] **Update .env with PostgreSQL URL**
   ```env
-  DATABASE_URL="postgresql://postgres:postgres@localhost:5432/political_sphere_dev"
+  DATABASE_URL="postgresql://postgres:postgres@localhost:5433/political_sphere_dev"
   ```
 
-- [ ] **Run Prisma Migrations**
+- [x] **Apply Prisma Schema**
   ```bash
   cd apps/api
-  npx prisma migrate dev --name initial_setup
-  npx prisma generate
+  npx prisma db push
   ```
 
-- [ ] **Seed Initial Data**
+- [x] **Seed Initial Data**
   ```bash
-  npx prisma db seed
+  npx tsx prisma/seed.ts
   ```
 
-**Estimated Time**: 2-4 hours
+**Notes**:
+- Removed duplicate `DATABASE_URL` from root `.env` to resolve Prisma conflict.
+- Added election creation to `prisma/seed.ts` to satisfy FK constraints before constituencies.
+- Updated `apps/api/.env.example` with DATABASE_URL guidance (5433 fallback when 5432 busy).
+
+**Follow-up**:
+- Harden credentials for non-dev environments; integrate secret management per security policy.
 **Assigned To**: Developer
 **Due Date**: ASAP
 

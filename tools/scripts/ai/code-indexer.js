@@ -23,15 +23,26 @@ import { createHash } from 'crypto';
 import { existsSync, mkdirSync, readdirSync, readFileSync, statSync, writeFileSync } from 'fs';
 import { extname, join, relative } from 'path';
 
+<<<<<<< HEAD
+const INDEX_FILE = 'ai/index/codebase-index.json';
+const METRICS_FILE = 'ai/index/quality-metrics.json';
+const GRAPH_FILE = 'ai/index/dependency-graph.json';
+=======
 const INDEX_FILE = 'ai-index/codebase-index.json';
 const METRICS_FILE = 'ai-index/quality-metrics.json';
 const GRAPH_FILE = 'ai-index/dependency-graph.json';
+>>>>>>> origin/main
 const SUPPORTED_EXTS = ['.js', '.ts', '.tsx', '.jsx', '.json', '.md'];
 const MAX_INDEX_SIZE = 20_000_000; // 20MB limit (increased for metrics)
 
 // Ensure index directory exists
+<<<<<<< HEAD
+if (!existsSync('ai/index')) {
+  mkdirSync('ai/index', { recursive: true });
+=======
 if (!existsSync('ai-index')) {
   mkdirSync('ai-index', { recursive: true });
+>>>>>>> origin/main
 }
 
 function tokenize(text) {
@@ -208,7 +219,7 @@ function searchIndex(query) {
   const filtered = results.filter(
     r =>
       !r.file.endsWith('codebase-index.json') &&
-      !r.file.startsWith('ai-index/') &&
+      !r.file.startsWith('ai/index/') &&
       !r.file.startsWith('ai/index/')
   );
 

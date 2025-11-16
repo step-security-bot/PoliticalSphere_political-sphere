@@ -6,18 +6,20 @@ The format follows Keep a Changelog (https://keepachangelog.com/en/1.0.0/) and t
 
 ## [2025-11-16] - Database Setup Standardization
 
+### Added
+- Database setup guidance added to `apps/api/README.md` (Docker + Homebrew instructions, seeding, troubleshooting).
+
+### Changed
+- Standardized local PostgreSQL port to fallback on 5433 when 5432 occupied; updated `apps/api/.env` and `.env.example`.
+- Removed `DATABASE_URL` from root `.env` to resolve Prisma duplicate env var conflict.
+- Updated `docs/TODO.md` marking database setup as completed with accurate commands.
+- **Updated database paths** in api utilities to use `data/runtime/` directory structure
+
 ### Fixed
 
 **PostgreSQL Setup and Seed Script**:
 - **Fixed Prisma seed foreign key error** by creating Election before Constituency (FK constraint satisfaction)
-- **Standardized local PostgreSQL port to 5433** (fallback when default 5432 is occupied)
-- **Removed duplicate DATABASE_URL** from root `.env` to resolve Prisma client conflict
-- **Updated database paths** in api utilities to use `data/runtime/` directory structure
-- **Added comprehensive setup documentation** to `apps/api/README.md`:
-  - Docker and Homebrew installation instructions
-  - Database creation and seeding steps
-  - Troubleshooting guide for common connection/auth issues
-  - Security warnings for credential rotation in non-dev environments
+- Prisma seed failure due to missing election foreign key: added election creation to `apps/api/prisma/seed.ts` prior to constituencies.
 - **Code quality improvements** in seed script:
   - Replaced `any[]` with `unknown[]` for Party placeholder (lint compliance)
   - Added descriptive comments for missing Game/Party models
@@ -31,6 +33,9 @@ The format follows Keep a Changelog (https://keepachangelog.com/en/1.0.0/) and t
 
 **Test Fixes**:
 - **Fixed GameBoard.test.jsx** window.matchMedia mock race condition by hoisting mock definition before React imports
+
+### Security / Compliance
+- Noted requirement to rotate credentials and avoid default `postgres:postgres` outside development.
 
 **Impact**:
 - ✅ Database seeding now completes successfully without FK violations
@@ -91,6 +96,8 @@ Closes #102
 - **False Positive Prevention**: Added path-based allowlist for `docs/**/*.md` files to prevent false detection of password hashing algorithm references (PBKDF2, Argon2id, bcrypt) and JWT examples in security documentation
 - **Configuration Standardization**: Used consistent string array syntax for regex allowlists, matching existing project patterns
 
+---
+
 ## [2025-11-14] - AI System End-to-End Review and Major Enhancements
 
 ### Added
@@ -117,7 +124,7 @@ Closes #102
 - **code-indexer.js**: Fixed validation failure on empty files (module-federation.config.ts); now skips empty files gracefully during indexing
 - **code-indexer.js**: Fixed search function to return valid JSON structure `{query, count, results}` instead of plain text
 - **@political-sphere/ai-system**: Built TypeScript package with `npm run build` to generate dist/ directory; added build step to ai-maintenance.yml and ai-governance.yml workflows
-- **competence-monitor.js**: Fixed metrics tracking to write `competenceScore` field to ai-metrics/stats.json for integration test assertions
+- **competence-monitor.js**: Fixed metrics tracking to write `competenceScore` field to ai/metrics/stats.json for integration test assertions
 - **ci-neutrality-check.mts**: Changed imports from package references to relative paths (`../../../libs/ai-system/dist/`) to fix ERR_MODULE_NOT_FOUND errors
 
 **AI System Critical Fixes** (Session 2 - Current):
@@ -1309,7 +1316,7 @@ The 19 failing test files have runtime/infrastructure issues (database schema se
   - Changed `/pnpm-workspace.yaml` → `/package-lock.json` (project uses npm, not pnpm)
   - Changed `/tsconfig.base.json` → `/tsconfig.json` (root config extends base in tools/config)
   - Added explicit sections: Documentation & Legal, Package Management, Build & Tooling Config, Editor & Code Quality, IDE & CI/CD, Environment Files
-  - Removed legacy references: `/ai-controls.json`, `/ai-metrics.json` (already moved), `/TODO-STEPS.md` (doesn't exist)
+  - Removed legacy references: `/ai-controls.json`, `/ai/metrics.json` (already moved), `/TODO-STEPS.md` (doesn't exist)
 
 #### Verification Status
 - ✅ `graph.json` already properly git-ignored (line 69 of `.gitignore`) per Nx best practices for generated artifacts
@@ -1866,14 +1873,14 @@ See `docs/05-engineering-and-devops/tools/ai-enhancement-implementation-summary.
 
 ### Fixed
 
-- **Path Resolution Issues**: Fixed competence monitor script paths to correctly reference ai-metrics and ai-learning directories
+- **Path Resolution Issues**: Fixed competence monitor script paths to correctly reference ai/metrics and ai-learning directories
 - **Module Export Consistency**: Updated all route files to use ES modules for consistency
 - **Middleware Exports**: Converted authentication middleware to ES module exports
 - **Dependency Management**: Added missing dependencies (cors, helmet, compression, express-rate-limit)
 
 - **Test reliability & DB lifecycle**: Fixed Vitest aliasing for `@political-sphere/shared` so runtime tests import the TypeScript `index.ts` (prevents missing schema exports). Converted domain services (UserService, PartyService, VoteService, BillService) to use a lazy database getter to avoid stale/closed DB connections during test lifecycle. Removed temporary inspection/test artifacts used for debugging.
 
-- **AI Context Preloader (2025-11-04)**: Ensure the context preloader writes the cache to the repository-root `ai-cache/context-cache.json`, create the cache directory if missing, and use a safe recursive directory walker instead of unsupported `readdirSync(..., { recursive: true })`. This fixes failing `tools/scripts/ai/context-preloader.spec.js` tests that expected the cache at the repo root. (Author: automation/assistant)
+- **AI Context Preloader (2025-11-04)**: Ensure the context preloader writes the cache to `ai/cache/context-cache.json` (with legacy `ai-cache/` fallback), create the cache directory if missing, and use a safe recursive directory walker instead of unsupported `readdirSync(..., { recursive: true })`. This fixes failing `tools/scripts/ai/context-preloader.spec.js` tests that expected the cache at the repo root. (Author: automation/assistant)
 
 ### Added
 
@@ -2078,7 +2085,7 @@ These practical fixes improve build reliability, test stability, CI robustness, 
 
 ### Performance
 
-- IDE responsiveness: Reduced VS Code load by excluding large generated folders from search and file watchers (`playwright-report/`, `artifacts/`, `ai-metrics/`, `test-results/`, `monitoring/data/`, `data/`). Added `scripts/dev/kill-resource-hogs.sh` and npm scripts `dev:clean:processes`/`dev:reset-performance` to terminate runaway Nx/Playwright processes and reset Nx cache. (2025-11-01)
+- IDE responsiveness: Reduced VS Code load by excluding large generated folders from search and file watchers (`playwright-report/`, `artifacts/`, `ai/metrics/`, `test-results/`, `monitoring/data/`, `data/`). Added `scripts/dev/kill-resource-hogs.sh` and npm scripts `dev:clean:processes`/`dev:reset-performance` to terminate runaway Nx/Playwright processes and reset Nx cache. (2025-11-01)
 
 ### Changed
 
@@ -2096,7 +2103,7 @@ These practical fixes improve build reliability, test stability, CI robustness, 
 
 - **Fixed Nx refresh slowdown**: Optimized daemon settings with 1000ms debounce delay and 500ms aggregate changes delay to reduce refresh frequency (2025-11-01)
 - **Cleared Nx cache**: Removed 1.3GB of old cache entries that were causing performance degradation (2025-11-01)
-- **Added file watcher optimizations**: Configured Nx to ignore AI directories (ai-cache, ai-logs, ai-metrics, ai-learning, ai-index, ai-knowledge) and other non-source directories (tmp, artifacts, monitoring/data) to prevent unnecessary file watching (2025-11-01)
+- **Added file watcher optimizations**: Configured Nx to ignore AI directories (ai/cache, ai-logs, ai/metrics, ai-learning, ai/index, ai-knowledge) and other non-source directories (tmp, artifacts, monitoring/data) to prevent unnecessary file watching (2025-11-01)
 - **Created optimization script**: Added `scripts/optimize-nx.sh` for easy performance tuning and cache management (2025-11-01)
 - **Fixed commit buffering**: Replaced slow TruffleHog with fast gitleaks for pre-commit secret scanning - reduces commit time from 30+ seconds to <2 seconds (2025-11-01)
 - **Fixed pre-push hanging**: Simplified workspace integrity check to only verify critical files exist instead of running slow find operations across entire workspace (2025-11-01)
