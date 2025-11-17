@@ -47,7 +47,7 @@ describe('Game Engine', () => {
     it('should update the updatedAt timestamp', () => {
       const newState = advanceGameState(initialGameState, [], 123);
       expect(new Date(newState.updatedAt).getTime()).toBeGreaterThan(
-        new Date(initialGameState.updatedAt).getTime(),
+        new Date(initialGameState.updatedAt).getTime()
       );
     });
   });
@@ -473,7 +473,7 @@ describe('Game Engine', () => {
 
       expect(newState.economy.treasury).toBeGreaterThan(initialGameState.economy.treasury);
       expect(newState.economy.inflationRate).toBeGreaterThan(
-        initialGameState.economy.inflationRate,
+        initialGameState.economy.inflationRate
       );
     });
 
@@ -655,7 +655,7 @@ describe('Game Engine', () => {
       const newState = advanceGameState(
         corruptedGame,
         [{ type: 'propose', payload: { title: 'Test' } }],
-        123,
+        123
       );
 
       expect(newState.proposals).toHaveLength(1);

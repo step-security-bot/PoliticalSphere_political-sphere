@@ -147,7 +147,7 @@ export function calculateSLI(endpoint: string): SLI {
  */
 export function checkSLO(
   endpoint: string,
-  slo: SLO = DEFAULT_SLO,
+  slo: SLO = DEFAULT_SLO
 ): {
   passing: boolean;
   violations: string[];

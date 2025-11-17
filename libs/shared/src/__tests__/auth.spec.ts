@@ -63,31 +63,31 @@ describe('JWT Authentication Utilities', () => {
 
     it('should throw error for short access secret', () => {
       expect(() => initializeJWT({ accessSecret: shortSecret, refreshSecret })).toThrow(
-        'JWT access secret must be at least 32 characters',
+        'JWT access secret must be at least 32 characters'
       );
     });
 
     it('should throw error for short refresh secret', () => {
       expect(() => initializeJWT({ accessSecret, refreshSecret: shortSecret })).toThrow(
-        'JWT refresh secret must be at least 32 characters',
+        'JWT refresh secret must be at least 32 characters'
       );
     });
 
     it('should throw error for empty access secret', () => {
       expect(() => initializeJWT({ accessSecret: '', refreshSecret })).toThrow(
-        'JWT access secret must be at least 32 characters',
+        'JWT access secret must be at least 32 characters'
       );
     });
 
     it('should throw error for empty refresh secret', () => {
       expect(() => initializeJWT({ accessSecret, refreshSecret: '' })).toThrow(
-        'JWT refresh secret must be at least 32 characters',
+        'JWT refresh secret must be at least 32 characters'
       );
     });
 
     it('should throw error when secrets are the same', () => {
       expect(() => initializeJWT({ accessSecret: sameSecret, refreshSecret: sameSecret })).toThrow(
-        'Access and refresh secrets must be different',
+        'Access and refresh secrets must be different'
       );
     });
   });
@@ -112,7 +112,7 @@ describe('JWT Authentication Utilities', () => {
       delete process.env.JWT_REFRESH_SECRET;
 
       expect(() => initializeJWTFromEnv()).toThrow(
-        'JWT_REFRESH_SECRET environment variable not set',
+        'JWT_REFRESH_SECRET environment variable not set'
       );
     });
   });
@@ -206,7 +206,7 @@ describe('JWT Authentication Utilities', () => {
       const expiredRefreshToken = jwt.sign(
         { userId: 'user123', username: 'testuser', type: 'refresh' },
         refreshSecret,
-        { expiresIn: '-1h' },
+        { expiresIn: '-1h' }
       );
 
       const result = verifyRefreshToken(expiredRefreshToken);
@@ -219,7 +219,7 @@ describe('JWT Authentication Utilities', () => {
     it('should handle invalid token', () => {
       const invalidRefreshToken = jwt.sign(
         { userId: 'user123', username: 'testuser', type: 'refresh' },
-        'wrong-secret',
+        'wrong-secret'
       );
 
       const result = verifyRefreshToken(invalidRefreshToken);
