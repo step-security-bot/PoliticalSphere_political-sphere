@@ -104,7 +104,7 @@ export const defaultSLIs: SLI[] = [
 export const defaultSLOs: SLO[] = [
   {
     name: 'Monthly Availability',
-    sli: defaultSLIs[0],
+    sli: defaultSLIs[0] as SLI,
     target: 0.999,
     window: '30d',
     errorBudget: {
@@ -115,7 +115,7 @@ export const defaultSLOs: SLO[] = [
   },
   {
     name: 'Weekly Latency P95',
-    sli: defaultSLIs[2],
+    sli: defaultSLIs[2] as SLI,
     target: 0.95,
     window: '7d',
     errorBudget: {
@@ -148,16 +148,16 @@ export const governanceConfig = {
 export const observabilityConfig = {
   traces: {
     enabled: true,
-    endpoint: process.env['OTEL_EXPORTER_OTLP_ENDPOINT'] || 'http://localhost:4318',
-    serviceName: process.env['OTEL_SERVICE_NAME'] || 'ai-system',
+    endpoint: process.env.OTEL_EXPORTER_OTLP_ENDPOINT || 'http://localhost:4318',
+    serviceName: process.env.OTEL_SERVICE_NAME || 'ai-system',
   },
   metrics: {
     enabled: true,
-    endpoint: process.env['PROMETHEUS_ENDPOINT'] || 'http://localhost:9090',
+    endpoint: process.env.PROMETHEUS_ENDPOINT || 'http://localhost:9090',
   },
   logs: {
     enabled: true,
-    level: (process.env['LOG_LEVEL'] || 'info') as 'debug' | 'info' | 'warn' | 'error',
+    level: (process.env.LOG_LEVEL || 'info') as 'debug' | 'info' | 'warn' | 'error',
     format: 'json' as const,
   },
 };
@@ -229,34 +229,41 @@ function parseNumber(value: string | undefined, fallback: number): number {
 }
 
 export function getConfig() {
-  const env = process.env['NODE_ENV'] || 'development';
+  const env = process.env.NODE_ENV || 'development';
 
   // Overlay defaults with environment variables (safe parsing)
+  const baseCheckpoint = defaultOrchestrationConfig.checkpoint ?? {
+    enabled: true,
+    storage: 'memory' as const,
+    resumeOnFailure: true,
+  };
+
   const orchestration = {
     ...defaultOrchestrationConfig,
-    framework: (process.env['AI_FRAMEWORK'] as any) || defaultOrchestrationConfig.framework,
-    pattern: (process.env['AI_PATTERN'] as any) || defaultOrchestrationConfig.pattern,
+    framework:
+      (process.env.AI_FRAMEWORK as OrchestrationConfig['framework']) ||
+      defaultOrchestrationConfig.framework,
+    pattern:
+      (process.env.AI_PATTERN as OrchestrationConfig['pattern']) ||
+      defaultOrchestrationConfig.pattern,
     checkpoint: {
-      ...defaultOrchestrationConfig.checkpoint,
-      enabled: parseBoolean(
-        process.env['AI_CHECKPOINT_ENABLED'],
-        defaultOrchestrationConfig.checkpoint.enabled
-      ),
+      ...baseCheckpoint,
+      enabled: parseBoolean(process.env.AI_CHECKPOINT_ENABLED, baseCheckpoint.enabled),
       storage:
-        (process.env['AI_CHECKPOINT_STORAGE'] as any) ||
-        defaultOrchestrationConfig.checkpoint.storage,
+        (process.env.AI_CHECKPOINT_STORAGE as typeof baseCheckpoint.storage) ||
+        baseCheckpoint.storage,
       resumeOnFailure: parseBoolean(
-        process.env['AI_CHECKPOINT_RESUME'],
-        defaultOrchestrationConfig.checkpoint.resumeOnFailure ?? true
+        process.env.AI_CHECKPOINT_RESUME,
+        baseCheckpoint.resumeOnFailure ?? true
       ),
     },
   } as typeof defaultOrchestrationConfig;
 
   const governance = {
     ...governanceConfig,
-    biasThreshold: parseNumber(process.env['AI_BIAS_THRESHOLD'], governanceConfig.biasThreshold),
+    biasThreshold: parseNumber(process.env.AI_BIAS_THRESHOLD, governanceConfig.biasThreshold),
     neutralityRequired: parseBoolean(
-      process.env['AI_NEUTRALITY_REQUIRED'],
+      process.env.AI_NEUTRALITY_REQUIRED,
       governanceConfig.neutralityRequired
     ),
   };

@@ -79,6 +79,19 @@ The format follows Keep a Changelog (<https://keepachangelog.com/en/1.0.0/>) and
 - Dependencies clean installed with overrides applied
 - Security review completed: 2025-11-17
 
+### Additional Hardening (Semgrep OSS + Docker builds)
+
+- chore(security): Semgrep OSS fallback and SARIF upload
+  - security.yml now falls back to `semgrep scan` with public rule packs (`p/default`, `p/owasp-top-ten`) when `SEMGREP_APP_TOKEN` is unavailable (e.g., fork PRs)
+  - Retains Semgrep Cloud path (`semgrep ci --config auto`) when token is present
+  - Continues to upload SARIF to GitHub code scanning
+  - ci.yml updated to run Semgrep via pinned container `returntocorp/semgrep:1.67.0` in OSS mode for consistency
+
+- fix(docker): Resolve `npm ci` failures in multi-stage builds
+  - All app Dockerfiles now copy `vendor/` before any `npm ci` to satisfy local `file:` overrides (patched `js-yaml`)
+  - Affected files: `apps/api/Dockerfile`, `apps/web/Dockerfile`, `apps/worker/Dockerfile`, `apps/game-server/Dockerfile`
+  - Fixes buildx errors like: `failed to solve: process "npm ci ..." exited with code 7/1`
+
 ## [2025-11-17] - Infrastructure Modernization
 
 ### Added

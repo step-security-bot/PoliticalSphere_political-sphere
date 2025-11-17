@@ -119,7 +119,8 @@ export const ElectionsCenter: React.FC<ElectionsCenterProps> = ({ userId: _userI
           <section className="elections-section">
             <div className="elections-grid">
               {elections.map(election => (
-                <article
+                <button
+                  type="button"
                   key={election.id}
                   className="election-card"
                   onClick={() => setSelectedElection(election)}
@@ -142,7 +143,7 @@ export const ElectionsCenter: React.FC<ElectionsCenterProps> = ({ userId: _userI
                       {Math.round((election.turnout / election.totalVoters) * 100)}%)
                     </dd>
                   </dl>
-                </article>
+                </button>
               ))}
             </div>
           </section>

@@ -29,7 +29,7 @@ startTelemetry({
     });
   })
   .catch(error => {
-    logger.fatal({ msg: 'Failed to initialize OpenTelemetry', err: error });
+    logger.fatal('Failed to initialize OpenTelemetry', { err: error });
     process.exit(1);
   });
 

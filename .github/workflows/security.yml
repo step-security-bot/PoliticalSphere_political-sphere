@@ -141,23 +141,40 @@ jobs:
             echo "::notice::Skipping Semgrep Cloud for fork PR (secrets not available)"
           fi
 
-      - name: Run Semgrep Security Scan
+      - name: Run Semgrep Security Scan (OSS fallback)
         id: semgrep
+        env:
+          SEMGREP_APP_TOKEN: ${{ secrets.SEMGREP_APP_TOKEN }}
+          EVENT_NAME: ${{ github.event_name }}
+          PR_HEAD_REPO: ${{ github.event.pull_request.head.repo.full_name }}
+          CURRENT_REPO: ${{ github.repository }}
         run: |
           echo "🔒 Running Semgrep security scan..."
-          semgrep ci --config auto --json --sarif --output semgrep-results.sarif > semgrep-results.json || true
+          USE_CLOUD=false
+          if [ -n "${SEMGREP_APP_TOKEN}" ] && { [ "${EVENT_NAME}" = "push" ] || [ "${PR_HEAD_REPO}" = "${CURRENT_REPO}" ]; }; then
+            USE_CLOUD=true
+          fi
+
+          if [ "${USE_CLOUD}" = true ]; then
+            echo "☁️ Semgrep Cloud mode (token detected)"
+            semgrep ci --config auto --json --sarif --output semgrep-results.sarif > semgrep-results.json || true
+          else
+            echo "🧰 Semgrep OSS mode (no token or fork PR)"
+            # Public, OSS-accessible rulesets only
+            semgrep scan \
+              --config p/default \
+              --config p/owasp-top-ten \
+              --json --sarif --output semgrep-results.sarif > semgrep-results.json || true
+          fi
 
           if [ -f semgrep-results.json ]; then
             findings=$(jq '.results | length' semgrep-results.json 2>/dev/null || echo "0")
             echo "findings=${findings}" >> "$GITHUB_OUTPUT"
             echo "📈 Found ${findings} security findings"
-            
             if [ "${findings}" -gt 0 ]; then
               echo "⚠️ Semgrep found security issues - review required"
             fi
           fi
-        env:
-          SEMGREP_APP_TOKEN: ${{ secrets.SEMGREP_APP_TOKEN }}
 
       - name: Upload SARIF Results
         if: always()

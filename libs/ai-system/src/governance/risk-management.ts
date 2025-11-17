@@ -174,7 +174,9 @@ export class RiskRegister {
     if (mitigations) {
       const index = mitigations.findIndex(m => m.id === mitigationId);
       if (index !== -1) {
-        mitigations[index] = { ...mitigations[index], ...updates };
+        const { id: _omit, ...rest } = updates as Partial<RiskMitigation>;
+        const safeRest = rest as Omit<Partial<RiskMitigation>, 'id'>;
+        mitigations[index] = { ...mitigations[index], ...safeRest } as RiskMitigation;
       }
     }
   }
@@ -297,6 +299,7 @@ export class RiskManagementOrchestrator {
   /**
    * Initialize risk assessments for all registered systems
    */
+  // biome-ignore lint/correctness/noUnusedPrivateClassMembers: Used in constructor
   private initializeRiskAssessments(): void {
     for (const [systemId, system] of this.systemInventory) {
       this.assessSystemRisks(systemId, system);

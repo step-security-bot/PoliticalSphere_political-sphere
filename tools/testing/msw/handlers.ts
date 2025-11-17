@@ -9,11 +9,11 @@ import { http, HttpResponse } from 'msw';
 
 // Import API fixtures
 import { authFixtures } from './fixtures/auth.fixtures';
-import { userFixtures } from './fixtures/user.fixtures';
 import { billFixtures } from './fixtures/bill.fixtures';
-import { voteFixtures } from './fixtures/vote.fixtures';
-import { partyFixtures } from './fixtures/party.fixtures';
 import { newsFixtures } from './fixtures/news.fixtures';
+import { partyFixtures } from './fixtures/party.fixtures';
+import { userFixtures } from './fixtures/user.fixtures';
+import { voteFixtures } from './fixtures/vote.fixtures';
 
 // Base API URL
 const API_BASE = 'http://localhost:3001/api';
@@ -83,8 +83,8 @@ export const userHandlers = [
   // GET /api/users
   http.get(`${API_BASE}/users`, ({ request }) => {
     const url = new URL(request.url);
-    const page = parseInt(url.searchParams.get('page') || '1');
-    const limit = parseInt(url.searchParams.get('limit') || '10');
+    const page = parseInt(url.searchParams.get('page') || '1', 10);
+    const limit = parseInt(url.searchParams.get('limit') || '10', 10);
 
     const startIndex = (page - 1) * limit;
     const endIndex = startIndex + limit;
@@ -123,7 +123,10 @@ export const userHandlers = [
       return HttpResponse.json({ error: 'User not found' }, { status: 404 });
     }
 
-    userFixtures.users[userIndex] = { ...userFixtures.users[userIndex], ...updates };
+    userFixtures.users[userIndex] = {
+      ...(userFixtures.users[userIndex] as unknown as Record<string, unknown>),
+      ...(updates as unknown as Record<string, unknown>),
+    } as (typeof userFixtures.users)[number];
     return HttpResponse.json(userFixtures.users[userIndex]);
   }),
 ];
@@ -135,8 +138,8 @@ export const billHandlers = [
     const url = new URL(request.url);
     const status = url.searchParams.get('status');
     const category = url.searchParams.get('category');
-    const page = parseInt(url.searchParams.get('page') || '1');
-    const limit = parseInt(url.searchParams.get('limit') || '10');
+    const page = parseInt(url.searchParams.get('page') || '1', 10);
+    const limit = parseInt(url.searchParams.get('limit') || '10', 10);
 
     let filteredBills = billFixtures.bills;
 
@@ -231,7 +234,10 @@ export const voteHandlers = [
       return HttpResponse.json({ error: 'Vote not found' }, { status: 404 });
     }
 
-    voteFixtures.votes[voteIndex] = { ...voteFixtures.votes[voteIndex], ...updates };
+    voteFixtures.votes[voteIndex] = {
+      ...(voteFixtures.votes[voteIndex] as unknown as Record<string, unknown>),
+      ...(updates as unknown as Record<string, unknown>),
+    } as (typeof voteFixtures.votes)[number];
     return HttpResponse.json(voteFixtures.votes[voteIndex]);
   }),
 ];
@@ -262,8 +268,8 @@ export const newsHandlers = [
   http.get(`${API_BASE}/news`, ({ request }) => {
     const url = new URL(request.url);
     const category = url.searchParams.get('category');
-    const page = parseInt(url.searchParams.get('page') || '1');
-    const limit = parseInt(url.searchParams.get('limit') || '10');
+    const page = parseInt(url.searchParams.get('page') || '1', 10);
+    const limit = parseInt(url.searchParams.get('limit') || '10', 10);
 
     let filteredNews = newsFixtures.newsArticles;
 

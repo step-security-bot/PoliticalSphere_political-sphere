@@ -6,16 +6,14 @@
  * @module orchestration/engine
  */
 
+import { config } from '../config';
 import type {
   Agent,
   AgentInput,
   AgentOutput,
   OrchestrationConfig,
   OrchestrationPattern,
-} from '../types';
-import { SequentialPattern } from './patterns/sequential';
-import { ConcurrentPattern } from './patterns/concurrent';
-import { config } from '../config';
+} from '../types/index';
 
 /**
  * Orchestration engine execution options
@@ -111,8 +109,7 @@ export class OrchestrationEngine {
           outputs = await this.executeSequential(agents, input);
           break;
         case 'concurrent':
-          outputs = await this.executeConcurrent(agents, input);
-          break;
+          throw new Error('Concurrent pattern not implemented.');
         default:
           throw new Error(`Pattern '${this.pattern}' not yet implemented`);
       }
@@ -144,18 +141,57 @@ export class OrchestrationEngine {
    * Execute agents sequentially
    */
   private async executeSequential(agents: Agent[], input: AgentInput): Promise<AgentOutput[]> {
-    const pattern = new SequentialPattern();
-    return pattern.execute(agents, input);
-  }
+    const outputs: AgentOutput[] = [];
+    let currentInput = input;
 
-  /**
-   * Execute agents concurrently
-   */
-  private async executeConcurrent(agents: Agent[], input: AgentInput): Promise<AgentOutput[]> {
-    const pattern = new ConcurrentPattern();
-    return pattern.execute(agents, input);
-  }
+    for (const agent of agents) {
+      try {
+        const startTime = Date.now();
+        const output = await agent.execute(currentInput);
+        const executionTime = Date.now() - startTime;
 
+        const standardizedOutput: AgentOutput = {
+          agentId: agent.id,
+          content: output.content || '',
+          metadata: {
+            executionTime,
+            timestamp: new Date(),
+            ...(output.metadata && typeof output.metadata === 'object' ? output.metadata : {}),
+          },
+        };
+
+        outputs.push(standardizedOutput);
+
+        // Prepare input for next agent
+        currentInput = {
+          ...currentInput,
+          previousOutputs: outputs,
+          context: {
+            ...currentInput.context,
+            lastOutput: standardizedOutput.content,
+          },
+        };
+      } catch (error) {
+        const errorOutput: AgentOutput = {
+          agentId: agent.id,
+          content: '',
+          metadata: {
+            executionTime: 0,
+            timestamp: new Date(),
+          },
+          error: {
+            message: error instanceof Error ? error.message : 'Unknown error',
+            code: 'EXECUTION_ERROR',
+          },
+        };
+
+        outputs.push(errorOutput);
+        break; // Stop on first error for sequential execution
+      }
+    }
+
+    return outputs;
+  }
   /**
    * Validate agent outputs
    */

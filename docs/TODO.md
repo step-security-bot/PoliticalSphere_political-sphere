@@ -1,5 +1,16 @@
 # TODO.md - Political Sphere Development Tasks
 
+## CI Security Scanning & Docker Builds (2025-11-17)
+
+- [x] Semgrep OSS fallback in CI
+  - Update `.github/workflows/security.yml` to use `semgrep scan` with public rule packs when `SEMGREP_APP_TOKEN` is absent or PR originates from a fork; retain cloud path when available. Upload SARIF for code scanning.
+  - Update `.github/workflows/ci.yml` to use pinned `returntocorp/semgrep:1.67.0` container in OSS mode.
+
+- [x] Fix Docker builds failing on `npm ci`
+  - Copy `vendor/` before all `npm ci` steps in app Dockerfiles to satisfy local `file:` overrides (patched `js-yaml`).
+  - Files: `apps/api/Dockerfile`, `apps/web/Dockerfile`, `apps/worker/Dockerfile`, `apps/game-server/Dockerfile`.
+
+
 ## Authentication Persistence & Login Reliability (2025-11-17)
 
 - [x] Switch API auth persistence from in-memory to file-backed SQLite database (`data/runtime/political_sphere.db`) with path correction and migration hooks

@@ -19,7 +19,7 @@ export const constitutionalGates: ValidationGate[] = [
     tier: ValidationTier.CONSTITUTIONAL,
     name: 'Political Neutrality Check',
     description: 'Ensures AI output maintains absolute political neutrality',
-    validators: [validators.biasDetection, validators.sentimentBalance],
+    validators: [validators.biasDetection(), validators.sentimentBalance()],
     blockOnFailure: true,
   }),
   new ValidationGate({
@@ -27,7 +27,7 @@ export const constitutionalGates: ValidationGate[] = [
     tier: ValidationTier.CONSTITUTIONAL,
     name: 'Democratic Integrity Check',
     description: 'Prevents manipulation of voting, speech, moderation, or power distribution',
-    validators: [validators.votingManipulation, validators.powerDistribution],
+    validators: [validators.votingManipulation(), validators.powerDistribution()],
     blockOnFailure: true,
   }),
 ];
@@ -42,9 +42,9 @@ export const mandatoryGates: ValidationGate[] = [
     name: 'Security Validation',
     description: 'OWASP ASVS 5.0.0 Level 2 security checks',
     validators: [
-      validators.inputSanitization,
-      validators.authenticationCheck,
-      validators.authorizationCheck,
+      validators.inputSanitization(),
+      validators.authenticationCheck(),
+      validators.authorizationCheck(),
     ],
     blockOnFailure: true,
   }),
@@ -53,7 +53,7 @@ export const mandatoryGates: ValidationGate[] = [
     tier: ValidationTier.MANDATORY,
     name: 'Accessibility Validation',
     description: 'WCAG 2.2 AA compliance checks',
-    validators: [validators.wcagCompliance],
+    validators: [validators.wcagCompliance()],
     blockOnFailure: true,
   }),
   new ValidationGate({
@@ -61,7 +61,7 @@ export const mandatoryGates: ValidationGate[] = [
     tier: ValidationTier.MANDATORY,
     name: 'Privacy Validation',
     description: 'GDPR compliance and data protection checks',
-    validators: [validators.gdprCompliance, validators.dataMinimization],
+    validators: [validators.gdprCompliance(), validators.dataMinimization()],
     blockOnFailure: true,
   }),
 ];
@@ -75,7 +75,7 @@ export const bestPracticeGates: ValidationGate[] = [
     tier: ValidationTier.BEST_PRACTICE,
     name: 'Code Quality Check',
     description: 'Code style, complexity, and maintainability checks',
-    validators: [validators.codeComplexity, validators.documentationCoverage],
+    validators: [validators.codeComplexity(), validators.documentationCoverage()],
     blockOnFailure: false,
   }),
   new ValidationGate({
@@ -83,7 +83,7 @@ export const bestPracticeGates: ValidationGate[] = [
     tier: ValidationTier.BEST_PRACTICE,
     name: 'Performance Check',
     description: 'Performance and efficiency checks',
-    validators: [validators.responseTime, validators.resourceUsage],
+    validators: [validators.responseTime(), validators.resourceUsage()],
     blockOnFailure: false,
   }),
 ];

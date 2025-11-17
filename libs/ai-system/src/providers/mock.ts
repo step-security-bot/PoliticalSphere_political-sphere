@@ -25,18 +25,18 @@ export class MockProvider implements ModelProvider {
     if (!last) return { content: `${prefix} (no input)` };
 
     // Simple tool-call protocol: if user writes tool:<name>(<json>)
-    const toolMatch = /tool:([a-zA-Z0-9_-]+)\((.*)\)\s*$/s.exec(last.content);
+    const toolMatch = /tool:([a-zA-Z0-9_-]+)\(([\s\S]*)\)\s*$/m.exec(last.content);
     if (toolMatch) {
       const [, toolName, rawArgs] = toolMatch;
       let args: unknown = rawArgs;
       try {
-        args = JSON.parse(rawArgs);
+        args = JSON.parse(rawArgs ?? '');
       } catch {
         // Keep rawArgs if JSON parse fails
       }
       return {
         content: `${prefix} Calling tool ${toolName}`,
-        toolCalls: [{ id: `${Date.now()}`, name: toolName, arguments: args }],
+        toolCalls: [{ id: `${Date.now()}`, name: toolName ?? 'tool', arguments: args }],
       };
     }
 

@@ -6,8 +6,6 @@
  * @module observability/metrics
  */
 
-import type { SLOMetrics } from '../types';
-
 /**
  * Metric data point
  */
@@ -71,11 +69,6 @@ export class MetricsCollector {
   private histograms: Map<string, number[]> = new Map();
   private slos: Map<string, SLODefinition> = new Map();
   private sliData: Map<string, number[]> = new Map();
-  private serviceName: string;
-
-  constructor(serviceName: string = 'default') {
-    this.serviceName = serviceName;
-  }
 
   /**
    * Record metric (legacy method for compatibility)
@@ -91,6 +84,7 @@ export class MetricsCollector {
       this.metrics.set(name, []);
     }
 
+    // biome-ignore lint/style/noNonNullAssertion: Safe after has check
     this.metrics.get(name)!.push(dataPoint);
     this.exportMetric(name, dataPoint);
   }
@@ -129,6 +123,7 @@ export class MetricsCollector {
         .map(([k, v]) => `${k}:${v}`)
         .join(',') || 'default';
 
+    // biome-ignore lint/style/noNonNullAssertion: Safe after has check
     const counterMap = this.counters.get(name)!;
     counterMap.set(labelKey, (counterMap.get(labelKey) || 0) + 1);
   }
@@ -147,6 +142,7 @@ export class MetricsCollector {
     if (!this.histograms.has(name)) {
       this.histograms.set(name, []);
     }
+    // biome-ignore lint/style/noNonNullAssertion: Safe after has check
     this.histograms.get(name)!.push(value);
   }
 
@@ -165,6 +161,7 @@ export class MetricsCollector {
     if (!this.sliData.has(name)) {
       this.sliData.set(name, []);
     }
+    // biome-ignore lint/style/noNonNullAssertion: Safe after has check
     this.sliData.get(name)!.push(value);
   }
 
@@ -203,7 +200,9 @@ export class MetricsCollector {
     this.counters.forEach((labelMap, name) => {
       report.counters[name] = {};
       labelMap.forEach((count, labelKey) => {
-        report.counters[name][labelKey] = count;
+        const bucket = report.counters[name] || {};
+        report.counters[name] = bucket;
+        bucket[labelKey] = count;
       });
     });
 
@@ -300,7 +299,16 @@ export class MetricsCollector {
   /**
    * Calculate SLO metrics (legacy method for compatibility)
    */
-  calculateSLO(service: string, windowMs: number = 3600000): SLOMetrics {
+  calculateSLO(
+    service: string,
+    windowMs: number = 3600000
+  ): {
+    service: string;
+    availability: number;
+    latency: { p50: number; p95: number; p99: number };
+    errorRate: number;
+    window: { start: Date; end: Date };
+  } {
     const windowStart = new Date(Date.now() - windowMs);
 
     const getMetricsInWindow = (name: string): MetricDataPoint[] => {
@@ -373,7 +381,7 @@ export class MetricsCollector {
     percentConsumed: number;
   } {
     const slo = this.calculateSLO(service);
-    const actualAvailability = slo.availability;
+    const actualAvailability = slo.availability ?? 1.0;
 
     // Error budget = 1 - target availability
     // e.g., 99.9% availability = 0.1% error budget

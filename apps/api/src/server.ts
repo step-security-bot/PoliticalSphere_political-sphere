@@ -550,19 +550,18 @@ async function handleRequest(
         return;
       }
 
-      const user = await authenticateUser(email, password);
-      if (!user) {
+      const auth = await authenticateUser(email, password);
+      if (!auth) {
         sendError(res, 401, 'Invalid credentials');
         return;
       }
 
-      const accessToken = generateAccessToken(user);
-      const refreshToken = generateRefreshToken(user);
+      const { user, accessToken, refreshToken } = auth;
 
       const userPayload: UserAuthPayload = {
         id: user.id,
         email: user.email,
-        role: user.role || undefined,
+        role: (user as { role?: string }).role || undefined,
       };
       sendJson(res, 200, {
         user: {

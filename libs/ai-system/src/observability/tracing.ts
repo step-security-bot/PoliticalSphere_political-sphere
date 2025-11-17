@@ -84,7 +84,10 @@ export class AITracer {
   private activeSpans: Map<string, TraceSpan> = new Map();
   private completedSpans: TraceSpan[] = [];
 
-  constructor(private serviceName: string) {}
+  constructor(
+    // biome-ignore lint/correctness/noUnusedPrivateClassMembers: Used in startSpan method
+    private serviceName: string
+  ) {}
 
   /**
    * Start a new trace span
@@ -169,7 +172,7 @@ export class AITracer {
       spanId: span.spanId,
       traceId: span.traceId,
       duration: `${duration}ms`,
-      status: span.status.code,
+      status: typeof span.status === 'string' ? span.status : span.status?.code,
       events: span.events.length,
     });
   }

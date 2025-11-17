@@ -110,7 +110,11 @@ export interface OrchestrationConfig {
 /**
  * Validation gate tier levels
  */
-export type ValidationTier = 0 | 1 | 2;
+export enum ValidationTier {
+  CONSTITUTIONAL = 0,
+  MANDATORY = 1,
+  BEST_PRACTICE = 2,
+}
 
 /**
  * Validation gate configuration
@@ -214,7 +218,7 @@ export interface TraceSpan {
   /** Trace ID */
   traceId: string;
   /** Parent span ID */
-  parentSpanId?: string;
+  parentId?: string;
   /** Operation name */
   name: string;
   /** Start time */
@@ -224,11 +228,13 @@ export interface TraceSpan {
   /** Span attributes */
   attributes: Record<string, string | number | boolean>;
   /** Span events */
-  events?: Array<{
+  events: Array<{
     timestamp: Date;
     name: string;
     attributes?: Record<string, unknown>;
   }>;
+  /** Span status */
+  status: { code: 'ok' | 'error'; message?: string };
 }
 
 /**
@@ -271,19 +277,16 @@ export interface SLO {
  * SLO metrics and status
  */
 export interface SLOMetrics {
-  /** SLO name */
-  slo: SLO;
-  /** Current compliance percentage */
-  compliance: number;
-  /** Error budget status */
-  errorBudget: {
-    total: number;
-    consumed: number;
-    remaining: number;
-    percentage: number;
-  };
-  /** Timestamp */
-  timestamp: Date;
+  /** Service name for which SLO is calculated */
+  service: string;
+  /** Availability ratio (0-1) */
+  availability: number;
+  /** Latency percentiles */
+  latency: { p50: number; p95: number; p99: number };
+  /** Error rate ratio (0-1) */
+  errorRate: number;
+  /** Time window covered by this calculation */
+  window: { start: Date; end: Date };
 }
 
 /**
@@ -313,6 +316,10 @@ export interface DSARRequest {
   completedAt?: Date;
   /** Rejection reason */
   rejectionReason?: string;
+  /** Timestamp */
+  timestamp?: Date;
+  /** Optional details provided by the requester */
+  details?: string;
 }
 
 /** Alias for backward compatibility */
@@ -322,29 +329,34 @@ export type DataSubjectRequest = DSARRequest;
  * Consent record for GDPR compliance
  */
 export interface ConsentRecord {
-  /** Consent ID */
-  consentId: string;
   /** User ID */
   userId: string;
   /** Purpose of data processing */
   purpose: string;
-  /** Granted timestamp */
-  grantedAt: Date;
-  /** Withdrawn timestamp */
-  withdrawnAt?: Date;
-  /** Consent status */
-  status: 'active' | 'withdrawn' | 'expired';
+  /** Whether consent is currently granted */
+  granted: boolean;
+  /** Legal basis */
+  legalBasis?: string;
+  /** Timestamp of the consent record */
+  timestamp: Date;
+  /** Expiry date */
+  expiryDate?: Date;
 }
 
 /**
  * Accessibility violation detail
  */
 export interface AccessibilityViolation {
-  node: string;
+  id?: string;
+  node?: string;
   impact: 'critical' | 'serious' | 'moderate' | 'minor';
   message: string;
   help: string;
   helpUrl: string;
+  /** Optional WCAG criterion for this violation */
+  criterion?: string;
+  /** Optional list of nodes from axe-like reports */
+  nodes?: Array<{ html: string; target: string[] }>;
 }
 
 /**
@@ -359,6 +371,10 @@ export interface AccessibilityResult {
   level: 'A' | 'AA' | 'AAA';
   /** Pass/fail status */
   passed: boolean;
+  /** Number of passing checks (if available) */
+  passes?: number;
+  /** Count of incomplete checks (if available) */
+  incomplete?: number;
   /** Violation details */
   violations?: AccessibilityViolation[];
   /** Timestamp */
@@ -372,7 +388,10 @@ export class AISystemError extends Error {
   constructor(
     message: string,
     public code: string,
-    public metadata?: Record<string, unknown>
+    public metadata?: Record<string, unknown>,
+    public findings?: unknown[],
+    public score?: number,
+    public violations?: unknown[]
   ) {
     super(message);
     this.name = 'AISystemError';

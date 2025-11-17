@@ -13,6 +13,7 @@ ARG REVISION="unknown"
 ARG CREATED=""
 
 # Install dumb-init and build dependencies for native modules
+# hadolint ignore=DL3018
 RUN apk add --no-cache dumb-init python3 make g++
 
 # Create non-root user with fixed UID/GID
@@ -32,6 +33,7 @@ USER nodejs
 
 # Copy root package files
 COPY --chown=nodejs:nodejs package.json package-lock.json ./
+COPY --chown=nodejs:nodejs vendor ./vendor
 
 # Install ALL dependencies with BuildKit npm cache
 RUN --mount=type=cache,target=/home/nodejs/.npm,uid=1001,gid=1001 \
@@ -47,6 +49,7 @@ USER nodejs
 
 # Copy root package files
 COPY --chown=nodejs:nodejs package.json package-lock.json ./
+COPY --chown=nodejs:nodejs vendor ./vendor
 
 # Install dependencies with cache mount
 RUN --mount=type=cache,target=/home/nodejs/.npm,uid=1001,gid=1001 \
@@ -88,6 +91,7 @@ USER nodejs
 
 # Copy root package files
 COPY --chown=nodejs:nodejs package.json package-lock.json ./
+COPY --chown=nodejs:nodejs vendor ./vendor
 
 # Install all dependencies (including devDependencies for build)
 RUN --mount=type=cache,target=/home/nodejs/.npm,uid=1001,gid=1001 \
@@ -123,6 +127,7 @@ USER nodejs
 
 # Install production dependencies only
 COPY --chown=nodejs:nodejs package.json package-lock.json ./
+COPY --chown=nodejs:nodejs vendor ./vendor
 RUN --mount=type=cache,target=/home/nodejs/.npm,uid=1001,gid=1001 \
     npm ci --omit=dev --workspaces=false --legacy-peer-deps && \
     npm cache clean --force

@@ -36,7 +36,7 @@ export interface AxeTestConfig {
  * });
  * ```
  */
-export async function runAxeTest(container: HTMLElement, config?: AxeTestConfig): Promise<void> {
+export async function runAxeTest(_container: HTMLElement, config?: AxeTestConfig): Promise<void> {
   // In production, this would use actual axe-core:
   // const { axe } = await import('axe-core');
   // const results = await axe(container, {

@@ -6,7 +6,7 @@
  * @module privacy/consent-manager
  */
 
-import type { ConsentRecord } from '../types';
+import type { ConsentRecord } from '../types/index';
 
 /**
  * Consent Purpose Categories
@@ -125,7 +125,8 @@ export class ConsentManager {
 
     // Group by purpose, keep only latest
     for (const consent of userConsents) {
-      if (!summary[consent.purpose] || consent.timestamp > summary[consent.purpose].timestamp) {
+      const prev = summary[consent.purpose];
+      if (!prev || consent.timestamp > prev.timestamp) {
         summary[consent.purpose] = {
           granted: consent.granted,
           timestamp: consent.timestamp,
@@ -149,6 +150,7 @@ export class ConsentManager {
     if (relevant.length === 0) return true;
 
     const latest = relevant[0];
+    if (!latest) return true;
     const now = Date.now();
     const age = now - latest.timestamp.getTime();
     const renewalThreshold = renewalPeriodDays * 24 * 60 * 60 * 1000;

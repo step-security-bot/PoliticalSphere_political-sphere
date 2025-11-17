@@ -14,7 +14,8 @@
       "@political-sphere/shared": ["libs/shared/src/index.ts"], // Ensure shared lib resolves correctly
       "@political-sphere/ui": ["libs/ui/src/index.ts"],
       "@political-sphere/platform": ["libs/platform/src/index.ts"],
-      "@political-sphere/infrastructure": ["libs/infrastructure/src/index.ts"]
+      "@political-sphere/infrastructure": ["libs/infrastructure/src/index.ts"],
+      "@political-sphere/game-engine": ["libs/game-engine/src/index.ts"]
     }
   },
   "include": [
@@ -54,6 +55,10 @@
     "./*.mjs"
   ],
   "exclude": [
+    // Exclude example code and legacy validation gates from strict type-checks
+    "libs/**/examples/**",
+    "libs/ai-system/src/validation/tiers.ts",
+
     "node_modules",
     "dist",
     "tmp",

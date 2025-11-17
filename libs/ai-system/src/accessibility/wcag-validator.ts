@@ -97,13 +97,11 @@ export class WCAGValidator {
         id: 'image-alt',
         criterion: '1.1.1',
         impact: 'critical',
-        description: 'Images must have alt text',
+        message: 'Images must have alt text',
         help: 'Add alt attribute to all images',
         helpUrl: 'https://www.w3.org/WAI/WCAG21/Understanding/non-text-content.html',
-        nodes: matches.map(html => ({
-          html,
-          target: ['img'],
-        })),
+        nodes: matches.map(html => ({ html, target: ['img'] })),
+        node: 'img',
       });
     } else {
       passes++;
@@ -117,13 +115,11 @@ export class WCAGValidator {
         id: 'form-label',
         criterion: '1.3.1',
         impact: 'serious',
-        description: 'Form inputs must have labels',
+        message: 'Form inputs must have labels',
         help: 'Associate labels with form controls',
         helpUrl: 'https://www.w3.org/WAI/WCAG21/Understanding/info-and-relationships.html',
-        nodes: inputMatches.map(html => ({
-          html,
-          target: ['input'],
-        })),
+        nodes: inputMatches.map(html => ({ html, target: ['input'] })),
+        node: 'input',
       });
     } else {
       passes++;
@@ -135,10 +131,11 @@ export class WCAGValidator {
         id: 'heading-order',
         criterion: '1.3.1',
         impact: 'moderate',
-        description: 'Page should have h1 heading',
+        message: 'Page should have h1 heading',
         help: 'Use proper heading hierarchy',
         helpUrl: 'https://www.w3.org/WAI/WCAG21/Understanding/info-and-relationships.html',
         nodes: [],
+        node: 'h1',
       });
     } else {
       passes++;
@@ -150,10 +147,11 @@ export class WCAGValidator {
         id: 'html-lang',
         criterion: '3.1.1',
         impact: 'serious',
-        description: 'HTML must have lang attribute',
+        message: 'HTML must have lang attribute',
         help: 'Add lang attribute to html element',
         helpUrl: 'https://www.w3.org/WAI/WCAG21/Understanding/language-of-page.html',
         nodes: [],
+        node: 'html',
       });
     } else {
       passes++;
@@ -165,6 +163,9 @@ export class WCAGValidator {
     const passed = violations.length === 0;
 
     return {
+      testId: 'wcag-basic',
+      criterion: 'multi',
+      level: 'AA',
       timestamp: new Date(),
       violations,
       passes,

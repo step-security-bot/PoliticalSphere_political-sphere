@@ -10,9 +10,9 @@
  * - Rollback procedures
  */
 
-import { execFileSync, execSync } from 'child_process';
-import { existsSync, readFileSync } from 'fs';
-import { join } from 'path';
+import { execFileSync } from 'node:child_process';
+import { existsSync, readFileSync } from 'node:fs';
+import { join } from 'node:path';
 
 class PipelineTest {
   constructor(name, description) {
@@ -47,7 +47,7 @@ class PipelineTestSuite {
 
   async runAll() {
     console.log('\n🧪 Running CI/CD Pipeline Integration Tests\n');
-    console.log('━'.repeat(80) + '\n');
+    console.log(`${'━'.repeat(80)}\n`);
 
     for (const { test, testFn } of this.tests) {
       await test.run(testFn);
@@ -56,7 +56,7 @@ class PipelineTestSuite {
     const passed = this.tests.filter(t => t.test.passed).length;
     const failed = this.tests.length - passed;
 
-    console.log('\n' + '━'.repeat(80));
+    console.log(`\n${'━'.repeat(80)}`);
     console.log(
       `\n📊 Results: ${passed} passed, ${failed} failed out of ${this.tests.length} tests\n`
     );
@@ -108,7 +108,7 @@ suite.addTest('Workflow files exist', 'Checks that all required workflow files a
 suite.addTest('Workflow syntax validation', 'Validates YAML syntax of all workflow files', () => {
   try {
     executeCommand('node', ['scripts/ci/validate-pipelines.mjs']);
-  } catch (_error) {
+  } catch (error) {
     // The validator might exit with 1 for warnings, check actual error
     if (error.message.includes('parse') || error.message.includes('syntax')) {
       throw error;
@@ -120,7 +120,7 @@ suite.addTest('Workflow syntax validation', 'Validates YAML syntax of all workfl
 suite.addTest('Lint checks pass', 'Runs linting to ensure code quality', () => {
   try {
     executeCommand('npm', ['run', 'lint']);
-  } catch (_error) {
+  } catch {
     throw new Error('Linting failed');
   }
 });
@@ -129,7 +129,7 @@ suite.addTest('Lint checks pass', 'Runs linting to ensure code quality', () => {
 suite.addTest('Type checking passes', 'Validates TypeScript types', () => {
   try {
     executeCommand('npm', ['run', 'typecheck']);
-  } catch (_error) {
+  } catch {
     throw new Error('Type checking failed');
   }
 });

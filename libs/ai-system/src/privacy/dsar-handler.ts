@@ -6,7 +6,7 @@
  * @module privacy/dsar-handler
  */
 
-import type { DataSubjectRequest } from '../types';
+import type { DataSubjectRequest } from '../types/index';
 
 /**
  * DSAR Handler
@@ -35,6 +35,7 @@ export class DSARHandler {
       type,
       userId,
       email,
+      requestedAt: timestamp,
       timestamp,
       dueDate,
       status: 'pending',

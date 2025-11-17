@@ -5,8 +5,8 @@
  * Comprehensive validation for CI pipeline using AI Development System.
  */
 
-import { execSync } from 'child_process';
-import { readFileSync, writeFileSync } from 'fs';
+import { execSync } from 'node:child_process';
+import { readFileSync, writeFileSync } from 'node:fs';
 import { GovernFunction } from '../src/governance/nist-ai-rmf.js';
 import { PoliticalNeutralityEnforcer } from '../src/governance/political-neutrality.js';
 import { ValidationGate } from '../src/validation/gate.js';
@@ -141,7 +141,7 @@ async function main() {
   console.log(`\n📊 Results written to ${resultsPath}`);
 
   // Summary
-  console.log('\n' + '='.repeat(50));
+  console.log(`\n${'='.repeat(50)}`);
   const passedChecks = results.checks.filter(c => c.passed).length;
   const totalChecks = results.checks.length;
 

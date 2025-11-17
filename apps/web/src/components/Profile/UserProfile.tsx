@@ -110,7 +110,7 @@ const UserProfile: FC<UserProfileProps> = ({ userId, onUpdateProfile, onUpdatePr
 
   const handlePreferenceChange = <K extends keyof UserPreferences>(
     key: K,
-    value: UserPreferences[K],
+    value: UserPreferences[K]
   ) => {
     const newPreferences = { ...preferences, [key]: value };
     setPreferences(newPreferences);
@@ -121,7 +121,7 @@ const UserProfile: FC<UserProfileProps> = ({ userId, onUpdateProfile, onUpdatePr
 
   const handleAccessibilityChange = (
     key: keyof UserPreferences['accessibility'],
-    value: boolean,
+    value: boolean
   ) => {
     const newPreferences = {
       ...preferences,

@@ -256,7 +256,12 @@ export const createApp = () => {
     if (typeof optionIndex !== 'number' || optionIndex < 0 || optionIndex >= poll.options.length) {
       return res.status(400).json({ success: false, error: 'Invalid option index' });
     }
-    poll.votes[optionIndex] += 1;
+    if (!Array.isArray(poll.votes)) {
+      poll.votes = poll.options.map(() => 0);
+    }
+    const votes = poll.votes as number[];
+    const index = optionIndex as number;
+    votes[index] = (votes[index] ?? 0) + 1;
     poll.totalVotes += 1;
     return res.json({ success: true, data: poll });
   });
@@ -273,7 +278,12 @@ export const createApp = () => {
     if (typeof optionIndex !== 'number' || optionIndex < 0 || optionIndex >= poll.options.length) {
       return res.status(400).json({ success: false, error: 'Invalid option index' });
     }
-    poll.votes[optionIndex] += 1;
+    if (!Array.isArray(poll.votes)) {
+      poll.votes = poll.options.map(() => 0);
+    }
+    const votes = poll.votes as number[];
+    const index = optionIndex as number;
+    votes[index] = (votes[index] ?? 0) + 1;
     poll.totalVotes += 1;
     return res.json({ success: true, data: poll });
   });

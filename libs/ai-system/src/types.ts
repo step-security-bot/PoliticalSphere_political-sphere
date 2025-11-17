@@ -79,6 +79,8 @@ export interface OrchestrationResult {
   transcript: Message[];
   /** The final message considered the outcome of the run. */
   output?: Message;
+  /** The final message (alias for output). */
+  finalMessage?: Message;
   /** True when orchestration ended cleanly according to the pattern. */
   completed: boolean;
   /** Any extra information the pattern exposes. */
@@ -130,6 +132,7 @@ export type Policy = (ctx: PolicyContext) => Promise<PolicyResult> | PolicyResul
 
 export interface Governance {
   policies: Policy[];
+  requireApproval?: boolean;
 }
 
 /** Validation Types */
@@ -152,6 +155,7 @@ export type Validator = (
 export interface Validators {
   input?: Validator[];
   output?: Validator[];
+  preExecution?: Validator[];
 }
 
 /** Factory helper input for orchestrators */
@@ -168,6 +172,28 @@ export interface OrchestratorInit {
 export type Orchestrator = {
   run(messages: Message[], ctx?: Partial<OrchestrationContext>): Promise<OrchestrationResult>;
 };
+
+/** Additional types from types/index.ts */
+
+// Re-export from types/index.ts for compatibility
+export type {
+  AgentInput,
+  AgentOutput,
+  OrchestrationPattern,
+  ValidationGateConfig,
+  ValidationResult,
+  TraceSpan,
+  SLI,
+  SLO,
+  SLOMetrics,
+  ConsentRecord,
+  DataSubjectRequest,
+  AccessibilityViolation,
+  AccessibilityResult,
+  OrchestrationConfig,
+} from './types/index';
+
+export { ValidationTier } from './types/index';
 
 /** Utility */
 export function defineAgent(agent: Agent): Agent {
