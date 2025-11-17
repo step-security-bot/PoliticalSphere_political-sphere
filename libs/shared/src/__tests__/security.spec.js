@@ -1,7 +1,7 @@
 // Ensure deterministic CSRF secret for tests
 process.env.CSRF_SECRET = process.env.CSRF_SECRET || 'test-csrf-secret';
 
-import { expect } from 'vitest';
+import { describe, expect, it } from 'vitest';
 
 import {
   checkRateLimit,

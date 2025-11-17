@@ -15,7 +15,6 @@ jobs:
     name: Political Neutrality Check
     runs-on: ubuntu-latest
     permissions:
-      contents: read
       issues: write
 
     steps:
@@ -117,6 +116,8 @@ jobs:
   semantic-quality-check:
     name: Semantic Code Quality Check
     runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
 
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
@@ -176,6 +177,8 @@ jobs:
   competence-assessment:
     name: AI Competence Assessment
     runs-on: ubuntu-latest
+    permissions:
+      actions: write
 
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2

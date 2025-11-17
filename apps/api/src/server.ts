@@ -5,11 +5,14 @@ import { URL } from 'node:url';
 
 import {
   checkRateLimit,
+  ConnectionTracker,
+  createLogger,
   getCorsHeaders,
-  getLogger,
   getRateLimitInfo,
   isIpAllowed,
   SECURITY_HEADERS,
+  setupGracefulShutdown,
+  startTelemetry,
 } from '@political-sphere/shared';
 
 /**
@@ -33,6 +36,7 @@ import {
   revokeRefreshToken,
   verifyRefreshToken,
 } from './modules/auth.js';
+import { prismaDb } from './services/database.service.js';
 import {
   methodNotAllowed,
   notFound,
@@ -80,6 +84,8 @@ const RATE_LIMIT_OPTIONS = {
 const RATE_LIMIT_WINDOW_SECONDS = Math.max(1, Math.floor(RATE_LIMIT_OPTIONS.windowMs / 1000));
 const RATE_LIMIT_POLICY = `${RATE_LIMIT_OPTIONS.maxRequests};w=${RATE_LIMIT_WINDOW_SECONDS}`;
 const MAX_BODY_BYTES = parsePositiveInt(process.env.API_MAX_BODY_BYTES, 1024 * 1024);
+// Unified request body read timeout (fail-closed) to prevent resource exhaustion / hangs
+const READ_BODY_TIMEOUT_MS = parsePositiveInt(process.env.READ_BODY_TIMEOUT_MS, 10_000);
 
 const _corsOptions: { exposedHeaders: string[] } = {
   exposedHeaders: [
@@ -130,21 +136,24 @@ if (logLevelString && !allowedLogLevels.includes(logLevelString as LogLevel)) {
     `Invalid LOG_LEVEL: "${logLevelString}". Allowed values are: ${allowedLogLevels.join(', ')}`
   );
 }
-const logLevelMap = {
-  debug: 0,
-  info: 1,
-  warn: 2,
-  error: 3,
-} as const;
-const logLevel = logLevelString
-  ? logLevelMap[logLevelString as (typeof allowedLogLevels)[number]]
-  : undefined;
-const logFile = process.env.LOG_FILE;
-const logger = getLogger({
+const logger = createLogger({
   service: 'api',
-  ...(logLevel !== undefined && { level: logLevel }),
-  ...(logFile !== undefined && { file: logFile }),
+  ...(logLevelString !== undefined && { level: logLevelString }),
 });
+
+// Initialize OpenTelemetry for distributed tracing and metrics
+// Export the promise so consumers can await it if needed
+export const telemetryInitPromise = startTelemetry({
+  serviceName: 'api',
+  serviceVersion: process.env.npm_package_version || '0.0.0',
+  environment: process.env.NODE_ENV || 'development',
+})
+  .then(() => {
+    logger.info('OpenTelemetry initialized for API service');
+  })
+  .catch(error => {
+    logger.error('Failed to initialize OpenTelemetry', { error: error.message });
+  });
 
 export interface NewsService {
   list(params: {
@@ -182,7 +191,15 @@ export function createNewsServer(
       sendError(res, 500, 'Internal Server Error');
     } finally {
       const duration = Date.now() - startTime;
-      logger.logRequest(req, res, duration);
+      logger.logRequest(
+        {
+          method: req.method || 'GET',
+          url: req.url || '/',
+          headers: req.headers,
+        },
+        { statusCode: res.statusCode },
+        duration
+      );
     }
   });
   return server;
@@ -215,7 +232,11 @@ async function handleRequest(
 
   // Check IP allowlist/blocklist
   if (!isIpAllowed(clientIp)) {
-    logger.logSecurityEvent('ip_blocked', { ip: clientIp }, req);
+    logger.logSecurityEvent({
+      event: 'ip_blocked',
+      ip: clientIp,
+      userAgent: req.headers['user-agent'],
+    });
     applyHeaders(res, getCorsHeaders(origin ?? ''));
     sendError(res, 403, 'Access denied');
     return;
@@ -224,7 +245,11 @@ async function handleRequest(
   // Rate limiting (exclude health checks)
   if (pathname !== '/healthz') {
     if (!checkRateLimit(clientIp, RATE_LIMIT_OPTIONS)) {
-      logger.logSecurityEvent('rate_limit_exceeded', { ip: clientIp }, req);
+      logger.logSecurityEvent({
+        event: 'rate_limit_exceeded',
+        ip: clientIp,
+        userAgent: req.headers['user-agent'],
+      });
       const rateLimitInfo = getRateLimitInfo(clientIp, RATE_LIMIT_OPTIONS);
       const retryAfter = Math.max(1, rateLimitInfo.reset);
       applyHeaders(res, getCorsHeaders(origin ?? ''));
@@ -309,19 +334,28 @@ async function handleRequest(
     if (method === 'POST') {
       let payload: unknown;
       try {
-        payload = await readJsonBody(req, { limit: MAX_BODY_BYTES });
+        payload = await readJsonBody(req, {
+          limit: MAX_BODY_BYTES,
+          timeoutMs: READ_BODY_TIMEOUT_MS,
+        });
       } catch (error) {
         if (hasErrorCode(error) && error.code === 'PAYLOAD_TOO_LARGE') {
-          logger.logSecurityEvent('payload_too_large', { limit: MAX_BODY_BYTES }, req);
+          logger.logSecurityEvent({
+            event: 'payload_too_large',
+            limit: MAX_BODY_BYTES,
+            ip: clientIp,
+            userAgent: req.headers['user-agent'],
+          });
           sendError(res, 413, 'Payload too large');
           return;
         }
         if (hasErrorCode(error) && error.code === 'UNSUPPORTED_MEDIA_TYPE') {
-          logger.logSecurityEvent(
-            'unsupported_media_type',
-            { contentType: req.headers['content-type'] },
-            req
-          );
+          logger.logSecurityEvent({
+            event: 'unsupported_media_type',
+            contentType: req.headers['content-type'],
+            ip: clientIp,
+            userAgent: req.headers['user-agent'],
+          });
           sendError(res, 415, 'Unsupported content type');
           return;
         }
@@ -363,19 +397,28 @@ async function handleRequest(
     if (method === 'PUT') {
       let payload: unknown;
       try {
-        payload = await readJsonBody(req, { limit: MAX_BODY_BYTES });
+        payload = await readJsonBody(req, {
+          limit: MAX_BODY_BYTES,
+          timeoutMs: READ_BODY_TIMEOUT_MS,
+        });
       } catch (error) {
         if (hasErrorCode(error) && error.code === 'PAYLOAD_TOO_LARGE') {
-          logger.logSecurityEvent('payload_too_large', { limit: MAX_BODY_BYTES }, req);
+          logger.logSecurityEvent({
+            event: 'payload_too_large',
+            details: { limit: MAX_BODY_BYTES },
+            ip: req.socket.remoteAddress,
+            userAgent: req.headers['user-agent'],
+          });
           sendError(res, 413, 'Payload too large');
           return;
         }
         if (hasErrorCode(error) && error.code === 'UNSUPPORTED_MEDIA_TYPE') {
-          logger.logSecurityEvent(
-            'unsupported_media_type',
-            { contentType: req.headers['content-type'] },
-            req
-          );
+          logger.logSecurityEvent({
+            event: 'unsupported_media_type',
+            details: { contentType: req.headers['content-type'] },
+            ip: req.socket.remoteAddress,
+            userAgent: req.headers['user-agent'],
+          });
           sendError(res, 415, 'Unsupported content type');
           return;
         }
@@ -417,7 +460,10 @@ async function handleRequest(
       }
       let payload: RegisterPayload;
       try {
-        payload = await readJsonBody(req, { limit: MAX_BODY_BYTES });
+        payload = await readJsonBody(req, {
+          limit: MAX_BODY_BYTES,
+          timeoutMs: READ_BODY_TIMEOUT_MS,
+        });
       } catch (error) {
         if (hasErrorCode(error) && error.code === 'PAYLOAD_TOO_LARGE') {
           sendError(res, 413, 'Payload too large');
@@ -468,7 +514,10 @@ async function handleRequest(
       }
       let payload: LoginPayload;
       try {
-        payload = await readJsonBody(req, { limit: MAX_BODY_BYTES });
+        payload = await readJsonBody(req, {
+          limit: MAX_BODY_BYTES,
+          timeoutMs: READ_BODY_TIMEOUT_MS,
+        });
       } catch (error) {
         if (hasErrorCode(error) && error.code === 'PAYLOAD_TOO_LARGE') {
           sendError(res, 413, 'Payload too large');
@@ -515,7 +564,10 @@ async function handleRequest(
       }
       let payload: RefreshPayload;
       try {
-        payload = await readJsonBody(req, { limit: MAX_BODY_BYTES });
+        payload = await readJsonBody(req, {
+          limit: MAX_BODY_BYTES,
+          timeoutMs: READ_BODY_TIMEOUT_MS,
+        });
       } catch (error) {
         if (hasErrorCode(error) && error.code === 'PAYLOAD_TOO_LARGE') {
           sendError(res, 413, 'Payload too large');
@@ -572,7 +624,10 @@ async function handleRequest(
       }
       let payload: LogoutPayload;
       try {
-        payload = await readJsonBody(req, { limit: MAX_BODY_BYTES });
+        payload = await readJsonBody(req, {
+          limit: MAX_BODY_BYTES,
+          timeoutMs: READ_BODY_TIMEOUT_MS,
+        });
       } catch (error) {
         if (hasErrorCode(error) && error.code === 'PAYLOAD_TOO_LARGE') {
           sendError(res, 413, 'Payload too large');
@@ -600,7 +655,10 @@ async function handleRequest(
       }
       let payload: ForgotPasswordPayload;
       try {
-        payload = await readJsonBody(req, { limit: MAX_BODY_BYTES });
+        payload = await readJsonBody(req, {
+          limit: MAX_BODY_BYTES,
+          timeoutMs: READ_BODY_TIMEOUT_MS,
+        });
       } catch (error) {
         if (hasErrorCode(error) && error.code === 'PAYLOAD_TOO_LARGE') {
           sendError(res, 413, 'Payload too large');
@@ -636,7 +694,10 @@ async function handleRequest(
       }
       let payload: ResetPasswordPayload;
       try {
-        payload = await readJsonBody(req, { limit: MAX_BODY_BYTES });
+        payload = await readJsonBody(req, {
+          limit: MAX_BODY_BYTES,
+          timeoutMs: READ_BODY_TIMEOUT_MS,
+        });
       } catch (error) {
         if (hasErrorCode(error) && error.code === 'PAYLOAD_TOO_LARGE') {
           sendError(res, 413, 'Payload too large');
@@ -706,20 +767,57 @@ async function handleRequest(
   notFound(res, pathname);
 }
 
-export function startServer(server: http.Server, port: number, host = '0.0.0.0'): void {
+// Connection tracker for graceful shutdown
+const connectionTracker = new ConnectionTracker();
+
+export async function startServer(
+  server: http.Server,
+  port: number,
+  host = '0.0.0.0'
+): Promise<void> {
+  // Ensure telemetry is initialized before accepting requests
+  await telemetryInitPromise;
+
   server.listen(port, host, () => {
-    logger.info('API server started', { host, port });
+    logger.info('API server started', {
+      host,
+      port,
+      bodyReadTimeoutMs: READ_BODY_TIMEOUT_MS,
+      maxBodyBytes: MAX_BODY_BYTES,
+      authImplementation: 'legacy modules/auth.js',
+    });
   });
 
-  const shutdown = () => {
-    logger.info('Received termination signal, shutting down...');
-    server.close(() => {
-      logger.info('Shutdown complete');
-      logger.close();
-      process.exit(0);
-    });
-  };
+  // Setup graceful shutdown with connection tracking
+  setupGracefulShutdown(server, {
+    timeout: 15000, // 15 seconds
+    logger,
+    onShutdown: async () => {
+      logger.info('Starting graceful shutdown...', {
+        activeConnections: connectionTracker.getActiveConnections(),
+      });
 
-  process.on('SIGINT', shutdown);
-  process.on('SIGTERM', shutdown);
+      // Wait for active connections to complete (10s timeout)
+      const allCompleted = await connectionTracker.waitForCompletion(10000);
+
+      if (allCompleted) {
+        logger.info('All connections completed gracefully');
+      } else {
+        logger.warn('Some connections timed out during shutdown', {
+          remaining: connectionTracker.getActiveConnections(),
+        });
+      }
+
+      // Close database connections
+      try {
+        await prismaDb.disconnect();
+        logger.info('Database connections closed');
+      } catch (error) {
+        logger.error('Failed to close database connections', { error });
+      }
+
+      // Close logger
+      logger.close();
+    },
+  });
 }

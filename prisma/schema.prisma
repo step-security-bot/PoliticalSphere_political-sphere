@@ -1,0 +1,368 @@
+// Prisma schema for Political Sphere
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Parliament Models
+model Chamber {
+  id        String   @id @default(cuid())
+  name      String
+  type      String // "house" | "senate"
+  seats     Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  motions Motion[]
+  debates Debate[]
+
+  @@map("chambers")
+}
+
+model Motion {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  status      String   @default("proposed") // "proposed" | "debating" | "passed" | "failed"
+  chamberId   String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  chamber Chamber @relation(fields: [chamberId], references: [id], onDelete: Cascade)
+  debate  Debate?
+
+  @@map("motions")
+}
+
+model Debate {
+  id          String    @id @default(cuid())
+  motionId    String    @unique
+  status      String    @default("scheduled") // "scheduled" | "active" | "completed"
+  scheduledAt DateTime?
+  startedAt   DateTime?
+  endedAt     DateTime?
+  chamberId   String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  motion  Motion  @relation(fields: [motionId], references: [id], onDelete: Cascade)
+  chamber Chamber @relation(fields: [chamberId], references: [id], onDelete: Cascade)
+  votes   Vote[]
+
+  @@map("debates")
+}
+
+model Vote {
+  id        String   @id @default(cuid())
+  debateId  String
+  userId    String
+  position  String // "aye" | "nay" | "abstain"
+  createdAt DateTime @default(now())
+
+  debate Debate @relation(fields: [debateId], references: [id], onDelete: Cascade)
+
+  @@unique([debateId, userId])
+  @@map("votes")
+}
+
+// Government Models
+model Government {
+  id          String    @id @default(cuid())
+  name        String
+  leaderId    String?
+  status      String    @default("active") // "active" | "dissolved"
+  formedAt    DateTime  @default(now())
+  dissolvedAt DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  ministers Minister[]
+
+  @@map("governments")
+}
+
+model Minister {
+  id           String    @id @default(cuid())
+  userId       String
+  governmentId String
+  portfolio    String
+  appointedAt  DateTime  @default(now())
+  resignedAt   DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  government Government @relation(fields: [governmentId], references: [id], onDelete: Cascade)
+
+  @@map("ministers")
+}
+
+model ExecutiveAction {
+  id          String    @id @default(cuid())
+  title       String
+  description String?
+  type        String // "decree" | "order" | "policy"
+  status      String    @default("proposed") // "proposed" | "signed" | "vetoed"
+  signedAt    DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@map("executive_actions")
+}
+
+model CabinetMeeting {
+  id          String   @id @default(cuid())
+  title       String
+  agenda      String?
+  scheduledAt DateTime
+  status      String   @default("scheduled") // "scheduled" | "in_progress" | "completed"
+  minutes     String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("cabinet_meetings")
+}
+
+// Judiciary Models
+model Case {
+  id          String    @id @default(cuid())
+  title       String
+  description String?
+  type        String // "constitutional" | "civil" | "criminal"
+  status      String    @default("filed") // "filed" | "under_review" | "decided" | "appealed"
+  filedAt     DateTime  @default(now())
+  decidedAt   DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  rulings Ruling[]
+  reviews Review[]
+
+  @@map("cases")
+}
+
+model Judge {
+  id          String    @id @default(cuid())
+  userId      String
+  court       String
+  position    String
+  appointedAt DateTime  @default(now())
+  termEndsAt  DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  rulings Ruling[]
+
+  @@map("judges")
+}
+
+model Ruling {
+  id        String   @id @default(cuid())
+  caseId    String
+  judgeId   String
+  decision  String
+  reasoning String?
+  issuedAt  DateTime @default(now())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  case  Case  @relation(fields: [caseId], references: [id], onDelete: Cascade)
+  judge Judge @relation(fields: [judgeId], references: [id], onDelete: Cascade)
+
+  @@map("rulings")
+}
+
+model Review {
+  id        String    @id @default(cuid())
+  caseId    String
+  type      String // "appeal" | "judicial_review"
+  status    String    @default("pending") // "pending" | "granted" | "denied"
+  filedAt   DateTime  @default(now())
+  decidedAt DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  case Case @relation(fields: [caseId], references: [id], onDelete: Cascade)
+
+  @@map("reviews")
+}
+
+model Precedent {
+  id        String   @id @default(cuid())
+  caseId    String?
+  citation  String   @unique
+  summary   String
+  holding   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("precedents")
+}
+
+// Media Models
+model PressRelease {
+  id          String   @id @default(cuid())
+  title       String
+  content     String
+  category    String?
+  publishedAt DateTime @default(now())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("press_releases")
+}
+
+model Poll {
+  id        String   @id @default(cuid())
+  question  String
+  options   Json // Array of string options
+  status    String   @default("active") // "active" | "closed"
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  votes PollVote[]
+
+  @@map("polls")
+}
+
+model PollVote {
+  id          String   @id @default(cuid())
+  pollId      String
+  userId      String
+  optionIndex Int
+  votedAt     DateTime @default(now())
+
+  poll Poll @relation(fields: [pollId], references: [id], onDelete: Cascade)
+
+  @@unique([pollId, userId])
+  @@map("poll_votes")
+}
+
+model Coverage {
+  id          String   @id @default(cuid())
+  headline    String
+  content     String
+  source      String
+  bias        Float? // -1 to 1 scale
+  publishedAt DateTime
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("coverage")
+}
+
+model Narrative {
+  id        String   @id @default(cuid())
+  title     String
+  content   String
+  sentiment String // "positive" | "negative" | "neutral"
+  strength  Float // 0-1 scale
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("narratives")
+}
+
+model ApprovalRating {
+  id         String   @id @default(cuid())
+  entityId   String
+  entityType String // "government" | "party" | "leader"
+  rating     Float // 0-100 scale
+  measuredAt DateTime @default(now())
+  createdAt  DateTime @default(now())
+
+  @@unique([entityId, entityType, measuredAt])
+  @@map("approval_ratings")
+}
+
+// Elections Models
+model Election {
+  id          String    @id @default(cuid())
+  name        String
+  type        String // "general" | "by-election" | "local"
+  status      String    @default("scheduled") // "scheduled" | "active" | "completed"
+  scheduledAt DateTime
+  startedAt   DateTime?
+  endedAt     DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  campaigns      Campaign[]
+  constituencies Constituency[]
+  votes          ElectionVote[]
+
+  @@map("elections")
+}
+
+model Campaign {
+  id          String   @id @default(cuid())
+  electionId  String
+  candidateId String
+  platform    String?
+  budget      Float?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  election Election @relation(fields: [electionId], references: [id], onDelete: Cascade)
+
+  @@map("campaigns")
+}
+
+model Constituency {
+  id         String   @id @default(cuid())
+  electionId String
+  name       String
+  region     String
+  population Int?
+  seats      Int      @default(1)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  election   Election    @relation(fields: [electionId], references: [id], onDelete: Cascade)
+  candidates Candidate[]
+
+  @@map("constituencies")
+}
+
+model Candidate {
+  id             String   @id @default(cuid())
+  constituencyId String
+  userId         String
+  partyId        String?
+  manifesto      String?
+  status         String   @default("nominated") // "nominated" | "withdrawn" | "elected"
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  constituency Constituency @relation(fields: [constituencyId], references: [id], onDelete: Cascade)
+
+  @@map("candidates")
+}
+
+model ElectionVote {
+  id             String   @id @default(cuid())
+  electionId     String
+  constituencyId String
+  candidateId    String
+  userId         String
+  votedAt        DateTime @default(now())
+
+  election Election @relation(fields: [electionId], references: [id], onDelete: Cascade)
+
+  @@unique([electionId, userId])
+  @@map("election_votes")
+}
+
+// User and Auth Models (simplified - would integrate with actual auth system)
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  username  String?  @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("users")
+}

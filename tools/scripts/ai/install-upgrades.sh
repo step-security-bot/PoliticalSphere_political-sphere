@@ -34,11 +34,11 @@ echo ""
 
 # Pin versions for security - update via security review process only
 npm install --save-dev \
-  tree-sitter@0.21.0 \
-  tree-sitter-javascript@0.21.0 \
-  tree-sitter-typescript@0.21.0 \
-  tree-sitter-python@0.21.0 \
-  @xenova/transformers@2.9.0
+  https://registry.npmjs.org/tree-sitter/-/tree-sitter-0.21.0.tgz \
+  https://registry.npmjs.org/tree-sitter-javascript/-/tree-sitter-javascript-0.21.0.tgz \
+  https://registry.npmjs.org/tree-sitter-typescript/-/tree-sitter-typescript-0.21.0.tgz \
+  https://registry.npmjs.org/tree-sitter-python/-/tree-sitter-python-0.21.0.tgz \
+  https://registry.npmjs.org/@xenova/transformers/-/transformers-2.9.0.tgz
 
 echo ""
 echo "${GREEN}✅ Phase 1 complete${NC}"
@@ -55,7 +55,9 @@ echo ""
 
 if [[ $REPLY =~ ^[Yy]$ ]]; then
   # Pin versions for security - update via security review process only
-  npm install --save-dev chokidar@3.5.3 vectordb@0.4.0
+  npm install --save-dev \
+    https://registry.npmjs.org/chokidar/-/chokidar-3.5.3.tgz \
+    https://registry.npmjs.org/vectordb/-/vectordb-0.4.0.tgz
   echo ""
   echo "${GREEN}✅ Phase 2 complete${NC}"
 else

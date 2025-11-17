@@ -2,6 +2,7 @@ name: 'Copilot Setup Steps'
 
 # Automatically run the setup steps when changed for validation
 # Allow manual testing through the repository's "Actions" tab
+permissions: read-all
 on:
   workflow_dispatch:
   push:

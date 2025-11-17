@@ -1,27 +1,13 @@
-// Structured logging utility for Political Sphere
+// Structured logging utility for Political Sphere using Pino
 // Implements best practices for production logging
 
-import { createWriteStream, type WriteStream } from 'node:fs';
-import { mkdir } from 'node:fs/promises';
+import pino from 'pino';
 import type { IncomingMessage, ServerResponse } from 'node:http';
-import { dirname } from 'node:path';
-
-// Log levels
-export const LOG_LEVELS = {
-  DEBUG: 0,
-  INFO: 1,
-  WARN: 2,
-  ERROR: 3,
-  FATAL: 4,
-} as const;
-
-const LOG_LEVEL_NAMES = ['DEBUG', 'INFO', 'WARN', 'ERROR', 'FATAL'] as const;
 
 export interface LoggerOptions {
-  level?: number;
+  level?: string;
   service?: string;
   environment?: string;
-  console?: boolean;
   file?: string;
 }
 
@@ -30,96 +16,65 @@ export interface LogMeta {
 }
 
 export class Logger {
-  private level: number;
-  private service: string;
-  private environment: string;
-  private console: boolean;
-  private file: string | undefined;
-  private stream: WriteStream | null = null;
+  private logger: pino.Logger;
 
   constructor(options: LoggerOptions = {}) {
-    this.level = options.level ?? LOG_LEVELS.INFO;
-    this.service = options.service ?? 'political-sphere';
-    this.environment = options.environment ?? process.env['NODE_ENV'] ?? 'development';
-    this.console = options.console !== false;
-    this.file = options.file;
+    const level = options.level ?? process.env.LOG_LEVEL ?? 'info';
+    const service = options.service ?? 'political-sphere';
+    const environment = options.environment ?? process.env['NODE_ENV'] ?? 'development';
 
-    if (this.file) {
-      this.initFileStream();
-    }
-  }
-
-  private async initFileStream(): Promise<void> {
-    if (!this.file) return;
-
-    try {
-      await mkdir(dirname(this.file), { recursive: true });
-      this.stream = createWriteStream(this.file, { flags: 'a' });
-    } catch (error) {
-      console.error('Failed to initialize log file:', error);
-    }
-  }
-
-  private formatMessage(level: number, message: string, meta: LogMeta = {}): string {
-    const timestamp = new Date().toISOString();
-    const logEntry = {
-      timestamp,
-      level: LOG_LEVEL_NAMES[level],
-      service: this.service,
-      environment: this.environment,
-      message,
-      ...meta,
+    const pinoConfig: pino.LoggerOptions = {
+      level,
+      formatters: {
+        level: label => {
+          return { level: label };
+        },
+      },
+      serializers: {
+        req: pino.stdSerializers.req,
+        res: pino.stdSerializers.res,
+        err: pino.stdSerializers.err,
+      },
+      base: {
+        service,
+        environment,
+      },
     };
 
-    return JSON.stringify(logEntry);
-  }
-
-  private write(level: number, message: string, meta?: LogMeta): void {
-    if (level < this.level) return;
-
-    const formatted = this.formatMessage(level, message, meta);
-
-    // Console output (with colors in development)
-    if (this.console) {
-      if (this.environment === 'development') {
-        const colors = {
-          0: '\x1b[36m', // DEBUG - Cyan
-          1: '\x1b[32m', // INFO - Green
-          2: '\x1b[33m', // WARN - Yellow
-          3: '\x1b[31m', // ERROR - Red
-          4: '\x1b[35m', // FATAL - Magenta
-        } as const;
-        const reset = '\x1b[0m';
-        console.log(`${colors[level as keyof typeof colors]}${formatted}${reset}`);
-      } else {
-        console.log(formatted);
-      }
+    // Add file transport if specified
+    if (options.file) {
+      pinoConfig.transport = {
+        targets: [
+          {
+            target: 'pino/file',
+            options: { destination: options.file },
+            level,
+          },
+        ],
+      };
     }
 
-    // File output
-    if (this.stream) {
-      this.stream.write(formatted + '\n');
-    }
+    this.logger = pino(pinoConfig);
   }
 
   debug(message: string, meta?: LogMeta): void {
-    this.write(LOG_LEVELS.DEBUG, message, meta);
+    this.logger.debug(meta, message);
   }
 
   info(message: string, meta?: LogMeta): void {
-    this.write(LOG_LEVELS.INFO, message, meta);
+    this.logger.info(meta, message);
   }
 
   warn(message: string, meta?: LogMeta): void {
-    this.write(LOG_LEVELS.WARN, message, meta);
+    this.logger.warn(meta, message);
   }
 
   error(message: string, meta?: LogMeta): void {
-    this.write(LOG_LEVELS.ERROR, message, meta);
+    this.logger.error(meta, message);
   }
 
   fatal(message: string, meta?: LogMeta): void {
-    this.write(LOG_LEVELS.FATAL, message, meta);
+    this.logger.fatal(meta, message);
   }
 
   // HTTP request logging
@@ -150,7 +105,6 @@ export class Logger {
       ...details,
       ip: req?.headers?.['x-forwarded-for']?.toString().split(',')[0] ?? req?.socket?.remoteAddress,
       userAgent: req?.headers?.['user-agent'],
-      timestamp: new Date().toISOString(),
     };
 
     this.warn('SECURITY_EVENT', meta);
@@ -158,20 +112,11 @@ export class Logger {
 
   // Error logging with stack trace
   logError(error: Error, context: LogMeta = {}): void {
-    const meta: LogMeta = {
-      errorName: error.name,
-      errorMessage: error.message,
-      stack: error.stack,
-      ...context,
-    };
-
-    this.error('Application error', meta);
+    this.logger.error({ err: error, ...context }, 'Application error');
   }
 
   close(): void {
-    if (this.stream) {
-      this.stream.end();
-    }
+    // Pino handles cleanup automatically
   }
 }
 

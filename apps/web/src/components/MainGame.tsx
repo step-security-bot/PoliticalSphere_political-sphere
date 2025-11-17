@@ -5,12 +5,17 @@
  */
 
 import { type FC, useCallback, useEffect, useState } from 'react';
+import ElectionsCenter from './Elections/ElectionsCenter';
+import GovernmentDashboard from './Government/GovernmentDashboard';
+import JudiciarySystem from './Judiciary/JudiciarySystem';
 import './MainGame.css';
+import MediaCenter from './Media/MediaCenter';
 import ParliamentChamber from './Parliament/ParliamentChamber';
 
 interface MainGameProps {
-  gameId: string;
-  onLeaveGame: () => void;
+  userId: string;
+  username: string;
+  onLogout: () => void;
 }
 
 type GameView =
@@ -25,9 +30,11 @@ type GameView =
 interface GameData {
   name?: string;
   players?: { id: string; name: string }[];
+  currentTurn?: number;
+  status?: string;
 }
 
-const MainGame: FC<MainGameProps> = ({ gameId, onLeaveGame }) => {
+const MainGame: FC<MainGameProps> = ({ userId, username, onLogout }) => {
   const [currentView, setCurrentView] = useState<GameView>('overview');
   const [gameData, setGameData] = useState<GameData | null>(null);
   const [loading, setLoading] = useState(true);
@@ -35,18 +42,19 @@ const MainGame: FC<MainGameProps> = ({ gameId, onLeaveGame }) => {
 
   const fetchGameData = useCallback(async () => {
     try {
-      const response = await fetch(`/api/games/${gameId}`);
-      if (!response.ok) throw new Error('Failed to fetch game data');
+      // Fetch simulation state (single world)
+      const response = await fetch('/api/simulation/state');
+      if (!response.ok) throw new Error('Failed to fetch simulation data');
       const data = await response.json();
       if (data.success) {
         setGameData(data.data);
       }
     } catch (error) {
-      console.error('Error fetching game data:', error);
+      console.error('Error fetching simulation data:', error);
     } finally {
       setLoading(false);
     }
-  }, [gameId]);
+  }, []);
 
   useEffect(() => {
     fetchGameData();
@@ -111,8 +119,9 @@ const MainGame: FC<MainGameProps> = ({ gameId, onLeaveGame }) => {
       <header className="game-header">
         <div className="header-content">
           <div className="game-title">
-            <h1>{gameData?.name || 'Political Sphere'}</h1>
-            <span className="game-status">Active Game</span>
+            <h1>Political Sphere</h1>
+            <span className="game-status">UK Political Simulation</span>
+            <span className="user-info">Welcome, {username}</span>
           </div>
 
           <nav className="header-nav" aria-label="Main navigation">
@@ -181,8 +190,8 @@ const MainGame: FC<MainGameProps> = ({ gameId, onLeaveGame }) => {
             </button>
           </nav>
 
-          <button type="button" onClick={onLeaveGame} className="btn-leave" aria-label="Leave game">
-            Leave Game
+          <button type="button" onClick={onLogout} className="btn-logout" aria-label="Log out">
+            Log Out
           </button>
         </div>
       </header>
@@ -288,35 +297,21 @@ const MainGame: FC<MainGameProps> = ({ gameId, onLeaveGame }) => {
         )}
 
         {currentView === 'parliament' && (
-          <ParliamentChamber gameId={gameId} userId="current-user-id" onError={addNotification} />
+          <ParliamentChamber userId={userId} onError={addNotification} />
         )}
 
         {currentView === 'government' && (
-          <div className="placeholder-view">
-            <h2>Government System</h2>
-            <p>Government dashboard coming soon...</p>
-          </div>
+          <GovernmentDashboard userId={userId} onError={addNotification} />
         )}
 
         {currentView === 'judiciary' && (
-          <div className="placeholder-view">
-            <h2>Judiciary System</h2>
-            <p>Judicial system coming soon...</p>
-          </div>
+          <JudiciarySystem userId={userId} onError={addNotification} />
         )}
 
-        {currentView === 'media' && (
-          <div className="placeholder-view">
-            <h2>Media System</h2>
-            <p>Media system coming soon...</p>
-          </div>
-        )}
+        {currentView === 'media' && <MediaCenter userId={userId} onError={addNotification} />}
 
         {currentView === 'elections' && (
-          <div className="placeholder-view">
-            <h2>Elections System</h2>
-            <p>Elections system coming soon...</p>
-          </div>
+          <ElectionsCenter userId={userId} onError={addNotification} />
         )}
 
         {currentView === 'profile' && (
@@ -331,7 +326,8 @@ const MainGame: FC<MainGameProps> = ({ gameId, onLeaveGame }) => {
       <footer className="game-footer">
         <p>Political Sphere - UK Political Simulation Game</p>
         <p className="footer-meta">
-          Game ID: {gameId} | Players: {gameData?.players?.length || 0}
+          Active Players: {gameData?.players?.length || 0} | Current Turn:{' '}
+          {gameData?.currentTurn || 1}
         </p>
       </footer>
     </div>

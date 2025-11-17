@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+oce#!/usr/bin/env bash
 set -euo pipefail
 
 # Accessibility checker using axe-core via Playwright
@@ -39,7 +39,7 @@ EOF
 if ! npm list @axe-core/playwright >/dev/null 2>&1; then
   echo "Installing @axe-core/playwright..."
   # Pinned version for security - update via security review process only
-  npm install --no-save @axe-core/playwright@4.11.0
+  npm install --no-save https://registry.npmjs.org/@axe-core/playwright/-/playwright-4.11.0.tgz
 fi
 
 # Run the test - pinned playwright version

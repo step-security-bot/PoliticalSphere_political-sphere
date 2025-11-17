@@ -47,18 +47,18 @@ function runPlaywrightJson() {
     let stdout = '';
     let stderr = '';
 
-    child.stdout.on('data', (d) => {
+    child.stdout.on('data', d => {
       stdout += d.toString();
     });
-    child.stderr.on('data', (d) => {
+    child.stderr.on('data', d => {
       stderr += d.toString();
     });
 
-    child.on('close', (code) => {
+    child.on('close', code => {
       resolvePromise({ code, stdout, stderr });
     });
 
-    child.on('error', (err) => rejectPromise(err));
+    child.on('error', err => rejectPromise(err));
   });
 }
 
@@ -147,7 +147,7 @@ async function main() {
   }
 }
 
-main().catch((err) => {
+main().catch(err => {
   console.error('Visual regression runner failed:', err);
   process.exit(1);
 });

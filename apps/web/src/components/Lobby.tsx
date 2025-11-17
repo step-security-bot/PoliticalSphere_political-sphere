@@ -4,8 +4,8 @@
  */
 
 import { useEffect, useState } from 'react';
-
-import { apiClient } from '../utils/api-client';
+import { useAuth } from '../contexts/AuthContext';
+import { api } from '../services/api';
 import './Lobby.css';
 
 interface Game {
@@ -28,15 +28,24 @@ export function Lobby({ onJoinGame }: LobbyProps) {
   const [showCreate, setShowCreate] = useState(false);
   const [gameName, setGameName] = useState('');
 
+  const { logout: authLogout } = useAuth();
+
   const loadGames = async () => {
     try {
       setLoading(true);
-      const [allGames, playerGames] = await Promise.all([
-        apiClient.listGames(),
-        apiClient.getMyGames(),
+      const [allGamesResponse, myGamesResponse] = await Promise.all([
+        api.listGames(),
+        api.getMyGames(),
       ]);
-      setGames(allGames.games);
-      setMyGames(playerGames.games);
+
+      if (allGamesResponse.success && allGamesResponse.data) {
+        setGames(allGamesResponse.data.games || allGamesResponse.data || []);
+      }
+
+      if (myGamesResponse.success && myGamesResponse.data) {
+        setMyGames(myGamesResponse.data.games || myGamesResponse.data || []);
+      }
+
       setError('');
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to load games');
@@ -54,10 +63,15 @@ export function Lobby({ onJoinGame }: LobbyProps) {
   const handleCreateGame = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const result = await apiClient.createGame(gameName || 'New Game');
-      setGameName('');
-      setShowCreate(false);
-      onJoinGame(result.game.id);
+      const result = await api.createGame(gameName || 'New Game');
+      if (result.success && result.data) {
+        const gameId = result.data.game?.id || result.data.id;
+        setGameName('');
+        setShowCreate(false);
+        onJoinGame(gameId);
+      } else {
+        setError(result.error || 'Failed to create game');
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to create game');
     }
@@ -65,15 +79,24 @@ export function Lobby({ onJoinGame }: LobbyProps) {
 
   const handleJoinGame = async (gameId: string) => {
     try {
-      await apiClient.joinGame(gameId);
-      onJoinGame(gameId);
+      const result = await api.joinGame(gameId);
+      if (result.success) {
+        onJoinGame(gameId);
+      } else {
+        setError(result.error || 'Failed to join game');
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to join game');
     }
   };
 
-  const handleLogout = () => {
-    apiClient.logout();
+  const handleLogout = async () => {
+    try {
+      await authLogout();
+      // Redirect will be handled by App.tsx when isAuthenticated becomes false
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to logout');
+    }
   };
 
   if (loading && games.length === 0) {

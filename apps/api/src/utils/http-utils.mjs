@@ -11,9 +11,18 @@ function isAllowedJsonContentType(contentType, allowedTypes) {
   return allowedTypes.some(type => contentType.startsWith(type));
 }
 
+/**
+ * Read and parse a JSON request body with size, content-type and timeout enforcement.
+ * @param {import('http').IncomingMessage} req
+ * @param {{limit?: number, allowedContentTypes?: string[], timeoutMs?: number}} options
+ * @returns {Promise<object|undefined>}
+ */
 export async function readJsonBody(req, options = {}) {
-  const { limit = DEFAULT_MAX_JSON_BYTES, allowedContentTypes = DEFAULT_ALLOWED_CONTENT_TYPES } =
-    options;
+  const {
+    limit = DEFAULT_MAX_JSON_BYTES,
+    allowedContentTypes = DEFAULT_ALLOWED_CONTENT_TYPES,
+    timeoutMs = 10000, // default 10s fail‑closed timeout
+  } = options;
 
   const contentTypeHeader = req.headers['content-type'];
   if (
@@ -29,17 +38,44 @@ export async function readJsonBody(req, options = {}) {
   const chunks = [];
   let totalLength = 0;
 
-  for await (const chunk of req) {
-    totalLength += chunk.length;
-    if (totalLength > limit) {
-      const tooLarge = new Error('Request entity too large');
-      tooLarge.code = 'PAYLOAD_TOO_LARGE';
-      // Don't forcibly destroy the request stream here; throwing allows the
-      // caller to handle the error and respond cleanly. Forcibly destroying
-      // the socket can produce EPIPE errors on the client.
-      throw tooLarge;
+  const bodyPromise = (async () => {
+    for await (const chunk of req) {
+      totalLength += chunk.length;
+      if (totalLength > limit) {
+        const tooLarge = new Error('Request entity too large');
+        tooLarge.code = 'PAYLOAD_TOO_LARGE';
+        throw tooLarge;
+      }
+      chunks.push(chunk);
     }
-    chunks.push(chunk);
+    return chunks;
+  })();
+
+  // Fail closed if body streaming exceeds timeout (security: prevent resource exhaustion)
+  const timeoutPromise = new Promise((_, reject) => {
+    const id = setTimeout(() => {
+      const err = new Error('Request body timeout');
+      err.code = 'BODY_TIMEOUT';
+      reject(err);
+    }, timeoutMs);
+    // Clear timeout on end/error
+    req.on('end', () => clearTimeout(id));
+    req.on('error', () => clearTimeout(id));
+    req.on('close', () => clearTimeout(id));
+    req.on('aborted', () => clearTimeout(id));
+  });
+
+  let streamedChunks;
+  try {
+    streamedChunks = await Promise.race([bodyPromise, timeoutPromise]);
+  } catch (e) {
+    // Propagate structured timeout / size / parse errors
+    throw e;
+  }
+
+  if (!Array.isArray(streamedChunks)) {
+    // In race scenario streamedChunks could be undefined if timeout fired first
+    if (chunks.length === 0) return {};
   }
 
   if (chunks.length === 0) {

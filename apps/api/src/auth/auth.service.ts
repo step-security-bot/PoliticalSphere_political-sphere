@@ -52,7 +52,7 @@ export interface RegisterInput {
 }
 
 export interface LoginInput {
-  username: string;
+  username: string; // Can be username or email
   password: string;
 }
 
@@ -87,8 +87,25 @@ export class AuthService {
       passwordHash,
       role: 'VIEWER',
     });
-    const tokens = this.generateTokens(user);
-    return { user, tokens };
+
+    // Ensure we have all required fields for token generation
+    if (!user.id || !user.username || !user.createdAt || !user.updatedAt) {
+      throw new Error('User creation failed - missing required fields');
+    }
+
+    const tokens = this.generateTokens({ id: user.id, username: user.username });
+
+    // Return user with guaranteed required fields
+    return {
+      user: {
+        id: user.id,
+        username: user.username,
+        email: user.email,
+        createdAt: user.createdAt,
+        updatedAt: user.updatedAt,
+      },
+      tokens,
+    };
   }
 
   async login(input: LoginInput): Promise<{
@@ -97,20 +114,42 @@ export class AuthService {
   }> {
     const { username, password } = input;
     const db = getDatabase();
+
+    // Support both username and email for login
+    // getUserForAuth accepts username or email
     const userForAuth = await db.users.getUserForAuth(username);
     if (!userForAuth) {
-      throw new Error('Invalid username or password');
+      throw new Error('Invalid credentials');
     }
+
     const isValid = await bcrypt.compare(password, userForAuth.passwordHash);
     if (!isValid) {
-      throw new Error('Invalid username or password');
+      throw new Error('Invalid credentials');
     }
+
     const user = await db.users.getById(userForAuth.id);
     if (!user) {
       throw new Error('User not found');
     }
-    const tokens = this.generateTokens(user);
-    return { user, tokens };
+
+    // Ensure we have all required fields for token generation
+    if (!user.id || !user.username) {
+      throw new Error('User data incomplete');
+    }
+
+    const tokens = this.generateTokens({ id: user.id, username: user.username });
+
+    // Return user with guaranteed required fields
+    return {
+      user: {
+        id: user.id,
+        username: user.username,
+        email: user.email,
+        createdAt: user.createdAt,
+        updatedAt: user.updatedAt,
+      },
+      tokens,
+    };
   }
 
   private generateTokens(user: { id: string; username: string }): {
@@ -159,7 +198,7 @@ export class AuthService {
       }
       const db = getDatabase();
       const user = await db.users.getById(payload.userId);
-      if (!user) {
+      if (!user || !user.id || !user.username) {
         throw new Error('User not found');
       }
       const accessPayload: TokenPayload = {
@@ -188,7 +227,19 @@ export class AuthService {
     updatedAt: Date;
   } | null> {
     const db = getDatabase();
-    return await db.users.getById(userId);
+    const user = await db.users.getById(userId);
+
+    if (!user || !user.id || !user.username || !user.createdAt || !user.updatedAt) {
+      return null;
+    }
+
+    return {
+      id: user.id,
+      username: user.username,
+      email: user.email,
+      createdAt: user.createdAt,
+      updatedAt: user.updatedAt,
+    };
   }
 }
 

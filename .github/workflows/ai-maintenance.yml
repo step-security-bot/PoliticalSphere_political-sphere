@@ -38,6 +38,8 @@ jobs:
     name: Build AI Code Indices
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    permissions:
+      actions: write
     
     steps:
       - name: Checkout repository
@@ -147,6 +149,8 @@ jobs:
     name: AI Competence Assessment
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    permissions:
+      actions: write
     
     steps:
       - name: Checkout repository
@@ -193,6 +197,8 @@ jobs:
     name: AI Performance Monitoring
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    permissions:
+      actions: write
     
     steps:
       - name: Checkout repository
@@ -265,6 +271,8 @@ jobs:
     timeout-minutes: 10
     needs: [smoke-test]
     if: github.ref == 'refs/heads/main'
+    permissions:
+      contents: write
     
     steps:
       - name: Checkout repository
@@ -307,7 +315,6 @@ jobs:
     needs: [build-ai-indices, competence-assessment, performance-monitoring, smoke-test]
     if: failure()
     permissions:
-      contents: read
       issues: write
     
     steps:

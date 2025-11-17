@@ -2,7 +2,6 @@
  * API Client Service
  * Centralized API communication with authentication
  */
-
 interface ApiResponse<T = any> {
   success: boolean;
   data?: T;
@@ -126,17 +125,37 @@ class ApiClient {
 
   // Authentication
   async login(email: string, password: string): Promise<ApiResponse> {
-    return this.request('/auth/login', {
+    const response = await this.request('/auth/login', {
       method: 'POST',
       body: JSON.stringify({ email, password }),
     });
+
+    // Store tokens if login successful
+    if (response.success && response.data) {
+      const { token, refreshToken } = response.data;
+      if (token && refreshToken) {
+        this.saveTokens(token, refreshToken);
+      }
+    }
+
+    return response;
   }
 
-  async register(email: string, password: string, displayName?: string): Promise<ApiResponse> {
-    return this.request('/auth/register', {
+  async register(username: string, email: string, password: string): Promise<ApiResponse> {
+    const response = await this.request('/auth/register', {
       method: 'POST',
-      body: JSON.stringify({ email, password, displayName }),
+      body: JSON.stringify({ username, email, password }),
     });
+
+    // Store tokens if registration successful
+    if (response.success && response.data) {
+      const { token, refreshToken } = response.data;
+      if (token && refreshToken) {
+        this.saveTokens(token, refreshToken);
+      }
+    }
+
+    return response;
   }
 
   async logout(): Promise<void> {
@@ -149,9 +168,9 @@ class ApiClient {
     this.clearTokens();
   }
 
-  // Parliament
-  async getChambers(gameId: string): Promise<ApiResponse> {
-    return this.request(`/parliament/chambers?gameId=${gameId}`);
+  // Parliament (Single World - no gameId needed)
+  async getChambers(): Promise<ApiResponse> {
+    return this.request('/parliament/chambers');
   }
 
   async createChamber(data: any): Promise<ApiResponse> {
@@ -183,9 +202,9 @@ class ApiClient {
     return this.request(`/parliament/motions/${motionId}/results`);
   }
 
-  // Government
-  async getGovernment(gameId: string): Promise<ApiResponse> {
-    return this.request(`/government?gameId=${gameId}`);
+  // Government (Single World)
+  async getGovernment(): Promise<ApiResponse> {
+    return this.request('/government');
   }
 
   async formGovernment(data: any): Promise<ApiResponse> {
@@ -209,9 +228,9 @@ class ApiClient {
     });
   }
 
-  // Elections
-  async getElections(gameId: string): Promise<ApiResponse> {
-    return this.request(`/elections?gameId=${gameId}`);
+  // Elections (Single World)
+  async getElections(): Promise<ApiResponse> {
+    return this.request('/elections');
   }
 
   async createElection(data: any): Promise<ApiResponse> {
@@ -235,9 +254,9 @@ class ApiClient {
     });
   }
 
-  // Judiciary
-  async getCases(gameId: string): Promise<ApiResponse> {
-    return this.request(`/judiciary/cases?gameId=${gameId}`);
+  // Judiciary (Single World)
+  async getCases(): Promise<ApiResponse> {
+    return this.request('/judiciary/cases');
   }
 
   async fileCase(data: any): Promise<ApiResponse> {
@@ -254,9 +273,13 @@ class ApiClient {
     });
   }
 
-  // Media
-  async getPressReleases(gameId: string): Promise<ApiResponse> {
-    return this.request(`/media/press?gameId=${gameId}`);
+  async getCaseRuling(caseId: string): Promise<ApiResponse> {
+    return this.request(`/judiciary/cases/${caseId}/ruling`);
+  }
+
+  // Media (Single World)
+  async getPressReleases(): Promise<ApiResponse> {
+    return this.request('/media/press');
   }
 
   async publishPressRelease(data: any): Promise<ApiResponse> {
@@ -266,8 +289,8 @@ class ApiClient {
     });
   }
 
-  async getPolls(gameId: string): Promise<ApiResponse> {
-    return this.request(`/media/polls?gameId=${gameId}`);
+  async getPolls(): Promise<ApiResponse> {
+    return this.request('/media/polls');
   }
 
   async createPoll(data: any): Promise<ApiResponse> {
@@ -298,6 +321,19 @@ class ApiClient {
 
   async getUserStats(userId: string): Promise<ApiResponse> {
     return this.request(`/users/${userId}/stats`);
+  }
+
+  // Simulation State (Single World)
+  async getSimulationState(): Promise<ApiResponse> {
+    return this.request('/simulation/state');
+  }
+
+  async getActivePlayers(): Promise<ApiResponse> {
+    return this.request('/simulation/players');
+  }
+
+  async getSimulationStats(): Promise<ApiResponse> {
+    return this.request('/simulation/stats');
   }
 }
 

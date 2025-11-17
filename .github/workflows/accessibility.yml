@@ -22,11 +22,7 @@ concurrency:
   group: accessibility-${{ github.ref }}
   cancel-in-progress: true
 
-permissions:
-  # Least-privilege: checkout needs contents:read; PR comment requires pull-requests:write.
-  # Removed checks: write (no check-run API usage) per OSSF Scorecard recommendation.
-  contents: read
-  pull-requests: write
+permissions: read-all
 
 env:
   NODE_VERSION: '22'
@@ -36,6 +32,8 @@ jobs:
     name: axe-core WCAG 2.2 AA Scan
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    permissions:
+      pull-requests: write
 
     strategy:
       fail-fast: false

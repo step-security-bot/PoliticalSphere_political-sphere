@@ -7,8 +7,8 @@
 import express from 'express';
 import rateLimit from 'express-rate-limit';
 
-import ageVerificationService from '../services/age-verification.service.js';
 import { authenticate, requireRole } from '../middleware/auth.js';
+import ageVerificationService from '../services/age-verification.service.js';
 import logger from '../utils/logger.js';
 import { CompleteVerificationSchema, InitiateVerificationSchema } from '../utils/shared-shim.js';
 

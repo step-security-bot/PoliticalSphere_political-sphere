@@ -17,18 +17,16 @@ on:
       - 'libs/ui/**'
   workflow_dispatch:
 
-permissions:
-  # Least-privilege: PR comment requires pull-requests: write; checkout needs contents: read.
-  # Retaining statuses: write because Lighthouse action posts commit status checks.
-  contents: read
-  pull-requests: write
-  statuses: write
-
 jobs:
   lighthouse:
     name: Lighthouse Performance & Accessibility Audit
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    permissions:
+      contents: read
+      actions: write
+      pull-requests: write
+      statuses: write
 
     steps:
       - name: Checkout code

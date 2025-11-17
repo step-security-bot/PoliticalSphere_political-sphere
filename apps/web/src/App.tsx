@@ -1,28 +1,27 @@
 /**
  * Main App Component
- * Handles authentication and routing
+ * Single-World Political Simulation
+ * Users log in and directly enter the persistent simulation
  */
 
 import { useState } from 'react';
 import './App.css';
 import Login from './components/Auth/Login';
 import Register from './components/Auth/Register';
-import { Lobby } from './components/Lobby';
 import MainGame from './components/MainGame';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 
-type Screen = 'login' | 'register' | 'lobby' | 'game';
+type Screen = 'login' | 'register' | 'simulation';
 
 function AppContent() {
-  const { user: _user, isAuthenticated, isLoading } = useAuth();
+  const { user, isAuthenticated, isLoading, logout } = useAuth();
   const [screen, setScreen] = useState<Screen>('login');
-  const [currentGameId, setCurrentGameId] = useState<string>('demo-game-1');
 
   if (isLoading) {
     return (
       <div className="app-loading">
         <div className="spinner" />
-        <p>Loading...</p>
+        <p>Loading Political Sphere...</p>
       </div>
     );
   }
@@ -32,7 +31,7 @@ function AppContent() {
     if (screen === 'register') {
       return (
         <Register
-          onRegisterSuccess={() => setScreen('lobby')}
+          onRegisterSuccess={() => setScreen('simulation')}
           onSwitchToLogin={() => setScreen('login')}
         />
       );
@@ -40,29 +39,24 @@ function AppContent() {
 
     return (
       <Login
-        onLoginSuccess={() => setScreen('lobby')}
+        onLoginSuccess={() => setScreen('simulation')}
         onSwitchToRegister={() => setScreen('register')}
       />
     );
   }
 
-  // Authenticated - show lobby or game
-  if (screen === 'lobby') {
-    return (
-      <Lobby
-        onJoinGame={(gameId: string) => {
-          setCurrentGameId(gameId);
-          setScreen('game');
-        }}
-      />
-    );
-  }
-
-  if (screen === 'game') {
-    return <MainGame gameId={currentGameId} onLeaveGame={() => setScreen('lobby')} />;
-  }
-
-  return <div>Error: Invalid state</div>;
+  // Authenticated - show simulation
+  // Single world simulation - no game ID needed
+  return (
+    <MainGame
+      userId={user?.id || ''}
+      username={user?.username || 'Player'}
+      onLogout={async () => {
+        await logout();
+        setScreen('login');
+      }}
+    />
+  );
 }
 
 export function App() {

@@ -3,7 +3,6 @@
   "extends": "./tools/config/tsconfig.base.json",
   "compilerOptions": {
     "rootDir": ".",
-    "ignoreDeprecations": "5.0", // Silence baseUrl deprecation warning; TODO: migrate to modern path resolution in TypeScript 7.0
     "baseUrl": ".", // Required for non-relative paths in paths mapping
     "allowJs": true,
     "checkJs": false,

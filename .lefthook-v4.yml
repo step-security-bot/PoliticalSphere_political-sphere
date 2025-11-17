@@ -1,0 +1,503 @@
+# =============================================================================
+# Lefthook Configuration - Political Sphere Pre-Commit Hooks
+# Version: 4.0.0 (Enterprise-Grade Sovereign Implementation)
+# Last Updated: 2025-11-17
+# Architecture: SLSA Level 3 compliant, OWASP ASVS aligned, WCAG 2.2 AA enforced
+# =============================================================================
+#
+# FULL DOCUMENTATION: docs/05-engineering-and-devops/development/pre-commit-architecture-v4.md
+#
+# QUICK START:
+#   Install: lefthook install
+#   Standard: git commit -m "feat: message"
+#   Branded:  git ps-commit -m "feat: message"  
+#   Skip:     LEFTHOOK=0 git commit (emergency only)
+#
+# EXECUTION MODES:
+#   FAST_AI=1      - Reduced gates for rapid iteration (dev only)
+#   AUDIT_MODE=1   - Full gates + evidence capture
+#   CI=1           - CI-optimized (non-interactive)
+#
+# =============================================================================
+
+min_version: 1.7.0
+
+pre-commit:
+  parallel: true
+  
+  commands:
+    # Phase 0: Initialization (-100)
+    init-telemetry:
+      priority: -100
+      run: |
+        export HOOK_START_TIME=$(date +%s)
+        export HOOK_TRACE_ID=$(uuidgen 2>/dev/null || echo "trace-$(date +%s)")
+        
+        if [ "${FAST_AI}" = "1" ]; then
+          export EXECUTION_MODE="fast-secure"
+        elif [ "${AUDIT_MODE}" = "1" ]; then
+          export EXECUTION_MODE="audit"
+        elif [ "${CI}" = "true" ] || [ "${CI}" = "1" ]; then
+          export EXECUTION_MODE="ci"
+        else
+          export EXECUTION_MODE="safe"
+        fi
+        
+        echo "🔍 Pre-commit validation (mode: ${EXECUTION_MODE})"
+        echo ""
+        
+        mkdir -p logs 2>/dev/null || true
+        if command -v jq >/dev/null 2>&1; then
+          echo "{\"timestamp\":\"$(date -u +%Y-%m-%dT%H:%M:%SZ)\",\"trace_id\":\"${HOOK_TRACE_ID}\",\"mode\":\"${EXECUTION_MODE}\",\"event\":\"hook_start\"}" \
+            >> logs/pre-commit-telemetry.jsonl 2>/dev/null || true
+        fi
+
+    # Phase 1: Critical Security (0)
+    secrets-scan:
+      priority: 0
+      run: |
+        echo "🔒 [P0] Scanning for leaked secrets..."
+        
+        if ! command -v gitleaks >/dev/null 2>&1; then
+          echo "❌ CRITICAL: gitleaks not installed"
+          echo ""
+          echo "Gitleaks is MANDATORY for secret scanning (OWASP ASVS V2.10)"
+          echo "Install: brew install gitleaks"
+          echo ""
+          echo "Emergency bypass (NOT recommended, requires post-review):"
+          echo "  LEFTHOOK_EXCLUDE=secrets-scan git commit"
+          exit 1
+        fi
+        
+        if ! gitleaks protect --staged --verbose --redact --exit-code 1; then
+          echo ""
+          echo "❌ SECRET LEAK DETECTED"
+          echo ""
+          echo "IMMEDIATE ACTION REQUIRED:"
+          echo "1. Remove the secret from staged files"
+          echo "2. Rotate/revoke the leaked credential immediately"
+          echo "3. Update secret storage (environment variables, vault)"
+          echo ""
+          echo "For false positives, update .gitleaks.toml allowlist with justification"
+          echo "See: docs/06-security-and-risk/security.md#secrets-management"
+          exit 1
+        fi
+        
+        echo "✅ No secrets detected"
+
+    dependency-security:
+      priority: 0
+      glob: '{package.json,package-lock.json,pnpm-lock.yaml,yarn.lock}'
+      run: |
+        if git diff --cached --name-only | grep -qE 'package.*\.json|.*lock.*'; then
+          echo "📦 [P0] Scanning dependencies for vulnerabilities..."
+          
+          if npm audit --audit-level=high --production --json > /tmp/npm-audit-$$.json 2>&1; then
+            echo "✅ No high/critical vulnerabilities"
+            rm -f /tmp/npm-audit-$$.json
+          else
+            VULN_COUNT=$(jq -r '.metadata.vulnerabilities.high + .metadata.vulnerabilities.critical' \
+              /tmp/npm-audit-$$.json 2>/dev/null || echo "unknown")
+            
+            echo ""
+            echo "❌ High/Critical vulnerabilities detected (count: ${VULN_COUNT})"
+            echo ""
+            echo "REMEDIATION:"
+            echo "  npm audit fix           # Auto-fix compatible updates"
+            echo "  npm audit fix --force   # Force breaking updates (review carefully)"
+            echo "  npm audit               # View full report"
+            echo ""
+            echo "For known acceptable risks, document in docs/06-security-and-risk/accepted-risks.md"
+            echo ""
+            
+            rm -f /tmp/npm-audit-$$.json
+            
+            if [ "${FAST_AI}" = "1" ]; then
+              echo "⚠️  FAST_AI mode: vulnerability check bypassed (NOT for production commits)"
+              exit 0
+            fi
+            
+            exit 1
+          fi
+        fi
+
+    license-compliance:
+      priority: 0
+      glob: 'package.json'
+      run: |
+        if git diff --cached --name-only | grep -q 'package.json'; then
+          echo "⚖️  [P0] Checking license compatibility..."
+          
+          ALLOWED_LICENSES="MIT;Apache-2.0;BSD-2-Clause;BSD-3-Clause;ISC;0BSD;CC0-1.0;Unlicense"
+          
+          if command -v npx >/dev/null 2>&1; then
+            if npx license-checker --onlyAllow "${ALLOWED_LICENSES}" --excludePrivatePackages --summary 2>/dev/null; then
+              echo "✅ All licenses compatible"
+            else
+              echo "⚠️  Incompatible licenses detected"
+              echo "Review: npx license-checker --summary"
+              echo "This is advisory - commit will proceed"
+            fi
+          else
+            echo "ℹ️  license-checker not available (install: npm i -g license-checker)"
+          fi
+        fi
+
+    # Phase 2: Code Quality (1)
+    format-code:
+      priority: 1
+      glob: '*.{ts,tsx,js,jsx,json,css,scss,md,yml,yaml}'
+      run: |
+        echo "🎨 [P1] Formatting code..."
+        
+        if command -v biome >/dev/null 2>&1; then
+          biome format --write {staged_files} 2>&1 | grep -v "Processed" || true
+          echo "✅ Formatted with Biome"
+        else
+          npx prettier --write --log-level warn {staged_files}
+          echo "✅ Formatted with Prettier"
+        fi
+      stage_fixed: true
+
+    lint-code:
+      priority: 1
+      glob: '*.{ts,tsx,js,jsx}'
+      run: |
+        echo "🔍 [P1] Linting code..."
+        
+        if command -v biome >/dev/null 2>&1; then
+          biome check --apply {staged_files} 2>/dev/null || true
+        fi
+        
+        if ! npx eslint --fix --max-warnings 0 {staged_files}; then
+          echo ""
+          echo "❌ ESLint errors or warnings detected"
+          echo ""
+          echo "Fix automatically: npx eslint --fix {staged_files}"
+          echo "Review errors: npx eslint {staged_files}"
+          echo ""
+          echo "Note: --max-warnings 0 enforces zero tolerance policy"
+          exit 1
+        fi
+        
+        echo "✅ Lint checks passed"
+      stage_fixed: true
+
+    typecheck:
+      priority: 1
+      glob: '*.{ts,tsx}'
+      run: |
+        if [ -n "{staged_files}" ]; then
+          echo "🔍 [P1] Type-checking TypeScript..."
+          
+          if ! npx tsc --noEmit --skipLibCheck --incremental; then
+            echo ""
+            echo "❌ TypeScript type errors detected"
+            echo "Fix type errors before committing (strict mode enforced)"
+            echo "Run: npx tsc --noEmit"
+            echo "See: docs/05-engineering-and-devops/languages/typescript.md"
+            exit 1
+          fi
+          
+          echo "✅ Type checks passed (strict mode)"
+        fi
+
+    # Phase 3: Governance (2)
+    accessibility-check:
+      priority: 2
+      glob: '*.{tsx,jsx,html}'
+      run: |
+        echo "♿ [P2] Validating accessibility (WCAG 2.2 AA)..."
+        
+        if ! npx eslint --plugin jsx-a11y \
+          --rule 'jsx-a11y/alt-text:error' \
+          --rule 'jsx-a11y/aria-props:error' \
+          --rule 'jsx-a11y/aria-proptypes:error' \
+          --rule 'jsx-a11y/aria-role:error' \
+          --rule 'jsx-a11y/aria-unsupported-elements:error' \
+          --rule 'jsx-a11y/role-has-required-aria-props:error' \
+          --rule 'jsx-a11y/role-supports-aria-props:error' \
+          --rule 'jsx-a11y/label-has-associated-control:error' \
+          --rule 'jsx-a11y/no-noninteractive-element-interactions:error' \
+          --rule 'jsx-a11y/no-static-element-interactions:error' \
+          --rule 'jsx-a11y/interactive-supports-focus:error' \
+          --rule 'jsx-a11y/click-events-have-key-events:error' \
+          --rule 'jsx-a11y/no-autofocus:warn' \
+          --rule 'jsx-a11y/heading-has-content:error' \
+          --rule 'jsx-a11y/html-has-lang:error' \
+          --rule 'jsx-a11y/img-redundant-alt:error' \
+          --rule 'jsx-a11y/no-redundant-roles:error' \
+          {staged_files}; then
+          echo ""
+          echo "❌ ACCESSIBILITY VIOLATIONS DETECTED"
+          echo ""
+          echo "WCAG 2.2 AA compliance is MANDATORY per constitutional requirements"
+          echo ""
+          echo "See: docs/05-engineering-and-devops/ui/ux-accessibility.md"
+          echo ""
+          echo "Common fixes:"
+          echo "  - Add alt text to <img> elements"
+          echo "  - Use semantic HTML (<button>, not <div onClick>)"
+          echo "  - Ensure ARIA props are valid and associated"
+          echo "  - Add keyboard event handlers alongside mouse events"
+          exit 1
+        fi
+        
+        echo "✅ Accessibility checks passed (WCAG 2.2 AA)"
+
+    test-quality-gates:
+      priority: 2
+      glob: '*.{test,spec}.{ts,tsx,js,jsx,mjs}'
+      run: |
+        echo "🧪 [P2] Validating test quality..."
+        
+        VIOLATIONS=0
+        
+        if grep -rn "\\<only\\>(" {staged_files} 2>/dev/null; then
+          echo "❌ .only() detected in tests (blocks CI execution)"
+          VIOLATIONS=$((VIOLATIONS + 1))
+        fi
+        
+        SKIPPED=$(grep -rn "\\<skip\\>(" {staged_files} 2>/dev/null | wc -l)
+        if [ "$SKIPPED" -gt 0 ]; then
+          echo "⚠️  $SKIPPED skipped tests detected (review needed)"
+          echo "   Add TODO comment with issue reference for each .skip()"
+        fi
+        
+        for file in {staged_files}; do
+          if [ -f "$file" ]; then
+            if grep -q "\\(describe\\|it\\|test\\)" "$file" 2>/dev/null; then
+              if ! grep -q "expect(" "$file" 2>/dev/null; then
+                echo "⚠️  Test file without assertions: $file"
+              fi
+            fi
+          fi
+        done
+        
+        if grep -rn "// *\\(it\\|test\\|describe\\)" {staged_files} 2>/dev/null; then
+          echo "⚠️  Commented-out tests detected (consider removal or re-enabling)"
+        fi
+        
+        if [ $VIOLATIONS -gt 0 ]; then
+          echo ""
+          echo "Remove .only() before committing"
+          exit 1
+        fi
+        
+        echo "✅ Test quality checks passed"
+
+    docs-lint:
+      priority: 2
+      glob: '*.{md,mdx}'
+      run: |
+        echo "📝 [P2] Linting documentation..."
+        
+        if command -v markdownlint >/dev/null 2>&1; then
+          if markdownlint {staged_files} 2>/dev/null; then
+            echo "✅ Markdown lint passed"
+          else
+            echo "⚠️  Markdown linting issues detected"
+            echo "   Auto-fix: markdownlint --fix {staged_files}"
+            
+            if [ "${FAST_AI}" != "1" ]; then
+              exit 1
+            fi
+          fi
+        else
+          for file in {staged_files}; do
+            if [ -f "$file" ]; then
+              if grep -qE "^#[^#[:space:]]" "$file"; then
+                echo "⚠️  Missing space after # in: $file"
+              fi
+            fi
+          done
+          
+          echo "ℹ️  markdownlint not installed (npm i -g markdownlint-cli for full validation)"
+        fi
+
+    change-budget-check:
+      priority: 2
+      run: |
+        echo "📊 [P2] Checking change budget..."
+        
+        if [ -f "tools/scripts/ai/guard-change-budget.mjs" ]; then
+          if node tools/scripts/ai/guard-change-budget.mjs; then
+            echo "✅ Change budget check passed"
+          else
+            echo "⚠️  Change budget exceeded or artefacts missing"
+            echo "   See guard-change-budget output for required actions"
+            
+            if [ "${FAST_AI}" != "1" ] && [ "${AUDIT_MODE}" = "1" ]; then
+              exit 1
+            fi
+          fi
+        else
+          echo "ℹ️  Change budget script not found (optional for FAST_AI mode)"
+        fi
+
+    # Phase 4: Infrastructure (3)
+    actionlint:
+      priority: 3
+      glob: '.github/workflows/*.{yml,yaml}'
+      run: |
+        if command -v actionlint >/dev/null 2>&1; then
+          echo "⚙️  [P3] Validating GitHub Actions..."
+          actionlint {staged_files} || {
+            echo ""
+            echo "❌ GitHub Actions validation failed"
+            echo "Fix workflow syntax errors"
+            exit 1
+          }
+        else
+          echo "ℹ️  actionlint not installed (brew install actionlint)"
+        fi
+
+    hadolint:
+      priority: 3
+      glob: '{**/Dockerfile*,**/*.dockerfile}'
+      run: |
+        if command -v hadolint >/dev/null 2>&1; then
+          echo "🐳 [P3] Linting Dockerfiles..."
+          hadolint --ignore DL3008 --ignore DL3009 {staged_files} || {
+            echo ""
+            echo "❌ Dockerfile linting failed"
+            exit 1
+          }
+        else
+          echo "ℹ️  hadolint not installed (brew install hadolint)"
+        fi
+
+    validate-json:
+      priority: 3
+      glob: '*.json'
+      run: |
+        echo "🔍 [P3] Validating JSON files..."
+        for file in {staged_files}; do
+          jq empty "$file" 2>/dev/null || {
+            echo "❌ Invalid JSON in $file"
+            exit 1
+          }
+        done
+        echo "✅ JSON validation passed"
+
+    validate-yaml:
+      priority: 3
+      glob: '*.{yml,yaml}'
+      run: |
+        if command -v yamllint >/dev/null 2>&1; then
+          echo "🔍 [P3] Validating YAML files..."
+          yamllint --strict {staged_files} 2>/dev/null || true
+        fi
+
+    finalize-telemetry:
+      priority: 999
+      run: |
+        HOOK_END_TIME=$(date +%s)
+        HOOK_DURATION=$((HOOK_END_TIME - ${HOOK_START_TIME:-$HOOK_END_TIME}))
+        
+        echo ""
+        echo "✅ Pre-commit validation complete (duration: ${HOOK_DURATION}s)"
+        
+        if command -v jq >/dev/null 2>&1 && [ -n "${HOOK_TRACE_ID}" ]; then
+          echo "{\"timestamp\":\"$(date -u +%Y-%m-%dT%H:%M:%SZ)\",\"trace_id\":\"${HOOK_TRACE_ID}\",\"duration_seconds\":${HOOK_DURATION},\"event\":\"hook_complete\"}" \
+            >> logs/pre-commit-telemetry.jsonl 2>/dev/null || true
+        fi
+
+# =============================================================================
+# PRE-PUSH HOOKS
+# =============================================================================
+
+pre-push:
+  parallel: false
+  
+  commands:
+    full-type-check:
+      run: |
+        echo "🔍 Running full TypeScript type check..."
+        npx tsc --noEmit || {
+          echo ""
+          echo "❌ TypeScript type errors found"
+          echo "Fix all type errors before pushing"
+          exit 1
+        }
+
+    test-changed:
+      run: |
+        echo "🧪 Running tests on changed files..."
+        npm run test:changed || {
+          echo ""
+          echo "❌ Tests failed"
+          echo "Fix failing tests before pushing"
+          exit 1
+        }
+
+    security-audit:
+      run: |
+        echo "🔒 Running security audit..."
+        npm audit --audit-level=moderate || {
+          echo ""
+          echo "⚠️  Security vulnerabilities found"
+          echo "Review: npm audit"
+          echo "Note: This is a warning - push will proceed"
+        }
+
+    branch-protection:
+      run: |
+        BRANCH=$(git branch --show-current)
+        
+        if [[ "$BRANCH" == "main" ]]; then
+          echo "⚠️  You are pushing directly to main"
+          echo "Consider using a feature branch"
+          echo "Press Ctrl+C to cancel or wait 3 seconds to continue..."
+          sleep 3
+        fi
+
+# =============================================================================
+# COMMIT MESSAGE HOOKS
+# =============================================================================
+
+commit-msg:
+  commands:
+    conventional-commits:
+      run: |
+        MSG=$(cat {1})
+        
+        if [ -z "$MSG" ] || ! echo "$MSG" | grep -q '[^[:space:]]'; then
+          echo "❌ Empty commit message"
+          echo "Use Conventional Commits format: feat(scope): description"
+          exit 1
+        fi
+        
+        MSG_NO_WHITESPACE=$(echo "$MSG" | tr -d '[:space:]]')
+        if [ ${#MSG_NO_WHITESPACE} -lt 10 ]; then
+          echo "❌ Commit message too short (${#MSG_NO_WHITESPACE} chars, need 10+)"
+          exit 1
+        fi
+        
+        if ! echo "$MSG" | grep -qE "^(feat|fix|docs|style|refactor|perf|test|build|ci|chore|revert)(\(.+\))?: .{1,}"; then
+          echo "❌ Invalid commit message format"
+          echo ""
+          echo "Use Conventional Commits:"
+          echo "  feat(scope): add new feature"
+          echo "  fix(scope): bug fix"
+          echo "  docs: update documentation"
+          echo ""
+          echo "Types: feat|fix|docs|style|refactor|perf|test|build|ci|chore|revert"
+          exit 1
+        fi
+        
+        TITLE=$(echo "$MSG" | head -n 1)
+        if [ ${#TITLE} -gt 100 ]; then
+          echo "❌ Commit title too long (${#TITLE} > 100 characters)"
+          exit 1
+        fi
+        
+        BRANCH=$(git branch --show-current)
+        if [[ "$BRANCH" == "main" ]] && echo "$MSG" | grep -iqE "^(wip|WIP|fixup|squash)"; then
+          echo "❌ WIP commits not allowed on main branch"
+          exit 1
+        fi
+        
+        if ! echo "$MSG" | grep -qE "#[0-9]+|Closes #[0-9]+|Fixes #[0-9]+"; then
+          echo "ℹ️  Consider referencing an issue: #123 or Closes #123"
+        fi

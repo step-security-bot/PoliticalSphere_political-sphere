@@ -5,25 +5,36 @@
  */
 
 import React, { FormEvent, useState } from 'react';
+import { useAuth } from '../../contexts/AuthContext';
 import './Auth.css';
 
 interface RegisterProps {
-  onRegisterSuccess: (user: any, token: string) => void;
+  onRegisterSuccess: () => void;
   onSwitchToLogin: () => void;
 }
 
 const Register: React.FC<RegisterProps> = ({ onRegisterSuccess, onSwitchToLogin }) => {
+  const { register } = useAuth();
+  const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [displayName, setDisplayName] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [showPassword, setShowPassword] = useState(false);
   const [agreedToTerms, setAgreedToTerms] = useState(false);
 
+  const validateUsername = (name: string): string | null => {
+    if (name.length < 3) return 'Username must be at least 3 characters';
+    if (name.length > 50) return 'Username must not exceed 50 characters';
+    if (!/^[a-zA-Z0-9_-]+$/.test(name))
+      return 'Username can only contain letters, numbers, underscores, and hyphens';
+    return null;
+  };
+
   const validatePassword = (pwd: string): string | null => {
     if (pwd.length < 8) return 'Password must be at least 8 characters';
+    if (pwd.length > 128) return 'Password must not exceed 128 characters';
     if (!/[A-Z]/.test(pwd)) return 'Password must contain an uppercase letter';
     if (!/[a-z]/.test(pwd)) return 'Password must contain a lowercase letter';
     if (!/[0-9]/.test(pwd)) return 'Password must contain a number';
@@ -37,6 +48,12 @@ const Register: React.FC<RegisterProps> = ({ onRegisterSuccess, onSwitchToLogin 
     // Validation
     if (!agreedToTerms) {
       setError('You must agree to the Terms of Service');
+      return;
+    }
+
+    const usernameError = validateUsername(username);
+    if (usernameError) {
+      setError(usernameError);
       return;
     }
 
@@ -54,32 +71,15 @@ const Register: React.FC<RegisterProps> = ({ onRegisterSuccess, onSwitchToLogin 
     setLoading(true);
 
     try {
-      const response = await fetch('/api/auth/register', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email,
-          password,
-          displayName: displayName || undefined,
-        }),
-      });
+      const result = await register(username, email, password);
 
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || 'Registration failed');
+      if (result.success) {
+        onRegisterSuccess();
+      } else {
+        setError(result.error || 'Registration failed');
       }
-
-      // Store tokens
-      localStorage.setItem('accessToken', data.accessToken);
-      localStorage.setItem('refreshToken', data.refreshToken);
-      localStorage.setItem('user', JSON.stringify(data.user));
-
-      onRegisterSuccess(data.user, data.accessToken);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred');
+      setError(err instanceof Error ? err.message : 'An unexpected error occurred');
     } finally {
       setLoading(false);
     }
@@ -106,6 +106,34 @@ const Register: React.FC<RegisterProps> = ({ onRegisterSuccess, onSwitchToLogin 
           )}
 
           <div className="form-group">
+            <label htmlFor="username">
+              Username
+              <span className="required" aria-label="required">
+                *
+              </span>
+            </label>
+            <input
+              type="text"
+              id="username"
+              name="username"
+              value={username}
+              onChange={e => setUsername(e.target.value)}
+              required
+              autoComplete="username"
+              aria-required="true"
+              aria-invalid={error ? 'true' : 'false'}
+              aria-describedby="username-requirements"
+              disabled={loading}
+              placeholder="Choose a unique username"
+              minLength={3}
+              maxLength={50}
+            />
+            <div id="username-requirements" className="field-help">
+              3-50 characters: letters, numbers, underscores, and hyphens only
+            </div>
+          </div>
+
+          <div className="form-group">
             <label htmlFor="email">
               Email Address
               <span className="required" aria-label="required">
@@ -124,21 +152,7 @@ const Register: React.FC<RegisterProps> = ({ onRegisterSuccess, onSwitchToLogin 
               aria-invalid={error ? 'true' : 'false'}
               disabled={loading}
               placeholder="your.email@example.com"
-            />
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="displayName">Display Name (Optional)</label>
-            <input
-              type="text"
-              id="displayName"
-              name="displayName"
-              value={displayName}
-              onChange={e => setDisplayName(e.target.value)}
-              autoComplete="name"
-              disabled={loading}
-              placeholder="How you'll appear in the game"
-              maxLength={50}
+              maxLength={255}
             />
           </div>
 
@@ -175,7 +189,7 @@ const Register: React.FC<RegisterProps> = ({ onRegisterSuccess, onSwitchToLogin 
               </button>
             </div>
             <div id="password-requirements" className="field-help">
-              Must be 8+ characters with uppercase, lowercase, and number
+              8-128 characters with uppercase, lowercase, and number
             </div>
           </div>
 
@@ -229,7 +243,9 @@ const Register: React.FC<RegisterProps> = ({ onRegisterSuccess, onSwitchToLogin 
           <button
             type="submit"
             className="btn-primary btn-full-width"
-            disabled={loading || !email || !password || !confirmPassword || !agreedToTerms}
+            disabled={
+              loading || !username || !email || !password || !confirmPassword || !agreedToTerms
+            }
           >
             {loading ? 'Creating account...' : 'Create Account'}
           </button>

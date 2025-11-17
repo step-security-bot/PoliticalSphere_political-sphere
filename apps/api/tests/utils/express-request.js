@@ -96,7 +96,11 @@ export async function dispatchRequest(app, { method = 'GET', url = '/', body, he
     const originalEnd = res.end.bind(res);
     res.end = (...args) => {
       const result = originalEnd(...args);
-      queueMicrotask(() => finalize());
+      // Wait for socket to finish writing before reading data
+      socket.once('finish', () => {
+        // Give socket time to flush all chunks
+        setImmediate(() => finalize());
+      });
       return result;
     };
 

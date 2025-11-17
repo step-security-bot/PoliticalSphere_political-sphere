@@ -5,14 +5,16 @@
  */
 
 import React, { FormEvent, useState } from 'react';
+import { useAuth } from '../../contexts/AuthContext';
 import './Auth.css';
 
 interface LoginProps {
-  onLoginSuccess: (user: any, token: string) => void;
+  onLoginSuccess: () => void;
   onSwitchToRegister: () => void;
 }
 
 const Login: React.FC<LoginProps> = ({ onLoginSuccess, onSwitchToRegister }) => {
+  const { login } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -25,28 +27,15 @@ const Login: React.FC<LoginProps> = ({ onLoginSuccess, onSwitchToRegister }) => 
     setLoading(true);
 
     try {
-      const response = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
-      });
+      const result = await login(email, password);
 
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || 'Login failed');
+      if (result.success) {
+        onLoginSuccess();
+      } else {
+        setError(result.error || 'Login failed');
       }
-
-      // Store tokens
-      localStorage.setItem('accessToken', data.accessToken);
-      localStorage.setItem('refreshToken', data.refreshToken);
-      localStorage.setItem('user', JSON.stringify(data.user));
-
-      onLoginSuccess(data.user, data.accessToken);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred');
+      setError(err instanceof Error ? err.message : 'An unexpected error occurred');
     } finally {
       setLoading(false);
     }

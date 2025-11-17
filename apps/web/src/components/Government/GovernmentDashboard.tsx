@@ -1,164 +1,141 @@
 /**
  * Government Dashboard Component
- * Displays government information, cabinet, ministers, and executive actions
+ * Manages cabinet, ministers, and executive actions
  * WCAG 2.2 AA Compliant
  */
 
-import React, { useState, useEffect, useCallback } from 'react';
+import type React from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import { api } from '../../services/api';
 import './GovernmentDashboard.css';
 
 interface Minister {
   id: string;
   userId: string;
-  position: string;
-  department?: string;
+  username: string;
+  portfolio: string;
   appointedAt: string;
-  status: string;
+  status: 'active' | 'resigned' | 'dismissed';
 }
 
-interface Government {
+interface Cabinet {
   id: string;
-  gameId: string;
-  name: string;
-  type: 'coalition' | 'majority' | 'minority';
-  leadPartyId: string;
+  primeMinisterId: string;
+  primeMinisterName: string;
+  party: string;
   formedAt: string;
-  status: string;
-  confidenceVotes: number;
-  noConfidenceVotes: number;
+  status: 'active' | 'dissolved';
+  ministers: Minister[];
 }
 
 interface ExecutiveAction {
   id: string;
-  type: string;
+  ministerId: string;
+  ministerName: string;
+  portfolio: string;
+  type: 'policy' | 'appointment' | 'budget' | 'emergency';
   title: string;
   description: string;
-  issuedBy: string;
-  status: string;
-  issuedAt: string;
+  status: 'proposed' | 'approved' | 'rejected' | 'implemented';
+  createdAt: string;
+}
+
+interface Policy {
+  id: string;
+  title: string;
+  description: string;
+  portfolio: string;
+  status: 'draft' | 'active' | 'suspended' | 'repealed';
+  implementedAt?: string;
 }
 
 interface GovernmentDashboardProps {
-  gameId: string;
-  onAppointMinister?: (data: { position: string; userId: string }) => void;
-  onIssueAction?: (data: { type: string; title: string; description: string }) => void;
+  userId: string;
+  onError?: (error: string) => void;
 }
 
-const GovernmentDashboard: React.FC<GovernmentDashboardProps> = ({
-  gameId,
-  onAppointMinister,
-  onIssueAction,
-}) => {
-  const [government, setGovernment] = useState<Government | null>(null);
-  const [ministers, setMinisters] = useState<Minister[]>([]);
+export const GovernmentDashboard: React.FC<GovernmentDashboardProps> = ({ userId, onError }) => {
+  const [cabinet, setCabinet] = useState<Cabinet | null>(null);
   const [actions, setActions] = useState<ExecutiveAction[]>([]);
+  const [policies, setPolicies] = useState<Policy[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [activeTab, setActiveTab] = useState<'cabinet' | 'actions'>('cabinet');
+  const [activeTab, setActiveTab] = useState<'cabinet' | 'actions' | 'policies'>('cabinet');
+  const [showActionForm, setShowActionForm] = useState(false);
+
+  // Form state for executive actions
+  const [actionForm, setActionForm] = useState({
+    type: 'policy' as ExecutiveAction['type'],
+    title: '',
+    description: '',
+    portfolio: '',
+  });
 
   const fetchGovernment = useCallback(async () => {
     try {
-      const response = await fetch(`/api/government?gameId=${gameId}`);
-      if (!response.ok) throw new Error('Failed to fetch government');
-      const data = await response.json();
-      if (data.success && data.data.length > 0) {
-        setGovernment(data.data[0]);
-      }
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Unknown error');
-    }
-  }, [gameId]);
+      setLoading(true);
+      const response = await api.getGovernment();
 
-  const fetchMinisters = useCallback(async () => {
-    if (!government) return;
-    try {
-      const response = await fetch(`/api/government/${government.id}/ministers`);
-      if (!response.ok) throw new Error('Failed to fetch ministers');
-      const data = await response.json();
-      if (data.success) {
-        setMinisters(data.data);
+      if (!response.success) {
+        throw new Error(response.error || 'Failed to fetch government data');
       }
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Unknown error');
-    }
-  }, [government]);
 
-  const fetchActions = useCallback(async () => {
-    if (!government) return;
-    try {
-      const response = await fetch(`/api/government/${government.id}/actions`);
-      if (!response.ok) throw new Error('Failed to fetch actions');
-      const data = await response.json();
-      if (data.success) {
-        setActions(data.data);
-      }
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Unknown error');
+      setCabinet(response.data?.cabinet || null);
+      setActions(response.data?.actions || []);
+      setPolicies(response.data?.policies || []);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Failed to fetch government data';
+      onError?.(message);
+    } finally {
+      setLoading(false);
     }
-  }, [government]);
+  }, [onError]);
 
   useEffect(() => {
-    const loadData = async () => {
-      setLoading(true);
-      await fetchGovernment();
-      setLoading(false);
-    };
-    loadData();
+    fetchGovernment();
+    // Poll for updates every 30 seconds
+    const interval = setInterval(fetchGovernment, 30000);
+    return () => clearInterval(interval);
   }, [fetchGovernment]);
 
-  useEffect(() => {
-    if (government) {
-      fetchMinisters();
-      fetchActions();
-    }
-  }, [government, fetchMinisters, fetchActions]);
+  const handleProposeAction = async (e: React.FormEvent) => {
+    e.preventDefault();
 
-  const handleAppointMinister = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const formData = new FormData(event.currentTarget);
-    const position = formData.get('position') as string;
-    const userId = formData.get('userId') as string;
+    try {
+      const response = await api.issueExecutiveAction(cabinet?.id || '', {
+        ...actionForm,
+        ministerId: userId,
+      });
 
-    if (position && userId && onAppointMinister) {
-      onAppointMinister({ position, userId });
-      event.currentTarget.reset();
-    }
-  };
+      if (!response.success) {
+        throw new Error(response.error || 'Failed to propose action');
+      }
 
-  const handleIssueAction = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const formData = new FormData(event.currentTarget);
-    const type = formData.get('actionType') as string;
-    const title = formData.get('actionTitle') as string;
-    const description = formData.get('actionDescription') as string;
-
-    if (type && title && description && onIssueAction) {
-      onIssueAction({ type, title, description });
-      event.currentTarget.reset();
+      // Reset form and refresh
+      setActionForm({ type: 'policy', title: '', description: '', portfolio: '' });
+      setShowActionForm(false);
+      fetchGovernment();
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Failed to propose action';
+      onError?.(message);
     }
   };
+
+  const isMinister = cabinet?.ministers.some(m => m.userId === userId && m.status === 'active');
+  const isPrimeMinister = cabinet?.primeMinisterId === userId;
 
   if (loading) {
     return (
-      <div className="government-dashboard" role="status" aria-live="polite">
-        <p>Loading government information...</p>
+      <div className="government-dashboard loading" aria-live="polite">
+        <p>Loading Government...</p>
       </div>
     );
   }
 
-  if (error) {
+  if (!cabinet) {
     return (
-      <div className="government-dashboard" role="alert">
-        <p className="error">Error: {error}</p>
-      </div>
-    );
-  }
-
-  if (!government) {
-    return (
-      <div className="government-dashboard">
+      <div className="government-dashboard empty">
         <h2>No Government Formed</h2>
-        <p>A government has not yet been formed for this game.</p>
+        <p>No government has been formed yet. A government must be formed after elections.</p>
       </div>
     );
   }
@@ -166,218 +143,249 @@ const GovernmentDashboard: React.FC<GovernmentDashboardProps> = ({
   return (
     <div className="government-dashboard">
       <header className="government-header">
-        <h1>{government.name}</h1>
-        <div className="government-meta">
-          <span className="government-type" aria-label="Government type">
-            {government.type.charAt(0).toUpperCase() + government.type.slice(1)} Government
-          </span>
-          <span className="government-status" aria-label="Government status">
-            Status: {government.status}
-          </span>
+        <div className="government-title">
+          <h1>Her Majesty's Government</h1>
+          <div className="government-meta">
+            <span className="pm-name">
+              Prime Minister: <strong>{cabinet.primeMinisterName}</strong>
+            </span>
+            <span className="party-badge">{cabinet.party}</span>
+            <span className="status-badge status-{cabinet.status}">{cabinet.status}</span>
+          </div>
         </div>
-        <div className="confidence-tracker" aria-label="Confidence votes">
-          <span className="confidence-for">Confidence: {government.confidenceVotes}</span>
-          <span className="confidence-against">No Confidence: {government.noConfidenceVotes}</span>
-        </div>
+
+        <nav className="government-tabs" aria-label="Government sections">
+          <button
+            type="button"
+            onClick={() => setActiveTab('cabinet')}
+            className={activeTab === 'cabinet' ? 'active' : ''}
+            aria-current={activeTab === 'cabinet' ? 'page' : undefined}
+          >
+            Cabinet ({cabinet.ministers.length})
+          </button>
+          <button
+            type="button"
+            onClick={() => setActiveTab('actions')}
+            className={activeTab === 'actions' ? 'active' : ''}
+            aria-current={activeTab === 'actions' ? 'page' : undefined}
+          >
+            Executive Actions ({actions.length})
+          </button>
+          <button
+            type="button"
+            onClick={() => setActiveTab('policies')}
+            className={activeTab === 'policies' ? 'active' : ''}
+            aria-current={activeTab === 'policies' ? 'page' : undefined}
+          >
+            Policies ({policies.length})
+          </button>
+        </nav>
       </header>
 
-      <nav className="government-tabs" role="tablist" aria-label="Government sections">
-        <button
-          type="button"
-          role="tab"
-          aria-selected={activeTab === 'cabinet'}
-          aria-controls="cabinet-panel"
-          id="cabinet-tab"
-          onClick={() => setActiveTab('cabinet')}
-          className={activeTab === 'cabinet' ? 'active' : ''}
-        >
-          Cabinet & Ministers
-        </button>
-        <button
-          type="button"
-          role="tab"
-          aria-selected={activeTab === 'actions'}
-          aria-controls="actions-panel"
-          id="actions-tab"
-          onClick={() => setActiveTab('actions')}
-          className={activeTab === 'actions' ? 'active' : ''}
-        >
-          Executive Actions
-        </button>
-      </nav>
+      <main className="government-content">
+        {activeTab === 'cabinet' && (
+          <section className="cabinet-section">
+            <header className="section-header">
+              <h2>Cabinet Ministers</h2>
+              {isPrimeMinister && (
+                <button type="button" className="btn-primary">
+                  Appoint Minister
+                </button>
+              )}
+            </header>
 
-      {activeTab === 'cabinet' && (
-        <section
-          id="cabinet-panel"
-          role="tabpanel"
-          aria-labelledby="cabinet-tab"
-          className="cabinet-section"
-        >
-          <h2>Cabinet Members</h2>
-
-          {ministers.length === 0 ? (
-            <p>No ministers appointed yet.</p>
-          ) : (
-            <ul className="ministers-list" aria-label="List of cabinet ministers">
-              {ministers.map(minister => (
-                <li key={minister.id} className="minister-card">
-                  <div className="minister-info">
-                    <h3>{minister.position}</h3>
-                    {minister.department && (
-                      <p className="minister-department">{minister.department}</p>
-                    )}
-                    <p className="minister-meta">
-                      Appointed: {new Date(minister.appointedAt).toLocaleDateString()}
-                    </p>
-                    <span className={`minister-status status-${minister.status}`}>
-                      {minister.status}
-                    </span>
-                  </div>
-                </li>
+            <div className="ministers-grid">
+              {cabinet.ministers.map(minister => (
+                <article key={minister.id} className="minister-card">
+                  <header>
+                    <h3>{minister.username}</h3>
+                    <span className="portfolio-badge">{minister.portfolio}</span>
+                  </header>
+                  <dl>
+                    <dt>Status:</dt>
+                    <dd>
+                      <span className={`status-badge status-${minister.status}`}>
+                        {minister.status}
+                      </span>
+                    </dd>
+                    <dt>Appointed:</dt>
+                    <dd>
+                      <time dateTime={minister.appointedAt}>
+                        {new Date(minister.appointedAt).toLocaleDateString()}
+                      </time>
+                    </dd>
+                  </dl>
+                  {isPrimeMinister && minister.status === 'active' && (
+                    <footer>
+                      <button type="button" className="btn-secondary btn-sm">
+                        Reassign Portfolio
+                      </button>
+                      <button type="button" className="btn-danger btn-sm">
+                        Dismiss
+                      </button>
+                    </footer>
+                  )}
+                </article>
               ))}
+            </div>
+
+            {cabinet.ministers.length === 0 && (
+              <p className="empty-state">No ministers appointed yet.</p>
+            )}
+          </section>
+        )}
+
+        {activeTab === 'actions' && (
+          <section className="actions-section">
+            <header className="section-header">
+              <h2>Executive Actions</h2>
+              {isMinister && (
+                <button
+                  type="button"
+                  onClick={() => setShowActionForm(!showActionForm)}
+                  className="btn-primary"
+                  aria-expanded={showActionForm}
+                >
+                  {showActionForm ? 'Cancel' : 'Propose Action'}
+                </button>
+              )}
+            </header>
+
+            {showActionForm && (
+              <form onSubmit={handleProposeAction} className="action-form">
+                <div className="form-group">
+                  <label htmlFor="action-type">Type:</label>
+                  <select
+                    id="action-type"
+                    value={actionForm.type}
+                    onChange={e =>
+                      setActionForm({
+                        ...actionForm,
+                        type: e.target.value as ExecutiveAction['type'],
+                      })
+                    }
+                    required
+                  >
+                    <option value="policy">Policy</option>
+                    <option value="appointment">Appointment</option>
+                    <option value="budget">Budget</option>
+                    <option value="emergency">Emergency</option>
+                  </select>
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="action-portfolio">Portfolio:</label>
+                  <input
+                    id="action-portfolio"
+                    type="text"
+                    value={actionForm.portfolio}
+                    onChange={e => setActionForm({ ...actionForm, portfolio: e.target.value })}
+                    required
+                    placeholder="e.g., Health, Education, Defence"
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="action-title">Title:</label>
+                  <input
+                    id="action-title"
+                    type="text"
+                    value={actionForm.title}
+                    onChange={e => setActionForm({ ...actionForm, title: e.target.value })}
+                    required
+                    maxLength={200}
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="action-description">Description:</label>
+                  <textarea
+                    id="action-description"
+                    value={actionForm.description}
+                    onChange={e => setActionForm({ ...actionForm, description: e.target.value })}
+                    required
+                    maxLength={2000}
+                    rows={6}
+                  />
+                </div>
+
+                <button type="submit" className="btn-primary">
+                  Propose Action
+                </button>
+              </form>
+            )}
+
+            <ul className="actions-list">
+              {actions.length === 0 ? (
+                <p className="empty-state">No executive actions proposed yet.</p>
+              ) : (
+                actions.map(action => (
+                  <li key={action.id} className="action-card">
+                    <header>
+                      <h3>{action.title}</h3>
+                      <div className="action-meta">
+                        <span className="type-badge type-{action.type}">{action.type}</span>
+                        <span className={`status-badge status-${action.status}`}>
+                          {action.status}
+                        </span>
+                      </div>
+                    </header>
+                    <p>{action.description}</p>
+                    <footer>
+                      <span className="minister-info">
+                        {action.ministerName} ({action.portfolio})
+                      </span>
+                      <time dateTime={action.createdAt}>
+                        {new Date(action.createdAt).toLocaleDateString()}
+                      </time>
+                    </footer>
+                  </li>
+                ))
+              )}
             </ul>
-          )}
+          </section>
+        )}
 
-          {onAppointMinister && (
-            <form
-              className="appoint-minister-form"
-              onSubmit={handleAppointMinister}
-              aria-labelledby="appoint-minister-heading"
-            >
-              <h3 id="appoint-minister-heading">Appoint New Minister</h3>
+        {activeTab === 'policies' && (
+          <section className="policies-section">
+            <header className="section-header">
+              <h2>Government Policies</h2>
+            </header>
 
-              <div className="form-group">
-                <label htmlFor="minister-position">
-                  Position <span aria-label="required">*</span>
-                </label>
-                <select id="minister-position" name="position" required aria-required="true">
-                  <option value="">Select position...</option>
-                  <option value="prime_minister">Prime Minister</option>
-                  <option value="chancellor">Chancellor of the Exchequer</option>
-                  <option value="foreign_secretary">Foreign Secretary</option>
-                  <option value="home_secretary">Home Secretary</option>
-                  <option value="defence_secretary">Defence Secretary</option>
-                  <option value="health_secretary">Health Secretary</option>
-                  <option value="education_secretary">Education Secretary</option>
-                  <option value="justice_secretary">Justice Secretary</option>
-                  <option value="transport_secretary">Transport Secretary</option>
-                  <option value="environment_secretary">Environment Secretary</option>
-                  <option value="business_secretary">Business Secretary</option>
-                  <option value="culture_secretary">Culture Secretary</option>
-                </select>
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="minister-user">
-                  User ID <span aria-label="required">*</span>
-                </label>
-                <input
-                  type="text"
-                  id="minister-user"
-                  name="userId"
-                  required
-                  aria-required="true"
-                  placeholder="Enter user ID"
-                />
-              </div>
-
-              <button type="submit" className="btn-primary">
-                Appoint Minister
-              </button>
-            </form>
-          )}
-        </section>
-      )}
-
-      {activeTab === 'actions' && (
-        <section
-          id="actions-panel"
-          role="tabpanel"
-          aria-labelledby="actions-tab"
-          className="actions-section"
-        >
-          <h2>Executive Actions</h2>
-
-          {actions.length === 0 ? (
-            <p>No executive actions issued yet.</p>
-          ) : (
-            <ul className="actions-list" aria-label="List of executive actions">
-              {actions.map(action => (
-                <li key={action.id} className="action-card">
-                  <div className="action-header">
-                    <h3>{action.title}</h3>
-                    <span className={`action-type type-${action.type}`}>
-                      {action.type.replace('_', ' ')}
-                    </span>
-                  </div>
-                  <p className="action-description">{action.description}</p>
-                  <div className="action-meta">
-                    <span>Issued: {new Date(action.issuedAt).toLocaleDateString()}</span>
-                    <span className={`action-status status-${action.status}`}>{action.status}</span>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          )}
-
-          {onIssueAction && (
-            <form
-              className="issue-action-form"
-              onSubmit={handleIssueAction}
-              aria-labelledby="issue-action-heading"
-            >
-              <h3 id="issue-action-heading">Issue Executive Action</h3>
-
-              <div className="form-group">
-                <label htmlFor="action-type">
-                  Action Type <span aria-label="required">*</span>
-                </label>
-                <select id="action-type" name="actionType" required aria-required="true">
-                  <option value="">Select type...</option>
-                  <option value="order">Executive Order</option>
-                  <option value="regulation">Regulation</option>
-                  <option value="treaty">Treaty</option>
-                  <option value="appointment">Appointment</option>
-                </select>
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="action-title">
-                  Title <span aria-label="required">*</span>
-                </label>
-                <input
-                  type="text"
-                  id="action-title"
-                  name="actionTitle"
-                  required
-                  aria-required="true"
-                  maxLength={200}
-                  placeholder="Enter action title"
-                />
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="action-description">
-                  Description <span aria-label="required">*</span>
-                </label>
-                <textarea
-                  id="action-description"
-                  name="actionDescription"
-                  required
-                  aria-required="true"
-                  maxLength={5000}
-                  rows={4}
-                  placeholder="Describe the executive action"
-                />
-              </div>
-
-              <button type="submit" className="btn-primary">
-                Issue Action
-              </button>
-            </form>
-          )}
-        </section>
-      )}
+            <div className="policies-grid">
+              {policies.length === 0 ? (
+                <p className="empty-state">No policies implemented yet.</p>
+              ) : (
+                policies.map(policy => (
+                  <article key={policy.id} className="policy-card">
+                    <header>
+                      <h3>{policy.title}</h3>
+                      <span className={`status-badge status-${policy.status}`}>
+                        {policy.status}
+                      </span>
+                    </header>
+                    <p>{policy.description}</p>
+                    <dl>
+                      <dt>Portfolio:</dt>
+                      <dd>{policy.portfolio}</dd>
+                      {policy.implementedAt && (
+                        <>
+                          <dt>Implemented:</dt>
+                          <dd>
+                            <time dateTime={policy.implementedAt}>
+                              {new Date(policy.implementedAt).toLocaleDateString()}
+                            </time>
+                          </dd>
+                        </>
+                      )}
+                    </dl>
+                  </article>
+                ))
+              )}
+            </div>
+          </section>
+        )}
+      </main>
     </div>
   );
 };

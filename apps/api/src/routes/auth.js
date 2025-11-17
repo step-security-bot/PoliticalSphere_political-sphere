@@ -16,7 +16,18 @@ const RegisterSchema = z.object({
       /^[a-zA-Z0-9_-]+$/,
       'Username can only contain letters, numbers, underscores, and hyphens'
     ),
-  email: z.string().email('Invalid email address').max(255, 'Email must not exceed 255 characters'),
+  email: z
+    .string()
+    .email('Invalid email address')
+    .max(255, 'Email must not exceed 255 characters')
+    .refine(
+      email => {
+        // Reject SQL injection patterns in email (single quote, double quote, semicolon, backslash, double dash)
+        const sqlPatterns = /['";\\]|--/;
+        return !sqlPatterns.test(email);
+      },
+      { message: 'Invalid email address' }
+    ),
   password: z
     .string()
     .min(8, 'Password must be at least 8 characters')
@@ -26,10 +37,16 @@ const RegisterSchema = z.object({
     .regex(/[0-9]/, 'Password must contain at least one number'),
 });
 
-const LoginSchema = z.object({
-  email: z.string().email('Invalid email address'),
-  password: z.string().min(1, 'Password is required'),
-});
+const LoginSchema = z
+  .object({
+    email: z.string().email('Invalid email address').optional(),
+    username: z.string().min(1, 'Username is required').optional(),
+    password: z.string().min(1, 'Password is required'),
+  })
+  .refine(data => data.email || data.username, {
+    message: 'Either email or username is required',
+    path: ['email'], // Point to email field for error
+  });
 
 // POST /register - Register new user
 router.post('/register', async (req, res) => {
@@ -38,24 +55,40 @@ router.post('/register', async (req, res) => {
     const validated = RegisterSchema.parse(req.body);
 
     // Use centralized authService for registration
-    const { user, tokens } = await authService.register({
+    const result = await authService.register({
       username: validated.username,
       email: validated.email,
       password: validated.password,
     });
 
+    // Defensive null checks
+    if (!result || !result.user || !result.tokens) {
+      logger.error('Registration returned invalid result', { result });
+      return res.status(500).json({
+        success: false,
+        error: 'Registration failed - invalid response',
+      });
+    }
+
+    const { user, tokens } = result;
+
     logger.info('User registered successfully', { userId: user.id, username: user.username });
 
-    res.status(201).json({
+    // Build response with explicit field checks
+    const responseData = {
       success: true,
       data: {
         id: user.id,
         username: user.username,
-        email: user.email,
+        email: user.email || '',
         token: tokens.accessToken,
         refreshToken: tokens.refreshToken,
       },
-    });
+    };
+
+    // Send response
+    res.status(201).json(responseData);
+    return;
   } catch (error) {
     // Handle Zod validation errors
     if (error instanceof z.ZodError) {
@@ -79,7 +112,7 @@ router.post('/register', async (req, res) => {
       });
     }
 
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       error: error.message || 'Registration failed',
     });
@@ -92,15 +125,27 @@ router.post('/login', async (req, res) => {
     // Validate input with Zod schema
     const validated = LoginSchema.parse(req.body);
 
-    // Use centralized authService for login
-    const { user, tokens } = await authService.login({
-      username: validated.email, // authService uses username, but we accept email
+    // Use centralized authService for login - pass email or username
+    const loginIdentifier = validated.email || validated.username;
+    const result = await authService.login({
+      username: loginIdentifier,
       password: validated.password,
     });
 
+    // Defensive null checks
+    if (!result || !result.user || !result.tokens) {
+      logger.error('Login returned invalid result', { result });
+      return res.status(500).json({
+        success: false,
+        error: 'Login failed - invalid response',
+      });
+    }
+
+    const { user, tokens } = result;
+
     logger.info('User logged in', { userId: user.id, username: user.username });
 
-    res.json({
+    const responseData = {
       success: true,
       data: {
         token: tokens.accessToken,
@@ -108,10 +153,13 @@ router.post('/login', async (req, res) => {
         user: {
           id: user.id,
           username: user.username,
-          email: user.email,
+          email: user.email || '',
         },
       },
-    });
+    };
+
+    res.json(responseData);
+    return;
   } catch (error) {
     // Handle Zod validation errors
     if (error instanceof z.ZodError) {
@@ -126,7 +174,7 @@ router.post('/login', async (req, res) => {
     }
 
     logger.error('Login error:', error);
-    res.status(401).json({
+    return res.status(401).json({
       success: false,
       error: error.message || 'Login failed',
     });

@@ -157,7 +157,15 @@ print_success "Dependencies installed!"
 # Step 4: Install and configure Lefthook
 print_step "Setting up git hooks (Lefthook)..."
 
+# Force Git to use .git/hooks so Husky does not recreate its folder
+git config core.hooksPath ".git/hooks" >/dev/null 2>&1 || true
+
 npx lefthook install
+
+if [ -d ".husky" ]; then
+    rm -rf .husky
+    print_info "Removed legacy Husky hooks; Lefthook now installs directly into .git/hooks."
+fi
 
 print_success "Git hooks installed!"
 

@@ -39,7 +39,7 @@ git checkout -b "$BRANCH_NAME"
 
 # Update dependencies
 log "Updating npm dependencies..."
-npm update
+npm audit fix
 
 # Run security audit and fix
 log "Running security audit..."

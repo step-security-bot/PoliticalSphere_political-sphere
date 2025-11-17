@@ -36,7 +36,7 @@ while IFS= read -r pkg; do
       # Install deps if node_modules missing
       if [[ ! -d node_modules ]]; then
         echo "   Installing npm dependencies in $dir..."
-        if ! npm ci --ignore-scripts --no-audit --no-fund 2>/dev/null && ! npm install --no-audit --no-fund 2>/dev/null; then
+        if ! npm ci --ignore-scripts --no-audit --no-fund 2>/dev/null; then
           echo "   ⚠️  WARNING: Failed to install dependencies in $dir; skipping migrations" >&2
           FAILED_COUNT=$((FAILED_COUNT + 1))
           popd >/dev/null

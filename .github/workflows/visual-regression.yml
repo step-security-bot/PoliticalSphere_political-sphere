@@ -17,9 +17,7 @@ concurrency:
   group: visual-${{ github.ref }}
   cancel-in-progress: true
 
-permissions:
-  contents: read
-  pull-requests: write
+permissions: read-all
 
 env:
   NODE_VERSION: '22'
@@ -29,6 +27,9 @@ jobs:
     name: Visual Regression Tests
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    permissions:
+      actions: write
+      pull-requests: write
     
     steps:
       - name: Checkout code

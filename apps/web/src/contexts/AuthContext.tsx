@@ -3,14 +3,14 @@
  * Manages user authentication state across the application
  */
 
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import React, { createContext, ReactNode, useContext, useEffect, useState } from 'react';
 import { api } from '../services/api';
 
 interface User {
   id: string;
+  username: string;
   email: string;
-  displayName?: string;
-  role: string;
+  role?: string;
 }
 
 interface AuthContextType {
@@ -19,9 +19,9 @@ interface AuthContextType {
   isLoading: boolean;
   login: (email: string, password: string) => Promise<{ success: boolean; error?: string }>;
   register: (
+    username: string,
     email: string,
-    password: string,
-    displayName?: string
+    password: string
   ) => Promise<{ success: boolean; error?: string }>;
   logout: () => Promise<void>;
 }
@@ -86,12 +86,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   };
 
-  const register = async (email: string, password: string, displayName?: string) => {
+  const register = async (username: string, email: string, password: string) => {
     try {
-      const response = await api.register(email, password, displayName);
+      const response = await api.register(username, email, password);
 
       if (response.success && response.data) {
-        const userData = response.data.user;
+        const userData = response.data.user || response.data;
         setUser(userData);
         localStorage.setItem('user', JSON.stringify(userData));
         return { success: true };

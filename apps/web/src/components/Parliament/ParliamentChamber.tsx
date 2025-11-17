@@ -41,16 +41,11 @@ interface VoteResults {
 }
 
 interface ParliamentChamberProps {
-  gameId: string;
   userId: string;
   onError?: (error: string) => void;
 }
 
-export const ParliamentChamber: React.FC<ParliamentChamberProps> = ({
-  gameId,
-  userId,
-  onError,
-}) => {
+export const ParliamentChamber: React.FC<ParliamentChamberProps> = ({ userId, onError }) => {
   const [chambers, setChambers] = useState<Chamber[]>([]);
   const [selectedChamber, setSelectedChamber] = useState<Chamber | null>(null);
   const [motions, setMotions] = useState<Motion[]>([]);
@@ -69,7 +64,8 @@ export const ParliamentChamber: React.FC<ParliamentChamberProps> = ({
   const fetchChambers = useCallback(async () => {
     try {
       setLoading(true);
-      const response = await api.getChambers(gameId);
+      // Single world - no gameId needed
+      const response = await api.getChambers();
 
       if (!response.success) {
         throw new Error(response.error || 'Failed to fetch chambers');
@@ -87,7 +83,7 @@ export const ParliamentChamber: React.FC<ParliamentChamberProps> = ({
     } finally {
       setLoading(false);
     }
-  }, [gameId, onError]);
+  }, [onError]);
 
   const fetchMotions = useCallback(
     async (chamberId: string) => {
@@ -160,7 +156,6 @@ export const ParliamentChamber: React.FC<ParliamentChamberProps> = ({
 
     try {
       const response = await api.createMotion({
-        gameId,
         chamberId: selectedChamber.id,
         proposerId: userId,
         ...motionForm,

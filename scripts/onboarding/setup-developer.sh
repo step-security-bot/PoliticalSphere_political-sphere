@@ -101,7 +101,7 @@ log_info "Step 2: Installing project dependencies..."
 if [ ! -d "node_modules" ]; then
   log_info "Running npm install..."
   # Install dependencies - package-lock.json pins exact versions for security
-  npm install
+  npm ci
   log_success "Dependencies installed"
 else
   log_info "node_modules exists. Running npm ci to ensure clean install..."
@@ -117,7 +117,16 @@ echo ""
 log_info "Step 3: Setting up Git hooks with Lefthook..."
 
 if [ -f ".lefthook.yml" ]; then
+  # Ensure Git uses the native hooks directory so Husky is never re-created
+  git config core.hooksPath ".git/hooks" >/dev/null 2>&1 || true
+
   npx lefthook install
+
+  if [ -d ".husky" ]; then
+    rm -rf .husky
+    log_info "Removed legacy Husky directory; Lefthook now installs into .git/hooks."
+  fi
+
   log_success "Git hooks installed"
 else
   log_warning ".lefthook.yml not found. Skipping Git hooks setup."

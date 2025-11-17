@@ -23,7 +23,7 @@ fi
 
 echo "📦 Step 1: Installing dependencies..."
 # Install dependencies - package-lock.json pins exact versions for security
-npm install
+npm ci
 
 echo ""
 echo "🗄️  Step 2: Setting up database..."

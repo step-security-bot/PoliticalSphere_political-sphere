@@ -42,12 +42,6 @@ on:
         required: false
         description: Full ECR registry URI (e.g. 123.dkr.ecr.us-east-1.amazonaws.com)
 
-permissions:
-  # Least-privilege: id-token: write needed only if assuming AWS role via OIDC.
-  # Removed packages: write (no GH Packages publishing in this reusable workflow).
-  contents: read
-  id-token: write
-
 jobs:
   build:
     name: Build & Test
@@ -55,6 +49,10 @@ jobs:
     defaults:
       run:
         working-directory: ${{ inputs.working_directory }}
+    permissions:
+      contents: read
+      actions: write
+      id-token: write
     env:
       SERVICES: ${{ inputs.services }}
       AWS_ROLE_TO_ASSUME: ${{ secrets.aws_role_to_assume }}

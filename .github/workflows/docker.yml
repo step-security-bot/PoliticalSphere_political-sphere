@@ -23,18 +23,14 @@ env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
 
-permissions:
-  # Least-privilege global permissions:
-  # packages: write required to push images to GHCR (non-PR events only)
-  # Removed id-token: write (not using OIDC here) and security-events: write (scoped to job below)
-  contents: read
-  packages: write
-
 jobs:
   build-and-push:
     name: Build and Push Docker Images
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    permissions:
+      contents: read
+      packages: write
 
     strategy:
       matrix:
@@ -140,7 +136,6 @@ jobs:
     timeout-minutes: 15
     if: github.event_name != 'pull_request'
     permissions:
-      contents: read
       security-events: write
 
     strategy:

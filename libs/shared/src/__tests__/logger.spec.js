@@ -1,4 +1,4 @@
-import { vi } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import { createLogger, getLogger, LOG_LEVELS } from '../logger.js';
 
