@@ -10,7 +10,7 @@ describe('Game Engine', () => {
       players: [
         { id: 'player1', name: 'Alice' },
         { id: 'player2', name: 'Bob' },
-        { id: 'player3', name: 'Charlie' }
+        { id: 'player3', name: 'Charlie' },
       ],
       proposals: [],
       votes: [],
@@ -19,11 +19,11 @@ describe('Game Engine', () => {
       economy: {
         treasury: 100000,
         inflationRate: 0.02,
-        unemploymentRate: 0.05
+        unemploymentRate: 0.05,
       },
       turn: { turnNumber: 0, phase: 'lobby' },
       createdAt: '2024-01-01T00:00:00.000Z',
-      updatedAt: '2024-01-01T00:00:00.000Z'
+      updatedAt: '2024-01-01T00:00:00.000Z',
     };
   });
 
@@ -47,21 +47,23 @@ describe('Game Engine', () => {
     it('should update the updatedAt timestamp', () => {
       const newState = advanceGameState(initialGameState, [], 123);
       expect(new Date(newState.updatedAt).getTime()).toBeGreaterThan(
-        new Date(initialGameState.updatedAt).getTime()
+        new Date(initialGameState.updatedAt).getTime(),
       );
     });
   });
 
   describe('propose action', () => {
     it('should create a new proposal with correct structure', () => {
-      const actions = [{
-        type: 'propose',
-        payload: {
-          title: 'Build a new school',
-          description: 'We need better education facilities',
-          proposerId: 'player1'
-        }
-      }];
+      const actions = [
+        {
+          type: 'propose',
+          payload: {
+            title: 'Build a new school',
+            description: 'We need better education facilities',
+            proposerId: 'player1',
+          },
+        },
+      ];
 
       const newState = advanceGameState(initialGameState, actions, 123);
 
@@ -72,7 +74,7 @@ describe('Game Engine', () => {
         description: 'We need better education facilities',
         proposerId: 'player1',
         status: 'proposed',
-        debateId: null
+        debateId: null,
       });
       expect(proposal.id).toMatch(/^proposal-/);
       expect(proposal.createdAt).toMatch(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/);
@@ -112,24 +114,28 @@ describe('Game Engine', () => {
     let gameWithProposal;
 
     beforeEach(() => {
-      const actions = [{
-        type: 'propose',
-        payload: {
-          title: 'Test Proposal',
-          proposerId: 'player1'
-        }
-      }];
+      const actions = [
+        {
+          type: 'propose',
+          payload: {
+            title: 'Test Proposal',
+            proposerId: 'player1',
+          },
+        },
+      ];
       gameWithProposal = advanceGameState(initialGameState, actions, 123);
     });
 
     it('should create a debate for a proposed proposal', () => {
-      const actions = [{
-        type: 'start_debate',
-        payload: {
-          proposalId: gameWithProposal.proposals[0].id,
-          speakingOrder: ['player1', 'player2', 'player3']
-        }
-      }];
+      const actions = [
+        {
+          type: 'start_debate',
+          payload: {
+            proposalId: gameWithProposal.proposals[0].id,
+            speakingOrder: ['player1', 'player2', 'player3'],
+          },
+        },
+      ];
 
       const newState = advanceGameState(gameWithProposal, actions, 456);
 
@@ -140,7 +146,7 @@ describe('Game Engine', () => {
         speakingOrder: ['player1', 'player2', 'player3'],
         currentSpeakerIndex: 0,
         timeLimit: 300000,
-        status: 'active'
+        status: 'active',
       });
       expect(debate.id).toMatch(/^debate-/);
       expect(newState.proposals[0].status).toBe('debate');
@@ -148,10 +154,12 @@ describe('Game Engine', () => {
     });
 
     it('should use default speaking order from players', () => {
-      const actions = [{
-        type: 'start_debate',
-        payload: { proposalId: gameWithProposal.proposals[0].id }
-      }];
+      const actions = [
+        {
+          type: 'start_debate',
+          payload: { proposalId: gameWithProposal.proposals[0].id },
+        },
+      ];
 
       const newState = advanceGameState(gameWithProposal, actions, 456);
 
@@ -159,10 +167,12 @@ describe('Game Engine', () => {
     });
 
     it('should not create debate for non-existent proposal', () => {
-      const actions = [{
-        type: 'start_debate',
-        payload: { proposalId: 'non-existent' }
-      }];
+      const actions = [
+        {
+          type: 'start_debate',
+          payload: { proposalId: 'non-existent' },
+        },
+      ];
 
       const newState = advanceGameState(gameWithProposal, actions, 456);
 
@@ -173,16 +183,20 @@ describe('Game Engine', () => {
       // Change proposal status to enacted
       const enactedGame = {
         ...gameWithProposal,
-        proposals: [{
-          ...gameWithProposal.proposals[0],
-          status: 'enacted'
-        }]
+        proposals: [
+          {
+            ...gameWithProposal.proposals[0],
+            status: 'enacted',
+          },
+        ],
       };
 
-      const actions = [{
-        type: 'start_debate',
-        payload: { proposalId: enactedGame.proposals[0].id }
-      }];
+      const actions = [
+        {
+          type: 'start_debate',
+          payload: { proposalId: enactedGame.proposals[0].id },
+        },
+      ];
 
       const newState = advanceGameState(enactedGame, actions, 789);
 
@@ -196,21 +210,26 @@ describe('Game Engine', () => {
     beforeEach(() => {
       const actions = [
         { type: 'propose', payload: { title: 'Test', proposerId: 'player1' } },
-        { type: 'start_debate', payload: { proposalId: 'proposal-5ga8al', speakingOrder: ['player1', 'player2'] } }
+        {
+          type: 'start_debate',
+          payload: { proposalId: 'proposal-5ga8al', speakingOrder: ['player1', 'player2'] },
+        },
       ];
       gameWithDebate = advanceGameState(initialGameState, actions, 123);
     });
 
     it('should add a speech to an active debate', () => {
       const debateId = gameWithDebate.debates[0].id;
-      const actions = [{
-        type: 'speak',
-        payload: {
-          debateId,
-          speakerId: 'player1',
-          content: 'I support this proposal because...'
-        }
-      }];
+      const actions = [
+        {
+          type: 'speak',
+          payload: {
+            debateId,
+            speakerId: 'player1',
+            content: 'I support this proposal because...',
+          },
+        },
+      ];
 
       const newState = advanceGameState(gameWithDebate, actions, 456);
 
@@ -219,7 +238,7 @@ describe('Game Engine', () => {
       expect(speech).toMatchObject({
         debateId,
         speakerId: 'player1',
-        content: 'I support this proposal because...'
+        content: 'I support this proposal because...',
       });
       expect(speech.id).toMatch(/^speech-/);
       expect(newState.debates[0].currentSpeakerIndex).toBe(1);
@@ -229,7 +248,7 @@ describe('Game Engine', () => {
       const debateId = gameWithDebate.debates[0].id;
       const actions = [
         { type: 'speak', payload: { debateId, speakerId: 'player1', content: 'Speech 1' } },
-        { type: 'speak', payload: { debateId, speakerId: 'player2', content: 'Speech 2' } }
+        { type: 'speak', payload: { debateId, speakerId: 'player2', content: 'Speech 2' } },
       ];
 
       const newState = advanceGameState(gameWithDebate, actions, 456);
@@ -244,14 +263,16 @@ describe('Game Engine', () => {
       const debateId = gameWithDebate.debates[0].id;
       const completeActions = [
         { type: 'speak', payload: { debateId, speakerId: 'player1', content: 'Speech 1' } },
-        { type: 'speak', payload: { debateId, speakerId: 'player2', content: 'Speech 2' } }
+        { type: 'speak', payload: { debateId, speakerId: 'player2', content: 'Speech 2' } },
       ];
       const completedGame = advanceGameState(gameWithDebate, completeActions, 456);
 
-      const actions = [{
-        type: 'speak',
-        payload: { debateId, speakerId: 'player1', content: 'Late speech' }
-      }];
+      const actions = [
+        {
+          type: 'speak',
+          payload: { debateId, speakerId: 'player1', content: 'Late speech' },
+        },
+      ];
 
       const newState = advanceGameState(completedGame, actions, 789);
 
@@ -263,22 +284,26 @@ describe('Game Engine', () => {
     let gameWithProposal;
 
     beforeEach(() => {
-      const actions = [{
-        type: 'propose',
-        payload: { title: 'Test Proposal', proposerId: 'player1' }
-      }];
+      const actions = [
+        {
+          type: 'propose',
+          payload: { title: 'Test Proposal', proposerId: 'player1' },
+        },
+      ];
       gameWithProposal = advanceGameState(initialGameState, actions, 123);
     });
 
     it('should record a vote correctly', () => {
-      const actions = [{
-        type: 'vote',
-        payload: {
-          proposalId: gameWithProposal.proposals[0].id,
-          playerId: 'player1',
-          choice: 'for'
-        }
-      }];
+      const actions = [
+        {
+          type: 'vote',
+          payload: {
+            proposalId: gameWithProposal.proposals[0].id,
+            playerId: 'player1',
+            choice: 'for',
+          },
+        },
+      ];
 
       const newState = advanceGameState(gameWithProposal, actions, 456);
 
@@ -287,21 +312,23 @@ describe('Game Engine', () => {
       expect(vote).toMatchObject({
         playerId: 'player1',
         proposalId: gameWithProposal.proposals[0].id,
-        choice: 'for'
+        choice: 'for',
       });
       expect(vote.id).toMatch(/^vote-/);
       expect(vote.createdAt).toBeDefined();
     });
 
     it('should handle vote from action.playerId when not in payload', () => {
-      const actions = [{
-        type: 'vote',
-        playerId: 'player2',
-        payload: {
-          proposalId: gameWithProposal.proposals[0].id,
-          choice: 'against'
-        }
-      }];
+      const actions = [
+        {
+          type: 'vote',
+          playerId: 'player2',
+          payload: {
+            proposalId: gameWithProposal.proposals[0].id,
+            choice: 'against',
+          },
+        },
+      ];
 
       const newState = advanceGameState(gameWithProposal, actions, 456);
 
@@ -312,7 +339,7 @@ describe('Game Engine', () => {
       const actions = [
         { type: 'vote', payload: { proposalId: 'missing-player' } },
         { type: 'vote', payload: { playerId: 'player1' } },
-        { type: 'vote', payload: { playerId: 'player1', proposalId: 'test' } }
+        { type: 'vote', payload: { playerId: 'player1', proposalId: 'test' } },
       ];
 
       const newState = advanceGameState(gameWithProposal, actions, 456);
@@ -343,9 +370,15 @@ describe('Game Engine', () => {
     it('should move proposals from debate to voting when debate is completed', () => {
       const actions = [
         { type: 'propose', payload: { title: 'Test', proposerId: 'player1' } },
-        { type: 'start_debate', payload: { proposalId: 'proposal-123', speakingOrder: ['player1'] } },
-        { type: 'speak', payload: { debateId: 'debate-123', speakerId: 'player1', content: 'Done' } },
-        { type: 'advance_turn' }
+        {
+          type: 'start_debate',
+          payload: { proposalId: 'proposal-123', speakingOrder: ['player1'] },
+        },
+        {
+          type: 'speak',
+          payload: { debateId: 'debate-123', speakerId: 'player1', content: 'Done' },
+        },
+        { type: 'advance_turn' },
       ];
 
       const newState = advanceGameState(initialGameState, actions, 123);
@@ -360,9 +393,15 @@ describe('Game Engine', () => {
     beforeEach(() => {
       const actions = [
         { type: 'propose', payload: { title: 'Test Proposal', proposerId: 'player1' } },
-        { type: 'start_debate', payload: { proposalId: 'proposal-123', speakingOrder: ['player1'] } },
-        { type: 'speak', payload: { debateId: 'debate-123', speakerId: 'player1', content: 'Done' } },
-        { type: 'advance_turn' }
+        {
+          type: 'start_debate',
+          payload: { proposalId: 'proposal-123', speakingOrder: ['player1'] },
+        },
+        {
+          type: 'speak',
+          payload: { debateId: 'debate-123', speakerId: 'player1', content: 'Done' },
+        },
+        { type: 'advance_turn' },
       ];
       gameWithVotingProposal = advanceGameState(initialGameState, actions, 123);
     });
@@ -372,7 +411,7 @@ describe('Game Engine', () => {
       const actions = [
         { type: 'vote', payload: { proposalId, playerId: 'player1', choice: 'for' } },
         { type: 'vote', payload: { proposalId, playerId: 'player2', choice: 'for' } },
-        { type: 'vote', payload: { proposalId, playerId: 'player3', choice: 'against' } }
+        { type: 'vote', payload: { proposalId, playerId: 'player3', choice: 'against' } },
       ];
 
       const newState = advanceGameState(gameWithVotingProposal, actions, 456);
@@ -385,7 +424,7 @@ describe('Game Engine', () => {
       const actions = [
         { type: 'vote', payload: { proposalId, playerId: 'player1', choice: 'for' } },
         { type: 'vote', payload: { proposalId, playerId: 'player2', choice: 'against' } },
-        { type: 'vote', payload: { proposalId, playerId: 'player3', choice: 'against' } }
+        { type: 'vote', payload: { proposalId, playerId: 'player3', choice: 'against' } },
       ];
 
       const newState = advanceGameState(gameWithVotingProposal, actions, 456);
@@ -395,8 +434,15 @@ describe('Game Engine', () => {
 
     it('should only resolve proposals that existed before the current advance call', () => {
       const actions = [
-        { type: 'vote', payload: { proposalId: gameWithVotingProposal.proposals[0].id, playerId: 'player1', choice: 'for' } },
-        { type: 'propose', payload: { title: 'New Proposal', proposerId: 'player2' } }
+        {
+          type: 'vote',
+          payload: {
+            proposalId: gameWithVotingProposal.proposals[0].id,
+            playerId: 'player1',
+            choice: 'for',
+          },
+        },
+        { type: 'propose', payload: { title: 'New Proposal', proposerId: 'player2' } },
       ];
 
       const newState = advanceGameState(gameWithVotingProposal, actions, 456);
@@ -410,32 +456,38 @@ describe('Game Engine', () => {
     it('should simulate economy with enacted policies', () => {
       const gameWithEconomy = {
         ...initialGameState,
-        proposals: [{
-          id: 'proposal-1',
-          title: 'Tax Cut Policy',
-          status: 'voting'
-        }],
+        proposals: [
+          {
+            id: 'proposal-1',
+            title: 'Tax Cut Policy',
+            status: 'voting',
+          },
+        ],
         votes: [
           { proposalId: 'proposal-1', choice: 'for' },
-          { proposalId: 'proposal-1', choice: 'for' }
-        ]
+          { proposalId: 'proposal-1', choice: 'for' },
+        ],
       };
 
       const newState = advanceGameState(gameWithEconomy, [], 123);
 
       expect(newState.economy.treasury).toBeGreaterThan(initialGameState.economy.treasury);
-      expect(newState.economy.inflationRate).toBeGreaterThan(initialGameState.economy.inflationRate);
+      expect(newState.economy.inflationRate).toBeGreaterThan(
+        initialGameState.economy.inflationRate,
+      );
     });
 
     it('should apply tax policy effects', () => {
       const gameWithTaxPolicy = {
         ...initialGameState,
-        proposals: [{
-          id: 'proposal-1',
-          title: 'Lower Taxes',
-          status: 'enacted'
-        }],
-        economy: { treasury: 100000, inflationRate: 0.02, unemploymentRate: 0.05 }
+        proposals: [
+          {
+            id: 'proposal-1',
+            title: 'Lower Taxes',
+            status: 'enacted',
+          },
+        ],
+        economy: { treasury: 100000, inflationRate: 0.02, unemploymentRate: 0.05 },
       };
 
       const newState = advanceGameState(gameWithTaxPolicy, [], 123);
@@ -447,12 +499,14 @@ describe('Game Engine', () => {
     it('should apply welfare policy effects', () => {
       const gameWithWelfarePolicy = {
         ...initialGameState,
-        proposals: [{
-          id: 'proposal-1',
-          title: 'Welfare Program',
-          status: 'enacted'
-        }],
-        economy: { treasury: 100000, inflationRate: 0.02, unemploymentRate: 0.05 }
+        proposals: [
+          {
+            id: 'proposal-1',
+            title: 'Welfare Program',
+            status: 'enacted',
+          },
+        ],
+        economy: { treasury: 100000, inflationRate: 0.02, unemploymentRate: 0.05 },
       };
 
       const newState = advanceGameState(gameWithWelfarePolicy, [], 123);
@@ -472,7 +526,7 @@ describe('Game Engine', () => {
     it('should ignore unknown action types', () => {
       const actions = [
         { type: 'unknown_action', payload: { some: 'data' } },
-        { type: 'propose', payload: { title: 'Valid Proposal' } }
+        { type: 'propose', payload: { title: 'Valid Proposal' } },
       ];
 
       const newState = advanceGameState(initialGameState, actions, 123);
@@ -487,7 +541,10 @@ describe('Game Engine', () => {
       const actions = [
         { type: 'propose', payload: { title: 'Test 1' } },
         { type: 'propose', payload: { title: 'Test 2' } },
-        { type: 'vote', payload: { proposalId: 'proposal-123', playerId: 'player1', choice: 'for' } }
+        {
+          type: 'vote',
+          payload: { proposalId: 'proposal-123', playerId: 'player1', choice: 'for' },
+        },
       ];
 
       const state1 = advanceGameState(initialGameState, actions, 42);
@@ -562,7 +619,7 @@ describe('Game Engine', () => {
     it('should handle large number of actions', () => {
       const actions = Array.from({ length: 1000 }, (_, i) => ({
         type: 'propose',
-        payload: { title: `Proposal ${i}`, proposerId: 'player1' }
+        payload: { title: `Proposal ${i}`, proposerId: 'player1' },
       }));
 
       const newState = advanceGameState(initialGameState, actions, 123);
@@ -573,7 +630,7 @@ describe('Game Engine', () => {
     it('should handle concurrent modifications safely', () => {
       const actions = [
         { type: 'propose', payload: { title: 'Concurrent 1' } },
-        { type: 'propose', payload: { title: 'Concurrent 2' } }
+        { type: 'propose', payload: { title: 'Concurrent 2' } },
       ];
 
       // Simulate multiple calls
@@ -595,7 +652,11 @@ describe('Game Engine', () => {
         votes: undefined, // Corrupted
       };
 
-      const newState = advanceGameState(corruptedGame, [{ type: 'propose', payload: { title: 'Test' } }], 123);
+      const newState = advanceGameState(
+        corruptedGame,
+        [{ type: 'propose', payload: { title: 'Test' } }],
+        123,
+      );
 
       expect(newState.proposals).toHaveLength(1);
       expect(newState.votes).toEqual([]);

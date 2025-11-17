@@ -1,12 +1,12 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 import {
-    calculateSLI,
-    checkSLO,
-    DEFAULT_SLO,
-    getAllMetrics,
-    performanceMiddleware,
-    recordLatency,
-    resetMetrics,
+  calculateSLI,
+  checkSLO,
+  DEFAULT_SLO,
+  getAllMetrics,
+  performanceMiddleware,
+  recordLatency,
+  resetMetrics,
 } from './performance.js';
 
 describe('Performance Monitoring', () => {

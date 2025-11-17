@@ -4,6 +4,11 @@ import { fileURLToPath } from 'node:url';
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vitest/config';
 
+// Configure React plugin for JSX
+const reactPlugin = react({
+  jsxRuntime: 'automatic',
+});
+
 // Vitest modes (driven by env):
 // - CI truthy (1/true/yes): single-threaded, default reporter, full run, fail on no tests.
 // - VITEST_SCOPE=shared: only shared lib tests + AI system integration.
@@ -22,7 +27,6 @@ const env = (process.env.VITEST_ENV || '').toLowerCase();
 const scope = (process.env.VITEST_SCOPE || '').toLowerCase();
 const isCI = isTruthyEnv(process.env.CI);
 const isChanged = isTruthyEnv(process.env.VITEST_CHANGED);
-const enableCoverage = isTruthyEnv(process.env.VITEST_COVERAGE) || isCI;
 
 // Normalize environment for Vitest - support node, jsdom, happy-dom
 const environment = ['node', 'jsdom', 'happy-dom'].includes(env) ? env : 'node';
@@ -69,27 +73,15 @@ const testFileExclude = [
 
 const watchExtraExclude = ['tools/**'];
 
-const testConfig = {
+// Base test configuration shared across all projects
+const createBaseTestConfig = () => ({
   globals: false,
   environment,
   testTimeout: 10000,
   exclude: [...baseExclude, ...e2eExclude, ...testFileExclude],
-  include:
-    scope === 'shared'
-      ? [
-          'libs/shared/src/__tests__/**/*.{test,spec}.{js,mjs,ts,tsx,jsx}',
-          // Explicitly include the AI system integration test under tools/**
-          'tools/**/ai-system.integration.test.{js,mjs,cjs,ts}',
-        ]
-      : [
-          'apps/*/src/**/*.{test,spec}.{js,mjs,ts,tsx,jsx}',
-          'libs/*/src/**/*.{test,spec}.{js,mjs,ts,tsx,jsx}',
-          // Explicitly include the AI system integration test under tools/**
-          'tools/**/ai-system.integration.test.{js,mjs,cjs,ts}',
-        ],
   // Use threads for better performance while maintaining isolation
   // Serial in CI for determinism; parallel locally for speed
-  pool: 'threads',
+  pool: 'threads' as const,
   poolOptions: {
     threads: {
       singleThread: isCI,
@@ -107,9 +99,6 @@ const testConfig = {
   silent: false,
   ui: false,
   open: false,
-  // Add caching to speed up repeated test runs (use Vite's cacheDir)
-  // NOTE: Vitest deprecated test.cache.dir; use top-level cacheDir instead.
-  // We'll set cacheDir at the root of this config object below.
   // Enable changed mode for faster development feedback
   // Default to disabled to ensure CI and coverage runs execute all tests.
   // Opt-in by setting VITEST_CHANGED=1 in dev tasks.
@@ -120,11 +109,40 @@ const testConfig = {
   // Mirror test.exclude to reduce watch noise
   // Additional exclusions for watch mode
   watchExclude: [...baseExclude, ...e2eExclude, ...watchExtraExclude],
-};
+});
+
+// Factory function to create project configurations
+const createProject = (name: string, include: string[]) => ({
+  name,
+  test: {
+    ...createBaseTestConfig(),
+    include,
+  },
+});
+
+// Define projects to group related test suites and reduce extension detection overhead
+const projects =
+  scope === 'shared'
+    ? [
+        createProject('shared-libs', [
+          'libs/shared/src/__tests__/**/*.{test,spec}.{js,mjs,ts,tsx,jsx}',
+        ]),
+        createProject('ai-integration', ['tools/**/ai-system.integration.test.{js,mjs,cjs,ts}']),
+      ]
+    : [
+        createProject('apps', ['apps/*/src/**/*.{test,spec}.{js,mjs,ts,tsx,jsx}']),
+        createProject('libs', ['libs/*/src/**/*.{test,spec}.{js,mjs,ts,tsx,jsx}']),
+        createProject('ai-integration', ['tools/**/ai-system.integration.test.{js,mjs,cjs,ts}']),
+      ];
 
 const config = {
-  plugins: [react()],
-  test: testConfig,
+  plugins: [reactPlugin],
+  test: {
+    projects,
+  },
+  esbuild: {
+    jsx: 'automatic' as const,
+  },
   // Use Vite's cache directory; Vitest will nest under this path automatically
   // Explicitly root it to avoid surprises if process.cwd() changes
   cacheDir: resolve(projectRoot, '.vitest/cache'),

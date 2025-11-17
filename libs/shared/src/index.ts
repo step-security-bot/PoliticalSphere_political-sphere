@@ -9,12 +9,11 @@ export * from './telemetry';
 
 // Pino logger exports (from JavaScript module)
 export {
-    LOG_LEVELS,
-    Logger,
-    correlationIdMiddleware,
-    createLogger,
-    generateCorrelationId,
-    getLogger,
-    setCorrelationId
+  LOG_LEVELS,
+  Logger,
+  correlationIdMiddleware,
+  createLogger,
+  generateCorrelationId,
+  getLogger,
+  setCorrelationId,
 } from './logger-pino.js';
-

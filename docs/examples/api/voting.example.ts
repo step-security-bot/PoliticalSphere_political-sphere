@@ -48,7 +48,7 @@ export async function castVote(req: Request, res: Response): Promise<void> {
       `SELECT id, status, voting_starts_at, voting_ends_at 
        FROM bills 
        WHERE id = $1 FOR UPDATE`, // Lock for consistency
-      [data.billId]
+      [data.billId],
     );
 
     const bill = billResult.rows[0];
@@ -79,7 +79,7 @@ export async function castVote(req: Request, res: Response): Promise<void> {
     // 4. CHECK: One vote per user (CRITICAL - Democratic Integrity)
     const existingVoteResult = await client.query(
       'SELECT id FROM votes WHERE bill_id = $1 AND user_id = $2',
-      [data.billId, userId]
+      [data.billId, userId],
     );
 
     if (existingVoteResult.rows.length > 0) {
@@ -96,7 +96,7 @@ export async function castVote(req: Request, res: Response): Promise<void> {
       `INSERT INTO votes (bill_id, user_id, position, weight, reason, is_public, created_at)
        VALUES ($1, $2, $3, 1.0, $4, $5, NOW())
        RETURNING id, bill_id, user_id, position, weight, created_at`,
-      [data.billId, userId, data.position, data.reason || null, data.isPublic]
+      [data.billId, userId, data.position, data.reason || null, data.isPublic],
     );
 
     const vote = voteResult.rows[0];
@@ -111,7 +111,7 @@ export async function castVote(req: Request, res: Response): Promise<void> {
 
     await client.query(
       `UPDATE bills SET ${column} = ${column} + 1, updated_at = NOW() WHERE id = $1`,
-      [data.billId]
+      [data.billId],
     );
 
     // 7. Create audit log (tamper-evident)
@@ -127,7 +127,7 @@ export async function castVote(req: Request, res: Response): Promise<void> {
           isPublic: data.isPublic,
           timestamp: vote.created_at,
         }),
-      ]
+      ],
     );
 
     // 8. Commit transaction
@@ -190,7 +190,7 @@ export async function getVoteResults(req: Request, res: Response): Promise<void>
         (b.votes_for + b.votes_against + b.votes_abstain) as total_votes
        FROM bills b
        WHERE b.id = $1`,
-      [billId]
+      [billId],
     );
 
     const bill = result.rows[0];
@@ -251,7 +251,7 @@ export async function getUserVote(req: Request, res: Response): Promise<void> {
       `SELECT id, position, reason, is_public, created_at
        FROM votes
        WHERE bill_id = $1 AND user_id = $2`,
-      [billId, userId]
+      [billId, userId],
     );
 
     if (result.rows.length === 0) {

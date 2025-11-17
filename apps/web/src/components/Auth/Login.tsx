@@ -6,8 +6,8 @@
 
 import React, { FormEvent, useState } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
-import ForgotPasswordModal from './ForgotPasswordModal';
 import './Auth.css';
+import ForgotPasswordModal from './ForgotPasswordModal';
 
 interface LoginProps {
   onLoginSuccess: () => void;

@@ -21,7 +21,6 @@
     "useUnknownInCatchVariables": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
-    // Performance optimizations
     "incremental": true,
     "tsBuildInfoFile": ".cache/tsbuildinfo.json",
     "assumeChangesOnlyAffectDirectDependencies": true,

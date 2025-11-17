@@ -82,8 +82,6 @@
     "apps/dev/testing",
     "tools/scripts/ai",
     "logs",
-    "docs",
-    "**/*.spec.*",
-    "**/*.test.*"
+    "docs"
   ]
 }

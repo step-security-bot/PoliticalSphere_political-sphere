@@ -174,12 +174,13 @@ export function extractBearerToken(authHeader: string | undefined): string | nul
     return null;
   }
 
-  const parts = authHeader.split(' ');
-  if (parts.length !== 2 || parts[0] !== 'Bearer') {
+  const trimmed = authHeader.trim();
+  if (!trimmed.startsWith('Bearer ')) {
     return null;
   }
 
-  return parts[1] || null;
+  const token = trimmed.slice(7).trim(); // Remove 'Bearer ' and trim
+  return token || null;
 }
 
 /**

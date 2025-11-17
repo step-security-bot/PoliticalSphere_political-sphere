@@ -1,11 +1,11 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import {
-    correlationIdMiddleware,
-    createLogger,
-    generateCorrelationId,
-    getLogger,
-    LOG_LEVELS,
-    setCorrelationId,
+  correlationIdMiddleware,
+  createLogger,
+  generateCorrelationId,
+  getLogger,
+  LOG_LEVELS,
+  setCorrelationId,
 } from '../logger-pino.js';
 
 describe('Pino Logger', () => {
@@ -75,7 +75,7 @@ describe('Pino Logger', () => {
           res: expect.objectContaining({ statusCode: 200 }),
           duration: 150,
         }),
-        'HTTP request'
+        'HTTP request',
       );
     });
 
@@ -96,7 +96,7 @@ describe('Pino Logger', () => {
         expect.objectContaining({
           res: expect.objectContaining({ statusCode: 404 }),
         }),
-        'HTTP client error'
+        'HTTP client error',
       );
     });
 
@@ -117,7 +117,7 @@ describe('Pino Logger', () => {
         expect.objectContaining({
           res: expect.objectContaining({ statusCode: 500 }),
         }),
-        'HTTP request failed'
+        'HTTP request failed',
       );
     });
   });
@@ -141,7 +141,7 @@ describe('Pino Logger', () => {
           ip: '192.168.1.1',
           userAgent: 'malicious-bot',
         }),
-        'SECURITY_EVENT'
+        'SECURITY_EVENT',
       );
     });
   });
@@ -162,7 +162,7 @@ describe('Pino Logger', () => {
           userId: '123',
           operation: 'test',
         }),
-        'Application error'
+        'Application error',
       );
     });
   });
@@ -201,7 +201,7 @@ describe('Pino Logger', () => {
               correlationId: 'test-correlation-123',
               data: 'value',
             }),
-            'Test message'
+            'Test message',
           );
 
           resolve();

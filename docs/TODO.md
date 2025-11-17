@@ -1,5 +1,23 @@
 # TODO.md - Political Sphere Development Tasks
 
+## Authentication Persistence & Login Reliability (2025-11-17)
+
+- [x] Switch API auth persistence from in-memory to file-backed SQLite database (`data/runtime/political_sphere.db`) with path correction and migration hooks
+- [x] Add missing schema fields: `password_hash` (NOT NULL) and `role` with constraint
+- [x] Accept username OR email for login payload on backend; keep frontend form neutral to allow either
+- [x] Add stub endpoints for Media and Elections to eliminate frontend 404s during development
+- [x] Create branch `feature/auth-persistence-final` containing full fixes and push to origin
+- [x] Fix `Login.tsx` to support username entry and rewire forgot-password modal state/import
+- [x] Open PR for `feature/auth-persistence-final` with scoped description and validation notes (PR #123)
+- [ ] Track follow-up: global TypeScript strict remediation (see issue to be created)
+
+### Follow-up Tasks (Planned)
+
+- [ ] Draft and file “TS Strict Remediation - Phase 1” (categorize Prisma/game-engine/AI system/types/fixtures)
+- [ ] Decide retention/removal of Prisma seed scripts or align with current Prisma schema
+- [ ] Reconcile AI orchestration pattern modules and exported types used by examples
+- [ ] Replace or implement missing `@political-sphere/game-engine` imports used by API/game-server
+
 ## Industry Best Practices Research & Implementation (Completed 2025-11-17) ✅
 
 ### Comprehensive Best Practices Analysis

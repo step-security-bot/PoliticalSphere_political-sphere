@@ -261,7 +261,7 @@ export function useInfiniteScroll<T>(baseUrl: string, pageSize = 20): UseInfinit
           loadMore();
         }
       },
-      { threshold: 0.1 }
+      { threshold: 0.1 },
     );
 
     const sentinel = sentinelRef.current;
@@ -340,7 +340,7 @@ export function useRealTimeData<T>(url: string, initialData: T[] = []) {
           break;
         case 'ITEM_UPDATED':
           setData(prev =>
-            prev.map((item: any) => (item.id === message.item.id ? message.item : item))
+            prev.map((item: any) => (item.id === message.item.id ? message.item : item)),
           );
           break;
         case 'ITEM_DELETED':
@@ -403,7 +403,7 @@ interface UseMutationOptions<T, V> {
 
 export function useMutation<T, V>(
   mutationFn: (variables: V) => Promise<T>,
-  options: UseMutationOptions<T, V> = {}
+  options: UseMutationOptions<T, V> = {},
 ) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
@@ -462,7 +462,7 @@ export function VoteButton({ billId }: { billId: string }) {
         // Rollback on error
         setVoteCount(prev => prev - 1);
       },
-    }
+    },
   );
 
   return (

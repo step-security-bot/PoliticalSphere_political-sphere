@@ -112,7 +112,7 @@ describe('UserService', () => {
         expect.objectContaining({
           username: userData.username,
           email: userData.email,
-        })
+        }),
       );
       expect(mockRepository.save).toHaveBeenCalledTimes(1);
     });
@@ -189,7 +189,7 @@ describe('BillService', () => {
       expect(result.status).toBe('passed');
       expect(mockBillRepo.update).toHaveBeenCalledWith(
         bill.id,
-        expect.objectContaining({ status: 'passed' })
+        expect.objectContaining({ status: 'passed' }),
       );
     });
 
@@ -225,7 +225,7 @@ describe('BillService', () => {
 
       // Act & Assert
       await expect(billService.finalizeBill(draftBill.id)).rejects.toThrow(
-        'Bill is not in voting phase'
+        'Bill is not in voting phase',
       );
     });
   });
@@ -249,7 +249,7 @@ describe('VotingService', () => {
 
       // Act & Assert
       await expect(votingService.castVote(invalidId, 'user-1', 'for')).rejects.toThrow(
-        'Invalid bill ID format'
+        'Invalid bill ID format',
       );
     });
 
@@ -261,7 +261,7 @@ describe('VotingService', () => {
 
       // Act & Assert
       await expect(votingService.castVote(billId, userId, invalidPosition)).rejects.toThrow(
-        'Invalid vote position'
+        'Invalid vote position',
       );
     });
 
@@ -273,7 +273,7 @@ describe('VotingService', () => {
 
       // Act & Assert
       await expect(votingService.castVote(billId, userId, 'for')).rejects.toThrow(
-        'Database operation failed'
+        'Database operation failed',
       );
     });
   });
@@ -402,7 +402,7 @@ class UserService {
 class BillService {
   constructor(
     private billRepo: MockBillRepository,
-    _voteRepo: MockVoteRepository
+    _voteRepo: MockVoteRepository,
   ) {}
 
   async finalizeBill(billId: string) {
@@ -432,7 +432,7 @@ class VotingService {
 class VotingWindow {
   constructor(
     private duration: number,
-    private onClose: () => void
+    private onClose: () => void,
   ) {}
 
   start() {

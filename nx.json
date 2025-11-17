@@ -22,10 +22,7 @@
       "!{projectRoot}/.eslintrc.json",
       "!{projectRoot}/eslint.config.js"
     ],
-    "testFiles": [
-      "!{projectRoot}/**/*.md",
-      "{projectRoot}/**/*.{test,spec}.{js,ts,tsx}"
-    ],
+    "testFiles": ["!{projectRoot}/**/*.md", "{projectRoot}/**/*.{test,spec}.{js,ts,tsx}"],
     "sharedGlobals": [
       "!{workspaceRoot}/ai/cache/**/*",
       "!{workspaceRoot}/ai-logs/**/*",
@@ -104,7 +101,15 @@
     "default": {
       "runner": "nx/tasks-runners/default",
       "options": {
-        "cacheableOperations": ["build", "lint", "test", "e2e", "test:e2e", "lint:boundaries", "type-check"],
+        "cacheableOperations": [
+          "build",
+          "lint",
+          "test",
+          "e2e",
+          "test:e2e",
+          "lint:boundaries",
+          "type-check"
+        ],
         "parallel": 4,
         "maxParallel": 6,
         "runtimeCacheInputs": ["node -v"],

@@ -3,9 +3,8 @@
  * Implements SLI/SLO tracking and performance metrics
  */
 
-import { getLogger } from './logger-pino.js';
-
 // TODO: Temporarily disable Pino logger to fix startup issues
+// import { getLogger } from './logger-pino.js';
 // const logger = getLogger({ service: 'performance' });
 const logger = console;
 
@@ -65,7 +64,7 @@ const metrics: Map<string, PerformanceMetrics> = new Map();
 /**
  * Initialize metrics for an endpoint
  */
-function initMetrics(endpoint: string): PerformanceMetrics {
+function initMetrics(_endpoint: string): PerformanceMetrics {
   const now = Date.now();
   return {
     requestCount: 0,
@@ -93,12 +92,12 @@ function getMetrics(endpoint: string): PerformanceMetrics {
  */
 export function recordLatency(endpoint: string, latencyMs: number, isError = false): void {
   const endpointMetrics = getMetrics(endpoint);
-  
+
   endpointMetrics.requestCount++;
   if (isError) {
     endpointMetrics.errorCount++;
   }
-  
+
   // Keep last 1000 latencies for percentile calculation
   endpointMetrics.latencies.push(latencyMs);
   if (endpointMetrics.latencies.length > 1000) {
@@ -111,7 +110,7 @@ export function recordLatency(endpoint: string, latencyMs: number, isError = fal
  */
 function percentile(values: number[], p: number): number {
   if (values.length === 0) return 0;
-  
+
   const sorted = [...values].sort((a, b) => a - b);
   const index = Math.ceil((p / 100) * sorted.length) - 1;
   return sorted[Math.max(0, index)];
@@ -122,18 +121,17 @@ function percentile(values: number[], p: number): number {
  */
 export function calculateSLI(endpoint: string): SLI {
   const endpointMetrics = getMetrics(endpoint);
-  
-  const errorRate = endpointMetrics.requestCount > 0
-    ? (endpointMetrics.errorCount / endpointMetrics.requestCount) * 100
-    : 0;
-  
+
+  const errorRate =
+    endpointMetrics.requestCount > 0
+      ? (endpointMetrics.errorCount / endpointMetrics.requestCount) * 100
+      : 0;
+
   const availability = 100 - errorRate;
-  
+
   const durationSeconds = (Date.now() - endpointMetrics.startTime) / 1000;
-  const throughput = durationSeconds > 0
-    ? endpointMetrics.requestCount / durationSeconds
-    : 0;
-  
+  const throughput = durationSeconds > 0 ? endpointMetrics.requestCount / durationSeconds : 0;
+
   return {
     latencyP50: percentile(endpointMetrics.latencies, 50),
     latencyP95: percentile(endpointMetrics.latencies, 95),
@@ -147,30 +145,33 @@ export function calculateSLI(endpoint: string): SLI {
 /**
  * Check if endpoint is meeting SLO
  */
-export function checkSLO(endpoint: string, slo: SLO = DEFAULT_SLO): {
+export function checkSLO(
+  endpoint: string,
+  slo: SLO = DEFAULT_SLO,
+): {
   passing: boolean;
   violations: string[];
   sli: SLI;
 } {
   const sli = calculateSLI(endpoint);
   const violations: string[] = [];
-  
+
   if (sli.latencyP95 > slo.maxLatencyP95) {
     violations.push(`P95 latency ${sli.latencyP95}ms exceeds ${slo.maxLatencyP95}ms`);
   }
-  
+
   if (sli.latencyP99 > slo.maxLatencyP99) {
     violations.push(`P99 latency ${sli.latencyP99}ms exceeds ${slo.maxLatencyP99}ms`);
   }
-  
+
   if (sli.errorRate > slo.maxErrorRate) {
     violations.push(`Error rate ${sli.errorRate.toFixed(2)}% exceeds ${slo.maxErrorRate}%`);
   }
-  
+
   if (sli.availability < slo.minAvailability) {
     violations.push(`Availability ${sli.availability.toFixed(2)}% below ${slo.minAvailability}%`);
   }
-  
+
   if (violations.length > 0) {
     logger.warn('SLO violations detected', {
       endpoint,
@@ -179,7 +180,7 @@ export function checkSLO(endpoint: string, slo: SLO = DEFAULT_SLO): {
       slo,
     });
   }
-  
+
   return {
     passing: violations.length === 0,
     violations,
@@ -192,11 +193,11 @@ export function checkSLO(endpoint: string, slo: SLO = DEFAULT_SLO): {
  */
 export function getAllMetrics(): Record<string, SLI> {
   const result: Record<string, SLI> = {};
-  
+
   for (const [endpoint, _] of metrics) {
     result[endpoint] = calculateSLI(endpoint);
   }
-  
+
   return result;
 }
 
@@ -224,7 +225,7 @@ export function performanceMiddleware(endpoint: string) {
     end: (startTime: number, isError = false) => {
       const latency = Date.now() - startTime;
       recordLatency(endpoint, latency, isError);
-      
+
       // Log slow requests (> 1 second)
       if (latency > 1000) {
         logger.warn('Slow request detected', {
@@ -233,7 +234,7 @@ export function performanceMiddleware(endpoint: string) {
           threshold: 1000,
         });
       }
-      
+
       return latency;
     },
   };
@@ -245,14 +246,14 @@ export function performanceMiddleware(endpoint: string) {
 export function startSLOMonitoring(intervalMs = 60000): NodeJS.Timeout {
   const interval = setInterval(() => {
     const allMetrics = getAllMetrics();
-    
+
     for (const endpoint of Object.keys(allMetrics)) {
       checkSLO(endpoint);
     }
   }, intervalMs);
-  
+
   logger.info('SLO monitoring started', { intervalMs });
-  
+
   return interval;
 }
 
