@@ -36,7 +36,7 @@ import {
   revokeRefreshToken,
   verifyRefreshToken,
 } from './modules/auth.js';
-import { prismaDb } from './services/database.service.js';
+import { prismaDb } from './services/prisma-database.service.js';
 import {
   methodNotAllowed,
   notFound,
@@ -458,7 +458,7 @@ async function handleRequest(
         password?: string;
         role?: string;
       }
-      let payload: RegisterPayload;
+      let payload: RegisterPayload | undefined;
       try {
         payload = await readJsonBody(req, {
           limit: MAX_BODY_BYTES,
@@ -474,6 +474,11 @@ async function handleRequest(
           return;
         }
         throw error;
+      }
+
+      if (!payload) {
+        sendError(res, 400, 'Invalid request payload');
+        return;
       }
 
       const { email, password, role } = payload;
@@ -512,7 +517,7 @@ async function handleRequest(
         email?: string;
         password?: string;
       }
-      let payload: LoginPayload;
+      let payload: LoginPayload | undefined;
       try {
         payload = await readJsonBody(req, {
           limit: MAX_BODY_BYTES,
@@ -528,6 +533,11 @@ async function handleRequest(
           return;
         }
         throw error;
+      }
+
+      if (!payload) {
+        sendError(res, 400, 'Invalid request payload');
+        return;
       }
 
       const { email, password } = payload;

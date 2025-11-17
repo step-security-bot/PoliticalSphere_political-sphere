@@ -35,10 +35,9 @@ interface MediaCenterProps {
   onError?: (error: string) => void;
 }
 
-export const MediaCenter: React.FC<MediaCenterProps> = ({ userId, onError }) => {
+export const MediaCenter: React.FC<MediaCenterProps> = ({ userId: _userId, onError }) => {
   const [news, setNews] = useState<NewsArticle[]>([]);
   const [polls, setPolls] = useState<Poll[]>([]);
-  const [selectedArticle, setSelectedArticle] = useState<NewsArticle | null>(null);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<'news' | 'polls'>('news');
 
@@ -110,11 +109,7 @@ export const MediaCenter: React.FC<MediaCenterProps> = ({ userId, onError }) => 
           <section className="news-section">
             <div className="news-grid">
               {news.map(article => (
-                <article
-                  key={article.id}
-                  className="news-card"
-                  onClick={() => setSelectedArticle(article)}
-                >
+                <article key={article.id} className="news-card">
                   <h3>{article.title}</h3>
                   <p>{article.content.substring(0, 150)}...</p>
                   <footer>
@@ -136,7 +131,7 @@ export const MediaCenter: React.FC<MediaCenterProps> = ({ userId, onError }) => 
                   <div className="poll-options">
                     {poll.options.map((option, idx) => (
                       <button
-                        key={idx}
+                        key={`${poll.id}-${option}`}
                         type="button"
                         onClick={() => handleVote(poll.id, idx)}
                         className="poll-option"
@@ -144,7 +139,8 @@ export const MediaCenter: React.FC<MediaCenterProps> = ({ userId, onError }) => 
                       >
                         <span>{option}</span>
                         <span className="poll-votes">
-                          {poll.votes[idx]} ({Math.round((poll.votes[idx] / (poll.totalVotes || 1)) * 100)}
+                          {poll.votes?.[idx] ?? 0} (
+                          {Math.round(((poll.votes?.[idx] ?? 0) / (poll.totalVotes || 1)) * 100)}
                           %)
                         </span>
                       </button>

@@ -258,7 +258,7 @@ export const createApp = () => {
     }
     poll.votes[optionIndex] += 1;
     poll.totalVotes += 1;
-    res.json({ success: true, data: poll });
+    return res.json({ success: true, data: poll });
   });
   app.post('/api/media/polls/:id/vote', (req, res) => {
     const { id } = req.params;
@@ -275,7 +275,7 @@ export const createApp = () => {
     }
     poll.votes[optionIndex] += 1;
     poll.totalVotes += 1;
-    res.json({ success: true, data: poll });
+    return res.json({ success: true, data: poll });
   });
 
   // Elections endpoints (stubs for now)

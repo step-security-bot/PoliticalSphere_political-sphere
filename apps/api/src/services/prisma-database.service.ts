@@ -33,6 +33,9 @@ prisma.$on('info', e => logger.info('Database info', { message: e.message }));
 prisma.$on('warn', e => logger.warn('Database warning', { message: e.message }));
 prisma.$on('error', e => logger.error('Database error', { message: e.message }));
 
+// Export the raw Prisma client for direct use
+export { prisma };
+
 /**
  * Generic CRUD operations using Prisma
  */
@@ -46,7 +49,8 @@ class PrismaDatabaseService {
       logger.debug('Record created', { model, id: result.id });
       return result;
     } catch (error) {
-      logger.error('Failed to create record', { model, error: error.message, data });
+      const err = error as Error;
+      logger.error('Failed to create record', { model, error: err.message, data });
       throw error;
     }
   }
@@ -61,7 +65,8 @@ class PrismaDatabaseService {
       });
       return result;
     } catch (error) {
-      logger.error('Failed to find record by ID', { model, id, error: error.message });
+      const err = error as Error;
+      logger.error('Failed to find record by ID', { model, id, error: err.message });
       throw error;
     }
   }
@@ -79,7 +84,8 @@ class PrismaDatabaseService {
       });
       return result;
     } catch (error) {
-      logger.error('Failed to find records', { model, where, options, error: error.message });
+      const err = error as Error;
+      logger.error('Failed to find records', { model, where, options, error: err.message });
       throw error;
     }
   }
@@ -91,7 +97,8 @@ class PrismaDatabaseService {
     try {
       return await (prisma as any)[model].count({ where });
     } catch (error) {
-      logger.error('Failed to count records', { model, where, error: error.message });
+      const err = error as Error;
+      logger.error('Failed to count records', { model, where, error: err.message });
       throw error;
     }
   }
@@ -111,7 +118,8 @@ class PrismaDatabaseService {
       logger.debug('Record updated', { model, id });
       return result;
     } catch (error) {
-      logger.error('Failed to update record', { model, id, data, error: error.message });
+      const err = error as Error;
+      logger.error('Failed to update record', { model, id, data, error: err.message });
       throw error;
     }
   }
@@ -127,7 +135,8 @@ class PrismaDatabaseService {
       logger.debug('Record deleted', { model, id });
       return true;
     } catch (error) {
-      logger.error('Failed to delete record', { model, id, error: error.message });
+      const err = error as Error;
+      logger.error('Failed to delete record', { model, id, error: err.message });
       throw error;
     }
   }
@@ -141,7 +150,8 @@ class PrismaDatabaseService {
         return await callback(tx);
       });
     } catch (error) {
-      logger.error('Transaction failed', { error: error.message });
+      const err = error as Error;
+      logger.error('Transaction failed', { error: err.message });
       throw error;
     }
   }
@@ -154,7 +164,8 @@ class PrismaDatabaseService {
       const count = await this.count(model, where);
       return count > 0;
     } catch (error) {
-      logger.error('Failed to check record existence', { model, where, error: error.message });
+      const err = error as Error;
+      logger.error('Failed to check record existence', { model, where, error: err.message });
       throw error;
     }
   }

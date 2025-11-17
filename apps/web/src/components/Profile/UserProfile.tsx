@@ -4,7 +4,8 @@
  * WCAG 2.2 AA Compliant
  */
 
-import React, { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import type { FC } from 'react';
 import './UserProfile.css';
 
 interface UserData {
@@ -42,7 +43,7 @@ interface UserProfileProps {
   onUpdatePreferences?: (preferences: UserPreferences) => void;
 }
 
-const UserProfile: React.FC<UserProfileProps> = ({
+const UserProfile: FC<UserProfileProps> = ({
   userId,
   onUpdateProfile,
   onUpdatePreferences,
@@ -111,7 +112,7 @@ const UserProfile: React.FC<UserProfileProps> = ({
     }
   };
 
-  const handlePreferenceChange = (key: keyof UserPreferences, value: any) => {
+  const handlePreferenceChange = <K extends keyof UserPreferences>(key: K, value: UserPreferences[K]) => {
     const newPreferences = { ...preferences, [key]: value };
     setPreferences(newPreferences);
     if (onUpdatePreferences) {
@@ -138,8 +139,8 @@ const UserProfile: React.FC<UserProfileProps> = ({
 
   if (loading) {
     return (
-      <div className="user-profile" role="status" aria-live="polite">
-        <p>Loading profile...</p>
+      <div className="user-profile">
+        <output aria-live="polite">Loading profile...</output>
       </div>
     );
   }
@@ -163,7 +164,7 @@ const UserProfile: React.FC<UserProfileProps> = ({
   return (
     <div className="user-profile">
       <header className="profile-header">
-        <div className="profile-avatar" aria-label="User avatar">
+        <div className="profile-avatar" role="img" aria-label="User avatar">
           {userData.displayName?.[0]?.toUpperCase() || userData.email?.[0]?.toUpperCase() || '?'}
         </div>
         <div className="profile-info">
@@ -175,7 +176,7 @@ const UserProfile: React.FC<UserProfileProps> = ({
         </div>
       </header>
 
-      <nav className="profile-tabs" role="tablist" aria-label="Profile sections">
+      <div className="profile-tabs" role="tablist" aria-label="Profile sections">
         <button
           type="button"
           role="tab"
@@ -209,7 +210,7 @@ const UserProfile: React.FC<UserProfileProps> = ({
         >
           Settings
         </button>
-      </nav>
+      </div>
 
       {activeTab === 'profile' && (
         <section
@@ -223,15 +224,15 @@ const UserProfile: React.FC<UserProfileProps> = ({
           {!isEditing ? (
             <div className="profile-display">
               <div className="profile-field">
-                <label>Email:</label>
+                <span className="field-label">Email:</span>
                 <span>{userData.email}</span>
               </div>
               <div className="profile-field">
-                <label>Display Name:</label>
+                <span className="field-label">Display Name:</span>
                 <span>{userData.displayName || 'Not set'}</span>
               </div>
               <div className="profile-field">
-                <label>Role:</label>
+                <span className="field-label">Role:</span>
                 <span>{userData.role}</span>
               </div>
               {userData.verifiedAge && (
@@ -352,7 +353,7 @@ const UserProfile: React.FC<UserProfileProps> = ({
               <select
                 id="theme-select"
                 value={preferences.theme}
-                onChange={e => handlePreferenceChange('theme', e.target.value)}
+                onChange={e => handlePreferenceChange('theme', e.target.value as 'light' | 'dark' | 'auto')}
               >
                 <option value="light">Light</option>
                 <option value="dark">Dark</option>
