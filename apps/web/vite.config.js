@@ -13,7 +13,7 @@ export default defineConfig({
     host: '0.0.0.0',
     proxy: {
       '/api': {
-        target: 'http://localhost:3001', // Proxy to API on 3001
+        target: 'http://localhost:4000', // Proxy to API on 4000
         changeOrigin: true,
         rewrite: path => path.replace(/^\/api/, ''),
       },

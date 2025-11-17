@@ -9,16 +9,21 @@ import Database from 'better-sqlite3';
 const getDbPath = () => {
   if (typeof __dirname !== 'undefined') {
     // CommonJS or transformed code
-    return path.join(__dirname, '../../../data/runtime/political_sphere.db');
+    // From apps/api/src/modules/stores/ go up 5 levels to repo root
+    return path.join(__dirname, '../../../../../data/runtime/political_sphere.db');
   } else {
     // Pure ESM
     const __filename = fileURLToPath(import.meta.url);
     const __dirname = path.dirname(__filename);
-    return path.join(__dirname, '../../../data/runtime/political_sphere.db');
+    // From apps/api/src/modules/stores/ go up 5 levels to repo root
+    return path.join(__dirname, '../../../../../data/runtime/political_sphere.db');
   }
 };
 
 let DB_PATH = getDbPath();
+
+// Export for debugging
+export { DB_PATH };
 
 // For test runs, prefer an in-memory database to avoid filesystem locking and
 // interference between parallel test runs. Use a file-backed DB only outside tests.
@@ -27,9 +32,13 @@ if (process.env.NODE_ENV === 'test') {
 }
 
 export function initializeDatabase(): Database.Database {
+  // Log the database path for debugging
+  console.log('🗄️  Initializing database at path:', DB_PATH);
+
   // If using a file-backed DB, ensure the directory exists before opening it.
   if (DB_PATH !== ':memory:') {
     const dir = path.dirname(DB_PATH);
+    console.log('📁 Ensuring directory exists:', dir);
     try {
       fs.mkdirSync(dir, { recursive: true });
     } catch {
@@ -39,6 +48,7 @@ export function initializeDatabase(): Database.Database {
 
   // Open the database. For in-memory DBs, better-sqlite3 accepts ':memory:'.
   const db = new Database(DB_PATH);
+  console.log('✅ Database opened successfully');
 
   // Enable WAL mode for better concurrency on file-backed DBs only. WAL is not
   // applicable for in-memory databases and can cause errors or be ignored.
@@ -61,16 +71,41 @@ export function initializeDatabase(): Database.Database {
 }
 
 export function runMigrations(db: Database.Database): void {
+  // Write to log file for debugging
+  try {
+    const logPath = path.join(process.cwd(), 'migration-debug.log');
+    fs.appendFileSync(logPath, `\n[${new Date().toISOString()}] Starting migrations\n`);
+    fs.appendFileSync(logPath, `DB_PATH: ${DB_PATH}\n`);
+    fs.appendFileSync(logPath, `CWD: ${process.cwd()}\n`);
+  } catch {
+    // Ignore logging errors
+  }
+
   // Create users table
   db.exec(`
     CREATE TABLE IF NOT EXISTS users (
       id TEXT PRIMARY KEY,
       username TEXT UNIQUE NOT NULL,
       email TEXT UNIQUE NOT NULL,
+      password_hash TEXT NOT NULL,
+      role TEXT DEFAULT 'VIEWER' CHECK(role IN ('ADMIN', 'MODERATOR', 'VIEWER')),
       created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
       updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
     );
   `);
+
+  // Migrate existing users table if it exists without password_hash column
+  // Check if password_hash column exists, add it if missing
+  const userTableInfo = db.pragma('table_info(users)') as Array<{ name: string }>;
+  const hasPasswordHash = userTableInfo.some(col => col.name === 'password_hash');
+  const hasRole = userTableInfo.some(col => col.name === 'role');
+
+  if (!hasPasswordHash) {
+    db.exec(`ALTER TABLE users ADD COLUMN password_hash TEXT;`);
+  }
+  if (!hasRole) {
+    db.exec(`ALTER TABLE users ADD COLUMN role TEXT DEFAULT 'VIEWER';`);
+  }
 
   // Create parties table
   db.exec(`

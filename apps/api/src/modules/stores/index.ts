@@ -1,8 +1,7 @@
 import type Database from 'better-sqlite3';
-import DatabaseConstructor from 'better-sqlite3';
 
 import { CacheService } from '../../utils/cache.ts'; // eslint-disable-line no-restricted-imports
-// import { initializeDatabase } from '../../utils/migrations/index.js'; // eslint-disable-line no-restricted-imports
+import { initializeDatabase, runMigrations } from './migrations.ts';
 
 import { BillStore } from './bill-store.ts';
 import { PartyStore } from './party-store.ts';
@@ -37,28 +36,12 @@ export class DatabaseConnection {
   public votes: VoteStore;
 
   constructor(options: DatabaseOptions = {}) {
-    // Use PostgreSQL in production, in-memory SQLite for tests
-    if (process.env.NODE_ENV === 'test') {
-      this.db = new DatabaseConstructor(':memory:', {});
-    } else {
-      // TODO: Implement PostgreSQL connection
-      // For now, use in-memory for development compatibility
-      this.db = new DatabaseConstructor(':memory:', {});
-    }
+    // Use file-based database from migrations.ts (uses :memory: for tests, file for dev/prod)
+    this.db = initializeDatabase();
 
-    // NOTE: runMigrations is async; calling without await leads to race condition in tests
-    // where stores attempt queries before tables exist. For production we keep migrations async
-    // (properly awaited during app bootstrap). For test environment we synchronously ensure the
-    // minimal schema exists up-front to prevent 'no such table' errors.
-    if (process.env.NODE_ENV === 'test') {
-      this.ensureTestSchema();
-    } else {
-      // For development, ensure schema exists
-      this.ensureTestSchema();
-      // TODO: Fix migrations - currently disabled for compatibility
-      // Fire and forget; production bootstrap should await this during server start.
-      // void runMigrations(this.db);
-    }
+    // Run migrations to ensure schema is up to date
+    // This is synchronous during initialization to prevent race conditions
+    runMigrations(this.db);
 
     if (options.cache) {
       this.cache = options.cache;
@@ -78,49 +61,6 @@ export class DatabaseConnection {
     if (this.ownsCache && this.cache) {
       void this.cache.close();
     }
-  }
-
-  // STATUS: PENDING_IMPLEMENTATION
-  // REASON: Temporary synchronous schema creation for tests until migration bootstrap is refactored
-  // DEPENDENCIES: Future improvement to await runMigrations during app initialization
-  // ESTIMATED_READINESS: After introducing async bootstrap sequence for API server
-  private ensureTestSchema(): void {
-    // Users
-    this.db.exec(`CREATE TABLE IF NOT EXISTS users (
-      id TEXT PRIMARY KEY,
-      username TEXT NOT NULL UNIQUE,
-      email TEXT NOT NULL UNIQUE,
-      password_hash TEXT,
-      role TEXT DEFAULT 'VIEWER',
-      created_at DATETIME NOT NULL,
-      updated_at DATETIME NOT NULL
-    );`);
-    // Parties
-    this.db.exec(`CREATE TABLE IF NOT EXISTS parties (
-      id TEXT PRIMARY KEY,
-      name TEXT NOT NULL UNIQUE,
-      description TEXT,
-      color TEXT NOT NULL,
-      created_at DATETIME NOT NULL
-    );`);
-    // Bills
-    this.db.exec(`CREATE TABLE IF NOT EXISTS bills (
-      id TEXT PRIMARY KEY,
-      title TEXT NOT NULL,
-      description TEXT,
-      proposer_id TEXT NOT NULL,
-      status TEXT NOT NULL,
-      created_at DATETIME NOT NULL,
-      updated_at DATETIME NOT NULL
-    );`);
-    // Votes
-    this.db.exec(`CREATE TABLE IF NOT EXISTS votes (
-      id TEXT PRIMARY KEY,
-      bill_id TEXT NOT NULL,
-      user_id TEXT NOT NULL,
-      vote TEXT NOT NULL,
-      created_at DATETIME NOT NULL
-    );`);
   }
 }
 

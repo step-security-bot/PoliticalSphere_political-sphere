@@ -38,18 +38,19 @@ router.post('/register', async (req, res) => {
 
 /**
  * POST /auth/login
- * Login existing user
+ * Login existing user (accepts username or email)
  */
 router.post('/login', async (req, res) => {
   try {
-    const { username, password } = req.body;
+    const { username, email, password } = req.body;
+    const usernameOrEmail = username || email;
 
-    if (!username || !password) {
-      res.status(400).json({ error: 'Username and password are required' });
+    if (!usernameOrEmail || !password) {
+      res.status(400).json({ error: 'Username/email and password are required' });
       return;
     }
 
-    const result = await authService.login({ username, password });
+    const result = await authService.login({ username: usernameOrEmail, password });
 
     res.json({
       user: result.user,

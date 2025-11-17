@@ -132,9 +132,13 @@ class ApiClient {
 
     // Store tokens if login successful
     if (response.success && response.data) {
-      const { token, refreshToken } = response.data;
-      if (token && refreshToken) {
-        this.saveTokens(token, refreshToken);
+      // Handle both token formats: legacy (token/refreshToken) and new (tokens.accessToken/refreshToken)
+      const tokens = response.data.tokens || response.data;
+      const accessToken = tokens.accessToken || tokens.token;
+      const refreshToken = tokens.refreshToken;
+
+      if (accessToken && refreshToken) {
+        this.saveTokens(accessToken, refreshToken);
       }
     }
 
@@ -149,9 +153,13 @@ class ApiClient {
 
     // Store tokens if registration successful
     if (response.success && response.data) {
-      const { token, refreshToken } = response.data;
-      if (token && refreshToken) {
-        this.saveTokens(token, refreshToken);
+      // Handle both token formats: legacy (token/refreshToken) and new (tokens.accessToken/refreshToken)
+      const tokens = response.data.tokens || response.data;
+      const accessToken = tokens.accessToken || tokens.token;
+      const refreshToken = tokens.refreshToken;
+
+      if (accessToken && refreshToken) {
+        this.saveTokens(accessToken, refreshToken);
       }
     }
 

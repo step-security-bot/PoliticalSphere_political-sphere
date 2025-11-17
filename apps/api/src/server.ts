@@ -730,6 +730,25 @@ async function handleRequest(
     return;
   }
 
+  // Simulation state endpoint (stub for now)
+  if (method === 'GET' && pathname === '/simulation/state') {
+    sendJson(res, 200, {
+      success: true,
+      data: {
+        currentDay: 1,
+        simulationSpeed: 1,
+        isPaused: false,
+        timestamp: new Date().toISOString(),
+        stats: {
+          totalPlayers: 0,
+          activeBills: 0,
+          activeVotes: 0,
+        },
+      },
+    });
+    return;
+  }
+
   if (method === 'GET' && pathname === '/') {
     sendJson(res, 200, {
       message: 'Political Sphere API is online.',
@@ -737,6 +756,7 @@ async function handleRequest(
         apiBasePath,
         `${apiBasePath}/{id}`,
         '/metrics/news',
+        '/simulation/state',
         '/auth/register',
         '/auth/login',
         '/auth/refresh',
