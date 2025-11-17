@@ -44,6 +44,9 @@
   },
   "unpkg": "dist/js-yaml.min.js",
   "jsdelivr": "dist/js-yaml.min.js",
+  "overrides": {
+    "glob": "^11.1.0"
+  },
   "dependencies": {
     "argparse": "^2.0.1"
   },

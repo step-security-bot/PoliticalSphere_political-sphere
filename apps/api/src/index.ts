@@ -5,9 +5,10 @@
 // Load environment variables from .env if present (local dev convenience)
 import 'dotenv/config';
 
-import { startTelemetry } from '@political-sphere/shared';
+import { startTelemetry, createLogger } from '@political-sphere/shared';
 import { app } from './app';
 
+const logger = createLogger({ name: 'api-main' });
 const PORT = process.env.PORT || 3001;
 
 // Initialize OpenTelemetry before starting the server
@@ -18,14 +19,17 @@ startTelemetry({
 })
   .then(() => {
     app.listen(PORT, () => {
-      console.log(`🚀 API server running on port ${PORT}`);
-      console.log(`📍 Health check: http://localhost:${PORT}/health`);
-      console.log(`🔐 Auth endpoints: http://localhost:${PORT}/auth`);
-      console.log(`🎮 Game endpoints: http://localhost:${PORT}/game`);
+      logger.info({
+        msg: '🚀 API server running',
+        port: PORT,
+        healthCheck: `http://localhost:${PORT}/health`,
+        authEndpoints: `http://localhost:${PORT}/auth`,
+        gameEndpoints: `http://localhost:${PORT}/game`,
+      });
     });
   })
   .catch(error => {
-    console.error('Failed to initialize OpenTelemetry:', error);
+    logger.fatal({ msg: 'Failed to initialize OpenTelemetry', err: error });
     process.exit(1);
   });
 

@@ -166,6 +166,7 @@
   },
   "overrides": {
     "zod": "^3.25.6",
+    "glob": "^11.1.0",
     "js-yaml": "file:vendor/js-yaml-patched",
     "codecov": {
       "js-yaml": "file:vendor/js-yaml-patched"

@@ -13,6 +13,11 @@
 
 name: Release
 
+permissions:
+  contents: write
+  pull-requests: write
+  packages: write
+
 on:
   push:
     branches: [main]

@@ -23,11 +23,12 @@ import partyRoutes from './routes/parties.js';
 import userRoutes from './routes/users.js';
 import voteRoutes from './routes/votes.js';
 import { sanitizeRequestForLog } from './utils/log-sanitizer.mjs';
+import { createLogger } from '@political-sphere/shared';
 
 import { getDatabase } from './index.js';
 
 const app = express();
-const logger = console;
+const logger = createLogger({ name: 'api-server' });
 
 app.use(
   helmet({
@@ -190,10 +191,10 @@ app.use('/api', newsRoutes);
 app.use('/', newsRoutes);
 
 app.use((err, req, res, _next) => {
-  console.error('Unhandled error', {
+  logger.error({
+    msg: 'Unhandled error',
     requestId: req.requestId,
-    error: err.message,
-    stack: err.stack,
+    err,
     url: req.url,
     method: req.method,
   });
@@ -206,7 +207,8 @@ app.use((err, req, res, _next) => {
 });
 
 app.use((req, res) => {
-  console.warn('Route not found', {
+  logger.warn({
+    msg: 'Route not found',
     requestId: req.requestId,
     method: req.method,
     url: req.url,
@@ -220,7 +222,7 @@ app.use((req, res) => {
 });
 
 const gracefulShutdown = () => {
-  console.log('Received shutdown signal, closing server...');
+  logger.info('Received shutdown signal, closing server...');
 
   const db = getDatabase();
   if (db) {
@@ -237,7 +239,8 @@ const PORT = process.env.PORT || 4000;
 const HOST = process.env.HOST || '0.0.0.0';
 
 app.listen(PORT, HOST, () => {
-  console.log('API server started', {
+  logger.info({
+    msg: 'API server started',
     host: HOST,
     port: PORT,
     environment: process.env.NODE_ENV || 'development',

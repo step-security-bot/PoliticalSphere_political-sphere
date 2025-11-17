@@ -1,8 +1,10 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { createLogger } from '@political-sphere/shared';
 
 const moduleDir = path.dirname(fileURLToPath(import.meta.url));
+const logger = createLogger({ name: 'news-service' });
 
 /**
  * File-based storage adapter for NewsService
@@ -93,7 +95,7 @@ class NewsService {
     const normalized = category.toLowerCase();
     if (!this.validCategories.includes(normalized)) {
       const error = new Error(
-        `Invalid category: ${category}. Must be one of: ${this.validCategories.join(', ')}`
+        `Invalid category: ${category}. Must be one of: ${this.validCategories.join(', ')}`,
       );
       error.code = 'VALIDATION_ERROR';
       throw error;
@@ -218,7 +220,7 @@ class NewsService {
         news = news.filter(
           item =>
             item.title.toLowerCase().includes(searchTerm) ||
-            item.content.toLowerCase().includes(searchTerm)
+            item.content.toLowerCase().includes(searchTerm),
         );
       }
 
@@ -234,7 +236,7 @@ class NewsService {
       if (error.code === 'VALIDATION_ERROR' || error.message.includes('Invalid')) {
         throw error;
       }
-      console.error('Error listing news:', error);
+      logger.error({ msg: 'Error listing news', err: error });
       return [];
     }
   }
@@ -282,7 +284,7 @@ class NewsService {
         }
         throw error;
       }
-      console.error('Error creating news item:', error);
+      logger.error({ msg: 'Error creating news item', err: error });
       throw new Error('Failed to create news item');
     }
   }
@@ -306,7 +308,7 @@ class NewsService {
       await this.store.writeAll(news);
       return news[index];
     } catch (error) {
-      console.error('Error updating news item:', error);
+      logger.error({ msg: 'Error updating news item', err: error, newsId: id });
       throw new Error('Failed to update news item');
     }
   }
@@ -316,7 +318,7 @@ class NewsService {
       const news = await this.store.readAll();
       return news.find(item => item.id === id) || null;
     } catch (error) {
-      console.error('Error getting news item:', error);
+      logger.error({ msg: 'Error getting news item', err: error, newsId: id });
       return null;
     }
   }
@@ -328,7 +330,8 @@ class NewsService {
       // Filter to published items only and valid categories
       const news = allNews.filter(
         item =>
-          item.status === 'published' && this.validCategories.includes(item.category?.toLowerCase())
+          item.status === 'published' &&
+          this.validCategories.includes(item.category?.toLowerCase()),
       );
 
       // Sort by creation date descending (newest first)
@@ -345,7 +348,7 @@ class NewsService {
         recent: sorted.slice(0, 5),
       };
     } catch (error) {
-      console.error('Error getting analytics:', error);
+      logger.error({ msg: 'Error getting analytics', err: error });
       return { total: 0, categories: {}, tags: {}, recent: [] };
     }
   }

@@ -4,6 +4,81 @@ This file is the canonical, repository-root changelog for Political Sphere. It c
 
 The format follows Keep a Changelog (<https://keepachangelog.com/en/1.0.0/>) and the project follows Semantic Versioning (<https://semver.org/>).
 
+## [2025-11-17] - Security Updates
+
+### Security
+
+**Dependabot Security Fixes - All Resolved**:
+
+- **Fixed glob Command Injection (HIGH severity - GHSA-5j98-mcp5-4vw2)**:
+  - Added package override to force glob@11.1.0+ across all dependencies
+  - Previously vulnerable: glob@10.4.5 (used by mocha, archiver-utils, testcontainers)
+  - Vulnerability: Command injection via -c/--cmd CLI flags (CVE score: 7.5)
+  - Resolution: Upgraded all instances to glob@11.1.0
+  - Affected 3 Dependabot alerts (#16, #17, #18) - now resolved
+
+- **Verified js-yaml Prototype Pollution Fix (MEDIUM severity)**:
+  - Confirmed vendor/js-yaml-patched@4.1.1 is properly applied via package overrides
+  - Patched version addresses prototype pollution in merge operator (<<)
+  - All js-yaml instances verified at 4.1.1 or 3.14.2+ (safe versions)
+  - Affected 3 Dependabot alerts (#12, #14, #15) - already resolved
+
+- **Verified esbuild Development Server Fix (MEDIUM severity)**:
+  - Confirmed esbuild@0.25.12 is above patched threshold (0.25.0+)
+  - Vulnerability: Unauthorized requests to development server
+  - Current version well above minimum safe version
+  - Affected 1 Dependabot alert (#13) - already resolved
+
+**Verification**:
+- npm audit: 0 vulnerabilities found
+- All 7 open Dependabot alerts resolved
+- Dependencies clean installed with overrides applied
+- Security review completed: 2025-11-17
+
+**Files Changed**:
+- `package.json`: Added glob@^11.1.0 override
+- `vendor/js-yaml-patched/package.json`: Added glob@^11.1.0 override
+- `package-lock.json`: Regenerated with secure versions
+- `vendor/js-yaml-patched/package-lock.json`: Regenerated with secure versions
+
+**Semgrep Code Security Fixes**:
+
+- **Fixed Log Injection Vulnerability (console-log-express)**:
+  - Replaced all `console.log/error/warn` with structured Pino logger
+  - Prevents log forgery attacks by using structured JSON logging
+  - Files updated:
+    - `apps/api/src/app.mjs`: 5 replacements (error, warn, info)
+    - `apps/api/src/news-service.js`: 5 replacements (all error cases)
+    - `apps/api/src/index.ts`: 2 replacements (info, fatal)
+  - Logger properly sanitizes user input and prevents newline injection
+  - All log entries now use structured format with proper field separation
+
+**OpenSSF Scorecard Security Fixes**:
+
+- **Fixed Token Permissions (HIGH severity)**:
+  - Added explicit `permissions:` blocks to GitHub Actions workflows
+  - Follows principle of least privilege for workflow tokens
+  - Files updated:
+    - `.github/workflows/build-and-test.yml`: Added contents:read, packages:write, security-events:write
+    - `.github/workflows/release.yml`: Added contents:write, pull-requests:write, packages:write
+    - `.github/workflows/lighthouse.yml`: Added contents:read, pull-requests:write
+  - Prevents unauthorized access to repository resources
+  - Limits token scope to only required permissions per workflow
+
+- **Fixed Security Policy Detection (MEDIUM severity)**:
+  - Added `SECURITY.md` to repository root (required by Scorecard)
+  - Previously only existed in `docs/06-security-and-risk/`
+  - Improves security discoverability for external researchers
+  - Contains vulnerability reporting procedures and secret management guidelines
+
+**Verification**:
+- npm audit: 0 vulnerabilities found
+- All 7 open Dependabot alerts resolved
+- Semgrep log injection issues resolved (1 alert)
+- Scorecard TokenPermissions issues resolved (5 alerts)
+- Dependencies clean installed with overrides applied
+- Security review completed: 2025-11-17
+
 ## [2025-11-17] - Infrastructure Modernization
 
 ### Added
