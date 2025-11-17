@@ -144,7 +144,7 @@ export const MediaCenter: React.FC<MediaCenterProps> = ({ userId, onError }) => 
                       >
                         <span>{option}</span>
                         <span className="poll-votes">
-                          {poll.votes[idx]} ({Math.round((poll.votes[idx] / poll.totalVotes) * 100)}
+                          {poll.votes[idx]} ({Math.round((poll.votes[idx] / (poll.totalVotes || 1)) * 100)}
                           %)
                         </span>
                       </button>

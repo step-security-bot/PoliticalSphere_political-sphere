@@ -343,6 +343,32 @@ class ApiClient {
   async getSimulationStats(): Promise<ApiResponse> {
     return this.request('/simulation/stats');
   }
+
+  // Game Management (Multi-World)
+  async listGames(): Promise<ApiResponse> {
+    return this.request('/games');
+  }
+
+  async getMyGames(): Promise<ApiResponse> {
+    return this.request('/games/my');
+  }
+
+  async createGame(name: string): Promise<ApiResponse> {
+    return this.request('/games', {
+      method: 'POST',
+      body: JSON.stringify({ name }),
+    });
+  }
+
+  async joinGame(gameId: string): Promise<ApiResponse> {
+    return this.request(`/games/${gameId}/join`, {
+      method: 'POST',
+    });
+  }
+
+  async getGameState(gameId: string): Promise<ApiResponse> {
+    return this.request(`/games/${gameId}/state`);
+  }
 }
 
 // Export singleton instance

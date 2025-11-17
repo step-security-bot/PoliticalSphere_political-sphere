@@ -4,7 +4,7 @@
  * WCAG 2.2 AA Compliant
  */
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import './UserProfile.css';
 
 interface UserData {
@@ -164,7 +164,7 @@ const UserProfile: React.FC<UserProfileProps> = ({
     <div className="user-profile">
       <header className="profile-header">
         <div className="profile-avatar" aria-label="User avatar">
-          {userData.displayName?.[0]?.toUpperCase() || userData.email[0].toUpperCase()}
+          {userData.displayName?.[0]?.toUpperCase() || userData.email?.[0]?.toUpperCase() || '?'}
         </div>
         <div className="profile-info">
           <h1>{userData.displayName || userData.email}</h1>
