@@ -29,12 +29,18 @@ jobs:
           sudo apt-get install -y unzip jq
 
       - name: Install Vault CLI
+        env:
+          VAULT_VERSION: '1.15.3'
+          # Integrity checksum for Vault CLI release archive
+          # security-false-positive: checksum value only
+          VAULT_SHA256: 'eebd32293f2eb0ec3c9dbae4b77c79975f95cba1e5c56fe8ba5dbfbde8e09513'
         run: |
-          VERSION="1.15.3"
-          curl -sSL -o vault.zip https://releases.hashicorp.com/vault/${VERSION}/vault_${VERSION}_linux_amd64.zip
+          curl -sSL -o vault.zip "https://releases.hashicorp.com/vault/${VAULT_VERSION}/vault_${VAULT_VERSION}_linux_amd64.zip"
+          echo "${VAULT_SHA256}  vault.zip" | sha256sum -c -
           unzip -o vault.zip
           chmod +x vault
           sudo mv vault /usr/local/bin/
+          rm vault.zip
 
       - name: Fetch secret
         id: get
@@ -45,17 +51,17 @@ jobs:
         run: |
           set -euo pipefail
           # default VAULT_ADDR to localhost if not provided (useful for dev clusters / port-forward)
-          VAULT_ADDR=${VAULT_ADDR:-http://127.0.0.1:8200}
+            VAULT_ADDR="${VAULT_ADDR:-http://127.0.0.1:8200}"
           export VAULT_ADDR
           # Attempt to read the KV v2 secret at inputs.secret_path
           out=$(vault kv get -format=json "${SECRET_PATH}" 2>/dev/null || true)
           if [[ -z "$out" ]]; then
-            echo "error=secret_not_found" >> $GITHUB_OUTPUT
+              echo "error=secret_not_found" >> "$GITHUB_OUTPUT"
             exit 1
           fi
           # Extract the first value (adjust extraction to your shape)
           secret_value=$(echo "$out" | jq -r '.data.data | to_entries[0].value')
-          echo "secret_value=$secret_value" >> $GITHUB_OUTPUT
+            echo "secret_value=${secret_value}" >> "$GITHUB_OUTPUT"
 
 # Security notes:
 # - This reusable workflow is intended for development and testing with short-lived tokens.

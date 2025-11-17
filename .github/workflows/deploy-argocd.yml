@@ -52,9 +52,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Install Argo CD CLI
+        env:
+          ARGOCD_VERSION: '2.10.8'
+          # Integrity checksum for Argo CD CLI binary
+          # security-false-positive: checksum value only
+          ARGOCD_SHA256: 'b835999144d4cb4e22ab0a32318d6540677e99f67b6ec6233931f57ec43cf1f4'
         run: |
-          VERSION="2.10.8"
-          curl -sSL -o argocd https://github.com/argoproj/argo-cd/releases/download/v${VERSION}/argocd-linux-amd64
+          curl -sSL -o argocd "https://github.com/argoproj/argo-cd/releases/download/v${ARGOCD_VERSION}/argocd-linux-amd64"
+          echo "${ARGOCD_SHA256}  argocd" | sha256sum -c -
           chmod +x argocd
           sudo mv argocd /usr/local/bin/argocd
 
@@ -76,11 +81,11 @@ jobs:
             echo "application_name input is required" >&2
             exit 1
           fi
-          LOGIN_OPTS="--grpc-web"
+          LOGIN_OPTS=(--grpc-web)
           if ! echo "$ARGOCD_SERVER" | grep -q '^https://'; then
-            LOGIN_OPTS="$LOGIN_OPTS --plaintext"
+            LOGIN_OPTS+=(--plaintext)
           fi
-          argocd login "$ARGOCD_SERVER" --username token --password "$ARGOCD_TOKEN" $LOGIN_OPTS --skip-test-tls
+          argocd login "$ARGOCD_SERVER" --username token --password "$ARGOCD_TOKEN" "${LOGIN_OPTS[@]}" --skip-test-tls
           if [[ "$ARGOCD_REFRESH" == "true" ]]; then
             argocd app get "$ARGOCD_APP" --refresh || true
           fi

@@ -24,6 +24,8 @@ env:
 jobs:
   health-check:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - name: Check API Health
         run: |
