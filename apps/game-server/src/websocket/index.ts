@@ -5,4 +5,4 @@
  */
 
 export { WebSocketServer } from './WebSocketServer';
-export type { GameClient, WebSocketMessage } from './WebSocketServer';
+export type { GameClient } from './WebSocketServer';

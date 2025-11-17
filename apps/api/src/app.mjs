@@ -5,6 +5,7 @@ import express from 'express';
 import rateLimit from 'express-rate-limit';
 import helmet from 'helmet';
 
+import { createLogger } from '@political-sphere/shared';
 import { authenticate, requireRole } from './middleware/auth.js';
 import { csrfProtection, csrfTokenMiddleware } from './middleware/csrf.js';
 import requestId from './middleware/request-id.js';
@@ -23,7 +24,6 @@ import partyRoutes from './routes/parties.js';
 import userRoutes from './routes/users.js';
 import voteRoutes from './routes/votes.js';
 import { sanitizeRequestForLog } from './utils/log-sanitizer.mjs';
-import { createLogger } from '@political-sphere/shared';
 
 import { getDatabase } from './index.js';
 

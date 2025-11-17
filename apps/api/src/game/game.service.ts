@@ -213,11 +213,7 @@ export class GameService {
 
     // Use game engine to advance state
     const seed = Date.now();
-    const newState = advanceGameState(
-      engineState,
-      [enrichedAction as import('@political-sphere/game-engine').PlayerAction],
-      seed
-    );
+    const newState = advanceGameState(engineState, [enrichedAction as any], seed);
 
     // Merge engine state back into game
     game.proposals = newState.proposals || [];

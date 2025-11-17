@@ -16,7 +16,7 @@ import {
 import type { Server as HttpServer } from 'node:http';
 import { WebSocketServer as WSServer, type WebSocket } from 'ws';
 
-interface GameClient {
+export interface GameClient {
   id: string;
   socket: WebSocket;
   gameId: string;

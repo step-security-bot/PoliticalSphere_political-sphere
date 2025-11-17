@@ -43,11 +43,7 @@ interface UserProfileProps {
   onUpdatePreferences?: (preferences: UserPreferences) => void;
 }
 
-const UserProfile: FC<UserProfileProps> = ({
-  userId,
-  onUpdateProfile,
-  onUpdatePreferences,
-}) => {
+const UserProfile: FC<UserProfileProps> = ({ userId, onUpdateProfile, onUpdatePreferences }) => {
   const [userData, setUserData] = useState<UserData | null>(null);
   const [userStats, setUserStats] = useState<UserStats | null>(null);
   const [preferences, setPreferences] = useState<UserPreferences>({
@@ -112,7 +108,10 @@ const UserProfile: FC<UserProfileProps> = ({
     }
   };
 
-  const handlePreferenceChange = <K extends keyof UserPreferences>(key: K, value: UserPreferences[K]) => {
+  const handlePreferenceChange = <K extends keyof UserPreferences>(
+    key: K,
+    value: UserPreferences[K],
+  ) => {
     const newPreferences = { ...preferences, [key]: value };
     setPreferences(newPreferences);
     if (onUpdatePreferences) {
@@ -122,7 +121,7 @@ const UserProfile: FC<UserProfileProps> = ({
 
   const handleAccessibilityChange = (
     key: keyof UserPreferences['accessibility'],
-    value: boolean
+    value: boolean,
   ) => {
     const newPreferences = {
       ...preferences,
@@ -237,13 +236,13 @@ const UserProfile: FC<UserProfileProps> = ({
               </div>
               {userData.verifiedAge && (
                 <div className="profile-field">
-                  <label>Age Verified:</label>
+                  <span className="field-label">Age Verified:</span>
                   <span>Yes</span>
                 </div>
               )}
               {userData.contentRating && (
                 <div className="profile-field">
-                  <label>Content Rating:</label>
+                  <span className="field-label">Content Rating:</span>
                   <span>{userData.contentRating}</span>
                 </div>
               )}
@@ -353,7 +352,9 @@ const UserProfile: FC<UserProfileProps> = ({
               <select
                 id="theme-select"
                 value={preferences.theme}
-                onChange={e => handlePreferenceChange('theme', e.target.value as 'light' | 'dark' | 'auto')}
+                onChange={e =>
+                  handlePreferenceChange('theme', e.target.value as 'light' | 'dark' | 'auto')
+                }
               >
                 <option value="light">Light</option>
                 <option value="dark">Dark</option>

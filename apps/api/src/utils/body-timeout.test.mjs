@@ -32,7 +32,9 @@ class SlowMockRequest extends EventEmitter {
 describe('readJsonBody timeout behavior', () => {
   it('should throw BODY_TIMEOUT when body streaming exceeds timeoutMs', async () => {
     const req = new SlowMockRequest(200); // delay longer than timeout
-    await expect(readJsonBody(req, { timeoutMs: 50 })).rejects.toMatchObject({ code: 'BODY_TIMEOUT' });
+    await expect(readJsonBody(req, { timeoutMs: 50 })).rejects.toMatchObject({
+      code: 'BODY_TIMEOUT',
+    });
   });
 
   it('should parse successfully when data arrives before timeout', async () => {

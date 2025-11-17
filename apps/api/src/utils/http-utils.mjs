@@ -65,13 +65,7 @@ export async function readJsonBody(req, options = {}) {
     req.on('aborted', () => clearTimeout(id));
   });
 
-  let streamedChunks;
-  try {
-    streamedChunks = await Promise.race([bodyPromise, timeoutPromise]);
-  } catch (e) {
-    // Propagate structured timeout / size / parse errors
-    throw e;
-  }
+  const streamedChunks = await Promise.race([bodyPromise, timeoutPromise]);
 
   if (!Array.isArray(streamedChunks)) {
     // In race scenario streamedChunks could be undefined if timeout fired first

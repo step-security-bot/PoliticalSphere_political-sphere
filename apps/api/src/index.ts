@@ -5,10 +5,10 @@
 // Load environment variables from .env if present (local dev convenience)
 import 'dotenv/config';
 
-import { startTelemetry, createLogger } from '@political-sphere/shared';
+import { createLogger, startTelemetry } from '@political-sphere/shared';
 import { app } from './app';
 
-const logger = createLogger({ name: 'api-main' });
+const logger = createLogger({ service: 'api-main' });
 const PORT = process.env.PORT || 3001;
 
 // Initialize OpenTelemetry before starting the server
@@ -19,7 +19,7 @@ startTelemetry({
 })
   .then(() => {
     app.listen(PORT, () => {
-      logger.info({
+      logger.info('🚀 API server running', {
         msg: '🚀 API server running',
         port: PORT,
         healthCheck: `http://localhost:${PORT}/health`,

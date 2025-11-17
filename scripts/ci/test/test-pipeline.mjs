@@ -27,7 +27,7 @@ class PipelineTest {
       await testFn();
       this.passed = true;
       console.log(`  ✅ ${this.name}`);
-    } catch (_error) {
+    } catch (error) {
       this.passed = false;
       this.error = error.message;
       console.log(`  ❌ ${this.name}: ${error.message}`);
@@ -73,7 +73,7 @@ function executeCommand(cmd, args) {
       throw new Error(`Invalid command: ${cmd}`);
     }
     return execFileSync(cmd, args || [], { encoding: 'utf8', stdio: 'pipe' });
-  } catch (_error) {
+  } catch (error) {
     throw new Error(`Command failed: ${error.message}`);
   }
 }

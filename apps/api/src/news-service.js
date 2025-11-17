@@ -1,7 +1,7 @@
+import { createLogger } from '@political-sphere/shared';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { createLogger } from '@political-sphere/shared';
 
 const moduleDir = path.dirname(fileURLToPath(import.meta.url));
 const logger = createLogger({ name: 'news-service' });
@@ -95,7 +95,7 @@ class NewsService {
     const normalized = category.toLowerCase();
     if (!this.validCategories.includes(normalized)) {
       const error = new Error(
-        `Invalid category: ${category}. Must be one of: ${this.validCategories.join(', ')}`,
+        `Invalid category: ${category}. Must be one of: ${this.validCategories.join(', ')}`
       );
       error.code = 'VALIDATION_ERROR';
       throw error;
@@ -220,7 +220,7 @@ class NewsService {
         news = news.filter(
           item =>
             item.title.toLowerCase().includes(searchTerm) ||
-            item.content.toLowerCase().includes(searchTerm),
+            item.content.toLowerCase().includes(searchTerm)
         );
       }
 
@@ -330,8 +330,7 @@ class NewsService {
       // Filter to published items only and valid categories
       const news = allNews.filter(
         item =>
-          item.status === 'published' &&
-          this.validCategories.includes(item.category?.toLowerCase()),
+          item.status === 'published' && this.validCategories.includes(item.category?.toLowerCase())
       );
 
       // Sort by creation date descending (newest first)
@@ -374,5 +373,5 @@ class NewsService {
   }
 }
 
-export { NewsService, FileNewsStore };
+export { FileNewsStore, NewsService };
 export default { NewsService, FileNewsStore };

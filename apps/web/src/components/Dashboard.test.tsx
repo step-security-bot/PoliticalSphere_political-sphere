@@ -1,33 +1,33 @@
 /**
  * @vitest-environment jsdom
  */
+import '@testing-library/jest-dom';
 import { cleanup, render, screen, waitFor } from '@testing-library/react';
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import Dashboard from './Dashboard';
+import { afterEach, beforeEach, describe, expect, it, vi, type MockedFunction } from 'vitest';
+import Dashboard from './Dashboard.jsx';
 
 describe('Dashboard Component', () => {
+  let mockFetch: MockedFunction<typeof fetch>;
+
   beforeEach(() => {
-    // Mock fetch globally
-    global.fetch = vi.fn();
+    mockFetch = vi.fn();
+    vi.stubGlobal('fetch', mockFetch);
   });
 
   afterEach(() => {
     cleanup();
-    vi.restoreAllMocks();
+    vi.unstubAllGlobals();
   });
 
   describe('Initial Rendering', () => {
     it('should render loading state initially', () => {
-      global.fetch.mockImplementation(() => new Promise(() => {})); // Never resolves
+      mockFetch.mockImplementation(() => new Promise(() => {})); // Never resolves
       render(<Dashboard />);
       expect(screen.getByText(/Loading.../i)).toBeInTheDocument();
     });
 
     it('should render the dashboard title', async () => {
-      global.fetch.mockResolvedValue({
-        ok: true,
-        json: async () => ({ data: [] }),
-      });
+      mockFetch.mockResolvedValue(new Response(JSON.stringify({ data: [] }), { status: 200 }));
       render(<Dashboard />);
       await waitFor(() => {
         expect(screen.getByText(/Dashboard/i)).toBeInTheDocument();
@@ -52,18 +52,16 @@ describe('Dashboard Component', () => {
         latest: mockNews[0],
       };
 
-      global.fetch.mockImplementation(url => {
+      mockFetch.mockImplementation((input: RequestInfo | URL) => {
+        const url =
+          input instanceof Request ? input.url : input instanceof URL ? input.href : input;
         if (url.includes('/news')) {
-          return Promise.resolve({
-            ok: true,
-            json: async () => ({ data: mockNews }),
-          });
+          return Promise.resolve(new Response(JSON.stringify({ data: mockNews }), { status: 200 }));
         }
         if (url.includes('/metrics/news')) {
-          return Promise.resolve({
-            ok: true,
-            json: async () => ({ data: mockSummary }),
-          });
+          return Promise.resolve(
+            new Response(JSON.stringify({ data: mockSummary }), { status: 200 }),
+          );
         }
         return Promise.reject(new Error('Unknown URL'));
       });
@@ -71,8 +69,8 @@ describe('Dashboard Component', () => {
       render(<Dashboard />);
 
       await waitFor(() => {
-        expect(global.fetch).toHaveBeenCalledWith('/api/news');
-        expect(global.fetch).toHaveBeenCalledWith('/api/metrics/news');
+        expect(mockFetch).toHaveBeenCalledWith('/api/news');
+        expect(mockFetch).toHaveBeenCalledWith('/api/metrics/news');
       });
 
       await waitFor(() => {
@@ -81,18 +79,14 @@ describe('Dashboard Component', () => {
     });
 
     it('should handle news API failure gracefully', async () => {
-      global.fetch.mockImplementation(url => {
+      mockFetch.mockImplementation((input: RequestInfo | URL) => {
+        const url =
+          input instanceof Request ? input.url : input instanceof URL ? input.href : input;
         if (url.includes('/news')) {
-          return Promise.resolve({
-            ok: false,
-            status: 500,
-          });
+          return Promise.resolve(new Response('', { status: 500 }));
         }
         if (url.includes('/metrics/news')) {
-          return Promise.resolve({
-            ok: true,
-            json: async () => ({ data: {} }),
-          });
+          return Promise.resolve(new Response(JSON.stringify({ data: {} }), { status: 200 }));
         }
         return Promise.reject(new Error('Unknown URL'));
       });
@@ -101,26 +95,22 @@ describe('Dashboard Component', () => {
 
       await waitFor(() => {
         expect(
-          screen.getByText(/API unavailable: News API responded with 500/i)
+          screen.getByText(/API unavailable: News API responded with 500/i),
         ).toBeInTheDocument();
       });
     });
 
     it('should handle metrics API failure gracefully', async () => {
-      global.fetch.mockImplementation(url => {
+      mockFetch.mockImplementation((input: RequestInfo | URL) => {
+        const url =
+          input instanceof Request ? input.url : input instanceof URL ? input.href : input;
         // Check metrics endpoint first - '/metrics/news' includes '/news'
         // so order matters when using includes() string checks.
         if (url.includes('/metrics/news')) {
-          return Promise.resolve({
-            ok: false,
-            status: 503,
-          });
+          return Promise.resolve(new Response('', { status: 503 }));
         }
         if (url.includes('/news')) {
-          return Promise.resolve({
-            ok: true,
-            json: async () => ({ data: [] }),
-          });
+          return Promise.resolve(new Response(JSON.stringify({ data: [] }), { status: 200 }));
         }
         return Promise.reject(new Error('Unknown URL'));
       });
@@ -129,13 +119,13 @@ describe('Dashboard Component', () => {
 
       await waitFor(() => {
         expect(
-          screen.getByText(/API unavailable: Metrics API responded with 503/i)
+          screen.getByText(/API unavailable: Metrics API responded with 503/i),
         ).toBeInTheDocument();
       });
     });
 
     it('should handle network errors', async () => {
-      global.fetch.mockRejectedValue(new Error('Network error'));
+      mockFetch.mockRejectedValue(new Error('Network error'));
 
       render(<Dashboard />);
 
@@ -162,18 +152,14 @@ describe('Dashboard Component', () => {
         },
       ];
 
-      global.fetch.mockImplementation(url => {
+      mockFetch.mockImplementation((input: RequestInfo | URL) => {
+        const url =
+          input instanceof Request ? input.url : input instanceof URL ? input.href : input;
         if (url.includes('/news')) {
-          return Promise.resolve({
-            ok: true,
-            json: async () => ({ data: mockNews }),
-          });
+          return Promise.resolve(new Response(JSON.stringify({ data: mockNews }), { status: 200 }));
         }
         if (url.includes('/metrics/news')) {
-          return Promise.resolve({
-            ok: true,
-            json: async () => ({ data: {} }),
-          });
+          return Promise.resolve(new Response(JSON.stringify({ data: {} }), { status: 200 }));
         }
         return Promise.reject(new Error('Unknown URL'));
       });
@@ -187,16 +173,13 @@ describe('Dashboard Component', () => {
     });
 
     it('should show placeholder message when no news is available', async () => {
-      global.fetch.mockResolvedValue({
-        ok: true,
-        json: async () => ({ data: [] }),
-      });
+      mockFetch.mockResolvedValue(new Response(JSON.stringify({ data: [] }), { status: 200 }));
 
       render(<Dashboard />);
 
       await waitFor(() => {
         expect(
-          screen.getByText(/No stories yet. The data pipeline will populate this feed shortly./i)
+          screen.getByText(/No stories yet. The data pipeline will populate this feed shortly./i),
         ).toBeInTheDocument();
       });
     });
@@ -204,10 +187,7 @@ describe('Dashboard Component', () => {
 
   describe('Accessibility', () => {
     it('should have proper ARIA attributes', async () => {
-      global.fetch.mockResolvedValue({
-        ok: true,
-        json: async () => ({ data: [] }),
-      });
+      mockFetch.mockResolvedValue(new Response(JSON.stringify({ data: [] }), { status: 200 }));
 
       const { container } = render(<Dashboard />);
 
@@ -219,7 +199,7 @@ describe('Dashboard Component', () => {
     });
 
     it('should update loading state for screen readers', async () => {
-      global.fetch.mockImplementation(() => new Promise(() => {}));
+      mockFetch.mockImplementation(() => new Promise(() => {}));
 
       render(<Dashboard />);
 
@@ -229,10 +209,7 @@ describe('Dashboard Component', () => {
 
   describe('Loading State', () => {
     it('should stop loading after successful data fetch', async () => {
-      global.fetch.mockResolvedValue({
-        ok: true,
-        json: async () => ({ data: [] }),
-      });
+      mockFetch.mockResolvedValue(new Response(JSON.stringify({ data: [] }), { status: 200 }));
 
       render(<Dashboard />);
 
@@ -246,7 +223,7 @@ describe('Dashboard Component', () => {
     });
 
     it('should stop loading after error', async () => {
-      global.fetch.mockRejectedValue(new Error('Test error'));
+      mockFetch.mockRejectedValue(new Error('Test error'));
 
       render(<Dashboard />);
 
@@ -258,10 +235,7 @@ describe('Dashboard Component', () => {
 
   describe('Status Messages', () => {
     it('should show success message after data loads', async () => {
-      global.fetch.mockResolvedValue({
-        ok: true,
-        json: async () => ({ data: [] }),
-      });
+      mockFetch.mockResolvedValue(new Response(JSON.stringify({ data: [] }), { status: 200 }));
 
       render(<Dashboard />);
 
@@ -271,7 +245,7 @@ describe('Dashboard Component', () => {
     });
 
     it('should show error message on failure', async () => {
-      global.fetch.mockRejectedValue(new Error('Connection failed'));
+      mockFetch.mockRejectedValue(new Error('Connection failed'));
 
       render(<Dashboard />);
 

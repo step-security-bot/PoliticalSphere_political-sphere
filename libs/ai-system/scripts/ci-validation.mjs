@@ -43,7 +43,7 @@ async function main() {
     } else {
       console.log('   ✅ Political neutrality check PASSED');
     }
-  } catch (_error) {
+  } catch (error) {
     console.warn('   ⚠️  Could not complete neutrality check:', error.message);
   }
 
@@ -77,7 +77,7 @@ async function main() {
     });
 
     console.log('   ✅ AI governance check PASSED');
-  } catch (_error) {
+  } catch (error) {
     console.warn('   ⚠️  Could not complete governance check:', error.message);
   }
 
@@ -111,7 +111,7 @@ async function main() {
       results.passed = false;
       console.error('   ❌ Validation gate test FAILED');
     }
-  } catch (_error) {
+  } catch (error) {
     console.warn('   ⚠️  Could not complete validation gate test:', error.message);
   }
 
@@ -131,7 +131,7 @@ async function main() {
     } else {
       console.warn('   ⚠️  Test coverage below threshold');
     }
-  } catch (_error) {
+  } catch {
     console.warn('   ⚠️  Could not run coverage check');
   }
 

@@ -492,7 +492,11 @@ async function handleRequest(
         const accessToken = generateAccessToken(user);
         const refreshToken = generateRefreshToken(user);
 
-        const userPayload = user as UserAuthPayload;
+        const userPayload: UserAuthPayload = {
+          id: user.id,
+          email: user.email,
+          role: user.role,
+        };
         sendJson(res, 201, {
           user: {
             id: userPayload.id,
@@ -555,7 +559,11 @@ async function handleRequest(
       const accessToken = generateAccessToken(user);
       const refreshToken = generateRefreshToken(user);
 
-      const userPayload = user as UserAuthPayload;
+      const userPayload: UserAuthPayload = {
+        id: user.id,
+        email: user.email,
+        role: user.role || undefined,
+      };
       sendJson(res, 200, {
         user: {
           id: userPayload.id,
@@ -572,7 +580,7 @@ async function handleRequest(
       interface RefreshPayload {
         refreshToken?: string;
       }
-      let payload: RefreshPayload;
+      let payload: RefreshPayload | undefined;
       try {
         payload = await readJsonBody(req, {
           limit: MAX_BODY_BYTES,
@@ -588,6 +596,11 @@ async function handleRequest(
           return;
         }
         throw error;
+      }
+
+      if (!payload) {
+        sendError(res, 400, 'Invalid request payload');
+        return;
       }
 
       const { refreshToken } = payload;
@@ -632,7 +645,7 @@ async function handleRequest(
       interface LogoutPayload {
         refreshToken?: string;
       }
-      let payload: LogoutPayload;
+      let payload: LogoutPayload | undefined;
       try {
         payload = await readJsonBody(req, {
           limit: MAX_BODY_BYTES,
@@ -648,6 +661,11 @@ async function handleRequest(
           return;
         }
         throw error;
+      }
+
+      if (!payload) {
+        sendError(res, 400, 'Invalid request payload');
+        return;
       }
 
       const { refreshToken } = payload;
@@ -663,7 +681,7 @@ async function handleRequest(
       interface ForgotPasswordPayload {
         email?: string;
       }
-      let payload: ForgotPasswordPayload;
+      let payload: ForgotPasswordPayload | undefined;
       try {
         payload = await readJsonBody(req, {
           limit: MAX_BODY_BYTES,
@@ -679,6 +697,11 @@ async function handleRequest(
           return;
         }
         throw error;
+      }
+
+      if (!payload) {
+        sendError(res, 400, 'Invalid request payload');
+        return;
       }
 
       const { email } = payload;
@@ -702,7 +725,7 @@ async function handleRequest(
         token?: string;
         newPassword?: string;
       }
-      let payload: ResetPasswordPayload;
+      let payload: ResetPasswordPayload | undefined;
       try {
         payload = await readJsonBody(req, {
           limit: MAX_BODY_BYTES,
@@ -718,6 +741,11 @@ async function handleRequest(
           return;
         }
         throw error;
+      }
+
+      if (!payload) {
+        sendError(res, 400, 'Invalid request payload');
+        return;
       }
 
       const { token, newPassword } = payload;

@@ -121,8 +121,7 @@ export const JudiciarySystem: React.FC<JudiciarySystemProps> = ({ userId: _userI
 
     if (decision && reasoning) {
       try {
-        await api.issueRuling({
-          caseId: selectedCase.id,
+        await api.issueRuling(selectedCase.id, {
           decision: decision as Ruling['decision'],
           reasoning,
         });

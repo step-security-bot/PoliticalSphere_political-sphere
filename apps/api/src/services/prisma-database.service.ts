@@ -3,8 +3,8 @@
  * Production-ready database abstraction using Prisma ORM
  */
 
-import { PrismaClient } from '@prisma/client';
 import { getLogger } from '@political-sphere/shared';
+import { PrismaClient } from '@prisma/client';
 
 const logger = getLogger({ service: 'database' });
 

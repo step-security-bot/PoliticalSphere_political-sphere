@@ -19,7 +19,7 @@ describe('OpenTelemetry Smoke Test', () => {
 
   it('should initialize telemetry with minimal config', async () => {
     const { initTelemetry } = await import('@political-sphere/shared');
-    
+
     // Initialize but don't start (to avoid side effects in tests)
     const sdk = initTelemetry({
       serviceName: 'test-service',
@@ -29,14 +29,14 @@ describe('OpenTelemetry Smoke Test', () => {
     expect(sdk).toBeDefined();
     expect(sdk.start).toBeDefined();
     expect(typeof sdk.start).toBe('function');
-    
+
     // Shutdown to clean up
     await sdk.shutdown();
   });
 
   it('should handle telemetry initialization errors gracefully', async () => {
     const { startTelemetry } = await import('@political-sphere/shared');
-    
+
     // Test with invalid configuration should not throw
     await expect(
       startTelemetry({

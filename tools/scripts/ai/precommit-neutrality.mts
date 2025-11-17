@@ -29,7 +29,7 @@ async function main() {
     await ciCheck(stagedFiles);
 
     console.log('✅ Pre-commit neutrality check passed\n');
-  } catch (error) {
+  } catch {
     console.error('\n❌ Pre-commit neutrality check FAILED');
     console.error('   Fix the issues above or use --no-verify to bypass (not recommended)\n');
     process.exit(1);

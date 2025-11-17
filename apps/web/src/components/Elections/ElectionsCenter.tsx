@@ -43,10 +43,10 @@ interface ElectionsCenterProps {
   onError?: (error: string) => void;
 }
 
-export const ElectionsCenter: React.FC<ElectionsCenterProps> = ({ userId, onError }) => {
+export const ElectionsCenter: React.FC<ElectionsCenterProps> = ({ userId: _userId, onError }) => {
   const [elections, setElections] = useState<Election[]>([]);
   const [constituencies, setConstituencies] = useState<Constituency[]>([]);
-  const [selectedElection, setSelectedElection] = useState<Election | null>(null);
+  const [_selectedElection, setSelectedElection] = useState<Election | null>(null);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<'elections' | 'constituencies'>('elections');
 
@@ -71,7 +71,7 @@ export const ElectionsCenter: React.FC<ElectionsCenterProps> = ({ userId, onErro
     return () => clearInterval(interval);
   }, [fetchElections]);
 
-  const handleVote = async (electionId: string, candidateId: string) => {
+  const _handleVote = async (electionId: string, candidateId: string) => {
     try {
       const response = await api.castElectionVote(electionId, { candidateId });
       if (response.success) {

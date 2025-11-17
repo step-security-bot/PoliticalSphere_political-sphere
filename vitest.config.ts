@@ -6,7 +6,7 @@ import { defineConfig } from 'vitest/config';
 
 // Configure React plugin for JSX
 const reactPlugin = react({
-  jsxRuntime: 'classic',
+  jsxRuntime: 'automatic',
 });
 
 // Vitest modes (driven by env):

@@ -13,8 +13,8 @@ import type { Request, Response } from 'express';
 import express from 'express';
 import { v4 as uuidv4 } from 'uuid';
 
-import { advanceGameState } from '../../../libs/game-engine/src/engine';
-import { LOG_LEVELS, Logger } from '../../../libs/shared/src/logger';
+import { advanceGameState } from '@political-sphere/game-engine';
+import { Logger } from '../../../libs/shared/src/logger';
 
 import complianceClient from './complianceClient';
 
@@ -145,8 +145,7 @@ let games = new Map<string, Game>();
 const logger = new Logger({
   service: 'game-server',
   environment: process.env.NODE_ENV || 'development',
-  level: process.env.LOG_LEVEL === 'debug' ? LOG_LEVELS.DEBUG : LOG_LEVELS.INFO,
-  console: true,
+  level: process.env.LOG_LEVEL === 'debug' ? 'debug' : 'info',
   file: process.env.LOG_FILE,
 });
 
@@ -637,11 +636,7 @@ app.post('/games/:id/action', async (req: Request, res: Response) => {
     }
 
     // Safe — apply via engine
-    const newState = advanceGameState(
-      game,
-      [action as import('../../../libs/game-engine/src/engine').PlayerAction],
-      Date.now()
-    );
+    const newState = advanceGameState(game, [action as any], Date.now());
     games.set(gameId, newState);
     if (db && typeof db.upsertGame === 'function') await db.upsertGame(gameId, newState);
     const newProposal = newState.proposals[newState.proposals.length - 1];
@@ -669,11 +664,7 @@ app.post('/games/:id/action', async (req: Request, res: Response) => {
     const { proposalId } = (action.payload || {}) as { proposalId?: string };
     if (!proposalId) return res.status(400).json({ error: 'proposalId required' });
 
-    const newState = advanceGameState(
-      game,
-      [action as import('../../../libs/game-engine/src/engine').PlayerAction],
-      Date.now()
-    );
+    const newState = advanceGameState(game, [action as any], Date.now());
     games.set(gameId, newState);
     if (db && typeof db.upsertGame === 'function') await db.upsertGame(gameId, newState);
     const debate = (newState.debates || [])[
@@ -703,11 +694,7 @@ app.post('/games/:id/action', async (req: Request, res: Response) => {
       });
     }
 
-    const newState = advanceGameState(
-      game,
-      [action as import('../../../libs/game-engine/src/engine').PlayerAction],
-      Date.now()
-    );
+    const newState = advanceGameState(game, [action as any], Date.now());
     games.set(gameId, newState);
     if (db && typeof db.upsertGame === 'function') await db.upsertGame(gameId, newState);
     const speech = (newState.speeches || [])[
@@ -727,11 +714,7 @@ app.post('/games/:id/action', async (req: Request, res: Response) => {
     if (!proposalId || !playerId || !choice)
       return res.status(400).json({ error: 'proposalId, playerId and choice are required' });
 
-    const newState = advanceGameState(
-      game,
-      [action as import('../../../libs/game-engine/src/engine').PlayerAction],
-      Date.now()
-    );
+    const newState = advanceGameState(game, [action as any], Date.now());
     games.set(gameId, newState);
     if (db && typeof db.upsertGame === 'function') await db.upsertGame(gameId, newState);
     const vote = newState.votes[newState.votes.length - 1];
@@ -744,11 +727,7 @@ app.post('/games/:id/action', async (req: Request, res: Response) => {
 
   // Handle advance_turn
   if (action.type === 'advance_turn') {
-    const newState = advanceGameState(
-      game,
-      [action as import('../../../libs/game-engine/src/engine').PlayerAction],
-      Date.now()
-    );
+    const newState = advanceGameState(game, [action as any], Date.now());
     games.set(gameId, newState);
     if (db && typeof db.upsertGame === 'function') await db.upsertGame(gameId, newState);
 
