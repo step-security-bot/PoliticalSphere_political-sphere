@@ -69,7 +69,7 @@ jobs:
 
       - name: Upload Checkov results to GitHub Security
         if: always()
-        uses: github/codeql-action/upload-sarif@ea9e4e37992a54ee68a9622e985e60c8e8f12d9f # v3.27.5
+        uses: github/codeql-action/upload-sarif@e12f0178983d466f2f6028f5cc7a6d786fd97f4b # v3.27.5
         with:
           sarif_file: checkov-results.sarif
           category: "checkov-iac-scan"
@@ -144,7 +144,7 @@ jobs:
 
       - name: Upload tfsec results
         if: always()
-        uses: github/codeql-action/upload-sarif@ea9e4e37992a54ee68a9622e985e60c8e8f12d9f # v3.27.5
+        uses: github/codeql-action/upload-sarif@e12f0178983d466f2f6028f5cc7a6d786fd97f4b # v3.27.5
         with:
           sarif_file: results.sarif
           category: "tfsec-terraform-scan"
@@ -168,7 +168,7 @@ jobs:
 
       - name: Upload Hadolint results
         if: always()
-        uses: github/codeql-action/upload-sarif@ea9e4e37992a54ee68a9622e985e60c8e8f12d9f # v3.27.5
+        uses: github/codeql-action/upload-sarif@e12f0178983d466f2f6028f5cc7a6d786fd97f4b # v3.27.5
         with:
           sarif_file: hadolint-results.sarif
           category: "hadolint-dockerfile-scan"

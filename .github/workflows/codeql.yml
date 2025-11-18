@@ -57,7 +57,7 @@ jobs:
           fetch-depth: 0
 
       - name: Initialize CodeQL
-        uses: github/codeql-action/init@ea9e4e37992a54ee68a9622e985e60c8e8f12d9f # v3.27.5
+        uses: github/codeql-action/init@e12f0178983d466f2f6028f5cc7a6d786fd97f4b # v3.27.5
         with:
           languages: ${{ matrix.language }}
           # Use default queries plus security-extended for comprehensive coverage
@@ -87,7 +87,7 @@ jobs:
         run: npm ci --legacy-peer-deps --ignore-scripts
 
       - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@ea9e4e37992a54ee68a9622e985e60c8e8f12d9f # v3.27.5
+        uses: github/codeql-action/analyze@e12f0178983d466f2f6028f5cc7a6d786fd97f4b # v3.27.5
         with:
           category: "/language:${{ matrix.language }}"
           # Upload SARIF results to GitHub Security
