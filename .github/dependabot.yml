@@ -1,29 +1,85 @@
 version: 2
 updates:
-  # Enable version updates for npm
+  # Enable version updates for npm (daily for security)
   - package-ecosystem: 'npm'
     directory: '/'
     schedule:
-      interval: 'weekly'
-    open-pull-requests-limit: 10
+      interval: 'daily'
+    open-pull-requests-limit: 15
+    labels:
+      - 'dependencies'
+      - 'npm'
+    commit-message:
+      prefix: 'chore(deps)'
+    groups:
+      development-dependencies:
+        dependency-type: 'development'
+        update-types:
+          - 'minor'
+          - 'patch'
 
-  # Enable version updates for GitHub Actions
+  # Enable version updates for GitHub Actions (weekly Monday)
   - package-ecosystem: 'github-actions'
     directory: '/'
     schedule:
       interval: 'weekly'
+      day: 'monday'
     open-pull-requests-limit: 10
+    labels:
+      - 'dependencies'
+      - 'github-actions'
+    commit-message:
+      prefix: 'chore(ci)'
 
   # Enable version updates for Docker images in apps/web
   - package-ecosystem: 'docker'
     directory: '/apps/web'
     schedule:
       interval: 'weekly'
+      day: 'tuesday'
     open-pull-requests-limit: 5
+    labels:
+      - 'dependencies'
+      - 'docker'
+    commit-message:
+      prefix: 'chore(docker)'
 
   # Enable version updates for Docker images in apps/worker
   - package-ecosystem: 'docker'
     directory: '/apps/worker'
     schedule:
       interval: 'weekly'
+      day: 'tuesday'
     open-pull-requests-limit: 5
+    labels:
+      - 'dependencies'
+      - 'docker'
+    commit-message:
+      prefix: 'chore(docker)'
+
+  # Enable version updates for Docker images in apps/api
+  - package-ecosystem: 'docker'
+    directory: '/apps/api'
+    schedule:
+      interval: 'weekly'
+      day: 'tuesday'
+    open-pull-requests-limit: 5
+    labels:
+      - 'dependencies'
+      - 'docker'
+    commit-message:
+      prefix: 'chore(docker)'
+
+  # Enable version updates for Terraform
+  - package-ecosystem: 'terraform'
+    directory: '/apps/infrastructure/terraform'
+    schedule:
+      interval: 'weekly'
+      day: 'wednesday'
+    open-pull-requests-limit: 5
+    labels:
+      - 'dependencies'
+      - 'terraform'
+      - 'infrastructure'
+    commit-message:
+      prefix: 'chore(terraform)'

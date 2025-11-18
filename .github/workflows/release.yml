@@ -13,10 +13,9 @@
 
 name: Release
 
+# Top-level: Minimal permissions by default (OWASP CICD-SEC-2)
 permissions:
-  contents: write
-  pull-requests: write
-  packages: write
+  contents: read
 
 on:
   push:

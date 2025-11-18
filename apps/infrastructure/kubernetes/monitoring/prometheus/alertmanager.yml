@@ -1,0 +1,74 @@
+global:
+  smtp_smarthost: 'smtp.gmail.com:587'
+  smtp_from: 'alerts@example.com'
+  smtp_auth_username: 'alerts@example.com'
+  smtp_auth_password: 'your-password'
+
+route:
+  group_by: ['alertname', 'service']
+  group_wait: 10s
+  group_interval: 10s
+  repeat_interval: 1h
+  receiver: 'slack-notifications'
+  routes:
+    - match:
+        severity: critical
+      receiver: 'slack-critical'
+    - match:
+        service: ci-pipeline
+      receiver: 'ci-cd-alerts'
+
+receivers:
+  - name: 'slack-notifications'
+    slack_configs:
+      - api_url: '${SLACK_WEBHOOK_URL}'
+        channel: '#alerts'
+        title: '{{ .GroupLabels.alertname }}'
+        text: |
+          {{ range .Alerts }}
+          *Alert:* {{ .Annotations.summary }}
+          *Description:* {{ .Annotations.description }}
+          *Severity:* {{ .Labels.severity }}
+          *Service:* {{ .Labels.service }}
+          *Time:* {{ .StartsAt.Format "2006-01-02 15:04:05" }}
+          {{ end }}
+
+  - name: 'slack-critical'
+    slack_configs:
+      - api_url: '${SLACK_WEBHOOK_URL}'
+        channel: '#critical-alerts'
+        title: '🚨 CRITICAL: {{ .GroupLabels.alertname }}'
+        text: |
+          {{ range .Alerts }}
+          🚨 *CRITICAL ALERT* 🚨
+          *Alert:* {{ .Annotations.summary }}
+          *Description:* {{ .Annotations.description }}
+          *Service:* {{ .Labels.service }}
+          *Time:* {{ .StartsAt.Format "2006-01-02 15:04:05" }}
+
+          Please investigate immediately!
+          {{ end }}
+
+  - name: 'ci-cd-alerts'
+    slack_configs:
+      - api_url: '${SLACK_WEBHOOK_URL}'
+        channel: '#ci-cd'
+        title: '🔄 CI/CD: {{ .GroupLabels.alertname }}'
+        text: |
+          {{ range .Alerts }}
+          🔄 *CI/CD Alert:* {{ .Annotations.summary }}
+          *Description:* {{ .Annotations.description }}
+          *Severity:* {{ .Labels.severity }}
+          *Run ID:* {{ .Labels.run_id }}
+          *Branch:* {{ .Labels.branch }}
+          *Time:* {{ .StartsAt.Format "2006-01-02 15:04:05" }}
+
+          Check: {{ .Annotations.runbook_url }}
+          {{ end }}
+
+  - name: 'discord-notifications'
+    webhook_configs:
+      - url: '${DISCORD_WEBHOOK_URL}'
+        http_config:
+          proxy_url: '${HTTP_PROXY}'
+        send_resolved: true

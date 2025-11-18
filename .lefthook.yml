@@ -41,48 +41,71 @@
 min_version: 1.7.0  # Updated for enhanced glob support and telemetry
 
 pre-commit:
-  parallel: true
-  
-  commands:
-    # =========================================================================
-    # PHASE 0: INITIALIZATION & TELEMETRY (Priority -100)
-    # =========================================================================
-    
-    init-telemetry:
-      priority: -100
-      run: |
-        export HOOK_START_TIME=$(date +%s)
-        export HOOK_TRACE_ID=$(uuidgen 2>/dev/null || echo "trace-$(date +%s)")
-        echo "HOOK_START_TIME=$HOOK_START_TIME" >> "${TMPDIR:-/tmp}/lefthook-$$-env"
-        echo "HOOK_TRACE_ID=$HOOK_TRACE_ID" >> "${TMPDIR:-/tmp}/lefthook-$$-env"
-        
-        # Detect execution context
-        if [ "${FAST_AI}" = "1" ]; then
-          export EXECUTION_MODE="fast-secure"
-        elif [ "${AUDIT_MODE}" = "1" ]; then
-          export EXECUTION_MODE="audit"
-        elif [ "${CI}" = "true" ] || [ "${CI}" = "1" ]; then
-          export EXECUTION_MODE="ci"
-        else
-          export EXECUTION_MODE="safe"
-        fi
-        
-        echo "🔍 Pre-commit validation (mode: ${EXECUTION_MODE}, trace: ${HOOK_TRACE_ID})"
-        echo ""
-        
-        # Log hook invocation for observability
-        if command -v jq >/dev/null 2>&1; then
-          echo "{\"timestamp\":\"$(date -u +%Y-%m-%dT%H:%M:%SZ)\",\"trace_id\":\"${HOOK_TRACE_ID}\",\"mode\":\"${EXECUTION_MODE}\",\"event\":\"hook_start\"}" \
-            >> logs/pre-commit-telemetry.jsonl 2>/dev/null || true
-        fi
+   parallel: true
+
+   commands:
+     # =========================================================================
+     # PHASE 0: INITIALIZATION & CHANGE DETECTION (Priority -100)
+     # =========================================================================
+
+     init-telemetry:
+       priority: -100
+       run: |
+         export HOOK_START_TIME=$(date +%s)
+         export HOOK_TRACE_ID=$(uuidgen 2>/dev/null || echo "trace-$(date +%s)")
+         echo "HOOK_START_TIME=$HOOK_START_TIME" >> "${TMPDIR:-/tmp}/lefthook-$$-env"
+         echo "HOOK_TRACE_ID=$HOOK_TRACE_ID" >> "${TMPDIR:-/tmp}/lefthook-$$-env"
+
+         # Detect changed files count for selective execution
+         export CHANGED_FILES_COUNT=$(git diff --cached --name-only | wc -l | tr -d ' ')
+         export CHANGED_FILES_LIST=$(git diff --cached --name-only | tr '\n' ' ')
+
+         # Detect execution context
+         if [ "${FAST_AI}" = "1" ]; then
+           export EXECUTION_MODE="fast-secure"
+         elif [ "${AUDIT_MODE}" = "1" ]; then
+           export EXECUTION_MODE="audit"
+         elif [ "${CI}" = "true" ] || [ "${CI}" = "1" ]; then
+           export EXECUTION_MODE="ci"
+         else
+           export EXECUTION_MODE="safe"
+         fi
+
+         # Determine execution strategy based on change size
+         if [ "${CHANGED_FILES_COUNT}" -lt 5 ] && [ "${EXECUTION_MODE}" != "audit" ]; then
+           export EXECUTION_STRATEGY="lightweight"
+           echo "🎯 Lightweight execution: ${CHANGED_FILES_COUNT} files changed (<5 threshold)"
+         else
+           export EXECUTION_STRATEGY="full"
+           echo "🔄 Full execution: ${CHANGED_FILES_COUNT} files changed"
+         fi
+
+         # Display branding
+         echo ""
+         echo "╔════════════════════════════════════════════════════╗"
+         echo "║         🏛️  POLITICAL SPHERE 🏛️                     ║"
+         echo "║                                                    ║"
+         echo "║    Democratic Governance • Political Simulation    ║"
+         echo "╚════════════════════════════════════════════════════╝"
+         echo ""
+         echo "✨ Thank you for contributing to democratic technology!"
+         echo ""
+         echo "🔍 Pre-commit validation (mode: ${EXECUTION_MODE}, strategy: ${EXECUTION_STRATEGY}, trace: ${HOOK_TRACE_ID})"
+         echo ""
+
+         # Log hook invocation for observability
+         if command -v jq >/dev/null 2>&1; then
+           echo "{\"timestamp\":\"$(date -u +%Y-%m-%dT%H:%M:%SZ)\",\"trace_id\":\"${HOOK_TRACE_ID}\",\"mode\":\"${EXECUTION_MODE}\",\"strategy\":\"${EXECUTION_STRATEGY}\",\"changed_files\":${CHANGED_FILES_COUNT},\"event\":\"hook_start\"}" \
+             >> logs/pre-commit-telemetry.jsonl 2>/dev/null || true
+         fi
     
     # =========================================================================
     # PHASE 1: CRITICAL SECURITY GATES (Priority 0 - BLOCKING)
     # All failures in this phase MUST block commit
     # =========================================================================
-    
+
     # 1.1 Secret Scanning (MANDATORY - never skip in production)
-    secrets-scan:
+     secrets-scan:
       priority: 0
       run: |
         echo "🔒 [P0] Scanning for leaked secrets..."
@@ -117,7 +140,7 @@ pre-commit:
         echo "✅ No secrets detected"
     
     # 1.2 Dependency Vulnerability Scan (HIGH priority)
-    dependency-security:
+     dependency-security:
       priority: 0
       glob: '{package.json,package-lock.json,pnpm-lock.yaml,yarn.lock}'
       run: |
@@ -159,7 +182,7 @@ pre-commit:
         fi
     
     # 1.3 License Compliance (ADVISORY - logs but doesn't block)
-    license-compliance:
+     license-compliance:
       priority: 0
       glob: 'package.json'
       run: |
@@ -195,7 +218,7 @@ pre-commit:
     # =========================================================================
     
     # 2.1 Code Formatting (auto-fix with stage)
-    format-code:
+     format-code:
       priority: 1
       glob: '*.{ts,tsx,js,jsx,json,css,scss,md,yml,yaml}'
       run: |
@@ -212,7 +235,7 @@ pre-commit:
       stage_fixed: true
     
     # 2.2 Linting (auto-fix + strict validation)
-    lint-code:
+     lint-code:
       priority: 1
       glob: '*.{ts,tsx,js,jsx}'
       run: |
@@ -239,7 +262,7 @@ pre-commit:
       stage_fixed: true
     
     # 2.3 TypeScript Type Checking (incremental for performance)
-    typecheck:
+     typecheck:
       priority: 1
       glob: '*.{ts,tsx}'
       run: |
@@ -267,7 +290,7 @@ pre-commit:
     # =========================================================================
     
     # 3.1 Accessibility Validation (WCAG 2.2 AA - MANDATORY)
-    accessibility-check:
+     accessibility-check:
       priority: 2
       glob: '*.{tsx,jsx,html}'
       run: |
@@ -307,7 +330,7 @@ pre-commit:
         fi
     
     # 3.2 Test Quality Gates
-    test-quality-gates:
+     test-quality-gates:
       priority: 2
       glob: '*.{test,spec}.{ts,tsx,js,jsx,mjs}'
       run: |
@@ -353,7 +376,7 @@ pre-commit:
         echo "✅ Test quality checks passed"
     
     # 3.3 Documentation Linting (Markdown quality)
-    docs-lint:
+     docs-lint:
       priority: 2
       glob: '*.{md,mdx}'
       run: |
@@ -387,7 +410,7 @@ pre-commit:
         fi
     
     # 3.4 AI Governance - Political Neutrality Check
-    ai-neutrality-check:
+     ai-neutrality-check:
       priority: 2
       glob: '*.{ts,tsx,js,jsx,md}'
       run: |
@@ -429,7 +452,7 @@ pre-commit:
         fi
     
     # 3.5 AI Semantic Quality Check
-    ai-semantic-quality:
+     ai-semantic-quality:
       priority: 2
       glob: '*.{ts,tsx,js,jsx}'
       run: |
@@ -471,7 +494,7 @@ pre-commit:
         fi
     
     # 3.6 AI Competence Quick Check
-    ai-competence-quick:
+     ai-competence-quick:
       priority: 2
       run: |
         echo "📊 [P2] Quick AI competence check..."
@@ -491,7 +514,7 @@ pre-commit:
         fi
     
     # 3.7 Update AI Index
-    update-ai-index:
+     update-ai-index:
       priority: 2
       glob: '*.{ts,tsx,js,jsx}'
       run: |
@@ -514,7 +537,7 @@ pre-commit:
     # =========================================================================
     
     # GitHub Actions validation
-    actionlint:
+     actionlint:
       priority: 3
       glob: '.github/workflows/*.{yml,yaml}'
       run: |
@@ -532,7 +555,7 @@ pre-commit:
         fi
     
     # Docker linting
-    hadolint:
+     hadolint:
       priority: 3
       glob: '{**/Dockerfile*,**/*.dockerfile}'
       run: |
@@ -550,7 +573,7 @@ pre-commit:
         fi
     
     # Validate JSON
-    validate-json:
+     validate-json:
       priority: 3
       glob: '*.json'
       run: |
@@ -562,7 +585,7 @@ pre-commit:
         done
     
     # Validate YAML
-    validate-yaml:
+     validate-yaml:
       priority: 3
       glob: '*.{yml,yaml}'
       run: |

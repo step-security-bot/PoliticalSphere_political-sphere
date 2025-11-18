@@ -19,6 +19,15 @@ export default defineConfig({
     baseURL: process.env.WEB_BASE_URL || process.env.BASE_URL || 'http://localhost:3000',
     headless: true,
   },
+  // E2E test sharding configuration
+  fullyParallel: true,
+  workers: process.env.CI ? 1 : undefined, // One worker per shard in CI
+  shard: process.env.SHARD
+    ? {
+        current: parseInt(process.env.SHARD_INDEX || '1', 10),
+        total: parseInt(process.env.SHARD_TOTAL || '1', 10),
+      }
+    : undefined,
   webServer: [
     {
       command: API_COMMAND,

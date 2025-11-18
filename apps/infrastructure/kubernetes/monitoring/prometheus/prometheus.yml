@@ -1,0 +1,24 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+rule_files:
+  - "alert_rules.yml"
+  - "slo_rules.yml"
+
+scrape_configs:
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+
+  - job_name: 'ci-cd-metrics'
+    static_configs:
+      - targets: ['otel-collector:4318']
+    metrics_path: '/v1/metrics'
+    params:
+      format: ['prometheus']
+
+  - job_name: 'application-metrics'
+    static_configs:
+      - targets: ['game-server:3001', 'web-app:3000']
+    scrape_interval: 30s

@@ -1,0 +1,55 @@
+groups:
+  - name: ci_cd_alerts
+    rules:
+      # CI/CD Pipeline Alerts
+      - alert: CI_Pipeline_Failed
+        expr: ci_pipeline_success_total == 0
+        for: 5m
+        labels:
+          severity: critical
+          service: ci-pipeline
+        annotations:
+          summary: "CI Pipeline has failed"
+          description: "CI Pipeline run {{ $labels.run_id }} has failed"
+          runbook_url: "https://docs.example.com/ci-cd/troubleshooting"
+
+      - alert: CI_Job_Long_Running
+        expr: ci_job_duration_seconds > 1800  # 30 minutes
+        for: 10m
+        labels:
+          severity: warning
+          service: ci-pipeline
+        annotations:
+          summary: "CI Job running too long"
+          description: "CI Job {{ $labels.job_name }} has been running for over 30 minutes"
+
+      - alert: CI_Test_Coverage_Dropped
+        expr: ci_test_coverage_percent < 80
+        for: 5m
+        labels:
+          severity: warning
+          service: ci-pipeline
+        annotations:
+          summary: "Test coverage dropped below 80%"
+          description: "Test coverage has dropped to {{ $value }}%"
+
+      # Application Health Alerts
+      - alert: Application_Down
+        expr: up == 0
+        for: 5m
+        labels:
+          severity: critical
+          service: application
+        annotations:
+          summary: "Application is down"
+          description: "Application {{ $labels.job }} on {{ $labels.instance }} is not responding"
+
+      - alert: High_Error_Rate
+        expr: rate(http_requests_total{status=~"5.."}[5m]) / rate(http_requests_total[5m]) > 0.05
+        for: 5m
+        labels:
+          severity: warning
+          service: application
+        annotations:
+          summary: "High error rate detected"
+          description: "Error rate is {{ $value | humanizePercentage }} for {{ $labels.service }}"

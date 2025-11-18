@@ -1,0 +1,42 @@
+{
+  "_type": "https://in-toto.io/Statement/v0.1",
+  "subject": [
+  {
+    "name": "test-artifact.tar.gz",
+    "digest": {
+      "sha256": "8308d593eb56527137532595a60255a3fcfbe4b6b068e29b22d99742bad80f6f"
+    }
+  }
+
+],
+  "predicateType": "https://slsa.dev/provenance/v0.2",
+  "predicate": {
+    "buildDefinition": {
+      "buildType": "https://github.com/slsa-framework/slsa-github-generator@v1.9.0",
+      "externalParameters": {
+        "workflow": {
+          "repository": "https://github.com/PoliticalSphere/political-sphere.git",
+          "path": ".github/workflows/ci.yml"
+        }
+      },
+      "resolvedDependencies": [
+        {
+          "uri": "git+https://github.com/PoliticalSphere/political-sphere.git#8405e5a73a3551dea6e31d250e63eace8272cb10",
+          "digest": {
+            "gitCommit": "8405e5a73a3551dea6e31d250e63eace8272cb10"
+          }
+        }
+      ]
+    },
+    "runDetails": {
+      "builder": {
+        "id": "https://github.com/slsa-framework/slsa-github-generator/.github/workflows/generator_generic_slsa3.yml@main"
+      },
+      "metadata": {
+        "startedOn": "2025-11-18T14:54:09Z",
+        "finishedOn": "2025-11-18T14:54:09Z"
+      },
+      "byproducts": []
+    }
+  }
+}

@@ -1,0 +1,35 @@
+# CI/CD Alerting Configuration
+# Integrate with Slack, Discord, or email
+
+alerts:
+  # Critical: Immediate notification
+  critical:
+    - condition: "success_rate < 0.85"
+      message: "⚠️ CI success rate dropped below 85%"
+      channels: ["#ci-critical", "email:platform-team"]
+      
+    - condition: "p95_duration > 2400"  # 40 minutes
+      message: "⚠️ CI P95 duration exceeded 40 minutes"
+      channels: ["#ci-critical"]
+
+  # Warning: Daily digest
+  warning:
+    - condition: "cache_hit_rate < 0.65"
+      message: "📊 Cache hit rate below 65%"
+      channels: ["#ci-monitoring"]
+      
+    - condition: "flaky_test_rate > 0.10"
+      message: "🔄 Flaky test rate above 10%"
+      channels: ["#ci-monitoring"]
+
+  # Info: Weekly summary
+  info:
+    - condition: "cost_increase > 0.20"
+      message: "💰 CI costs increased by 20% this week"
+      channels: ["#ci-monitoring"]
+
+# Alert throttling
+throttling:
+  critical: "15min"  # Max 1 alert per 15 minutes
+  warning: "1hour"   # Max 1 alert per hour
+  info: "1day"       # Max 1 alert per day

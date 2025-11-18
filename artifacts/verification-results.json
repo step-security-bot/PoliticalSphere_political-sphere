@@ -1,0 +1,27 @@
+{
+  "verification_timestamp": "2025-11-18T15:04:20Z",
+  "project": "political-sphere",
+  "checks": {
+    "sbom_integrity": {
+      "status": "failed",
+      "details": "SBOM directory missing"
+    },
+    "artifact_signatures": {
+      "status": "failed",
+      "details": "No signature files found"
+    },
+    "slsa_provenance": {
+      "status": "passed",
+      "details": "Valid SLSA provenance format"
+    },
+    "slsa_level": {
+      "status": "passed",
+      "details": "SLSA Level 3 compliance confirmed"
+    },
+    "build_manifest": {
+      "status": "failed",
+      "details": "Build manifest missing"
+    }
+  },
+  "overall_result": false
+}

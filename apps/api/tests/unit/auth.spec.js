@@ -2,11 +2,11 @@ import express from 'express';
 import request from 'supertest';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import authRoutes from '../../src/routes/auth.js';
+// Set required environment variables for tests BEFORE importing anything that uses them
+process.env.JWT_SECRET = 'test-secret-key-that-is-at-least-32-characters-long';
+process.env.JWT_REFRESH_SECRET = 'test-refresh-secret-key-that-is-at-least-32-characters-long';
 
-// Set required environment variables for tests
-process.env.JWT_SECRET = 'test-secret-key';
-process.env.JWT_REFRESH_SECRET = 'test-refresh-secret-key';
+import authRoutes from '../../src/routes/auth.js';
 
 // Create a shared mock DB instance
 const mockDb = {

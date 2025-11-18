@@ -1,15 +1,15 @@
 # Political Sphere
 
-[![Version](https://img.shields.io/badge/version-2.4.0-blue.svg)](CHANGELOG.md)
 [![Node.js](https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen)](package.json)
-[![License](https://img.shields.io/badge/license-All%20Rights%20Reserved-red.svg)](LICENSE)
 [![Tests](https://img.shields.io/badge/tests-in%20progress-yellow)](docs/TODO.md)
 [![Coverage](https://codecov.io/gh/political-sphere/political-sphere/branch/main/graph/badge.svg)](https://codecov.io/gh/political-sphere/political-sphere)
 [![Audit](https://img.shields.io/badge/audit-completed-green)](#project-status)
 
-Political Sphere is an online multiplayer political simulation platform modeled on the political institutions of the United Kingdom. Players engage in parliamentary-style decision-making: drafting bills, debating policy, forming coalitions, and voting on legislation. Every decision produces realistic simulated outcomes, influencing the virtual country’s economy, public opinion, and social dynamics over time.
+🌍 **Political Sphere** is an immersive online multiplayer political simulation platform inspired by the UK's parliamentary system. Dive into the heart of democracy where players draft legislation, engage in heated debates, forge alliances, and cast votes that shape a virtual nation's destiny.
 
-Our primary strategic objective is to deliver rich, engaging gameplay that captures the complexity and unpredictability of democratic governance. A secondary strategic objective is to provide civic educational value — not through formal teaching, but through passive exposure to impartial processes and real-world political mechanics. Political Sphere does not promote any ideology or viewpoint; instead, it provides a neutral environment where decisions and consequences speak for themselves.
+Experience the thrill of governance as your choices ripple through realistic simulations affecting the economy, public sentiment, and societal dynamics. Whether you're a seasoned strategist or a curious newcomer, Political Sphere offers an unparalleled journey into the intricacies of democratic decision-making.
+
+Our mission: Deliver captivating gameplay that authentically mirrors the chaos and brilliance of real-world politics, while fostering civic understanding through experiential learning. No agendas, no biases—just pure, consequence-driven democracy in action.
 
 **AI Integration:**
 
@@ -42,14 +42,14 @@ The review process prioritises iteration over perfection. At times, code that co
 | **CI/CD Pipeline**   | ✅ Active         | Automated testing and security scans          |
 | **Production Ready** | 🚧 In Development | MVP features implemented, hardening ongoing   |
 
-## Features
+## ✨ Features
 
-- **Democratic Governance**: Constitutional framework with transparent decision-making and parliamentary procedures
-- **Multiplayer Simulation**: Real-time political scenario modeling with up to multiple concurrent players
-- **Ethical AI Integration**: AI assistants with strict governance boundaries and constitutional compliance
-- **Comprehensive Testing**: Unit, integration, e2e, accessibility, and security testing infrastructure
-- **Zero-Trust Security**: End-to-end encryption, auditability, and compliance monitoring
-- **Accessibility First**: WCAG 2.2 AA+ compliance across all interfaces with automated testing
+- 🏛️ **Democratic Governance**: Constitutional framework with transparent decision-making and parliamentary procedures
+- 👥 **Multiplayer Simulation**: Real-time political scenario modeling with up to multiple concurrent players
+- 🤖 **Ethical AI Integration**: AI assistants with strict governance boundaries and constitutional compliance
+- 🧪 **Comprehensive Testing**: Unit, integration, e2e, accessibility, and security testing infrastructure
+- 🔒 **Zero-Trust Security**: End-to-end encryption, auditability, and compliance monitoring
+- ♿ **Accessibility First**: WCAG 2.2 AA+ compliance across all interfaces with automated testing
 
 ## Installation
 
@@ -73,6 +73,19 @@ npm install
 # Optional: Run health checks
 npm run preflight
 ```
+
+## Quick Start
+
+For the impatient:
+
+```bash
+git clone https://github.com/your-org/political-sphere.git
+cd political-sphere
+npm install
+npm run dev
+```
+
+Visit `http://localhost:3000` to start exploring the political simulation.
 
 ## Usage
 
@@ -98,9 +111,9 @@ npm run build:api        # Build the API (TypeScript compilation)
 ### AI-Assisted Development
 
 ```bash
-npm run ai:review        # AI code review and suggestions
-npm run ai:blackbox      # Governance compliance checking
+npm run ai:improve       # AI code review and suggestions
 npm run ai:status        # Check AI assistant status
+npm run ai:chat          # Interactive AI assistant
 ```
 
 ## Development
@@ -120,26 +133,36 @@ npm run ai:status        # Check AI assistant status
 
 ```
 apps/                    # Applications
-├── api/                 # REST API server (Express.js + TypeScript)
-├── web/                 # React frontend (Vite + TypeScript)
-├── game-server/         # Game simulation engine
-├── e2e/                 # End-to-end tests
-└── infrastructure/      # Infrastructure as Code
+├── dev/                 # Development environment, tools, and sandbox
+├── game-server/         # Game simulation engine (TypeScript + Node.js)
 
-libs/                    # Shared libraries and utilities
-├── shared/              # Common utilities and types
-├── ui/                  # Reusable React components
-├── testing/             # Test utilities and factories
-└── platform/            # Platform-specific code
+libs/                    # Shared libraries and utilities (TBD)
 
 docs/                    # Documentation
-├── 00-foundation/       # Business and product docs
-├── 04-architecture/     # Technical architecture
-├── 05-engineering-and-devops/  # Development guides
-└── 06-security-and-risk/       # Security documentation
+├── ...                  # Various guides and architecture docs
 
-scripts/                 # Automation and utility scripts
+tools/                   # Development tools and automation
+├── scripts/             # Build, test, and utility scripts
+├── mcp-servers/         # MCP server implementations
+├── monitoring/          # Performance and system monitoring
+└── docker-compose.yml   # Development environment setup
+
+data/                    # Test data, fixtures, and seeds
+├── fixtures/            # Test scenarios and user data
+├── datasets/            # Data catalogs
+└── runtime/             # Runtime data storage
+
+prisma/                  # Database schema and migrations
+
 .github/                 # GitHub workflows and templates
+
+ai/                      # AI-assisted development tools
+
+assets/                  # Static assets and resources
+
+config/                  # Configuration files
+
+reports/                 # Generated reports and analytics
 ```
 
 ## Testing
@@ -163,7 +186,7 @@ npm run test:frontend     # Frontend component tests
 
 ## Contributing
 
-See [Contributing Guide](CONTRIBUTING.md) and [.blackboxrules](.blackboxrules) for governance rules.
+See [.blackboxrules](.blackboxrules) for governance rules.
 
 ### Development Workflow
 
@@ -185,26 +208,33 @@ See [Contributing Guide](CONTRIBUTING.md) and [.blackboxrules](.blackboxrules) f
 - **Testing**: Comprehensive automated testing required
 - **AI Ethics**: AI cannot influence political outcomes or bias results
 
+## 🧠 Development Philosophy
+
+Political Sphere embraces a **human-AI collaborative development model** where AI accelerates progress while maintaining human oversight and ethical boundaries. Our core principles:
+
+- **Iterative Excellence**: Prioritize momentum over perfection; commit working code early and refine iteratively
+- **Ethical AI Use**: AI assists development but never compromises democratic integrity or security
+- **Open Governance**: All decisions follow transparent, documented processes with community input
+- **Quality Assurance**: Comprehensive testing, security audits, and accessibility checks are non-negotiable
+- **Educational Impact**: Build systems that teach democratic principles through immersive experience
+
 ## Documentation
 
 ### Architecture & Design
 
 - [System Architecture](docs/STRUCTURE.md)
-- [API Documentation](apps/api/openapi/api.yaml)
-- [Database Schema](docs/04-architecture/database-schema.md)
+- [API Documentation](docs/04-architecture/api.md)
 - [Security Guidelines](docs/06-security-and-risk/SECURITY.md)
 
 ### Development Guides
 
-- [Contributing Guide](CONTRIBUTING.md)
 - [Coding Standards](docs/05-engineering-and-devops/coding-standards-typescript-react.md)
-- [Testing Guide](docs/05-engineering-and-devops/testing.md)
+- [Testing Guide](docs/05-engineering-and-devops/testing/)
 - [AI Governance](docs/07-ai-and-simulation/ai-governance.md)
 
 ### Project Management
 
 - [TODO List](docs/TODO.md)
-- [CHANGELOG](CHANGELOG.md)
 - [ADR Index](docs/04-architecture/adr/)
 
 ## System Requirements
@@ -239,7 +269,7 @@ Political Sphere is built as an Nx monorepo with microservices architecture:
 - **Base URL**: `http://localhost:3001` (development)
 - **Authentication**: JWT with refresh tokens
 - **Rate Limiting**: Configurable per endpoint
-- **OpenAPI Spec**: [View API Documentation](apps/api/openapi/api.yaml)
+- **API Documentation**: [View API Documentation](docs/04-architecture/api.md)
 
 ### Key Endpoints
 
@@ -264,6 +294,23 @@ npm run dev              # Start all services with Docker
 - Kubernetes manifests in `apps/infrastructure/`
 - GitOps deployment via ArgoCD
 - Automated CI/CD pipelines with security scanning
+
+## FAQ
+
+### What is Political Sphere?
+Political Sphere is a multiplayer simulation game that lets players experience democratic governance through parliamentary procedures, policy-making, and coalition-building in a virtual UK-inspired political system.
+
+### How does AI integration work?
+AI assistants help with development tasks and power in-game NPCs for realistic opposition. All AI systems are governed by strict ethical frameworks to ensure neutrality and prevent manipulation of political outcomes.
+
+### Is the game free?
+Yes, Political Sphere is open-source and free to play. The project focuses on educational and entertainment value rather than monetization.
+
+### Can I contribute?
+Absolutely! See the Contributing section above and our [.blackboxrules](.blackboxrules) for governance guidelines. We welcome contributions that align with our principles of democratic integrity and security.
+
+### What technologies are used?
+The project is built with Node.js, TypeScript, React, and various modern web technologies. It uses an Nx monorepo structure for scalable development.
 
 ## Troubleshooting
 
@@ -334,4 +381,4 @@ npm run build
 
 ## License
 
-All Rights Reserved. See [LICENSE](LICENSE) for details.
+All Rights Reserved.

@@ -1,0 +1,187 @@
+name: 'Security Scanning'
+description: 'Comprehensive security scanning with npm audit, Semgrep, Trivy, and Grype'
+author: 'Political Sphere Team'
+
+inputs:
+  node-version:
+    description: 'Node.js version to use'
+    required: false
+    default: '22'
+  
+  enable-npm-audit:
+    description: 'Enable npm audit for dependency vulnerabilities'
+    required: false
+    default: 'true'
+  
+  enable-semgrep:
+    description: 'Enable Semgrep SAST scanning'
+    required: false
+    default: 'true'
+  
+  enable-trivy:
+    description: 'Enable Trivy vulnerability scanner'
+    required: false
+    default: 'true'
+  
+  enable-grype:
+    description: 'Enable Grype vulnerability scanner'
+    required: false
+    default: 'true'
+  
+  fail-on-high:
+    description: 'Fail the action if high/critical vulnerabilities are found'
+    required: false
+    default: 'true'
+
+  semgrep-token:
+    description: 'Semgrep App token for cloud integration'
+    required: false
+    default: ''
+
+outputs:
+  npm-audit-result:
+    description: 'Result of npm audit (passed/failed/skipped)'
+    value: ${{ steps.npm-audit.outputs.result }}
+  
+  semgrep-result:
+    description: 'Result of Semgrep scan (passed/failed/skipped)'
+    value: ${{ steps.semgrep.outputs.result }}
+  
+  trivy-result:
+    description: 'Result of Trivy scan (passed/failed/skipped)'
+    value: ${{ steps.trivy.outputs.result }}
+  
+  grype-result:
+    description: 'Result of Grype scan (passed/failed/skipped)'
+    value: ${{ steps.grype.outputs.result }}
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Cache security databases
+      if: inputs.enable-trivy == 'true' || inputs.enable-grype == 'true'
+      uses: actions/cache@e12d46a63a90f2fae62d114769bbf2a179198b5c # v4.2.0
+      with:
+        path: |
+          ~/.cache/trivy
+          ~/.cache/grype
+        key: ${{ runner.os }}-security-db-${{ steps.date.outputs.date }}
+        restore-keys: |
+          ${{ runner.os }}-security-db-
+
+    - name: Get current date
+      id: date
+      shell: bash
+      run: echo "date=$(date +'%Y-%m-%d')" >> $GITHUB_OUTPUT
+
+    - name: Run npm audit
+      id: npm-audit
+      if: inputs.enable-npm-audit == 'true'
+      shell: bash
+      continue-on-error: ${{ inputs.fail-on-high != 'true' }}
+      run: |
+        echo "🔍 Running npm audit for dependency vulnerabilities..."
+        if npm audit --audit-level=high --production; then
+          echo "result=passed" >> $GITHUB_OUTPUT
+          echo "✅ npm audit passed - no high/critical vulnerabilities"
+        else
+          echo "result=failed" >> $GITHUB_OUTPUT
+          echo "❌ npm audit found high/critical vulnerabilities"
+          if [ "${{ inputs.fail-on-high }}" = "true" ]; then
+            exit 1
+          fi
+        fi
+
+    - name: Run Semgrep SAST
+      id: semgrep
+      if: inputs.enable-semgrep == 'true'
+      shell: bash
+      continue-on-error: ${{ inputs.fail-on-high != 'true' }}
+      run: |
+        echo "🔍 Running Semgrep SAST analysis..."
+        
+        # Install Semgrep if not available
+        if ! command -v semgrep &> /dev/null; then
+          pip install semgrep==1.67.0
+        fi
+        
+        # Run with common security rulesets
+        if semgrep scan --config=p/default --config=p/owasp-top-ten --error --quiet; then
+          echo "result=passed" >> $GITHUB_OUTPUT
+          echo "✅ Semgrep passed - no security issues found"
+        else
+          echo "result=failed" >> $GITHUB_OUTPUT
+          echo "❌ Semgrep found security issues"
+          if [ "${{ inputs.fail-on-high }}" = "true" ]; then
+            exit 1
+          fi
+        fi
+
+    - name: Run Trivy vulnerability scanner
+      id: trivy
+      if: inputs.enable-trivy == 'true'
+      shell: bash
+      continue-on-error: ${{ inputs.fail-on-high != 'true' }}
+      run: |
+        echo "🔍 Running Trivy vulnerability scanner..."
+        
+        # Install Trivy if not available
+        if ! command -v trivy &> /dev/null; then
+          wget -qO- https://github.com/aquasecurity/trivy/releases/download/v0.67.2/trivy_0.67.2_Linux-64bit.tar.gz | \
+            tar xz -C /tmp && sudo mv /tmp/trivy /usr/local/bin/
+        fi
+        
+        # Scan filesystem for vulnerabilities
+        if trivy fs --severity HIGH,CRITICAL --exit-code 1 .; then
+          echo "result=passed" >> $GITHUB_OUTPUT
+          echo "✅ Trivy passed - no high/critical vulnerabilities"
+        else
+          echo "result=failed" >> $GITHUB_OUTPUT
+          echo "❌ Trivy found high/critical vulnerabilities"
+          if [ "${{ inputs.fail-on-high }}" = "true" ]; then
+            exit 1
+          fi
+        fi
+
+    - name: Run Grype vulnerability scanner
+      id: grype
+      if: inputs.enable-grype == 'true'
+      shell: bash
+      continue-on-error: ${{ inputs.fail-on-high != 'true' }}
+      run: |
+        echo "🔍 Running Grype vulnerability scanner..."
+        
+        # Install Grype if not available
+        if ! command -v grype &> /dev/null; then
+          curl -sSfL https://raw.githubusercontent.com/anchore/grype/main/install.sh | \
+            sh -s -- -b /usr/local/bin v0.103.0
+        fi
+        
+        # Scan current directory
+        if grype dir:. --fail-on high; then
+          echo "result=passed" >> $GITHUB_OUTPUT
+          echo "✅ Grype passed - no high/critical vulnerabilities"
+        else
+          echo "result=failed" >> $GITHUB_OUTPUT
+          echo "❌ Grype found high/critical vulnerabilities"
+          if [ "${{ inputs.fail-on-high }}" = "true" ]; then
+            exit 1
+          fi
+        fi
+
+    - name: Security scan summary
+      if: always()
+      shell: bash
+      run: |
+        echo "## 🔒 Security Scan Results"
+        echo ""
+        echo "| Scanner | Result |"
+        echo "|---------|--------|"
+        echo "| npm audit | ${{ steps.npm-audit.outputs.result || 'skipped' }} |"
+        echo "| Semgrep | ${{ steps.semgrep.outputs.result || 'skipped' }} |"
+        echo "| Trivy | ${{ steps.trivy.outputs.result || 'skipped' }} |"
+        echo "| Grype | ${{ steps.grype.outputs.result || 'skipped' }} |"
+
+branding:
+  icon: 'shield'
+  color: 'blue'

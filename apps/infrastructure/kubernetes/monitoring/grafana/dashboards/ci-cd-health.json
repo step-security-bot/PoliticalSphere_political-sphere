@@ -1,0 +1,100 @@
+{
+  "dashboard": {
+    "id": null,
+    "title": "CI/CD Health Dashboard",
+    "tags": ["ci-cd", "observability", "monitoring"],
+    "timezone": "browser",
+    "panels": [
+      {
+        "id": 1,
+        "title": "Pipeline Success Rate",
+        "type": "stat",
+        "targets": [
+          {
+            "expr": "rate(ci_pipeline_success_total[5m])",
+            "legendFormat": "Success Rate"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "percentunit",
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                { "color": "red", "value": null },
+                { "color": "orange", "value": 0.95 },
+                { "color": "green", "value": 0.99 }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "id": 2,
+        "title": "Job Durations",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "ci_job_duration_seconds{job_name=~\"$job\"}",
+            "legendFormat": "{{job_name}}"
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "title": "Test Coverage Trend",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "ci_test_coverage_percent",
+            "legendFormat": "Coverage %"
+          }
+        ]
+      },
+      {
+        "id": 4,
+        "title": "Build Artifacts Count",
+        "type": "stat",
+        "targets": [
+          {
+            "expr": "ci_build_artifacts_count",
+            "legendFormat": "Artifacts"
+          }
+        ]
+      },
+      {
+        "id": 5,
+        "title": "Failure Analytics",
+        "type": "table",
+        "targets": [
+          {
+            "expr": "ci_job_duration_seconds{job_result=\"failure\"}",
+            "legendFormat": "Failed Jobs"
+          }
+        ]
+      }
+    ],
+    "time": {
+      "from": "now-1h",
+      "to": "now"
+    },
+    "timepicker": {},
+    "templating": {
+      "list": [
+        {
+          "name": "job",
+          "type": "query",
+          "query": "label_values(ci_job_duration_seconds, job_name)",
+          "label": "Job"
+        }
+      ]
+    },
+    "annotations": {
+      "list": []
+    },
+    "refresh": "30s",
+    "schemaVersion": 27,
+    "version": 0,
+    "links": []
+  }
+}

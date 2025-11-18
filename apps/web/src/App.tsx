@@ -4,18 +4,13 @@
  * Users log in and directly enter the persistent simulation
  */
 
-import { useState } from 'react';
 import './App.css';
-import Login from './components/Auth/Login';
-import Register from './components/Auth/Register';
+import AuthForm from './components/Auth/AuthForm';
 import MainGame from './components/MainGame';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 
-type Screen = 'login' | 'register' | 'simulation';
-
 function AppContent() {
   const { user, isAuthenticated, isLoading, logout } = useAuth();
-  const [screen, setScreen] = useState<Screen>('login');
 
   if (isLoading) {
     return (
@@ -26,36 +21,15 @@ function AppContent() {
     );
   }
 
-  // Not authenticated - show login/register
+  // Not authenticated - show unified auth form
   if (!isAuthenticated) {
-    if (screen === 'register') {
-      return (
-        <Register
-          onRegisterSuccess={() => setScreen('simulation')}
-          onSwitchToLogin={() => setScreen('login')}
-        />
-      );
-    }
-
-    return (
-      <Login
-        onLoginSuccess={() => setScreen('simulation')}
-        onSwitchToRegister={() => setScreen('register')}
-      />
-    );
+    return <AuthForm onAuthSuccess={() => {}} />;
   }
 
   // Authenticated - show simulation
   // Single world simulation - no game ID needed
   return (
-    <MainGame
-      userId={user?.id || ''}
-      username={user?.username || 'Player'}
-      onLogout={async () => {
-        await logout();
-        setScreen('login');
-      }}
-    />
+    <MainGame userId={user?.id || ''} username={user?.username || 'Player'} onLogout={logout} />
   );
 }
 

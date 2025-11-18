@@ -4,10 +4,9 @@
  * Integrates accessibility and reporting features
  */
 
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useAccessibility } from '../hooks/useAccessibility.js';
 import ReportContent from './ReportContent';
-import './GameBoard.css'; // Assume CSS exists or create later
 
 const GameBoard = ({ gameId, proposals, onProposalSubmit, onVote }) => {
   const [showReport, setShowReport] = useState(null);

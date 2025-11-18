@@ -119,12 +119,12 @@ export class AuthService {
     // getUserForAuth accepts username or email
     const userForAuth = await db.users.getUserForAuth(username);
     if (!userForAuth) {
-      throw new Error('Invalid credentials');
+      throw new Error('Invalid username or password');
     }
 
     const isValid = await bcrypt.compare(password, userForAuth.passwordHash);
     if (!isValid) {
-      throw new Error('Invalid credentials');
+      throw new Error('Invalid username or password');
     }
 
     const user = await db.users.getById(userForAuth.id);

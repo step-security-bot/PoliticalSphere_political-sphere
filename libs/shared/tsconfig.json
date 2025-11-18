@@ -1,6 +1,7 @@
 {
   "extends": "../../tools/config/tsconfig.base.json",
   "compilerOptions": {
+    "ignoreDeprecations": "6.0",
     "baseUrl": ".",
     "outDir": "./dist",
     "rootDir": "./src",
@@ -10,7 +11,7 @@
     "module": "ES2022",
     "target": "ES2022",
     "lib": ["ES2022"],
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "allowJs": true,
     "checkJs": false,
     "esModuleInterop": true,

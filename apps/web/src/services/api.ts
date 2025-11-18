@@ -20,54 +20,29 @@ class ApiClient {
   }
 
   private loadTokens(): void {
-    this.accessToken = localStorage.getItem('accessToken');
-    this.refreshToken = localStorage.getItem('refreshToken');
+    // Tokens are now managed by httpOnly cookies on the server side
+    // Client-side storage removed for security
   }
 
-  private saveTokens(accessToken: string, refreshToken: string): void {
-    this.accessToken = accessToken;
-    this.refreshToken = refreshToken;
-    localStorage.setItem('accessToken', accessToken);
-    localStorage.setItem('refreshToken', refreshToken);
+  private saveTokens(): void {
+    // Tokens are now managed by httpOnly cookies on the server side
+    // Client-side storage removed for security
   }
 
   private clearTokens(): void {
-    this.accessToken = null;
-    this.refreshToken = null;
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('refreshToken');
-    localStorage.removeItem('user');
+    // Tokens are now managed by httpOnly cookies on the server side
+    // Client-side storage removed for security
   }
 
   private async refreshAccessToken(): Promise<boolean> {
-    if (!this.refreshToken) return false;
-
-    try {
-      const response = await fetch(`${this.baseUrl}/auth/refresh`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ refreshToken: this.refreshToken }),
-      });
-
-      if (!response.ok) {
-        this.clearTokens();
-        return false;
-      }
-
-      const data = await response.json();
-      this.saveTokens(data.accessToken, data.refreshToken);
-      return true;
-    } catch {
-      this.clearTokens();
-      return false;
-    }
+    // Token refresh is now handled server-side with httpOnly cookies
+    // Client-side refresh removed for security
+    return false;
   }
 
   private async request<T = any>(
     endpoint: string,
-    options: RequestInit = {}
+    options: RequestInit = {},
   ): Promise<ApiResponse<T>> {
     const url = `${this.baseUrl}${endpoint}`;
     const headers: Record<string, string> = {
@@ -75,31 +50,20 @@ class ApiClient {
       ...(options.headers as Record<string, string>),
     };
 
-    if (this.accessToken) {
-      headers['Authorization'] = `Bearer ${this.accessToken}`;
-    }
+    // Authorization is now handled via httpOnly cookies
+    // No client-side token management
 
     try {
-      let response = await fetch(url, {
+      const response = await fetch(url, {
         ...options,
         headers,
+        credentials: 'include', // Include cookies for authentication
       });
 
-      // If unauthorized, try to refresh token
-      if (response.status === 401 && this.refreshToken) {
-        const refreshed = await this.refreshAccessToken();
-        if (refreshed && this.accessToken) {
-          // Retry request with new token
-          headers['Authorization'] = `Bearer ${this.accessToken}`;
-          response = await fetch(url, {
-            ...options,
-            headers,
-          });
-        } else {
-          // Refresh failed, redirect to login
-          window.location.href = '/login';
-          throw new Error('Session expired. Please log in again.');
-        }
+      // If unauthorized, redirect to login
+      if (response.status === 401) {
+        window.location.href = '/login';
+        throw new Error('Session expired. Please log in again.');
       }
 
       const data = await response.json();
@@ -130,17 +94,8 @@ class ApiClient {
       body: JSON.stringify({ email, password }),
     });
 
-    // Store tokens if login successful
-    if (response.success && response.data) {
-      // Handle both token formats: legacy (token/refreshToken) and new (tokens.accessToken/refreshToken)
-      const tokens = response.data.tokens || response.data;
-      const accessToken = tokens.accessToken || tokens.token;
-      const refreshToken = tokens.refreshToken;
-
-      if (accessToken && refreshToken) {
-        this.saveTokens(accessToken, refreshToken);
-      }
-    }
+    // Tokens are now managed server-side with httpOnly cookies
+    // No client-side token storage
 
     return response;
   }
@@ -151,29 +106,17 @@ class ApiClient {
       body: JSON.stringify({ username, email, password }),
     });
 
-    // Store tokens if registration successful
-    if (response.success && response.data) {
-      // Handle both token formats: legacy (token/refreshToken) and new (tokens.accessToken/refreshToken)
-      const tokens = response.data.tokens || response.data;
-      const accessToken = tokens.accessToken || tokens.token;
-      const refreshToken = tokens.refreshToken;
-
-      if (accessToken && refreshToken) {
-        this.saveTokens(accessToken, refreshToken);
-      }
-    }
+    // Tokens are now managed server-side with httpOnly cookies
+    // No client-side token storage
 
     return response;
   }
 
   async logout(): Promise<void> {
-    if (this.refreshToken) {
-      await this.request('/auth/logout', {
-        method: 'POST',
-        body: JSON.stringify({ refreshToken: this.refreshToken }),
-      });
-    }
-    this.clearTokens();
+    await this.request('/auth/logout', {
+      method: 'POST',
+    });
+    // Cookies are cleared server-side
   }
 
   // Parliament (Single World - no gameId needed)

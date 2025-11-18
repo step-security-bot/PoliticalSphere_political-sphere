@@ -1,7 +1,7 @@
 /**
  * @vitest-environment jsdom
  */
-import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 // Mock window.matchMedia BEFORE any imports
 Object.defineProperty(window, 'matchMedia', {
@@ -30,7 +30,7 @@ const focusPreviousElementMock = vi.fn();
 const skipToContentMock = vi.fn();
 const skipToNavigationMock = vi.fn();
 
-vi.mock('../../hooks/useAccessibility', () => ({
+vi.mock('../hooks/useAccessibility.js', () => ({
   useAccessibility: () => ({
     announce: announceMock,
     trapFocus: trapFocusMock,
@@ -46,7 +46,7 @@ vi.mock('../../hooks/useAccessibility', () => ({
 }));
 
 // Mock ReportContent component
-vi.mock('./ReportContent', () => ({
+vi.mock('./ReportContent.jsx', () => ({
   default: ({ onClose, onReportSubmitted }) => (
     <div data-testid="report-content">
       <h2 id="report-title">Report Content</h2>
@@ -60,12 +60,8 @@ vi.mock('./ReportContent', () => ({
   ),
 }));
 
-let GameBoard;
-beforeAll(async () => {
-  // Dynamically import after mocks are registered so the module can
-  // be resolved and the mocked dependencies applied by Vitest.
-  GameBoard = (await import('./GameBoard')).default;
-});
+// Import GameBoard statically after mocks are defined
+import GameBoard from './GameBoard';
 
 describe('GameBoard Component', () => {
   const mockProposals = [
@@ -124,7 +120,7 @@ describe('GameBoard Component', () => {
 
     it('should not render proposal form when onProposalSubmit is not provided', () => {
       render(
-        <GameBoard gameId="game-123" proposals={mockProposals} onVote={mockCallbacks.onVote} />
+        <GameBoard gameId="game-123" proposals={mockProposals} onVote={mockCallbacks.onVote} />,
       );
 
       expect(screen.queryByText('Submit a Proposal')).not.toBeInTheDocument();

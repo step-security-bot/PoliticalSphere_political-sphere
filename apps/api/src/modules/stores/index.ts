@@ -64,10 +64,15 @@ export class DatabaseConnection {
   }
 }
 
-// Singleton pattern for database connection
+// Singleton pattern for database connection (disabled in tests)
 let dbConnection: DatabaseConnection | null = null;
 
 export function getDatabase(options: DatabaseOptions = {}): DatabaseConnection {
+  // In test environment, always create a new connection to avoid interference
+  if (process.env.NODE_ENV === 'test') {
+    return new DatabaseConnection(options);
+  }
+
   if (!dbConnection) {
     dbConnection = new DatabaseConnection(options);
   }
@@ -75,6 +80,14 @@ export function getDatabase(options: DatabaseOptions = {}): DatabaseConnection {
 }
 
 export function closeDatabase(): void {
+  if (process.env.NODE_ENV === 'test') {
+    // In test environment, getDatabase() returns a new instance each time,
+    // so we need to close the specific instance. But since tests call this
+    // in afterEach, and getDatabase() creates new instances, we can't track them.
+    // Instead, rely on garbage collection or let the process end.
+    return;
+  }
+
   if (dbConnection) {
     dbConnection.close();
     dbConnection = null;

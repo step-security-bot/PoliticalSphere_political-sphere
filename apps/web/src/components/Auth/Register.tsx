@@ -4,7 +4,8 @@
  * WCAG 2.2 AA Compliant
  */
 
-import React, { FormEvent, useState } from 'react';
+import type React from 'react';
+import { type FormEvent, useState } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 import './Auth.css';
 
@@ -13,16 +14,20 @@ interface RegisterProps {
   onSwitchToLogin: () => void;
 }
 
-const Register: React.FC<RegisterProps> = ({ onRegisterSuccess, onSwitchToLogin }) => {
-  const { register } = useAuth();
+const Register: React.FC<RegisterProps> = ({
+  onRegisterSuccess,
+  onSwitchToLogin: _onSwitchToLogin,
+}) => {
+  const { register, registerLoading } = useAuth();
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [agreedToTerms, setAgreedToTerms] = useState(false);
+  const [passwordStrength, setPasswordStrength] = useState<'Weak' | 'Medium' | 'Strong'>('Weak');
 
   const validateUsername = (name: string): string | null => {
     if (name.length < 3) return 'Username must be at least 3 characters';
@@ -38,7 +43,21 @@ const Register: React.FC<RegisterProps> = ({ onRegisterSuccess, onSwitchToLogin 
     if (!/[A-Z]/.test(pwd)) return 'Password must contain an uppercase letter';
     if (!/[a-z]/.test(pwd)) return 'Password must contain a lowercase letter';
     if (!/[0-9]/.test(pwd)) return 'Password must contain a number';
+    if (!/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(pwd))
+      return 'Password must contain a special character';
     return null;
+  };
+
+  const calculatePasswordStrength = (pwd: string): 'Weak' | 'Medium' | 'Strong' => {
+    let score = 0;
+    if (pwd.length >= 8) score++;
+    if (/[A-Z]/.test(pwd)) score++;
+    if (/[a-z]/.test(pwd)) score++;
+    if (/[0-9]/.test(pwd)) score++;
+    if (/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(pwd)) score++;
+    if (score <= 1) return 'Weak';
+    if (score <= 3) return 'Medium';
+    return 'Strong';
   };
 
   const handleSubmit = async (e: FormEvent) => {
@@ -68,8 +87,6 @@ const Register: React.FC<RegisterProps> = ({ onRegisterSuccess, onSwitchToLogin 
       return;
     }
 
-    setLoading(true);
-
     try {
       const result = await register(username, email, password);
 
@@ -78,10 +95,8 @@ const Register: React.FC<RegisterProps> = ({ onRegisterSuccess, onSwitchToLogin 
       } else {
         setError(result.error || 'Registration failed');
       }
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'An unexpected error occurred');
-    } finally {
-      setLoading(false);
+    } catch {
+      setError('An unexpected error occurred. Please try again.');
     }
   };
 
@@ -90,7 +105,7 @@ const Register: React.FC<RegisterProps> = ({ onRegisterSuccess, onSwitchToLogin 
       <div className="auth-card">
         <header className="auth-header">
           <h1>Political Sphere</h1>
-          <p>UK Political Simulation Game</p>
+          <p>Ready to take your seat?</p>
         </header>
 
         <form className="auth-form" onSubmit={handleSubmit} noValidate>
@@ -108,9 +123,7 @@ const Register: React.FC<RegisterProps> = ({ onRegisterSuccess, onSwitchToLogin 
           <div className="form-group">
             <label htmlFor="username">
               Username
-              <span className="required" aria-label="required">
-                *
-              </span>
+              <span className="required">*</span>
             </label>
             <input
               type="text"
@@ -123,7 +136,7 @@ const Register: React.FC<RegisterProps> = ({ onRegisterSuccess, onSwitchToLogin 
               aria-required="true"
               aria-invalid={error ? 'true' : 'false'}
               aria-describedby="username-requirements"
-              disabled={loading}
+              disabled={registerLoading}
               placeholder="Choose a unique username"
               minLength={3}
               maxLength={50}
@@ -136,9 +149,7 @@ const Register: React.FC<RegisterProps> = ({ onRegisterSuccess, onSwitchToLogin 
           <div className="form-group">
             <label htmlFor="email">
               Email Address
-              <span className="required" aria-label="required">
-                *
-              </span>
+              <span className="required">*</span>
             </label>
             <input
               type="email"
@@ -150,7 +161,7 @@ const Register: React.FC<RegisterProps> = ({ onRegisterSuccess, onSwitchToLogin 
               autoComplete="email"
               aria-required="true"
               aria-invalid={error ? 'true' : 'false'}
-              disabled={loading}
+              disabled={registerLoading}
               placeholder="your.email@example.com"
               maxLength={255}
             />
@@ -159,9 +170,7 @@ const Register: React.FC<RegisterProps> = ({ onRegisterSuccess, onSwitchToLogin 
           <div className="form-group">
             <label htmlFor="password">
               Password
-              <span className="required" aria-label="required">
-                *
-              </span>
+              <span className="required">*</span>
             </label>
             <div className="password-input-wrapper">
               <input
@@ -169,13 +178,16 @@ const Register: React.FC<RegisterProps> = ({ onRegisterSuccess, onSwitchToLogin 
                 id="password"
                 name="password"
                 value={password}
-                onChange={e => setPassword(e.target.value)}
+                onChange={e => {
+                  setPassword(e.target.value);
+                  setPasswordStrength(calculatePasswordStrength(e.target.value));
+                }}
                 required
                 autoComplete="new-password"
                 aria-required="true"
                 aria-invalid={error ? 'true' : 'false'}
                 aria-describedby="password-requirements"
-                disabled={loading}
+                disabled={registerLoading}
                 placeholder="Create a strong password"
               />
               <button
@@ -183,36 +195,115 @@ const Register: React.FC<RegisterProps> = ({ onRegisterSuccess, onSwitchToLogin 
                 className="password-toggle"
                 onClick={() => setShowPassword(!showPassword)}
                 aria-label={showPassword ? 'Hide password' : 'Show password'}
-                disabled={loading}
+                disabled={registerLoading}
+                style={{ outline: 'none' }}
               >
-                {showPassword ? '👁️' : '👁️‍🗨️'}
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className={`eye-icon ${showPassword ? 'eye-open' : 'eye-closed'}`}
+                >
+                  <title>Password visibility toggle</title>
+                  {showPassword ? (
+                    <>
+                      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                      <circle cx="12" cy="12" r="3" />
+                    </>
+                  ) : (
+                    <>
+                      <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" />
+                      <line x1="1" y1="1" x2="23" y2="23" />
+                    </>
+                  )}
+                </svg>
               </button>
             </div>
             <div id="password-requirements" className="field-help">
               8-128 characters with uppercase, lowercase, and number
+            </div>
+            <div className="password-strength-indicator">
+              <span>Password Strength: {passwordStrength}</span>
+              <div className="strength-bar-container">
+                <div
+                  className="strength-bar"
+                  style={{
+                    width:
+                      passwordStrength === 'Weak'
+                        ? '33%'
+                        : passwordStrength === 'Medium'
+                          ? '66%'
+                          : '100%',
+                    backgroundColor:
+                      passwordStrength === 'Weak'
+                        ? '#ff4444'
+                        : passwordStrength === 'Medium'
+                          ? '#ffaa00'
+                          : '#44aa44',
+                  }}
+                ></div>
+              </div>
             </div>
           </div>
 
           <div className="form-group">
             <label htmlFor="confirmPassword">
               Confirm Password
-              <span className="required" aria-label="required">
-                *
-              </span>
+              <span className="required">*</span>
             </label>
-            <input
-              type={showPassword ? 'text' : 'password'}
-              id="confirmPassword"
-              name="confirmPassword"
-              value={confirmPassword}
-              onChange={e => setConfirmPassword(e.target.value)}
-              required
-              autoComplete="new-password"
-              aria-required="true"
-              aria-invalid={error ? 'true' : 'false'}
-              disabled={loading}
-              placeholder="Re-enter your password"
-            />
+            <div className="password-input-wrapper">
+              <input
+                type={showConfirmPassword ? 'text' : 'password'}
+                id="confirmPassword"
+                name="confirmPassword"
+                value={confirmPassword}
+                onChange={e => setConfirmPassword(e.target.value)}
+                required
+                autoComplete="new-password"
+                aria-required="true"
+                aria-invalid={error ? 'true' : 'false'}
+                disabled={registerLoading}
+                placeholder="Re-enter your password"
+              />
+              <button
+                type="button"
+                className="password-toggle"
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                aria-label={showConfirmPassword ? 'Hide password' : 'Show password'}
+                disabled={registerLoading}
+                style={{ outline: 'none' }}
+              >
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className={`eye-icon ${showConfirmPassword ? 'eye-open' : 'eye-closed'}`}
+                >
+                  <title>Password visibility toggle</title>
+                  {showConfirmPassword ? (
+                    <>
+                      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                      <circle cx="12" cy="12" r="3" />
+                    </>
+                  ) : (
+                    <>
+                      <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" />
+                      <line x1="1" y1="1" x2="23" y2="23" />
+                    </>
+                  )}
+                </svg>
+              </button>
+            </div>
           </div>
 
           <div className="form-group checkbox-group">
@@ -225,7 +316,7 @@ const Register: React.FC<RegisterProps> = ({ onRegisterSuccess, onSwitchToLogin 
                 onChange={e => setAgreedToTerms(e.target.checked)}
                 required
                 aria-required="true"
-                disabled={loading}
+                disabled={registerLoading}
               />
               <span>
                 I agree to the{' '}
@@ -244,22 +335,18 @@ const Register: React.FC<RegisterProps> = ({ onRegisterSuccess, onSwitchToLogin 
             type="submit"
             className="btn-primary btn-full-width"
             disabled={
-              loading || !username || !email || !password || !confirmPassword || !agreedToTerms
+              registerLoading ||
+              !username ||
+              !email ||
+              !password ||
+              !confirmPassword ||
+              !agreedToTerms
             }
           >
-            {loading ? 'Creating account...' : 'Create Account'}
+            {registerLoading ? 'Creating account...' : 'Create Account'}
           </button>
 
-          <div className="auth-links">
-            <button
-              type="button"
-              className="link-button"
-              onClick={onSwitchToLogin}
-              disabled={loading}
-            >
-              Already have an account? Log in
-            </button>
-          </div>
+          <div className="auth-links"></div>
         </form>
 
         <footer className="auth-footer">

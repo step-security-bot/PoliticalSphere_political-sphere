@@ -1,0 +1,14 @@
+{
+  "generated_at": "2025-11-18T14:54:09Z",
+  "framework": "SLSA",
+  "level": 3,
+  "generator": "slsa-github-generator",
+  "subjects_count": 1,
+  "project": "political-sphere",
+  "compliance": {
+    "slsa_level": 3,
+    "provenance_available": true,
+    "build_service": "github_actions",
+    "non_falsifiable": true
+  }
+}

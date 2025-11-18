@@ -4,7 +4,8 @@
  * WCAG 2.2 AA Compliant
  */
 
-import React, { FormEvent, useState } from 'react';
+import type React from 'react';
+import { type FormEvent, useEffect, useState } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 import './Auth.css';
 import ForgotPasswordModal from './ForgotPasswordModal';
@@ -14,19 +15,28 @@ interface LoginProps {
   onSwitchToRegister: () => void;
 }
 
-const Login: React.FC<LoginProps> = ({ onLoginSuccess, onSwitchToRegister }) => {
-  const { login } = useAuth();
+const Login: React.FC<LoginProps> = ({
+  onLoginSuccess,
+  onSwitchToRegister: _onSwitchToRegister,
+}) => {
+  const { login, loginLoading } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [showPassword, setShowPassword] = useState(false);
   const [showForgotPassword, setShowForgotPassword] = useState(false);
 
+  useEffect(() => {}, []);
+
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setError(null);
-    setLoading(true);
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setError('Invalid email format');
+      return;
+    }
 
     try {
       const result = await login(email, password);
@@ -36,10 +46,8 @@ const Login: React.FC<LoginProps> = ({ onLoginSuccess, onSwitchToRegister }) => 
       } else {
         setError(result.error || 'Login failed');
       }
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'An unexpected error occurred');
-    } finally {
-      setLoading(false);
+    } catch {
+      setError('An unexpected error occurred. Please try again.');
     }
   };
 
@@ -48,8 +56,7 @@ const Login: React.FC<LoginProps> = ({ onLoginSuccess, onSwitchToRegister }) => 
       <div className="auth-card">
         <header className="auth-header">
           <h1>Political Sphere</h1>
-          <p>Welcome back to Political Sphere</p>
-          <p>UK Political Simulation Game</p>
+          <p>Ready to take your seat?</p>
         </header>
 
         <form className="auth-form" onSubmit={handleSubmit} noValidate>
@@ -67,12 +74,10 @@ const Login: React.FC<LoginProps> = ({ onLoginSuccess, onSwitchToRegister }) => 
           <div className="form-group">
             <label htmlFor="email">
               Email Address or Username
-              <span className="required" aria-label="required">
-                *
-              </span>
+              <span className="required">*</span>
             </label>
             <input
-              type="text"
+              type="email"
               id="email"
               name="email"
               value={email}
@@ -81,7 +86,7 @@ const Login: React.FC<LoginProps> = ({ onLoginSuccess, onSwitchToRegister }) => 
               autoComplete="email"
               aria-required="true"
               aria-invalid={error ? 'true' : 'false'}
-              disabled={loading}
+              disabled={loginLoading}
               placeholder="your.email@example.com"
             />
           </div>
@@ -89,9 +94,7 @@ const Login: React.FC<LoginProps> = ({ onLoginSuccess, onSwitchToRegister }) => 
           <div className="form-group">
             <label htmlFor="password">
               Password
-              <span className="required" aria-label="required">
-                *
-              </span>
+              <span className="required">*</span>
             </label>
             <div className="password-input-wrapper">
               <input
@@ -104,7 +107,7 @@ const Login: React.FC<LoginProps> = ({ onLoginSuccess, onSwitchToRegister }) => 
                 autoComplete="current-password"
                 aria-required="true"
                 aria-invalid={error ? 'true' : 'false'}
-                disabled={loading}
+                disabled={loginLoading}
                 placeholder="Enter your password"
               />
               <button
@@ -112,7 +115,8 @@ const Login: React.FC<LoginProps> = ({ onLoginSuccess, onSwitchToRegister }) => 
                 className="password-toggle"
                 onClick={() => setShowPassword(!showPassword)}
                 aria-label={showPassword ? 'Hide password' : 'Show password'}
-                disabled={loading}
+                disabled={loginLoading}
+                style={{ outline: 'none' }}
               >
                 <svg
                   width="20"
@@ -125,6 +129,7 @@ const Login: React.FC<LoginProps> = ({ onLoginSuccess, onSwitchToRegister }) => 
                   strokeLinejoin="round"
                   className={`eye-icon ${showPassword ? 'eye-open' : 'eye-closed'}`}
                 >
+                  <title>Password visibility toggle</title>
                   {showPassword ? (
                     <>
                       <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
@@ -144,25 +149,17 @@ const Login: React.FC<LoginProps> = ({ onLoginSuccess, onSwitchToRegister }) => 
           <button
             type="submit"
             className="btn-primary btn-full-width"
-            disabled={loading || !email || !password}
+            disabled={loginLoading || !email || !password}
           >
-            {loading ? 'Logging in...' : 'Log In'}
+            {loginLoading ? 'Logging in...' : 'Log In'}
           </button>
 
           <div className="auth-links">
             <button
               type="button"
               className="link-button"
-              onClick={onSwitchToRegister}
-              disabled={loading}
-            >
-              Don't have an account? Register
-            </button>
-            <button
-              type="button"
-              className="link-button"
               onClick={() => setShowForgotPassword(true)}
-              disabled={loading}
+              disabled={loginLoading}
             >
               Forgot password?
             </button>
@@ -175,7 +172,7 @@ const Login: React.FC<LoginProps> = ({ onLoginSuccess, onSwitchToRegister }) => 
             <a href="/terms.html" target="_blank" rel="noopener noreferrer">
               Terms of Service
             </a>{' '}
-            and{' '}
+            and acknowledge our{' '}
             <a href="/privacy.html" target="_blank" rel="noopener noreferrer">
               Privacy Policy
             </a>

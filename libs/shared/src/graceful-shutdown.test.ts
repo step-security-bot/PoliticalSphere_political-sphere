@@ -48,18 +48,16 @@ describe('setupGracefulShutdown', () => {
 
     // Simulate SIGTERM
     const mockExit = vi.spyOn(process, 'exit').mockImplementation(() => {
-      throw new Error('process.exit called');
+      // Don't throw, just prevent actual exit
+      return undefined as never;
     });
 
-    try {
-      process.emit('SIGTERM', 'SIGTERM');
-      await new Promise(resolve => setTimeout(resolve, 50));
-    } catch {
-      // Expected - process.exit throws
-    }
+    process.emit('SIGTERM', 'SIGTERM');
+    await new Promise(resolve => setTimeout(resolve, 50));
 
     expect(onShutdown).toHaveBeenCalled();
     expect(mockServer.close).toHaveBeenCalled();
+    expect(mockExit).toHaveBeenCalledWith(0);
 
     mockExit.mockRestore();
     cleanup();
@@ -72,19 +70,15 @@ describe('setupGracefulShutdown', () => {
     });
 
     const mockExit = vi.spyOn(process, 'exit').mockImplementation(() => {
-      throw new Error('process.exit called');
+      return undefined as never;
     });
 
-    try {
-      process.emit('SIGTERM', 'SIGTERM');
-      await new Promise(resolve => setTimeout(resolve, 50));
-    } catch {
-      // Expected
-    }
+    process.emit('SIGTERM', 'SIGTERM');
+    await new Promise(resolve => setTimeout(resolve, 50));
 
     expect(mockLogger.info).toHaveBeenCalledWith(
       expect.stringContaining('shutdown'),
-      expect.any(Object)
+      expect.any(Object),
     );
 
     mockExit.mockRestore();
@@ -118,22 +112,18 @@ describe('setupGracefulShutdown', () => {
     });
 
     const mockExit = vi.spyOn(process, 'exit').mockImplementation(() => {
-      throw new Error('process.exit called');
+      return undefined as never;
     });
 
-    try {
-      // Emit SIGTERM twice
-      process.emit('SIGTERM', 'SIGTERM');
-      process.emit('SIGTERM', 'SIGTERM');
-      await new Promise(resolve => setTimeout(resolve, 50));
-    } catch {
-      // Expected
-    }
+    // Emit SIGTERM twice
+    process.emit('SIGTERM', 'SIGTERM');
+    process.emit('SIGTERM', 'SIGTERM');
+    await new Promise(resolve => setTimeout(resolve, 50));
 
     // Should warn about duplicate shutdown
     expect(mockLogger.warn).toHaveBeenCalledWith(
       expect.stringContaining('already in progress'),
-      expect.any(Object)
+      expect.any(Object),
     );
 
     mockExit.mockRestore();
@@ -170,7 +160,7 @@ describe('withGracefulTimeout', () => {
     };
 
     await expect(withGracefulTimeout(operation, 100, 'fallback')).rejects.toThrow(
-      'Operation failed'
+      'Operation failed',
     );
   });
 });
@@ -289,15 +279,11 @@ describe('Integration: Graceful shutdown with connection tracking', () => {
     }, 50);
 
     const mockExit = vi.spyOn(process, 'exit').mockImplementation(() => {
-      throw new Error('process.exit called');
+      return undefined as never;
     });
 
-    try {
-      process.emit('SIGTERM', 'SIGTERM');
-      await new Promise(resolve => setTimeout(resolve, 150));
-    } catch {
-      // Expected
-    }
+    process.emit('SIGTERM', 'SIGTERM');
+    await new Promise(resolve => setTimeout(resolve, 150));
 
     expect(mockLogger.info).toHaveBeenCalledWith('Waiting for connections to complete');
     expect(tracker.count).toBe(0);

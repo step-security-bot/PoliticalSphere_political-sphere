@@ -26,6 +26,10 @@ outputs:
   cache-hit:
     description: 'Whether cache was hit'
     value: ${{ steps.setup-node.outputs.cache-hit }}
+    
+  deps-cache-hit:
+    description: 'Whether dependencies cache was hit'
+    value: ${{ steps.cache-deps.outputs.cache-hit }}
 
 runs:
   using: 'composite'
@@ -36,24 +40,44 @@ runs:
       with:
         node-version: ${{ inputs.node-version }}
         cache: ${{ inputs.cache }}
+    
+    - name: Cache dependencies (layered)
+      id: cache-deps
+      uses: actions/cache@e12d46a63a90f2fae62d114769bbf2a179198b5c # v4.2.0
+      with:
+        path: |
+          ~/.npm
+          node_modules
+          .vitest/cache
+        key: ${{ runner.os }}-deps-${{ hashFiles('**/package-lock.json') }}-${{ hashFiles('vitest.config.ts') }}
+        restore-keys: |
+          ${{ runner.os }}-deps-${{ hashFiles('**/package-lock.json') }}-
+          ${{ runner.os }}-deps-
 
     - name: Install dependencies
       shell: bash
       env:
         INSTALL_CMD: ${{ inputs.install-command }}
+        CACHE_HIT: ${{ steps.cache-deps.outputs.cache-hit }}
       run: |
         echo "📦 Installing dependencies..."
+        
+        if [ "$CACHE_HIT" == "true" ]; then
+          echo "✅ Cache hit! Skipping dependency installation."
+        else
+          echo "⚠️  Cache miss. Installing dependencies..."
 
-        # Workaround for npm optional dependencies bug on Node 22
-        # See: https://github.com/npm/cli/issues/4828
-        if [ -f package-lock.json ]; then
-          echo "🔄 Cleaning package-lock for fresh install (npm bug workaround)..."
-          rm -f package-lock.json
-          npm install --package-lock-only
+          # Workaround for npm optional dependencies bug on Node 22
+          # See: https://github.com/npm/cli/issues/4828
+          if [ -f package-lock.json ]; then
+            echo "🔄 Cleaning package-lock for fresh install (npm bug workaround)..."
+            rm -f package-lock.json
+            npm install --package-lock-only
+          fi
+
+          eval "${INSTALL_CMD}"
+          echo "✅ Dependencies installed successfully"
         fi
-
-        eval "${INSTALL_CMD}"
-        echo "✅ Dependencies installed successfully"
 
     - name: Verify installation
       shell: bash

@@ -1,0 +1,50 @@
+groups:
+  - name: ci_cd_slos
+    rules:
+      # CI/CD Pipeline SLOs
+      - record: ci_pipeline_success_rate
+        expr: |
+          rate(ci_pipeline_success_total[30d])
+          / rate(ci_pipeline_runs_total[30d])
+
+      - record: ci_pipeline_slo_error_budget
+        expr: |
+          1 - ci_pipeline_success_rate
+
+      # SLO burn rate calculations
+      - record: ci_pipeline_slo_burn_rate_1h
+        expr: |
+          (1 - ci_pipeline_success_rate)
+          / (1 - 0.95)  # 95% SLO target
+
+      - record: ci_pipeline_slo_burn_rate_6h
+        expr: |
+          (1 - rate(ci_pipeline_success_rate[6h]))
+          / (1 - 0.95)
+
+      # Job-specific SLOs
+      - record: ci_job_success_rate
+        expr: |
+          sum(rate(ci_job_success_total{job_result="success"}[7d]))
+          / sum(rate(ci_job_total[7d]))
+
+      # Alert on SLO breaches
+      - alert: CI_Pipeline_SLO_Breach
+        expr: ci_pipeline_slo_burn_rate_1h > 14.4  # Burn rate for 1 hour window
+        for: 5m
+        labels:
+          severity: critical
+          service: ci-pipeline
+        annotations:
+          summary: "CI Pipeline SLO breach detected"
+          description: "CI Pipeline success rate is below 95% SLO target"
+
+      - alert: CI_Job_Failure_Rate_High
+        expr: rate(ci_job_failure_total[5m]) > 0.1
+        for: 10m
+        labels:
+          severity: warning
+          service: ci-pipeline
+        annotations:
+          summary: "High CI job failure rate"
+          description: "CI job failure rate exceeds 10% in 5 minute window"

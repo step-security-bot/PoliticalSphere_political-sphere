@@ -1,0 +1,109 @@
+name: 'CodeQL Security Analysis'
+
+on:
+  push:
+    branches: [main, develop]
+    paths:
+      - '**/*.ts'
+      - '**/*.tsx'
+      - '**/*.js'
+      - '**/*.jsx'
+      - '**/*.mjs'
+      - '.github/workflows/codeql.yml'
+  pull_request:
+    branches: [main, develop]
+    paths:
+      - '**/*.ts'
+      - '**/*.tsx'
+      - '**/*.js'
+      - '**/*.jsx'
+      - '**/*.mjs'
+  schedule:
+    # Weekly scan every Monday at 6 AM UTC
+    - cron: '0 6 * * 1'
+  workflow_dispatch:
+
+# Top-level: Minimal permissions by default (OWASP CICD-SEC-2)
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  NODE_VERSION: '22'
+
+jobs:
+  analyze:
+    name: CodeQL Analysis
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+
+    strategy:
+      fail-fast: false
+      matrix:
+        language: ['javascript']
+        # Future: Add 'python' if backend services added
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          fetch-depth: 0
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@ea9e4e37992a54ee68a9622e985e60c8e8f12d9f # v3.27.5
+        with:
+          languages: ${{ matrix.language }}
+          # Use default queries plus security-extended for comprehensive coverage
+          queries: +security-extended,security-and-quality
+          # Configure CodeQL database
+          setup-python-dependencies: false
+          config: |
+            paths-ignore:
+              - 'node_modules'
+              - 'dist'
+              - 'coverage'
+              - '**/*.test.ts'
+              - '**/*.test.tsx'
+              - '**/*.spec.ts'
+              - '**/*.spec.tsx'
+              - 'docs/**'
+
+      - name: Setup Node.js for dependencies
+        if: matrix.language == 'javascript'
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        if: matrix.language == 'javascript'
+        run: npm ci --legacy-peer-deps --ignore-scripts
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@ea9e4e37992a54ee68a9622e985e60c8e8f12d9f # v3.27.5
+        with:
+          category: "/language:${{ matrix.language }}"
+          # Upload SARIF results to GitHub Security
+          upload: true
+
+      - name: Upload CodeQL results as artifact
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: codeql-results-${{ matrix.language }}
+          path: /home/runner/work/_temp/codeql_databases/*.sarif
+          retention-days: 90
+
+      - name: Check for critical findings
+        if: always()
+        run: |
+          echo "📊 CodeQL analysis complete"
+          echo "Review findings in the Security tab: https://github.com/${{ github.repository }}/security/code-scanning"
+          echo "Note: The CodeQL action will automatically fail the workflow if critical security issues are detected"

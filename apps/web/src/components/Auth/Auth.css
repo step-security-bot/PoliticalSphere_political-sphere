@@ -59,6 +59,50 @@
   text-align: center;
 }
 
+.auth-toggle-buttons {
+  display: flex;
+  margin-bottom: 1.5rem;
+  background: #f3f4f6;
+  border-radius: 8px;
+  padding: 4px;
+  gap: 4px;
+}
+
+.toggle-button {
+  flex: 1;
+  background: none;
+  border: none;
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #6b7280;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+}
+
+.toggle-button:hover:not(:disabled) {
+  background: #e5e7eb;
+  color: #374151;
+}
+
+.toggle-button.active {
+  background: white;
+  color: #1f2937;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.toggle-button:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+.toggle-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
 .auth-error {
   background: #fee2e2;
   border: 1px solid #fca5a5;
@@ -168,6 +212,32 @@
   margin-top: 0.5rem;
   font-size: 0.75rem;
   color: #6b7280;
+}
+
+.password-strength-dots {
+  display: flex;
+  gap: 4px;
+  margin-top: 0.5rem;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #d1d5db;
+  transition: background-color 0.2s ease;
+}
+
+.dot.active.weak {
+  background-color: #ff4444;
+}
+
+.dot.active.medium {
+  background-color: #ffaa00;
+}
+
+.dot.active.strong {
+  background-color: #44aa44;
 }
 
 .checkbox-group {
@@ -475,6 +545,94 @@
 }
 
 /* Dark Mode Support (Optional) */
+/* reCAPTCHA Container Styling */
+.captcha-container {
+  margin: 1.5rem 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.captcha-container > div {
+  max-width: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.captcha-container iframe {
+  max-width: 100%;
+}
+
+/* Inner wrapper used to force the generated reCAPTCHA elements to be full width */
+.captcha-inner {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.captcha-inner > div,
+.captcha-inner .g-recaptcha,
+.captcha-inner iframe,
+.captcha-inner .rc-anchor,
+.captcha-inner .rc-anchor-contents {
+  width: 100% !important;
+  max-width: 100% !important;
+  display: block !important;
+}
+
+/* Clear any transform scaling for normal-sized widgets so the element can flow */
+.captcha-inner iframe {
+  transform: none !important;
+}
+
+/* Responsive scaling for compact reCAPTCHA */
+@media (max-width: 380px) {
+  .captcha-container > div {
+    transform: scale(0.92);
+    transform-origin: center center;
+  }
+}
+
+@media (max-width: 340px) {
+  .captcha-container > div {
+    transform: scale(0.85);
+    transform-origin: center center;
+  }
+}
+
+@media (max-width: 300px) {
+  .captcha-container > div {
+    transform: scale(0.78);
+    transform-origin: center center;
+  }
+}
+
+/* Responsive scaling for compact reCAPTCHA */
+@media (max-width: 380px) {
+  .captcha-container > div {
+    transform: scale(0.92);
+    transform-origin: center center;
+  }
+}
+
+@media (max-width: 340px) {
+  .captcha-container > div {
+    transform: scale(0.85);
+    transform-origin: center center;
+  }
+}
+
+@media (max-width: 300px) {
+  .captcha-container > div {
+    transform: scale(0.78);
+    transform-origin: center center;
+  }
+}
+
 @media (prefers-color-scheme: dark) {
   .auth-container {
     background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
@@ -514,6 +672,27 @@
 
   .checkbox-label span {
     color: #e5e7eb;
+  }
+
+  .captcha-container {
+    background: linear-gradient(to bottom, #1f2937 0%, #111827 100%);
+    border-color: #374151;
+    box-shadow:
+      0 1px 3px rgba(0, 0, 0, 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  }
+
+  .captcha-container::before {
+    color: #9ca3af;
+  }
+
+  .captcha-container:focus-within {
+    border-color: #60a5fa;
+    box-shadow:
+      0 0 0 3px rgba(96, 165, 250, 0.15),
+      0 1px 3px rgba(0, 0, 0, 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    background: linear-gradient(to bottom, #1f2937 0%, #1e3a5f 100%);
   }
 
   .auth-footer {

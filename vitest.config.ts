@@ -15,6 +15,7 @@ const reactPlugin = react({
 // - VITEST_ENV=node|jsdom|happy-dom (case-insensitive): select test environment.
 // - VITEST_CHANGED=1/true/yes (non-CI only): run only changed tests in dev.
 // - VITEST_COVERAGE=1/true/yes: enable enhanced coverage reporting.
+// - VITEST_RETRY=N: retry flaky tests up to N times (default: 0, CI recommended: 2).
 
 const projectRoot = fileURLToPath(new URL('.', import.meta.url)); // Works where __dirname is undefined (Vitest extension, ESM)
 
@@ -27,6 +28,7 @@ const env = (process.env.VITEST_ENV || '').toLowerCase();
 const scope = (process.env.VITEST_SCOPE || '').toLowerCase();
 const isCI = isTruthyEnv(process.env.CI);
 const isChanged = isTruthyEnv(process.env.VITEST_CHANGED);
+const retryCount = parseInt(process.env.VITEST_RETRY || '0', 10);
 
 // Normalize environment for Vitest - support node, jsdom, happy-dom
 const environment = ['node', 'jsdom', 'happy-dom'].includes(env) ? env : 'node';
@@ -78,7 +80,15 @@ const createBaseTestConfig = () => ({
   globals: false,
   environment,
   testTimeout: 10000,
+  // Retry flaky tests in CI (configurable via VITEST_RETRY env var)
+  retry: retryCount,
   exclude: [...baseExclude, ...e2eExclude, ...testFileExclude],
+  // Inline React dependencies to prevent version mismatch
+  server: {
+    deps: {
+      inline: ['react', 'react-dom', '@testing-library/react'],
+    },
+  },
   // Use threads for better performance while maintaining isolation
   // Serial in CI for determinism; parallel locally for speed
   pool: 'threads' as const,
@@ -118,6 +128,10 @@ const createProject = (name: string, include: string[]) => ({
     ...createBaseTestConfig(),
     include,
   },
+  esbuild: {
+    jsx: 'automatic' as const,
+    jsxImportSource: 'react',
+  },
 });
 
 // Define projects to group related test suites and reduce extension detection overhead
@@ -139,15 +153,23 @@ const config = {
   plugins: [reactPlugin],
   test: {
     projects,
+    globals: true, // Enable global test functions
+    environment: 'jsdom', // Default to jsdom for React tests
   },
   esbuild: {
     jsx: 'automatic' as const,
+    jsxImportSource: 'react',
   },
   // Use Vite's cache directory; Vitest will nest under this path automatically
   // Explicitly root it to avoid surprises if process.cwd() changes
   cacheDir: resolve(projectRoot, '.vitest/cache'),
   resolve: {
     alias: {
+      // Ensure single React version across all tests
+      react: resolve(projectRoot, 'node_modules/react'),
+      'react-dom': resolve(projectRoot, 'node_modules/react-dom'),
+      'react/jsx-runtime': resolve(projectRoot, 'node_modules/react/jsx-runtime.js'),
+      'react/jsx-dev-runtime': resolve(projectRoot, 'node_modules/react/jsx-dev-runtime.js'),
       // NOTE: shared is tested against the built CJS bundle to mirror production usage.
       '@political-sphere/shared': resolve(projectRoot, 'libs/shared/cjs-shared.cjs'),
       '@political-sphere/ui': resolve(projectRoot, 'libs/ui/src'),
