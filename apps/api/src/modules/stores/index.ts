@@ -20,13 +20,12 @@ function shouldEnableCache(): boolean {
   if (DB_PATH === ':memory:') {
     return false;
   }
-  if (process.env.API_ENABLE_CACHE === 'true') {
-    return true;
-  }
   if (process.env.API_ENABLE_CACHE === 'false') {
     return false;
   }
-  return Boolean(process.env.REDIS_URL);
+  // Only enable cache if explicitly requested AND Redis is available
+  // This prevents automatic enabling which can hurt performance
+  return process.env.API_ENABLE_CACHE === 'true' && Boolean(process.env.REDIS_URL);
 }
 
 export class DatabaseConnection {

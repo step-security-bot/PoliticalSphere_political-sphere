@@ -43,7 +43,8 @@ export class BillStore {
       stmt.run(id, billData.title, billData.description ?? null, proposerId, status, now, now);
 
       if (this.cache) {
-        await this.cache.del(cacheKeys.bills());
+        // Fire and forget cache invalidation to avoid blocking writes
+        void this.cache.del(cacheKeys.bills());
       }
 
       return {
@@ -85,9 +86,16 @@ export class BillStore {
           };
         }
       }
+
+      // Time the DB query
+      const startTime = process.hrtime.bigint();
       const stmt = this.db.prepare('SELECT * FROM bills WHERE id = ?');
       const row = stmt.get(id) as BillRow | undefined;
+      const endTime = process.hrtime.bigint();
+      const queryTimeMs = Number(endTime - startTime) / 1_000_000; // Convert to milliseconds
+
       if (!row) return null;
+
       const bill = {
         id: row.id,
         title: row.title,
@@ -97,9 +105,13 @@ export class BillStore {
         createdAt: new Date(row.created_at),
         updatedAt: new Date(row.updated_at),
       };
-      if (this.cache) {
-        await this.cache.set(cacheKeys.bill(id), bill, CACHE_TTL.BILL);
+
+      // Only cache if query took longer than 0.1ms (threshold for slow queries)
+      if (this.cache && queryTimeMs > 0.1) {
+        // Fire and forget cache set to avoid blocking reads
+        void this.cache.set(cacheKeys.bill(id), bill, CACHE_TTL.BILL);
       }
+
       return bill;
     });
   }
@@ -131,8 +143,14 @@ export class BillStore {
           }));
         }
       }
+
+      // Time the DB query
+      const startTime = process.hrtime.bigint();
       const stmt = this.db.prepare('SELECT * FROM bills ORDER BY created_at DESC');
       const rows = stmt.all() as BillRow[];
+      const endTime = process.hrtime.bigint();
+      const queryTimeMs = Number(endTime - startTime) / 1_000_000; // Convert to milliseconds
+
       const bills = rows.map(r => ({
         id: r.id,
         title: r.title,
@@ -142,9 +160,13 @@ export class BillStore {
         createdAt: new Date(r.created_at),
         updatedAt: new Date(r.updated_at),
       }));
-      if (this.cache) {
-        await this.cache.set(cacheKeys.bills(), bills, CACHE_TTL.BILLS_LIST);
+
+      // Only cache if query took longer than 0.5ms (getAll might be slower)
+      if (this.cache && queryTimeMs > 0.5) {
+        // Fire and forget cache set to avoid blocking reads
+        void this.cache.set(cacheKeys.bills(), bills, CACHE_TTL.BILLS_LIST);
       }
+
       return bills;
     });
   }
@@ -177,8 +199,9 @@ export class BillStore {
 
       // Invalidate cache
       if (this.cache) {
-        await this.cache.del(cacheKeys.bill(id));
-        await this.cache.del(cacheKeys.bills());
+        // Fire and forget cache invalidation to avoid blocking writes
+        void this.cache.del(cacheKeys.bill(id));
+        void this.cache.del(cacheKeys.bills());
       }
 
       return this.getById(id);
@@ -192,8 +215,9 @@ export class BillStore {
 
       // Invalidate cache
       if (this.cache) {
-        await this.cache.del(cacheKeys.bill(id));
-        await this.cache.del(cacheKeys.bills());
+        // Fire and forget cache invalidation to avoid blocking writes
+        void this.cache.del(cacheKeys.bill(id));
+        void this.cache.del(cacheKeys.bills());
       }
 
       return result.changes > 0;

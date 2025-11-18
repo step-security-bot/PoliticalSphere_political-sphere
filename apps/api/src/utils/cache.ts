@@ -26,6 +26,13 @@ function isRedisLike(input: unknown): input is RedisLike {
 export class CacheService {
   private redis: RedisLike;
   private ownsConnection = false;
+  private metrics = {
+    hits: 0,
+    misses: 0,
+    sets: 0,
+    gets: 0,
+    errors: 0,
+  };
 
   constructor(redisInput?: RedisInput) {
     if (isRedisInstance(redisInput)) {
@@ -53,18 +60,53 @@ export class CacheService {
   }
 
   async get<T>(key: string): Promise<T | null> {
+    this.metrics.gets++;
     try {
       const data = await this.redis.get(key);
-      return data ? JSON.parse(data) : null;
+      if (!data) {
+        this.metrics.misses++;
+        return null;
+      }
+
+      this.metrics.hits++;
+
+      // Fast path for primitives and simple objects
+      if (data.startsWith('"') && data.endsWith('"')) {
+        // String
+        return JSON.parse(data) as T;
+      }
+      if (/^-?\d+(\.\d+)?$/.test(data)) {
+        // Number
+        return (data.includes('.') ? parseFloat(data) : parseInt(data, 10)) as T;
+      }
+      if (data === 'true' || data === 'false') {
+        // Boolean
+        return (data === 'true') as T;
+      }
+
+      // Full JSON parse for complex objects
+      return JSON.parse(data) as T;
     } catch (error) {
+      this.metrics.errors++;
       console.warn('Cache get error:', error);
       return null;
     }
   }
 
   async set(key: string, value: unknown, ttlSeconds?: number): Promise<void> {
+    this.metrics.sets++;
     try {
-      const data = JSON.stringify(value);
+      let data: string;
+
+      // Optimize serialization for common types
+      if (typeof value === 'string') {
+        data = JSON.stringify(value); // Still need quotes for strings
+      } else if (typeof value === 'number' || typeof value === 'boolean') {
+        data = String(value); // No JSON overhead for primitives
+      } else {
+        data = JSON.stringify(value);
+      }
+
       if (typeof ttlSeconds === 'number' && Number.isFinite(ttlSeconds)) {
         const ttl = Math.max(0, Math.floor(ttlSeconds));
         if (ttl > 0) {
@@ -76,6 +118,7 @@ export class CacheService {
         await this.redis.set(key, data);
       }
     } catch (error) {
+      this.metrics.errors++;
       console.warn('Cache set error:', error);
     }
   }
@@ -111,6 +154,14 @@ export class CacheService {
     if (this.ownsConnection) {
       await this.redis.quit();
     }
+  }
+
+  getMetrics() {
+    const hitRate = this.metrics.gets > 0 ? (this.metrics.hits / this.metrics.gets) * 100 : 0;
+    return {
+      ...this.metrics,
+      hitRate: `${hitRate.toFixed(2)}%`,
+    };
   }
 }
 

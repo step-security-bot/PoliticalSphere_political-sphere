@@ -29,7 +29,7 @@ export default defineConfig({
   // Shared settings for all projects
   use: {
     // Base URL for tests
-    baseURL: process.env.E2E_BASE_URL || 'http://localhost:3000',
+    baseURL: process.env.E2E_BASE_URL || 'http://localhost:3001',
 
     // Collect trace on failure for debugging
     trace: 'on-first-retry',
@@ -92,8 +92,8 @@ export default defineConfig({
   // Web server configuration for local testing (only in non-CI environments)
   ...(!process.env.CI && {
     webServer: {
-      command: 'npm run start:dev',
-      port: 3000,
+      command: 'npm run serve:web',
+      port: 3001,
       timeout: 120 * 1000,
       reuseExistingServer: true,
     },
