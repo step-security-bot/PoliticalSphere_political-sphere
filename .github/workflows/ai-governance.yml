@@ -15,7 +15,8 @@ jobs:
     name: Political Neutrality Check
     runs-on: ubuntu-latest
     permissions:
-      issues: write
+      contents: read
+      pull-requests: write
 
     steps:
       - uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5.0.1
@@ -178,7 +179,7 @@ jobs:
     name: AI Competence Assessment
     runs-on: ubuntu-latest
     permissions:
-      actions: write
+      contents: read
 
     steps:
       - uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5.0.1

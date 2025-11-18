@@ -275,7 +275,7 @@ jobs:
     if: always() && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository)
     timeout-minutes: 15
     permissions:
-      actions: write
+      contents: read
     strategy:
       fail-fast: false
       matrix:
@@ -353,7 +353,6 @@ jobs:
     timeout-minutes: 5
     permissions:
       contents: read
-      actions: write
     if: always() && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository)
     steps:
       - uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5.0.1
@@ -430,7 +429,6 @@ jobs:
     timeout-minutes: 20
     permissions:
       contents: read
-      actions: write
     if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
     steps:
       - uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5.0.1
@@ -526,7 +524,6 @@ jobs:
     timeout-minutes: 15
     permissions:
       contents: read
-      actions: write
       id-token: write  # Required for keyless signing
       attestations: write  # Required for SLSA provenance
     if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
@@ -597,7 +594,6 @@ jobs:
     timeout-minutes: 10
     permissions:
       contents: read
-      actions: write
     steps:
       - uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5.0.1
 
@@ -642,7 +638,6 @@ jobs:
     timeout-minutes: 5
     permissions:
       contents: read
-      actions: write
       pull-requests: write
     if: github.event_name == 'pull_request'
     steps:
@@ -661,7 +656,6 @@ jobs:
     timeout-minutes: 10
     permissions:
       contents: read
-      actions: write
       security-events: write
     steps:
       - uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5.0.1
@@ -705,7 +699,6 @@ jobs:
     timeout-minutes: 20
     permissions:
       contents: read
-      actions: write
     if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
     services:
       postgres:
@@ -768,7 +761,6 @@ jobs:
     timeout-minutes: 20
     permissions:
       contents: read
-      actions: write
     if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
     strategy:
       fail-fast: false
@@ -877,7 +869,6 @@ jobs:
     if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
     permissions:
       contents: read
-      actions: write
       pull-requests: write
     steps:
       - uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5.0.1
@@ -955,7 +946,6 @@ jobs:
     if: (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository)
     permissions:
       contents: read
-      actions: write
     steps:
       - uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5.0.1
         with:
@@ -994,7 +984,6 @@ jobs:
     timeout-minutes: 10
     permissions:
       contents: read
-      actions: write
     steps:
       - uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5.0.1
 
@@ -1043,7 +1032,6 @@ jobs:
     timeout-minutes: 5
     permissions:
       contents: read
-      actions: write
     steps:
       - name: Checkout code
         uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5.0.1
@@ -1094,7 +1082,6 @@ jobs:
     timeout-minutes: 5
     permissions:
       contents: read
-      actions: write
     steps:
       - name: Collect job metrics
         env:
@@ -1130,8 +1117,8 @@ jobs:
                 "result": "${{ needs.build.result }}",
                   "duration_seconds": 0
               },
-              "security-scan": {
-                "result": "${{ needs.security-scan.result }}",
+              "security-audit": {
+                "result": "${{ needs.security-audit.result }}",
                   "duration_seconds": 0
               },
               "integration-test": {

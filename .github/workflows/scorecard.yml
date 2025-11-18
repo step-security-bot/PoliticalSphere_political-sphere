@@ -21,7 +21,6 @@ jobs:
     timeout-minutes: 15
     permissions:
       contents: read
-      actions: write
       security-events: write
     steps:
       - name: Checkout
