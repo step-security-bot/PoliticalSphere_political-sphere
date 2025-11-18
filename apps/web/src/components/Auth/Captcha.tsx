@@ -73,7 +73,6 @@ const Captcha = forwardRef<CaptchaRef, CaptchaProps>(
     return (
       <div className="captcha-container">
         <div ref={innerRef} className="captcha-inner">
-          {/* @ts-expect-error - ReCAPTCHA component typing issue with React 18 */}
           <ReCAPTCHA
             ref={recaptchaRef}
             sitekey={siteKey}
