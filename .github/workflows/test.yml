@@ -169,7 +169,7 @@ jobs:
     needs: [quality-checks, unit-tests, integration-tests]
     if: always()
     permissions:
-      pull-requests: write
+      issues: write
 
     steps:
       - name: Check test results

@@ -14,8 +14,7 @@
 name: Release
 
 # Top-level: Minimal permissions by default (OWASP CICD-SEC-2)
-permissions:
-  contents: read
+permissions: read-all
 
 on:
   push:

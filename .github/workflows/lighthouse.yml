@@ -1,8 +1,6 @@
 name: Lighthouse CI
 
-permissions:
-  contents: read
-  pull-requests: write
+permissions: read-all
 
 on:
   pull_request:
@@ -28,6 +26,7 @@ jobs:
     timeout-minutes: 15
     permissions:
       contents: read
+      issues: write
 
     steps:
       - name: Checkout code
