@@ -25,7 +25,7 @@ jobs:
     steps:
       # Checkout repository with full history for git operations
       - name: Checkout code
-        uses: actions/checkout@11bd71933491cb004c78e8db5fd3fc5fb2b171fc # v4.2.2
+        uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v4.2.2
         with:
           # fetch-depth will be overridden by Copilot for security
           fetch-depth: 0
