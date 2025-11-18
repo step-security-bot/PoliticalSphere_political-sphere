@@ -31,7 +31,7 @@ jobs:
 
       - name: Run Scorecard
         # Pin by commit SHA for supply-chain security (v2.4.3)
-        uses: ossf/scorecard-action@99c09fe975337306107572b4fdf4db224cf8e2f2 # v2.4.3 (pinned SHA)
+        uses: ossf/scorecard-action@4eaacf0543bb3f2c246792bd56e8cdeffafb205a # v2.4.3 (pinned SHA)
         with:
           results_file: results.json
           results_format: json
@@ -60,7 +60,7 @@ jobs:
           retention-days: 30
       - name: Run Scorecard (SARIF)
         # Second invocation to produce SARIF for code scanning ingestion
-        uses: ossf/scorecard-action@99c09fe975337306107572b4fdf4db224cf8e2f2
+        uses: ossf/scorecard-action@4eaacf0543bb3f2c246792bd56e8cdeffafb205a
         with:
           results_file: results.sarif
           results_format: sarif
