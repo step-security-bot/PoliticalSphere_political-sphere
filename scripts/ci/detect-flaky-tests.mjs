@@ -32,8 +32,10 @@ class FlakyTestDetector {
 
     // Load recent failure patterns
     if (existsSync(FAILURE_LOG)) {
-      const lines = readFileSync(FAILURE_LOG, 'utf8').split('\n').filter(line => line.trim());
-      const cutoffTime = new Date(Date.now() - (TIME_WINDOW_HOURS * 60 * 60 * 1000));
+      const lines = readFileSync(FAILURE_LOG, 'utf8')
+        .split('\n')
+        .filter(line => line.trim());
+      const cutoffTime = new Date(Date.now() - TIME_WINDOW_HOURS * 60 * 60 * 1000);
 
       for (const line of lines) {
         const [timestamp, testName, pattern, error] = line.split(',');
@@ -47,12 +49,14 @@ class FlakyTestDetector {
           this.failures.get(testName).push({
             timestamp: failureTime,
             pattern,
-            error
+            error,
           });
         }
       }
 
-      console.log(`📊 Analyzed ${this.failures.size} test failure patterns in last ${TIME_WINDOW_HOURS} hours`);
+      console.log(
+        `📊 Analyzed ${this.failures.size} test failure patterns in last ${TIME_WINDOW_HOURS} hours`
+      );
     }
   }
 
@@ -75,7 +79,7 @@ class FlakyTestDetector {
           patterns,
           avgTimeBetweenFailures,
           lastFailure: failures[failures.length - 1].timestamp,
-          quarantineReason: `Failed ${failures.length} times with patterns: ${patterns.join(', ')}`
+          quarantineReason: `Failed ${failures.length} times with patterns: ${patterns.join(', ')}`,
         });
       }
     }
@@ -90,7 +94,7 @@ class FlakyTestDetector {
     const intervals = [];
 
     for (let i = 1; i < sortedFailures.length; i++) {
-      intervals.push(sortedFailures[i].timestamp - sortedFailures[i-1].timestamp);
+      intervals.push(sortedFailures[i].timestamp - sortedFailures[i - 1].timestamp);
     }
 
     return intervals.reduce((sum, interval) => sum + interval, 0) / intervals.length;
@@ -113,10 +117,10 @@ class FlakyTestDetector {
           quarantinedAt: new Date().toISOString(),
           reason: test.quarantineReason,
           failureCount: test.failureCount,
-          patterns: test.patterns
+          patterns: test.patterns,
         };
         return acc;
-      }, {})
+      }, {}),
     };
 
     writeFileSync(QUARANTINE_FILE, JSON.stringify(quarantineData, null, 2));
@@ -130,7 +134,7 @@ class FlakyTestDetector {
         totalTestsAnalyzed: this.failures.size,
         quarantinedTests: this.quarantined.size,
         failureThreshold: FAILURE_THRESHOLD,
-        timeWindowHours: TIME_WINDOW_HOURS
+        timeWindowHours: TIME_WINDOW_HOURS,
       },
       quarantinedTests: Array.from(this.quarantined),
       recentFailures: Object.fromEntries(
@@ -139,10 +143,10 @@ class FlakyTestDetector {
           {
             count: failures.length,
             lastFailure: failures[failures.length - 1]?.timestamp,
-            patterns: [...new Set(failures.map(f => f.pattern))]
-          }
+            patterns: [...new Set(failures.map(f => f.pattern))],
+          },
         ])
-      )
+      ),
     };
 
     writeFileSync('flaky-test-report.json', JSON.stringify(report, null, 2));

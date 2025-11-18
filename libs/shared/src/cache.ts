@@ -293,7 +293,7 @@ class FileCache {
       await Promise.all(
         files
           .filter(file => file.endsWith('.cache'))
-          .map(file => fs.unlink(path.join(this.directory, file))),
+          .map(file => fs.unlink(path.join(this.directory, file)))
       );
     } catch (error) {
       logger.warn('File cache clear error', { error: (error as Error).message });
@@ -318,7 +318,7 @@ class CacheService {
     if (this.config.fileCache?.enabled) {
       this.fileCache = new FileCache(
         this.config.fileCache.directory,
-        this.config.fileCache.maxFileSize,
+        this.config.fileCache.maxFileSize
       );
     }
 
@@ -516,7 +516,7 @@ export async function withCache<T>(
   key: string,
   queryFn: () => Promise<T>,
   ttl?: number,
-  forceRefresh = false,
+  forceRefresh = false
 ): Promise<T> {
   const cache = getCache();
 
@@ -562,7 +562,7 @@ export const cachedQueries = {
         const { executeQuerySingle, sessionQueries } = await import('./database.js');
         return executeQuerySingle(sessionQueries.findById, [sessionId]);
       },
-      60,
+      60
     ); // Shorter TTL for sessions
   },
 
@@ -575,7 +575,7 @@ export const cachedQueries = {
         const { executeQuerySingle, rateLimitQueries } = await import('./database.js');
         return executeQuerySingle(rateLimitQueries.check, [identifier, action]);
       },
-      30,
+      30
     ); // Very short TTL for rate limiting
   },
 };

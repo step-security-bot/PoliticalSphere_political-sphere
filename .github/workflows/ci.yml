@@ -1084,7 +1084,7 @@ jobs:
         test,
         coverage-aggregation,
         build,
-        security-scan,
+        security-audit,
         integration-test,
         e2e-test,
         accessibility-test,
@@ -1195,7 +1195,7 @@ jobs:
         lint-and-typecheck,
         test,
         build,
-        security-scan,
+        security-audit,
         integration-test,
         e2e-test,
         accessibility-test,
@@ -1212,7 +1212,7 @@ jobs:
       - name: Check if all jobs passed
         env:
           LINT_RESULT: ${{ needs.lint-and-typecheck.result }}
-          SECURITY_RESULT: ${{ needs.security-scan.result }}
+          SECURITY_RESULT: ${{ needs.security-audit.result }}
           TEST_RESULT: ${{ needs.test.result }}
           BUILD_RESULT: ${{ needs.build.result }}
           INTEGRATION_TEST_RESULT: ${{ needs.integration-test.result }}
@@ -1254,7 +1254,7 @@ jobs:
           fi
 
           if [[ "${SECURITY_RESULT}" != "success" ]]; then
-            echo "❌ security-scan failed or was skipped"
+            echo "❌ security-audit failed or was skipped"
             FAILED=true
           fi
 

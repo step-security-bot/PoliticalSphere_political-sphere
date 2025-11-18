@@ -24,4 +24,8 @@ export default defineConfig({
       '@': '/src',
     },
   },
+  test: {
+    environment: 'jsdom',
+    setupFiles: ['./test-setup.js'],
+  },
 });

@@ -5,8 +5,8 @@
  */
 
 const TOKEN_KEY = 'auth_tokens';
-const SALT_KEY = 'auth_salt';
-const IV_KEY = 'auth_iv';
+const _SALT_KEY = 'auth_salt';
+const _IV_KEY = 'auth_iv';
 
 // Generate a cryptographically secure key from password
 async function deriveKey(password: string, salt: Uint8Array): Promise<CryptoKey> {
@@ -16,20 +16,20 @@ async function deriveKey(password: string, salt: Uint8Array): Promise<CryptoKey>
     encoder.encode(password),
     'PBKDF2',
     false,
-    ['deriveBits', 'deriveKey'],
+    ['deriveBits', 'deriveKey']
   );
 
   return crypto.subtle.deriveKey(
     {
       name: 'PBKDF2',
-      salt: salt as any,
+      salt: salt as BufferSource,
       iterations: 100000,
       hash: 'SHA-256',
     },
     keyMaterial,
     { name: 'AES-GCM', length: 256 },
     false,
-    ['encrypt', 'decrypt'],
+    ['encrypt', 'decrypt']
   );
 }
 
@@ -56,9 +56,9 @@ async function encryptData(data: string, password: string): Promise<string> {
 
     const encoder = new TextEncoder();
     const encrypted = await crypto.subtle.encrypt(
-      { name: 'AES-GCM', iv: iv },
+      { name: 'AES-GCM', iv: iv as unknown as BufferSource },
       key,
-      encoder.encode(data),
+      encoder.encode(data)
     );
 
     // Combine salt + iv + encrypted data
@@ -86,7 +86,11 @@ async function decryptData(encryptedData: string, password: string): Promise<str
 
     const key = await deriveKey(password, salt);
 
-    const decrypted = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: iv }, key, encrypted);
+    const decrypted = await crypto.subtle.decrypt(
+      { name: 'AES-GCM', iv: iv as unknown as BufferSource },
+      key,
+      encrypted
+    );
 
     const decoder = new TextDecoder();
     return decoder.decode(decrypted);

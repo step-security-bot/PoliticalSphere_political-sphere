@@ -17,6 +17,7 @@ describe('Bills Routes', () => {
   beforeEach(async () => {
     getDatabase();
     app = express();
+    app.use(express.json());
     app.use('/api', usersRouter);
     app.use('/api', billsRouter);
     app.use('/auth', authRoutes);

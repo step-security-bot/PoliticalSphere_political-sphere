@@ -1,10 +1,10 @@
 #!/usr/bin/env node
-import { execSync } from 'child_process';
+import { execSync } from 'node:child_process';
 // Lightweight AST-ish checker: strips comments and strings, then detects '../../' style imports.
 // No external dependencies.
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 import { safeJoin, validateFilename } from '../../libs/shared/src/path-security.js';
 
@@ -53,7 +53,7 @@ function listFiles() {
       encoding: 'utf8',
     });
     return out.split(/\r?\n/).filter(Boolean);
-  } catch (_e) {
+  } catch {
     // fallback: walk directory (simple)
     function walk(dir) {
       const res = [];
@@ -73,7 +73,7 @@ function listFiles() {
           } else if (/\.(js|ts|jsx|tsx)$/.test(sanitizedName)) {
             res.push(path.relative(ROOT, full));
           }
-        } catch (_error) {}
+        } catch {}
       }
       return res;
     }
@@ -100,7 +100,7 @@ for (const f of files) {
       }
       fs.appendFileSync(REPORT_FILE, '\n');
     }
-  } catch (_e) {
+  } catch {
     // ignore parse errors
   }
 }

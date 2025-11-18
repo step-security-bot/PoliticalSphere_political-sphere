@@ -168,6 +168,7 @@ const config = {
       // Ensure single React version across all tests
       react: resolve(projectRoot, 'node_modules/react'),
       'react-dom': resolve(projectRoot, 'node_modules/react-dom'),
+      'react-dom/client': resolve(projectRoot, 'node_modules/react-dom/client.js'),
       'react/jsx-runtime': resolve(projectRoot, 'node_modules/react/jsx-runtime.js'),
       'react/jsx-dev-runtime': resolve(projectRoot, 'node_modules/react/jsx-dev-runtime.js'),
       // NOTE: shared is tested against the built CJS bundle to mirror production usage.
@@ -178,6 +179,8 @@ const config = {
       '@political-sphere/infrastructure': resolve(projectRoot, 'libs/infrastructure/src'),
       '@political-sphere/game-engine': resolve(projectRoot, 'libs/game-engine/src'),
     },
+    // Deduplicate React packages to avoid multiple copies during testing
+    dedupe: ['react', 'react-dom'],
   },
 };
 

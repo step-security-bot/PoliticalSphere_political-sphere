@@ -20,19 +20,23 @@ router.post('/register', async (req, res) => {
     const { username, password, email } = req.body;
 
     if (!username || !password) {
-      res.status(400).json({ error: 'Username and password are required' });
+      res.status(400).json({ success: false, error: 'Username and password are required' });
       return;
     }
 
     const result = await authService.register({ username, password, email });
 
     res.status(201).json({
-      user: result.user,
-      tokens: result.tokens,
+      success: true,
+      data: {
+        id: result.user.id,
+        token: result.tokens.accessToken,
+        refreshToken: result.tokens.refreshToken,
+      },
     });
   } catch (error) {
     const message = error instanceof Error ? error.message : 'Registration failed';
-    res.status(400).json({ error: message });
+    res.status(400).json({ success: false, error: message });
   }
 });
 
@@ -46,19 +50,23 @@ router.post('/login', async (req, res) => {
     const usernameOrEmail = username || email;
 
     if (!usernameOrEmail || !password) {
-      res.status(400).json({ error: 'Username/email and password are required' });
+      res.status(400).json({ success: false, error: 'Username/email and password are required' });
       return;
     }
 
     const result = await authService.login({ username: usernameOrEmail, password });
 
     res.json({
-      user: result.user,
-      tokens: result.tokens,
+      success: true,
+      data: {
+        user: result.user,
+        token: result.tokens.accessToken,
+        refreshToken: result.tokens.refreshToken,
+      },
     });
   } catch (error) {
     const message = error instanceof Error ? error.message : 'Login failed';
-    res.status(401).json({ error: message });
+    res.status(401).json({ success: false, error: message });
   }
 });
 

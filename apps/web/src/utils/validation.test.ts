@@ -237,7 +237,7 @@ describe('Form Validation', () => {
         validForm.password,
         validForm.confirmPassword,
         validForm.agreedToTerms,
-        validForm.captchaToken,
+        validForm.captchaToken
       );
       expect(result.isValid).toBe(true);
       expect(result.errors).toEqual({});
@@ -250,7 +250,7 @@ describe('Form Validation', () => {
         validForm.password,
         validForm.confirmPassword,
         false,
-        validForm.captchaToken,
+        validForm.captchaToken
       );
       expect(result.isValid).toBe(false);
       expect(result.errors.terms).toBe('You must agree to the Terms of Service and Privacy Policy');
@@ -263,7 +263,7 @@ describe('Form Validation', () => {
         'weak', // weak password
         'different', // doesn't match
         false, // terms not agreed
-        null, // no captcha
+        null // no captcha
       );
       expect(result.isValid).toBe(false);
       expect(Object.keys(result.errors)).toHaveLength(6);
@@ -293,7 +293,7 @@ describe('Integration Scenarios', () => {
       'SecurePass123!',
       'SecurePass123!',
       true,
-      'captcha-token',
+      'captcha-token'
     );
 
     expect(formValidation.isValid).toBe(true);

@@ -1,7 +1,7 @@
 import type Database from 'better-sqlite3';
 
 import { CacheService } from '../../utils/cache.ts'; // eslint-disable-line no-restricted-imports
-import { initializeDatabase, runMigrations } from './migrations.ts';
+import { DB_PATH, initializeDatabase, runMigrations } from './migrations.ts';
 
 import { BillStore } from './bill-store.ts';
 import { PartyStore } from './party-store.ts';
@@ -15,6 +15,9 @@ interface DatabaseOptions {
 
 function shouldEnableCache(): boolean {
   if (process.env.NODE_ENV === 'test') {
+    return false;
+  }
+  if (DB_PATH === ':memory:') {
     return false;
   }
   if (process.env.API_ENABLE_CACHE === 'true') {

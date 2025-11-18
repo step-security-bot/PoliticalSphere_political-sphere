@@ -87,7 +87,7 @@ const Captcha = forwardRef<CaptchaRef, CaptchaProps>(
         </div>
       </div>
     );
-  },
+  }
 );
 
 Captcha.displayName = 'Captcha';

@@ -44,25 +44,25 @@ const dashboardTemplates = {
         id: 2,
         title: 'Job Execution Times',
         type: 'graph',
-        targets: [{
-          expr: 'ci_job_duration_seconds{job_result="success"}',
-          legendFormat: '{{job_name}}'
-        }],
-        yAxes: [
-          { unit: 'seconds', label: 'Duration' }
-        ]
+        targets: [
+          {
+            expr: 'ci_job_duration_seconds{job_result="success"}',
+            legendFormat: '{{job_name}}',
+          },
+        ],
+        yAxes: [{ unit: 'seconds', label: 'Duration' }],
       },
       {
         id: 3,
         title: 'Test Coverage Trend',
         type: 'graph',
-        targets: [{
-          expr: 'ci_test_coverage_percent',
-          legendFormat: 'Coverage %'
-        }],
-        yAxes: [
-          { unit: 'percent', label: 'Coverage' }
-        ]
+        targets: [
+          {
+            expr: 'ci_test_coverage_percent',
+            legendFormat: 'Coverage %',
+          },
+        ],
+        yAxes: [{ unit: 'percent', label: 'Coverage' }],
       },
       {
         id: 4,
@@ -71,38 +71,40 @@ const dashboardTemplates = {
         targets: [
           {
             expr: 'ci_pipeline_slo_burn_rate_1h',
-            legendFormat: '1h Burn Rate'
+            legendFormat: '1h Burn Rate',
           },
           {
             expr: 'ci_pipeline_slo_burn_rate_6h',
-            legendFormat: '6h Burn Rate'
-          }
+            legendFormat: '6h Burn Rate',
+          },
         ],
         thresholds: [
           { value: 1, color: 'green' },
           { value: 5.76, color: 'orange' },
-          { value: 14.4, color: 'red' }
-        ]
+          { value: 14.4, color: 'red' },
+        ],
       },
       {
         id: 5,
         title: 'Recent Failures',
         type: 'table',
-        targets: [{
-          expr: 'ci_job_duration_seconds{job_result="failure"}',
-          legendFormat: 'Failed Jobs'
-        }],
+        targets: [
+          {
+            expr: 'ci_job_duration_seconds{job_result="failure"}',
+            legendFormat: 'Failed Jobs',
+          },
+        ],
         transformations: [
           {
             id: 'organize',
             options: {
               excludeByName: {
                 __name__: true,
-                job: true
-              }
-            }
-          }
-        ]
+                job: true,
+              },
+            },
+          },
+        ],
       },
       {
         id: 6,
@@ -128,9 +130,9 @@ const dashboardTemplates = {
 ### Quick Actions
 - [View Failed Jobs](#) | [Check Logs](#) | [Restart Pipeline](#)
         `,
-        mode: 'markdown'
-      }
-    ]
+        mode: 'markdown',
+      },
+    ],
   },
 
   'application-health': {
@@ -141,31 +143,37 @@ const dashboardTemplates = {
         id: 1,
         title: 'Application Uptime',
         type: 'stat',
-        targets: [{
-          expr: 'up',
-          legendFormat: 'Uptime'
-        }]
+        targets: [
+          {
+            expr: 'up',
+            legendFormat: 'Uptime',
+          },
+        ],
       },
       {
         id: 2,
         title: 'Response Time',
         type: 'graph',
-        targets: [{
-          expr: 'http_request_duration_seconds{quantile="0.95"}',
-          legendFormat: '95th percentile'
-        }]
+        targets: [
+          {
+            expr: 'http_request_duration_seconds{quantile="0.95"}',
+            legendFormat: '95th percentile',
+          },
+        ],
       },
       {
         id: 3,
         title: 'Error Rate',
         type: 'graph',
-        targets: [{
-          expr: 'rate(http_requests_total{status=~"5.."}[5m])',
-          legendFormat: '5xx errors'
-        }]
-      }
-    ]
-  }
+        targets: [
+          {
+            expr: 'rate(http_requests_total{status=~"5.."}[5m])',
+            legendFormat: '5xx errors',
+          },
+        ],
+      },
+    ],
+  },
 };
 
 function generateDashboard(templateName, outputFile) {
@@ -190,35 +198,37 @@ function generateDashboard(templateName, outputFile) {
           h: 8,
           w: 12,
           x: (index % 2) * 12,
-          y: Math.floor(index / 2) * 8
-        }
+          y: Math.floor(index / 2) * 8,
+        },
       })),
       time: {
         from: 'now-1h',
-        to: 'now'
+        to: 'now',
       },
       timepicker: {},
       templating: {
-        list: []
+        list: [],
       },
       annotations: {
-        list: []
+        list: [],
       },
       refresh: '30s',
       schemaVersion: 27,
       version: 0,
-      links: []
-    }
+      links: [],
+    },
   };
 
   fs.writeFileSync(outputFile, JSON.stringify(dashboard, null, 2));
   console.log(`✅ Generated dashboard: ${outputFile}`);
 }
 
-const [,, templateName, outputFile] = process.argv;
+const [, , templateName, outputFile] = process.argv;
 
 if (!templateName || !outputFile) {
-  console.error('Usage: node scripts/observability/generate-dashboard.mjs <template> <output-file>');
+  console.error(
+    'Usage: node scripts/observability/generate-dashboard.mjs <template> <output-file>'
+  );
   console.log('Available templates:', Object.keys(dashboardTemplates).join(', '));
   process.exit(1);
 }

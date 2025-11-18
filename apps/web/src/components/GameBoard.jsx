@@ -6,7 +6,7 @@
 
 import { useEffect, useState } from 'react';
 import { useAccessibility } from '../hooks/useAccessibility.js';
-import ReportContent from './ReportContent';
+import ReportContent from './ReportContent.jsx';
 
 const GameBoard = ({ gameId, proposals, onProposalSubmit, onVote }) => {
   const [showReport, setShowReport] = useState(null);

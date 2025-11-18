@@ -1,6 +1,6 @@
 #!/usr/bin/env node
-import fs from 'fs';
-import path from 'path';
+import fs from 'node:fs';
+import path from 'node:path';
 
 import { safeJoin, validateFilename } from '../../libs/shared/src/path-security.js';
 
@@ -83,14 +83,14 @@ function checkFilePlacement(filePath) {
   // Check root-level directories (like .github/, .vscode/)
   if (parts.length === 2 && parts[1] === '') {
     // directory
-    const dirName = parts[0] + '/';
+    const dirName = `${parts[0]}/`;
     if (rules.root.some(pattern => dirName === pattern || dirName.startsWith(pattern))) {
       return null; // allowed
     }
   }
 
   // Check directory placement for subdirectories
-  const topDir = parts[0] + '/';
+  const topDir = `${parts[0]}/`;
   const allowedDirs = rules.directories[topDir];
   if (!allowedDirs) {
     // Allow if it's a root-allowed directory
@@ -125,7 +125,7 @@ function main() {
             errors.push(error);
           }
         }
-      } catch (_error) {}
+      } catch {}
     }
   }
 

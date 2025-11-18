@@ -120,7 +120,7 @@ describe('GameBoard Component', () => {
 
     it('should not render proposal form when onProposalSubmit is not provided', () => {
       render(
-        <GameBoard gameId="game-123" proposals={mockProposals} onVote={mockCallbacks.onVote} />,
+        <GameBoard gameId="game-123" proposals={mockProposals} onVote={mockCallbacks.onVote} />
       );
 
       expect(screen.queryByText('Submit a Proposal')).not.toBeInTheDocument();

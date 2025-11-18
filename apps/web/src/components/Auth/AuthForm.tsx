@@ -115,7 +115,7 @@ const AuthForm: React.FC<AuthFormProps> = ({ onAuthSuccess }) => {
       signupPassword,
       confirmPassword,
       agreedToTerms,
-      captchaToken,
+      captchaToken
     );
 
     if (!validation.isValid) {
@@ -131,7 +131,7 @@ const AuthForm: React.FC<AuthFormProps> = ({ onAuthSuccess }) => {
       const result = await register(
         sanitizeUsername(username),
         sanitizeEmail(signupEmail),
-        signupPassword,
+        signupPassword
       );
 
       if (result.success) {

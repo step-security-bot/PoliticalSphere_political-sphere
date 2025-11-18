@@ -78,7 +78,7 @@ describe('setupGracefulShutdown', () => {
 
     expect(mockLogger.info).toHaveBeenCalledWith(
       expect.stringContaining('shutdown'),
-      expect.any(Object),
+      expect.any(Object)
     );
 
     mockExit.mockRestore();
@@ -123,7 +123,7 @@ describe('setupGracefulShutdown', () => {
     // Should warn about duplicate shutdown
     expect(mockLogger.warn).toHaveBeenCalledWith(
       expect.stringContaining('already in progress'),
-      expect.any(Object),
+      expect.any(Object)
     );
 
     mockExit.mockRestore();
@@ -160,7 +160,7 @@ describe('withGracefulTimeout', () => {
     };
 
     await expect(withGracefulTimeout(operation, 100, 'fallback')).rejects.toThrow(
-      'Operation failed',
+      'Operation failed'
     );
   });
 });

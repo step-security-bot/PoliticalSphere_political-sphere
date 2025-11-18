@@ -5,9 +5,9 @@
 // - Ensures workflow filenames are kebab-case and start with a verb
 // - Ensures actions have action.yml and README.md
 
-import { execSync } from 'child_process';
-import fs from 'fs';
-import path from 'path';
+import { execSync } from 'node:child_process';
+import fs from 'node:fs';
+import path from 'node:path';
 
 const repoRoot = process.cwd();
 const ghDir = path.join(repoRoot, '.github');
@@ -18,7 +18,7 @@ let exitCode = 0;
 function fileExists(p) {
   try {
     return fs.existsSync(p);
-  } catch (_e) {
+  } catch {
     return false;
   }
 }
@@ -70,7 +70,7 @@ if (fileExists(workflowsDir)) {
               ['-c', 'import sys,yaml; yaml.safe_load(open(sys.argv[1]));', fullPath],
               { stdio: 'ignore' }
             );
-          } catch (_e) {
+          } catch {
             console.warn(
               `WARN: YAML parse failed for ${fullPath} (python3/yaml not available or syntax error)`
             );
@@ -88,7 +88,7 @@ if (fileExists(workflowsDir)) {
             ['-c', 'import sys,yaml; yaml.safe_load(open(sys.argv[1]));', fullPath],
             { stdio: 'ignore' }
           );
-        } catch (_e) {
+        } catch {
           console.warn(
             `WARN: YAML parse failed for ${fullPath} (python3/yaml not available or syntax error)`
           );
@@ -122,7 +122,7 @@ if (fileExists(actionsDir)) {
           ['-c', 'import sys,yaml; yaml.safe_load(open(sys.argv[1]));', actionYml],
           { stdio: 'ignore' }
         );
-      } catch (_e) {
+      } catch {
         console.warn(
           `WARN: YAML parse failed for ${actionYml} (python3/yaml not available or syntax error)`
         );
