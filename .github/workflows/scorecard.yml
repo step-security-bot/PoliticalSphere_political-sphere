@@ -9,6 +9,10 @@ on:
     - cron: '30 2 * * 1' # Weekly Monday 02:30 UTC
   push:
     branches: [main]
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - '.github/workflows/**'
   workflow_dispatch: {}
 
 permissions:
