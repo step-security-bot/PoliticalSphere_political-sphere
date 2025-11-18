@@ -2,7 +2,7 @@ global:
   smtp_smarthost: 'smtp.gmail.com:587'
   smtp_from: 'alerts@example.com'
   smtp_auth_username: 'alerts@example.com'
-  smtp_auth_password: 'your-password'
+  smtp_auth_password: '${SMTP_PASSWORD}'
 
 route:
   group_by: ['alertname', 'service']

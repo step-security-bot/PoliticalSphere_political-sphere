@@ -5,6 +5,11 @@
 # DEPENDENCIES: Docker image, secrets management, ingress controller
 # ESTIMATED_READINESS: After containerization (Sprint 29+)
 
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: political-sphere
+---
 # TODO: Implement API deployment manifest
 # - Deployment with multiple replicas
 # - Health checks (liveness and readiness probes)

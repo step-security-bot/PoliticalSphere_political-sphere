@@ -5,6 +5,11 @@
 # DEPENDENCIES: Cert-manager, DNS configuration, load balancer
 # ESTIMATED_READINESS: After K8s cluster setup (Sprint 29+)
 
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: political-sphere
+---
 # TODO: Implement Ingress configuration
 # - HTTPS-only with TLS termination
 # - Rate limiting

@@ -4,8 +4,7 @@
  * Analyzes failure patterns and marks tests for quarantine
  */
 
-import { readFileSync, writeFileSync, existsSync } from 'fs';
-import { join } from 'path';
+import { existsSync, readFileSync, writeFileSync } from 'fs';
 
 const FAILURE_LOG = 'test-failure-patterns.log';
 const QUARANTINE_FILE = 'test-quarantine.json';

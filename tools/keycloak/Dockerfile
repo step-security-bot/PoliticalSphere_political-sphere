@@ -19,5 +19,9 @@ RUN /bin/sh -c '\
 # Ensure permissions match the upstream image defaults
 USER 1000
 
+# Healthcheck using curl to verify Keycloak is responding
+HEALTHCHECK --interval=30s --timeout=3s --start-period=60s --retries=3 \
+  CMD curl -f http://localhost:8080/health/ready || exit 1
+
 # Note: keep entrypoint / CMD from base image. This Dockerfile is intended
 # only to add curl for dev healthchecks and should not be used in production.
