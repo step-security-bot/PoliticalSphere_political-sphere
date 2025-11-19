@@ -11,7 +11,6 @@ import type {
   Agent,
   AgentInput,
   AgentOutput,
-  Message,
   OrchestrationConfig,
   OrchestrationPattern,
 } from '../types/index';
@@ -252,6 +251,9 @@ export class OrchestrationEngine {
 
     while (currentAgentIndex < agents.length) {
       const agent = agents[currentAgentIndex];
+      if (!agent) {
+        throw new Error(`Agent at index ${currentAgentIndex} is undefined`);
+      }
       try {
         const startTime = Date.now();
         const output = await agent.execute(currentInput);
@@ -307,11 +309,13 @@ export class OrchestrationEngine {
    */
   private async executeGroupChat(agents: Agent[], input: AgentInput): Promise<AgentOutput[]> {
     const outputs: AgentOutput[] = [];
-    const conversation: Message[] = [{ role: 'user', content: input.prompt }];
-    let rounds = 3; // Maximum rounds to prevent infinite loops
+    const conversation: Array<{ role: string; content: string; name?: string }> = [
+      { role: 'user', content: input.prompt },
+    ];
+    const rounds = 3; // Maximum rounds to prevent infinite loops
 
     for (let round = 0; round < rounds; round++) {
-      let roundOutputs: AgentOutput[] = [];
+      const roundOutputs: AgentOutput[] = [];
 
       for (const agent of agents) {
         try {
@@ -335,7 +339,6 @@ export class OrchestrationEngine {
             metadata: {
               executionTime,
               timestamp: new Date(),
-              round,
               ...(output.metadata && typeof output.metadata === 'object' ? output.metadata : {}),
             },
           };
@@ -353,7 +356,6 @@ export class OrchestrationEngine {
             metadata: {
               executionTime: 0,
               timestamp: new Date(),
-              round,
             },
             error: {
               message: error instanceof Error ? error.message : 'Unknown error',
@@ -386,6 +388,9 @@ export class OrchestrationEngine {
     }
 
     const coordinator = agents[0];
+    if (!coordinator) {
+      throw new Error('Coordinator agent (first agent) is undefined');
+    }
     const workers = agents.slice(1);
     const outputs: AgentOutput[] = [];
 
@@ -401,7 +406,6 @@ export class OrchestrationEngine {
         metadata: {
           executionTime,
           timestamp: new Date(),
-          role: 'coordinator',
           ...(planOutput.metadata && typeof planOutput.metadata === 'object'
             ? planOutput.metadata
             : {}),
@@ -457,13 +461,15 @@ export class OrchestrationEngine {
       const workerOutputs = await Promise.all(workerPromises);
       outputs.push(...workerOutputs);
     } catch (error) {
+      if (!coordinator) {
+        throw new Error('Coordinator agent is undefined');
+      }
       const errorOutput: AgentOutput = {
         agentId: coordinator.id,
         content: '',
         metadata: {
           executionTime: 0,
           timestamp: new Date(),
-          role: 'coordinator',
         },
         error: {
           message: error instanceof Error ? error.message : 'Coordinator failed',
@@ -482,7 +488,7 @@ export class OrchestrationEngine {
    */
   private async validateOutputs(
     outputs: AgentOutput[],
-    validators: Array<{ validate: (output: AgentOutput) => Promise<boolean> }>,
+    validators: Array<{ validate: (output: AgentOutput) => Promise<boolean> }>
   ): Promise<Array<{ passed: boolean; message?: string }>> {
     const results: Array<{ passed: boolean; message?: string }> = [];
 

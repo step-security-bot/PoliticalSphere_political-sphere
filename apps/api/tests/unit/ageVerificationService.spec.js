@@ -1,9 +1,9 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import AgeVerificationService from '../../src/services/age-verification.service.js';
+import AgeVerificationService from '../../src/modules/ageVerificationService.ts';
 
 // Mock dependencies
-vi.mock('../../src/logger.js', () => ({
+vi.mock('../../src/utils/logger.js', () => ({
   default: {
     info: vi.fn(),
     warn: vi.fn(),
@@ -86,7 +86,7 @@ describe('AgeVerificationService', () => {
       };
 
       await expect(service.verifyAge(verificationData)).rejects.toThrow(
-        'Invalid date of birth format',
+        'Invalid date of birth format'
       );
     });
 
@@ -97,7 +97,7 @@ describe('AgeVerificationService', () => {
       };
 
       await expect(service.verifyAge(incompleteData)).rejects.toThrow(
-        'Missing required fields: dateOfBirth, verificationMethod',
+        'Missing required fields: dateOfBirth, verificationMethod'
       );
     });
   });

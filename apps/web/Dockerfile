@@ -47,19 +47,17 @@ FROM base AS builder
 
 USER nodejs
 
-# Copy root package files
+## Install all dependencies (including devDependencies for build) using workspaces
+# Copy manifests first to maximize cache hits
 COPY --chown=nodejs:nodejs package.json package-lock.json ./
-COPY --chown=nodejs:nodejs vendor ./vendor
-
-# Install all dependencies (including devDependencies for build)
-RUN --mount=type=cache,target=/home/nodejs/.npm,uid=1001,gid=1001 \
-    npm ci --workspaces=false --legacy-peer-deps && \
-    npm cache clean --force
-
-# Copy source code
-COPY --chown=nodejs:nodejs apps/web ./apps/web
+COPY --chown=nodejs:nodejs apps/web/package.json ./apps/web/package.json
 COPY --chown=nodejs:nodejs libs ./libs
 COPY --chown=nodejs:nodejs tsconfig*.json nx.json ./
+
+# Now install with workspaces (needs workspace manifests present)
+RUN --mount=type=cache,target=/home/nodejs/.npm,uid=1001,gid=1001 \
+    npm ci --workspaces --include-workspace-root --legacy-peer-deps && \
+    npm cache clean --force
 
 # Build the frontend application (creates dist/ or build/)
 RUN npm run build -w apps/web
@@ -71,19 +69,16 @@ FROM base AS development
 
 USER nodejs
 
-# Copy root package files
+## Install dependencies with workspaces for dev server
+# Copy manifests and sources
 COPY --chown=nodejs:nodejs package.json package-lock.json ./
-COPY --chown=nodejs:nodejs vendor ./vendor
-
-# Install dependencies with cache mount
-RUN --mount=type=cache,target=/home/nodejs/.npm,uid=1001,gid=1001 \
-    npm ci --workspaces=false --legacy-peer-deps && \
-    npm cache clean --force
-
-# Copy all source code
 COPY --chown=nodejs:nodejs apps/web ./apps/web
 COPY --chown=nodejs:nodejs libs ./libs
 COPY --chown=nodejs:nodejs tsconfig*.json nx.json ./
+
+RUN --mount=type=cache,target=/home/nodejs/.npm,uid=1001,gid=1001 \
+    npm ci --workspaces --include-workspace-root --legacy-peer-deps && \
+    npm cache clean --force
 
 # Set development environment
 ENV NODE_ENV=development \

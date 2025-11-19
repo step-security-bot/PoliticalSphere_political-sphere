@@ -13,11 +13,9 @@ export interface AuthUser {
   role: string;
 }
 
-declare global {
-  namespace Express {
-    interface Request {
-      authUser?: AuthUser;
-    }
+declare module 'express-serve-static-core' {
+  interface Request {
+    authUser?: AuthUser;
   }
 }
 
@@ -27,11 +25,8 @@ declare global {
  */
 export function authenticate(req: Request, res: Response, next: NextFunction): void {
   // Bypass only when NODE_ENV=test and FORCE_AUTH !== '1'
-  if (
-    process.env.NODE_ENV === 'test' &&
-    process.env.FORCE_AUTH !== '1' &&
-    !req.cookies.accessToken
-  ) {
+  const tokenFromCookie = req.cookies?.accessToken as string | undefined;
+  if (process.env.NODE_ENV === 'test' && process.env.FORCE_AUTH !== '1' && !tokenFromCookie) {
     req.authUser = {
       userId: req.params.id || 'test-user-id',
       username: 'test-user',
@@ -42,7 +37,7 @@ export function authenticate(req: Request, res: Response, next: NextFunction): v
   }
 
   try {
-    const token = req.cookies.accessToken;
+    const token = tokenFromCookie;
     if (!token) {
       res.status(401).json({ error: 'No access token provided' });
       return;

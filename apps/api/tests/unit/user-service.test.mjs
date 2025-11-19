@@ -4,7 +4,7 @@
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
 import { UserService } from '../../src/domain/user-service';
-import { closeDatabase, getDatabase } from '../../s../stores/index.ts';
+import { closeDatabase, getDatabase } from '../../src/modules/stores/index.ts';
 
 describe('UserService Unit Tests', () => {
   let db;

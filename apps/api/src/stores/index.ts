@@ -47,10 +47,10 @@ export class DatabaseConnection {
     }
 
     // Stores accept specific constructor signatures
-    this.users = new UserStore(this.db, null);
-    this.parties = new PartyStore(this.db, null);
-    this.bills = new BillStore(null);
-    this.votes = new VoteStore(null);
+    this.users = new UserStore(this.db, this.cache ?? null);
+    this.parties = new PartyStore(this.db, this.cache ?? null);
+    this.bills = new BillStore(this.db, this.cache ?? null);
+    this.votes = new VoteStore(this.cache ?? null);
   }
 
   close() {
@@ -65,13 +65,9 @@ export class DatabaseConnection {
 let dbConnection: DatabaseConnection | null = null;
 
 export function getDatabase(
-  options: { cache?: CacheService; enableCache?: boolean } = {},
+  options: { cache?: CacheService; enableCache?: boolean } = {}
 ): DatabaseConnection {
-  // In test environment, always create a new connection to avoid interference
-  if (process.env.NODE_ENV === 'test') {
-    return new DatabaseConnection(options);
-  }
-
+  // Use a singleton even in tests; tests call closeDatabase() between cases
   if (!dbConnection) {
     dbConnection = new DatabaseConnection(options);
   }
@@ -79,14 +75,6 @@ export function getDatabase(
 }
 
 export function closeDatabase() {
-  if (process.env.NODE_ENV === 'test') {
-    // In test environment, getDatabase() returns a new instance each time,
-    // so we need to close the specific instance. But since tests call this
-    // in afterEach, and getDatabase() creates new instances, we can't track them.
-    // Instead, rely on garbage collection or let the process end.
-    return;
-  }
-
   if (dbConnection) {
     dbConnection.close();
     dbConnection = null;

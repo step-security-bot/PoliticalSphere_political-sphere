@@ -4,9 +4,14 @@
  */
 
 import { getLogger } from '@political-sphere/shared';
-import { JudiciaryDB, WhereClause } from '../services/database.service.js';
+import { JudiciaryDB } from '../services/database.service.js';
 // import { nlpService } from '../../../../libs/ai-system/src/nlp';
 
+/** Helper to safely extract error message */
+function getErrorMessage(error: unknown): string {
+  if (error instanceof Error) return getErrorMessage(error);
+  return String(error);
+}
 const logger = getLogger({ service: 'judiciary' });
 
 export interface CreateCaseData {
@@ -58,7 +63,7 @@ export class JudiciaryService {
       logger.info('Case created', { id: caseData.id });
       return caseData;
     } catch (error) {
-      logger.error('Failed to create case', { error: error.message, data });
+      logger.error('Failed to create case', { error: getErrorMessage(error), data });
       throw error;
     }
   }
@@ -74,7 +79,7 @@ export class JudiciaryService {
       }
       return caseData;
     } catch (error) {
-      logger.error('Failed to get case', { id, error: error.message });
+      logger.error('Failed to get case', { id, error: getErrorMessage(error) });
       throw error;
     }
   }
@@ -99,7 +104,7 @@ export class JudiciaryService {
 
       return cases;
     } catch (error) {
-      logger.error('Failed to list cases', { options, error: error.message });
+      logger.error('Failed to list cases', { options, error: getErrorMessage(error) });
       throw error;
     }
   }
@@ -117,7 +122,7 @@ export class JudiciaryService {
       logger.info('Case updated', { id });
       return caseData;
     } catch (error) {
-      logger.error('Failed to update case', { id, data, error: error.message });
+      logger.error('Failed to update case', { id, data, error: getErrorMessage(error) });
       throw error;
     }
   }
@@ -135,7 +140,7 @@ export class JudiciaryService {
       logger.info('Case decided', { id });
       return caseData;
     } catch (error) {
-      logger.error('Failed to decide case', { id, error: error.message });
+      logger.error('Failed to decide case', { id, error: getErrorMessage(error) });
       throw error;
     }
   }
@@ -160,7 +165,7 @@ export class JudiciaryService {
       logger.info('Judge created', { id: judge.id });
       return judge;
     } catch (error) {
-      logger.error('Failed to create judge', { error: error.message, data });
+      logger.error('Failed to create judge', { error: getErrorMessage(error), data });
       throw error;
     }
   }
@@ -176,7 +181,7 @@ export class JudiciaryService {
       }
       return judge;
     } catch (error) {
-      logger.error('Failed to get judge', { id, error: error.message });
+      logger.error('Failed to get judge', { id, error: getErrorMessage(error) });
       throw error;
     }
   }
@@ -194,7 +199,7 @@ export class JudiciaryService {
 
       return judges;
     } catch (error) {
-      logger.error('Failed to list judges', { options, error: error.message });
+      logger.error('Failed to list judges', { options, error: getErrorMessage(error) });
       throw error;
     }
   }
@@ -209,7 +214,7 @@ export class JudiciaryService {
       logger.info('Judge updated', { id });
       return judge;
     } catch (error) {
-      logger.error('Failed to update judge', { id, data, error: error.message });
+      logger.error('Failed to update judge', { id, data, error: getErrorMessage(error) });
       throw error;
     }
   }
@@ -230,7 +235,7 @@ export class JudiciaryService {
       logger.info('Ruling created', { id: ruling.id });
       return ruling;
     } catch (error) {
-      logger.error('Failed to create ruling', { error: error.message, data });
+      logger.error('Failed to create ruling', { error: getErrorMessage(error), data });
       throw error;
     }
   }
@@ -246,7 +251,7 @@ export class JudiciaryService {
       }
       return ruling;
     } catch (error) {
-      logger.error('Failed to get ruling', { id, error: error.message });
+      logger.error('Failed to get ruling', { id, error: getErrorMessage(error) });
       throw error;
     }
   }
@@ -259,7 +264,7 @@ export class JudiciaryService {
       const rulings = await JudiciaryDB.listRulings({ caseId });
       return rulings;
     } catch (error) {
-      logger.error('Failed to list rulings', { caseId, error: error.message });
+      logger.error('Failed to list rulings', { caseId, error: getErrorMessage(error) });
       throw error;
     }
   }
@@ -279,7 +284,7 @@ export class JudiciaryService {
       logger.info('Review created', { id: review.id });
       return review;
     } catch (error) {
-      logger.error('Failed to create review', { error: error.message, data });
+      logger.error('Failed to create review', { error: getErrorMessage(error), data });
       throw error;
     }
   }
@@ -295,7 +300,7 @@ export class JudiciaryService {
       }
       return review;
     } catch (error) {
-      logger.error('Failed to get review', { id, error: error.message });
+      logger.error('Failed to get review', { id, error: getErrorMessage(error) });
       throw error;
     }
   }
@@ -319,7 +324,7 @@ export class JudiciaryService {
 
       return reviews;
     } catch (error) {
-      logger.error('Failed to list reviews', { caseId, options, error: error.message });
+      logger.error('Failed to list reviews', { caseId, options, error: getErrorMessage(error) });
       throw error;
     }
   }
@@ -340,7 +345,7 @@ export class JudiciaryService {
       logger.info('Review updated', { id, status: data.status });
       return review;
     } catch (error) {
-      logger.error('Failed to update review', { id, data, error: error.message });
+      logger.error('Failed to update review', { id, data, error: getErrorMessage(error) });
       throw error;
     }
   }
@@ -352,7 +357,7 @@ export class JudiciaryService {
     try {
       return await this.updateReview(id, { status: 'granted', decidedAt: new Date() });
     } catch (error) {
-      logger.error('Failed to grant review', { id, error: error.message });
+      logger.error('Failed to grant review', { id, error: getErrorMessage(error) });
       throw error;
     }
   }
@@ -364,7 +369,7 @@ export class JudiciaryService {
     try {
       return await this.updateReview(id, { status: 'denied', decidedAt: new Date() });
     } catch (error) {
-      logger.error('Failed to deny review', { id, error: error.message });
+      logger.error('Failed to deny review', { id, error: getErrorMessage(error) });
       throw error;
     }
   }
@@ -384,7 +389,7 @@ export class JudiciaryService {
       logger.info('Precedent created', { id: precedent.id });
       return precedent;
     } catch (error) {
-      logger.error('Failed to create precedent', { error: error.message, data });
+      logger.error('Failed to create precedent', { error: getErrorMessage(error), data });
       throw error;
     }
   }
@@ -401,7 +406,7 @@ export class JudiciaryService {
 
       return precedents;
     } catch (error) {
-      logger.error('Failed to list precedents', { options, error: error.message });
+      logger.error('Failed to list precedents', { options, error: getErrorMessage(error) });
       throw error;
     }
   }
@@ -419,10 +424,10 @@ export class JudiciaryService {
         return [];
       }
 
-      const cases = await Promise.all(caseIds.map(id => this.getCase(id)));
+      const cases = await Promise.all(caseIds.map(id => this.getCase(id as string)));
       return cases;
     } catch (error) {
-      logger.error('Failed to get cases by judge', { judgeId, error: error.message });
+      logger.error('Failed to get cases by judge', { judgeId, error: getErrorMessage(error) });
       throw error;
     }
   }
@@ -434,7 +439,7 @@ export class JudiciaryService {
     try {
       return await this.listCases({ status: 'filed' });
     } catch (error) {
-      logger.error('Failed to get active cases', { error: error.message });
+      logger.error('Failed to get active cases', { error: getErrorMessage(error) });
       throw error;
     }
   }
@@ -446,7 +451,7 @@ export class JudiciaryService {
     try {
       return await this.listCases({ status: 'under_review' });
     } catch (error) {
-      logger.error('Failed to get cases under review', { error: error.message });
+      logger.error('Failed to get cases under review', { error: getErrorMessage(error) });
       throw error;
     }
   }
@@ -482,7 +487,7 @@ export class JudiciaryService {
         complexity,
       };
     } catch (error) {
-      logger.error('Failed to analyze case with NLP', { caseId, error: error.message });
+      logger.error('Failed to analyze case with NLP', { caseId, error: getErrorMessage(error) });
       throw error;
     }
   }
@@ -498,7 +503,11 @@ export class JudiciaryService {
       // Stub legal reasoning generation
       return `As Judge ${judge.position} in the ${judge.court}, I have reviewed the case "${caseData.title}". Based on the facts presented and applicable legal principles, I conclude that the matter requires careful consideration of constitutional principles and fairness.`;
     } catch (error) {
-      logger.error('Failed to generate legal reasoning', { caseId, judgeId, error: error.message });
+      logger.error('Failed to generate legal reasoning', {
+        caseId,
+        judgeId,
+        error: getErrorMessage(error),
+      });
       throw error;
     }
   }
@@ -515,7 +524,7 @@ export class JudiciaryService {
       const caseData = await this.getCase(caseId);
 
       // Stub classification for now
-      const predictedType = caseData.type;
+      const predictedType = caseData.type as string;
       const confidence = 0.8;
 
       // Find similar precedents (simplified)
@@ -528,7 +537,10 @@ export class JudiciaryService {
         similarPrecedents,
       };
     } catch (error) {
-      logger.error('Failed to classify case and find precedents', { caseId, error: error.message });
+      logger.error('Failed to classify case and find precedents', {
+        caseId,
+        error: getErrorMessage(error),
+      });
       throw error;
     }
   }

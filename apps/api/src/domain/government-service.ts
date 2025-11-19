@@ -6,6 +6,11 @@
 import { getLogger } from '@political-sphere/shared';
 import { GovernmentDB } from '../services/database.service.js';
 
+/** Helper to safely extract error message */
+function getErrorMessage(error: unknown): string {
+  if (error instanceof Error) return getErrorMessage(error);
+  return String(error);
+}
 const logger = getLogger({ service: 'government' });
 
 export interface CreateGovernmentData {
@@ -47,7 +52,7 @@ export class GovernmentService {
       logger.info('Government created', { id: government.id });
       return government;
     } catch (error) {
-      logger.error('Failed to create government', { error: error.message, data });
+      logger.error('Failed to create government', { error: getErrorMessage(error), data });
       throw error;
     }
   }
@@ -63,7 +68,7 @@ export class GovernmentService {
       }
       return government;
     } catch (error) {
-      logger.error('Failed to get government', { id, error: error.message });
+      logger.error('Failed to get government', { id, error: getErrorMessage(error) });
       throw error;
     }
   }
@@ -85,7 +90,7 @@ export class GovernmentService {
 
       return governments;
     } catch (error) {
-      logger.error('Failed to list governments', { options, error: error.message });
+      logger.error('Failed to list governments', { options, error: getErrorMessage(error) });
       throw error;
     }
   }
@@ -95,7 +100,7 @@ export class GovernmentService {
    */
   async updateGovernment(
     id: string,
-    data: Partial<CreateGovernmentData & { status: string; dissolvedAt?: Date }>,
+    data: Partial<CreateGovernmentData & { status: string; dissolvedAt?: Date }>
   ) {
     try {
       logger.info('Updating government', { id, data });
@@ -103,7 +108,7 @@ export class GovernmentService {
       logger.info('Government updated', { id });
       return government;
     } catch (error) {
-      logger.error('Failed to update government', { id, data, error: error.message });
+      logger.error('Failed to update government', { id, data, error: getErrorMessage(error) });
       throw error;
     }
   }
@@ -121,7 +126,7 @@ export class GovernmentService {
       logger.info('Government dissolved', { id });
       return government;
     } catch (error) {
-      logger.error('Failed to dissolve government', { id, error: error.message });
+      logger.error('Failed to dissolve government', { id, error: getErrorMessage(error) });
       throw error;
     }
   }
@@ -141,7 +146,7 @@ export class GovernmentService {
       logger.info('Minister created', { id: minister.id });
       return minister;
     } catch (error) {
-      logger.error('Failed to create minister', { error: error.message, data });
+      logger.error('Failed to create minister', { error: getErrorMessage(error), data });
       throw error;
     }
   }
@@ -157,7 +162,7 @@ export class GovernmentService {
       }
       return minister;
     } catch (error) {
-      logger.error('Failed to get minister', { id, error: error.message });
+      logger.error('Failed to get minister', { id, error: getErrorMessage(error) });
       throw error;
     }
   }
@@ -170,7 +175,7 @@ export class GovernmentService {
       const ministers = await GovernmentDB.listMinisters({ governmentId });
       return ministers;
     } catch (error) {
-      logger.error('Failed to list ministers', { governmentId, error: error.message });
+      logger.error('Failed to list ministers', { governmentId, error: getErrorMessage(error) });
       throw error;
     }
   }
@@ -185,7 +190,7 @@ export class GovernmentService {
       logger.info('Minister updated', { id });
       return minister;
     } catch (error) {
-      logger.error('Failed to update minister', { id, data, error: error.message });
+      logger.error('Failed to update minister', { id, data, error: getErrorMessage(error) });
       throw error;
     }
   }
@@ -200,7 +205,7 @@ export class GovernmentService {
       logger.info('Minister resigned', { id });
       return minister;
     } catch (error) {
-      logger.error('Failed to resign minister', { id, error: error.message });
+      logger.error('Failed to resign minister', { id, error: getErrorMessage(error) });
       throw error;
     }
   }
@@ -220,7 +225,7 @@ export class GovernmentService {
       logger.info('Executive action created', { id: action.id });
       return action;
     } catch (error) {
-      logger.error('Failed to create executive action', { error: error.message, data });
+      logger.error('Failed to create executive action', { error: getErrorMessage(error), data });
       throw error;
     }
   }
@@ -236,7 +241,7 @@ export class GovernmentService {
       }
       return action;
     } catch (error) {
-      logger.error('Failed to get executive action', { id, error: error.message });
+      logger.error('Failed to get executive action', { id, error: getErrorMessage(error) });
       throw error;
     }
   }
@@ -257,7 +262,7 @@ export class GovernmentService {
 
       return actions;
     } catch (error) {
-      logger.error('Failed to list executive actions', { options, error: error.message });
+      logger.error('Failed to list executive actions', { options, error: getErrorMessage(error) });
       throw error;
     }
   }
@@ -275,7 +280,7 @@ export class GovernmentService {
       logger.info('Executive action signed', { id });
       return action;
     } catch (error) {
-      logger.error('Failed to sign executive action', { id, error: error.message });
+      logger.error('Failed to sign executive action', { id, error: getErrorMessage(error) });
       throw error;
     }
   }
@@ -295,7 +300,7 @@ export class GovernmentService {
       logger.info('Cabinet meeting created', { id: meeting.id });
       return meeting;
     } catch (error) {
-      logger.error('Failed to create cabinet meeting', { error: error.message, data });
+      logger.error('Failed to create cabinet meeting', { error: getErrorMessage(error), data });
       throw error;
     }
   }
@@ -311,7 +316,7 @@ export class GovernmentService {
       }
       return meeting;
     } catch (error) {
-      logger.error('Failed to get cabinet meeting', { id, error: error.message });
+      logger.error('Failed to get cabinet meeting', { id, error: getErrorMessage(error) });
       throw error;
     }
   }
@@ -321,7 +326,7 @@ export class GovernmentService {
    */
   async updateCabinetMeeting(
     id: string,
-    data: Partial<CreateCabinetMeetingData & { status: string; minutes?: string }>,
+    data: Partial<CreateCabinetMeetingData & { status: string; minutes?: string }>
   ) {
     try {
       logger.info('Updating cabinet meeting', { id, data });
@@ -329,7 +334,7 @@ export class GovernmentService {
       logger.info('Cabinet meeting updated', { id });
       return meeting;
     } catch (error) {
-      logger.error('Failed to update cabinet meeting', { id, data, error: error.message });
+      logger.error('Failed to update cabinet meeting', { id, data, error: getErrorMessage(error) });
       throw error;
     }
   }

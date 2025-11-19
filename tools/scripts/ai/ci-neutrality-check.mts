@@ -140,7 +140,7 @@ async function main() {
       file.includes('.spec.') ||
       file.includes('.fixture.') ||
       file.includes('.mock.')
-    );
+        );
 
     if (isTestOrFixtureFile) {
       continue;

@@ -3,23 +3,17 @@
   "version": "0.0.1",
   "description": "Shared utilities and libraries for Political Sphere applications",
   "type": "module",
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "main": "./dist/src/index.js",
+  "types": "./dist/src/index.d.ts",
   "scripts": {
     "build": "tsc"
   },
   "exports": {
     ".": {
-      "import": "./dist/index.js",
+      "import": "./dist/src/index.js",
       "require": "./cjs-shared.cjs",
-      "default": "./dist/index.js",
-      "types": "./dist/index.d.ts"
-    },
-    "./logger-pino": {
-      "import": "./dist/logger-pino.js",
-      "require": "./cjs-shared.cjs",
-      "default": "./dist/logger-pino.js",
-      "types": "./dist/logger-pino.d.ts"
+      "default": "./dist/src/index.js",
+      "types": "./dist/src/index.d.ts"
     }
   }
 }

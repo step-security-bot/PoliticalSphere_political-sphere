@@ -1,15 +1,18 @@
-// Lightweight test-safe logger stub using Pino logger.
-import { getLogger } from '@political-sphere/shared/logger-pino';
+/* eslint-disable no-console */
+// Lightweight test-safe logger stub.
+// Avoid external dependencies in test environment.
 
-const logger = getLogger({ service: 'api-utils' });
+const base = {
+  info: (...args) => console.info(...args),
+  warn: (...args) => console.warn(...args),
+  error: (...args) => console.error(...args),
+  audit: (...args) => console.info('[AUDIT]', ...args),
+};
 
 const passthrough = (level, args) => {
   if (process.env.NODE_ENV === 'test') return; // silence during tests
-  if (args.length === 1) {
-    logger[level](args[0]);
-  } else {
-    logger[level](args[0], args.slice(1));
-  }
+  const fn = base[level] || base.info;
+  fn(...args);
 };
 
 export const info = (...args) => passthrough('info', args);

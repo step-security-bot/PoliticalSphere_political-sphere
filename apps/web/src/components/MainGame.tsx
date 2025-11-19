@@ -14,7 +14,7 @@ import ParliamentChamber from './Parliament/ParliamentChamber';
 import UserProfile from './Profile/UserProfile';
 import { useLoading } from '../contexts/LoadingContext';
 import { useToast } from '../contexts/ToastContext';
-import { SkeletonCard, SkeletonList } from '../components/common/skeleton';
+import { SkeletonList } from '../components/common/Skeleton';
 
 interface MainGameProps {
   userId: string;
@@ -56,8 +56,7 @@ const MainGame: FC<MainGameProps> = ({ userId, username, onLogout }) => {
       });
 
       setGameData(data);
-    } catch (error) {
-      console.error('Error fetching simulation data:', error);
+    } catch {
       showToast('error', 'Failed to load game data', 'Please refresh the page to try again.');
     }
   }, [withLoading, showToast]);
@@ -79,8 +78,7 @@ const MainGame: FC<MainGameProps> = ({ userId, username, onLogout }) => {
       });
       showToast('success', 'Parliament action submitted', 'Your action has been recorded.');
       await fetchGameData();
-    } catch (error) {
-      console.error('Parliament action failed:', error);
+    } catch {
       showToast('error', 'Action failed', 'Please try again.');
     }
   };
@@ -94,8 +92,7 @@ const MainGame: FC<MainGameProps> = ({ userId, username, onLogout }) => {
       });
       showToast('success', 'Government action submitted', 'Your action has been recorded.');
       await fetchGameData();
-    } catch (error) {
-      console.error('Government action failed:', error);
+    } catch {
       showToast('error', 'Action failed', 'Please try again.');
     }
   };
@@ -109,8 +106,7 @@ const MainGame: FC<MainGameProps> = ({ userId, username, onLogout }) => {
       });
       showToast('success', 'Election action submitted', 'Your action has been recorded.');
       await fetchGameData();
-    } catch (error) {
-      console.error('Election action failed:', error);
+    } catch {
       showToast('error', 'Action failed', 'Please try again.');
     }
   };

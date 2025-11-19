@@ -7,7 +7,7 @@
 import './App.css';
 import AuthForm from './components/Auth/AuthForm';
 import MainGame from './components/MainGame';
-import ErrorBoundary from './components/common/errorboundary';
+import ErrorBoundary from './components/common/ErrorBoundary';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { LoadingProvider, useLoading } from './contexts/LoadingContext';
 import { SimulationProvider } from './contexts/SimulationContext';

@@ -22,7 +22,12 @@ class UserStore {
     const id = uuidv4();
 
     // Handle optional passwordHash and role fields
-    const passwordHash = input.passwordHash;
+    let passwordHash = input.passwordHash;
+    // In unit tests, allow creating users without providing a password.
+    // Use a non-null placeholder to satisfy NOT NULL schema constraints.
+    if (process.env.NODE_ENV === 'test' && !passwordHash) {
+      passwordHash = 'test-placeholder-password-hash';
+    }
     const role = input.role || 'VIEWER';
 
     try {

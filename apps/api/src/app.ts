@@ -1,6 +1,7 @@
 /**
  * Express App (without server listen) for testing and composition
  */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import 'dotenv/config';
 import compression from 'compression';
 import cookieParser from 'cookie-parser';
@@ -22,7 +23,7 @@ import { judiciaryService } from './domain/judiciary-service.ts';
 import { gameEventEmitter } from './events';
 import { sanitizeRequest, validateContentType } from './middleware/validation.middleware.ts';
 import { authenticate, requirePlayer } from './auth/auth.middleware.ts';
-import { auditAuth, auditApiAccess } from './middleware/audit.middleware.ts';
+import { auditApiAccess } from './middleware/audit.middleware.ts';
 
 export const createApp = () => {
   const app = express();
@@ -56,7 +57,7 @@ export const createApp = () => {
     cors({
       origin: process.env.CORS_ORIGIN || 'http://localhost:5173',
       credentials: true,
-    }),
+    })
   );
 
   // Compression middleware (must be before other middleware)
@@ -72,7 +73,7 @@ export const createApp = () => {
         // Use compression filter function
         return compression.filter(req, res);
       },
-    }),
+    })
   );
 
   // Logging
@@ -133,7 +134,8 @@ export const createApp = () => {
         success: true,
         data: currentGovernment,
       });
-    } catch (error) {
+    } catch (_error) {
+      // eslint-disable-line @typescript-eslint/no-unused-vars
       res.status(500).json({
         success: false,
         error: 'Failed to fetch government data',
@@ -151,12 +153,13 @@ export const createApp = () => {
         });
       }
       const government = await governmentService.createGovernment({ name, leaderId });
-      res.json({
+      return res.json({
         success: true,
         data: government,
       });
-    } catch (error) {
-      res.status(500).json({
+    } catch (_error) {
+      // eslint-disable-line @typescript-eslint/no-unused-vars
+      return res.status(500).json({
         success: false,
         error: 'Failed to create government',
       });
@@ -166,6 +169,9 @@ export const createApp = () => {
   app.post('/government/:id/ministers', requirePlayer, async (req, res) => {
     try {
       const { id } = req.params;
+      if (!id) {
+        return res.status(400).json({ success: false, error: 'Government ID is required' });
+      }
       const { userId, portfolio } = req.body;
       if (!userId || !portfolio) {
         return res.status(400).json({
@@ -178,12 +184,13 @@ export const createApp = () => {
         governmentId: id,
         portfolio,
       });
-      res.json({
+      return res.json({
         success: true,
         data: minister,
       });
-    } catch (error) {
-      res.status(500).json({
+    } catch (_error) {
+      // eslint-disable-line @typescript-eslint/no-unused-vars
+      return res.status(500).json({
         success: false,
         error: 'Failed to appoint minister',
       });
@@ -192,7 +199,6 @@ export const createApp = () => {
 
   app.post('/government/:id/actions', requirePlayer, async (req, res) => {
     try {
-      const { id } = req.params;
       const { title, description, type } = req.body;
       if (!title || !type) {
         return res.status(400).json({
@@ -205,12 +211,13 @@ export const createApp = () => {
         description,
         type,
       });
-      res.json({
+      return res.json({
         success: true,
         data: action,
       });
-    } catch (error) {
-      res.status(500).json({
+    } catch (_error) {
+      // eslint-disable-line @typescript-eslint/no-unused-vars
+      return res.status(500).json({
         success: false,
         error: 'Failed to create executive action',
       });
@@ -226,14 +233,15 @@ export const createApp = () => {
         type: type as string,
         limit: limit ? parseInt(limit as string) : undefined,
       });
-      res.json({
+      return res.json({
         success: true,
         data: cases,
       });
-    } catch (error) {
-      res.status(500).json({
+    } catch (_error) {
+      // eslint-disable-line @typescript-eslint/no-unused-vars
+      return res.status(500).json({
         success: false,
-        error: 'Failed to fetch cases',
+        error: 'Failed to get cases',
       });
     }
   });
@@ -252,14 +260,15 @@ export const createApp = () => {
         description,
         type,
       });
-      res.json({
+      return res.json({
         success: true,
         data: caseData,
       });
-    } catch (error) {
-      res.status(500).json({
+    } catch (_error) {
+      // eslint-disable-line @typescript-eslint/no-unused-vars
+      return res.status(500).json({
         success: false,
-        error: 'Failed to create case',
+        error: 'Failed to create minister',
       });
     }
   });
@@ -267,6 +276,9 @@ export const createApp = () => {
   app.post('/judiciary/cases/:id/ruling', requirePlayer, async (req, res) => {
     try {
       const { id } = req.params;
+      if (!id) {
+        return res.status(400).json({ success: false, error: 'Case ID is required' });
+      }
       const { judgeId, decision, reasoning } = req.body;
       if (!judgeId || !decision) {
         return res.status(400).json({
@@ -280,12 +292,13 @@ export const createApp = () => {
         decision,
         reasoning,
       });
-      res.json({
+      return res.json({
         success: true,
         data: ruling,
       });
-    } catch (error) {
-      res.status(500).json({
+    } catch (_error) {
+      // eslint-disable-line @typescript-eslint/no-unused-vars
+      return res.status(500).json({
         success: false,
         error: 'Failed to create ruling',
       });
@@ -635,13 +648,14 @@ export const createApp = () => {
     (err: Error, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
       // Log errors only in development to prevent information leakage
       if (process.env.NODE_ENV === 'development') {
+        // eslint-disable-next-line no-console
         console.error('Unhandled error:', err);
       }
       res.status(500).json({
         error: 'Internal server error',
         message: process.env.NODE_ENV === 'development' ? err.message : undefined,
       });
-    },
+    }
   );
 
   return app;

@@ -60,7 +60,7 @@ runs:
   steps:
     - name: Cache security databases
       if: inputs.enable-trivy == 'true' || inputs.enable-grype == 'true'
-      uses: actions/cache@e12d46a63a90f2fae62d114769bbf2a179198b5c # v4.2.0
+      uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
       with:
         path: |
           ~/.cache/trivy

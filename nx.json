@@ -36,27 +36,31 @@
       "!{workspaceRoot}/monitoring/data/**/*"
     ],
     "buildInputs": [
-      "production",
-      "^production",
+      "{projectRoot}/**/*",
+      "!{projectRoot}/**/?(*.)+(spec|test).[jt]s?(x)?(.snap)",
+      "!{projectRoot}/tsconfig.spec.json",
+      "!{projectRoot}/jest.config.[jt]s",
+      "!{projectRoot}/src/test-setup.[jt]s",
+      "!{projectRoot}/test-setup.[jt]s",
+      "!{projectRoot}/.eslintrc.json",
+      "!{projectRoot}/eslint.config.js",
       "{workspaceRoot}/babel.config.json",
       "{workspaceRoot}/tsconfig.base.json"
     ],
     "testInputs": [
-      "default",
-      "^production",
+      "{projectRoot}/**/*",
       "{workspaceRoot}/jest.preset.js",
       "{workspaceRoot}/jest.config.ts",
       "{workspaceRoot}/test-setup.ts"
     ],
     "lintInputs": [
-      "default",
+      "{projectRoot}/**/*",
       "{workspaceRoot}/.eslintrc.json",
       "{workspaceRoot}/.eslintignore",
       "{workspaceRoot}/eslint.config.js"
     ],
     "e2eInputs": [
-      "default",
-      "^production",
+      "{projectRoot}/**/*",
       "{projectRoot}/playwright.config.ts",
       "{projectRoot}/test-setup.ts"
     ]

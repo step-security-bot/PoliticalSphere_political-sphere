@@ -77,7 +77,7 @@ const watchExtraExclude = ['tools/**'];
 
 // Base test configuration shared across all projects
 const createBaseTestConfig = () => ({
-  globals: false,
+  globals: true,
   environment,
   testTimeout: 10000,
   // Retry flaky tests in CI (configurable via VITEST_RETRY env var)
@@ -102,7 +102,7 @@ const createBaseTestConfig = () => ({
   mockReset: true,
   restoreMocks: true,
   clearMocks: true,
-  setupFiles: ['./tools/testing/test-env-setup.ts'],
+  setupFiles: ['./tools/testing/test-env-setup.ts', './scripts/test-setup.ts'],
   globalSetup: ['./tools/testing/global-setup.ts'],
   // Performance: disable unnecessary features
   reporters: isCI ? ['default'] : ['verbose'],

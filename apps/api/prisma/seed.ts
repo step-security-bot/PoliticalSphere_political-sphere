@@ -3,6 +3,8 @@
  * Populates database with initial game data
  */
 
+/* eslint-disable no-console */
+
 import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
@@ -48,10 +50,12 @@ async function main() {
     update: {},
     create: {
       id: 'election-demo-1',
+      gameId: 'game-demo-1',
       name: 'Demo General Election',
-      type: 'general',
+      electionType: 'general',
       status: 'scheduled',
-      scheduledAt: new Date(Date.now() + 24 * 60 * 60 * 1000), // Tomorrow
+      startDate: new Date(Date.now() + 24 * 60 * 60 * 1000), // Tomorrow
+      endDate: new Date(Date.now() + 48 * 60 * 60 * 1000), // Day after tomorrow
     },
   });
   console.log('✅ Created demo election');
@@ -64,6 +68,7 @@ async function main() {
         name: 'London Central',
         region: 'London',
         population: 75000,
+        registeredVoters: 68000,
       },
     }),
     prisma.constituency.create({
@@ -72,6 +77,7 @@ async function main() {
         name: 'Manchester North',
         region: 'North West',
         population: 68000,
+        registeredVoters: 61000,
       },
     }),
     prisma.constituency.create({
@@ -80,6 +86,7 @@ async function main() {
         name: 'Edinburgh South',
         region: 'Scotland',
         population: 72000,
+        registeredVoters: 65000,
       },
     }),
   ]);
@@ -105,6 +112,9 @@ async function main() {
   // Create demo press release
   const _pressRelease = await prisma.pressRelease.create({
     data: {
+      gameId: 'game-demo-1',
+      authorId: 'user-demo-1',
+      authorType: 'government',
       title: 'Parliament Opens New Session',
       content:
         'The UK Parliament has opened its new session with a focus on economic recovery and climate action. Members from all parties gathered to discuss the legislative agenda for the coming term.',
@@ -118,8 +128,13 @@ async function main() {
   // Create demo poll
   const _poll = await prisma.poll.create({
     data: {
+      gameId: 'game-demo-1',
+      creatorId: 'user-demo-1',
       question: 'Which issue should Parliament prioritize?',
       options: ['Economy', 'Healthcare', 'Climate', 'Education'],
+      pollType: 'issue',
+      duration: 604800, // 7 days in seconds
+      closesAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days from now
       status: 'active',
     },
   });

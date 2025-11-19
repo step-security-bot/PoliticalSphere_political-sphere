@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
 import { BillService } from '../../src/domain/bill-service';
 import { UserService } from '../../src/domain/user-service';
-import { closeDatabase, getDatabase } from '../../s../stores/index.ts';
+import { closeDatabase, getDatabase } from '../../src/stores/index.ts';
 
 describe('BillService', () => {
   let userService;

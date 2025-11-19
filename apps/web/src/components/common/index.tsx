@@ -75,7 +75,7 @@ export const Card: React.FC<CardProps> = ({ children, className = '', title }) =
 };
 
 // Re-export other common components that live in separate files
-export { ErrorBoundary } from './errorboundary';
-export { Skeleton, SkeletonList, SkeletonCard, SkeletonText } from './skeleton';
+export { ErrorBoundary } from './ErrorBoundary';
+export { Skeleton, SkeletonList, SkeletonCard, SkeletonText } from './Skeleton';
 
-export { default as ConfirmDialog } from './confirmdialog';
+export { default as ConfirmDialog } from './ConfirmDialog';
