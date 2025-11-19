@@ -78,5 +78,7 @@ To contribute a new template or improve existing ones:
 
 ---
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 **Last Updated**: 2025-10-29  
 **Maintained By**: Documentation Team

@@ -1,4 +1,7 @@
 ---
+
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 description: 'AI governance safeguards, neutrality enforcement, and oversight checkpoints'
 applyTo: '**/*'
 ---

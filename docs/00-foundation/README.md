@@ -12,6 +12,8 @@
 
 Welcome to the foundation documentation for Political Sphere. This section establishes the core principles, vision, and fundamental concepts that guide our multiplayer political simulation game.
 
+> NOTE: This folder contains the canonical project-level context and strategic documents used across all sections; see `docs/00-foundation/project-context.md` for the executive overview and strategic roadmap.
+
 ## Overview
 
 The foundation documents provide the essential context and principles that underpin all aspects of Political Sphere. These documents are foundational to understanding our mission, values, and approach to creating an engaging and responsible political simulation platform.

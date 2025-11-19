@@ -7,6 +7,8 @@
 
 ---
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 ## Executive Summary
 
 This document presents a comprehensive, evidence-based plan for building a production-grade AI Development System for Political Sphere, informed by 30+ authoritative sources across multi-agent frameworks, security standards, AI governance, observability, and accessibility.
@@ -23,6 +25,7 @@ This document presents a comprehensive, evidence-based plan for building a produ
 **Zero-Budget Validation:** All proposed tools and frameworks are free, open-source, or use free tiers (LangGraph MIT, Semantic Kernel MIT, OpenTelemetry Apache 2.0, axe-core MPL-2.0, OWASP free, WCAG free, NIST RMF voluntary/free).
 
 **Recommended Approach:**
+
 - **Phase 1 (Foundation)**: Implement pattern-based orchestration using Semantic Kernel's proven patterns (Sequential, Concurrent, Handoff, Group Chat, Magentic)
 - **Phase 2 (Resilience)**: Add LangGraph checkpoint/resume for workflow interruption recovery
 - **Phase 3 (Validation)**: Build tiered validation gates using OWASP ASVS requirement identifiers
@@ -36,6 +39,7 @@ To enhance how AI gathers context through documentation and code comments, the f
 ### 1. Enhanced README Files with AI-Friendly Details
 
 **Directory README Structure (9 Sections)**:
+
 - **1. Directory Identity & Purpose**: Clear name, description, role, audience, classification
 - **2. Scope, Boundaries & Responsibilities**: What it does/not do, functional scope, key files/subdirs
 - **3. Criticality, Risk Profile & Access Level**: Criticality, risk, volatility, skill levels, restrictions
@@ -47,6 +51,7 @@ To enhance how AI gathers context through documentation and code comments, the f
 - **9. Maintenance, Ownership & Review Cycle**: Owners, review processes, escalation paths
 
 **AI-Specific Enhancements**:
+
 - **Code Examples**: Comprehensive TypeScript examples with JSDoc comments
 - **API References**: Detailed function signatures, parameter types, return values
 - **Usage Patterns**: Real-world examples with context and explanations
@@ -56,6 +61,7 @@ To enhance how AI gathers context through documentation and code comments, the f
 ### 2. Detailed JSDoc Comments and Inline Documentation
 
 **Enhanced Code Comments**:
+
 - **Function Headers**: Comprehensive JSDoc with @param, @returns, @example
 - **Type Definitions**: Detailed interface documentation with usage examples
 - **Algorithm Explanations**: Inline comments explaining complex logic
@@ -63,7 +69,8 @@ To enhance how AI gathers context through documentation and code comments, the f
 - **Error Handling**: Documentation of error conditions and recovery paths
 
 **Example Enhanced Documentation**:
-```typescript
+
+````typescript
 /**
  * Orchestrates AI agents using specified pattern with governance and validation
  * @param init - Orchestrator initialization configuration
@@ -88,11 +95,12 @@ To enhance how AI gathers context through documentation and code comments, the f
 export function createOrchestrator(init: OrchestratorInit): Orchestrator {
   // Implementation with detailed inline comments
 }
-```
+````
 
 ### 3. Cross-Referenced Documentation Structure
 
 **Interlinked Documentation**:
+
 - **README Cross-References**: Links between directory READMEs for related functionality
 - **API Documentation**: Links from READMEs to detailed API docs
 - **Standards References**: Citations to WCAG, OWASP, NIST with version numbers
@@ -100,6 +108,7 @@ export function createOrchestrator(init: OrchestratorInit): Orchestrator {
 - **Example Links**: Pointers to working code examples
 
 **Navigation Aids**:
+
 - **Table of Contents**: Comprehensive TOC in each major doc
 - **Quick Reference**: Cheat sheets and command references
 - **Search-Friendly**: Consistent terminology and naming conventions
@@ -108,6 +117,7 @@ export function createOrchestrator(init: OrchestratorInit): Orchestrator {
 ### 4. AI Context Gathering Best Practices
 
 **Documentation Standards**:
+
 - **Consistent Structure**: 9-section README format across all directories
 - **Versioned References**: Cite standards with specific versions (WCAG 2.2 AA, OWASP ASVS 5.0.0)
 - **Executable Examples**: Code snippets that can be copied and run
@@ -115,6 +125,7 @@ export function createOrchestrator(init: OrchestratorInit): Orchestrator {
 - **Performance Expectations**: Clear SLIs/SLOs and performance targets
 
 **Code Comment Standards**:
+
 - **Intent Documentation**: Why code exists, not just what it does
 - **Business Context**: Links between code and business requirements
 - **Algorithm Explanations**: Complex logic broken down with comments
@@ -122,6 +133,7 @@ export function createOrchestrator(init: OrchestratorInit): Orchestrator {
 - **Error Handling**: Documented error conditions and recovery strategies
 
 **Benefits for AI Context Gathering**:
+
 - **Faster Onboarding**: AI can understand project structure and purpose quickly
 - **Accurate Implementation**: Detailed examples reduce guesswork
 - **Consistency Enforcement**: Standards documented for uniform application
@@ -155,6 +167,7 @@ export function createOrchestrator(init: OrchestratorInit): Orchestrator {
 **Research Scope:** 30+ authoritative sources across 8 strategic areas  
 **Time Period:** November 2025  
 **Selection Criteria:**
+
 - Official documentation from standards bodies (W3C, OWASP, NIST, ISO)
 - Open-source frameworks with significant adoption (10k+ GitHub stars or 1M+ users)
 - Vendor-neutral solutions (no lock-in)
@@ -163,18 +176,19 @@ export function createOrchestrator(init: OrchestratorInit): Orchestrator {
 
 **Sources Breakdown:**
 
-| Category | Sources | Key Organizations |
-|----------|---------|-------------------|
-| Multi-Agent Frameworks | 5 | LangGraph, Semantic Kernel, CrewAI, AutoGen, Microsoft |
-| Security Standards | 3 | OWASP (ASVS, DevSecOps, Static Analysis) |
-| Accessibility | 3 | W3C (WCAG 2.2), Deque (axe-core), Testing Library |
-| AI Governance | 2 | NIST (AI RMF 1.0), ISO (42001:2023) |
-| Privacy | 2 | GDPR (EU), GDPR.eu (Implementation Guide) |
-| Observability | 2 | OpenTelemetry (CNCF), OpenTelemetry Docs |
-| Microsoft Platform | 10+ | Microsoft Learn, Azure Architecture, GitHub Copilot |
-| Total Unique Sources | 30+ | Mix of standards, frameworks, tools, documentation |
+| Category               | Sources | Key Organizations                                      |
+| ---------------------- | ------- | ------------------------------------------------------ |
+| Multi-Agent Frameworks | 5       | LangGraph, Semantic Kernel, CrewAI, AutoGen, Microsoft |
+| Security Standards     | 3       | OWASP (ASVS, DevSecOps, Static Analysis)               |
+| Accessibility          | 3       | W3C (WCAG 2.2), Deque (axe-core), Testing Library      |
+| AI Governance          | 2       | NIST (AI RMF 1.0), ISO (42001:2023)                    |
+| Privacy                | 2       | GDPR (EU), GDPR.eu (Implementation Guide)              |
+| Observability          | 2       | OpenTelemetry (CNCF), OpenTelemetry Docs               |
+| Microsoft Platform     | 10+     | Microsoft Learn, Azure Architecture, GitHub Copilot    |
+| Total Unique Sources   | 30+     | Mix of standards, frameworks, tools, documentation     |
 
 **Research Validation:**
+
 - Cross-referenced findings across multiple sources
 - Verified license compatibility (all free/open-source)
 - Validated technical feasibility within project constraints
@@ -186,16 +200,17 @@ export function createOrchestrator(init: OrchestratorInit): Orchestrator {
 
 ### Framework Comparison Matrix
 
-| Framework | Stars | License | Key Strength | Best For | Limitations |
-|-----------|-------|---------|--------------|----------|-------------|
-| **LangGraph** | 21k | MIT | Checkpoint/resume, durable execution | Workflow interruption recovery, stateful agents | Requires LangChain ecosystem |
-| **Semantic Kernel** | 26.7k | MIT | Enterprise patterns, production-ready | Pattern-based orchestration, Microsoft integration | Limited checkpoint capability |
-| **CrewAI** | 40.3k | MIT | Autonomous collaboration, role-based agents | Multi-agent teams, flexible problem-solving | Less granular control |
-| **AutoGen** | 51.6k | CC-BY-4.0/MIT | Conversational agents, human-in-loop | Interactive multi-agent systems | Lacks inherent process concept |
+| Framework           | Stars | License       | Key Strength                                | Best For                                           | Limitations                    |
+| ------------------- | ----- | ------------- | ------------------------------------------- | -------------------------------------------------- | ------------------------------ |
+| **LangGraph**       | 21k   | MIT           | Checkpoint/resume, durable execution        | Workflow interruption recovery, stateful agents    | Requires LangChain ecosystem   |
+| **Semantic Kernel** | 26.7k | MIT           | Enterprise patterns, production-ready       | Pattern-based orchestration, Microsoft integration | Limited checkpoint capability  |
+| **CrewAI**          | 40.3k | MIT           | Autonomous collaboration, role-based agents | Multi-agent teams, flexible problem-solving        | Less granular control          |
+| **AutoGen**         | 51.6k | CC-BY-4.0/MIT | Conversational agents, human-in-loop        | Interactive multi-agent systems                    | Lacks inherent process concept |
 
 ### Detailed Analysis
 
 #### LangGraph
+
 - **Repository**: https://github.com/langchain-ai/langgraph
 - **Community**: 21k stars, 3.7k forks, 33.6k dependent repositories
 - **Key Features**:
@@ -211,6 +226,7 @@ export function createOrchestrator(init: OrchestratorInit): Orchestrator {
 **Recommendation**: Use LangGraph for checkpoint/resume capability in Phase 2 to handle workflow interruptions gracefully.
 
 #### Semantic Kernel
+
 - **Repository**: https://github.com/microsoft/semantic-kernel
 - **Community**: 26.7k stars, 4.3k forks, 2.3k dependent projects
 - **Supported Languages**: Python 3.10+, .NET 8.0+, Java JDK 17+
@@ -232,6 +248,7 @@ export function createOrchestrator(init: OrchestratorInit): Orchestrator {
 **Recommendation**: Use Semantic Kernel as primary orchestration framework in Phase 1. The 5 proven patterns cover our use cases and align with Microsoft ecosystem.
 
 #### CrewAI
+
 - **Repository**: https://github.com/crewAIInc/crewAI
 - **Community**: 40.3k stars, 5.4k forks, 17.3k dependent projects
 - **Key Features**:
@@ -247,6 +264,7 @@ export function createOrchestrator(init: OrchestratorInit): Orchestrator {
 **Recommendation**: Consider CrewAI patterns for autonomous multi-agent teams in Phase 3 if Semantic Kernel patterns prove insufficient.
 
 #### AutoGen
+
 - **Repository**: https://github.com/microsoft/autogen
 - **Community**: 51.6k stars, 7.8k forks, 3.9k dependent projects
 - **Key Features**:
@@ -263,6 +281,7 @@ export function createOrchestrator(init: OrchestratorInit): Orchestrator {
 ### Selected Framework: Semantic Kernel
 
 **Rationale**:
+
 1. **Proven Patterns**: 5 orchestration patterns (Sequential, Concurrent, Handoff, Group Chat, Magentic) cover Political Sphere use cases
 2. **Enterprise-Ready**: Production-grade observability, security, stable APIs
 3. **Multi-Language**: Python (primary) + .NET (future expansion) + Java support
@@ -271,6 +290,7 @@ export function createOrchestrator(init: OrchestratorInit): Orchestrator {
 6. **Active Development**: 245 releases, 421 contributors, 2.3k dependent projects
 
 **Integration Strategy**:
+
 - **Phase 1**: Implement Semantic Kernel patterns (Sequential, Concurrent, Handoff)
 - **Phase 2**: Add LangGraph checkpoint/resume for resilience
 - **Phase 3**: Optionally integrate CrewAI Crews for specialized autonomous teams
@@ -284,6 +304,7 @@ export function createOrchestrator(init: OrchestratorInit): Orchestrator {
 **Source**: https://owasp.org/www-project-application-security-verification-standard/
 
 **Key Features**:
+
 - Versioned requirement identifiers: `v<version>-<chapter>.<section>.<requirement>` (e.g., `v5.0.0-1.2.5`)
 - Three verification levels:
   - **Level 1** (A): Baseline security (opportunistic)
@@ -293,6 +314,7 @@ export function createOrchestrator(init: OrchestratorInit): Orchestrator {
 - Translations: Turkish, Russian, French, Korean, Arabic, Japanese
 
 **Integration Approach**:
+
 ```typescript
 // Validation gate requirement mapping
 interface ValidationRequirement {
@@ -305,6 +327,7 @@ interface ValidationRequirement {
 ```
 
 **Political Sphere Mapping**:
+
 - **Tier 0 (Constitutional)**: Voting integrity, speech neutrality, moderation fairness
 - **Tier 1 (Mandatory)**: ASVS Level 2 requirements for auth, session management, input validation
 - **Tier 2 (Best-practice)**: ASVS Level 3 requirements for enhanced security
@@ -314,6 +337,7 @@ interface ValidationRequirement {
 **Source**: https://owasp.org/www-project-devsecops-guideline/
 
 **Required Pipeline Steps** (in order):
+
 1. **Git Repository Scanning**: Detect secrets, credentials, sensitive data (Gitleaks)
 2. **SAST (Static Application Security Testing)**: Analyze source code for vulnerabilities (Semgrep, SonarQube)
 3. **SCA (Software Composition Analysis)**: Check dependencies for known vulnerabilities (Snyk, OWASP Dependency-Check)
@@ -324,12 +348,14 @@ interface ValidationRequirement {
 8. **Compliance Check**: Verify regulatory requirements (GDPR, WCAG, NIST)
 
 **Static Analysis Techniques** (OWASP):
+
 - **Data Flow Analysis**: Track data movement through code
 - **Control Flow Analysis**: Analyze execution paths
 - **Taint Analysis**: Identify untrusted input propagation
 - **Lexical Analysis**: Pattern matching for security issues
 
 **Political Sphere Implementation**:
+
 ```yaml
 # .github/workflows/security-pipeline.yml
 jobs:
@@ -338,16 +364,16 @@ jobs:
     steps:
       - name: Git Secrets Scan
         run: gitleaks detect --no-git
-      
+
       - name: SAST
         run: semgrep --config auto --sarif > semgrep.sarif
-      
+
       - name: SCA
         run: snyk test --all-projects --sarif > snyk.sarif
-      
+
       - name: IaC Scan
         run: trivy config . --format sarif > trivy-iac.sarif
-      
+
       - name: Upload Results
         uses: github/codeql-action/upload-sarif@v2
 ```
@@ -355,11 +381,12 @@ jobs:
 ### Validation Gate Architecture
 
 **Tier System** (based on Master Directive):
+
 ```typescript
 enum ValidationTier {
   CONSTITUTIONAL = 0, // NEVER bypass (voting, speech, moderation, power)
-  MANDATORY = 1,      // Block by default (security, accessibility, neutrality)
-  BEST_PRACTICE = 2   // Warn, allow override with justification
+  MANDATORY = 1, // Block by default (security, accessibility, neutrality)
+  BEST_PRACTICE = 2, // Warn, allow override with justification
 }
 
 interface ValidationGate {
@@ -372,6 +399,7 @@ interface ValidationGate {
 ```
 
 **Gate Orchestrator** (Tier 0 + Tier 1 + Tier 2):
+
 1. Execute all gates in parallel (where independent)
 2. Aggregate results by tier
 3. **Tier 0 failure** → Hard block, escalate to governance
@@ -379,6 +407,7 @@ interface ValidationGate {
 5. **Tier 2 failure** → Warning, allow documented override
 
 **OWASP ASVS Integration**:
+
 - Map each ASVS requirement to appropriate tier
 - Use requirement IDs for audit trail: `v5.0.0-1.2.5 PASSED`
 - Generate compliance reports in CSV/JSON for external audits
@@ -386,6 +415,7 @@ interface ValidationGate {
 ### Zero-Trust Security Model
 
 **Principles** (from project requirements):
+
 1. **Never trust, always verify**: No implicit trust at any layer
 2. **Least privilege**: Minimal access required for operation
 3. **Assume breach**: Design for compromise scenarios
@@ -393,6 +423,7 @@ interface ValidationGate {
 5. **Verify explicitly**: Authenticate and authorize every request
 
 **Implementation**:
+
 - **Authentication**: JWT with refresh tokens, PBKDF2/Argon2id hashing
 - **Authorization**: RBAC with permission checks on every request
 - **Secrets Management**: AWS Secrets Manager, HashiCorp Vault (never in repo)
@@ -436,12 +467,14 @@ interface ValidationGate {
    - Continuous improvement
 
 **Companion Resources**:
+
 - **AI RMF Playbook**: Practical implementation guidance
 - **Roadmap**: Future development plans
 - **Crosswalk**: Mapping to other standards (ISO, OECD, EU)
 - **Generative AI Profile** (NIST-AI-600-1, July 2024): GenAI-specific risks
 
 **Political Sphere Integration**:
+
 ```typescript
 // AI System Registration
 interface AISystemRecord {
@@ -463,6 +496,7 @@ interface AISystemRecord {
 **Status**: Certifiable standard (paid, CHF 199 for English PDF)
 
 **Key Features**:
+
 - **World's first** AI management system standard
 - Specifies requirements for establishing, implementing, maintaining AIMS
 - Addresses ethical considerations, transparency, continuous learning
@@ -470,6 +504,7 @@ interface AISystemRecord {
 - 51 pages of requirements
 
 **Scope**:
+
 - Organizational governance of AI systems
 - Risk management processes
 - Ethical AI principles
@@ -477,6 +512,7 @@ interface AISystemRecord {
 - Continuous learning and improvement
 
 **Political Sphere Approach**:
+
 - **Governance**: Use free NIST AI RMF for operational guidance
 - **Certification**: Reserve ISO 42001 for future enterprise sales/partnerships
 - **Alignment**: Design system to be ISO 42001-ready without paying for certification now
@@ -484,6 +520,7 @@ interface AISystemRecord {
 ### Political Neutrality Requirements
 
 **Constitutional Mandate** (from project governance):
+
 - ❌ **PROHIBITED**: AI systems that manipulate political outcomes
 - ✅ **REQUIRED**: Neutrality tests and bias monitoring
 - ✅ **REQUIRED**: Contestability mechanisms for users
@@ -491,6 +528,7 @@ interface AISystemRecord {
 - ✅ **REQUIRED**: Human oversight for political content decisions
 
 **Implementation Strategy**:
+
 ```typescript
 // Political Neutrality Checker
 interface NeutralityCheck {
@@ -516,6 +554,7 @@ interface BiasMetrics {
 ### Transparency & Explainability
 
 **NIST AI RMF Requirements**:
+
 - Document all AI systems with model cards
 - Provide structured reasoning/explanations for decisions
 - Enable authorized audit access
@@ -523,6 +562,7 @@ interface BiasMetrics {
 - Support contestability mechanisms
 
 **Political Sphere Implementation**:
+
 ```typescript
 // Model Card (standardized format)
 interface ModelCard {
@@ -564,12 +604,14 @@ interface ModelCard {
 ### Human Oversight Requirements
 
 **From project governance**:
+
 - Publishing political content → Human approval required
 - Accessing user data → Human authorization + audit log
 - Changing policies/rules → Governance review + ADR
 - High-stakes decisions → Human-in-the-loop mandatory
 
 **Implementation**:
+
 ```typescript
 // Human-in-the-Loop (HITL) Manager
 interface HITLRequest {
@@ -631,6 +673,7 @@ interface HITLRequest {
 **License**: Apache 2.0 (free, vendor-neutral)
 
 **Key Principles**:
+
 1. **You own the data** - No vendor lock-in
 2. **Single API** - Learn once, use everywhere
 
@@ -655,6 +698,7 @@ interface HITLRequest {
    - Tamper-evident audit trails
 
 **OpenTelemetry Components**:
+
 - **Specification**: Cross-language protocol (OTLP)
 - **APIs**: Generate telemetry data
 - **SDKs**: Implement spec for each language (Python, .NET, Java, Node.js)
@@ -665,6 +709,7 @@ interface HITLRequest {
 **Vendor Support**: 90+ observability vendors (Grafana, Prometheus, Jaeger, Datadog, New Relic, Splunk)
 
 **Political Sphere Integration**:
+
 ```typescript
 // OpenTelemetry Setup
 import { NodeSDK } from '@opentelemetry/sdk-node';
@@ -685,6 +730,7 @@ sdk.start();
 ```
 
 **AI System Instrumentation**:
+
 ```typescript
 // Trace AI agent execution
 import { trace, context, SpanStatusCode } from '@opentelemetry/api';
@@ -692,7 +738,7 @@ import { trace, context, SpanStatusCode } from '@opentelemetry/api';
 const tracer = trace.getTracer('ai-agent-system');
 
 async function executeAgent(agentId: string, task: string) {
-  return await tracer.startActiveSpan('agent.execute', async (span) => {
+  return await tracer.startActiveSpan('agent.execute', async span => {
     span.setAttributes({
       'agent.id': agentId,
       'task.description': task,
@@ -722,30 +768,32 @@ async function executeAgent(agentId: string, task: string) {
 ```
 
 **SLI/SLO Definition** (from project requirements):
+
 ```typescript
 interface ServiceLevelObjectives {
   availability: {
-    target: 99.9, // %
-    measurement: 'uptime_ratio',
+    target: 99.9; // %
+    measurement: 'uptime_ratio';
   };
   latency: {
-    p50: 100, // ms - 50th percentile
-    p95: 200, // ms - 95th percentile
-    p99: 500, // ms - 99th percentile
+    p50: 100; // ms - 50th percentile
+    p95: 200; // ms - 95th percentile
+    p99: 500; // ms - 99th percentile
   };
   errorRate: {
-    target: 0.1, // % - less than 0.1% errors
-    measurement: 'failed_requests / total_requests',
+    target: 0.1; // % - less than 0.1% errors
+    measurement: 'failed_requests / total_requests';
   };
   saturation: {
-    cpu: 70, // % - max CPU utilization
-    memory: 80, // % - max memory utilization
-    disk: 85, // % - max disk utilization
+    cpu: 70; // % - max CPU utilization
+    memory: 80; // % - max memory utilization
+    disk: 85; // % - max disk utilization
   };
 }
 ```
 
 **Structured Logging Format**:
+
 ```typescript
 // JSON structured logs
 interface LogEntry {
@@ -775,6 +823,7 @@ logger.info('Agent task completed', {
 ```
 
 **Observability Stack** (Zero-Budget Options):
+
 - **Metrics**: Prometheus (CNCF, open-source) + Grafana (dashboards)
 - **Traces**: Jaeger (CNCF, open-source) or Zipkin
 - **Logs**: Loki (Grafana Labs, open-source) or Elasticsearch
@@ -782,6 +831,7 @@ logger.info('Agent task completed', {
 - **Dashboards**: Grafana (open-source, free tier cloud)
 
 **Error Budget Tracking**:
+
 ```typescript
 // Calculate error budget consumption
 interface ErrorBudget {
@@ -836,6 +886,7 @@ if (errorBudget.percentConsumed > 80) {
 **WCAG 2.2 AA Success Criteria**: 86 total (50 Level A + 36 Level AA)
 
 **New in WCAG 2.2**:
+
 - **2.4.11 Focus Not Obscured (Minimum)** - AA
 - **2.4.12 Focus Not Obscured (Enhanced)** - AAA
 - **2.4.13 Focus Appearance** - AAA
@@ -847,6 +898,7 @@ if (errorBudget.percentConsumed > 80) {
 - **3.3.9 Accessible Authentication (Enhanced)** - AAA
 
 **Contrast Requirements**:
+
 - **Normal text**: 4.5:1 minimum (Level AA)
 - **Large text** (18pt+ or 14pt+ bold): 3:1 minimum (Level AA)
 - **Enhanced** (Level AAA): 7:1 normal, 4.5:1 large
@@ -858,6 +910,7 @@ if (errorBudget.percentConsumed > 80) {
 **License**: MPL-2.0 (open-source, free)
 
 **Key Features**:
+
 - **57% automated coverage** of WCAG issues
 - **Zero false positives** (design goal)
 - Supports all modern browsers (Edge 40+, Chrome 42+, Firefox 38+, Safari 7+)
@@ -867,6 +920,7 @@ if (errorBudget.percentConsumed > 80) {
 - Integrations: Chrome DevTools, Firefox DevTools, Edge DevTools
 
 **Political Sphere Integration**:
+
 ```typescript
 // Vitest + Testing Library + axe-core
 import { render } from '@testing-library/react';
@@ -891,6 +945,7 @@ test('component meets WCAG 2.2 AA standards', async () => {
 ```
 
 **CI/CD Integration**:
+
 ```yaml
 # .github/workflows/accessibility.yml
 name: Accessibility Tests
@@ -910,6 +965,7 @@ jobs:
 ```
 
 **Accessibility Validation Gate**:
+
 ```typescript
 // Tier 1 validation (MANDATORY)
 interface AccessibilityGate extends ValidationGate {
@@ -927,6 +983,7 @@ interface AccessibilityGate extends ValidationGate {
 ```
 
 **Manual Testing Requirements** (43% not covered by axe-core):
+
 - Keyboard navigation (Tab, Shift+Tab, Enter, Space, Arrow keys)
 - Screen reader testing (NVDA, JAWS, VoiceOver)
 - Focus management (visible focus indicators, logical tab order)
@@ -934,6 +991,7 @@ interface AccessibilityGate extends ValidationGate {
 - Alternative text quality (descriptive, not redundant)
 
 **Deque Tools Ecosystem**:
+
 - **axe DevTools** (Browser extensions): Chrome, Firefox, Edge (free)
 - **axe-core/react**: React integration (free)
 - **axe-core/playwright**: E2E testing integration (free)
@@ -941,6 +999,7 @@ interface AccessibilityGate extends ValidationGate {
 - **axe Auditor** (Enterprise): Detailed reporting (paid)
 
 **Political Sphere Accessibility Checklist**:
+
 - ✅ All UI components tested with axe-core (automated)
 - ✅ Keyboard navigation verified manually
 - ✅ Screen reader tested with NVDA (Windows) or VoiceOver (macOS)
@@ -957,7 +1016,7 @@ interface AccessibilityGate extends ValidationGate {
 
 ## Accessibility & Compliance
 
-*[Content to be added in next stage]*
+_[Content to be added in next stage]_
 
 ---
 
@@ -970,6 +1029,7 @@ interface AccessibilityGate extends ValidationGate {
 **Jurisdiction**: EU/UK (extraterritorial application)
 
 **Core Principles** (Article 5):
+
 1. **Lawfulness, fairness, transparency**: Legal basis + clear communication
 2. **Purpose limitation**: Collect for specified, explicit, legitimate purposes
 3. **Data minimization**: Adequate, relevant, limited to necessity
@@ -979,6 +1039,7 @@ interface AccessibilityGate extends ValidationGate {
 7. **Accountability**: Demonstrate compliance
 
 **Lawful Basis for Processing** (Article 6):
+
 1. **Consent**: Freely given, specific, informed, unambiguous (affirmative action)
 2. **Contract**: Necessary for contract performance
 3. **Legal obligation**: Required by law
@@ -988,18 +1049,19 @@ interface AccessibilityGate extends ValidationGate {
 
 **Data Subject Rights** (Articles 12-23):
 
-| Right | Article | Description | Timeline |
-|-------|---------|-------------|----------|
-| **Right to be Informed** | 13-14 | Transparent information about processing | At collection |
-| **Right of Access** | 15 | Copy of personal data held | 30 days |
-| **Right to Rectification** | 16 | Correct inaccurate data | 30 days |
-| **Right to Erasure** ("Right to be Forgotten") | 17 | Delete personal data | 30 days |
-| **Right to Restriction** | 18 | Limit processing temporarily | 30 days |
-| **Right to Data Portability** | 20 | Export in machine-readable format | 30 days |
-| **Right to Object** | 21 | Stop processing for specific purposes | Immediately |
-| **Automated Decision Rights** | 22 | Human review of automated decisions | At request |
+| Right                                          | Article | Description                              | Timeline      |
+| ---------------------------------------------- | ------- | ---------------------------------------- | ------------- |
+| **Right to be Informed**                       | 13-14   | Transparent information about processing | At collection |
+| **Right of Access**                            | 15      | Copy of personal data held               | 30 days       |
+| **Right to Rectification**                     | 16      | Correct inaccurate data                  | 30 days       |
+| **Right to Erasure** ("Right to be Forgotten") | 17      | Delete personal data                     | 30 days       |
+| **Right to Restriction**                       | 18      | Limit processing temporarily             | 30 days       |
+| **Right to Data Portability**                  | 20      | Export in machine-readable format        | 30 days       |
+| **Right to Object**                            | 21      | Stop processing for specific purposes    | Immediately   |
+| **Automated Decision Rights**                  | 22      | Human review of automated decisions      | At request    |
 
 **Political Sphere Implementation**:
+
 ```typescript
 // Data Subject Access Request (DSAR) Handler
 interface DSARRequest {
@@ -1035,6 +1097,7 @@ async function processDSAR(request: DSARRequest) {
 ```
 
 **Data Protection Impact Assessment (DPIA)** (Article 35):
+
 - **Required when**: High risk to rights/freedoms (e.g., profiling, sensitive data, large-scale monitoring)
 - **Contents**:
   1. Description of processing operations and purposes
@@ -1043,18 +1106,26 @@ async function processDSAR(request: DSARRequest) {
   4. Measures to address risks (including safeguards)
 
 **Political Sphere DPIA Triggers**:
+
 - AI-driven content recommendation (profiling)
 - Political preference analysis (sensitive data)
 - Vote tracking and analysis (automated decision-making)
 - User behavior monitoring (large-scale)
 
 **Records of Processing Activities (ROPA)** (Article 30):
+
 ```typescript
 interface ProcessingActivity {
   id: string;
   name: string;
   purposes: string[]; // Why we process
-  lawfulBasis: 'CONSENT' | 'CONTRACT' | 'LEGAL_OBLIGATION' | 'VITAL_INTERESTS' | 'PUBLIC_TASK' | 'LEGITIMATE_INTERESTS';
+  lawfulBasis:
+    | 'CONSENT'
+    | 'CONTRACT'
+    | 'LEGAL_OBLIGATION'
+    | 'VITAL_INTERESTS'
+    | 'PUBLIC_TASK'
+    | 'LEGITIMATE_INTERESTS';
   categories: string[]; // Types of data (email, IP, voting history)
   recipients: string[]; // Who receives data (internal teams, third parties)
   retentionPeriod: string; // How long we keep it
@@ -1065,6 +1136,7 @@ interface ProcessingActivity {
 ```
 
 **Data Retention & Erasure**:
+
 ```typescript
 // Automated retention policy enforcement
 interface RetentionPolicy {
@@ -1097,6 +1169,7 @@ const retentionPolicies: RetentionPolicy[] = [
 ```
 
 **Consent Management**:
+
 ```typescript
 // GDPR-compliant consent
 interface ConsentRecord {
@@ -1120,6 +1193,7 @@ const consentCategories = [
 ```
 
 **Privacy by Design** (Article 25):
+
 1. **Data minimization**: Collect only what's necessary
 2. **Pseudonymization**: Replace identifiers with pseudonyms
 3. **Encryption**: At rest (AES-256) and in transit (TLS 1.3+)
@@ -1128,11 +1202,13 @@ const consentCategories = [
 6. **Privacy defaults**: Opt-in, not opt-out
 
 **Breach Notification** (Articles 33-34):
+
 - **To Supervisory Authority**: Within 72 hours of becoming aware
 - **To Data Subjects**: Without undue delay if high risk to rights/freedoms
 - **Contents**: Nature of breach, affected data, likely consequences, mitigation measures
 
 **Political Sphere Breach Response**:
+
 ```typescript
 interface BreachResponse {
   detectedAt: Date;
@@ -1148,6 +1224,7 @@ interface BreachResponse {
 ```
 
 **Cross-Border Data Transfers** (Chapter V):
+
 - **Adequacy decision**: Transfer to countries with adequate protection (UK, Japan, etc.)
 - **Standard Contractual Clauses (SCCs)**: EU-approved contracts
 - **Binding Corporate Rules (BCRs)**: For multinational organizations
@@ -1166,6 +1243,7 @@ interface BreachResponse {
 **Selected Framework**: **Semantic Kernel** (MIT license, 26.7k stars)
 
 **Rationale**:
+
 - Proven enterprise patterns (Sequential, Concurrent, Handoff, Group Chat, Magentic)
 - Model-agnostic (easy to swap LLM providers)
 - Production-grade observability and security
@@ -1173,6 +1251,7 @@ interface BreachResponse {
 - Active development (245 releases, 421 contributors)
 
 **Implementation**:
+
 ```
 /libs/ai-system/
 ├── orchestration/
@@ -1186,6 +1265,7 @@ interface BreachResponse {
 ```
 
 **Five Orchestration Patterns** (from Azure Architecture):
+
 1. **Sequential**: Research → Analysis → Report (linear pipeline)
 2. **Concurrent**: Multi-source data gathering (parallel execution)
 3. **Handoff**: Triage → Specialist agent (dynamic routing)
@@ -1197,34 +1277,36 @@ interface BreachResponse {
 **Framework**: **OWASP ASVS 5.0.0** + **Custom Political Neutrality Checks**
 
 **Three-Tier Architecture**:
+
 ```typescript
 // Tier 0: Constitutional (NEVER bypass)
 const tier0Gates = [
-  votingIntegrityCheck,    // No manipulation of vote outcomes
-  speechNeutralityCheck,   // No political bias in content
+  votingIntegrityCheck, // No manipulation of vote outcomes
+  speechNeutralityCheck, // No political bias in content
   moderationFairnessCheck, // Equal treatment across positions
-  powerDistributionCheck,  // No unauthorized privilege changes
+  powerDistributionCheck, // No unauthorized privilege changes
 ];
 
 // Tier 1: Mandatory (block by default)
 const tier1Gates = [
-  owaspAsvs5SecurityChecks,  // ASVS Level 2 requirements
+  owaspAsvs5SecurityChecks, // ASVS Level 2 requirements
   wcag22AAAccessibilityChecks, // WCAG 2.2 AA criteria
-  aiNeutralityChecks,        // Bias detection < 0.1 threshold
-  testCoverageCheck,         // 80%+ coverage for critical paths
-  gdprComplianceCheck,       // Data protection requirements
-  typeSafetyCheck,           // No 'any' types, strict mode
+  aiNeutralityChecks, // Bias detection < 0.1 threshold
+  testCoverageCheck, // 80%+ coverage for critical paths
+  gdprComplianceCheck, // Data protection requirements
+  typeSafetyCheck, // No 'any' types, strict mode
 ];
 
 // Tier 2: Best-practice (warn, allow override with justification)
 const tier2Gates = [
-  documentationCheck,        // JSDoc for public APIs
-  performanceBenchmark,      // p95 < 200ms, p99 < 500ms
-  codeQualityMetrics,        // Complexity, duplication
+  documentationCheck, // JSDoc for public APIs
+  performanceBenchmark, // p95 < 200ms, p99 < 500ms
+  codeQualityMetrics, // Complexity, duplication
 ];
 ```
 
 **Gate Orchestrator**:
+
 ```
 ┌─────────────────────────────────────────┐
 │        Pull Request Submitted           │
@@ -1256,6 +1338,7 @@ const tier2Gates = [
 **Framework**: **NIST AI RMF 1.0** (voluntary, free)
 
 **Four Functions Implementation**:
+
 ```
 /libs/ai-system/
 ├── governance/
@@ -1278,6 +1361,7 @@ const tier2Gates = [
 ```
 
 **Model Card Template** (NIST requirement):
+
 - Model details (name, version, type, owner)
 - Intended use and out-of-scope uses
 - Performance metrics and decision thresholds
@@ -1290,6 +1374,7 @@ const tier2Gates = [
 **Framework**: **OpenTelemetry** (Apache 2.0, CNCF)
 
 **Three Pillars**:
+
 ```
 /libs/ai-system/
 ├── observability/
@@ -1309,6 +1394,7 @@ const tier2Gates = [
 ```
 
 **Zero-Budget Observability Stack**:
+
 - **Metrics**: Prometheus (open-source) + Grafana (free tier)
 - **Traces**: Jaeger (CNCF, open-source)
 - **Logs**: Loki (open-source) or Elasticsearch (free tier)
@@ -1319,6 +1405,7 @@ const tier2Gates = [
 **Framework**: **axe-core** (MPL-2.0, 6.7k stars, 13M users)
 
 **Automated + Manual Testing**:
+
 ```
 /libs/ai-system/
 ├── accessibility/
@@ -1336,6 +1423,7 @@ const tier2Gates = [
 ```
 
 **Coverage**:
+
 - **Automated (57%)**: axe-core in Vitest, Playwright, CI/CD
 - **Manual (43%)**: Keyboard nav, screen readers (NVDA/VoiceOver), focus management
 
@@ -1344,6 +1432,7 @@ const tier2Gates = [
 **Framework**: **GDPR Articles 12-23** + **Privacy by Design**
 
 **Implementation**:
+
 ```
 /libs/ai-system/
 ├── privacy/
@@ -1408,7 +1497,9 @@ const tier2Gates = [
 **Objective**: Establish core orchestration layer with Semantic Kernel
 
 **Deliverables**:
+
 1. **Directory Structure**:
+
    ```
    /libs/ai-system/
    ├── orchestration/semantic-kernel/
@@ -1432,12 +1523,14 @@ const tier2Gates = [
    - Example agents (research, analysis, reporting)
 
 **Success Criteria**:
+
 - ✅ Sequential pattern working end-to-end
 - ✅ Concurrent pattern aggregating results correctly
 - ✅ Tests passing in CI/CD
 - ✅ Documentation complete (README, API docs)
 
 **Dependencies**:
+
 - Python 3.10+
 - Semantic Kernel SDK (`pip install semantic-kernel`)
 - OpenAI API key (or local Ollama for testing)
@@ -1449,6 +1542,7 @@ const tier2Gates = [
 **Objective**: Add checkpoint/resume capability with LangGraph
 
 **Deliverables**:
+
 1. **LangGraph Integration**:
    - Checkpoint manager
    - State persistence (SQLite/PostgreSQL)
@@ -1466,12 +1560,14 @@ const tier2Gates = [
    - Recovery time benchmarks
 
 **Success Criteria**:
+
 - ✅ Workflows resume correctly after interruption
 - ✅ State persists across restarts
 - ✅ Recovery time < 5 seconds
 - ✅ No data loss on failure
 
 **Dependencies**:
+
 - LangGraph (`pip install langgraph`)
 - Database for state persistence
 - Async event handling
@@ -1483,6 +1579,7 @@ const tier2Gates = [
 **Objective**: Implement tiered validation gates with OWASP ASVS
 
 **Deliverables**:
+
 1. **Validation Gate System**:
    - Tier 0 gates (Constitutional)
    - Tier 1 gates (Mandatory: OWASP ASVS 5.0.0 Level 2)
@@ -1503,12 +1600,14 @@ const tier2Gates = [
    - Golden dataset validation
 
 **Success Criteria**:
+
 - ✅ All Tier 0 gates enforced (0% bypass rate)
 - ✅ All Tier 1 gates active (block on failure)
 - ✅ Security pipeline integrated into CI/CD
 - ✅ Political bias detection < 0.1 threshold
 
 **Dependencies**:
+
 - GitHub Actions workflows
 - Security scanning tools (free tier)
 - Bias detection model
@@ -1520,6 +1619,7 @@ const tier2Gates = [
 **Objective**: Implement NIST AI RMF governance framework
 
 **Deliverables**:
+
 1. **GOVERN Function**:
    - AI Governance Committee charter
    - Roles defined (AI Owner, Data Steward, Ethics Reviewer)
@@ -1545,12 +1645,14 @@ const tier2Gates = [
    - Quarterly audit process
 
 **Success Criteria**:
+
 - ✅ All AI systems registered with model cards
 - ✅ Bias monitoring active with alerting
 - ✅ Incident response tested (tabletop exercise)
 - ✅ First quarterly audit completed
 
 **Dependencies**:
+
 - Governance committee formation
 - Dashboard infrastructure (Grafana)
 - Alerting system (PagerDuty free tier or email)
@@ -1562,6 +1664,7 @@ const tier2Gates = [
 **Objective**: Implement OpenTelemetry for production monitoring
 
 **Deliverables**:
+
 1. **OpenTelemetry Setup**:
    - SDKs installed (Python, Node.js)
    - Auto-instrumentation configured
@@ -1585,6 +1688,7 @@ const tier2Gates = [
    - Security incident notifications
 
 **Success Criteria**:
+
 - ✅ All agents instrumented with OpenTelemetry
 - ✅ Traces visible in Jaeger
 - ✅ Metrics flowing to Prometheus
@@ -1592,6 +1696,7 @@ const tier2Gates = [
 - ✅ Alerts firing correctly (tested)
 
 **Dependencies**:
+
 - OpenTelemetry Collector
 - Prometheus + Grafana (Docker Compose or cloud free tier)
 - Jaeger (Docker or cloud free tier)
@@ -1603,6 +1708,7 @@ const tier2Gates = [
 **Objective**: Implement WCAG 2.2 AA compliance and GDPR requirements
 
 **Deliverables**:
+
 1. **Accessibility (WCAG 2.2 AA)**:
    - axe-core integration in Vitest
    - axe-core integration in Playwright E2E
@@ -1626,6 +1732,7 @@ const tier2Gates = [
    - User-facing accessibility statement
 
 **Success Criteria**:
+
 - ✅ axe-core tests passing (0 violations)
 - ✅ Manual accessibility audit passed
 - ✅ DSAR workflow tested (< 30-day response)
@@ -1633,6 +1740,7 @@ const tier2Gates = [
 - ✅ Privacy policy published
 
 **Dependencies**:
+
 - axe-core library
 - Legal review (privacy policy)
 - DPIA template
@@ -1641,21 +1749,22 @@ const tier2Gates = [
 
 ### Milestone Timeline
 
-| Phase | Duration | Start | End | Key Deliverable |
-|-------|----------|-------|-----|-----------------|
-| Phase 1: Foundation | 2 weeks | Week 1 | Week 2 | Semantic Kernel orchestration |
-| Phase 2: Resilience | 2 weeks | Week 3 | Week 4 | LangGraph checkpoint/resume |
-| Phase 3: Validation | 2 weeks | Week 5 | Week 6 | OWASP ASVS validation gates |
-| Phase 4: Governance | 2 weeks | Week 7 | Week 8 | NIST AI RMF implementation |
-| Phase 5: Observability | 2 weeks | Week 9 | Week 10 | OpenTelemetry monitoring |
-| Phase 6: Compliance | 2 weeks | Week 11 | Week 12 | WCAG AA + GDPR |
-| **Total** | **12 weeks** | | | **Production-ready AI system** |
+| Phase                  | Duration     | Start   | End     | Key Deliverable                |
+| ---------------------- | ------------ | ------- | ------- | ------------------------------ |
+| Phase 1: Foundation    | 2 weeks      | Week 1  | Week 2  | Semantic Kernel orchestration  |
+| Phase 2: Resilience    | 2 weeks      | Week 3  | Week 4  | LangGraph checkpoint/resume    |
+| Phase 3: Validation    | 2 weeks      | Week 5  | Week 6  | OWASP ASVS validation gates    |
+| Phase 4: Governance    | 2 weeks      | Week 7  | Week 8  | NIST AI RMF implementation     |
+| Phase 5: Observability | 2 weeks      | Week 9  | Week 10 | OpenTelemetry monitoring       |
+| Phase 6: Compliance    | 2 weeks      | Week 11 | Week 12 | WCAG AA + GDPR                 |
+| **Total**              | **12 weeks** |         |         | **Production-ready AI system** |
 
 ### Integration Strategy
 
 **Option B: Full Replacement** (selected per user directive)
 
 **Migration Plan**:
+
 1. **Week 1**: Create new `/libs/ai-system/` structure
 2. **Week 2**: Implement Semantic Kernel patterns, deprecate old tools
 3. **Week 3-4**: Migrate useful patterns from `/tools/scripts/ai/` to new system
@@ -1663,41 +1772,40 @@ const tier2Gates = [
 5. **Week 6+**: Continue with Phase 3-6 implementation
 
 **Backward Compatibility**:
+
 - Maintain NPM scripts (`ai`, `ai:chat`, etc.) as wrappers to new system
 - Provide migration guide for existing usage
 - Deprecation warnings in old tools
 
 ---
 
-
-
 ## Zero-Budget Validation
 
-*[Content to be added in next stage]*
+_[Content to be added in next stage]_
 
 ---
 
 ## Decision Matrices
 
-*[Content to be added in next stage]*
+_[Content to be added in next stage]_
 
 ---
 
 ## Risk Assessment
 
-*[Content to be added in next stage]*
+_[Content to be added in next stage]_
 
 ---
 
 ## Success Metrics
 
-*[Content to be added in next stage]*
+_[Content to be added in next stage]_
 
 ---
 
 ## References
 
-*[Complete bibliography to be added in final stage]*
+_[Complete bibliography to be added in final stage]_
 
 ---
 

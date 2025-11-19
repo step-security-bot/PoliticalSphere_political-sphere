@@ -1,5 +1,7 @@
 # Environment Validation Guide
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 **Version:** 2.0.0  
 **Last Updated:** 2025-11-10  
 **Tool:** `tools/scripts/validation/validate-environment.mjs`

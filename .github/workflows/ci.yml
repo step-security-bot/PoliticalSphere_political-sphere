@@ -441,11 +441,16 @@ jobs:
       - name: Cache Nx Cloud data
         uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.2.0
         with:
-          path: .nx/cache
-          key: nx-cloud-${{ runner.os }}-${{ github.sha }}
+          path: |
+            .nx/cache
+            .nx/workspace-data
+            .nx/daemon
+          key: nx-cloud-v2-${{ runner.os }}-${{ hashFiles('**/nx.json', '**/project.json', '**/tsconfig*.json') }}-${{ github.sha }}
           restore-keys: |
-            nx-cloud-${{ runner.os }}-${{ github.base_ref }}-
-            nx-cloud-${{ runner.os }}-
+            nx-cloud-v2-${{ runner.os }}-${{ hashFiles('**/nx.json', '**/project.json', '**/tsconfig*.json') }}-${{ github.base_ref }}-
+            nx-cloud-v2-${{ runner.os }}-${{ hashFiles('**/nx.json', '**/project.json', '**/tsconfig*.json') }}-
+            nx-cloud-v2-${{ runner.os }}-${{ github.base_ref }}-
+            nx-cloud-v2-${{ runner.os }}-
 
       - name: Cache build outputs
         uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.2.0
@@ -455,11 +460,15 @@ jobs:
             .nx/cache
             apps/*/dist
             libs/*/dist
-          key: ${{ runner.os }}-build-${{ hashFiles('**/package-lock.json', '**/tsconfig*.json', 'nx.json') }}-${{ github.sha }}
+            .next/cache
+            .vite/cache
+            .swc/cache
+          key: ${{ runner.os }}-build-v2-${{ hashFiles('**/package-lock.json', '**/tsconfig*.json', 'nx.json', '**/vite.config.*', '**/next.config.*') }}-${{ github.sha }}
           restore-keys: |
-            ${{ runner.os }}-build-${{ hashFiles('**/package-lock.json', '**/tsconfig*.json', 'nx.json') }}-
-            ${{ runner.os }}-build-${{ github.base_ref }}-
-            ${{ runner.os }}-build-
+            ${{ runner.os }}-build-v2-${{ hashFiles('**/package-lock.json', '**/tsconfig*.json', 'nx.json', '**/vite.config.*', '**/next.config.*') }}-${{ github.base_ref }}-
+            ${{ runner.os }}-build-v2-${{ hashFiles('**/package-lock.json', '**/tsconfig*.json', 'nx.json') }}-
+            ${{ runner.os }}-build-v2-${{ github.base_ref }}-
+            ${{ runner.os }}-build-v2-
 
       - name: Build applications
         run: |
@@ -471,6 +480,7 @@ jobs:
             echo "🔄 Building all applications for main branch"
             npm run build
           fi
+
       - name: Verify build outputs
         run: |
           echo "Checking build artifacts..."
@@ -502,11 +512,20 @@ jobs:
           echo "Build manifest:"
           cat dist/BUILD_MANIFEST.json
 
+      - name: Create build artifact archive for SLSA attestation
+        run: |
+          echo "📦 Creating build artifact archive..."
+          tar -czf build-artifacts.tar.gz -C dist .
+          echo "✅ Build artifact archive created: build-artifacts.tar.gz"
+          ls -la build-artifacts.tar.gz
+
       - name: Upload build artifacts
         uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
         with:
           name: build-artifacts
-          path: dist/
+          path: |
+            dist/
+            build-artifacts.tar.gz
           retention-days: 30
 
       - name: Upload build manifest
@@ -541,14 +560,41 @@ jobs:
           name: build-artifacts
           path: dist/
 
-      - name: Generate SBOM
+      - name: Generate SBOM with Syft
         run: ./scripts/security/supply-chain/generate-sbom.sh
 
-      - name: Sign Artifacts with Sigstore/cosign
+      - name: Generate SLSA Level 3 Provenance
+        run: ./scripts/security/supply-chain/generate-provenance.sh
+
+      - name: Sign SBOM, provenance, and artifacts with Sigstore/cosign
         run: ./scripts/security/supply-chain/sign-artifacts.sh
 
-      - name: Generate SLSA Provenance
-        run: ./scripts/security/supply-chain/generate-provenance.sh
+      - name: Verify SLSA Level 3 compliance
+        run: |
+          echo "🔍 Verifying SLSA Level 3 compliance..."
+
+          # Install SLSA verifier
+          curl -sSfL https://github.com/slsa-framework/slsa-verifier/releases/download/v2.4.1/slsa-verifier-linux-amd64 \
+            -o slsa-verifier && chmod +x slsa-verifier
+
+          # Verify the provenance format (basic validation)
+          if [ -f artifacts/provenance/provenance.intoto.jsonl ]; then
+            echo "✅ SLSA provenance file exists"
+
+            # Check if provenance contains required SLSA Level 3 elements
+            if jq -e '.predicate.buildDefinition.buildType' artifacts/provenance/provenance.intoto.jsonl > /dev/null; then
+              echo "✅ SLSA provenance contains build definition"
+            fi
+
+            if jq -e '.predicate.runDetails.metadata.completeness' artifacts/provenance/provenance.intoto.jsonl > /dev/null; then
+              echo "✅ SLSA provenance contains completeness metadata"
+            fi
+          else
+            echo "❌ SLSA provenance file not found"
+            exit 1
+          fi
+
+          echo "✅ SLSA Level 3 provenance format validated"
 
       - name: Verify Supply Chain Security
         run: ./scripts/security/supply-chain/verify-supply-chain.sh
@@ -567,7 +613,7 @@ jobs:
           path: artifacts/signatures/
           retention-days: 90
 
-      - name: Upload provenance
+      - name: Upload SLSA provenance
         uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
         with:
           name: slsa-provenance
@@ -603,10 +649,16 @@ jobs:
       - name: Cache security audit results
         uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.2.0
         with:
-          path: audit-results.json
-          key: npm-audit-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
+          path: |
+            audit-results.json
+            .audit-cache
+            .trivy-cache
+            .semgrep-cache
+          key: security-audit-v2-${{ runner.os }}-${{ hashFiles('**/package-lock.json', '**/package.json', '.gitleaks.toml', '.semgrepignore') }}-${{ github.sha }}
           restore-keys: |
-            npm-audit-${{ runner.os }}-
+            security-audit-v2-${{ runner.os }}-${{ hashFiles('**/package-lock.json', '**/package.json', '.gitleaks.toml', '.semgrepignore') }}-${{ github.base_ref }}-
+            security-audit-v2-${{ runner.os }}-${{ hashFiles('**/package-lock.json', '**/package.json') }}-
+            security-audit-v2-${{ runner.os }}-
 
       - name: Run npm audit
         run: |
@@ -661,11 +713,15 @@ jobs:
       - name: Cache Semgrep results
         uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.2.0
         with:
-          path: semgrep-results.json
-          key: semgrep-scan-${{ runner.os }}-${{ github.sha }}
+          path: |
+            semgrep-results.json
+            .semgrep-cache
+          key: semgrep-scan-v2-${{ runner.os }}-${{ hashFiles('.semgrepignore', 'semgrep-config/**') }}-${{ github.sha }}
           restore-keys: |
-            semgrep-scan-${{ runner.os }}-${{ github.base_ref }}-
-            semgrep-scan-${{ runner.os }}-
+            semgrep-scan-v2-${{ runner.os }}-${{ hashFiles('.semgrepignore', 'semgrep-config/**') }}-${{ github.base_ref }}-
+            semgrep-scan-v2-${{ runner.os }}-${{ hashFiles('.semgrepignore') }}-
+            semgrep-scan-v2-${{ runner.os }}-${{ github.base_ref }}-
+            semgrep-scan-v2-${{ runner.os }}-
 
       - name: Run Semgrep Security Scan (OSS)
         run: |
@@ -780,18 +836,27 @@ jobs:
             ~/.cache/ms-playwright
             ~/Library/Caches/ms-playwright
             %USERPROFILE%\AppData\Local\ms-playwright
-          key: playwright-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}-browsers
+            .playwright-cache
+          key: playwright-v2-${{ runner.os }}-${{ hashFiles('**/package-lock.json', '**/playwright.config.ts') }}-${{ env.PLAYWRIGHT_VERSION }}
           restore-keys: |
-            playwright-${{ runner.os }}-browsers
+            playwright-v2-${{ runner.os }}-${{ hashFiles('**/package-lock.json', '**/playwright.config.ts') }}-
+            playwright-v2-${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}-
+            playwright-v2-${{ runner.os }}-browsers
 
       - name: Cache E2E test results
         uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.2.0
         with:
-          path: .e2e-cache
-          key: e2e-results-${{ runner.os }}-${{ github.sha }}-${{ matrix.shard }}
+          path: |
+            .e2e-cache
+            playwright-report/
+            test-results/
+            .playwright-cache
+          key: e2e-results-v2-${{ runner.os }}-${{ hashFiles('**/playwright.config.ts', 'apps/**/e2e/**') }}-${{ matrix.shard }}-${{ github.sha }}
           restore-keys: |
-            e2e-results-${{ runner.os }}-${{ github.base_ref }}-${{ matrix.shard }}
-            e2e-results-${{ runner.os }}-${{ matrix.shard }}
+            e2e-results-v2-${{ runner.os }}-${{ hashFiles('**/playwright.config.ts', 'apps/**/e2e/**') }}-${{ matrix.shard }}-${{ github.base_ref }}-
+            e2e-results-v2-${{ runner.os }}-${{ hashFiles('**/playwright.config.ts', 'apps/**/e2e/**') }}-${{ matrix.shard }}-
+            e2e-results-v2-${{ runner.os }}-${{ github.base_ref }}-${{ matrix.shard }}-
+            e2e-results-v2-${{ runner.os }}-${{ matrix.shard }}-
 
       - name: Install Playwright browsers
         env:

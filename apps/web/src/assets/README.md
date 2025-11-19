@@ -15,6 +15,7 @@
 ## 2. Scope, Boundaries, & Responsibilities
 
 **Responsibilities:**
+
 - `images/`: Product, marketing, and UI illustration folders (`game/`, `marketing/`, `ui/`)
 - `icons/`: SVG/icon sprites
 - `fonts/`: Web font bundles

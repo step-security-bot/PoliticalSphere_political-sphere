@@ -12,6 +12,8 @@
 
 ---
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 ## 🎯 Objectives
 
 - Establish clear roles, responsibilities, and processes for AI governance.

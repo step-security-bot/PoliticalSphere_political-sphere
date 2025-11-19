@@ -6,6 +6,8 @@
 
 ---
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 ## Owners & Contacts
 
 - **SRE / On-call:** SRE Team — oncall@sre.political-sphere.example

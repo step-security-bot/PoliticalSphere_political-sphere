@@ -13,6 +13,7 @@
 Our CI/CD pipeline executes 24 separate GitHub Actions workflows with redundant testing and security scanning:
 
 **Performance Bottlenecks:**
+
 - PR validation: 35-50 minutes average
 - Test execution: 5-8 minutes per shard × 3 shards = 15-24 minutes total
 - Full test suite runs even for tiny PRs (1-2 file changes)
@@ -21,12 +22,14 @@ Our CI/CD pipeline executes 24 separate GitHub Actions workflows with redundant 
 - No incremental testing (Nx affected underutilized)
 
 **Workflow Redundancy:**
+
 - `test.yml` (221 lines) duplicates `ci.yml` test stages
 - `security-scan.yml` (100 lines) should be reusable composite action
 - `build-and-test.yml` overlaps with `ci.yml` build stage
 - 7 workflows identified for consolidation → reduce 24 to 17 (29% reduction)
 
 **Testing Inefficiencies:**
+
 - Static 3-shard split regardless of change size
 - Small PRs (<10 files) waste resources with 3-shard parallelization
 - Large PRs (>50 files) underutilize only 3 shards
@@ -36,24 +39,28 @@ Our CI/CD pipeline executes 24 separate GitHub Actions workflows with redundant 
 ### Research and Best Practices
 
 **Microsoft Learn - GitHub Actions Performance:**
+
 - Dynamic matrix strategies enable variable shard counts
 - `fromJSON` with `range()` creates dynamic matrix arrays
 - Job dependencies with `needs.job-id.outputs.variable` pass runtime values
 - Conditional job execution via `if: github.event_name == 'pull_request'`
 
 **Nx Affected Testing:**
+
 - `nx affected --target=test` runs only tests for changed code
 - Reduces test time by 40-70% for typical PRs
 - Requires git history (`fetch-depth: 0`) to compute affected projects
 - Works seamlessly with existing Vitest project configuration
 
 **Test Retry Patterns:**
+
 - Vitest supports `retry` configuration for handling flaky tests
 - Industry standard: max 2 retries for CI environments
 - Prevents pipeline failures from transient issues (network, timing)
 - Should be enabled only in CI (not local development)
 
 **Workflow Consolidation Benefits:**
+
 - Reduced maintenance burden (fewer YAML files to update)
 - Simplified dependency graphs (fewer inter-workflow dependencies)
 - Improved observability (single workflow = single status check)
@@ -78,7 +85,7 @@ calculate-shards:
     - name: Calculate shard count from changed files
       run: |
         CHANGED_FILES=$(git diff --name-only origin/${{ github.base_ref }}...HEAD | grep -E '\.(ts|tsx|js|jsx|mjs)$' | wc -l)
-        
+
         if [ "$CHANGED_FILES" -lt 10 ]; then
           SHARD_COUNT=3; USE_AFFECTED="true"  # Small PR: minimal parallelism + affected
         elif [ "$CHANGED_FILES" -lt 50 ]; then
@@ -89,6 +96,7 @@ calculate-shards:
 ```
 
 **Rationale:**
+
 - Small PRs (<10 files): 3 shards + Nx affected = 50-70% time reduction
 - Medium PRs (10-50 files): 5 shards + Nx affected = 30-50% time reduction
 - Large PRs (>50 files): 7 shards + full suite = 20-30% time reduction via parallelism
@@ -107,6 +115,7 @@ calculate-shards:
 ```
 
 **Rationale:**
+
 - Nx affected skips unchanged projects/libs
 - Maintains test isolation (each shard independent)
 - Falls back to full suite for large refactors (safety net)
@@ -115,22 +124,25 @@ calculate-shards:
 **3. Test Retry Logic for Flaky Test Handling:**
 
 Update `vitest.config.ts`:
+
 ```typescript
 const retryCount = parseInt(process.env.VITEST_RETRY || '0', 10);
 
 const createBaseTestConfig = () => ({
   // ... existing config
-  retry: retryCount,  // 0 locally, 2 in CI
+  retry: retryCount, // 0 locally, 2 in CI
 });
 ```
 
 CI workflow:
+
 ```yaml
 env:
-  VITEST_RETRY: '2'  # Max 2 retries for flaky tests
+  VITEST_RETRY: '2' # Max 2 retries for flaky tests
 ```
 
 **Rationale:**
+
 - Prevents false negatives from network timeouts, race conditions
 - Industry best practice: max 2 retries (avoid hiding real issues)
 - Only enabled in CI (developers see failures immediately)
@@ -143,12 +155,13 @@ env:
   run: |
     EXPECTED_SHARDS=${{ needs.calculate-shards.outputs.shard-count || '3' }}
     DOWNLOADED_SHARDS=$(find coverage-shards -name "lcov.info" | wc -l)
-    
+
     # Don't fail on shard mismatch (affected mode may skip entire shards)
     echo "Expected: $EXPECTED_SHARDS, Downloaded: $DOWNLOADED_SHARDS"
 ```
 
 **Rationale:**
+
 - Nx affected may result in fewer shards running (0 tests in shard)
 - Coverage aggregation must tolerate variable shard counts
 - Maintains 80% threshold on combined coverage
@@ -163,6 +176,7 @@ env:
 - Simplifies status checks (1 instead of 2 workflows)
 
 **Migration:**
+
 - Add conditional logic to `ci.yml` to handle `test.yml` triggers
 - Update branch protection rules to reference consolidated workflow
 - Deprecate `test.yml` with 30-day sunset period
@@ -171,6 +185,7 @@ env:
 **2. Convert `security-scan.yml` to Composite Action:**
 
 Create `.github/actions/security-scan/action.yml`:
+
 ```yaml
 inputs:
   enable-npm-audit: { default: 'true' }
@@ -187,18 +202,20 @@ outputs:
 ```
 
 **Benefits:**
+
 - Reusable across workflows (ci.yml, docker.yml, scheduled scans)
 - Toggleable security scanners via inputs
 - Consistent security scanning across all pipelines
 - Easier to version and update scanner configurations
 
 **Usage in workflows:**
+
 ```yaml
 - uses: ./.github/actions/security-scan
   with:
     fail-on-high: 'true'
     enable-trivy: 'true'
-    enable-grype: 'false'  # Example: disable specific scanner
+    enable-grype: 'false' # Example: disable specific scanner
 ```
 
 **3. Consolidate `build-and-test.yml` Functionality:**
@@ -213,6 +230,7 @@ outputs:
 ### Phase 5: Security Hardening (Weeks 3-6) - Preview
 
 **Planned Security Enhancements:**
+
 - SLSA Level 3 provenance generation (supply chain integrity)
 - SBOM generation for all artifacts (currently only Docker images)
 - OIDC authentication for AWS/Azure (eliminate long-lived credentials)
@@ -221,6 +239,7 @@ outputs:
 - Automated Dependabot for action updates
 
 **Target Metrics:**
+
 - OWASP ASVS compliance: 65% → 90%
 - SLSA Level: 1 → 3
 - Vulnerability remediation SLA: < 7 days for high/critical
@@ -230,6 +249,7 @@ outputs:
 ### Positive
 
 **Performance Improvements (Expected):**
+
 - Small PR validation time: 35-50 min → 12-18 min (60-65% reduction)
 - Medium PR validation time: 35-50 min → 18-25 min (45-50% reduction)
 - Large PR validation time: 35-50 min → 25-35 min (20-30% reduction)
@@ -237,12 +257,14 @@ outputs:
 - Developer re-run requests: -60-80% (via retry logic)
 
 **Maintainability Improvements:**
+
 - Workflow count: 24 → 17 (29% reduction)
 - YAML maintenance burden: -500+ lines
 - Security scanner configuration: centralized in single action
 - Status checks: simplified (fewer required checks)
 
 **Cost Savings:**
+
 - GitHub Actions minutes: 30-40% reduction (estimated $200-300/month savings)
 - Developer time: 15-25 hours/week saved (faster feedback loops)
 - Incident response: faster rollbacks (simpler pipeline)
@@ -250,24 +272,29 @@ outputs:
 ### Negative (with Mitigations)
 
 **Increased Complexity:**
+
 - Dynamic matrix strategies harder to debug than static
 - **Mitigation:** Comprehensive logging in calculate-shards job, document matrix generation logic in ADR
 
 **Risk of Over-Optimization:**
+
 - Nx affected may miss edge cases (transitive dependencies)
 - **Mitigation:** Full test suite for PRs >50 files, scheduled nightly full runs, escape hatch via workflow_dispatch
 
 **Breaking Change for Branch Protection:**
+
 - Consolidating workflows changes required status checks
 - **Mitigation:** Phased migration with 30-day overlap period, update documentation, notify team via Slack/email
 
 **Flaky Test Masking:**
+
 - Retry logic may hide real intermittent bugs
 - **Mitigation:** Track retry metrics, alert on >10% retry rate, investigate persistent flakes
 
 ### Monitoring and Success Criteria
 
 **Key Metrics (Dashboard):**
+
 1. **PR Validation Time (P50/P95/P99):**
    - Baseline: P50=42min, P95=55min, P99=68min
    - Target: P50=18min, P95=30min, P99=45min
@@ -289,6 +316,7 @@ outputs:
    - Target: <10,000 minutes/month (33% reduction)
 
 **Weekly Review Process:**
+
 - Monday: Review P95 PR validation time (target: <30 min)
 - Wednesday: Review retry rate and flaky test candidates
 - Friday: Review Nx affected effectiveness (% time saved)
@@ -300,10 +328,12 @@ outputs:
 **Approach:** Increase all PRs to 5 shards regardless of size
 
 **Pros:**
+
 - Simpler than dynamic sharding
 - Better parallelism for medium/large PRs
 
 **Cons:**
+
 - Small PRs waste resources (overhead > benefit)
 - No cost optimization for common case (<10 files)
 - Doesn't leverage Nx affected
@@ -315,10 +345,12 @@ outputs:
 **Approach:** Always use Nx affected, never run full suite
 
 **Pros:**
+
 - Maximum test time reduction
 - Simplest implementation
 
 **Cons:**
+
 - Risk missing transitive dependency issues
 - Difficult to debug "works in PR, fails in main"
 - No safety net for large refactors
@@ -330,10 +362,12 @@ outputs:
 **Approach:** Maintain 24 workflows, optimize individually
 
 **Pros:**
+
 - No migration risk
 - Clear separation of concerns
 
 **Cons:**
+
 - Ongoing maintenance burden (24 files to update)
 - Duplicated security scanning logic
 - Complex inter-workflow dependencies
@@ -345,11 +379,13 @@ outputs:
 **Approach:** Migrate to CircleCI, Travis, or Jenkins
 
 **Pros:**
+
 - Better caching primitives
 - Advanced parallelization features
 - Dedicated support
 
 **Cons:**
+
 - Migration cost: 80-120 hours
 - Additional monthly cost: $500-1000
 - Lock-in to commercial vendor
@@ -362,18 +398,21 @@ outputs:
 ### Week 1: Phase 4B - Test Optimization
 
 **Day 1-2: Dynamic Sharding Implementation**
+
 - [ ] Add `calculate-shards` job to `ci.yml`
 - [ ] Update `test` job matrix to use dynamic shard count
 - [ ] Add changed files calculation logic
 - [ ] Test with small PR (<10 files), medium PR (10-50 files), large PR (>50 files)
 
 **Day 3-4: Nx Affected Integration**
+
 - [ ] Update test execution to use `nx affected --target=test`
 - [ ] Add conditional logic (affected vs full suite)
 - [ ] Update coverage aggregation to handle variable shards
 - [ ] Validate affected detection accuracy
 
 **Day 5: Retry Logic Implementation**
+
 - [ ] Update `vitest.config.ts` with retry configuration
 - [ ] Add `VITEST_RETRY=2` to CI environment
 - [ ] Test retry behavior with intentionally flaky test
@@ -382,6 +421,7 @@ outputs:
 ### Week 2: Phase 4C - Workflow Consolidation
 
 **Day 1-2: Security Scan Composite Action**
+
 - [ ] Create `.github/actions/security-scan/action.yml`
 - [ ] Migrate npm audit, Semgrep, Trivy, Grype logic
 - [ ] Add security database caching (Trivy/Grype)
@@ -389,6 +429,7 @@ outputs:
 - [ ] Deprecate standalone `security-scan.yml`
 
 **Day 3-4: Workflow Consolidation**
+
 - [ ] Analyze `test.yml` for unique features
 - [ ] Merge unique logic into `ci.yml`
 - [ ] Add deprecation notice to `test.yml`
@@ -396,6 +437,7 @@ outputs:
 - [ ] Test consolidated workflow with sample PR
 
 **Day 5: Documentation and Validation**
+
 - [ ] Update developer documentation (CONTRIBUTING.md)
 - [ ] Create workflow migration guide
 - [ ] Update CHANGELOG.md with Phase 4B/4C entries
@@ -404,12 +446,14 @@ outputs:
 ### Week 3: Monitoring and Refinement
 
 **Day 1-2: Metrics Dashboard**
+
 - [ ] Set up GitHub Actions metrics collection
 - [ ] Create P50/P95/P99 latency dashboard
 - [ ] Track retry rate and flaky test candidates
 - [ ] Monitor Nx affected effectiveness
 
 **Day 3-5: Performance Tuning**
+
 - [ ] Analyze first week of data
 - [ ] Adjust shard count thresholds if needed
 - [ ] Identify optimization opportunities
@@ -418,6 +462,7 @@ outputs:
 ### Validation Criteria
 
 **Before Phase 4B Completion:**
+
 - ✅ Dynamic sharding tested with 3/5/7 shard configurations
 - ✅ Nx affected correctly identifies changed projects
 - ✅ Retry logic prevents transient failures
@@ -425,6 +470,7 @@ outputs:
 - ✅ No regression in test coverage percentage
 
 **Before Phase 4C Completion:**
+
 - ✅ Security scan composite action reusable across workflows
 - ✅ test.yml functionality fully migrated to ci.yml
 - ✅ Branch protection rules updated successfully
@@ -432,6 +478,7 @@ outputs:
 - ✅ Developer documentation updated
 
 **Performance Targets (End of Week 3):**
+
 - ✅ Small PR validation time: <20 minutes (P95)
 - ✅ Medium PR validation time: <30 minutes (P95)
 - ✅ Retry rate: <10% across all test runs
@@ -452,6 +499,8 @@ outputs:
 - **Annual Review:** 2026-11-18 (major version evaluation)
 
 ---
+
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
 
 **Approval:**  
 ☑️ **Accepted** - 2025-11-18  

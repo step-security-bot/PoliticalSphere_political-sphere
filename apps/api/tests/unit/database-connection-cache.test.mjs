@@ -1,4 +1,4 @@
-import { closeDatabase, getDatabase } from '../../src/modules/stores/index.ts';
+import { closeDatabase, getDatabase } from '../../s../stores/index.ts';
 
 function createStubCache() {
   const calls = [];

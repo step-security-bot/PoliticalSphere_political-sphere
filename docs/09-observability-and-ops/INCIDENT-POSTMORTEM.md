@@ -7,6 +7,8 @@
 
 ---
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 ## Executive Summary
 
 All source code files (.github/, package.json, nx.json, TypeScript/JavaScript source files, and configuration files) went missing from the main branch, leaving only documentation and build artifacts. The issue was resolved by merging the `blackboxai/dev-autopilot` branch which contained all the missing files.

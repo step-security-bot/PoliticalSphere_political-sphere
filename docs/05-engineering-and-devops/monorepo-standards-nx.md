@@ -12,6 +12,8 @@
 
 ---
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 ## 🎯 Objectives
 
 - Maximize code reuse and maintainability across apps and libs.

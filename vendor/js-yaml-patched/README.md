@@ -1,26 +1,21 @@
-JS-YAML - YAML 1.2 parser / writer for JavaScript
-=================================================
+# JS-YAML - YAML 1.2 parser / writer for JavaScript
 
 [![CI](https://github.com/nodeca/js-yaml/workflows/CI/badge.svg?branch=master)](https://github.com/nodeca/js-yaml/actions)
 [![NPM version](https://img.shields.io/npm/v/js-yaml.svg)](https://www.npmjs.org/package/js-yaml)
 
-__[Online Demo](http://nodeca.github.com/js-yaml/)__
-
+**[Online Demo](http://nodeca.github.com/js-yaml/)**
 
 This is an implementation of [YAML](http://yaml.org/), a human-friendly data
 serialization language. Started as [PyYAML](http://pyyaml.org/) port, it was
 completely rewritten from scratch. Now it's very fast, and supports 1.2 spec.
 
-
-Installation
-------------
+## Installation
 
 ### YAML module for node.js
 
 ```
 npm install js-yaml
 ```
-
 
 ### CLI executable
 
@@ -45,17 +40,15 @@ Optional arguments:
   -t, --trace    Show stack trace on error
 ```
 
-
-API
----
+## API
 
 Here we cover the most 'useful' methods. If you need advanced details (creating
 your own tags), see [examples](https://github.com/nodeca/js-yaml/tree/master/examples)
 for more info.
 
-``` javascript
+```javascript
 const yaml = require('js-yaml');
-const fs   = require('fs');
+const fs = require('fs');
 
 // Get document, or throw exception on error
 try {
@@ -65,7 +58,6 @@ try {
   console.log(e);
 }
 ```
-
 
 ### load (string [ , options ])
 
@@ -97,20 +89,18 @@ So, the JSON schema is not as strictly defined in the YAML specification.
 It allows numbers in any notation, use `Null` and `NULL` as `null`, etc.
 The core schema also has no such restrictions. It allows binary notation for integers.
 
-
 ### loadAll (string [, iterator] [, options ])
 
 Same as `load()`, but understands multi-document sources. Applies
 `iterator` to each document if specified, or returns array of documents.
 
-``` javascript
+```javascript
 const yaml = require('js-yaml');
 
 yaml.loadAll(data, function (doc) {
   console.log(doc);
 });
 ```
-
 
 ### dump (object [ , options ])
 
@@ -143,7 +133,7 @@ The following table show availlable styles (e.g. "canonical",
 "binary"...) available for each tag (.e.g. !!null, !!int ...). Yaml
 output is shown on the right side after `=>` (default setting) or `->`:
 
-``` none
+```none
 !!null
   "canonical"   -> "~"
   "lowercase"   => "null"
@@ -169,17 +159,16 @@ output is shown on the right side after `=>` (default setting) or `->`:
 
 Example:
 
-``` javascript
+```javascript
 dump(object, {
-  'styles': {
-    '!!null': 'canonical' // dump null as ~
+  styles: {
+    '!!null': 'canonical', // dump null as ~
   },
-  'sortKeys': true        // sort object keys
+  sortKeys: true, // sort object keys
 });
 ```
 
-Supported YAML types
---------------------
+## Supported YAML types
 
 The list of standard YAML tags and corresponding JavaScript types. See also
 [YAML tag discussion](http://pyyaml.org/wiki/YAMLTagDiscussion) and
@@ -205,31 +194,29 @@ The list of standard YAML tags and corresponding JavaScript types. See also
 See [js-yaml-js-types](https://github.com/nodeca/js-yaml-js-types) for
 extra types.
 
-
-Caveats
--------
+## Caveats
 
 Note, that you use arrays or objects as key in JS-YAML. JS does not allow objects
 or arrays as keys, and stringifies (by calling `toString()` method) them at the
 moment of adding them.
 
-``` yaml
+```yaml
 ---
-? [ foo, bar ]
-: - baz
-? { foo: bar }
-: - baz
+[foo, bar]:
+  - baz
+{ foo: bar }:
+  - baz
   - baz
 ```
 
-``` javascript
+```javascript
 { "foo,bar": ["baz"], "[object Object]": ["baz", "baz"] }
 ```
 
 Also, reading of properties on implicit block mapping keys is not supported yet.
 So, the following YAML document cannot be loaded.
 
-``` yaml
+```yaml
 &anchor foo:
   foo: bar
   *anchor: duplicate key
@@ -237,9 +224,7 @@ So, the following YAML document cannot be loaded.
   *anchor: duplicate key
 ```
 
-
-js-yaml for enterprise
-----------------------
+## js-yaml for enterprise
 
 Available as part of the Tidelift Subscription
 

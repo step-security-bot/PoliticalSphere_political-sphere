@@ -1,6 +1,6 @@
 import { type CreateVoteInput, CreateVoteSchema, type Vote } from '@political-sphere/shared';
 
-import { getDatabase } from '../modules/stores/index.js';
+import { getDatabase } from '../stores/index.js';
 
 export class VoteService {
   // Lazy getter to avoid stale DB connections in tests
@@ -30,7 +30,12 @@ export class VoteService {
       throw new Error('User has already voted on this bill');
     }
 
-    return this.db.votes.create(input);
+    const result = await this.db.votes.create(input);
+    // Ensure vote is one of the allowed values
+    return {
+      ...result,
+      vote: result.vote as 'aye' | 'nay' | 'abstain',
+    };
   }
 
   async getVoteById(id: string): Promise<Vote | null> {

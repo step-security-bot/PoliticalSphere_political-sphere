@@ -1,0 +1,251 @@
+# Default values for political-sphere.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+# Global configuration
+global:
+  imageRegistry: "123456789012.dkr.ecr.us-east-1.amazonaws.com"
+  imagePullSecrets: []
+  storageClass: "gp3"
+  environment: "production"
+
+# API service configuration
+api:
+  enabled: true
+  image:
+    repository: political-sphere/prod/api
+    tag: "latest"
+    pullPolicy: IfNotPresent
+  replicaCount: 3
+  port: 3000
+  service:
+    type: ClusterIP
+    port: 80
+  resources:
+    requests:
+      memory: "256Mi"
+      cpu: "250m"
+    limits:
+      memory: "512Mi"
+      cpu: "500m"
+  autoscaling:
+    enabled: true
+    minReplicas: 3
+    maxReplicas: 10
+    targetCPUUtilizationPercentage: 70
+    targetMemoryUtilizationPercentage: 80
+  env:
+    NODE_ENV: "production"
+    PORT: "3000"
+    LOG_LEVEL: "info"
+    CORS_ORIGIN: "https://political-sphere.com"
+  secrets:
+    jwtSecret: "change-me-in-production"
+    databaseUrl: "postgres://user:pass@db_host:5432/db_name"
+    redisUrl: "redis://user:pass@redis_host:6379/0"
+
+# Web frontend configuration
+web:
+  enabled: true
+  image:
+    repository: political-sphere/prod/web
+    tag: "latest"
+    pullPolicy: IfNotPresent
+  replicaCount: 2
+  port: 80
+  service:
+    type: ClusterIP
+    port: 80
+  resources:
+    requests:
+      memory: "128Mi"
+      cpu: "100m"
+    limits:
+      memory: "256Mi"
+      cpu: "200m"
+  autoscaling:
+    enabled: true
+    minReplicas: 2
+    maxReplicas: 8
+    targetCPUUtilizationPercentage: 60
+    targetMemoryUtilizationPercentage: 70
+  env:
+    REACT_APP_API_URL: "https://api.political-sphere.com"
+    REACT_APP_WS_URL: "wss://game.political-sphere.com"
+    REACT_APP_ENVIRONMENT: "production"
+
+# Game server configuration
+gameServer:
+  enabled: true
+  image:
+    repository: political-sphere/prod/game-server
+    tag: "latest"
+    pullPolicy: IfNotPresent
+  replicaCount: 2
+  port: 8080
+  service:
+    type: ClusterIP
+    port: 80
+  resources:
+    requests:
+      memory: "512Mi"
+      cpu: "500m"
+    limits:
+      memory: "1Gi"
+      cpu: "1000m"
+  autoscaling:
+    enabled: true
+    minReplicas: 2
+    maxReplicas: 8
+    targetCPUUtilizationPercentage: 70
+    targetMemoryUtilizationPercentage: 80
+  env:
+    NODE_ENV: "production"
+    PORT: "8080"
+    LOG_LEVEL: "info"
+    REDIS_URL: "redis://redis:6379/0"
+    API_URL: "http://api.political-sphere.svc.cluster.local"
+  secrets:
+    jwtSecret: "change-me-in-production"
+    redisAuthToken: "redis-auth-token"
+
+# Ingress configuration
+ingress:
+  enabled: true
+  className: "nginx"
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/rate-limit: "100"
+    nginx.ingress.kubernetes.io/rate-limit-window: "1m"
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+    nginx.ingress.kubernetes.io/cors-allow-origin: "https://political-sphere.com"
+    nginx.ingress.kubernetes.io/cors-allow-methods: "GET, POST, PUT, DELETE, OPTIONS"
+    nginx.ingress.kubernetes.io/cors-allow-headers: "DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization"
+    nginx.ingress.kubernetes.io/cors-allow-credentials: "true"
+    nginx.ingress.kubernetes.io/proxy-body-size: "50m"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "300"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "300"
+    nginx.ingress.kubernetes.io/websocket-services: "game-server"
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      # Security headers
+      add_header X-Frame-Options "SAMEORIGIN" always;
+      add_header X-Content-Type-Options "nosniff" always;
+      add_header X-XSS-Protection "1; mode=block" always;
+      add_header Referrer-Policy "strict-origin-when-cross-origin" always;
+      add_header Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' wss: https:;" always;
+  hosts:
+    - host: api.political-sphere.com
+      paths:
+        - path: /
+          pathType: Prefix
+          service:
+            name: api
+            port:
+              number: 80
+    - host: game.political-sphere.com
+      paths:
+        - path: /
+          pathType: Prefix
+          service:
+            name: game-server
+            port:
+              number: 80
+    - host: www.political-sphere.com
+      paths:
+        - path: /
+          pathType: Prefix
+          service:
+            name: web
+            port:
+              number: 80
+        - path: /api
+          pathType: Prefix
+          service:
+            name: api
+            port:
+              number: 80
+  tls:
+    - secretName: political-sphere-tls
+      hosts:
+        - api.political-sphere.com
+        - game.political-sphere.com
+        - www.political-sphere.com
+
+# Certificate manager configuration
+cert-manager:
+  enabled: true
+  clusterIssuer:
+    name: letsencrypt-prod
+    email: admin@political-sphere.com
+    server: https://acme-v02.api.letsencrypt.org/directory
+    route53:
+      region: us-east-1
+      secretName: route53-credentials
+
+# NGINX Ingress Controller
+ingress-nginx:
+  enabled: true
+  controller:
+    replicaCount: 2
+    service:
+      type: LoadBalancer
+      annotations:
+        service.beta.kubernetes.io/aws-load-balancer-type: nlb
+        service.beta.kubernetes.io/aws-load-balancer-cross-zone-load-balancing-enabled: "true"
+        service.beta.kubernetes.io/aws-load-balancer-ssl-cert: "arn:aws:acm:us-east-1:123456789012:certificate/certificate-id"
+        service.beta.kubernetes.io/aws-load-balancer-ssl-ports: "443"
+        service.beta.kubernetes.io/aws-load-balancer-backend-protocol: "http"
+
+# Monitoring stack
+prometheus:
+  enabled: true
+  server:
+    persistentVolume:
+      enabled: true
+      size: 50Gi
+  alertmanager:
+    enabled: true
+  pushgateway:
+    enabled: false
+
+grafana:
+  enabled: true
+  adminPassword: "change-me-in-production"
+  persistence:
+    enabled: true
+    size: 10Gi
+  service:
+    type: ClusterIP
+
+# ELK Stack
+elasticsearch:
+  enabled: true
+  replicas: 3
+  minimumMasterNodes: 2
+  persistence:
+    enabled: true
+    size: 100Gi
+
+kibana:
+  enabled: true
+  service:
+    type: ClusterIP
+
+# Network policies
+networkPolicies:
+  enabled: true
+  defaultDenyAll: true
+  allowDNS: true
+  allowMonitoring: true
+
+# Service accounts and RBAC
+serviceAccounts:
+  api:
+    create: true
+    annotations:
+      eks.amazonaws.com/role-arn: "arn:aws:iam::123456789012:role/political-sphere-api-role"
+  gameServer:
+    create: true
+    annotations:
+      eks.amazonaws.com/role-arn: "arn:aws:iam::123456789012:role/political-sphere-game-server-role"

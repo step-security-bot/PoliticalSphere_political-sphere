@@ -84,7 +84,7 @@ EOF
 {
   "_type": "https://in-toto.io/Statement/v0.1",
   "subject": $(cat "${SUBJECTS_FILE}"),
-  "predicateType": "https://slsa.dev/provenance/v0.2",
+  "predicateType": "https://slsa.dev/provenance/v1",
   "predicate": {
     "buildDefinition": {
       "buildType": "https://github.com/slsa-framework/slsa-github-generator@v1.9.0",
@@ -120,7 +120,20 @@ EOF
         "startedOn": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
         "finishedOn": "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
       },
-      "byproducts": []
+      "byproducts": [
+        {
+          "uri": "file:///github/workspace/artifacts/sbom/sbom-cyclonedx.json",
+          "digest": {
+            "sha256": "$(sha256sum artifacts/sbom/sbom-cyclonedx.json 2>/dev/null | cut -d' ' -f1 || echo 'PLACEHOLDER_SBOM_DIGEST')"
+          }
+        },
+        {
+          "uri": "file:///github/workspace/artifacts/sbom/sbom-spdx.json",
+          "digest": {
+            "sha256": "$(sha256sum artifacts/sbom/sbom-spdx.json 2>/dev/null | cut -d' ' -f1 || echo 'PLACEHOLDER_SBOM_DIGEST')"
+          }
+        }
+      ]
     }
   }
 }
@@ -157,7 +170,7 @@ EOF
     },
     "runDetails": {
       "builder": {
-        "id": "https://github.com/slsa-framework/slsa-github-generator/.github/workflows/generator_generic_slsa3.yml@main"
+        "id": "https://github.com/slsa-framework/slsa-github-generator/.github/workflows/generator_generic_slsa3.yml@v1.9.0"
       },
       "metadata": {
         "startedOn": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",

@@ -1,5 +1,7 @@
 # Supply Chain Security Implementation
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 ## Overview
 
 This document outlines the advanced supply chain security measures implemented for the Political Sphere project, achieving SLSA Level 3 compliance with automated provenance generation, Sigstore/cosign artifact signing, and comprehensive SBOM creation.
@@ -10,12 +12,12 @@ This document outlines the advanced supply chain security measures implemented f
 
 The implementation meets all SLSA Level 3 requirements:
 
-| Requirement | Status | Implementation |
-|-------------|--------|----------------|
-| **Source** | ✅ Level 4 | Git version control with verified history, retained indefinitely |
-| **Build** | ✅ Level 3 | Scripted builds with provenance, isolated environment, parameterized |
-| **Provenance** | ✅ Level 3 | Authenticated, non-falsifiable build metadata |
-| **Common** | ✅ Level 3 | Security controls, access management, audit logging |
+| Requirement    | Status     | Implementation                                                       |
+| -------------- | ---------- | -------------------------------------------------------------------- |
+| **Source**     | ✅ Level 4 | Git version control with verified history, retained indefinitely     |
+| **Build**      | ✅ Level 3 | Scripted builds with provenance, isolated environment, parameterized |
+| **Provenance** | ✅ Level 3 | Authenticated, non-falsifiable build metadata                        |
+| **Common**     | ✅ Level 3 | Security controls, access management, audit logging                  |
 
 ### Build Service Security
 
@@ -33,6 +35,7 @@ The implementation meets all SLSA Level 3 requirements:
 **Coverage**: Complete dependency analysis including transitive dependencies
 
 **Features**:
+
 - Automated SBOM generation for all build artifacts
 - Container image SBOM support
 - NTIA minimum elements compliance
@@ -47,6 +50,7 @@ The implementation meets all SLSA Level 3 requirements:
 **Verification**: Automated signature validation
 
 **Features**:
+
 - Keyless signing (no private key management)
 - Sigstore transparency log integration
 - Rekor tamper-proof ledger
@@ -61,6 +65,7 @@ The implementation meets all SLSA Level 3 requirements:
 **Format**: In-toto attestation format
 
 **Features**:
+
 - Complete build dependency tracking
 - Non-falsifiable provenance attestations
 - GitHub Actions environment integration
@@ -75,6 +80,7 @@ The implementation meets all SLSA Level 3 requirements:
 **Reporting**: JSON-based verification results
 
 **Checks Performed**:
+
 - SBOM integrity and completeness
 - Artifact signature verification
 - SLSA provenance validation
@@ -96,8 +102,8 @@ jobs:
     permissions:
       contents: read
       actions: write
-      id-token: write  # For keyless signing
-      attestations: write  # For SLSA provenance
+      id-token: write # For keyless signing
+      attestations: write # For SLSA provenance
     steps:
       - name: Generate SBOM
         run: ./scripts/security/supply-chain/generate-sbom.sh
@@ -123,8 +129,8 @@ jobs:
 permissions:
   contents: read
   actions: write
-  id-token: write      # Required for keyless signing
-  attestations: write  # Required for SLSA provenance
+  id-token: write # Required for keyless signing
+  attestations: write # Required for SLSA provenance
 ```
 
 ## Artifact Structure
@@ -244,14 +250,14 @@ slsa-verifier verify-artifact \
 
 ## Compliance Summary
 
-| Component | SLSA Level | Status | Evidence |
-|-----------|------------|--------|----------|
-| Source Control | 4 | ✅ | Git with branch protection |
-| Build Service | 3 | ✅ | GitHub Actions with provenance |
-| Provenance | 3 | ✅ | SLSA v0.2 format |
-| Artifact Signing | 3 | ✅ | Sigstore/cosign |
-| SBOM Generation | N/A | ✅ | SPDX/CycloneDX formats |
-| Verification | N/A | ✅ | Automated end-to-end |
+| Component        | SLSA Level | Status | Evidence                       |
+| ---------------- | ---------- | ------ | ------------------------------ |
+| Source Control   | 4          | ✅     | Git with branch protection     |
+| Build Service    | 3          | ✅     | GitHub Actions with provenance |
+| Provenance       | 3          | ✅     | SLSA v0.2 format               |
+| Artifact Signing | 3          | ✅     | Sigstore/cosign                |
+| SBOM Generation  | N/A        | ✅     | SPDX/CycloneDX formats         |
+| Verification     | N/A        | ✅     | Automated end-to-end           |
 
 **Overall SLSA Compliance: Level 3 Achieved**
 

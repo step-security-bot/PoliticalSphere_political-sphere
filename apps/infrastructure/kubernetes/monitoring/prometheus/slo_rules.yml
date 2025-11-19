@@ -30,14 +30,14 @@ groups:
 
       # Alert on SLO breaches
       - alert: CI_Pipeline_SLO_Breach
-        expr: ci_pipeline_slo_burn_rate_1h > 14.4  # Burn rate for 1 hour window
+        expr: ci_pipeline_slo_burn_rate_1h > 14.4 # Burn rate for 1 hour window
         for: 5m
         labels:
           severity: critical
           service: ci-pipeline
         annotations:
-          summary: "CI Pipeline SLO breach detected"
-          description: "CI Pipeline success rate is below 95% SLO target"
+          summary: 'CI Pipeline SLO breach detected'
+          description: 'CI Pipeline success rate is below 95% SLO target'
 
       - alert: CI_Job_Failure_Rate_High
         expr: rate(ci_job_failure_total[5m]) > 0.1
@@ -46,5 +46,5 @@ groups:
           severity: warning
           service: ci-pipeline
         annotations:
-          summary: "High CI job failure rate"
-          description: "CI job failure rate exceeds 10% in 5 minute window"
+          summary: 'High CI job failure rate'
+          description: 'CI job failure rate exceeds 10% in 5 minute window'

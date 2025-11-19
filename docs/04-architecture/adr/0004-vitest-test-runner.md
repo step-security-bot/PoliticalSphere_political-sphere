@@ -1,5 +1,7 @@
 # ADR-0004: Vitest as Primary Test Runner
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 **Status:** Accepted  
 **Date:** 2025-11-10  
 **Deciders:** Technical Lead, QA Team  

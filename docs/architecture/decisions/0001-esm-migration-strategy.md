@@ -1,5 +1,7 @@
 # ESM Migration Strategy - Hybrid Approach
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 **Status**: Accepted
 **Date**: 2025-11-11
 **Decision Makers**: Solo Developer + AI Assistants

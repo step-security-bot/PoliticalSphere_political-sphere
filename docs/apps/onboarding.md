@@ -1,5 +1,7 @@
 # Political Sphere Engineering Onboarding
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 Welcome aboard! This guide walks you through the first day tasks to become productive on the Political Sphere platform.
 
 ## Accounts & Access

@@ -12,6 +12,8 @@
 
 ---
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 ## 🎯 Purpose
 
 Our Personas and Use Cases document defines the key user archetypes and behavioral patterns that drive Political Sphere's design and development. These insights ensure our democratically-governed multiplayer political simulation platform meets the diverse needs of citizens seeking to understand and participate in democracy.

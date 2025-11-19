@@ -48,6 +48,8 @@
 | [Content Moderation and Enforcement](content-moderation-and-enforcement.md)         | In-game content rules                   | Active |
 | [Accessibility and UX Harm Minimisation](accessibility-and-ux-harm-minimisation.md) | Inclusive and safe user experience      | Active |
 
+> NOTE: Game design and feature prioritization must align with the project's mission and governance; see `docs/00-foundation/project-context.md` for details.
+
 ---
 
 ## 🎮 Core Gameplay Loop

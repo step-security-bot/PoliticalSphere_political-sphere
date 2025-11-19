@@ -93,10 +93,7 @@
 
 ## 🧪 Security Testing and Validation
 
-- **Automated Scans:** CI/CD includes SAST, DAST, dependency checks, and secret detection.
-- **Penetration Testing:** Annual external assessments; internal red team exercises quarterly.
-- **Compliance Audits:** Self-assessments against ISO 27001 and GDPR; external audits as needed.
-- **AI Ethics Reviews:** Regular evaluations of AI systems for bias, transparency, and safety.
+> NOTE: For executive-level project context and the relationship between AI, governance, and security, see `docs/00-foundation/project-context.md`.
 
 ---
 

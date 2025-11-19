@@ -156,7 +156,7 @@ export class WebSocketServer {
    */
   private verifyClient(
     info: { origin: string; req: { headers: Record<string, string | string[] | undefined> } },
-    callback: (verified: boolean, code?: number, message?: string) => void
+    callback: (verified: boolean, code?: number, message?: string) => void,
   ): void {
     const origin = info.origin || 'unknown';
 
@@ -287,16 +287,9 @@ export class WebSocketServer {
   }
 
   /**
-   * Handle incoming messages from clients
+   * Check rate limiting for a client
    */
-  private handleMessage(clientId: string, data: Buffer): void {
-    const client = this.clients.get(clientId);
-    if (!client) {
-      this.logger.warn('Message from unknown client', { clientId });
-      return;
-    }
-
-    // Rate limiting check
+  private checkRateLimit(client: GameClient): boolean {
     const now = Date.now();
     const timeSinceLastMessage = now - client.lastMessageTime;
 
@@ -312,57 +305,50 @@ export class WebSocketServer {
     // Check if rate limit exceeded
     if (client.messageCount > this.MAX_MESSAGES_PER_MINUTE) {
       this.logger.warn('Rate limit exceeded', {
-        clientId,
+        clientId: client.id,
         userId: client.userId,
         messageCount: client.messageCount,
         window: this.MESSAGE_WINDOW_MS,
       });
-
-      this.sendToClient(clientId, {
-        type: 'error',
-        data: {
-          message: 'Rate limit exceeded. Please slow down.',
-          retryAfter: Math.ceil((client.lastMessageTime + this.MESSAGE_WINDOW_MS - now) / 1000),
-        },
-      });
-      return;
+      return false;
     }
 
-    // Message size validation (max 10KB)
+    return true;
+  }
+
+  /**
+   * Validate message size
+   */
+  private validateMessageSize(client: GameClient, data: Buffer): boolean {
     const MAX_MESSAGE_SIZE = 10 * 1024; // 10KB
     if (data.length > MAX_MESSAGE_SIZE) {
       this.logger.warn('Message too large', {
-        clientId,
+        clientId: client.id,
         userId: client.userId,
         size: data.length,
         maxSize: MAX_MESSAGE_SIZE,
       });
-      this.sendToClient(clientId, {
-        type: 'error',
-        data: { message: 'Message too large. Maximum size is 10KB.' },
-      });
-      return;
+      return false;
     }
+    return true;
+  }
 
+  /**
+   * Parse and validate message
+   */
+  private parseAndValidateMessage(client: GameClient, data: Buffer): GameMessage | null {
     try {
       const message = JSON.parse(data.toString()) as GameMessage;
 
       // Validate message structure
       if (!isValidMessage(message)) {
         this.logger.warn('Invalid message structure', {
-          clientId,
+          clientId: client.id,
           userId: client.userId,
           messageType:
             typeof message === 'object' ? (message as Record<string, unknown>).type : 'unknown',
         });
-        this.sendToClient(clientId, {
-          type: 'error',
-          data: {
-            message: 'Invalid message format. Message must have a valid type and structure.',
-            allowedTypes: VALID_MESSAGE_TYPES,
-          },
-        });
-        return;
+        return null;
       }
 
       // Validate gameId format if present (UUID v4 pattern)
@@ -370,58 +356,99 @@ export class WebSocketServer {
         const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
         if (!uuidRegex.test(message.gameId)) {
           this.logger.warn('Invalid gameId format', {
-            clientId,
+            clientId: client.id,
             userId: client.userId,
             gameId: message.gameId,
           });
-          this.sendToClient(clientId, {
-            type: 'error',
-            data: { message: 'Invalid gameId format. Must be a valid UUID.' },
-          });
-          return;
+          return null;
         }
       }
 
-      this.logger.debug('Received message', {
-        clientId,
-        userId: client.userId,
-        type: message.type,
-        gameId: message.gameId,
-      });
-
-      switch (message.type) {
-        case 'join':
-          this.handleJoinGame(clientId, message);
-          break;
-        case 'leave':
-          this.handleLeaveGame(clientId);
-          break;
-        case 'action':
-          this.handleGameAction(clientId, message);
-          break;
-        case 'ping':
-          this.sendToClient(clientId, { type: 'pong', timestamp: Date.now() });
-          break;
-        default:
-          // Type narrowing ensures this is unreachable
-          this.logger.warn('Unknown message type', {
-            clientId,
-            type: message.type,
-          });
-          this.sendToClient(clientId, {
-            type: 'error',
-            data: { message: `Unknown message type: ${message.type}` },
-          });
-      }
+      return message;
     } catch (error) {
       this.logger.error('Error parsing message', {
-        clientId,
+        clientId: client.id,
         error: error instanceof Error ? error.message : String(error),
       });
+      return null;
+    }
+  }
+
+  /**
+   * Handle incoming messages from clients
+   */
+  private handleMessage(clientId: string, data: Buffer): void {
+    const client = this.clients.get(clientId);
+    if (!client) {
+      this.logger.warn('Message from unknown client', { clientId });
+      return;
+    }
+
+    // Rate limiting check
+    if (!this.checkRateLimit(client)) {
       this.sendToClient(clientId, {
         type: 'error',
-        data: { message: 'Invalid message format' },
+        data: {
+          message: 'Rate limit exceeded. Please slow down.',
+          retryAfter: Math.ceil(
+            (client.lastMessageTime + this.MESSAGE_WINDOW_MS - Date.now()) / 1000,
+          ),
+        },
       });
+      return;
+    }
+
+    // Message size validation
+    if (!this.validateMessageSize(client, data)) {
+      this.sendToClient(clientId, {
+        type: 'error',
+        data: { message: 'Message too large. Maximum size is 10KB.' },
+      });
+      return;
+    }
+
+    const message = this.parseAndValidateMessage(client, data);
+    if (!message) {
+      this.sendToClient(clientId, {
+        type: 'error',
+        data: {
+          message: 'Invalid message format. Message must have a valid type and structure.',
+          allowedTypes: VALID_MESSAGE_TYPES,
+        },
+      });
+      return;
+    }
+
+    this.logger.debug('Received message', {
+      clientId,
+      userId: client.userId,
+      type: message.type,
+      gameId: message.gameId,
+    });
+
+    switch (message.type) {
+      case 'join':
+        this.handleJoinGame(clientId, message);
+        break;
+      case 'leave':
+        this.handleLeaveGame(clientId);
+        break;
+      case 'action':
+        this.handleGameAction(clientId, message);
+        break;
+      case 'ping':
+        this.sendToClient(clientId, { type: 'pong', timestamp: Date.now() });
+        break;
+      default:
+        // Type narrowing ensures this is unreachable
+        this.logger.warn('Unknown message type', {
+          clientId,
+          type: message.type,
+        });
+        this.sendToClient(clientId, {
+          type: 'error',
+          data: { message: `Unknown message type: ${message.type}` },
+        });
     }
   }
 
@@ -470,7 +497,7 @@ export class WebSocketServer {
         data: { clientId },
         timestamp: Date.now(),
       },
-      clientId
+      clientId,
     );
   }
 
@@ -506,7 +533,7 @@ export class WebSocketServer {
         data: { clientId },
         timestamp: Date.now(),
       },
-      clientId
+      clientId,
     );
 
     client.gameId = '';
@@ -541,7 +568,7 @@ export class WebSocketServer {
         data: message.data,
         timestamp: Date.now(),
       },
-      clientId
+      clientId,
     );
   }
 

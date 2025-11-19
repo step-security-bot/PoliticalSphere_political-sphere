@@ -1,4 +1,7 @@
 ---
+
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 description: 'TypeScript coding standards including strict mode, type safety, and ESM module guidelines'
 applyTo: '**/*.ts,**/*.tsx'
 ---

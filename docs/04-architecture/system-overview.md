@@ -12,6 +12,8 @@
 
 ---
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 ## 🎯 Purpose
 
 Political Sphere is a persistent political simulation game that models parliamentary processes in a fair, rule-driven, self-contained fictional environment.

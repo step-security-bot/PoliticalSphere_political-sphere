@@ -1,36 +1,34 @@
-/**
- * API Server
- * Main Express application with auth and game routes
- */
-// Load environment variables from .env if present (local dev convenience)
-import 'dotenv/config';
-
-import { createLogger, startTelemetry } from '@political-sphere/shared';
+// ESM shim to align legacy JS entry with the new TypeScript app factory
+// Export only the Express app from the TS source. Avoid re-exporting TS store modules
+// to prevent Node from importing TypeScript directly in environments that bypass Vite.
+import { createServer } from 'node:http';
+import { WebSocketServer } from './websocket/WebSocketServer';
+import { gameEventEmitter } from './events';
 import { app } from './app';
+import { getLogger } from '@political-sphere/shared';
 
-const logger = createLogger({ service: 'api-main' });
-const PORT = process.env.PORT || 3001;
+const logger = getLogger({ service: 'api' });
 
-// Initialize OpenTelemetry before starting the server
-startTelemetry({
-  serviceName: 'api',
-  serviceVersion: process.env.npm_package_version || '0.0.0',
-  environment: process.env.NODE_ENV || 'development',
-})
-  .then(() => {
-    app.listen(PORT, () => {
-      logger.info('🚀 API server running', {
-        msg: '🚀 API server running',
-        port: PORT,
-        healthCheck: `http://localhost:${PORT}/health`,
-        authEndpoints: `http://localhost:${PORT}/auth`,
-        gameEndpoints: `http://localhost:${PORT}/game`,
-      });
-    });
-  })
-  .catch(error => {
-    logger.fatal('Failed to initialize OpenTelemetry', { err: error });
-    process.exit(1);
+export { app };
+
+// Start server if this file is run directly
+if (import.meta.url === `file://${process.argv[1]}`) {
+  const PORT = parseInt(process.env.PORT || '4000', 10);
+  const HOST = process.env.HOST || '0.0.0.0';
+
+  // Create HTTP server
+  const server = createServer(app);
+
+  // Initialize WebSocket server
+  const wsServer = new WebSocketServer(server, {
+    requireAuth: process.env.NODE_ENV === 'production',
+    allowedOrigins: process.env.CORS_ORIGIN ? process.env.CORS_ORIGIN.split(',') : undefined,
   });
 
-export default app;
+  // Connect event emitter to WebSocket server
+  gameEventEmitter.setWebSocketServer(wsServer);
+
+  server.listen(PORT, HOST, () => {
+    logger.info(`API server with WebSocket support listening on http://${HOST}:${PORT}`);
+  });
+}

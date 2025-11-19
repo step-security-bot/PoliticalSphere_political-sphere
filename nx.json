@@ -65,7 +65,12 @@
     "build": {
       "dependsOn": ["^build"],
       "inputs": ["buildInputs"],
-      "outputs": ["{projectRoot}/dist", "{projectRoot}/build"],
+      "outputs": [
+        "{projectRoot}/dist",
+        "{projectRoot}/build",
+        "{projectRoot}/.next/cache",
+        "{projectRoot}/.vite/cache"
+      ],
       "cache": true
     },
     "lint": {
@@ -77,7 +82,12 @@
     },
     "test": {
       "inputs": ["testInputs"],
-      "outputs": ["{projectRoot}/coverage", "{projectRoot}/test-results"],
+      "outputs": [
+        "{projectRoot}/coverage",
+        "{projectRoot}/test-results",
+        "{projectRoot}/.vitest/cache",
+        "{projectRoot}/.nyc_output"
+      ],
       "cache": true,
       "configurations": {
         "ci": {

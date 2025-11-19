@@ -1,0 +1,211 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: game-server-service-account
+  namespace: political-sphere
+  annotations:
+    eks.amazonaws.com/role-arn: "arn:aws:iam::123456789012:role/political-sphere-game-server-role"
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: game-server-config
+  namespace: political-sphere
+data:
+  NODE_ENV: "production"
+  PORT: "8080"
+  LOG_LEVEL: "info"
+  REDIS_URL: "redis://redis:6379/0"
+  API_URL: "http://api.political-sphere.svc.cluster.local"
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: game-server-secrets
+  namespace: political-sphere
+type: Opaque
+data:
+  # Base64 encoded values - replace with actual secrets
+  JWT_SECRET: "Y2hhbmdlLW1lLWluLXByb2R1Y3Rpb24="  # change-me-in-production
+  REDIS_AUTH_TOKEN: "cmVkaXMtYXV0aC10b2tlbg=="  # redis-auth-token
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: game-server
+  namespace: political-sphere
+  labels:
+    app: game-server
+    version: v1
+    component: websocket
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: game-server
+  template:
+    metadata:
+      labels:
+        app: game-server
+        version: v1
+        component: websocket
+    spec:
+      serviceAccountName: game-server-service-account
+      containers:
+      - name: game-server
+        image: 123456789012.dkr.ecr.us-east-1.amazonaws.com/political-sphere/prod/game-server:latest
+        ports:
+        - containerPort: 8080
+          name: websocket
+          protocol: TCP
+        env:
+        - name: NODE_ENV
+          valueFrom:
+            configMapKeyRef:
+              name: game-server-config
+              key: NODE_ENV
+        - name: PORT
+          valueFrom:
+            configMapKeyRef:
+              name: game-server-config
+              key: PORT
+        - name: LOG_LEVEL
+          valueFrom:
+            configMapKeyRef:
+              name: game-server-config
+              key: LOG_LEVEL
+        - name: REDIS_URL
+          valueFrom:
+            configMapKeyRef:
+              name: game-server-config
+              key: REDIS_URL
+        - name: API_URL
+          valueFrom:
+            configMapKeyRef:
+              name: game-server-config
+              key: API_URL
+        - name: JWT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: game-server-secrets
+              key: JWT_SECRET
+        - name: REDIS_AUTH_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: game-server-secrets
+              key: REDIS_AUTH_TOKEN
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+            scheme: HTTP
+          initialDelaySeconds: 30
+          periodSeconds: 15
+          timeoutSeconds: 5
+          failureThreshold: 3
+          successThreshold: 1
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: 8080
+            scheme: HTTP
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          timeoutSeconds: 3
+          failureThreshold: 3
+          successThreshold: 1
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "500m"
+          limits:
+            memory: "1Gi"
+            cpu: "1000m"
+        securityContext:
+          allowPrivilegeEscalation: false
+          runAsNonRoot: true
+          runAsUser: 1001
+          readOnlyRootFilesystem: true
+          capabilities:
+            drop:
+            - ALL
+      securityContext:
+        fsGroup: 1001
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            preference:
+              matchExpressions:
+              - key: workload
+                operator: In
+                values:
+                - game-server
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - game-server
+              topologyKey: kubernetes.io/hostname
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: game-server
+  namespace: political-sphere
+  labels:
+    app: game-server
+    component: websocket
+spec:
+  type: ClusterIP
+  ports:
+  - port: 80
+    targetPort: 8080
+    protocol: TCP
+    name: websocket
+  selector:
+    app: game-server
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: game-server-hpa
+  namespace: political-sphere
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: game-server
+  minReplicas: 2
+  maxReplicas: 8
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 80
+  behavior:
+    scaleDown:
+      stabilizationWindowSeconds: 300
+      policies:
+      - type: Percent
+        value: 20
+        periodSeconds: 60
+    scaleUp:
+      stabilizationWindowSeconds: 30
+      policies:
+      - type: Percent
+        value: 100
+        periodSeconds: 30

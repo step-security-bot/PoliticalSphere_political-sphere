@@ -12,6 +12,8 @@
 
 ---
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 ## 🎯 Purpose
 
 This Versioning Policy establishes standardized rules for versioning Political Sphere's documentation, templates, and related artifacts. The policy ensures clear version identification, change tracking, backward compatibility, and stakeholder communication while supporting compliance and audit requirements.

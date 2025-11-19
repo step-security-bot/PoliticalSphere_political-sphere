@@ -10,6 +10,8 @@
 
 ---
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 ## Overview
 
 This document establishes coding standards for TypeScript and React development in the Political Sphere project. These standards ensure readable, maintainable, secure, and accessible code that upholds democratic integrity and political neutrality.

@@ -1,5 +1,7 @@
 # Project Dependency Graph
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 **Last Updated:** 2025-11-10  
 **Total Projects:** 35
 

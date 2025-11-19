@@ -142,6 +142,8 @@ Justification cites internal project standards (organization.md, copilot-instruc
 
 ---
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 ## Next Phases
 
 - Phase 2: Deep content audit (per-file logic, security headers, accessibility, performance critical paths).

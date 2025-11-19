@@ -1,5 +1,7 @@
 # Risk Register
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 ## Overview
 
 This risk register documents identified risks to the Political Sphere platform, their likelihood, impact, and mitigation strategies. Risks are linked to relevant ADRs where architectural decisions address them.
@@ -140,6 +142,74 @@ This risk register documents identified risks to the Political Sphere platform, 
 - **Linked ADR**: ADR-0005 (AI Governance)
 - **Last Reviewed**: 2024-12-19
 
+### PROD-1: Production Deployment Failures
+
+- **Description**: Deployment to production may fail due to configuration issues or environment differences
+- **Likelihood**: Medium (4)
+- **Impact**: High (5)
+- **Risk Score**: 20 (High)
+- **Status**: Open
+- **Owner**: DevOps Team
+- **Mitigation**:
+  - Blue-green deployment strategy implemented
+  - Automated smoke tests post-deployment
+  - Staging environment mirroring production
+  - Rollback procedures documented and tested
+  - Feature flags for gradual rollouts
+- **Linked ADR**: ADR-0009 (Canary Deployment Strategy)
+- **Last Reviewed**: 2025-11-19
+
+### PROD-2: Data Loss During Deployment
+
+- **Description**: Database migrations or deployment processes may cause data loss
+- **Likelihood**: Low (2)
+- **Impact**: Critical (6)
+- **Risk Score**: 12 (Medium)
+- **Status**: Mitigated (Migration safety implemented)
+- **Owner**: Database Team
+- **Mitigation**:
+  - Database backups before all deployments
+  - Migration rollback procedures
+  - Schema change validation in staging
+  - Data integrity checks post-migration
+  - Point-in-time recovery capability
+- **Linked ADR**: ADR-0007 (Database Migration Strategy)
+- **Last Reviewed**: 2025-11-19
+
+### PROD-3: Monitoring Blind Spots
+
+- **Description**: Insufficient monitoring may delay detection of production issues
+- **Likelihood**: Medium (3)
+- **Impact**: High (5)
+- **Risk Score**: 15 (High)
+- **Status**: Open
+- **Owner**: SRE Team
+- **Mitigation**:
+  - Comprehensive observability stack (logs, metrics, traces)
+  - Alerting on key SLOs (availability, latency, error rate)
+  - Synthetic monitoring for critical user journeys
+  - Log aggregation and correlation
+  - On-call rotation with escalation procedures
+- **Linked ADR**: ADR-0004 (Performance Monitoring)
+- **Last Reviewed**: 2025-11-19
+
+### PROD-4: Scalability Limitations
+
+- **Description**: System may not scale to handle production traffic levels
+- **Likelihood**: Medium (3)
+- **Impact**: Medium (4)
+- **Risk Score**: 12 (Medium)
+- **Status**: Open
+- **Owner**: Platform Team
+- **Mitigation**:
+  - Load testing completed before production
+  - Horizontal scaling capability implemented
+  - Auto-scaling policies configured
+  - Performance monitoring and alerting
+  - CDN integration for static assets
+- **Linked ADR**: ADR-0008 (Scalability and Performance)
+- **Last Reviewed**: 2025-11-19
+
 ## Risk Monitoring
 
 ### Review Cadence
@@ -170,7 +240,8 @@ This risk register documents identified risks to the Political Sphere platform, 
 
 ## Change History
 
-| Date       | Change                                     | Author |
-| ---------- | ------------------------------------------ | ------ |
-| 2025-10-28 | Initial risk register created              | CTO    |
-| 2025-10-28 | Added SEC-1, DEP-1, PERF-1, COMP-1, TEST-1 | CTO    |
+| Date       | Change                                                                 | Author |
+| ---------- | ---------------------------------------------------------------------- | ------ |
+| 2025-11-19 | Added PROD-1, PROD-2, PROD-3, PROD-4 production deployment risks       | CTO    |
+| 2025-10-28 | Initial risk register created                                          | CTO    |
+| 2025-10-28 | Added SEC-1, DEP-1, PERF-1, COMP-1, TEST-1                             | CTO    |

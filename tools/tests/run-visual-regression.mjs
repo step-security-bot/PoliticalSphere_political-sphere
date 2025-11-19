@@ -30,7 +30,7 @@ async function readJsonArraySafe(file) {
     const txt = await readFile(file, 'utf8');
     const parsed = JSON.parse(txt);
     return Array.isArray(parsed) ? parsed : [];
-  } catch (_e) {
+  } catch {
     return [];
   }
 }
@@ -108,7 +108,7 @@ async function main() {
   let report;
   try {
     report = JSON.parse(stdout || '{}');
-  } catch (_e) {
+  } catch {
     console.error('Failed to parse Playwright JSON output');
     if (stderr) console.error(stderr);
     process.exitCode = code || 1;

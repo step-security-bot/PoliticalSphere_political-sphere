@@ -7,11 +7,14 @@
 
 ---
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 ## Context and Problem Statement
 
 GitHub Actions workflows in Political Sphere were using inconsistent permission models, with some workflows having overly permissive `GITHUB_TOKEN` access (`write-all` or broad write permissions at the top level). This violates the principle of least privilege and increases the attack surface for supply chain attacks.
 
 **Security Risks:**
+
 - **OWASP CICD-SEC-2 (Inadequate Identity and Access Management):** Overprivileged tokens can be exploited by compromised actions or malicious code injection
 - **Credential Escalation:** An attacker gaining control of a workflow could exfiltrate secrets or modify repository contents
 - **Supply Chain Attacks:** Compromised third-party actions with excessive permissions can abuse trust relationships
@@ -29,14 +32,17 @@ GitHub Actions workflows in Political Sphere were using inconsistent permission 
 ## Considered Options
 
 ### Option 1: Keep Current Mixed Approach
+
 - **Pros:** No immediate work required
 - **Cons:** Security vulnerability, non-compliant with OWASP standards, inconsistent patterns
 
 ### Option 2: Set All Workflows to `write-all`
+
 - **Pros:** Simple, no breakage
 - **Cons:** Maximum security risk, violates least privilege, regulatory non-compliance
 
 ### Option 3: Least-Privilege Model (SELECTED)
+
 - **Pros:** Secure, compliant, auditable, follows industry best practices
 - **Cons:** Requires initial audit and remediation effort
 
@@ -65,8 +71,8 @@ jobs:
   release:
     runs-on: ubuntu-latest
     permissions:
-      contents: write     # Explicitly grant write access
-      packages: write     # Only for package publishing
+      contents: write # Explicitly grant write access
+      packages: write # Only for package publishing
     steps:
       - uses: actions/checkout@<sha>
       - run: npm publish
@@ -74,13 +80,13 @@ jobs:
 
 ### Permission Mapping by Workflow Type
 
-| Workflow Type | Top-Level | Job-Level Additions | Justification |
-|---------------|-----------|---------------------|---------------|
-| **CI/CD** (ci.yml, test.yml) | `contents: read` | `pull-requests: write` (comment job only) | Post test results to PRs |
-| **Security** (security.yml, codeql.yml) | `contents: read` | `security-events: write` (SARIF upload) | Upload security findings |
-| **Release** (release.yml) | `contents: read` | `contents: write`, `packages: write` | Create tags, publish artifacts |
-| **Dependency Updates** (dependency-updates.yml) | `contents: read` | `pull-requests: write` | Dependabot PR creation |
-| **Read-Only** (e2e.yml, accessibility.yml) | `contents: read` | None | No state-changing operations |
+| Workflow Type                                   | Top-Level        | Job-Level Additions                       | Justification                  |
+| ----------------------------------------------- | ---------------- | ----------------------------------------- | ------------------------------ |
+| **CI/CD** (ci.yml, test.yml)                    | `contents: read` | `pull-requests: write` (comment job only) | Post test results to PRs       |
+| **Security** (security.yml, codeql.yml)         | `contents: read` | `security-events: write` (SARIF upload)   | Upload security findings       |
+| **Release** (release.yml)                       | `contents: read` | `contents: write`, `packages: write`      | Create tags, publish artifacts |
+| **Dependency Updates** (dependency-updates.yml) | `contents: read` | `pull-requests: write`                    | Dependabot PR creation         |
+| **Read-Only** (e2e.yml, accessibility.yml)      | `contents: read` | None                                      | No state-changing operations   |
 
 ### Enforcement Mechanisms
 
@@ -113,6 +119,7 @@ jobs:
 ## Validation and Acceptance Criteria
 
 **Phase 1 Completion Criteria:**
+
 - [ ] All 28 workflows updated with top-level `permissions: contents: read` or `read-all`
 - [ ] Job-level permissions granted only where needed
 - [ ] Zero workflows use `write-all` at any level
@@ -121,6 +128,7 @@ jobs:
 - [ ] No workflow execution regressions for 7 days
 
 **Ongoing Validation:**
+
 - [ ] Monthly permission audits with `scripts/ci/audit-permissions.sh`
 - [ ] Security team review required for all workflow changes
 - [ ] Quarterly review of permission grants vs. actual usage
@@ -154,7 +162,7 @@ jobs:
     steps:
       - uses: step-security/harden-runner@v2
         with:
-          egress-policy: audit  # Monitor network egress
+          egress-policy: audit # Monitor network egress
           allowed-endpoints: |
             github.com:443
             api.github.com:443
@@ -162,6 +170,7 @@ jobs:
 ```
 
 **Harden-Runner Benefits:**
+
 - Detects outbound network calls to unexpected domains
 - Prevents credential exfiltration
 - Provides forensic evidence for security incidents
@@ -195,6 +204,7 @@ If permission changes cause workflow failures:
 ## Amendments
 
 ### 2025-11-18 - Initial Implementation
+
 - Created ADR documenting least-privilege permission model
 - Updated 3 critical workflows (release.yml, codeql.yml, ci.yml)
 - Deployed permission audit script (`scripts/ci/audit-permissions.sh`)
@@ -202,6 +212,7 @@ If permission changes cause workflow failures:
 ---
 
 **Document Control:**
+
 - **Version:** 1.0.0
 - **Last Updated:** 2025-11-18
 - **Next Review:** 2025-12-18

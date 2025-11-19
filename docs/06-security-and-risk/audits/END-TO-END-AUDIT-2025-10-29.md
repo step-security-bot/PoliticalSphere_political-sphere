@@ -7,6 +7,8 @@
 
 ---
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 ## Executive Summary
 
 This comprehensive end-to-end audit evaluates the Political Sphere project against all quality dimensions defined in the copilot instructions (.blackboxrules and .github/copilot-instructions.md). The audit covers 9 major areas: Organization, Quality, Security, AI Governance, Testing, Compliance, UX/Accessibility, Operations, and Strategic Alignment.

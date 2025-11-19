@@ -1,5 +1,7 @@
 ADR (Architectural Decision Record) guidelines
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 Place ADRs in `docs/adr/` with a filename like `0001-descriptive-title.md`.
 
 Required front-matter keys:

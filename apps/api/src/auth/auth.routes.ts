@@ -4,12 +4,31 @@
  */
 
 import { Router } from 'express';
+import { z } from 'zod';
 
-import type { AuthRequest } from './auth.middleware.ts';
 import { authenticate } from './auth.middleware.ts';
 import { authService } from './auth.service.ts';
+import { auditAuth } from '../middleware/audit.middleware.ts';
+
+// Validation schemas
+const registerSchema = z.object({
+  username: z.string().min(3).max(50).regex(/^[a-zA-Z0-9_]+$/),
+  password: z.string().min(8).max(128),
+  email: z.string().email().optional(),
+});
+
+const loginSchema = z.object({
+  username: z.string().min(1).max(50).optional(),
+  email: z.string().email().optional(),
+  password: z.string().min(1),
+}).refine(data => data.username || data.email, {
+  message: 'Either username or email must be provided',
+});
 
 const router = Router();
+
+// Apply audit logging to all auth routes
+router.use(auditAuth);
 
 /**
  * POST /auth/register
@@ -17,21 +36,34 @@ const router = Router();
  */
 router.post('/register', async (req, res) => {
   try {
-    const { username, password, email } = req.body;
-
-    if (!username || !password) {
-      res.status(400).json({ success: false, error: 'Username and password are required' });
+    const validation = registerSchema.safeParse(req.body);
+    if (!validation.success) {
+      res.status(400).json({ success: false, error: 'Invalid input', details: validation.error.issues });
       return;
     }
 
+    const { username, password, email } = validation.data;
+
     const result = await authService.register({ username, password, email });
+
+    // Set httpOnly cookies for tokens
+    res.cookie('accessToken', result.tokens.accessToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      maxAge: 15 * 60 * 1000, // 15 minutes
+    });
+    res.cookie('refreshToken', result.tokens.refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+    });
 
     res.status(201).json({
       success: true,
       data: {
-        id: result.user.id,
-        token: result.tokens.accessToken,
-        refreshToken: result.tokens.refreshToken,
+        user: result.user,
       },
     });
   } catch (error) {
@@ -46,22 +78,35 @@ router.post('/register', async (req, res) => {
  */
 router.post('/login', async (req, res) => {
   try {
-    const { username, email, password } = req.body;
-    const usernameOrEmail = username || email;
-
-    if (!usernameOrEmail || !password) {
-      res.status(400).json({ success: false, error: 'Username/email and password are required' });
+    const validation = loginSchema.safeParse(req.body);
+    if (!validation.success) {
+      res.status(400).json({ success: false, error: 'Invalid input', details: validation.error.issues });
       return;
     }
 
-    const result = await authService.login({ username: usernameOrEmail, password });
+    const { username, email, password } = validation.data;
+    const usernameOrEmail = username || email;
+
+    const result = await authService.login({ username: usernameOrEmail!, password });
+
+    // Set httpOnly cookies for tokens
+    res.cookie('accessToken', result.tokens.accessToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      maxAge: 15 * 60 * 1000, // 15 minutes
+    });
+    res.cookie('refreshToken', result.tokens.refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+    });
 
     res.json({
       success: true,
       data: {
         user: result.user,
-        token: result.tokens.accessToken,
-        refreshToken: result.tokens.refreshToken,
       },
     });
   } catch (error) {
@@ -98,19 +143,23 @@ router.post('/refresh', async (req, res) => {
  */
 router.post('/logout', async (req, res) => {
   try {
-    const { refreshToken } = req.body;
+    const refreshToken = req.cookies.refreshToken;
 
     if (!refreshToken) {
-      res.status(400).json({ error: 'Refresh token is required' });
+      res.status(400).json({ error: 'No refresh token found' });
       return;
     }
 
     await authService.revokeRefreshToken(refreshToken);
 
-    res.json({ message: 'Logged out successfully' });
+    // Clear cookies
+    res.clearCookie('accessToken');
+    res.clearCookie('refreshToken');
+
+    res.json({ success: true, message: 'Logged out successfully' });
   } catch (error) {
     const message = error instanceof Error ? error.message : 'Logout failed';
-    res.status(400).json({ error: message });
+    res.status(400).json({ success: false, error: message });
   }
 });
 
@@ -118,14 +167,14 @@ router.post('/logout', async (req, res) => {
  * GET /auth/me
  * Get current user info
  */
-router.get('/me', authenticate, async (req: AuthRequest, res) => {
+router.get('/me', authenticate, async (req, res) => {
   try {
-    if (!req.user) {
+    if (!req.authUser) {
       res.status(401).json({ error: 'Not authenticated' });
       return;
     }
 
-    const user = await authService.getUserById(req.user.userId);
+    const user = await authService.getUserById(req.authUser.userId);
     if (!user) {
       res.status(404).json({ error: 'User not found' });
       return;

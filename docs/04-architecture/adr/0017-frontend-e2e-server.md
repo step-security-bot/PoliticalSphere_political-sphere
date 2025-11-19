@@ -10,6 +10,8 @@
 
 ---
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 ## Status
 
 **Accepted** - Implemented as of 2025-11-09

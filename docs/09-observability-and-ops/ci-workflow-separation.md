@@ -46,6 +46,8 @@ The repository uses multiple GitHub Actions workflows with clear separation of c
 
 ---
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 ### 2. `build-and-test.yml` - Reusable Build & Deployment Workflow
 
 **Purpose:** Parameterized, reusable workflow for building Docker images and running Nx tasks

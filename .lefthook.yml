@@ -80,6 +80,9 @@ pre-commit:
            echo "🔄 Full execution: ${CHANGED_FILES_COUNT} files changed"
          fi
 
+         # Initialize caching directories
+         mkdir -p .lefthook-cache/eslint .lefthook-cache/prettier .lefthook-cache/typescript
+
          # Display branding
          echo ""
          echo "╔════════════════════════════════════════════════════╗"
@@ -223,14 +226,28 @@ pre-commit:
       glob: '*.{ts,tsx,js,jsx,json,css,scss,md,yml,yaml}'
       run: |
         echo "🎨 [P1] Formatting code..."
-        
-        # Prefer Biome (faster), fallback to Prettier
-        if command -v biome >/dev/null 2>&1; then
-          biome format --write {staged_files} 2>&1 | grep -v "Processed" || true
-          echo "✅ Formatted with Biome"
+
+        # Generate cache key based on file contents and config
+        CACHE_KEY=$(echo "{staged_files}" | xargs -n1 | sort | xargs cat 2>/dev/null | sha256sum 2>/dev/null | cut -d' ' -f1 || echo "no-cache")
+        CONFIG_KEY=$(cat .prettierrc biome.json eslint.config.js 2>/dev/null | sha256sum 2>/dev/null | cut -d' ' -f1 || echo "no-config")
+
+        CACHE_FILE=".lefthook-cache/prettier/${CACHE_KEY}-${CONFIG_KEY}"
+
+        if [ -f "$CACHE_FILE" ] && [ "${EXECUTION_MODE}" != "audit" ]; then
+          echo "✅ Using cached formatting results"
         else
-          npx prettier --write --log-level warn {staged_files}
-          echo "✅ Formatted with Prettier"
+          # Prefer Biome (faster), fallback to Prettier
+          if command -v biome >/dev/null 2>&1; then
+            biome format --write {staged_files} 2>&1 | grep -v "Processed" || true
+            echo "✅ Formatted with Biome"
+          else
+            npx prettier --write --log-level warn {staged_files}
+            echo "✅ Formatted with Prettier"
+          fi
+
+          # Cache the result
+          mkdir -p .lefthook-cache/prettier
+          touch "$CACHE_FILE"
         fi
       stage_fixed: true
     
@@ -240,25 +257,39 @@ pre-commit:
       glob: '*.{ts,tsx,js,jsx}'
       run: |
         echo "🔍 [P1] Linting code..."
-        
-        # Biome fast pass (optional)
-        if command -v biome >/dev/null 2>&1; then
-          biome check --apply {staged_files} 2>/dev/null || true
+
+        # Generate cache key based on file contents and config
+        CACHE_KEY=$(echo "{staged_files}" | xargs -n1 | sort | xargs cat 2>/dev/null | sha256sum 2>/dev/null | cut -d' ' -f1 || echo "no-cache")
+        CONFIG_KEY=$(cat eslint.config.js .eslintrc.json biome.json 2>/dev/null | sha256sum 2>/dev/null | cut -d' ' -f1 || echo "no-config")
+
+        CACHE_FILE=".lefthook-cache/eslint/${CACHE_KEY}-${CONFIG_KEY}"
+
+        if [ -f "$CACHE_FILE" ] && [ "${EXECUTION_MODE}" != "audit" ]; then
+          echo "✅ Using cached linting results"
+        else
+          # Biome fast pass (optional)
+          if command -v biome >/dev/null 2>&1; then
+            biome check --apply {staged_files} 2>/dev/null || true
+          fi
+
+          # ESLint strict validation (zero warnings)
+          if ! npx eslint --fix --max-warnings 0 {staged_files}; then
+            echo ""
+            echo "❌ ESLint errors or warnings detected"
+            echo ""
+            echo "Fix automatically: npx eslint --fix {staged_files}"
+            echo "Review errors: npx eslint {staged_files}"
+            echo ""
+            echo "Note: --max-warnings 0 enforces zero tolerance policy"
+            exit 1
+          fi
+
+          echo "✅ Lint checks passed"
+
+          # Cache the result
+          mkdir -p .lefthook-cache/eslint
+          touch "$CACHE_FILE"
         fi
-        
-        # ESLint strict validation (zero warnings)
-        if ! npx eslint --fix --max-warnings 0 {staged_files}; then
-          echo ""
-          echo "❌ ESLint errors or warnings detected"
-          echo ""
-          echo "Fix automatically: npx eslint --fix {staged_files}"
-          echo "Review errors: npx eslint {staged_files}"
-          echo ""
-          echo "Note: --max-warnings 0 enforces zero tolerance policy"
-          exit 1
-        fi
-        
-        echo "✅ Lint checks passed"
       stage_fixed: true
     
     # 2.3 TypeScript Type Checking (incremental for performance)

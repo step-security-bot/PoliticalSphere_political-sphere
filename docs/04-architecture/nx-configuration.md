@@ -139,6 +139,8 @@ The configuration enforces strict architectural boundaries through dependency co
 
 ---
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 **Last Updated**: 2025-01-01
 **Version**: 1.0.0
 **Review Cycle**: Quarterly

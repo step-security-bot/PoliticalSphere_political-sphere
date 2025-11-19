@@ -11,7 +11,7 @@ vi.mock('../../src/logger.js', () => ({
   },
 }));
 
-vi.mock('../../src/modules/stores/index.ts', () => ({
+vi.mock('../../stores/index.ts', () => ({
   getDatabase: vi.fn(() => ({
     compliance: {
       create: vi.fn(),
@@ -27,7 +27,7 @@ describe('ComplianceService', () => {
 
   beforeEach(async () => {
     vi.clearAllMocks();
-    const { getDatabase } = await import('../../src/modules/stores/index.ts');
+    const { getDatabase } = await import('../../stores/index.ts');
     mockDb = getDatabase();
     service = new ComplianceService(mockDb.compliance);
   });
@@ -58,7 +58,7 @@ describe('ComplianceService', () => {
       mockDb.compliance.create.mockRejectedValue(new Error('Database error'));
 
       await expect(service.logAuditEvent('user_login', 'user-456', {})).rejects.toThrow(
-        'Database error'
+        'Database error',
       );
     });
   });
@@ -96,7 +96,7 @@ describe('ComplianceService', () => {
 
       expect(result).toEqual(mockReports);
       expect(mockDb.compliance.getAll).toHaveBeenCalledWith(
-        expect.objectContaining({ userId: 'user-123' })
+        expect.objectContaining({ userId: 'user-123' }),
       );
     });
   });

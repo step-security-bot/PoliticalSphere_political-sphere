@@ -7,6 +7,7 @@
 import type React from 'react';
 import { type FormEvent, useEffect, useState } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
+import { useLoading } from '../../contexts/LoadingContext';
 import './Auth.css';
 import ForgotPasswordModal from './ForgotPasswordModal';
 
@@ -19,7 +20,8 @@ const Login: React.FC<LoginProps> = ({
   onLoginSuccess,
   onSwitchToRegister: _onSwitchToRegister,
 }) => {
-  const { login, loginLoading } = useAuth();
+  const { login } = useAuth();
+  const { isLoading } = useLoading();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
@@ -86,7 +88,7 @@ const Login: React.FC<LoginProps> = ({
               autoComplete="email"
               aria-required="true"
               aria-invalid={error ? 'true' : 'false'}
-              disabled={loginLoading}
+              disabled={isLoading('auth-login')}
               placeholder="your.email@example.com"
             />
           </div>
@@ -107,7 +109,7 @@ const Login: React.FC<LoginProps> = ({
                 autoComplete="current-password"
                 aria-required="true"
                 aria-invalid={error ? 'true' : 'false'}
-                disabled={loginLoading}
+                disabled={isLoading('auth-login')}
                 placeholder="Enter your password"
               />
               <button
@@ -115,7 +117,7 @@ const Login: React.FC<LoginProps> = ({
                 className="password-toggle"
                 onClick={() => setShowPassword(!showPassword)}
                 aria-label={showPassword ? 'Hide password' : 'Show password'}
-                disabled={loginLoading}
+                disabled={isLoading('auth-login')}
                 style={{ outline: 'none' }}
               >
                 <svg
@@ -149,9 +151,9 @@ const Login: React.FC<LoginProps> = ({
           <button
             type="submit"
             className="btn-primary btn-full-width"
-            disabled={loginLoading || !email || !password}
+            disabled={isLoading('auth-login') || !email || !password}
           >
-            {loginLoading ? 'Logging in...' : 'Log In'}
+            {isLoading('auth-login') ? 'Logging in...' : 'Log In'}
           </button>
 
           <div className="auth-links">
@@ -159,7 +161,7 @@ const Login: React.FC<LoginProps> = ({
               type="button"
               className="link-button"
               onClick={() => setShowForgotPassword(true)}
-              disabled={loginLoading}
+              disabled={isLoading('auth-login')}
             >
               Forgot password?
             </button>

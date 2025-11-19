@@ -8,6 +8,8 @@
 
 ---
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 ## Table of Contents
 
 1. [Emergency Contacts](#emergency-contacts)

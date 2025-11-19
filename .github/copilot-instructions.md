@@ -82,7 +82,7 @@ The following list is non-hiracrachial
 - **Constitutional** - Highest-priority rules that can never be bypassed (ethics, safety, privacy)
 - **Zero-trust** - Security model assuming no implicit trust at any layer
 
-> **Note:** Technology-specific guidance is integrated into `docs/` (see [Path-Specific Instructions](#path-specific-instructions)).
+> **Note:** Technology-specific guidance is integrated into `docs/` (see Path-Specific Instructions).
 
 ---
 
@@ -90,58 +90,58 @@ The following list is non-hiracrachial
 
 **Essential Reading:**
 
-- [Five Core Rules](#five-core-rules) - ⭐ START HERE
-- [Version History & Glossary](#version-history) - 📚 TERMINOLOGY
-- [Quick Reference Appendix](#quick-reference-appendix) - 🔍 CHEAT SHEET
+- Five Core Rules - ⭐ START HERE
+- Version History & Glossary - 📚 TERMINOLOGY
+- Quick Reference Appendix - 🔍 CHEAT SHEET
 
 **Main Sections:**
 
-1. [Quick Reference Links](#quick-reference-links)
-2. [Project Context](#project-context)
+1. Quick Reference Links
+2. Project Context
    - What This Project Does
    - Technology Stack
    - Core Principles
-3. [Your Role as GitHub Copilot](#your-role-as-github-copilot)
+3. Your Role as GitHub Copilot
    - AI Persona & Interaction Style
    - High-Risk Patterns (Never Suggest)
    - Fail-Gracefully Strategy
    - Output Validation Checklist
-4. [Project Structure](#project-structure-and-organization)
+4. Project Structure
    - Directory Layout
    - Naming Conventions
-5. [Code Quality Standards](#code-quality-standards)
+5. Code Quality Standards
    - Definition of Done
    - Code Style
    - Function Feasibility and Implementation Status
-6. [Testing Infrastructure](#testing-infrastructure-core-principle) - ⭐ CORE PRINCIPLE
+6. Testing Infrastructure - ⭐ CORE PRINCIPLE
    - Test Pyramid Strategy
    - CI/CD Integration
    - Specialized Testing (MLOps, Database, Microservices)
-7. [Security and Privacy](#security-and-privacy)
+7. Security and Privacy
    - Zero-Trust Model
    - Secrets Management
    - Data Classification
-8. [Accessibility Requirements](#accessibility-requirements-mandatory) - ⚠️ MANDATORY
+8. Accessibility Requirements - ⚠️ MANDATORY
    - WCAG 2.2 AA Compliance
    - Code Examples
-9. [AI Governance and Ethics](#ai-governance-and-ethics)
+9. AI Governance and Ethics
    - Political Neutrality
    - Transparency & Human Oversight
-10. [Collaboration and Communication](#collaboration-and-communication)
+10. Collaboration and Communication
     - When to Ask Questions
     - Constitutional Citation Requirements
-11. [Working with GitHub Issues](#working-with-github-issues) - 📋 TASK GUIDANCE
+11. Working with GitHub Issues - 📋 TASK GUIDANCE
     - Understanding Requirements
     - Well-Scoped Issues
     - Example Issue Format
-12. [Pull Request Workflow](#pull-request-workflow) - 🔄 PR PROCESS
+12. Pull Request Workflow - 🔄 PR PROCESS
     - Creating Effective PRs
     - Responding to Feedback
     - Iterative Improvement
-13. [Change Management](#change-management)
+13. Change Management
     - Execution Modes (Safe, Fast-Secure, Audit, R&D)
     - Risk Tier Examples
-14. [Compliance and Auditability](#compliance-and-auditability)
+14. Compliance and Auditability
     - GDPR/CCPA Data Protection
     - Audit Readiness
 
@@ -176,26 +176,26 @@ All technology-specific guidance is now integrated into the main `docs/` structu
 
 | File                                                                            | Focus Area                       | Version | Use When                             |
 | ------------------------------------------------------------------------------- | -------------------------------- | ------- | ------------------------------------ |
-| [testing.md](../docs/05-engineering-and-devops/development/testing.md)          | Testing patterns, AAA, mocking   | 2.0.0   | Writing tests (unit/integration/E2E) |
-| [typescript.md](../docs/05-engineering-and-devops/languages/typescript.md)      | Type safety, strict mode, ESM    | 2.0.0   | Writing TypeScript code              |
-| [react.md](../docs/05-engineering-and-devops/languages/react.md)                | Components, hooks, accessibility | 2.0.0   | Building React UI components         |
-| [backend.md](../docs/05-engineering-and-devops/development/backend.md)          | APIs, validation, databases      | 2.0.0   | Developing backend services          |
-| [quick-ref.md](../docs/quick-ref.md)                                            | Cheat sheet, commands, patterns  | 2.0.0   | Quick lookups during coding          |
-| [ai-governance.md](../docs/07-ai-and-simulation/ai-governance.md)               | AI ethics, bias monitoring       | 2.0.0   | Working with AI/ML systems           |
-| [compliance.md](../docs/03-legal-and-compliance/compliance.md)                  | GDPR, CCPA, audit trails         | 2.0.0   | Handling personal data               |
-| [operations.md](../docs/09-observability-and-ops/operations.md)                 | Deployment, monitoring, SRE      | 2.0.0   | Production operations                |
-| [organization.md](../docs/00-foundation/organization.md)                        | File placement, structure        | 1.7.0   | Project organization                 |
-| [quality.md](../docs/05-engineering-and-devops/development/quality.md)          | Code review, best practices      | 2.0.0   | Code quality enforcement             |
-| [security.md](../docs/06-security-and-risk/security.md)                         | Zero-trust, secrets, encryption  | 1.7.0   | Security implementation              |
-| [strategy.md](../docs/01-strategy/strategy.md)                                  | Architecture, roadmap            | 2.0.0   | Strategic decisions                  |
-| [ux-accessibility.md](../docs/05-engineering-and-devops/ui/ux-accessibility.md) | WCAG, screen readers, a11y       | 2.0.0   | Accessible UX design                 |
-| [sops/](../docs/05-engineering-and-devops/sops/)                                | Standard Operating Procedures    | 1.0.0   | Routine task checklists and guides   |
+| `docs/05-engineering-and-devops/development/testing.md`                     | Testing patterns, AAA, mocking   | 2.0.0   | Writing tests (unit/integration/E2E) |
+| `docs/05-engineering-and-devops/languages/typescript.md`                    | Type safety, strict mode, ESM    | 2.0.0   | Writing TypeScript code              |
+| `docs/05-engineering-and-devops/languages/react.md`                          | Components, hooks, accessibility | 2.0.0   | Building React UI components         |
+| `docs/05-engineering-and-devops/development/backend.md`                      | APIs, validation, databases      | 2.0.0   | Developing backend services          |
+| `docs/quick-ref.md`                                                          | Cheat sheet, commands, patterns  | 2.0.0   | Quick lookups during coding          |
+| `docs/07-ai-and-simulation/ai-governance.md`                                  | AI ethics, bias monitoring       | 2.0.0   | Working with AI/ML systems           |
+| `docs/03-legal-and-compliance/compliance.md`                                  | GDPR, CCPA, audit trails         | 2.0.0   | Handling personal data               |
+| `docs/09-observability-and-ops/operations.md`                                 | Deployment, monitoring, SRE      | 2.0.0   | Production operations                |
+| `docs/00-foundation/organization.md`                                          | File placement, structure        | 1.7.0   | Project organization                 |
+| `docs/05-engineering-and-devops/development/quality.md`                        | Code review, best practices      | 2.0.0   | Code quality enforcement             |
+| `docs/06-security-and-risk/security.md`                                        | Zero-trust, secrets, encryption  | 1.7.0   | Security implementation              |
+| `docs/01-strategy/strategy.md`                                                 | Architecture, roadmap            | 2.0.0   | Strategic decisions                  |
+| `docs/05-engineering-and-devops/ui/ux-accessibility.md`                        | WCAG, screen readers, a11y       | 2.0.0   | Accessible UX design                 |
+| `docs/05-engineering-and-devops/sops/`                                          | Standard Operating Procedures    | 1.0.0   | Routine task checklists and guides   |
 
 ### Project Documentation
 
 - **Current Work**: `docs/TODO.md` - Active tasks and priorities
 - **Changelog**: `CHANGELOG.md` (root) - All project changes
-- **Architecture Decisions**: `docs/adr/` - [ADR](#glossary) format decisions
+- **Architecture Decisions**: `docs/adr/` - ADR (see Glossary) format decisions
 - **Standards**: `docs/00-foundation/standards/standards-overview.md` - Complete compliance reference
 - **Security Policies**: `docs/06-security-and-risk/` - Security requirements and procedures
 - **Governance Framework**: `docs/02-governance/` - Constitutional and policy documents
@@ -416,7 +416,7 @@ function checkPermission(user: User, resource: Resource): boolean {
 - ✅ **No political content assumptions**: Neutral, unbiased examples and data
 - ✅ **Accessibility considered**: WCAG compliance for UI changes
 - ✅ **Constitutional compliance**: No violation of democratic integrity principles
-- ✅ **Feasibility validated**: All functions are implementable with available technology and resources (see [Function Feasibility](#function-feasibility-and-implementation-status))
+- ✅ **Feasibility validated**: All functions are implementable with available technology and resources (see Function Feasibility section)
 
 ### AI Recommendation Report Format
 
@@ -650,7 +650,7 @@ Code is complete only when:
 9. Observability instrumented (structured logs, metrics, traces)
 10. `CHANGELOG.md` and `docs/TODO.md` updated
 
-> **Note**: Detailed testing requirements are in [Testing Infrastructure](#testing-infrastructure-core-principle) section and `.github/copilot-instructions/additional-guidance/testing.instructions.md`
+> **Note**: Detailed testing requirements are in the Testing Infrastructure section and `.github/copilot-instructions/additional-guidance/testing.instructions.md`
 
 ### Code Style
 
@@ -1644,7 +1644,7 @@ For detailed guidance on specific topics, refer to:
 - `docs/standards-overview.md` - Complete standards documentation
 - `docs/TODO.md` - Current work items and priorities
 - `CHANGELOG.md` - Project history and changes
-- `docs/adr/` - Architectural decisions ([ADR](#glossary) format)
+- `docs/adr/` - Architectural decisions (ADR, see Glossary) format
 - `docs/security/` - Security policies and procedures
 - `docs/governance/` - Governance framework and policies
 
@@ -1656,7 +1656,7 @@ For detailed guidance on specific topics, refer to:
 
 Propose changes when you notice:
 
-1. **Outdated standards** - New versions of [WCAG](#glossary), [OWASP](#glossary), [NIST](#glossary), etc.
+1. **Outdated standards** - New versions of WCAG, OWASP, NIST, etc. (see Glossary)
 2. **Missing guidance** - Gaps in coverage or ambiguous rules
 3. **Incorrect information** - Technical inaccuracies or broken links
 4. **New patterns needed** - Emerging technologies or architectural changes
@@ -1683,7 +1683,7 @@ Propose changes when you notice:
 
 - **Quarterly reviews**: First week of Feb, May, Aug, Nov
 - **Ad-hoc updates**: Security issues, standards updates, critical corrections
-- **Owner**: Technical Governance Committee ([TGC](#glossary))
+- **Owner**: Technical Governance Committee (TGC; see Glossary)
 
 ---
 
@@ -1694,7 +1694,7 @@ When working on this project:
 1. **Start** by checking `docs/TODO.md` for context
 2. **Design** with security, accessibility, and quality from the beginning
 3. **Implement** following strict standards and conventions
-4. **Test** comprehensively with multiple test types (see [Testing Infrastructure](#testing-infrastructure-core-principle))
+4. **Test** comprehensively with multiple test types (see Testing Infrastructure section)
 5. **Document** clearly including inline comments and README updates
 6. **Validate** against all relevant standards and benchmarks
 7. **Update** `docs/TODO.md` and `CHANGELOG.md` before considering work complete

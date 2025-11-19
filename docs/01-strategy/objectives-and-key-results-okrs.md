@@ -12,6 +12,8 @@
 
 ---
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 ## 🎯 Overview
 
 Build and validate the core multiplayer parliamentary gameplay loop in a safe, fair, and persistent environment.

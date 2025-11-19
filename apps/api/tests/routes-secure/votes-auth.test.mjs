@@ -2,14 +2,14 @@ import express from 'express';
 import request from 'supertest';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
-import { closeDatabase, getDatabase } from '../../src/modules/stores/index.ts';
+import { getTestDatabase, resetTestDatabase } from '../../src/test-support/database.ts';
 import authRouter from '../../src/routes/auth.js';
 import billsRouter from '../../src/routes/bills.js';
 import votesRouter from '../../src/routes/votes.js';
 
 async function registerAndLogin(app, email = `vote+${Date.now()}@example.com`) {
   const username = `voter_${Date.now()}`;
-  const password = 'password123';
+  const password = 'Password123';
   await request(app)
     .post('/register')
     .send({ username, email, password })
@@ -23,11 +23,14 @@ async function registerAndLogin(app, email = `vote+${Date.now()}@example.com`) {
 
 describe('votes routes (auth enforced)', () => {
   let app;
+  let testDb;
   const prev = process.env.FORCE_AUTH;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     process.env.FORCE_AUTH = '1';
-    getDatabase();
+    resetTestDatabase();
+    testDb = getTestDatabase();
+    await testDb.setup();
 
     app = express();
     app.use(express.json());
@@ -36,9 +39,9 @@ describe('votes routes (auth enforced)', () => {
     app.use('/', votesRouter);
   });
 
-  afterEach(() => {
+  afterEach(async () => {
     process.env.FORCE_AUTH = prev;
-    closeDatabase();
+    await testDb.teardown();
   });
 
   it('creates a vote with valid token (POST /votes)', async () => {

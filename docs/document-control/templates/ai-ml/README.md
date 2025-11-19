@@ -50,4 +50,6 @@ Templates align with:
 
 ---
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 **Status**: ✅ Templates available, migration planned Q1 2026

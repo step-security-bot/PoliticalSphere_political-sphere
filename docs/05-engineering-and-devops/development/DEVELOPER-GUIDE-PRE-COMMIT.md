@@ -51,6 +51,7 @@ git commit -m "feat(voting): implement ranked choice voting"
 ```
 
 **What runs:**
+
 - ✅ Secrets scanning (gitleaks)
 - ✅ Dependency security (npm audit high/critical)
 - ✅ License compliance
@@ -74,6 +75,7 @@ FAST_AI=1 git commit -m "wip: testing approach"
 ```
 
 **What runs:**
+
 - ✅ Secrets scanning (CRITICAL - always enforced)
 - ⚠️ Dependency security (bypassed with warning)
 - ⚠️ License compliance (advisory only)
@@ -86,6 +88,7 @@ FAST_AI=1 git commit -m "wip: testing approach"
 - ❌ Infrastructure validation (skipped)
 
 **⚠️ IMPORTANT:** Never use `FAST_AI=1` for:
+
 - Commits to `main` branch
 - Production deployments
 - Release candidates
@@ -102,6 +105,7 @@ AUDIT_MODE=1 git commit -m "release: v2.0.0"
 ```
 
 **What runs:**
+
 - All Standard Mode gates
 - PLUS:
   - ✅ Structured telemetry logging
@@ -121,6 +125,7 @@ CI=1 git commit -m "ci: automated deployment"
 ```
 
 **Behavior:**
+
 - All gates enforced
 - No interactive prompts
 - Structured JSON logging
@@ -136,6 +141,7 @@ LEFTHOOK=0 git commit -m "hotfix: critical production issue"
 ```
 
 **⚠️ Requirements:**
+
 - Document reason in commit message
 - Create follow-up issue for post-commit review
 - Run full validation manually: `lefthook run pre-commit`
@@ -149,11 +155,13 @@ LEFTHOOK_EXCLUDE=secrets-scan git commit -m "chore: update .gitleaks.toml"
 ```
 
 **Valid use cases:**
+
 - Updating hook configuration files
 - Installing new security tools
 - Troubleshooting specific tool failures
 
 **Invalid use cases:**
+
 - Avoiding legitimate violations
 - Speeding up commits
 - Circumventing quality standards
@@ -177,11 +185,13 @@ LEFTHOOK_EXCLUDE=secrets-scan git commit -m "chore: update .gitleaks.toml"
 **Skippable:** NO (constitutional requirement)
 
 **Tools:**
+
 - gitleaks (secret scanning)
 - npm audit (dependency vulnerabilities)
 - license-checker (SPDX compliance)
 
 **Failure modes:**
+
 - **Secrets detected:** Commit BLOCKED, immediate credential rotation required
 - **High/critical CVE:** Commit BLOCKED in standard/audit mode, warning in fast mode
 - **License incompatible:** Advisory warning (proceed with manual review)
@@ -195,12 +205,14 @@ LEFTHOOK_EXCLUDE=secrets-scan git commit -m "chore: update .gitleaks.toml"
 **Skippable:** NO (quality baseline)
 
 **Tools:**
+
 - Biome (fast formatter/linter)
 - Prettier (fallback formatter)
 - ESLint (linting with --max-warnings 0)
 - TypeScript (strict mode type checking)
 
 **Failure modes:**
+
 - **Format errors:** Auto-fixed and re-staged
 - **Lint errors:** Commit BLOCKED (must fix manually)
 - **Type errors:** Commit BLOCKED (strict mode non-negotiable)
@@ -214,12 +226,14 @@ LEFTHOOK_EXCLUDE=secrets-scan git commit -m "chore: update .gitleaks.toml"
 **Skippable:** In FAST_AI mode only (except accessibility)
 
 **Tools:**
+
 - eslint-plugin-jsx-a11y (17 WCAG 2.2 AA rules)
 - Custom test quality validator
 - markdownlint (documentation linting)
 - guard-change-budget.mjs (change governance)
 
 **Failure modes:**
+
 - **Accessibility violations:** Commit BLOCKED (WCAG 2.2 AA mandatory)
 - **.only() in tests:** Commit BLOCKED (breaks CI)
 - **Markdown issues:** Commit BLOCKED in standard mode, warning in fast mode
@@ -234,12 +248,14 @@ LEFTHOOK_EXCLUDE=secrets-scan git commit -m "chore: update .gitleaks.toml"
 **Skippable:** In FAST_AI mode
 
 **Tools:**
+
 - actionlint (GitHub Actions YAML)
 - hadolint (Dockerfile linting)
 - jq (JSON validation)
 - yamllint (YAML validation)
 
 **Failure modes:**
+
 - **Invalid workflow:** Commit BLOCKED (prevents CI failures)
 - **Dockerfile violations:** Commit BLOCKED (security/best practices)
 - **Malformed JSON/YAML:** Commit BLOCKED (parse errors)
@@ -308,6 +324,7 @@ regexes = ["TEST_JWT_SECRET"]
 ```
 
 **Resources:**
+
 - [WCAG 2.2 Quick Reference](https://www.w3.org/WAI/WCAG22/quickref/)
 - Project guide: `docs/05-engineering-and-devops/ui/ux-accessibility.md`
 
@@ -325,11 +342,13 @@ FAST_AI=1 git commit -m "wip"
 ```
 
 **Performance baseline:**
+
 - P50: ~8 seconds
 - P95: ~15 seconds
 - P99: ~22 seconds
 
 **If consistently slower:**
+
 1. Check system resources (CPU, disk I/O)
 2. Clear caches: `rm -rf .nx/cache node_modules/.cache`
 3. Update tools: `brew upgrade gitleaks actionlint hadolint`
@@ -348,6 +367,7 @@ npx tsc --noEmit src/components/Button.tsx
 ```
 
 **Common fixes:**
+
 - Add explicit return types
 - Use `unknown` instead of `any`
 - Enable `skipLibCheck` temporarily for third-party type issues
@@ -366,6 +386,7 @@ markdownlint --help
 ```
 
 **Common violations:**
+
 - MD013: Line too long (max 100 chars for prose)
 - MD024: Duplicate heading (siblings_only: true)
 - MD033: HTML in markdown (allowed in this project)
@@ -387,7 +408,7 @@ Hooks in the same phase run in parallel where possible:
 
 ```yaml
 pre-commit:
-  parallel: true  # Enable parallel execution
+  parallel: true # Enable parallel execution
 ```
 
 ### Incremental Type Checking
@@ -412,15 +433,15 @@ npx eslint {staged_files}  # Not entire codebase
 
 Pre-commit hooks mirror CI gates for fail-fast validation:
 
-| Hook | CI Equivalent | Parity |
-|------|---------------|--------|
-| secrets-scan | Gitleaks workflow | ✅ Full |
-| dependency-security | npm audit job | ✅ Full |
-| lint-code | lint-typecheck job | ✅ Full |
-| typecheck | lint-typecheck job | ✅ Full |
-| accessibility-check | a11y-check job | ✅ Full |
-| test-changed | test-changed job | 🔄 Subset |
-| actionlint | validate-workflows job | ✅ Full |
+| Hook                | CI Equivalent          | Parity    |
+| ------------------- | ---------------------- | --------- |
+| secrets-scan        | Gitleaks workflow      | ✅ Full   |
+| dependency-security | npm audit job          | ✅ Full   |
+| lint-code           | lint-typecheck job     | ✅ Full   |
+| typecheck           | lint-typecheck job     | ✅ Full   |
+| accessibility-check | a11y-check job         | ✅ Full   |
+| test-changed        | test-changed job       | 🔄 Subset |
+| actionlint          | validate-workflows job | ✅ Full   |
 
 **Philosophy:** Local validation catches 90%+ of CI failures before push.
 
@@ -448,15 +469,15 @@ cat logs/pre-commit-telemetry.jsonl | jq .
 
 # Calculate P95 duration
 cat logs/pre-commit-telemetry.jsonl | jq -s '
-  map(select(.event=="hook_complete")) | 
-  map(.duration_seconds) | 
-  sort | 
+  map(select(.event=="hook_complete")) |
+  map(.duration_seconds) |
+  sort |
   .[length * 0.95 | floor]
 '
 
 # Count commits by mode
 cat logs/pre-commit-telemetry.jsonl | jq -s '
-  group_by(.mode) | 
+  group_by(.mode) |
   map({mode: .[0].mode, count: length})
 '
 ```
@@ -469,6 +490,7 @@ cat logs/pre-commit-telemetry.jsonl | jq -s '
 ```
 
 **Fields:**
+
 - `timestamp`: ISO 8601 UTC
 - `trace_id`: UUID v4 (correlates start/complete)
 - `mode`: safe | fast-secure | audit | ci
@@ -489,19 +511,19 @@ cat logs/pre-commit-telemetry.jsonl | jq -s '
 
 ### Types
 
-| Type | Purpose | Example |
-|------|---------|---------|
-| `feat` | New feature | `feat(voting): add ranked choice` |
-| `fix` | Bug fix | `fix(auth): resolve token expiry` |
-| `docs` | Documentation only | `docs(api): update endpoints` |
-| `style` | Code style (no logic change) | `style: apply prettier` |
-| `refactor` | Code restructure (no behavior change) | `refactor(db): extract repository` |
-| `perf` | Performance improvement | `perf(query): add index on user_id` |
-| `test` | Tests only | `test(voting): add edge cases` |
-| `build` | Build system/dependencies | `build: upgrade react to 19.x` |
-| `ci` | CI configuration | `ci: add accessibility workflow` |
-| `chore` | Maintenance tasks | `chore: update .gitignore` |
-| `revert` | Revert previous commit | `revert: feat(voting)` |
+| Type       | Purpose                               | Example                             |
+| ---------- | ------------------------------------- | ----------------------------------- |
+| `feat`     | New feature                           | `feat(voting): add ranked choice`   |
+| `fix`      | Bug fix                               | `fix(auth): resolve token expiry`   |
+| `docs`     | Documentation only                    | `docs(api): update endpoints`       |
+| `style`    | Code style (no logic change)          | `style: apply prettier`             |
+| `refactor` | Code restructure (no behavior change) | `refactor(db): extract repository`  |
+| `perf`     | Performance improvement               | `perf(query): add index on user_id` |
+| `test`     | Tests only                            | `test(voting): add edge cases`      |
+| `build`    | Build system/dependencies             | `build: upgrade react to 19.x`      |
+| `ci`       | CI configuration                      | `ci: add accessibility workflow`    |
+| `chore`    | Maintenance tasks                     | `chore: update .gitignore`          |
+| `revert`   | Revert previous commit                | `revert: feat(voting)`              |
 
 ### Scopes (Examples)
 
@@ -616,6 +638,8 @@ markdownlint --version
 **Solution:** See [Slow Hook Execution](#slow-hook-execution) section
 
 ---
+
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
 
 **Last Updated:** 2025-11-17  
 **Maintained By:** DevOps Team  

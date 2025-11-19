@@ -203,6 +203,8 @@ This document provides evidence of compliance with the EU AI Act (Regulation (EU
 
 ---
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 **Compliance Status**: Compliant
 **Last Assessment**: December 2024
 **Next Review**: December 2025

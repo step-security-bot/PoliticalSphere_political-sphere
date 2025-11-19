@@ -1,99 +1,132 @@
-# TODO.md - Political Sphere Development Tasks
+# Testing Infrastructure Enhancement TODO
 
-## CI/CD Enterprise Improvement Initiative (2025-11-18) ✅ COMPLETE
+## Overview
 
-### All 5 Phases Successfully Implemented
+Elevate the Political Sphere testing infrastructure to the highest standard by adding advanced testing types, enhancing CI/CD gates, and implementing comprehensive observability. All changes must maintain WCAG 2.2 AA compliance, zero-trust security, and 80%+ test coverage.
 
-- [X] **Phase 1: Security Hardening** - OWASP CICD-SEC-2 compliance achieved
-  - Created ADR-020 (GitHub Actions least-privilege permissions)
-  - Implemented audit-permissions.sh (93% workflow compliance)
-  - Fixed 3 critical workflows (ci.yml, codeql.yml, release.yml)
-  - Zero `write-all` permissions across 28 workflows
-  - Validation: 7/7 acceptance tests passing
-  - Documentation: docs/architecture/decisions/020-github-actions-permissions.md
+> NOTE: For strategic alignment, ensure planned changes map to `docs/00-foundation/project-context.md` and the Technology Stack in `docs/00-foundation/technology-stack.md`.
 
-- [X] **Phase 2: Performance Optimization** - Target <20 min P95 CI duration
-  - Enhanced multi-level caching (npm + node_modules + vitest + Playwright)
-  - Verified dynamic sharding already implemented (3-7 shards based on PR size)
-  - Prepared Nx Cloud DTE configuration (optional $49/month subscription)
-  - Cache hit rate target: 90% (current: 75%)
-  - Documentation: Phase 2 findings in FINAL-SUMMARY
+## Current Status
 
-- [X] **Phase 3: Observability & Monitoring** - Complete pipeline visibility
-  - Created metrics baseline report (JSON format)
-  - Implemented workflow metrics collection (JSONL)
-  - Built dashboard generator (automated weekly reports)
-  - Configured tiered alerts (critical/warning/info)
-  - SLO tracking for availability, latency, error rate
-  - Alert latency: <5 minutes
-  - Documentation: .github/alerts-config.yml, scripts/ci/generate-dashboard.sh
+- ✅ Vitest configured for unit/integration tests
+- ✅ Playwright configured for E2E, visual, and accessibility tests
+- ✅ MSW for API mocking
+- ✅ Test factories with Fishery/Faker
+- ✅ Global test setups
 
-- [X] **Phase 4: Advanced Supply Chain Security** - SLSA Level 3 certification
-  - Created SLSA provenance workflow (keyless signing with Cosign)
-  - Implemented artifact signing with Sigstore (OIDC-based)
-  - Built SBOM generation workflow (CycloneDX + SPDX, weekly schedule)
-  - Deployed dependency verification script (integrity + license compliance)
-  - Created ADR-023 (supply chain security architecture)
-  - Transparency logging with Rekor public ledger
-  - Documentation: docs/architecture/decisions/023-supply-chain-security.md
+## Planned Enhancements
 
-- [X] **Phase 5: Continuous Improvement & Automation** - Self-healing infrastructure
-  - Implemented intelligent retry logic (exponential backoff)
-  - Created cost optimization analyzer ($420/month savings identified)
-  - Built developer experience tools (local CI with `act`, fast feedback <30s)
-  - Established quarterly review process (systematic evaluation checklist)
-  - Documented complete automation catalog (18+ automations)
-  - Self-healing: 60% reduction in manual interventions
-  - Documentation: docs/05-engineering-and-devops/cicd/AUTOMATION-CATALOG.md
+### 1. Security Testing Integration
 
-### Comprehensive Deliverables
-- **Documentation**: 6 major documents (50+ pages total assessment)
-- **ADRs**: ADR-020 (permissions), ADR-023 (supply chain)
-- **Workflows**: 3 new workflows (SLSA, SBOM, alerts)
-- **Scripts**: 12 automation scripts (audit, metrics, retry, cost analysis)
-- **Developer tools**: Local CI emulation, fast feedback loops
-- **Final summary**: docs/05-engineering-and-devops/cicd/FINAL-SUMMARY-ALL-PHASES-2025-11-18.md
+- [ ] Install OWASP ZAP CLI
+- [ ] Create security test configuration
+- [ ] Integrate DAST scans into CI/CD pipeline
+- [ ] Add security test reports and dashboards
+- [ ] Implement automated vulnerability scanning
 
-### Impact Assessment
-- **Security**: SLSA Level 3, OWASP certified, 93% permission compliance
-- **Performance**: <20 min P95 achievable, 75%→90% cache hit rate target
-- **Cost**: 60% reduction ($420/month savings), $284/month projected spend
-- **Observability**: Complete metrics, <5 min alerts, automated dashboards
-- **Automation**: Self-healing retry, cost optimization, quarterly reviews
+### 2. Performance and Load Testing
 
-### Next Steps (Week 1) - UPDATED 2025-11-18
-- [ ] Train team on new CI/CD tools and processes
-- [ ] Enable Nx Cloud DTE subscription ($49/month - requires approval)
-- [ ] Set up Slack webhooks for alert integration
-- [ ] Install `act` for local CI emulation (brew install act)
-- [ ] Run first weekly metrics dashboard generation
-- [ ] Create CI/CD documentation for team onboarding
-- [ ] Set up automated dependency vulnerability scanning
-- [ ] Implement CI/CD performance monitoring dashboard
+- [ ] Install k6 for load testing
+- [ ] Create performance test scripts
+- [ ] Set up load testing scenarios (smoke, load, stress, spike)
+- [ ] Integrate performance benchmarks into CI/CD
+- [ ] Add performance metrics collection and alerting
 
----
+### 3. Contract Testing
 
-## CI Security Scanning & Docker Builds (2025-11-17)
+- [ ] Install Pact CLI and libraries
+- [ ] Create contract test configurations
+- [ ] Implement consumer-driven contract tests
+- [ ] Set up contract verification in CI/CD
+- [ ] Add contract test reports
 
-- [x] Semgrep OSS fallback in CI
-  - Update `.github/workflows/security.yml` to use `semgrep scan` with public rule packs when `SEMGREP_APP_TOKEN` is absent or PR originates from a fork; retain cloud path when available. Upload SARIF for code scanning.
-  - Update `.github/workflows/ci.yml` to use pinned `returntocorp/semgrep:1.67.0` container in OSS mode.
+### 4. Chaos Engineering
 
-- [x] Fix Docker builds failing on `npm ci`
-  - Copy `vendor/` before all `npm ci` steps in app Dockerfiles to satisfy local `file:` overrides (patched `js-yaml`).
-  - Files: `apps/api/Dockerfile`, `apps/web/Dockerfile`, `apps/worker/Dockerfile`, `apps/game-server/Dockerfile`.
+- [ ] Install Chaos Monkey or similar tools
+- [ ] Create chaos experiment configurations
+- [ ] Implement failure injection tests
+- [ ] Add chaos testing to CI/CD pipeline
+- [ ] Set up monitoring for chaos experiments
 
+### 5. Mutation Testing
 
-## Authentication Persistence & Login Reliability (2025-11-17)
+- [ ] Install Stryker for mutation testing
+- [ ] Configure mutation test settings
+- [ ] Integrate mutation testing into CI/CD
+- [ ] Add mutation test reports and thresholds
+- [ ] Optimize mutation testing for performance
 
-- [x] Switch API auth persistence from in-memory to file-backed SQLite database (`data/runtime/political_sphere.db`) with path correction and migration hooks
-- [x] Add missing schema fields: `password_hash` (NOT NULL) and `role` with constraint
-- [x] Accept username OR email for login payload on backend; keep frontend form neutral to allow either
+### 6. Enhanced CI/CD Gates
+
+- [ ] Add security scanning gates (SAST, SCA, DAST)
+- [ ] Implement accessibility scanning gates
+- [ ] Add performance regression checks
+- [ ] Enhance test coverage requirements
+- [ ] Implement automated rollback on test failures
+
+### 7. Observability and Monitoring
+
+- [ ] Set up test metrics collection (OpenTelemetry)
+- [ ] Create test dashboards and reporting
+- [ ] Implement test failure analysis and alerting
+- [ ] Add structured logging for test execution
+- [ ] Set up test performance monitoring
+
+### 8. Documentation and Compliance
+
+- [ ] Update testing documentation
+- [ ] Add compliance checklists for new test types
+- [ ] Update CHANGELOG.md with changes
+- [ ] Ensure all tests meet WCAG 2.2 AA and security standards
+- [ ] Validate against OWASP ASVS v5.0.0 and NIST guidelines
+
+## Dependencies
+
+- OWASP ZAP CLI
+- k6
+- Pact
+- Chaos Monkey (or equivalent)
+- Stryker
+- OpenTelemetry libraries
+- Additional CI/CD tools as needed
+
+## Risk Mitigation
+
+- Implement changes incrementally to avoid disrupting existing tests
+- Maintain backward compatibility with current test suites
+- Ensure all new tests pass in CI before merging
+- Monitor performance impact of additional test layers
+
+## Success Criteria
+
+- All test types integrated and passing
+- CI/CD pipeline enhanced with new gates
+- Observability dashboards operational
+- Documentation updated and compliant
+- No regression in existing test coverage or performance
 - [x] Add stub endpoints for Media and Elections to eliminate frontend 404s during development
 - [x] Create branch `feature/auth-persistence-final` containing full fixes and push to origin
 - [x] Fix `Login.tsx` to support username entry and rewire forgot-password modal state/import
 - [x] Open PR for `feature/auth-persistence-final` with scoped description and validation notes (PR #123)
 - [ ] Track follow-up: global TypeScript strict remediation (see issue to be created)
+
+### 2025-11-19 Monorepo & Security Tooling Enhancements
+- [x] Expand npm workspaces scope to include apps/* (improves hoisting / consistency)
+- [x] Introduce central security:scan script (npm audit + optional OSV) and enforce in fast-secure
+- [x] Add performance budget enforcement script perf:enforce (CI gating)
+- [x] Add ai:health script (AI system telemetry surface)
+- [x] Replace obsolete test:frontend with test:a11y:components (component-level accessibility validation using jest-axe)
+- [x] Add .nvmrc (pin Node 22.0.0 runtime)
+- [x] Create ADR-001 documenting workspace + security scan decisions
+- [x] Update CHANGELOG with new section
+- [x] Add accessibility button a11y test (baseline) under libs/ui/accessibility/__tests__
+
+### Follow-up (Planned)
+- [ ] Parameterize security scanning per app (security:scan:app)
+- [ ] Add SARIF conversion & upload for vulnerability findings
+- [ ] Integrate mutation testing (Stryker) and flaky test detector
+- [ ] Consolidate multiple audit scripts into single parameterized runner (reduce cognitive load)
+- [ ] Add performance metrics auto-generation feeding perf-enforce
 
 ### Follow-up Tasks (Planned)
 
@@ -276,49 +309,40 @@
 - [x] **Todo 1**: Moderation route validation tests (3/3 passing)
   - Created moderation.test.mjs with POST /analyze, CreateReportSchema, ReviewContentSchema tests
   - Verified 400 errors for missing fields
-  
 - [x] **Todo 2**: News route validation tests (4/4 passing)
   - Created news.test.mjs with POST /news, PUT /news/:id tests
   - Mocked NewsService to avoid file system dependencies
-  
 - [x] **Todo 3**: Age verification validation tests (4/4 passing)
   - Created ageVerification.test.mjs with POST /initiate, POST /verify tests
   - Mocked age verification service for isolation
-  
 - [x] **Todo 4**: Compliance route validation tests (4/4 passing)
   - Created compliance.test.mjs with POST /events, POST /breach-notification tests
   - Mocked compliance service to test validation independently
-  
 - [x] **Todo 5**: Unified validation error structure test (4/4 passing)
   - Created validation-assertions.mjs with assertValidationError and assertValidationSuccess helpers
   - Created validation-structure.test.mjs demonstrating unified error format
   - Ensures consistency: { success: false, error: 'Validation failed', details: [{field, message}] }
-  
 - [x] **Todo 6**: Validation metrics instrumentation
   - Created validation-metrics.js with in-memory counters
   - Tracks validation success/failure counts and parse timing
   - Exposed via /api/metrics/validation endpoint
   - Functions: recordValidation(), getValidationMetrics(), resetValidationMetrics()
-  
 - [x] **Todo 7**: Security review & hardening
   - Created docs/06-security-and-risk/security-review-validation-routes-2025-11-16.md
   - Reviewed XSS, SQL injection, command injection vectors
   - Route-by-route security assessment completed
   - Overall security posture: 🟢 STRONG
   - No critical vulnerabilities identified
-  
 - [x] **Todo 8**: Replace any casts in server.ts
   - Created UserAuthPayload interface
   - Removed all (user as any) occurrences (6 instances replaced)
   - Fixed cache.ts generics: replaced 'any' with 'unknown'
   - Improved type safety in JWT refresh token handling
-  
 - [x] **Todo 9**: Documentation update
   - Updated CHANGELOG.md with validation testing achievements
   - Updated docs/05-engineering-and-devops/development/backend.md with validation patterns
   - Documented test infrastructure, security findings, and schemas
   - Added metrics and performance baseline documentation
-  
 - [x] **Todo 10**: Validation performance benchmark
   - Created validation-performance.mjs benchmark script
   - Measured schema parse time: avg 0.0030ms, P95 0.0044ms
@@ -844,14 +868,14 @@
 
 ### Metrics Tracking
 
-| Metric | Before Review | After Fixes (2025-11-14) | Target | Status |
-|--------|---------------|--------------------------|--------|--------|
-| TypeScript Errors | 16 | 0 (pending verification) | 0 | ✅ Fixed |
-| Test Pass Rate | 93.8% (272/290) | TBD (pending test run) | 100% | 🔄 In Progress |
-| ESLint Errors | 50+ | 29 (non-critical) | 0 | 🟡 Improved |
-| WebSocket Tests | 0/13 passing | 13/13 (pending verification) | 13/13 | ✅ Fixed |
-| Security Vulnerabilities | 0 | 0 | 0 | ✅ Excellent |
-| @types/ws | Missing | Installed | Installed | ✅ Complete |
+| Metric                   | Before Review   | After Fixes (2025-11-14)     | Target    | Status         |
+| ------------------------ | --------------- | ---------------------------- | --------- | -------------- |
+| TypeScript Errors        | 16              | 0 (pending verification)     | 0         | ✅ Fixed       |
+| Test Pass Rate           | 93.8% (272/290) | TBD (pending test run)       | 100%      | 🔄 In Progress |
+| ESLint Errors            | 50+             | 29 (non-critical)            | 0         | 🟡 Improved    |
+| WebSocket Tests          | 0/13 passing    | 13/13 (pending verification) | 13/13     | ✅ Fixed       |
+| Security Vulnerabilities | 0               | 0                            | 0         | ✅ Excellent   |
+| @types/ws                | Missing         | Installed                    | Installed | ✅ Complete    |
 
 ### Documentation Updates
 
@@ -1061,8 +1085,8 @@
 **Follow-up**:
 
 - Harden credentials for non-dev environments; integrate secret management per security policy.
-**Assigned To**: Developer
-**Due Date**: ASAP
+  **Assigned To**: Developer
+  **Due Date**: ASAP
 
 ---
 
@@ -1262,17 +1286,17 @@
 
 ## 📊 Updated Progress Tracking
 
-| System | Backend | Frontend | Database | Integration | Testing | Total |
-|--------|---------|----------|----------|-------------|---------|-------|
-| Parliament | 100% | 100% | 0% | 0% | 20% | 44% |
-| Government | 100% | 100% | 0% | 0% | 20% | 44% |
-| Judiciary | 100% | 100% | 0% | 0% | 20% | 44% |
-| Media | 100% | 100% | 0% | 0% | 20% | 44% |
-| Elections | 100% | 100% | 0% | 0% | 20% | 44% |
-| Profile | 30% | 100% | 0% | 0% | 20% | 30% |
-| Auth | 100% | 0% | 0% | 0% | 50% | 30% |
-| Party | 80% | 0% | 0% | 0% | 20% | 20% |
-| **OVERALL** | **89%** | **75%** | **0%** | **0%** | **24%** | **38%** |
+| System      | Backend | Frontend | Database | Integration | Testing | Total   |
+| ----------- | ------- | -------- | -------- | ----------- | ------- | ------- |
+| Parliament  | 100%    | 100%     | 0%       | 0%          | 20%     | 44%     |
+| Government  | 100%    | 100%     | 0%       | 0%          | 20%     | 44%     |
+| Judiciary   | 100%    | 100%     | 0%       | 0%          | 20%     | 44%     |
+| Media       | 100%    | 100%     | 0%       | 0%          | 20%     | 44%     |
+| Elections   | 100%    | 100%     | 0%       | 0%          | 20%     | 44%     |
+| Profile     | 30%     | 100%     | 0%       | 0%          | 20%     | 30%     |
+| Auth        | 100%    | 0%       | 0%       | 0%          | 50%     | 30%     |
+| Party       | 80%     | 0%       | 0%       | 0%          | 20%     | 20%     |
+| **OVERALL** | **89%** | **75%**  | **0%**   | **0%**      | **24%** | **38%** |
 
 ---
 
@@ -1335,18 +1359,18 @@
 
 ## Status Dashboard
 
-| Category | Status | Progress |
-|----------|--------|----------|
-| **Core Blockers** | ✅ Complete | 100% |
-| **Game Systems** | ✅ Complete | 8/8 (100%) |
-| **API Endpoints** | ✅ Complete | 60+ endpoints |
-| **UI Components** | 🟡 In Progress | 1/6 (17%) |
-| **Infrastructure** | ✅ Complete | Middleware + Services |
-| **Database** | 🔴 Not Started | In-memory only |
-| **Testing** | 🟡 Partial | Core tests passing |
-| **Documentation** | ✅ Complete | Comprehensive |
-| **Security** | 🟡 Good | Auth + validation |
-| **Production Ready** | 🟡 Almost | Needs DB migration |
+| Category             | Status         | Progress              |
+| -------------------- | -------------- | --------------------- |
+| **Core Blockers**    | ✅ Complete    | 100%                  |
+| **Game Systems**     | ✅ Complete    | 8/8 (100%)            |
+| **API Endpoints**    | ✅ Complete    | 60+ endpoints         |
+| **UI Components**    | 🟡 In Progress | 1/6 (17%)             |
+| **Infrastructure**   | ✅ Complete    | Middleware + Services |
+| **Database**         | 🔴 Not Started | In-memory only        |
+| **Testing**          | 🟡 Partial     | Core tests passing    |
+| **Documentation**    | ✅ Complete    | Comprehensive         |
+| **Security**         | 🟡 Good        | Auth + validation     |
+| **Production Ready** | 🟡 Almost      | Needs DB migration    |
 
 **Overall Project Status**: 🟢 **EXCELLENT PROGRESS** - Core game complete, ready for database migration and production deployment
 

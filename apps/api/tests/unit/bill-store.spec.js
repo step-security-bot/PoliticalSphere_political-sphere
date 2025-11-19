@@ -3,7 +3,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import BillStore from '../stores/bill-store.js';
 
 // Mock the database
-vi.mock('../../src/modules/stores/index.ts', () => ({
+vi.mock('../../stores/index.ts', () => ({
   getDatabase: vi.fn(() => ({
     bills: {
       create: vi.fn(),
@@ -22,7 +22,7 @@ describe('BillStore', () => {
 
   beforeEach(async () => {
     vi.clearAllMocks();
-    const { getDatabase } = await import('../../src/modules/stores/index.ts');
+    const { getDatabase } = await import('../../stores/index.ts');
     mockDb = getDatabase();
     store = new BillStore(mockDb.bills);
   });
@@ -205,7 +205,7 @@ describe('BillStore', () => {
 
     it('should throw error for invalid vote type', async () => {
       await expect(store.addVote('bill-123', 'user-456', 'invalid')).rejects.toThrow(
-        'Invalid vote type'
+        'Invalid vote type',
       );
     });
 
@@ -213,7 +213,7 @@ describe('BillStore', () => {
       mockDb.bills.getById.mockResolvedValue(null);
 
       await expect(store.addVote('non-existent', 'user-456', 'yes')).rejects.toThrow(
-        'Bill not found'
+        'Bill not found',
       );
     });
   });

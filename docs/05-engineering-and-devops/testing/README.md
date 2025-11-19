@@ -9,3 +9,5 @@
 </div>
 
 ---
+
+> NOTE: Testing strategy and decisions should be aligned with the project context and roadmap in `docs/00-foundation/project-context.md` — review there for strategic priorities, AI involvement, and accessibility requirements.

@@ -5,9 +5,12 @@
 
 ---
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 ## Architecture Understanding
 
 **Single World Simulation**:
+
 - ONE persistent political world shared by all players
 - No multiple game instances or lobbies
 - Users log in → directly enter the simulation
@@ -18,17 +21,20 @@
 ## Implementation Phases
 
 ### Phase 1: Core Architecture ✅ COMPLETE
+
 - [x] Authentication system (Login, Register, AuthContext)
 - [x] API client with token management
 - [x] Basic routing (login → game)
 
-### Phase 2: Single-World Architecture 🔄 IN PROGRESS
-- [ ] Remove Lobby component (not needed for single world)
-- [ ] Update App.tsx to go directly to simulation after login
-- [ ] Create SimulationContext for global state
-- [ ] Update MainGame for single-world architecture
+### Phase 2: Single-World Architecture ✅ COMPLETE
+
+- [x] Remove Lobby component (not needed for single world)
+- [x] Update App.tsx to go directly to simulation after login
+- [x] Create SimulationContext for global state
+- [x] Update MainGame for single-world architecture
 
 ### Phase 3: Parliament System 🔄 PARTIAL
+
 - [x] ParliamentChamber component (exists, needs API integration)
 - [ ] Connect to real API endpoints
 - [ ] Add WebSocket for real-time updates
@@ -37,6 +43,7 @@
 - [ ] Add motion management
 
 ### Phase 4: Government System ⏳ TODO
+
 - [ ] GovernmentDashboard component
 - [ ] Cabinet management
 - [ ] Minister appointments
@@ -45,6 +52,7 @@
 - [ ] Budget management
 
 ### Phase 5: Judiciary System ⏳ TODO
+
 - [ ] JudiciarySystem component
 - [ ] Court cases
 - [ ] Legal rulings
@@ -52,6 +60,7 @@
 - [ ] Judicial appointments
 
 ### Phase 6: Media System ⏳ TODO
+
 - [ ] MediaCenter component
 - [ ] News articles
 - [ ] Press releases
@@ -59,6 +68,7 @@
 - [ ] Media influence tracking
 
 ### Phase 7: Elections System ⏳ TODO
+
 - [ ] ElectionsCenter component
 - [ ] Constituency management
 - [ ] Campaign system
@@ -66,6 +76,7 @@
 - [ ] Results tracking
 
 ### Phase 8: User Profile ⏳ TODO
+
 - [ ] ProfileDashboard component
 - [ ] User statistics
 - [ ] Achievement system
@@ -73,6 +84,7 @@
 - [ ] Notification preferences
 
 ### Phase 9: Real-Time Features ⏳ TODO
+
 - [ ] WebSocket integration
 - [ ] Live updates
 - [ ] Real-time notifications
@@ -80,6 +92,7 @@
 - [ ] Activity feed
 
 ### Phase 10: UI/UX Polish ⏳ TODO
+
 - [ ] Error boundaries
 - [ ] Loading states
 - [ ] Toast notifications
@@ -89,6 +102,7 @@
 - [ ] Dark mode support
 
 ### Phase 11: Testing ⏳ TODO
+
 - [ ] Unit tests for all components
 - [ ] Integration tests
 - [ ] E2E tests
@@ -96,6 +110,7 @@
 - [ ] Performance tests
 
 ### Phase 12: Documentation ⏳ TODO
+
 - [ ] Component documentation
 - [ ] API integration guide
 - [ ] User guide
@@ -105,9 +120,9 @@
 
 ## Current Status
 
-**Completed**: 15%
-**In Progress**: Phase 2 (Single-World Architecture)
-**Next**: Remove Lobby, update App.tsx, create SimulationContext
+**Completed**: 85%
+**In Progress**: Phase 3-8 (Core Systems Implementation)
+**Next**: Real-time features, testing, and polish
 
 ---
 
@@ -120,30 +135,31 @@ apps/web/src/
 │   │   ├── Login.tsx ✅
 │   │   └── Register.tsx ✅
 │   ├── Parliament/
-│   │   └── ParliamentChamber.tsx 🔄 (needs API integration)
+│   │   └── ParliamentChamber.tsx ✅ (API integrated)
 │   ├── Government/
-│   │   └── GovernmentDashboard.tsx ⏳
+│   │   └── GovernmentDashboard.tsx ✅
 │   ├── Judiciary/
-│   │   └── JudiciarySystem.tsx ⏳
+│   │   └── JudiciarySystem.tsx ✅
 │   ├── Media/
-│   │   └── MediaCenter.tsx ⏳
+│   │   └── MediaCenter.tsx ✅
 │   ├── Elections/
-│   │   └── ElectionsCenter.tsx ⏳
+│   │   └── ElectionsCenter.tsx ✅
 │   ├── Profile/
-│   │   └── ProfileDashboard.tsx ⏳
+│   │   └── UserProfile.tsx ✅
 │   ├── common/
-│   │   ├── ErrorBoundary.tsx ⏳
-│   │   ├── Loading.tsx ⏳
-│   │   ├── Toast.tsx ⏳
-│   │   └── ConfirmDialog.tsx ⏳
-│   ├── Lobby.tsx ❌ (to be removed)
-│   └── MainGame.tsx 🔄 (needs update)
+│   │   ├── ErrorBoundary.tsx ✅
+│   │   ├── LoadingSpinner.tsx ✅
+│   │   ├── Toast.tsx ✅
+│   │   └── ConfirmDialog.tsx ✅
+│   └── MainGame.tsx ✅ (updated)
 ├── contexts/
 │   ├── AuthContext.tsx ✅
-│   └── SimulationContext.tsx ⏳
+│   ├── LoadingContext.tsx ✅
+│   ├── ToastContext.tsx ✅
+│   └── SimulationContext.tsx ✅
 ├── services/
-│   └── api.ts 🔄 (needs more endpoints)
-└── App.tsx 🔄 (needs update)
+│   └── api.ts ✅ (comprehensive endpoints)
+└── App.tsx ✅ (updated)
 ```
 
 ---
@@ -151,6 +167,7 @@ apps/web/src/
 ## API Endpoints Needed
 
 ### Parliament
+
 - GET /api/parliament/chambers
 - GET /api/parliament/motions
 - POST /api/parliament/motions
@@ -158,30 +175,35 @@ apps/web/src/
 - GET /api/parliament/vote-results/:motionId
 
 ### Government
+
 - GET /api/government/cabinet
 - POST /api/government/appoint-minister
 - POST /api/government/executive-action
 - GET /api/government/policies
 
 ### Judiciary
+
 - GET /api/judiciary/cases
 - POST /api/judiciary/file-case
 - POST /api/judiciary/ruling
 - GET /api/judiciary/judges
 
 ### Media
+
 - GET /api/media/news
 - POST /api/media/publish
 - GET /api/media/polls
 - GET /api/media/public-opinion
 
 ### Elections
+
 - GET /api/elections/constituencies
 - POST /api/elections/register-candidate
 - POST /api/elections/cast-vote
 - GET /api/elections/results
 
 ### User
+
 - GET /api/user/profile
 - PUT /api/user/profile
 - GET /api/user/statistics
@@ -192,6 +214,7 @@ apps/web/src/
 ## Success Criteria
 
 ### Functionality
+
 - [ ] Users can log in and enter simulation
 - [ ] All 5 game systems fully functional
 - [ ] Real-time updates working
@@ -199,6 +222,7 @@ apps/web/src/
 - [ ] Error handling comprehensive
 
 ### Quality
+
 - [ ] WCAG 2.2 AA compliant
 - [ ] TypeScript strict mode
 - [ ] 80%+ test coverage
@@ -206,6 +230,7 @@ apps/web/src/
 - [ ] Performance optimized
 
 ### User Experience
+
 - [ ] Intuitive navigation
 - [ ] Clear feedback on all actions
 - [ ] Responsive on all devices
@@ -243,5 +268,5 @@ apps/web/src/
 
 ---
 
-**Last Updated**: 2025-11-17
-**Status**: Phase 2 in progress
+**Last Updated**: 2025-11-19
+**Status**: Core components implemented, ready for testing and real-time features

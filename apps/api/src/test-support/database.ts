@@ -8,7 +8,37 @@
  * in production code.
  */
 
-import { type DatabaseConnection, getDatabase, closeDatabase } from '../modules/stores/index.ts';
+import { type DatabaseConnection, getDatabase, closeDatabase } from '../stores/index.js';
+
+// Test data type definitions
+export interface TestUser {
+  id?: string;
+  username: string;
+  email: string;
+  password_hash?: string;
+  role?: string;
+  created_at?: string;
+  updated_at?: string;
+}
+
+export interface TestParty {
+  id?: string;
+  name: string;
+  description?: string;
+  color?: string;
+  created_at?: string;
+  updated_at?: string;
+}
+
+export interface TestBill {
+  id?: string;
+  title: string;
+  description?: string | null;
+  proposerId: string;
+  status?: string;
+  created_at?: string;
+  updated_at?: string;
+}
 
 /**
  * Database test interface
@@ -22,7 +52,21 @@ export class TestDatabase {
    * @returns Database connection instance
    */
   async setup(): Promise<DatabaseConnection> {
+    // Use a unique database file for each test to avoid conflicts
+    const fs = await import('node:fs');
+    const path = await import('node:path');
+    const dbPath = path.join(process.cwd(), `test-${Date.now()}-${Math.random()}.db`);
+
+    // Set DATABASE_URL to the unique file
+    process.env.DATABASE_URL = `file:${dbPath}`;
+
     this.connection = getDatabase();
+
+    // Disconnect and reconnect Prisma to ensure it uses the new database
+    const { prisma } = await import('../services/prisma-database.service.ts');
+    await prisma.$disconnect();
+    await prisma.$connect();
+
     return this.connection;
   }
 
@@ -30,6 +74,9 @@ export class TestDatabase {
    * Clean up database after tests
    */
   async teardown(): Promise<void> {
+    // Disconnect Prisma to ensure clean state for next test
+    const { prisma } = await import('../services/prisma-database.service.ts');
+    await prisma.$disconnect();
     closeDatabase();
     this.connection = null;
   }
@@ -50,7 +97,7 @@ export class TestDatabase {
    * @param overrides - Properties to override defaults
    * @returns Created user
    */
-  async createTestUser(overrides: Record<string, any> = {}): Promise<any> {
+  async createTestUser(overrides: Partial<TestUser> = {}): Promise<TestUser> {
     const db = this.getConnection();
     const userData = {
       username: `testuser_${Date.now()}`,
@@ -65,7 +112,7 @@ export class TestDatabase {
    * @param overrides - Properties to override defaults
    * @returns Created party
    */
-  async createTestParty(overrides: Record<string, any> = {}): Promise<any> {
+  async createTestParty(overrides: Partial<TestParty> = {}): Promise<TestParty> {
     const db = this.getConnection();
     const partyData = {
       name: `Test Party ${Date.now()}`,
@@ -81,7 +128,7 @@ export class TestDatabase {
    * @param overrides - Properties to override defaults
    * @returns Created bill
    */
-  async createTestBill(overrides: Record<string, any> = {}): Promise<any> {
+  async createTestBill(overrides: Partial<TestBill> = {}): Promise<TestBill> {
     const db = this.getConnection();
     const billData = {
       title: `Test Bill ${Date.now()}`,

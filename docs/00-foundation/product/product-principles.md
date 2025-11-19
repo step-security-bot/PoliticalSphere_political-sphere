@@ -12,6 +12,8 @@
 
 ---
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 ## 🎯 Purpose
 
 Our Product Principles establish the fundamental guidelines that shape every product decision at Political Sphere. These principles ensure our AI-powered political simulation platform delivers exceptional user experiences while maintaining ethical standards, technical excellence, and strategic alignment with our mission to democratize political understanding.

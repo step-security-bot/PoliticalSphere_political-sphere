@@ -343,6 +343,8 @@ export async function validateDeployment(event: CodeDeployEvent): Promise<void> 
 
 ---
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 **Approved by**: [Pending]  
 **Implementation Start**: 2025-11-01  
 **Target Completion**: 2025-12-31

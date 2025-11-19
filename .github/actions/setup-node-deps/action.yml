@@ -49,10 +49,14 @@ runs:
           ~/.npm
           node_modules
           .vitest/cache
-        key: ${{ runner.os }}-deps-${{ hashFiles('**/package-lock.json') }}-${{ hashFiles('vitest.config.ts') }}
+          .nx/cache
+          .eslintcache
+          .prettiercache
+        key: ${{ runner.os }}-deps-v2-${{ hashFiles('**/package-lock.json', '**/nx.json', '**/vitest.config.ts', '**/eslint.config.js') }}-${{ github.sha }}
         restore-keys: |
-          ${{ runner.os }}-deps-${{ hashFiles('**/package-lock.json') }}-
-          ${{ runner.os }}-deps-
+          ${{ runner.os }}-deps-v2-${{ hashFiles('**/package-lock.json', '**/nx.json', '**/vitest.config.ts', '**/eslint.config.js') }}-
+          ${{ runner.os }}-deps-v2-${{ hashFiles('**/package-lock.json') }}-
+          ${{ runner.os }}-deps-v2-
 
     - name: Install dependencies
       shell: bash

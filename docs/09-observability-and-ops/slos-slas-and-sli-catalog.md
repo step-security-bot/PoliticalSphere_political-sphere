@@ -10,6 +10,8 @@
 
 ---
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 This document catalogs the primary Service Level Objectives (SLOs), Service Level Indicators (SLIs), and measurement guidance used to evaluate production readiness.
 
 ## Key SLOs

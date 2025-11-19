@@ -12,6 +12,8 @@
 
 ---
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 ## 🎯 Goals
 
 - Deliver a cohesive API surface that powers web clients, moderator tooling, educators, and automation.

@@ -10,6 +10,8 @@
 
 ---
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 ## Purpose
 
 This Governance Charter establishes the foundational principles, structures, and processes for governing Political Sphere. It ensures that all decisions — whether platform-level or in-game — are made transparently, accountably, and in alignment with the project's core values of fairness, safety, and ethical containment.

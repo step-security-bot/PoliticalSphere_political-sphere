@@ -1,5 +1,7 @@
 # Disaster Recovery Plan
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 This DR plan outlines how to recover Political Sphere infrastructure and applications in the event of catastrophic failure or data loss.
 
 ## Objectives

@@ -7,6 +7,8 @@
 
 ---
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 ## Overview
 
 This session completed the implementation of two critical infrastructure improvements identified in the comprehensive best practices research:

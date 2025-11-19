@@ -1,5 +1,7 @@
 # Audit Standard Operating Procedure (SOP)
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 # For Political Sphere Universal Audit
 
 ## Purpose

@@ -1,5 +1,7 @@
 # Performance Monitoring with OpenTelemetry
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 **Version:** 1.0.0  
 **Last Updated:** 2025-11-14  
 **Status:** Recommended
@@ -11,12 +13,14 @@ This guide documents OpenTelemetry (OTel) integration for comprehensive performa
 ## What is OpenTelemetry?
 
 OpenTelemetry is a vendor-neutral observability framework that provides:
+
 - **Distributed tracing** - Track requests across microservices
 - **Metrics** - Collect performance indicators (latency, throughput, errors)
 - **Logs** - Structured logging with trace correlation
 - **Auto-instrumentation** - Automatic HTTP, database, and framework instrumentation
 
 **Benefits:**
+
 - Vendor-agnostic (works with Datadog, New Relic, Honeycomb, Jaeger, etc.)
 - Standardized telemetry data format
 - Rich ecosystem of exporters and plugins
@@ -96,7 +100,8 @@ import { Resource } from '@opentelemetry/resources';
 import { SemanticResourceAttributes } from '@opentelemetry/semantic-conventions';
 
 const resource = new Resource({
-  [SemanticResourceAttributes.SERVICE_NAME]: process.env.OTEL_SERVICE_NAME || 'political-sphere-api',
+  [SemanticResourceAttributes.SERVICE_NAME]:
+    process.env.OTEL_SERVICE_NAME || 'political-sphere-api',
   [SemanticResourceAttributes.SERVICE_VERSION]: process.env.npm_package_version || '1.0.0',
   [SemanticResourceAttributes.DEPLOYMENT_ENVIRONMENT]: process.env.NODE_ENV || 'development',
 });
@@ -141,16 +146,15 @@ sdk.start();
 
 // Graceful shutdown
 process.on('SIGTERM', () => {
-  sdk.shutdown()
+  sdk
+    .shutdown()
     .then(() => console.log('OpenTelemetry SDK shut down'))
-    .catch((error) => console.error('Error shutting down OpenTelemetry SDK', error));
+    .catch(error => console.error('Error shutting down OpenTelemetry SDK', error));
 });
 
 function parseHeaders(headers?: string): Record<string, string> {
   if (!headers) return {};
-  return Object.fromEntries(
-    headers.split(',').map(h => h.split('='))
-  );
+  return Object.fromEntries(headers.split(',').map(h => h.split('=')));
 }
 ```
 
@@ -210,11 +214,13 @@ export function initOpenTelemetry() {
     },
   });
 
-  provider.addSpanProcessor(new BatchSpanProcessor(exporter, {
-    maxQueueSize: 100,
-    maxExportBatchSize: 10,
-    scheduledDelayMillis: 500,
-  }));
+  provider.addSpanProcessor(
+    new BatchSpanProcessor(exporter, {
+      maxQueueSize: 100,
+      maxExportBatchSize: 10,
+      scheduledDelayMillis: 500,
+    })
+  );
 
   provider.register();
 
@@ -222,9 +228,7 @@ export function initOpenTelemetry() {
     instrumentations: [
       new DocumentLoadInstrumentation(),
       new FetchInstrumentation({
-        propagateTraceHeaderCorsUrls: [
-          new RegExp(`${import.meta.env.VITE_API_URL}/.*`),
-        ],
+        propagateTraceHeaderCorsUrls: [new RegExp(`${import.meta.env.VITE_API_URL}/.*`)],
         clearTimingResources: true,
       }),
     ],
@@ -257,7 +261,7 @@ const tracer = trace.getTracer('political-sphere-api');
 
 export async function processVote(voteData: VoteInput) {
   // Create a new span
-  return tracer.startActiveSpan('processVote', async (span) => {
+  return tracer.startActiveSpan('processVote', async span => {
     try {
       // Add attributes (metadata)
       span.setAttribute('vote.billId', voteData.billId);
@@ -299,7 +303,7 @@ const tracer = trace.getTracer('political-sphere-web');
 
 export function VotingComponent() {
   const handleVote = async (billId: string, value: number) => {
-    return tracer.startActiveSpan('user_vote', async (span) => {
+    return tracer.startActiveSpan('user_vote', async span => {
       try {
         span.setAttribute('bill.id', billId);
         span.setAttribute('vote.value', value);
@@ -354,22 +358,22 @@ const activeConnections = meter.createUpDownCounter('http.connections.active', {
 // Usage
 export async function createVote(data: VoteInput) {
   const start = Date.now();
-  
+
   activeConnections.add(1);
-  
+
   try {
     const result = await voteService.create(data);
-    
+
     voteCounter.add(1, {
       billId: data.billId,
       value: data.value,
     });
-    
+
     const duration = Date.now() - start;
     voteProcessingDuration.record(duration, {
       success: true,
     });
-    
+
     return result;
   } catch (error) {
     voteProcessingDuration.record(Date.now() - start, {
@@ -387,6 +391,7 @@ export async function createVote(data: VoteInput) {
 ### Option 1: OpenTelemetry Collector (Recommended)
 
 **Benefits:**
+
 - Centralized telemetry collection
 - Protocol translation (OTLP → Datadog, Jaeger, etc.)
 - Batching and buffering
@@ -404,9 +409,9 @@ services:
     volumes:
       - ./otel-collector-config.yaml:/etc/otel-collector-config.yaml
     ports:
-      - '4318:4318'  # OTLP HTTP receiver
-      - '4317:4317'  # OTLP gRPC receiver
-      - '8888:8888'  # Prometheus metrics
+      - '4318:4318' # OTLP HTTP receiver
+      - '4317:4317' # OTLP gRPC receiver
+      - '8888:8888' # Prometheus metrics
       - '13133:13133' # Health check
     environment:
       - DATADOG_API_KEY=${DATADOG_API_KEY}
@@ -427,11 +432,11 @@ processors:
   batch:
     timeout: 10s
     send_batch_size: 1024
-  
+
   memory_limiter:
     check_interval: 1s
     limit_mib: 512
-  
+
   # Sample 10% of traces
   probabilistic_sampler:
     sampling_percentage: 10
@@ -442,13 +447,13 @@ exporters:
     api:
       key: ${env:DATADOG_API_KEY}
       site: datadoghq.com
-  
+
   # Export to Jaeger (for local development)
   jaeger:
     endpoint: jaeger:14250
     tls:
       insecure: true
-  
+
   # Log to console (debugging)
   logging:
     loglevel: info
@@ -459,7 +464,7 @@ service:
       receivers: [otlp]
       processors: [memory_limiter, batch, probabilistic_sampler]
       exporters: [datadog, logging]
-    
+
     metrics:
       receivers: [otlp]
       processors: [memory_limiter, batch]
@@ -496,9 +501,9 @@ services:
   jaeger:
     image: jaegertracing/all-in-one:latest
     ports:
-      - '16686:16686'  # Web UI
-      - '14250:14250'  # gRPC
-      - '14268:14268'  # HTTP
+      - '16686:16686' # Web UI
+      - '14250:14250' # gRPC
+      - '14268:14268' # HTTP
     environment:
       - COLLECTOR_OTLP_ENABLED=true
 ```
@@ -542,6 +547,7 @@ OTEL_EXPORTER_OTLP_HEADERS=Authorization=Basic <base64-encoded-credentials>
 ### Sampling
 
 **Production sampling rates:**
+
 - **High-traffic services**: 1-10% (reduce overhead)
 - **Low-traffic services**: 100% (capture all traces)
 - **Critical paths**: 100% (voting, authentication)
@@ -588,17 +594,20 @@ span.setAttribute(SemanticAttributes.DB_STATEMENT, 'SELECT * FROM users WHERE id
 ### No traces appearing
 
 **Check exporter endpoint:**
+
 ```bash
 curl http://localhost:4318/v1/traces -v
 ```
 
 **Enable debug logging:**
+
 ```bash
 export OTEL_LOG_LEVEL=debug
 npm run dev
 ```
 
 **Verify collector health:**
+
 ```bash
 curl http://localhost:13133
 ```
@@ -606,18 +615,20 @@ curl http://localhost:13133
 ### High overhead
 
 **Reduce sampling rate:**
+
 ```bash
 export OTEL_TRACES_SAMPLER_ARG=0.01  # 1% sampling
 ```
 
 **Disable auto-instrumentation:**
+
 ```typescript
 instrumentations: [
   getNodeAutoInstrumentations({
     '@opentelemetry/instrumentation-fs': { enabled: false },
     '@opentelemetry/instrumentation-dns': { enabled: false },
   }),
-]
+];
 ```
 
 ### Missing context propagation
@@ -628,7 +639,7 @@ instrumentations: [
 // Frontend fetch
 fetch('/api/votes', {
   headers: {
-    'traceparent': getCurrentTraceParent(),
+    traceparent: getCurrentTraceParent(),
   },
 });
 
@@ -659,8 +670,8 @@ describe('OpenTelemetry instrumentation', () => {
     provider.register();
 
     const tracer = trace.getTracer('test');
-    
-    await tracer.startActiveSpan('test-span', async (span) => {
+
+    await tracer.startActiveSpan('test-span', async span => {
       span.setAttribute('test.attribute', 'value');
       span.end();
     });
@@ -683,7 +694,7 @@ describe('OpenTelemetry instrumentation', () => {
     OTEL_EXPORTER_OTLP_ENDPOINT: http://localhost:4318
     OTEL_SERVICE_NAME: political-sphere-api-ci
   run: npm test
-  
+
 - name: Upload trace data
   if: failure()
   uses: actions/upload-artifact@v3
@@ -695,19 +706,23 @@ describe('OpenTelemetry instrumentation', () => {
 ## Cost Management
 
 ### Datadog Pricing
+
 - **APM**: $31/host/month + $0.013/indexed span
 - **Logs**: $0.10/GB ingested
 
 **Optimize:**
+
 - Use 10% trace sampling
 - Index only error spans and slow requests
 - Set retention to 15 days (not 90 days)
 
 ### Honeycomb Pricing
+
 - **Free**: 20M events/month
 - **Pro**: $0.20/million events
 
 **Optimize:**
+
 - Use head-based sampling (10%)
 - Enable derived columns instead of full traces
 - Archive old traces to S3

@@ -10,6 +10,8 @@
 
 ---
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 ## Purpose
 
 This handbook documents on-call responsibilities, escalation policies, and the incident response playbooks used by the Political Sphere SRE and Security teams.

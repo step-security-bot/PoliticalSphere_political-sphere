@@ -7,11 +7,14 @@
 
 ---
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 ## Quick Start
 
 ### Daily Developer Workflow
 
 **Morning Setup (5 minutes):**
+
 ```bash
 # 1. Check AI system health
 npm run ai:status
@@ -24,6 +27,7 @@ lefthook version  # Should show 1.5.0+
 ```
 
 **During Development:**
+
 ```bash
 # Before starting work - search for relevant code
 npm run ai:search "authentication logic"
@@ -39,6 +43,7 @@ git push origin feature-branch
 ```
 
 **End of Day (2 minutes):**
+
 ```bash
 # Check if you triggered any AI warnings
 cat .git/hooks/lefthook.log | grep "⚠️"
@@ -54,9 +59,11 @@ node tools/scripts/ai/analytics.js log-session
 ### Core Tools (Use Daily)
 
 #### ai:search - Semantic Code Search
+
 **Purpose:** Find relevant code across the entire codebase using natural language
 
 **Usage:**
+
 ```bash
 # Search for concepts
 npm run ai:search "user authentication flow"
@@ -69,6 +76,7 @@ npm run ai:search "how to add new API endpoint"
 ```
 
 **When to Use:**
+
 - Starting work on unfamiliar area
 - Looking for implementation examples
 - Finding where to add new code
@@ -79,9 +87,11 @@ npm run ai:search "how to add new API endpoint"
 ---
 
 #### ai:context - Build Context for AI Assistants
+
 **Purpose:** Generate comprehensive context for AI pair programming
 
 **Usage:**
+
 ```bash
 # Full context refresh
 npm run ai:context
@@ -93,6 +103,7 @@ npm run ai:context --area=governance
 ```
 
 **When to Use:**
+
 - Before long AI-assisted coding session
 - When AI suggestions seem outdated
 - After major codebase changes
@@ -103,9 +114,11 @@ npm run ai:context --area=governance
 ---
 
 #### ai:index - Build/Update Code Index
+
 **Purpose:** Create searchable semantic index of codebase
 
 **Usage:**
+
 ```bash
 # Full rebuild (takes 10-20 minutes)
 npm run ai:index build
@@ -118,6 +131,7 @@ npm run ai:index validate
 ```
 
 **When to Use:**
+
 - After checking out new branch
 - After pulling major changes
 - When search results seem stale
@@ -130,30 +144,36 @@ npm run ai:index validate
 ### Quality Tools (Automated in CI/CD)
 
 #### Neutrality Checker
+
 **Purpose:** Detect political bias in code, comments, docs
 
 **Automated Execution:**
+
 - Pre-commit hook: `ai-neutrality-check`
 - CI workflow: `political-neutrality` job in ai-governance.yml
 
 **Manual Usage:**
+
 ```bash
 node tools/scripts/ai/ci-neutrality-check.mts src/feature.ts
 ```
 
 **What It Checks:**
+
 - Variable names with political connotations
 - Comments with partisan language
 - Documentation with biased examples
 - Test data with real-world political references
 
 **How to Fix Violations:**
+
 - Use neutral placeholders: "Party A", "Candidate X"
 - Remove partisan examples from docs
 - Use synthetic test data only
 - Replace political terminology with generic terms
 
 **Example Violations:**
+
 ```javascript
 // ❌ BAD
 const labourPolicy = getPolicy('labour');
@@ -171,24 +191,29 @@ const votersGroupB = filterVoters('group-b');
 ---
 
 #### Semantic Quality Checker
+
 **Purpose:** Analyze code quality using semantic understanding
 
 **Automated Execution:**
+
 - Pre-commit hook: `ai-semantic-quality`
 - CI workflow: `semantic-quality-check` job in ai-governance.yml
 
 **Manual Usage:**
+
 ```bash
 node tools/scripts/ai/semantic-indexer.cjs analyze src/feature.ts
 ```
 
 **What It Checks:**
+
 - Code complexity and maintainability
 - Naming conventions and clarity
 - Pattern consistency with codebase
 - Semantic coherence
 
 **Interpreting Results:**
+
 - Quality Score 0.8-1.0: Excellent
 - Quality Score 0.6-0.8: Good
 - Quality Score 0.4-0.6: Needs improvement
@@ -197,13 +222,16 @@ node tools/scripts/ai/semantic-indexer.cjs analyze src/feature.ts
 ---
 
 #### Competence Monitor
+
 **Purpose:** Assess overall AI-assisted code quality trends
 
 **Automated Execution:**
+
 - Nightly: `competence-assessment` in ai-maintenance.yml
 - PR: `competence-assessment` job in ai-governance.yml
 
 **Manual Usage:**
+
 ```bash
 # Full assessment
 node tools/scripts/ai/competence-monitor.js assess
@@ -213,12 +241,14 @@ node tools/scripts/ai/competence-monitor.js quick-check src/feature.ts
 ```
 
 **Competence Score Meaning:**
+
 - 0.7-1.0: High quality AI assistance
 - 0.5-0.7: Acceptable quality, monitor trends
 - 0.3-0.5: Declining quality, review practices
 - <0.3: Critical, immediate intervention needed
 
 **When Score Drops:**
+
 1. Review recent AI-generated commits
 2. Check test coverage hasn't declined
 3. Refresh AI context: `npm run ai:refresh`
@@ -230,9 +260,11 @@ node tools/scripts/ai/competence-monitor.js quick-check src/feature.ts
 ### Advanced Tools (Occasional Use)
 
 #### ai:optimize - Optimize AI Caches
+
 **Purpose:** Clean up and optimize AI caching for performance
 
 **Usage:**
+
 ```bash
 npm run ai:optimize
 
@@ -241,6 +273,7 @@ npm run ai:cache stats
 ```
 
 **When to Use:**
+
 - AI tools running slowly
 - Cache size >500MB
 - After major dependency updates
@@ -248,14 +281,17 @@ npm run ai:cache stats
 ---
 
 #### ai:ast - AST Analysis
+
 **Purpose:** Deep abstract syntax tree analysis for code understanding
 
 **Usage:**
+
 ```bash
 npm run ai:ast src/feature.ts
 ```
 
 **When to Use:**
+
 - Need deep structural code analysis
 - Building custom code transformations
 - Advanced refactoring assistance
@@ -267,6 +303,7 @@ npm run ai:ast src/feature.ts
 ### Pre-Commit Hook Warnings
 
 **Example Output:**
+
 ```bash
 ⚠️ AI neutrality check completed with warnings
   - Potential partisan term detected in src/feature.ts:42
@@ -274,6 +311,7 @@ npm run ai:ast src/feature.ts
 ```
 
 **Action:**
+
 1. Review flagged line in editor
 2. Assess if truly biased or false positive
 3. If biased: Refactor to neutral language
@@ -285,12 +323,14 @@ npm run ai:ast src/feature.ts
 ### CI Workflow Failures
 
 **Scenario: Change Budget Violation**
+
 ```
 ❌ Change Budget Violation
 This PR exceeds the change budget for Fast-Secure mode (200 lines, 8 files)
 ```
 
 **Actions:**
+
 - **Option 1 (Recommended):** Split PR into smaller focused changes
 - **Option 2:** Switch to Safe mode (≤300 lines, ≤12 files)
 - **Option 3:** Use Audit mode if comprehensive changes required
@@ -299,12 +339,14 @@ This PR exceeds the change budget for Fast-Secure mode (200 lines, 8 files)
 ---
 
 **Scenario: Political Neutrality Failed**
+
 ```
 ❌ Political Neutrality Validation Failed
 Flagged content in: src/components/PartySelector.tsx
 ```
 
 **Actions:**
+
 1. Click workflow link to see detailed report
 2. Review flagged file sections
 3. Replace partisan terms with neutral placeholders
@@ -314,6 +356,7 @@ Flagged content in: src/components/PartySelector.tsx
 ---
 
 **Scenario: Competence Score Warning**
+
 ```
 ⚠️ Competence Score: 0.52 (below target 0.7)
 Recommendations:
@@ -322,6 +365,7 @@ Recommendations:
 ```
 
 **Actions:**
+
 1. Check which recent commits lowered score
 2. Add missing tests for new features
 3. Refactor complex AI-generated code
@@ -386,6 +430,7 @@ gh run list --workflow=ai-maintenance.yml --limit=5
 ### Reviewing AI-Generated Code
 
 **Checklist for PR Reviews:**
+
 - [ ] Tests included for new functionality
 - [ ] No hardcoded secrets or credentials
 - [ ] Accessibility attributes present (WCAG 2.2 AA)
@@ -398,6 +443,7 @@ gh run list --workflow=ai-maintenance.yml --limit=5
 - [ ] Changelog entry added
 
 **Red Flags:**
+
 - Missing tests for critical paths
 - Complex logic without comments
 - Security shortcuts (disabled validation, etc.)
@@ -413,11 +459,13 @@ gh run list --workflow=ai-maintenance.yml --limit=5
 
 **Context Awareness:**
 GitHub Copilot automatically receives context from:
+
 - `.github/copilot-instructions.md` (1566 lines of guidance)
 - Recently indexed code (via ai-index/)
 - Context bundles in `tools/ai/context-bundles/`
 
 **Best Practices:**
+
 1. Keep context bundles updated (weekly refresh)
 2. Use descriptive comments to guide suggestions
 3. Review suggestions against security/accessibility standards
@@ -431,22 +479,26 @@ GitHub Copilot automatically receives context from:
 **Workflow Execution:**
 
 **On Every PR:**
+
 - ai-governance.yml runs 7 validation jobs
 - Results posted as PR comments
 - Failures block merge
 
 **Nightly at 2 AM UTC:**
+
 - ai-maintenance.yml rebuilds indices
 - Updates context bundles
 - Assesses competence trends
 - Publishes artifacts
 
 **Pre-Commit Locally:**
+
 - Lefthook runs 3 AI validation hooks
 - Warnings logged, commit proceeds
 - Index updated on pre-push
 
 **Visual:**
+
 ```
 ┌─────────────────────────────────────┐
 │  Developer Workflow                 │
@@ -483,22 +535,26 @@ GitHub Copilot automatically receives context from:
 ### Key Metrics
 
 **View Current Competence Score:**
+
 ```bash
 cat ai-metrics/stats.json | jq '.competenceScore'
 # Target: >0.7
 ```
 
 **View Competence Trend:**
+
 ```bash
 cat ai-metrics/stats.json | jq '.history[] | {date, score}'
 ```
 
 **View AI Tool Performance:**
+
 ```bash
 cat ai-metrics/performance.json | jq
 ```
 
 **View Index Health:**
+
 ```bash
 cat ai-index/metadata.json | jq '{files, size, lastUpdated}'
 ```
@@ -508,6 +564,7 @@ cat ai-index/metadata.json | jq '{files, size, lastUpdated}'
 ### Grafana Dashboard (Future)
 
 **Planned Panels:**
+
 1. Competence Score Trend (30 days)
 2. AI Tool Latency (p50/p95/p99)
 3. Cache Hit Rate
@@ -550,26 +607,28 @@ AI tool not working?
 
 ### Documentation Resources
 
-| Question | Resource |
-|----------|----------|
-| How do AI tools work? | `tools/scripts/ai/README.md` |
-| What's the operational status? | `tools/scripts/ai/AI_TOOLS_STATUS.md` |
-| How to maintain AI systems? | `docs/05-engineering-and-devops/sops/ai-maintenance-sop.md` |
-| What are the governance rules? | `docs/07-ai-and-simulation/ai-governance.md` |
-| How to use GitHub Copilot? | `.github/copilot-instructions.md` |
-| What's on the TODO? | `docs/TODO.md` |
+| Question                       | Resource                                                    |
+| ------------------------------ | ----------------------------------------------------------- |
+| How do AI tools work?          | `tools/scripts/ai/README.md`                                |
+| What's the operational status? | `tools/scripts/ai/AI_TOOLS_STATUS.md`                       |
+| How to maintain AI systems?    | `docs/05-engineering-and-devops/sops/ai-maintenance-sop.md` |
+| What are the governance rules? | `docs/07-ai-and-simulation/ai-governance.md`                |
+| How to use GitHub Copilot?     | `.github/copilot-instructions.md`                           |
+| What's on the TODO?            | `docs/TODO.md`                                              |
 
 ---
 
 ### Escalation Path
 
 **Issue Severity:**
+
 - **P0 (Critical):** AI system completely down >1hr → Page on-call
 - **P1 (High):** Major functionality broken → Create high-priority issue
 - **P2 (Medium):** Degraded performance → Weekly review
 - **P3 (Low):** Feature request → Quarterly planning
 
 **Contacts:**
+
 - AI System Steward: Lead Developer
 - On-Call Engineer: Rotation schedule
 - TGC: Technical Governance Committee
@@ -579,6 +638,7 @@ AI tool not working?
 ## Best Practices Summary
 
 **DO:**
+
 - ✅ Keep AI context updated (weekly minimum)
 - ✅ Review AI-generated code before committing
 - ✅ Run smoke tests after major changes
@@ -588,6 +648,7 @@ AI tool not working?
 - ✅ Document AI assistance in commit messages
 
 **DON'T:**
+
 - ❌ Bypass AI validation checks without justification
 - ❌ Commit AI-generated code without review
 - ❌ Ignore declining competence scores

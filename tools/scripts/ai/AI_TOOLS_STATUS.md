@@ -9,6 +9,7 @@
 This document provides a comprehensive status of all AI development tools in the Political Sphere project. Each tool is categorized by function and marked with operational status.
 
 **Status Indicators:**
+
 - ✅ **OPERATIONAL** - Tested and working correctly
 - 🔄 **PENDING_TESTING** - Exists but not yet validated
 - ⚠️ **NEEDS_FIX** - Exists but has known issues
@@ -20,6 +21,7 @@ This document provides a comprehensive status of all AI development tools in the
 ## Core Indexing & Search (7 tools)
 
 ### code-indexer.js
+
 **Status:** 🔄 PENDING_TESTING  
 **Purpose:** Build and search semantic code index  
 **Usage:** `node tools/scripts/ai/code-indexer.js build|search <query>`  
@@ -27,6 +29,7 @@ This document provides a comprehensive status of all AI development tools in the
 **Notes:** Referenced in smoke test, needs path validation
 
 ### semantic-indexer.cjs
+
 **Status:** 🔄 PENDING_TESTING  
 **Purpose:** Advanced semantic code analysis and indexing  
 **Usage:** `node tools/scripts/ai/semantic-indexer.cjs`  
@@ -34,6 +37,7 @@ This document provides a comprehensive status of all AI development tools in the
 **Notes:** Part of AI hub system
 
 ### incremental-indexer.js
+
 **Status:** 🔄 PENDING_TESTING  
 **Purpose:** Incremental code indexing for changed files  
 **Usage:** `node tools/scripts/ai/incremental-indexer.js`  
@@ -41,6 +45,7 @@ This document provides a comprehensive status of all AI development tools in the
 **Notes:** Optimize reindexing performance
 
 ### index-if-changed.js
+
 **Status:** 🔄 PENDING_TESTING  
 **Purpose:** Conditional indexing based on file changes  
 **Usage:** `node tools/scripts/ai/index-if-changed.js`  
@@ -48,6 +53,7 @@ This document provides a comprehensive status of all AI development tools in the
 **Notes:** CI/CD integration candidate
 
 ### index-server.js
+
 **Status:** 🔄 PENDING_TESTING  
 **Purpose:** HTTP API server for code index queries  
 **Usage:** `node tools/scripts/ai/index-server.js` (runs on port 3001)  
@@ -56,6 +62,7 @@ This document provides a comprehensive status of all AI development tools in the
 **Notes:** Referenced in smoke test with health checks
 
 ### embeddings.js
+
 **Status:** 🔄 PENDING_TESTING  
 **Purpose:** Generate vector embeddings for code  
 **Usage:** `node tools/scripts/ai/embeddings.js`  
@@ -63,6 +70,7 @@ This document provides a comprehensive status of all AI development tools in the
 **Notes:** Foundation for semantic search
 
 ### embedding-engine.cjs
+
 **Status:** 🔄 PENDING_TESTING  
 **Purpose:** Advanced embedding engine with caching  
 **Usage:** `node tools/scripts/ai/embedding-engine.cjs test`  
@@ -74,6 +82,7 @@ This document provides a comprehensive status of all AI development tools in the
 ## Context & Caching (6 tools)
 
 ### context-preloader.js
+
 **Status:** 🔄 PENDING_TESTING  
 **Purpose:** Preload and manage AI context bundles  
 **Usage:** `node tools/scripts/ai/context-preloader.js preload|get <context>`  
@@ -81,13 +90,15 @@ This document provides a comprehensive status of all AI development tools in the
 **Notes:** Referenced in smoke test
 
 ### build-context-bundles.js
+
 **Status:** 🔄 PENDING_TESTING  
 **Purpose:** Generate context bundles for AI assistants  
 **Usage:** `node tools/scripts/ai/build-context-bundles.js`  
-**Output:** tools/ai/context-bundles/*.md  
+**Output:** tools/ai/context-bundles/\*.md  
 **Notes:** Should run before context-preloader
 
 ### pre-cache.js
+
 **Status:** 🔄 PENDING_TESTING  
 **Purpose:** Pre-warm caches for faster AI responses  
 **Usage:** `node tools/scripts/ai/pre-cache.js`  
@@ -95,6 +106,7 @@ This document provides a comprehensive status of all AI development tools in the
 **Notes:** Referenced in README.md CI workflow
 
 ### cache-manager.cjs
+
 **Status:** 🔄 PENDING_TESTING  
 **Purpose:** Manage AI response caching  
 **Usage:** Library import  
@@ -102,6 +114,7 @@ This document provides a comprehensive status of all AI development tools in the
 **Notes:** Used by ai-hub.cjs
 
 ### smart-cache.cjs
+
 **Status:** 🔄 PENDING_TESTING  
 **Purpose:** Intelligent cache with LRU eviction  
 **Usage:** Library import  
@@ -109,6 +122,7 @@ This document provides a comprehensive status of all AI development tools in the
 **Notes:** Advanced caching logic
 
 ### context-optimizer.cjs
+
 **Status:** 🔄 PENDING_TESTING  
 **Purpose:** Optimize context window usage  
 **Usage:** Library import  
@@ -120,6 +134,7 @@ This document provides a comprehensive status of all AI development tools in the
 ## Quality & Governance (8 tools)
 
 ### competence-monitor.js
+
 **Status:** 🔄 PENDING_TESTING  
 **Purpose:** Assess AI assistant code quality and competence  
 **Usage:** `node tools/scripts/ai/competence-monitor.js assess`  
@@ -127,6 +142,7 @@ This document provides a comprehensive status of all AI development tools in the
 **Notes:** Referenced in smoke test, has test suite
 
 ### ci-neutrality-check.mts
+
 **Status:** ✅ OPERATIONAL  
 **Purpose:** CI/CD political neutrality validation  
 **Usage:** `node tools/scripts/ai/ci-neutrality-check.mts <files...>`  
@@ -134,6 +150,7 @@ This document provides a comprehensive status of all AI development tools in the
 **Notes:** Actively used in CI pipeline
 
 ### precommit-neutrality.mts
+
 **Status:** 🔄 PENDING_TESTING  
 **Purpose:** Pre-commit hook for neutrality validation  
 **Usage:** Git hook (symlink to .git/hooks/pre-commit)  
@@ -141,6 +158,7 @@ This document provides a comprehensive status of all AI development tools in the
 **Notes:** Currently not integrated
 
 ### guard-change-budget.mjs
+
 **Status:** 🔄 PENDING_TESTING  
 **Purpose:** Enforce change budget limits (Fast-Secure/Safe/Audit modes)  
 **Usage:** `node tools/scripts/ai/guard-change-budget.mjs`  
@@ -148,6 +166,7 @@ This document provides a comprehensive status of all AI development tools in the
 **Notes:** Referenced in governance docs
 
 ### risk-assessment-integration.js
+
 **Status:** 🔄 PENDING_TESTING  
 **Purpose:** Integrate AI risk assessment into workflows  
 **Usage:** `node tools/scripts/ai/risk-assessment-integration.js`  
@@ -155,12 +174,14 @@ This document provides a comprehensive status of all AI development tools in the
 **Notes:** NIST AI RMF 1.0 compliance
 
 ### model-validation-pipeline.js
+
 **Status:** 🔄 PENDING_TESTING  
 **Purpose:** Validate AI model outputs for bias and quality  
 **Usage:** `node tools/scripts/ai/model-validation-pipeline.js`  
 **Notes:** AI governance requirement
 
 ### performance-monitor.js
+
 **Status:** 🔄 PENDING_TESTING  
 **Purpose:** Monitor AI tool performance and metrics  
 **Usage:** `node tools/scripts/ai/performance-monitor.js`  
@@ -168,6 +189,7 @@ This document provides a comprehensive status of all AI development tools in the
 **Notes:** Should feed into observability stack
 
 ### analytics.js
+
 **Status:** 🔄 PENDING_TESTING  
 **Purpose:** AI usage analytics and reporting  
 **Usage:** `node tools/scripts/ai/analytics.js`  
@@ -178,6 +200,7 @@ This document provides a comprehensive status of all AI development tools in the
 ## Advanced AI Core (10 tools)
 
 ### ai-hub.cjs
+
 **Status:** 🔄 PENDING_TESTING  
 **Purpose:** Unified AI intelligence hub - single interface for all AI capabilities  
 **Usage:** Library import or CLI  
@@ -185,6 +208,7 @@ This document provides a comprehensive status of all AI development tools in the
 **Notes:** Central orchestration layer
 
 ### ai-assistant.cjs
+
 **Status:** 🔄 PENDING_TESTING  
 **Purpose:** Interactive AI coding assistant  
 **Usage:** `node tools/scripts/ai/ai-assistant.cjs`  
@@ -192,6 +216,7 @@ This document provides a comprehensive status of all AI development tools in the
 **Notes:** CLI interface for developers
 
 ### code-analyzer.cjs
+
 **Status:** 🔄 PENDING_TESTING  
 **Purpose:** Static code analysis for AI context  
 **Usage:** Library import  
@@ -199,6 +224,7 @@ This document provides a comprehensive status of all AI development tools in the
 **Notes:** Part of ai-hub.cjs
 
 ### ast-analyzer.cjs
+
 **Status:** 🔄 PENDING_TESTING  
 **Purpose:** Abstract Syntax Tree analysis  
 **Usage:** `npm run ai:parse <file>`  
@@ -206,6 +232,7 @@ This document provides a comprehensive status of all AI development tools in the
 **Notes:** install-upgrades.sh mentions npm run ai:parse
 
 ### tree-sitter-parser.cjs
+
 **Status:** 🔄 PENDING_TESTING  
 **Purpose:** Tree-sitter-based code parsing  
 **Usage:** `node tools/scripts/ai/tree-sitter-parser.cjs list`  
@@ -213,6 +240,7 @@ This document provides a comprehensive status of all AI development tools in the
 **Notes:** install-upgrades.sh validates with 'list' command
 
 ### expert-knowledge.cjs
+
 **Status:** 🔄 PENDING_TESTING  
 **Purpose:** Expert knowledge base for AI recommendations  
 **Usage:** Library import  
@@ -220,6 +248,7 @@ This document provides a comprehensive status of all AI development tools in the
 **Notes:** Part of ai-hub.cjs
 
 ### pattern-matcher.cjs
+
 **Status:** 🔄 PENDING_TESTING  
 **Purpose:** Code pattern matching and recognition  
 **Usage:** Library import  
@@ -227,6 +256,7 @@ This document provides a comprehensive status of all AI development tools in the
 **Notes:** Part of ai-hub.cjs
 
 ### memory-system.cjs
+
 **Status:** 🔄 PENDING_TESTING  
 **Purpose:** Persistent memory for AI context across sessions  
 **Usage:** Library import  
@@ -234,6 +264,7 @@ This document provides a comprehensive status of all AI development tools in the
 **Notes:** Long-term context retention
 
 ### vector-store.cjs
+
 **Status:** 🔄 PENDING_TESTING  
 **Purpose:** Vector database for semantic search  
 **Usage:** Library import  
@@ -241,6 +272,7 @@ This document provides a comprehensive status of all AI development tools in the
 **Notes:** Foundation for semantic indexer
 
 ### parallel-processor.cjs
+
 **Status:** 🔄 PENDING_TESTING  
 **Purpose:** Parallel processing for AI tasks  
 **Usage:** Library import  
@@ -252,30 +284,35 @@ This document provides a comprehensive status of all AI development tools in the
 ## Testing & Validation (4 tools)
 
 ### test-ai-tools.cjs
+
 **Status:** 🔄 PENDING_TESTING  
 **Purpose:** Test suite runner for AI tools  
 **Usage:** `node tools/scripts/ai/test-ai-tools.cjs`  
 **Notes:** Should be in CI pipeline
 
 ### test-all-tools.cjs
+
 **Status:** 🔄 PENDING_TESTING  
 **Purpose:** Comprehensive AI tools validation  
 **Usage:** `node tools/scripts/ai/test-all-tools.cjs`  
 **Notes:** Similar to smoke.sh but more thorough
 
 ### code-indexer.spec.js
+
 **Status:** 🔄 PENDING_TESTING  
 **Purpose:** Unit tests for code-indexer.js  
 **Framework:** Vitest/Jest  
 **Notes:** Test coverage for indexing
 
 ### context-preloader.spec.js
+
 **Status:** 🔄 PENDING_TESTING  
 **Purpose:** Unit tests for context-preloader.js  
 **Framework:** Vitest/Jest  
 **Notes:** Test coverage for context loading
 
 ### competence-monitor.spec.js
+
 **Status:** 🔄 PENDING_TESTING  
 **Purpose:** Unit tests for competence-monitor.js  
 **Framework:** Vitest/Jest  
@@ -287,6 +324,7 @@ This document provides a comprehensive status of all AI development tools in the
 ## Maintenance & Utilities (2 tools)
 
 ### update-recent-changes.js
+
 **Status:** 🔄 PENDING_TESTING  
 **Purpose:** Update AI index with recent code changes  
 **Usage:** `node tools/scripts/ai/update-recent-changes.js`  
@@ -294,6 +332,7 @@ This document provides a comprehensive status of all AI development tools in the
 **Notes:** Should run after commits
 
 ### smoke.sh
+
 **Status:** ⚠️ NEEDS_FIX  
 **Purpose:** Smoke test for all AI tools  
 **Usage:** `bash tools/scripts/ai/smoke.sh`  
@@ -305,6 +344,7 @@ This document provides a comprehensive status of all AI development tools in the
 ## Missing/Referenced Tools
 
 ### ai-maintenance.yml
+
 **Status:** ❌ NON_FUNCTIONAL  
 **Expected:** .github/workflows/ai-maintenance.yml  
 **Referenced:** tools/scripts/ai/README.md (lines describing nightly CI runs)  
@@ -316,10 +356,12 @@ This document provides a comprehensive status of all AI development tools in the
 ## Integration Status
 
 ### Current Integrations ✅
+
 - **ci-neutrality-check.mts** → .github/workflows/ai-governance.yml (ACTIVE)
 - **competence-monitor.spec.js** → Has test suite (TESTABLE)
 
 ### Missing Integrations ⚠️
+
 - **precommit-neutrality.mts** → NOT in .lefthook.yml
 - **guard-change-budget.mjs** → NOT in CI workflows
 - **test-ai-tools.cjs** → NOT in CI pipeline
@@ -332,24 +374,28 @@ This document provides a comprehensive status of all AI development tools in the
 ## Recommended Actions
 
 ### Priority 1: Critical Path Validation
+
 1. Run smoke.sh with fixed paths to identify broken tools
 2. Test core tools: code-indexer, context-preloader, competence-monitor
 3. Validate index-server endpoints and health checks
 4. Fix any broken dependencies or missing files
 
 ### Priority 2: CI/CD Integration
+
 1. Create .github/workflows/ai-maintenance.yml (nightly runs)
 2. Add AI validation gates to existing CI workflows
 3. Integrate precommit-neutrality.mts into .lefthook.yml
 4. Add guard-change-budget.mjs to PR validation
 
 ### Priority 3: Testing & Documentation
+
 1. Run all .spec.js test suites (code-indexer, context-preloader, competence-monitor)
 2. Create integration tests for AI workflow
 3. Document actual tool usage patterns in SOPs
 4. Create troubleshooting guides for common failures
 
 ### Priority 4: Observability
+
 1. Connect performance-monitor.js to Prometheus/Grafana
 2. Add AI metrics dashboard (usage, quality improvements, time saved)
 3. Implement alerting for AI tool degradation
@@ -359,11 +405,11 @@ This document provides a comprehensive status of all AI development tools in the
 
 ## Environment Variables
 
-| Variable | Default | Purpose |
-|----------|---------|---------|
-| FAST_AI | 0 | Enable fast mode (lower rigor) |
-| INDEXER_CONCURRENCY | 4 | Parallel indexing workers |
-| PRE_CACHE_MAX_ENTRIES | 1000 | Maximum cache entries |
+| Variable              | Default | Purpose                        |
+| --------------------- | ------- | ------------------------------ |
+| FAST_AI               | 0       | Enable fast mode (lower rigor) |
+| INDEXER_CONCURRENCY   | 4       | Parallel indexing workers      |
+| PRE_CACHE_MAX_ENTRIES | 1000    | Maximum cache entries          |
 
 ---
 

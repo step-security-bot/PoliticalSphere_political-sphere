@@ -12,6 +12,8 @@
 
 ---
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 ## 🎯 Objectives
 
 - Provide end-to-end tracing from player request to AI decision to audit log.

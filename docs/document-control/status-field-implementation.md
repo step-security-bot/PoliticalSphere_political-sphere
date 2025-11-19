@@ -10,6 +10,8 @@
 
 ---
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 ## Overview
 
 All 216 documentation files in the `docs/` directory now include a **Status** field in their metadata tables, following the document lifecycle defined in `docs/document-control/review-and-approval-workflow.md`.

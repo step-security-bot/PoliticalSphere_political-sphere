@@ -90,4 +90,6 @@ This report captures the infrastructure, platform, CI/CD, and developer experien
 
 ---
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 _Last updated: {{DATE}}_

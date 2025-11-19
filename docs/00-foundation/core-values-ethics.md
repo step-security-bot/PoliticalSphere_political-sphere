@@ -107,6 +107,8 @@ This hierarchy is our constitutional override logic — it guides design reviews
 
 ---
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 ## 🌟 Core Values
 
 ### Fairness

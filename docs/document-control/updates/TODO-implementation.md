@@ -10,6 +10,8 @@
 
 ---
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 - [x] Create Terraform config for localstack in apps/dev/terraform/ (main.tf, variables.tf, outputs.tf)
 - [x] Update docker-compose.dev.yaml to add Prometheus and Grafana services
 - [x] Create scripts/setup.sh onboarding script

@@ -10,6 +10,8 @@
 
 ---
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 ## Overview
 
 Political Sphere is designed as a UK-style parliamentary simulation, launching primarily in English with internationalization (i18n) foundations for future global expansion. Localization will prioritize ethical containment, safety, and fictional neutrality, avoiding real-world political imports.

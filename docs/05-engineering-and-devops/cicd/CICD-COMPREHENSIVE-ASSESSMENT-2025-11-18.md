@@ -1,10 +1,13 @@
 # CI/CD Comprehensive Assessment & Improvement Plan
+
 **Version:** 1.0.0  
 **Date:** 2025-11-18  
 **Owner:** Platform Engineering  
 **Status:** Phase 1 - In Progress
 
 ---
+
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
 
 ## Executive Summary
 
@@ -13,6 +16,7 @@ This document presents a comprehensive, evidence-based assessment of Political S
 ### Current State Summary
 
 **Strengths:**
+
 - ✅ GitHub Actions already pinned to SHA (excellent security posture)
 - ✅ Dockerfiles pinned by digest (SLSA Level 3 compliant)
 - ✅ package-lock.json present and tracked
@@ -23,6 +27,7 @@ This document presents a comprehensive, evidence-based assessment of Political S
 - ✅ Extensive workflow coverage (27 workflow files)
 
 **Critical Gaps Identified:**
+
 - ⚠️ Inconsistent GITHUB_TOKEN permissions (mix of read-all, write-all, and granular)
 - ⚠️ Some workflows lack top-level permissions declaration
 - ⚠️ Limited workflow observability and failure analytics
@@ -32,6 +37,7 @@ This document presents a comprehensive, evidence-based assessment of Political S
 - ⚠️ Limited cache invalidation strategies
 
 **Risk Assessment:**
+
 - **HIGH**: GITHUB_TOKEN privilege escalation potential
 - **MEDIUM**: CI/CD performance degradation at scale
 - **MEDIUM**: Lack of failure analytics impedes improvement
@@ -44,12 +50,14 @@ This document presents a comprehensive, evidence-based assessment of Political S
 ### 1.1 Architecture Analysis
 
 **Monorepo Structure:**
+
 - **Tool:** Nx workspace with 12+ applications and 17+ libraries
 - **Package Manager:** npm (not pnpm despite workspace.yaml presence)
 - **Node Version:** 22 (LTS)
 - **Build Tool:** Vite (frontend), tsc (backend)
 
 **CI/CD Platform:**
+
 - **Primary:** GitHub Actions (27 workflows)
 - **Pre-commit:** Lefthook v4.0.0 (enterprise-grade)
 - **Observability:** Limited (basic success/failure tracking)
@@ -81,12 +89,14 @@ FROM node:22-alpine@sha256:6e80991f69cc7722c561e5d14d5e72ab47c0d6b6cfb3ae50fb9cf
 ### 1.3 Performance Analysis
 
 **Current Metrics** (from Lefthook):
+
 - P50: 8.2s
-- P95: 14.7s  
+- P95: 14.7s
 - P99: 22.1s
 - Target: P95 < 20s for <20 files ✅
 
 **CI Pipeline Metrics** (estimated from workflows):
+
 - Pre-flight: ~5 minutes
 - Lint + Type-check: ~3-5 minutes
 - Test Suite: ~5-10 minutes (with Nx affected)
@@ -94,6 +104,7 @@ FROM node:22-alpine@sha256:6e80991f69cc7722c561e5d14d5e72ab47c0d6b6cfb3ae50fb9cf
 - **Total P95:** ~25-35 minutes
 
 **Bottlenecks:**
+
 - Sequential dependency installation across jobs
 - Limited test parallelization
 - No distributed caching for Playwright
@@ -102,6 +113,7 @@ FROM node:22-alpine@sha256:6e80991f69cc7722c561e5d14d5e72ab47c0d6b6cfb3ae50fb9cf
 ### 1.4 Quality Gates
 
 **Current Gates:**
+
 ```yaml
 # From ci.yml workflow
 1. Secret scanning (Gitleaks)
@@ -121,6 +133,7 @@ FROM node:22-alpine@sha256:6e80991f69cc7722c561e5d14d5e72ab47c0d6b6cfb3ae50fb9cf
 ### 1.5 Compliance & Auditability
 
 **Current:**
+
 - ✅ SLSA provenance workflow exists
 - ✅ SBOM generation capability
 - ✅ Audit trails in pre-commit telemetry
@@ -136,16 +149,18 @@ FROM node:22-alpine@sha256:6e80991f69cc7722c561e5d14d5e72ab47c0d6b6cfb3ae50fb9cf
 **Source:** [GitHub Actions Security Best Practices](https://learn.microsoft.com/en-us/azure/devops/pipelines/security/github-advanced-security)
 
 **Key Recommendations:**
+
 1. **Minimal Permissions** (REQUIRED)
+
    ```yaml
    permissions:
-     contents: read  # Top-level default
-   
+     contents: read # Top-level default
+
    jobs:
      build:
        permissions:
          contents: read
-         pull-requests: write  # Only if needed
+         pull-requests: write # Only if needed
    ```
 
 2. **Action Pinning** (COMPLETED ✅)
@@ -203,6 +218,7 @@ FROM node:22-alpine@sha256:6e80991f69cc7722c561e5d14d5e72ab47c0d6b6cfb3ae50fb9cf
 **Key Patterns:**
 
 1. **Affected Commands** (PARTIALLY IMPLEMENTED)
+
    ```bash
    # Current usage in workflows
    npx nx affected --target=test --parallel=3
@@ -227,31 +243,37 @@ FROM node:22-alpine@sha256:6e80991f69cc7722c561e5d14d5e72ab47c0d6b6cfb3ae50fb9cf
 **Tasks:**
 
 1.1. **Audit and Fix Permissions** (3-5 days)
-   - Use StepSecurity online tool to analyze all workflows
-   - Set top-level `permissions: read-all` or `contents: read`
-   - Grant minimal write permissions at job level only
-   - **Deliverable:** All 27 workflows updated with least-privilege model
+
+- Use StepSecurity online tool to analyze all workflows
+- Set top-level `permissions: read-all` or `contents: read`
+- Grant minimal write permissions at job level only
+- **Deliverable:** All 27 workflows updated with least-privilege model
 
 1.2. **Implement Workflow Allowlist** (1-2 days)
-   - Create `.github/allowed-actions.txt` with approved actions
-   - Configure repository settings to enforce allowlist
-   - **Deliverable:** Only vetted actions can be used
+
+- Create `.github/allowed-actions.txt` with approved actions
+- Configure repository settings to enforce allowlist
+- **Deliverable:** Only vetted actions can be used
 
 1.3. **Enable Harden-Runner** (2-3 days)
-   ```yaml
-   - uses: step-security/harden-runner@v2
-     with:
-       egress-policy: audit  # or block for critical workflows
-   ```
-   - **Deliverable:** Network egress monitoring on all workflows
+
+```yaml
+- uses: step-security/harden-runner@v2
+  with:
+    egress-policy: audit # or block for critical workflows
+```
+
+- **Deliverable:** Network egress monitoring on all workflows
 
 **Success Criteria:**
+
 - ✅ All workflows pass StepSecurity audit
 - ✅ Zero `write-all` permissions in workflows
 - ✅ Harden-Runner deployed to 5+ critical workflows
 - ✅ ADR documenting permission model created
 
 **Risk Mitigation:**
+
 - Test in feature branch before main
 - Monitor for workflow breakage
 - Maintain rollback plan
@@ -265,35 +287,41 @@ FROM node:22-alpine@sha256:6e80991f69cc7722c561e5d14d5e72ab47c0d6b6cfb3ae50fb9cf
 **Tasks:**
 
 2.1. **Implement Distributed Task Execution** (3-4 days)
-   - Enable Nx DTE for parallel test execution
-   - Configure agent-based test distribution
-   - **Deliverable:** Test suite runs 2-3x faster
+
+- Enable Nx DTE for parallel test execution
+- Configure agent-based test distribution
+- **Deliverable:** Test suite runs 2-3x faster
 
 2.2. **Optimize Caching Strategy** (2-3 days)
-   ```yaml
-   - uses: actions/cache@v4
-     with:
-       path: |
-         ~/.npm
-         .nx/cache
-         node_modules/.cache
-       key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-       restore-keys: |
-         ${{ runner.os }}-node-
-   ```
-   - Implement multi-level caching (npm, Nx, Playwright)
-   - **Deliverable:** 30-50% faster cold builds
+
+```yaml
+- uses: actions/cache@v4
+  with:
+    path: |
+      ~/.npm
+      .nx/cache
+      node_modules/.cache
+    key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+    restore-keys: |
+      ${{ runner.os }}-node-
+```
+
+- Implement multi-level caching (npm, Nx, Playwright)
+- **Deliverable:** 30-50% faster cold builds
 
 2.3. **Parallelize E2E Tests** (2-3 days)
-   ```yaml
-   strategy:
-     matrix:
-       shard: [1, 2, 3, 4]
-   run: npx playwright test --shard=${{ matrix.shard }}/4
-   ```
-   - **Deliverable:** E2E tests complete in <5 minutes
+
+```yaml
+strategy:
+  matrix:
+    shard: [1, 2, 3, 4]
+run: npx playwright test --shard=${{ matrix.shard }}/4
+```
+
+- **Deliverable:** E2E tests complete in <5 minutes
 
 **Success Criteria:**
+
 - ✅ CI pipeline P95 < 20 minutes
 - ✅ Test suite P95 < 8 minutes
 - ✅ Cache hit rate > 70%
@@ -307,29 +335,34 @@ FROM node:22-alpine@sha256:6e80991f69cc7722c561e5d14d5e72ab47c0d6b6cfb3ae50fb9cf
 **Tasks:**
 
 3.1. **Deploy CI/CD Dashboard** (4-5 days)
-   - Integrate with GitHub Actions API
-   - Track: success rate, duration, flakiness, cost
-   - **Deliverable:** Real-time CI/CD health dashboard
+
+- Integrate with GitHub Actions API
+- Track: success rate, duration, flakiness, cost
+- **Deliverable:** Real-time CI/CD health dashboard
 
 3.2. **Implement Failure Analytics** (2-3 days)
-   ```yaml
-   - name: Upload failure logs
-     if: failure()
-     uses: actions/upload-artifact@v4
-     with:
-       name: failure-logs-${{ github.run_id }}
-       path: |
-         logs/
-         reports/
-   ```
-   - **Deliverable:** Automated failure categorization
+
+```yaml
+- name: Upload failure logs
+  if: failure()
+  uses: actions/upload-artifact@v4
+  with:
+    name: failure-logs-${{ github.run_id }}
+    path: |
+      logs/
+      reports/
+```
+
+- **Deliverable:** Automated failure categorization
 
 3.3. **Set Up Alerts** (1-2 days)
-   - Slack/Discord webhooks for critical failures
-   - Weekly CI/CD health reports
-   - **Deliverable:** Proactive failure detection
+
+- Slack/Discord webhooks for critical failures
+- Weekly CI/CD health reports
+- **Deliverable:** Proactive failure detection
 
 **Success Criteria:**
+
 - ✅ Dashboard showing 30-day trends
 - ✅ Alerts trigger within 5 minutes of failure
 - ✅ Flaky test detection automated
@@ -343,26 +376,31 @@ FROM node:22-alpine@sha256:6e80991f69cc7722c561e5d14d5e72ab47c0d6b6cfb3ae50fb9cf
 **Tasks:**
 
 4.1. **Implement Artifact Signing** (3-4 days)
-   ```yaml
-   - uses: sigstore/cosign-installer@v3
-   - name: Sign artifacts
-     run: |
-       cosign sign-blob --key cosign.key \
-         --output-signature=artifact.sig \
-         artifact.tar.gz
-   ```
-   - **Deliverable:** All release artifacts signed with Sigstore
+
+```yaml
+- uses: sigstore/cosign-installer@v3
+- name: Sign artifacts
+  run: |
+    cosign sign-blob --key cosign.key \
+      --output-signature=artifact.sig \
+      artifact.tar.gz
+```
+
+- **Deliverable:** All release artifacts signed with Sigstore
 
 4.2. **Automated Provenance Upload** (2-3 days)
-   - Integrate SLSA provenance with container registry
-   - **Deliverable:** Provenance attestations in OCI registry
+
+- Integrate SLSA provenance with container registry
+- **Deliverable:** Provenance attestations in OCI registry
 
 4.3. **Supply Chain Levels for Software Artifacts (SLSA) Compliance** (2-3 days)
-   - Verify hermetic builds
-   - Implement build parameter recording
-   - **Deliverable:** SLSA Level 3 certification readiness
+
+- Verify hermetic builds
+- Implement build parameter recording
+- **Deliverable:** SLSA Level 3 certification readiness
 
 **Success Criteria:**
+
 - ✅ All releases have provenance attestations
 - ✅ Artifacts verifiable with cosign
 - ✅ SLSA scorecard 8.5+
@@ -376,21 +414,25 @@ FROM node:22-alpine@sha256:6e80991f69cc7722c561e5d14d5e72ab47c0d6b6cfb3ae50fb9cf
 **Tasks:**
 
 5.1. **Implement Self-Healing Workflows** (3-4 days)
-   - Automatic retry with exponential backoff
-   - Intelligent test selection on retry
-   - **Deliverable:** 80% reduction in transient failures
+
+- Automatic retry with exponential backoff
+- Intelligent test selection on retry
+- **Deliverable:** 80% reduction in transient failures
 
 5.2. **Cost Optimization** (2-3 days)
-   - Analyze GitHub Actions usage
-   - Optimize runner selection (self-hosted for heavy workloads)
-   - **Deliverable:** 20-30% reduction in CI costs
+
+- Analyze GitHub Actions usage
+- Optimize runner selection (self-hosted for heavy workloads)
+- **Deliverable:** 20-30% reduction in CI costs
 
 5.3. **Developer Experience Improvements** (2-3 days)
-   - Pre-merge CI status dashboard
-   - Local CI emulation with `act`
-   - **Deliverable:** Faster developer feedback
+
+- Pre-merge CI status dashboard
+- Local CI emulation with `act`
+- **Deliverable:** Faster developer feedback
 
 **Success Criteria:**
+
 - ✅ Transient failure rate < 2%
 - ✅ CI cost per PR < $0.50
 - ✅ Developer satisfaction score > 8/10
@@ -420,7 +462,7 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     permissions:
-      contents: read  # Explicit read for clarity
+      contents: read # Explicit read for clarity
     steps:
       - uses: actions/checkout@<sha>
       - run: npm run lint
@@ -430,7 +472,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      pull-requests: write  # ONLY for PR comments
+      pull-requests: write # ONLY for PR comments
     steps:
       - uses: actions/checkout@<sha>
       - run: npm test
@@ -457,13 +499,13 @@ jobs:
 
 **Workflow-by-Workflow Permissions Mapping:**
 
-| Workflow | Top-Level | Job-Level Additions | Justification |
-|----------|-----------|---------------------|---------------|
-| `ci.yml` | `contents: read` | `pull-requests: write` (test report job) | PR comment posting |
-| `security.yml` | `contents: read` | `security-events: write` (SARIF upload) | CodeQL/Semgrep results |
-| `release.yml` | `contents: read` | `contents: write`, `packages: write` | Tag creation, artifact publish |
-| `dependency-updates.yml` | `contents: read` | `pull-requests: write` | Dependabot PR creation |
-| `e2e.yml` | `contents: read` | None | Read-only test execution |
+| Workflow                 | Top-Level        | Job-Level Additions                      | Justification                  |
+| ------------------------ | ---------------- | ---------------------------------------- | ------------------------------ |
+| `ci.yml`                 | `contents: read` | `pull-requests: write` (test report job) | PR comment posting             |
+| `security.yml`           | `contents: read` | `security-events: write` (SARIF upload)  | CodeQL/Semgrep results         |
+| `release.yml`            | `contents: read` | `contents: write`, `packages: write`     | Tag creation, artifact publish |
+| `dependency-updates.yml` | `contents: read` | `pull-requests: write`                   | Dependabot PR creation         |
+| `e2e.yml`                | `contents: read` | None                                     | Read-only test execution       |
 
 ### 4.2 Cache Optimization Strategy
 
@@ -509,6 +551,7 @@ jobs:
 ```
 
 **Cache Invalidation Triggers:**
+
 - `package-lock.json` changes → npm cache invalidated
 - Source code changes → Nx cache invalidated (git SHA)
 - Playwright version changes → Browser cache invalidated
@@ -546,6 +589,7 @@ jobs:
 ```
 
 **Expected Performance Improvement:**
+
 - Current: ~10 minutes for full test suite
 - With DTE: ~4-5 minutes (2x faster)
 - Cost: Marginal (parallel runner usage)
@@ -556,24 +600,25 @@ jobs:
 
 ```yaml
 # .github/workflows/ci.yml (add to end of each job)
-      - name: Report metrics
-        if: always()
-        run: |
-          cat << EOF > metrics.json
-          {
-            "workflow": "${{ github.workflow }}",
-            "job": "${{ github.job }}",
-            "run_id": "${{ github.run_id }}",
-            "status": "${{ job.status }}",
-            "duration_seconds": $(($(date +%s) - ${START_TIME})),
-            "timestamp": "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
-          }
-          EOF
-          # Send to metrics endpoint (future: OpenTelemetry)
-          echo "Metrics: $(cat metrics.json)"
+- name: Report metrics
+  if: always()
+  run: |
+    cat << EOF > metrics.json
+    {
+      "workflow": "${{ github.workflow }}",
+      "job": "${{ github.job }}",
+      "run_id": "${{ github.run_id }}",
+      "status": "${{ job.status }}",
+      "duration_seconds": $(($(date +%s) - ${START_TIME})),
+      "timestamp": "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+    }
+    EOF
+    # Send to metrics endpoint (future: OpenTelemetry)
+    echo "Metrics: $(cat metrics.json)"
 ```
 
 **Grafana Dashboard Metrics:**
+
 - Success rate (%) per workflow
 - P50/P95/P99 duration
 - Flakiness score (failed reruns / total runs)
@@ -586,34 +631,38 @@ jobs:
 
 ### 5.1 Implementation Risks
 
-| Risk | Severity | Likelihood | Mitigation |
-|------|----------|------------|------------|
-| Permission changes break workflows | HIGH | MEDIUM | Incremental rollout, test in feature branch |
-| DTE increases cost significantly | MEDIUM | LOW | Start with 2 agents, monitor cost per week |
-| Cache corruption causes flaky builds | MEDIUM | LOW | Implement cache versioning, fallback to fresh install |
-| Harden-Runner blocks legitimate egress | HIGH | MEDIUM | Start with audit mode, whitelist known endpoints |
-| StepSecurity analysis overwhelms team | LOW | MEDIUM | Prioritize critical workflows first |
+| Risk                                   | Severity | Likelihood | Mitigation                                            |
+| -------------------------------------- | -------- | ---------- | ----------------------------------------------------- |
+| Permission changes break workflows     | HIGH     | MEDIUM     | Incremental rollout, test in feature branch           |
+| DTE increases cost significantly       | MEDIUM   | LOW        | Start with 2 agents, monitor cost per week            |
+| Cache corruption causes flaky builds   | MEDIUM   | LOW        | Implement cache versioning, fallback to fresh install |
+| Harden-Runner blocks legitimate egress | HIGH     | MEDIUM     | Start with audit mode, whitelist known endpoints      |
+| StepSecurity analysis overwhelms team  | LOW      | MEDIUM     | Prioritize critical workflows first                   |
 
 ### 5.2 Rollback Plans
 
 **Per Phase:**
 
 **Phase 1 (Security):**
+
 - Revert: Git revert permission changes
 - Fallback: Temporarily use `write-all` with ADR justification
 - Time to rollback: <5 minutes
 
 **Phase 2 (Performance):**
+
 - Revert: Disable DTE via environment variable
 - Fallback: Sequential execution (current state)
 - Time to rollback: <1 minute
 
 **Phase 3 (Observability):**
+
 - Revert: Remove metrics collection steps
 - Fallback: No impact on pipeline functionality
 - Time to rollback: N/A (non-blocking)
 
 **Phase 4 (Supply Chain):**
+
 - Revert: Skip signing steps
 - Fallback: Release without signatures (temporary)
 - Time to rollback: <10 minutes
@@ -625,6 +674,7 @@ jobs:
 ### 6.1 Phase 1 Success Criteria
 
 **Security Hardening:**
+
 - [ ] 100% of workflows use least-privilege permissions
 - [ ] StepSecurity audit score ≥ 95/100
 - [ ] Zero workflows with `write-all` at job level
@@ -634,6 +684,7 @@ jobs:
 ### 6.2 Phase 2 Success Criteria
 
 **Performance Optimization:**
+
 - [ ] CI pipeline P95 duration: <20 minutes (current: ~30-35 min)
 - [ ] Test suite P95 duration: <8 minutes (current: ~10-15 min)
 - [ ] Cache hit rate: ≥70%
@@ -642,6 +693,7 @@ jobs:
 ### 6.3 Phase 3 Success Criteria
 
 **Observability:**
+
 - [ ] CI/CD dashboard live with 30-day historical data
 - [ ] Alert latency: <5 minutes for critical failures
 - [ ] Flaky test detection: ≥90% accuracy
@@ -650,6 +702,7 @@ jobs:
 ### 6.4 Phase 4 Success Criteria
 
 **Supply Chain Security:**
+
 - [ ] 100% of releases have SLSA provenance
 - [ ] All artifacts signed with cosign
 - [ ] SLSA scorecard: ≥8.5/10
@@ -658,6 +711,7 @@ jobs:
 ### 6.5 Phase 5 Success Criteria
 
 **Continuous Improvement:**
+
 - [ ] Transient failure rate: <2%
 - [ ] CI cost per PR: <$0.50 (baseline: TBD)
 - [ ] Developer satisfaction: ≥8/10
@@ -669,25 +723,26 @@ jobs:
 
 ### 7.1 Human Resources
 
-| Phase | Effort (Person-Days) | Roles Required |
-|-------|---------------------|----------------|
-| Phase 1 | 8-10 | Platform Engineer, Security Engineer |
-| Phase 2 | 7-9 | Platform Engineer, DevOps Engineer |
-| Phase 3 | 7-9 | SRE, Platform Engineer |
-| Phase 4 | 7-9 | Security Engineer, Platform Engineer |
-| Phase 5 | 7-9 | Platform Engineer, Developer Advocate |
-| **Total** | **36-46** | **~2 months with 1 FTE** |
+| Phase     | Effort (Person-Days) | Roles Required                        |
+| --------- | -------------------- | ------------------------------------- |
+| Phase 1   | 8-10                 | Platform Engineer, Security Engineer  |
+| Phase 2   | 7-9                  | Platform Engineer, DevOps Engineer    |
+| Phase 3   | 7-9                  | SRE, Platform Engineer                |
+| Phase 4   | 7-9                  | Security Engineer, Platform Engineer  |
+| Phase 5   | 7-9                  | Platform Engineer, Developer Advocate |
+| **Total** | **36-46**            | **~2 months with 1 FTE**              |
 
 ### 7.2 Infrastructure Costs
 
-| Item | Current | Projected | Delta |
-|------|---------|-----------|-------|
-| GitHub Actions minutes (monthly) | ~5,000 | ~6,000 | +20% (DTE overhead) |
-| Nx Cloud (monthly) | $0 (free tier) | $49 (Pro) | +$49 |
-| Monitoring (Grafana Cloud) | $0 | $29 | +$29 |
-| **Total Monthly** | **~$0** | **~$78** | **+$78** |
+| Item                             | Current        | Projected | Delta               |
+| -------------------------------- | -------------- | --------- | ------------------- |
+| GitHub Actions minutes (monthly) | ~5,000         | ~6,000    | +20% (DTE overhead) |
+| Nx Cloud (monthly)               | $0 (free tier) | $49 (Pro) | +$49                |
+| Monitoring (Grafana Cloud)       | $0             | $29       | +$29                |
+| **Total Monthly**                | **~$0**        | **~$78**  | **+$78**            |
 
 **ROI Analysis:**
+
 - Developer time saved: ~2 hours/week × 5 devs × $50/hour = **$500/week**
 - Monthly savings: **$2,000**
 - Monthly cost: **$78**
@@ -696,6 +751,7 @@ jobs:
 ### 7.3 Tool Requirements
 
 **New Tools to Introduce:**
+
 1. **StepSecurity** (Free for public repos, $49/month for private)
    - Purpose: Workflow security analysis
    - Installation: GitHub App
@@ -721,6 +777,7 @@ jobs:
 ### 8.1 Incremental Rollout
 
 **Week 1-2: Phase 1 (Security)**
+
 - **Monday:** Audit current permissions with StepSecurity
 - **Tuesday-Wednesday:** Update 5 critical workflows (ci.yml, security.yml, release.yml, etc.)
 - **Thursday:** Test updated workflows in feature branch
@@ -730,6 +787,7 @@ jobs:
 - **Week 2 Friday:** Create ADR-020, Phase 1 retrospective
 
 **Week 3-4: Phase 2 (Performance)**
+
 - **Monday:** Enable Nx Cloud DTE in dev environment
 - **Tuesday-Wednesday:** Test DTE with 2 agents, measure performance
 - **Thursday:** Optimize caching strategy, add Playwright cache
@@ -739,17 +797,20 @@ jobs:
 - **Week 4 Friday:** Phase 2 retrospective, document learnings
 
 **Week 5-6: Phase 3 (Observability)**
+
 - Similar phased approach
 
 ### 8.2 Testing Strategy
 
 **Pre-Merge Testing:**
+
 1. **Unit Tests:** All workflow changes validated with actionlint
 2. **Integration Tests:** Run full CI suite in feature branch
 3. **Smoke Tests:** Verify critical paths (build, test, deploy preview)
 4. **Chaos Tests:** Introduce failures to validate error handling
 
 **Post-Merge Monitoring:**
+
 1. **24-Hour Watch:** Monitor all workflow runs
 2. **72-Hour Analysis:** Check for regressions, flakiness
 3. **Weekly Review:** Retrospective on issues, improvements
@@ -757,11 +818,13 @@ jobs:
 ### 8.3 Communication Plan
 
 **Stakeholders:**
+
 - **Developers:** Weekly updates on CI/CD improvements
 - **Security Team:** Phase 1 and 4 deep-dive reviews
 - **Leadership:** Monthly progress reports with ROI metrics
 
 **Channels:**
+
 - **Slack:** `#ci-cd-improvements` channel for real-time updates
 - **ADRs:** Formal documentation in `docs/architecture/decisions/`
 - **Retrospectives:** End-of-phase lessons learned
@@ -820,6 +883,7 @@ jobs:
 ### 10.1 Phase 1 Acceptance
 
 **Criteria:**
+
 - ✅ All workflows pass StepSecurity audit (score ≥95)
 - ✅ Zero workflows use `write-all` permissions
 - ✅ Harden-Runner deployed to `ci.yml`, `security.yml`, `release.yml`
@@ -831,6 +895,7 @@ jobs:
 ### 10.2 Phase 2 Acceptance
 
 **Criteria:**
+
 - ✅ CI pipeline P95 < 20 minutes (measured over 50 runs)
 - ✅ Test suite P95 < 8 minutes (measured over 100 runs)
 - ✅ Cache hit rate ≥70% (measured over 7 days)
@@ -842,6 +907,7 @@ jobs:
 ### 10.3 Final Acceptance (All Phases)
 
 **Criteria:**
+
 - ✅ All phase-specific acceptance criteria met
 - ✅ ADRs created and published
 - ✅ Runbooks reviewed by 3+ team members
@@ -858,6 +924,7 @@ jobs:
 ### 11.1 Quarterly Reviews
 
 **Schedule:**
+
 - **Q1 2026:** Review Phase 1-2 outcomes, plan Phase 6 (TBD)
 - **Q2 2026:** Performance benchmarking, cost optimization
 - **Q3 2026:** Security audit, SLSA recertification
@@ -866,6 +933,7 @@ jobs:
 ### 11.2 Feedback Mechanisms
 
 **Channels:**
+
 1. **Weekly CI/CD Office Hours:** Open forum for questions
 2. **Monthly Metrics Review:** Dashboard walkthrough, trend analysis
 3. **Quarterly Retrospectives:** Deep-dive on successes, failures
@@ -874,6 +942,7 @@ jobs:
 ### 11.3 Adaptation Triggers
 
 **When to re-evaluate:**
+
 - GitHub Actions pricing changes
 - New security vulnerabilities discovered
 - Team size doubles (>10 developers)
@@ -893,12 +962,14 @@ This comprehensive CI/CD improvement plan addresses the critical gaps identified
 5. **Developer Experience:** Faster feedback, fewer disruptions
 
 **Next Steps:**
+
 1. Review and approve this plan (Target: 2025-11-20)
 2. Assign ownership (Platform Engineering team)
 3. Kick off Phase 1 (Target: 2025-11-25)
 4. Schedule weekly check-ins (Every Friday, 30 minutes)
 
 **References:**
+
 - [GitHub Actions Security Guide](https://docs.github.com/en/actions/security-guides)
 - [OWASP Top 10 CI/CD Risks](https://owasp.org/www-project-top-10-ci-cd-security-risks/)
 - [SLSA Framework](https://slsa.dev/)
@@ -908,6 +979,7 @@ This comprehensive CI/CD improvement plan addresses the critical gaps identified
 ---
 
 **Document Control:**
+
 - **Version:** 1.0.0
 - **Last Updated:** 2025-11-18
 - **Next Review:** 2025-12-18

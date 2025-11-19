@@ -6,6 +6,8 @@
 
 ---
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 ## Compliance Checklist for Suggestions
 
 Before suggesting code, infrastructure, or configuration changes, verify all requirements:

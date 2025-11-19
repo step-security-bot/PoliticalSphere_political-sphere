@@ -179,8 +179,8 @@ const agent = defineAgent({
     return {
       message: {
         role: 'assistant',
-        content: `echo: ${last?.content ?? ''}`
-      }
+        content: `echo: ${last?.content ?? ''}`,
+      },
     };
   },
 });
@@ -191,7 +191,7 @@ const agent = defineAgent({
  */
 const orchestrator = createOrchestrator({
   pattern: 'concurrent',
-  agents: [agent]
+  agents: [agent],
 });
 
 /**
@@ -199,10 +199,12 @@ const orchestrator = createOrchestrator({
  * @param messages - Initial conversation messages
  * @returns Promise resolving to orchestration result
  */
-const result = await orchestrator.run([{
-  role: 'user',
-  content: 'Hello'
-}]);
+const result = await orchestrator.run([
+  {
+    role: 'user',
+    content: 'Hello',
+  },
+]);
 ```
 
 ## Examples
@@ -214,6 +216,7 @@ const result = await orchestrator.run([{
 ## Extending
 
 ### Policies
+
 ```ts
 const policy = definePolicy((messages, response) => {
   // Policy logic here
@@ -223,8 +226,9 @@ enforcePolicies([policy], messages, response);
 ```
 
 ### Validators
+
 ```ts
-const validator = defineValidator((context) => {
+const validator = defineValidator(context => {
   // Validation logic
   return { valid: true, reason: null };
 });
@@ -232,25 +236,27 @@ await runValidators([validator], context);
 ```
 
 ### Tools
+
 ```ts
 // Register tool with registry
 ToolRegistry.register({
   name: 'my-tool',
   description: 'Tool description',
-  execute: async (params) => {
+  execute: async params => {
     // Tool execution logic
     return { result: 'output' };
-  }
+  },
 });
 
 // Return tool messages from agents
 return {
   message: { role: 'assistant', content: 'Using tool' },
-  toolCalls: [{ name: 'my-tool', params: {} }]
+  toolCalls: [{ name: 'my-tool', params: {} }],
 };
 ```
 
 ### Providers
+
 ```ts
 // Use MockProvider for testing
 const provider = new MockProvider();

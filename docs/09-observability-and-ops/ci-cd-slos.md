@@ -11,6 +11,8 @@ This document defines the Service Level Objectives (SLOs) and Service Level Indi
 
 ---
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 ## 🎯 Service Level Objectives
 
 ### Build Performance

@@ -10,26 +10,26 @@ import './ParliamentChamber.css';
 
 interface Chamber {
   id: string;
-  gameId: string;
-  type: 'commons' | 'lords';
+  gameId?: string;
+  type: string;
   name: string;
-  maxSeats: number;
-  quorumPercentage: number;
-  seats: string[];
-  status: string;
-  createdAt: string;
+  maxSeats?: number;
+  quorumPercentage?: number;
+  seats?: string[];
+  status?: string;
+  createdAt?: string;
 }
 
 interface Motion {
   id: string;
-  gameId: string;
+  gameId?: string;
   chamberId: string;
-  proposerId: string;
-  type: 'debate' | 'vote' | 'amendment' | 'procedural';
+  proposerId?: string;
+  type: string;
   title: string;
   description: string;
-  status: 'proposed' | 'debate' | 'voting' | 'completed';
-  createdAt: string;
+  status: string;
+  createdAt?: string;
   result?: 'passed' | 'failed';
 }
 
@@ -45,25 +45,41 @@ interface ParliamentChamberProps {
   onError?: (error: string) => void;
 }
 
+interface LoadingStates {
+  chambers: boolean;
+  motions: boolean;
+  creatingMotion: boolean;
+  voting: boolean;
+  voteResults: boolean;
+}
+
 export const ParliamentChamber: React.FC<ParliamentChamberProps> = ({ userId, onError }) => {
   const [chambers, setChambers] = useState<Chamber[]>([]);
   const [selectedChamber, setSelectedChamber] = useState<Chamber | null>(null);
   const [motions, setMotions] = useState<Motion[]>([]);
   const [selectedMotion, setSelectedMotion] = useState<Motion | null>(null);
   const [voteResults, setVoteResults] = useState<VoteResults | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState<LoadingStates>({
+    chambers: true,
+    motions: false,
+    creatingMotion: false,
+    voting: false,
+    voteResults: false,
+  });
   const [showCreateMotion, setShowCreateMotion] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   // Form state for creating motions
   const [motionForm, setMotionForm] = useState({
-    type: 'debate' as Motion['type'],
+    type: 'debate' as string,
     title: '',
     description: '',
   });
 
   const fetchChambers = useCallback(async () => {
     try {
-      setLoading(true);
+      setLoading(prev => ({ ...prev, chambers: true }));
+      setError(null);
       // Single world - no gameId needed
       const response = await api.getChambers();
 
@@ -71,54 +87,63 @@ export const ParliamentChamber: React.FC<ParliamentChamberProps> = ({ userId, on
         throw new Error(response.error || 'Failed to fetch chambers');
       }
 
-      setChambers(response.data || []);
+      setChambers((response.data || []) as Chamber[]);
 
       // Auto-select first chamber
       if (response.data && response.data.length > 0) {
-        setSelectedChamber(response.data[0]);
+        setSelectedChamber(response.data[0] as Chamber);
       }
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Failed to fetch chambers';
+      setError(message);
       onError?.(message);
     } finally {
-      setLoading(false);
+      setLoading(prev => ({ ...prev, chambers: false }));
     }
   }, [onError]);
 
   const fetchMotions = useCallback(
     async (chamberId: string) => {
       try {
+        setLoading(prev => ({ ...prev, motions: true }));
         const response = await api.getMotions(chamberId);
 
         if (!response.success) {
           throw new Error(response.error || 'Failed to fetch motions');
         }
 
-        setMotions(response.data || []);
+        setMotions((response.data || []) as Motion[]);
       } catch (error) {
         const message = error instanceof Error ? error.message : 'Failed to fetch motions';
+        setError(message);
         onError?.(message);
+      } finally {
+        setLoading(prev => ({ ...prev, motions: false }));
       }
     },
-    [onError]
+    [onError],
   );
 
   const fetchVoteResults = useCallback(
     async (motionId: string) => {
       try {
+        setLoading(prev => ({ ...prev, voteResults: true }));
         const response = await api.getVoteResults(motionId);
 
         if (!response.success) {
           throw new Error(response.error || 'Failed to fetch vote results');
         }
 
-        setVoteResults(response.data);
+        setVoteResults(response.data || null);
       } catch (error) {
         const message = error instanceof Error ? error.message : 'Failed to fetch vote results';
+        setError(message);
         onError?.(message);
+      } finally {
+        setLoading(prev => ({ ...prev, voteResults: false }));
       }
     },
-    [onError]
+    [onError],
   );
 
   // Fetch chambers on mount
@@ -150,11 +175,15 @@ export const ParliamentChamber: React.FC<ParliamentChamberProps> = ({ userId, on
     e.preventDefault();
 
     if (!selectedChamber) {
-      onError?.('Please select a chamber first');
+      const message = 'Please select a chamber first';
+      setError(message);
+      onError?.(message);
       return;
     }
 
     try {
+      setLoading(prev => ({ ...prev, creatingMotion: true }));
+      setError(null);
       const response = await api.createMotion({
         chamberId: selectedChamber.id,
         proposerId: userId,
@@ -171,12 +200,17 @@ export const ParliamentChamber: React.FC<ParliamentChamberProps> = ({ userId, on
       fetchMotions(selectedChamber.id);
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Failed to create motion';
+      setError(message);
       onError?.(message);
+    } finally {
+      setLoading(prev => ({ ...prev, creatingMotion: false }));
     }
   };
 
   const handleCastVote = async (motionId: string, vote: 'aye' | 'no' | 'abstain') => {
     try {
+      setLoading(prev => ({ ...prev, voting: true }));
+      setError(null);
       const response = await api.castVote(motionId, vote);
 
       if (!response.success) {
@@ -187,14 +221,34 @@ export const ParliamentChamber: React.FC<ParliamentChamberProps> = ({ userId, on
       fetchVoteResults(motionId);
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Failed to cast vote';
+      setError(message);
       onError?.(message);
+    } finally {
+      setLoading(prev => ({ ...prev, voting: false }));
     }
   };
 
-  if (loading) {
+  if (loading.chambers) {
     return (
       <div className="parliament-chamber loading" aria-live="polite">
         <p>Loading Parliament...</p>
+      </div>
+    );
+  }
+
+  if (error && chambers.length === 0) {
+    return (
+      <div className="parliament-chamber error" role="alert">
+        <h2>Error Loading Parliament</h2>
+        <p>{error}</p>
+        <button
+          type="button"
+          onClick={fetchChambers}
+          className="btn-primary"
+          disabled={loading.chambers}
+        >
+          {loading.chambers ? 'Retrying...' : 'Retry'}
+        </button>
       </div>
     );
   }
@@ -236,7 +290,7 @@ export const ParliamentChamber: React.FC<ParliamentChamberProps> = ({ userId, on
               <dd>{selectedChamber.type === 'commons' ? 'House of Commons' : 'House of Lords'}</dd>
               <dt>Seats:</dt>
               <dd>
-                {selectedChamber.seats.length} / {selectedChamber.maxSeats}
+                {selectedChamber.seats?.length || 0} / {selectedChamber.maxSeats || 0}
               </dd>
               <dt>Quorum:</dt>
               <dd>{selectedChamber.quorumPercentage}%</dd>
@@ -263,9 +317,7 @@ export const ParliamentChamber: React.FC<ParliamentChamberProps> = ({ userId, on
                   <select
                     id="motion-type"
                     value={motionForm.type}
-                    onChange={e =>
-                      setMotionForm({ ...motionForm, type: e.target.value as Motion['type'] })
-                    }
+                    onChange={e => setMotionForm({ ...motionForm, type: e.target.value })}
                     required
                   >
                     <option value="debate">Debate</option>
@@ -307,14 +359,18 @@ export const ParliamentChamber: React.FC<ParliamentChamberProps> = ({ userId, on
                   </span>
                 </div>
 
-                <button type="submit" className="btn-primary">
-                  Submit Motion
+                <button type="submit" className="btn-primary" disabled={loading.creatingMotion}>
+                  {loading.creatingMotion ? 'Submitting...' : 'Submit Motion'}
                 </button>
               </form>
             )}
 
             <ul className="motions-list">
-              {motions.length === 0 ? (
+              {loading.motions ? (
+                <li className="loading-state" aria-live="polite">
+                  <p>Loading motions...</p>
+                </li>
+              ) : motions.length === 0 ? (
                 <p className="empty-state">No motions have been proposed yet.</p>
               ) : (
                 motions.map(motion => (
@@ -338,8 +394,10 @@ export const ParliamentChamber: React.FC<ParliamentChamberProps> = ({ userId, on
                     <p>{motion.description}</p>
                     <footer>
                       <span className="motion-type">{motion.type}</span>
-                      <time dateTime={motion.createdAt}>
-                        {new Date(motion.createdAt).toLocaleDateString()}
+                      <time dateTime={motion.createdAt || ''}>
+                        {motion.createdAt
+                          ? new Date(motion.createdAt).toLocaleDateString()
+                          : 'Unknown date'}
                       </time>
                     </footer>
                   </li>
@@ -366,12 +424,17 @@ export const ParliamentChamber: React.FC<ParliamentChamberProps> = ({ userId, on
                 {selectedMotion.status === 'voting' && (
                   <section className="voting-section">
                     <h4>Cast Your Vote</h4>
-                    <fieldset className="vote-buttons" aria-label="Voting options">
+                    <fieldset
+                      className="vote-buttons"
+                      aria-label="Voting options"
+                      disabled={loading.voting}
+                    >
                       <button
                         type="button"
                         onClick={() => handleCastVote(selectedMotion.id, 'aye')}
                         className="btn-vote btn-aye"
                         aria-label="Vote Aye"
+                        disabled={loading.voting}
                       >
                         Aye
                       </button>
@@ -380,6 +443,7 @@ export const ParliamentChamber: React.FC<ParliamentChamberProps> = ({ userId, on
                         onClick={() => handleCastVote(selectedMotion.id, 'no')}
                         className="btn-vote btn-no"
                         aria-label="Vote No"
+                        disabled={loading.voting}
                       >
                         No
                       </button>
@@ -388,12 +452,17 @@ export const ParliamentChamber: React.FC<ParliamentChamberProps> = ({ userId, on
                         onClick={() => handleCastVote(selectedMotion.id, 'abstain')}
                         className="btn-vote btn-abstain"
                         aria-label="Abstain from voting"
+                        disabled={loading.voting}
                       >
                         Abstain
                       </button>
                     </fieldset>
 
-                    {voteResults && (
+                    {loading.voteResults ? (
+                      <div className="vote-results loading" aria-live="polite">
+                        <p>Loading vote results...</p>
+                      </div>
+                    ) : voteResults ? (
                       <div className="vote-results" aria-live="polite">
                         <h5>Current Results</h5>
                         <dl>
@@ -407,7 +476,7 @@ export const ParliamentChamber: React.FC<ParliamentChamberProps> = ({ userId, on
                           <dd>{voteResults.total}</dd>
                         </dl>
                       </div>
-                    )}
+                    ) : null}
                   </section>
                 )}
 

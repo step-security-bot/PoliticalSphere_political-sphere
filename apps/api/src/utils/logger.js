@@ -1,8 +1,15 @@
-// Lightweight test-safe logger stub. In production replace with structured logger.
+// Lightweight test-safe logger stub using Pino logger.
+import { getLogger } from '@political-sphere/shared/logger-pino';
+
+const logger = getLogger({ service: 'api-utils' });
+
 const passthrough = (level, args) => {
   if (process.env.NODE_ENV === 'test') return; // silence during tests
-  // eslint-disable-next-line no-console
-  console.log(`[${level}]`, ...args);
+  if (args.length === 1) {
+    logger[level](args[0]);
+  } else {
+    logger[level](args[0], args.slice(1));
+  }
 };
 
 export const info = (...args) => passthrough('info', args);

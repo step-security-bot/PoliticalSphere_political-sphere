@@ -1,4 +1,7 @@
 ---
+
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 description: 'Operational excellence, observability, and resilience expectations'
 applyTo: '**/apps/**/*,**/libs/**/*,**/tools/**/*'
 ---

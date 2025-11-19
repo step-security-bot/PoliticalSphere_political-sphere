@@ -1,0 +1,81 @@
+const { CacheService } = require('../utils/cache.ts'); // eslint-disable-line no-restricted-imports
+const { DB_PATH, initializeDatabase, runMigrations } = require('./migrations.js');
+
+const { BillStore } = require('./bill-store.js');
+const { PartyStore } = require('./party-store.js');
+const { UserStore } = require('./user-store.js');
+const { VoteStore } = require('./vote-store.js');
+
+function shouldEnableCache() {
+  if (process.env.NODE_ENV === 'test') {
+    return false;
+  }
+  if (DB_PATH === ':memory:') {
+    return false;
+  }
+  if (process.env.API_ENABLE_CACHE === 'false') {
+    return false;
+  }
+  // Only enable cache if explicitly requested AND Redis is available
+  // This prevents automatic enabling which can hurt performance
+  return process.env.API_ENABLE_CACHE === 'true' && Boolean(process.env.REDIS_URL);
+}
+
+class DatabaseConnection {
+  constructor(options = {}) {
+    // Initialize database and run migrations for compatibility
+    const db = initializeDatabase();
+    runMigrations(db);
+    db.close(); // Close the better-sqlite3 connection since we use Prisma
+
+    if (options.cache) {
+      this.cache = options.cache;
+    } else if (options.enableCache ?? shouldEnableCache()) {
+      this.cache = new CacheService();
+      this.ownsCache = true;
+    }
+
+    this.users = new UserStore(this.cache);
+    this.parties = new PartyStore(this.cache);
+    this.bills = new BillStore(this.cache);
+    this.votes = new VoteStore(this.cache);
+  }
+
+  close() {
+    if (this.ownsCache && this.cache) {
+      void this.cache.close();
+    }
+  }
+}
+
+// Singleton pattern for database connection (disabled in tests)
+let dbConnection = null;
+
+function getDatabase(options = {}) {
+  // In test environment, always create a new connection to avoid interference
+  if (process.env.NODE_ENV === 'test') {
+    return new DatabaseConnection(options);
+  }
+
+  if (!dbConnection) {
+    dbConnection = new DatabaseConnection(options);
+  }
+  return dbConnection;
+}
+
+function closeDatabase() {
+  if (process.env.NODE_ENV === 'test') {
+    // In test environment, getDatabase() returns a new instance each time,
+    // so we need to close the specific instance. But since tests call this
+    // in afterEach, and getDatabase() creates new instances, we can't track them.
+    // Instead, rely on garbage collection or let the process end.
+    return;
+  }
+
+  if (dbConnection) {
+    dbConnection.close();
+    dbConnection = null;
+  }
+}
+
+module.exports = { DatabaseConnection, getDatabase, closeDatabase };

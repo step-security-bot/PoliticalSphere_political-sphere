@@ -5,7 +5,7 @@
  * This runs once before all tests and once after all tests.
  */
 
-import { beforeAll, afterAll } from 'vitest';
+// No direct Vitest hooks are needed here; globalSetup returns teardown
 
 // Global setup - runs once before all test suites
 export async function setup() {

@@ -87,7 +87,7 @@ export async function registerUser(req: Request, res: Response): Promise<void> {
       `INSERT INTO users (username, email, password_hash, role, is_active, created_at, updated_at)
        VALUES ($1, $2, $3, 'user', true, NOW(), NOW())
        RETURNING id, username, email, role, created_at`,
-      [data.username, data.email, passwordHash],
+      [data.username, data.email, passwordHash]
     );
 
     const user = result.rows[0];
@@ -105,7 +105,7 @@ export async function registerUser(req: Request, res: Response): Promise<void> {
     // 6. Store refresh token (for revocation capability)
     await db.query(
       "INSERT INTO refresh_tokens (user_id, token, expires_at) VALUES ($1, $2, NOW() + INTERVAL '7 days')",
-      [user.id, refreshToken],
+      [user.id, refreshToken]
     );
 
     // 7. Send response (NEVER send password hash)
@@ -149,7 +149,7 @@ export async function loginUser(req: Request, res: Response): Promise<void> {
     // 2. Find user by email
     const result = await db.query(
       'SELECT id, username, email, password_hash, role, is_active FROM users WHERE email = $1',
-      [data.email],
+      [data.email]
     );
 
     const user = result.rows[0];
@@ -188,7 +188,7 @@ export async function loginUser(req: Request, res: Response): Promise<void> {
     // 7. Store refresh token
     await db.query(
       "INSERT INTO refresh_tokens (user_id, token, expires_at) VALUES ($1, $2, NOW() + INTERVAL '7 days')",
-      [user.id, refreshToken],
+      [user.id, refreshToken]
     );
 
     // 8. Update last login

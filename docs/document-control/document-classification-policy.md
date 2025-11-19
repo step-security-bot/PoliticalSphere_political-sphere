@@ -12,6 +12,8 @@
 
 ---
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 ## 🎯 Purpose
 
 This Document Classification Policy establishes a standardized framework for classifying Political Sphere's documentation and data based on sensitivity, regulatory requirements, and business impact. The policy ensures appropriate protection, handling, and access controls while supporting compliance with GDPR, EU AI Act, and other regulatory frameworks.

@@ -117,6 +117,35 @@ async function main() {
       continue;
     }
 
+    // Skip test files, fixtures, and examples (allowed to contain political content)
+    // Check for standard test/fixture directories and file patterns
+    const isTestOrFixtureFile = (
+      // Standard test directories
+      file.includes('/tests/') ||
+      file.includes('/__tests__/') ||
+      file.includes('/test/') ||
+      // Standard fixture directories
+      file.includes('/fixtures/') ||
+      file.includes('/fixture/') ||
+      file.includes('/__fixtures__/') ||
+      // Standard example directories
+      file.includes('/examples/') ||
+      file.includes('/example/') ||
+      // Standard mock directories
+      file.includes('/mocks/') ||
+      file.includes('/mock/') ||
+      file.includes('/__mocks__/') ||
+      // Test file extensions
+      file.includes('.test.') ||
+      file.includes('.spec.') ||
+      file.includes('.fixture.') ||
+      file.includes('.mock.')
+    );
+
+    if (isTestOrFixtureFile) {
+      continue;
+    }
+
     try {
       const content = await fs.readFile(file, 'utf-8');
       const result = await checkNeutrality(content);

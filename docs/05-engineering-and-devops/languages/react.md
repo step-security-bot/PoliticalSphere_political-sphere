@@ -1,4 +1,7 @@
 ---
+
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 description: 'React component patterns, hooks, accessibility (WCAG 2.2 AA), and performance best practices'
 applyTo: '**/apps/frontend/**/*.tsx,**/libs/ui/**/*.tsx'
 ---

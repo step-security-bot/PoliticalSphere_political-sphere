@@ -10,25 +10,29 @@ This document outlines the performance monitoring strategy for the Political Sph
 
 ---
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 ## Service Level Indicators (SLIs)
 
 ### API Endpoints
 
 **Critical Endpoints**:
 
-| Endpoint | SLI Metric | Target | Measurement |
-|----------|-----------|--------|-------------|
-| `POST /auth/login` | Response Time (P95) | < 200ms | OpenTelemetry traces |
-| `POST /auth/register` | Response Time (P95) | < 500ms | OpenTelemetry traces |
-| `GET /api/news` | Response Time (P95) | < 150ms | OpenTelemetry traces |
-| `POST /api/news` | Response Time (P95) | < 300ms | OpenTelemetry traces |
-| `GET /health` | Response Time (P99) | < 50ms | Health check monitoring |
+| Endpoint              | SLI Metric          | Target  | Measurement             |
+| --------------------- | ------------------- | ------- | ----------------------- |
+| `POST /auth/login`    | Response Time (P95) | < 200ms | OpenTelemetry traces    |
+| `POST /auth/register` | Response Time (P95) | < 500ms | OpenTelemetry traces    |
+| `GET /api/news`       | Response Time (P95) | < 150ms | OpenTelemetry traces    |
+| `POST /api/news`      | Response Time (P95) | < 300ms | OpenTelemetry traces    |
+| `GET /health`         | Response Time (P99) | < 50ms  | Health check monitoring |
 
 **Availability**:
+
 - Target: 99.9% uptime (43 minutes downtime per month maximum)
 - Measurement: Health check polling every 30 seconds
 
 **Error Rate**:
+
 - Target: < 0.1% of requests (999 successful requests per 1000)
 - Measurement: HTTP status codes (5xx errors tracked separately from 4xx)
 
@@ -42,39 +46,39 @@ This document outlines the performance monitoring strategy for the Political Sph
 // Example: Response time tracking
 const SLO_TARGETS = {
   authentication: {
-    p50: 50,   // 50th percentile: 50ms
-    p95: 200,  // 95th percentile: 200ms
-    p99: 500,  // 99th percentile: 500ms
+    p50: 50, // 50th percentile: 50ms
+    p95: 200, // 95th percentile: 200ms
+    p99: 500, // 99th percentile: 500ms
   },
   api: {
-    p50: 30,   // 50th percentile: 30ms
-    p95: 150,  // 95th percentile: 150ms
-    p99: 300,  // 99th percentile: 300ms
+    p50: 30, // 50th percentile: 30ms
+    p95: 150, // 95th percentile: 150ms
+    p99: 300, // 99th percentile: 300ms
   },
   database: {
-    p50: 10,   // 50th percentile: 10ms
-    p95: 50,   // 95th percentile: 50ms
-    p99: 100,  // 99th percentile: 100ms
+    p50: 10, // 50th percentile: 10ms
+    p95: 50, // 95th percentile: 50ms
+    p99: 100, // 99th percentile: 100ms
   },
 };
 ```
 
 ### Throughput SLOs
 
-| Service | Metric | Target | Alert Threshold |
-|---------|--------|--------|-----------------|
-| API | Requests per second | 100 RPS | < 10 RPS or > 1000 RPS |
-| Database | Queries per second | 500 QPS | < 50 QPS or > 5000 QPS |
-| WebSocket | Connections | 1000 concurrent | > 900 (90% capacity) |
+| Service   | Metric              | Target          | Alert Threshold        |
+| --------- | ------------------- | --------------- | ---------------------- |
+| API       | Requests per second | 100 RPS         | < 10 RPS or > 1000 RPS |
+| Database  | Queries per second  | 500 QPS         | < 50 QPS or > 5000 QPS |
+| WebSocket | Connections         | 1000 concurrent | > 900 (90% capacity)   |
 
 ### Resource Utilization SLOs
 
-| Resource | Target | Alert Threshold |
-|----------|--------|-----------------|
-| CPU | < 70% average | > 80% for 5 minutes |
-| Memory | < 80% usage | > 90% for 5 minutes |
+| Resource | Target            | Alert Threshold     |
+| -------- | ----------------- | ------------------- |
+| CPU      | < 70% average     | > 80% for 5 minutes |
+| Memory   | < 80% usage       | > 90% for 5 minutes |
 | Disk I/O | < 60% utilization | > 75% for 5 minutes |
-| Network | < 50% bandwidth | > 70% for 5 minutes |
+| Network  | < 50% bandwidth   | > 70% for 5 minutes |
 
 ---
 
@@ -83,24 +87,26 @@ const SLO_TARGETS = {
 ### 1. OpenTelemetry Metrics Collection
 
 **Already Implemented** ✅:
+
 - OpenTelemetry SDK configured in `libs/shared/src/telemetry.ts`
 - OTLP metrics exporter sending to `localhost:4318/v1/metrics`
 - Auto-instrumentation for HTTP, Express, database queries
 
 **Metrics Collected**:
+
 ```typescript
 // HTTP request duration
 http.server.duration (histogram)
   - Attributes: http.method, http.route, http.status_code
-  
+
 // HTTP request count
 http.server.request.count (counter)
   - Attributes: http.method, http.route, http.status_code
-  
+
 // Database query duration
 db.client.operation.duration (histogram)
   - Attributes: db.system, db.operation, db.name
-  
+
 // Active connections
 http.server.active_requests (gauge)
 ```
@@ -158,11 +164,13 @@ Already implemented in `apps/api/tests/helpers/validation-metrics.js`:
 **Setup Steps**:
 
 1. **Install Prometheus Exporter**:
+
 ```bash
 npm install @opentelemetry/exporter-prometheus
 ```
 
 2. **Configure Prometheus Endpoint**:
+
 ```typescript
 // apps/api/src/metrics.ts
 import { PrometheusExporter } from '@opentelemetry/exporter-prometheus';
@@ -177,12 +185,13 @@ export function setupPrometheusExporter() {
       console.log('Prometheus scrape endpoint: http://localhost:9464/metrics');
     }
   );
-  
+
   return prometheusExporter;
 }
 ```
 
 3. **Prometheus Configuration** (`prometheus.yml`):
+
 ```yaml
 global:
   scrape_interval: 15s
@@ -195,7 +204,7 @@ scrape_configs:
         labels:
           service: 'api'
           environment: 'production'
-          
+
   - job_name: 'worker'
     static_configs:
       - targets: ['localhost:9465']
@@ -209,6 +218,7 @@ scrape_configs:
 **Dashboard 1: API Performance**
 
 Panels:
+
 - Request rate (requests per second)
 - Response time (P50, P95, P99)
 - Error rate (4xx, 5xx)
@@ -218,6 +228,7 @@ Panels:
 **Dashboard 2: User Engagement**
 
 Panels:
+
 - Active users (real-time)
 - Registrations per hour
 - Votes cast per hour
@@ -227,6 +238,7 @@ Panels:
 **Dashboard 3: Database Performance**
 
 Panels:
+
 - Query duration (P50, P95, P99)
 - Queries per second
 - Connection pool usage
@@ -239,29 +251,29 @@ Panels:
 
 ### Critical Alerts (PagerDuty/On-call)
 
-| Alert | Condition | Action |
-|-------|-----------|--------|
-| **Service Down** | Health check fails for 2+ minutes | Immediate page |
-| **High Error Rate** | Error rate > 5% for 5 minutes | Immediate page |
-| **P99 Latency** | P99 latency > 2 seconds for 10 minutes | Immediate page |
-| **Database Down** | Database connection fails | Immediate page |
+| Alert               | Condition                              | Action         |
+| ------------------- | -------------------------------------- | -------------- |
+| **Service Down**    | Health check fails for 2+ minutes      | Immediate page |
+| **High Error Rate** | Error rate > 5% for 5 minutes          | Immediate page |
+| **P99 Latency**     | P99 latency > 2 seconds for 10 minutes | Immediate page |
+| **Database Down**   | Database connection fails              | Immediate page |
 
 ### Warning Alerts (Slack/Email)
 
-| Alert | Condition | Action |
-|-------|-----------|--------|
-| **Elevated Error Rate** | Error rate > 1% for 10 minutes | Slack notification |
-| **High Latency** | P95 latency > 500ms for 15 minutes | Slack notification |
-| **High CPU Usage** | CPU > 80% for 10 minutes | Slack notification |
-| **High Memory Usage** | Memory > 90% for 10 minutes | Slack notification |
+| Alert                   | Condition                          | Action             |
+| ----------------------- | ---------------------------------- | ------------------ |
+| **Elevated Error Rate** | Error rate > 1% for 10 minutes     | Slack notification |
+| **High Latency**        | P95 latency > 500ms for 15 minutes | Slack notification |
+| **High CPU Usage**      | CPU > 80% for 10 minutes           | Slack notification |
+| **High Memory Usage**   | Memory > 90% for 10 minutes        | Slack notification |
 
 ### Informational Alerts (Logs)
 
-| Alert | Condition | Action |
-|-------|-----------|--------|
-| **Slow Query** | Query duration > 1 second | Log warning |
-| **Rate Limit Hit** | User hits rate limit | Log info |
-| **Authentication Failure** | Failed login attempt | Log security event |
+| Alert                      | Condition                 | Action             |
+| -------------------------- | ------------------------- | ------------------ |
+| **Slow Query**             | Query duration > 1 second | Log warning        |
+| **Rate Limit Hit**         | User hits rate limit      | Log info           |
+| **Authentication Failure** | Failed login attempt      | Log security event |
 
 ---
 
@@ -271,14 +283,15 @@ Panels:
 
 **API Response Times** (as of 2025-11-17):
 
-| Endpoint | P50 | P95 | P99 |
-|----------|-----|-----|-----|
-| `GET /health` | 5ms | 10ms | 15ms |
-| `POST /auth/login` | TBD | TBD | TBD |
-| `GET /api/news` | TBD | TBD | TBD |
-| `POST /api/news` | TBD | TBD | TBD |
+| Endpoint           | P50 | P95  | P99  |
+| ------------------ | --- | ---- | ---- |
+| `GET /health`      | 5ms | 10ms | 15ms |
+| `POST /auth/login` | TBD | TBD  | TBD  |
+| `GET /api/news`    | TBD | TBD  | TBD  |
+| `POST /api/news`   | TBD | TBD  | TBD  |
 
 **Validation Performance**:
+
 - Average schema parse time: 0.0030ms
 - P95 parse time: 0.0044ms
 - 100% of validations < 0.01ms
@@ -306,6 +319,7 @@ Panels:
    - Expected: Graceful degradation, no crashes
 
 **Load Testing Tools**:
+
 - k6 (preferred): Scriptable load testing
 - Artillery: Scenario-based testing
 - Apache JMeter: GUI-based testing
@@ -317,17 +331,20 @@ Panels:
 ### Current Setup
 
 ✅ **Implemented**:
+
 - Pino structured logging (JSON format)
 - Correlation IDs for request tracing
 - OpenTelemetry SDK with auto-instrumentation
 - OTLP exporters for traces and metrics
 
 ⚠️ **In Progress**:
+
 - Prometheus metrics endpoint
 - Grafana dashboards
 - Alerting rules
 
 ❌ **Not Implemented**:
+
 - Centralized log aggregation (ELK, Loki)
 - Distributed tracing backend (Jaeger, Tempo)
 - APM (Application Performance Monitoring)
@@ -335,18 +352,21 @@ Panels:
 ### Recommended Stack
 
 **Option 1: Open Source**
+
 - **Logs**: Loki (log aggregation) + Grafana (visualization)
 - **Metrics**: Prometheus (storage) + Grafana (visualization)
 - **Traces**: Tempo (storage) + Grafana (visualization)
 - **Alerts**: Alertmanager + PagerDuty integration
 
 **Option 2: Cloud-Native (AWS)**
+
 - **Logs**: CloudWatch Logs
 - **Metrics**: CloudWatch Metrics
 - **Traces**: AWS X-Ray
 - **Alerts**: CloudWatch Alarms + SNS
 
 **Option 3: SaaS**
+
 - **All-in-one**: Datadog, New Relic, or Dynatrace
 - **Pros**: Fully managed, easy setup, powerful features
 - **Cons**: Higher cost, vendor lock-in
@@ -469,6 +489,7 @@ This performance monitoring setup provides a solid foundation for observability 
 - **SLO tracking** for reliability commitments
 
 **Next Steps**:
+
 1. Complete Phase 1 (Prometheus exporter and basic dashboards)
 2. Set up load testing pipeline
 3. Establish performance baselines

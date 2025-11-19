@@ -103,20 +103,22 @@ const orchestrator = createOrchestrator({
   agents: [agent],
   governance: {
     policies: [
-      async (ctx) => {
+      async ctx => {
         const lastMessage = ctx.messages[ctx.messages.length - 1];
         const result = await neutralityEnforcer.checkNeutrality(lastMessage.content);
-        
+
         if (!result.isNeutral) {
           return {
             ok: false,
-            violations: [{
-              code: 'POLITICAL_BIAS',
-              message: `Bias score ${result.biasScore} exceeds threshold`,
-            }],
+            violations: [
+              {
+                code: 'POLITICAL_BIAS',
+                message: `Bias score ${result.biasScore} exceeds threshold`,
+              },
+            ],
           };
         }
-        
+
         return { ok: true };
       },
     ],
@@ -169,28 +171,28 @@ const orchestrator = createOrchestrator({
   pattern: 'concurrent',
   agents: [agent],
   observability: {
-    onStart: async (event) => {
+    onStart: async event => {
       logger.info('Orchestration started', {
         runId: event.runId,
         pattern: event.pattern,
         agentCount: event.agents.length,
       });
     },
-    onMessage: async (event) => {
+    onMessage: async event => {
       logger.debug('Message received', {
         runId: event.runId,
         from: event.from,
         role: event.message.role,
       });
     },
-    onEnd: async (event) => {
+    onEnd: async event => {
       logger.info('Orchestration completed', {
         runId: event.runId,
         messageCount: event.result.transcript.length,
         completed: event.result.completed,
       });
     },
-    onError: async (event) => {
+    onError: async event => {
       logger.error('Orchestration error', {
         runId: event.runId,
         error: event.error,
@@ -295,7 +297,7 @@ const accessRequest = dsarHandler.createRequest({
 });
 
 // Process request with data fetcher
-const userData = await dsarHandler.processRequest(accessRequest.requestId, async (userId) => {
+const userData = await dsarHandler.processRequest(accessRequest.requestId, async userId => {
   return {
     profile: { name: 'John Doe', email: 'user@example.com' },
     preferences: { theme: 'dark', language: 'en' },
@@ -328,10 +330,9 @@ describe('My Agent', () => {
       },
     });
 
-    const result = await agent.respond(
-      [{ role: 'user', content: 'Hello' }],
-      { runId: 'test-123' } as any
-    );
+    const result = await agent.respond([{ role: 'user', content: 'Hello' }], {
+      runId: 'test-123',
+    } as any);
 
     expect(result.message.content).toBe('Test response');
   });
@@ -364,9 +365,7 @@ describe('Orchestration', () => {
       agents: [agent1, agent2],
     });
 
-    const result = await orchestrator.run([
-      { role: 'user', content: 'Test input' },
-    ]);
+    const result = await orchestrator.run([{ role: 'user', content: 'Test input' }]);
 
     expect(result.completed).toBe(true);
     expect(result.transcript.length).toBeGreaterThan(0);
@@ -412,11 +411,11 @@ const orchestrator = createOrchestrator({
   pattern: 'concurrent',
   agents: [agent],
   observability: {
-    onStart: async (event) => {
+    onStart: async event => {
       const span = tracer.startSpan('orchestration', { runId: event.runId });
       logger.info('Started', event);
     },
-    onEnd: async (event) => {
+    onEnd: async event => {
       metrics.recordLatency(Date.now() - startTime);
       logger.info('Completed', event);
     },
@@ -441,7 +440,7 @@ const orchestrator = createOrchestrator({
   agents: [agent],
   validators: {
     input: [
-      async (value) => {
+      async value => {
         const result = inputSchema.safeParse(value);
         if (!result.success) {
           return {
@@ -570,6 +569,7 @@ For questions or issues:
 ---
 
 **Remember**: All AI systems must comply with:
+
 - Political neutrality (bias < 0.1)
 - WCAG 2.2 AA accessibility
 - GDPR privacy requirements

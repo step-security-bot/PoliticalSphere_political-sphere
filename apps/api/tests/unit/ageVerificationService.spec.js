@@ -11,7 +11,7 @@ vi.mock('../../src/logger.js', () => ({
   },
 }));
 
-vi.mock('../../src/modules/stores/index.ts', () => ({
+vi.mock('../../stores/index.ts', () => ({
   getDatabase: vi.fn(() => ({
     ageVerification: {
       create: vi.fn(),
@@ -28,7 +28,7 @@ describe('AgeVerificationService', () => {
 
   beforeEach(async () => {
     vi.clearAllMocks();
-    const { getDatabase } = await import('../../src/modules/stores/index.ts');
+    const { getDatabase } = await import('../../stores/index.ts');
     mockDb = getDatabase();
     service = new AgeVerificationService(mockDb.ageVerification);
   });
@@ -86,7 +86,7 @@ describe('AgeVerificationService', () => {
       };
 
       await expect(service.verifyAge(verificationData)).rejects.toThrow(
-        'Invalid date of birth format'
+        'Invalid date of birth format',
       );
     });
 
@@ -97,7 +97,7 @@ describe('AgeVerificationService', () => {
       };
 
       await expect(service.verifyAge(incompleteData)).rejects.toThrow(
-        'Missing required fields: dateOfBirth, verificationMethod'
+        'Missing required fields: dateOfBirth, verificationMethod',
       );
     });
   });

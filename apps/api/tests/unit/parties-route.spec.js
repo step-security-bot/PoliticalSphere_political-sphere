@@ -2,7 +2,7 @@ import express from 'express';
 import request from 'supertest';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
-import partiesRouter from '../../src/routes/parties.js';
+import partiesRouter from '../../src/routes/parties.ts';
 import { closeDatabase, getDatabase } from '../index.js';
 
 describe('parties routes', () => {

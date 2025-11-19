@@ -27,7 +27,16 @@
 
 Political Sphere is an innovative **multiplayer political simulation game** set in the United Kingdom, where players engage in realistic political discourse, strategy, and governance. Built as a scalable web platform, it combines immersive gameplay with AI-powered features to create an authentic political experience.
 
-The platform supports:
+### Project Overview
+
+- **Type**: Multiplayer political simulation platform
+- **Development Model**: Solo developer project leveraging AI as collaborative coding partner
+- **Architecture**: Nx monorepo with microservices architecture
+- **Scale**: 12+ deployable applications, 17+ shared libraries, 100+ documentation files
+- **Technology**: TypeScript-first with React 19, Node.js 22, PostgreSQL, Redis
+- **Quality Standards**: Enterprise-grade (80%+ test coverage, WCAG 2.2 AA+, zero-trust security)
+
+### The Platform Supports
 
 - **Multiplayer political simulation** with real-time strategy and decision-making
 - **UK-based political system** modeling parliamentary democracy, elections, and policy-making
@@ -36,9 +45,75 @@ The platform supports:
 - **AI-enhanced features** for intelligent opponents, policy analysis, and dynamic events
 - **Comprehensive compliance** with UK regulations, privacy standards, and ethical gaming practices
 
+### Key Differentiators
+
+1. **Constitutional Governance**: Democratic neutrality enforced through constitutional framework
+2. **AI-Augmented Development**: Heavy use of AI assistants with human oversight and governance
+3. **Accessibility First**: WCAG 2.2 AA+ compliance is mandatory, not optional
+4. **Security by Design**: Zero-trust architecture, comprehensive auditing, encryption everywhere
+5. **Test-Driven Quality**: 80%+ coverage targets with automated testing at all levels
+6. **Comprehensive Documentation**: 100+ structured documents across 12+ sections
+
 ## Documentation Overview
 
 This documentation is organized into **logical phases and functional areas** to support the platform's development lifecycle. Each section contains detailed guides, specifications, and procedures relevant to that phase.
+
+### Quick Navigation
+
+**🚀 Getting Started:**
+
+- [Project Overview & Vision](./00-foundation/vision-mission.md) - Mission, values, and goals
+- [Technology Stack](./00-foundation/technology-stack.md) - Complete technology reference
+- [Development Environment Setup](./00-foundation/organization.md) - Project structure
+- [Quick Reference Guide](./quick-ref.md) - Commands and common patterns
+
+**Maintenance Tools**
+
+- `npm run docs:add-project-context` — Adds a project-context note to docs that do not already reference `docs/00-foundation/project-context.md`. Use for large-scale doc context updates.
+
+**👨‍💻 For Developers:**
+
+- [Development Workflows](./05-engineering-and-devops/development/) - Coding practices
+- [Testing Strategy](./05-engineering-and-devops/testing/) - Testing infrastructure
+- [TypeScript Guide](./05-engineering-and-devops/languages/typescript.md) - TypeScript standards
+- [React Patterns](./05-engineering-and-devops/languages/react.md) - React best practices
+- [Backend Development](./05-engineering-and-devops/development/backend.md) - API development
+
+**🏗️ For Architects:**
+
+- [System Architecture](./04-architecture/architecture.md) - High-level architecture
+- [System Overview](./04-architecture/system-overview.md) - Component details
+- [ADR Index](./04-architecture/adr/) - Architecture Decision Records
+- [Data Architecture](./04-architecture/data-architecture/) - Database design
+- [API Architecture](./04-architecture/api-architecture/) - API design patterns
+
+**🔒 For Security:**
+
+- [Security Architecture](./06-security-and-risk/security.md) - Security policies
+- [Threat Modeling](./06-security-and-risk/threat-modeling-stride.md) - STRIDE analysis
+- [Risk Register](./06-security-and-risk/risk-register.md) - Known risks
+- [Incident Response](./06-security-and-risk/incident-response/) - Security procedures
+
+**🎮 For Game Designers:**
+
+- [Game Design Document](./08-game-design-and-mechanics/game-design-document-gdd.md) - Core mechanics
+- [Elections & Voting](./08-game-design-and-mechanics/mechanics/elections-policy-and-mechanics.md) - Electoral system
+- [Lawmaking Engine](./08-game-design-and-mechanics/mechanics/lawmaking-and-procedure-engine.md) - Legislative process
+- [AI NPC Behaviors](./08-game-design-and-mechanics/systems/ai-npc-behaviours-and-tuning.md) - AI opponents
+
+**⚖️ For Governance:**
+
+- [Governance Charter](./02-governance/governance-charter.md) - Governance framework
+- [Decision Rights](./02-governance/decision-rights-matrix.md) - Who decides what
+- [Compliance Overview](./03-legal-and-compliance/compliance.md) - Legal requirements
+- [AI Governance](./07-ai-and-simulation/ai-governance.md) - AI ethics and safety
+
+**📊 For Operations:**
+
+- [Operations Guide](./09-observability-and-ops/operations.md) - Deployment and monitoring
+- [CI/CD Architecture](./05-engineering-and-devops/ci-cd-architecture.md) - Build pipelines
+- [Observability](./04-architecture/observability-architecture.md) - Logging, metrics, tracing
+- [Performance Monitoring](./09-observability-and-ops/GUIDE-Performance-Monitoring-Setup.md) - APM setup
 
 ## Core Documentation Structure
 
@@ -183,16 +258,16 @@ Monitoring, logging, and operational procedures.
 
 | Section                       | Status      | Completion | Owner             |
 | ----------------------------- | ----------- | ---------- | ----------------- |
-| 00-foundation/                | 📝 Draft    | 25%        | Development Team  |
-| 01-strategy/                  | 📝 Draft    | 40%        | Product Team      |
+| 00-foundation/                | 📝 Draft    | 75%        | Development Team  |
+| 01-strategy/                  | 📝 Draft    | 60%        | Product Team      |
 | 02-governance/                | ✅ Complete | 100%       | Governance Team   |
-| 03-legal-and-compliance/      | 📝 Draft    | 60%        | Legal Team        |
+| 03-legal-and-compliance/      | 📝 Draft    | 70%        | Legal Team        |
 | 04-architecture/              | ✅ Complete | 100%       | Architecture Team |
-| 05-engineering-and-devops/    | 📝 Draft    | 70%        | DevOps Team       |
-| 06-security-and-risk/         | 📝 Draft    | 80%        | Security Team     |
-| 07-ai-and-simulation/         | 📝 Draft    | 30%        | AI Team           |
-| 08-game-design-and-mechanics/ | 📝 Draft    | 45%        | Game Design Team  |
-| 09-observability-and-ops/     | 📝 Draft    | 80%        | SRE Team          |
+| 05-engineering-and-devops/    | ✅ Complete | 90%        | DevOps Team       |
+| 06-security-and-risk/         | ✅ Complete | 95%        | Security Team     |
+| 07-ai-and-simulation/         | 📝 Draft    | 70%        | AI Team           |
+| 08-game-design-and-mechanics/ | 📝 Draft    | 65%        | Game Design Team  |
+| 09-observability-and-ops/     | ✅ Complete | 95%        | SRE Team          |
 
 **Legend:**
 

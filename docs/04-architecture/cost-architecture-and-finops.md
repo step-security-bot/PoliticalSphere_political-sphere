@@ -12,6 +12,8 @@
 
 ---
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 ## 🎯 Objectives
 
 - Maintain zero-budget constraint: no cloud spend, no paid services, no premium tooling.

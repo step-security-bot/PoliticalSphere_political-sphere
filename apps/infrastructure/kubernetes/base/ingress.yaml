@@ -1,67 +1,111 @@
-# Placeholder: Ingress Configuration
-#
-# STATUS: PENDING_IMPLEMENTATION
-# REASON: Requires ingress controller (NGINX/Traefik), TLS certificates, domain setup
-# DEPENDENCIES: Cert-manager, DNS configuration, load balancer
-# ESTIMATED_READINESS: After K8s cluster setup (Sprint 29+)
-
 apiVersion: v1
 kind: Namespace
 metadata:
   name: political-sphere
+  labels:
+    name: political-sphere
 ---
-# TODO: Implement Ingress configuration
-# - HTTPS-only with TLS termination
-# - Rate limiting
-# - CORS configuration
-# - Path-based routing to services
-# - WAF integration
-
-# Example structure (to be implemented):
-#
-# apiVersion: networking.k8s.io/v1
-# kind: Ingress
-# metadata:
-#   name: main-ingress
-#   namespace: political-sphere
-#   annotations:
-#     cert-manager.io/cluster-issuer: "letsencrypt-prod"
-#     nginx.ingress.kubernetes.io/ssl-redirect: "true"
-#     nginx.ingress.kubernetes.io/rate-limit: "100"
-#     nginx.ingress.kubernetes.io/enable-cors: "true"
-# spec:
-#   tls:
-#   - hosts:
-#     - api.political-sphere.com
-#     - www.political-sphere.com
-#     secretName: tls-secret
-#   rules:
-#   - host: api.political-sphere.com
-#     http:
-#       paths:
-#       - path: /
-#         pathType: Prefix
-#         backend:
-#           service:
-#             name: api
-#             port:
-#               number: 80
-#   - host: www.political-sphere.com
-#     http:
-#       paths:
-#       - path: /
-#         pathType: Prefix
-#         backend:
-#           service:
-#             name: frontend
-#             port:
-#               number: 80
-
-apiVersion: v1
-kind: ConfigMap
+apiVersion: networking.k8s.io/v1
+kind: Ingress
 metadata:
-  name: ingress-placeholder
-  namespace: default
+  name: main-ingress
+  namespace: political-sphere
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/rate-limit: "100"
+    nginx.ingress.kubernetes.io/rate-limit-window: "1m"
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+    nginx.ingress.kubernetes.io/cors-allow-origin: "https://political-sphere.com"
+    nginx.ingress.kubernetes.io/cors-allow-methods: "GET, POST, PUT, DELETE, OPTIONS"
+    nginx.ingress.kubernetes.io/cors-allow-headers: "DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization"
+    nginx.ingress.kubernetes.io/cors-allow-credentials: "true"
+    nginx.ingress.kubernetes.io/proxy-body-size: "50m"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "300"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "300"
+    nginx.ingress.kubernetes.io/websocket-services: "game-server"
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      # Security headers
+      add_header X-Frame-Options "SAMEORIGIN" always;
+      add_header X-Content-Type-Options "nosniff" always;
+      add_header X-XSS-Protection "1; mode=block" always;
+      add_header Referrer-Policy "strict-origin-when-cross-origin" always;
+      add_header Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' wss: https:;" always;
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    - api.political-sphere.com
+    - game.political-sphere.com
+    - www.political-sphere.com
+    secretName: political-sphere-tls
+  rules:
+  - host: api.political-sphere.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: api
+            port:
+              number: 80
+  - host: game.political-sphere.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: game-server
+            port:
+              number: 80
+  - host: www.political-sphere.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: web
+            port:
+              number: 80
+      - path: /api
+        pathType: Prefix
+        backend:
+          service:
+            name: api
+            port:
+              number: 80
+---
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-prod
+spec:
+  acme:
+    server: https://acme-v02.api.letsencrypt.org/directory
+    email: admin@political-sphere.com
+    privateKeySecretRef:
+      name: letsencrypt-prod
+    solvers:
+    - dns01:
+        route53:
+          region: us-east-1
+          secretAccessKeySecretRef:
+            name: route53-credentials
+            key: secret-access-key
+          accessKeyIDSecretRef:
+            name: route53-credentials
+            key: access-key-id
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: route53-credentials
+  namespace: cert-manager
+type: Opaque
 data:
-  status: 'PENDING_IMPLEMENTATION'
-  note: 'Ingress pending ingress controller setup, TLS certificates, and domain configuration'
+  # Base64 encoded AWS credentials for Route53 DNS challenge
+  access-key-id: "QUtJQTJBR0VZQU1QTEVYS0VZQQ=="  # AKIA2AGEYAMPLEXKEYA
+  secret-access-key: "U2VjcmV0S2V5"  # SecretKey

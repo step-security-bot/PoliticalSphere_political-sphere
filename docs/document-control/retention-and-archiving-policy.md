@@ -12,6 +12,8 @@
 
 ---
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 ## 🎯 Purpose
 
 This Retention and Archiving Policy establishes standardized procedures for managing the lifecycle of Political Sphere's documentation, from creation through archival and eventual disposal. The policy ensures compliance with legal, regulatory, and business requirements while optimizing storage costs and maintaining accessibility of critical information.

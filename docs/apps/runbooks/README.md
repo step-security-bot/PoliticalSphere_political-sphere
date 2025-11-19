@@ -1,5 +1,7 @@
 # Runbooks Directory
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 This directory contains operational runbooks for managing Political Sphere services in production.
 
 ## Purpose

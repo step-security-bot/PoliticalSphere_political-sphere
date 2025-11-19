@@ -12,6 +12,8 @@
 
 ---
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 ## 🧭 Domain Overview
 
 Political Sphere uses domain-driven design to preserve autonomy inside the modular monolith. Contexts align to user value streams and regulatory responsibilities. Each context owns its data, exposes clear APIs, and participates in the shared event bus (NATS).

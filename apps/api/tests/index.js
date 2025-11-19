@@ -6,4 +6,4 @@
  * exact source location.
  */
 
-export { getDatabase, closeDatabase } from '../src/modules/stores/index.ts';
+export { getDatabase, closeDatabase } from '../src/stores/index.ts';

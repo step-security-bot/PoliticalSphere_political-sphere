@@ -4,6 +4,8 @@
 
 ---
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 ## Document Metadata
 
 ```yaml
@@ -18371,11 +18373,11 @@ jobs:
       - uses: snyk/actions/node@master
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-      
+
       - name: Run npm audit
         run: npm audit --audit-level=moderate
         continue-on-error: true  # Warn but don't block
-      
+
       - name: Upload results
         uses: github/codeql-action/upload-sarif@v2
         with:
@@ -18386,11 +18388,11 @@ jobs:
 
 **Audit frequency metrics**:
 
-| Tool | Scan Frequency | Last 30 Days | Vulnerabilities Found | Remediated |
-|------|---------------|--------------|----------------------|------------|
-| Snyk | 47 scans | 47 | 12 | 11 (92%) |
-| Dependabot | Continuous | ~20 PRs | 8 | 8 (100%) |
-| npm audit | ~200 runs | ~200 | 3 | 3 (100%) |
+| Tool       | Scan Frequency | Last 30 Days | Vulnerabilities Found | Remediated |
+| ---------- | -------------- | ------------ | --------------------- | ---------- |
+| Snyk       | 47 scans       | 47           | 12                    | 11 (92%)   |
+| Dependabot | Continuous     | ~20 PRs      | 8                     | 8 (100%)   |
+| npm audit  | ~200 runs      | ~200         | 3                     | 3 (100%)   |
 
 **Total**: 23 vulnerabilities detected and 22 remediated (96% fix rate)
 
@@ -18400,17 +18402,20 @@ jobs:
 # VULN-2025-11-01: Prototype Pollution in lodash
 
 ## Detection
+
 - Tool: Snyk
 - Detected: 2025-11-01 09:15 UTC
 - Severity: HIGH (CVSS 7.4)
 - Affected: lodash@4.17.20
 
 ## Response
+
 - Alert: GitHub Security Advisory email
 - Investigation: 2025-11-01 10:30 (developer notified)
 - Analysis: Used in 3 packages (direct + transitive)
 
 ## Remediation
+
 - Action: Dependabot PR #234 created automatically
 - Change: lodash@4.17.20 → lodash@4.17.21
 - Testing: CI passed, no breaking changes
@@ -18418,6 +18423,7 @@ jobs:
 - Deployment: 2025-11-01 15:30 (patched in production)
 
 ## Outcome
+
 - Time to remediate: 6h 15min (detection → production)
 - Impact: Zero (caught before exploitation)
 ```
@@ -18428,17 +18434,20 @@ jobs:
 # Dependency Management Policy
 
 ## Automatic Updates (Dependabot)
+
 - Security vulnerabilities: ✅ AUTO-MERGE (if CI passes)
 - Patch updates (0.0.X): ✅ AUTO-MERGE
 - Minor updates (0.X.0): ⚠️ MANUAL REVIEW
 - Major updates (X.0.0): ⚠️ MANUAL REVIEW + TESTING
 
 ## Version Pinning
+
 - Production: ✅ Exact versions (package-lock.json)
 - Development: ✅ Exact versions (consistent envs)
 - No wildcards: ❌ (e.g., "^1.0.0" not used in production)
 
 ## Update Cadence
+
 - Security patches: Immediate (within 24h)
 - Minor updates: Monthly review cycle
 - Major updates: Quarterly + compatibility testing
@@ -18447,64 +18456,74 @@ jobs:
 **Gaps in dependency auditing**:
 
 1. **License compliance** ❌
+
    ```bash
    # Not currently tracked
    npm install license-checker
    npx license-checker --summary
-   
+
    # Would reveal: MIT, Apache-2.0, ISC licenses
    # Risk: GPL dependency could create licensing conflict
    # Mitigation: Manual review, should automate
    ```
 
 2. **Transitive dependency depth** ⚠️
+
    ```bash
    # Current: Scan all dependencies (direct + transitive)
    # Gap: No limit on dependency tree depth
    # Risk: Deep trees = larger attack surface
-   
+
    # Example: express has 57 transitive dependencies
    npm ls express
-   
+
    # Recommendation: Prefer packages with shallow trees
    ```
 
 3. **Supply chain attacks** ⚠️
+
    ```markdown
    # Not fully mitigated
-   
+
    - Package maintainer compromise: ⚠️ Detected by Snyk (heuristics)
    - Typosquatting: ⚠️ Manual review (no automated check)
    - Dependency confusion: ❌ No private registry (low risk for now)
-   
+
    # Example: event-stream incident (2018)
+
    # Malicious code in popular package went undetected for weeks
+
    # Political Sphere: Would Snyk catch this? Probably, but not guaranteed
    ```
 
 **External validation**:
 
 **OWASP Top 10 — A06:2021 Vulnerable and Outdated Components**:
+
 > "Continuous monitoring and patching of dependencies is essential"
 
 **Political Sphere**: ✅ **COMPLIANT** — daily scans, rapid patching
 
 **NIST SSDF (Secure Software Development Framework)**:
+
 > "Automate dependency vulnerability scanning in CI/CD pipeline"
 
 **Political Sphere**: ✅ **IMPLEMENTED** — Snyk in GitHub Actions
 
 **npm Best Practices**:
+
 > "Run `npm audit` before every deploy"
 
 **Political Sphere**: ✅ **EXCEEDS** — runs on every PR, not just deploy
 
-**Recommendation**: 
+**Recommendation**:
+
 1. Add license compliance scanning (license-checker in CI)
 2. Monitor supply chain risk (Socket.dev or similar)
 3. Document acceptable license types (MIT, Apache-2.0, ISC)
 
 **Sources**:
+
 - GitHub Actions workflow analysis (.github/workflows/security.yml)
 - Snyk dashboard (30-day vulnerability metrics)
 - Dependabot PR history
@@ -18522,37 +18541,38 @@ jobs:
 
 **OWASP Top 10 Testing Coverage**:
 
-```markdown
+````markdown
 # OWASP Top 10 2021 Assessment
 
 ## A01:2021 – Broken Access Control ⚠️ PARTIAL
 
 Testing:
+
 - Unit tests: ✅ Authorization checks in tests
 - Integration tests: ✅ Endpoint permissions validated
 - Penetration testing: ❌ NOT PERFORMED
 
 Example test:
+
 ```typescript
 describe('Vote API Authorization', () => {
   it('should reject unauthenticated votes', async () => {
-    const response = await request(app)
-      .post('/api/votes')
-      .send({ proposalId: 1, vote: 'YES' });
-    
+    const response = await request(app).post('/api/votes').send({ proposalId: 1, vote: 'YES' });
+
     expect(response.status).toBe(401);
   });
-  
+
   it('should reject votes from ineligible users', async () => {
     const response = await request(app)
       .post('/api/votes')
       .set('Authorization', `Bearer ${ineligibleUserToken}`)
       .send({ proposalId: 1, vote: 'YES' });
-    
+
     expect(response.status).toBe(403);
   });
 });
 ```
+````
 
 **Gap**: No horizontal privilege escalation tests (e.g., can User A vote as User B?)
 
@@ -18561,27 +18581,29 @@ describe('Vote API Authorization', () => {
 ## A02:2021 – Cryptographic Failures ✅ TESTED
 
 Testing:
+
 - Secrets scanning: ✅ Gitleaks (pre-commit + CI)
 - TLS enforcement: ✅ HTTPS-only in production
 - Password hashing: ✅ bcrypt with salt
 
 Evidence:
+
 ```typescript
 // Password hashing test
 describe('Password Security', () => {
   it('should hash passwords with bcrypt', async () => {
     const password = 'SecureP@ssw0rd!';
     const hash = await hashPassword(password);
-    
+
     expect(hash).not.toBe(password);
     expect(hash).toMatch(/^\$2[aby]\$\d+\$/); // bcrypt format
     expect(await verifyPassword(password, hash)).toBe(true);
   });
-  
+
   it('should use sufficient rounds for bcrypt', async () => {
     const hash = await hashPassword('test');
     const rounds = parseInt(hash.split('$')[2]);
-    
+
     expect(rounds).toBeGreaterThanOrEqual(12); // OWASP recommendation
   });
 });
@@ -18594,22 +18616,24 @@ describe('Password Security', () => {
 ## A03:2021 – Injection ✅ TESTED
 
 Testing:
+
 - SQL injection: ✅ Parameterized queries (Prisma ORM)
 - NoSQL injection: ✅ Input validation
 - Command injection: ✅ No shell execution from user input
 
 Example test:
+
 ```typescript
 describe('SQL Injection Prevention', () => {
   it('should safely escape malicious input', async () => {
     const maliciousInput = "'; DROP TABLE users; --";
-    
+
     // Attempt injection via user search
     const result = await userService.findByName(maliciousInput);
-    
+
     // Should return empty array, not execute DROP TABLE
     expect(result).toEqual([]);
-    
+
     // Verify users table still exists
     const userCount = await db.user.count();
     expect(userCount).toBeGreaterThan(0);
@@ -18624,6 +18648,7 @@ describe('SQL Injection Prevention', () => {
 ## A04:2021 – Insecure Design ⚠️ PARTIAL
 
 Testing:
+
 - Threat modeling: ⚠️ INFORMAL (not documented)
 - Security requirements: ✅ Documented in copilot-instructions.md
 - Secure design patterns: ✅ Zero-trust architecture
@@ -18635,16 +18660,18 @@ Testing:
 ## A05:2021 – Security Misconfiguration ⚠️ PARTIAL
 
 Testing:
+
 - Default credentials: ❌ NOT TESTED (no automated check)
 - Unnecessary features: ⚠️ Manual review only
 - Security headers: ✅ TESTED
 
 Example test:
+
 ```typescript
 describe('Security Headers', () => {
   it('should set security headers', async () => {
     const response = await request(app).get('/');
-    
+
     expect(response.headers['x-frame-options']).toBe('DENY');
     expect(response.headers['x-content-type-options']).toBe('nosniff');
     expect(response.headers['strict-transport-security']).toMatch(/max-age=/);
@@ -18659,6 +18686,7 @@ describe('Security Headers', () => {
 ## A06:2021 – Vulnerable and Outdated Components ✅ TESTED
 
 Testing:
+
 - Dependency scanning: ✅ Snyk + Dependabot
 - Frequency: ✅ Daily automated scans
 - Remediation: ✅ 96% fix rate
@@ -18670,24 +18698,26 @@ Testing:
 ## A07:2021 – Identification and Authentication Failures ✅ TESTED
 
 Testing:
+
 - Password strength: ✅ zod validation
 - Brute force protection: ⚠️ Rate limiting (not specifically tested)
 - Session management: ✅ JWT expiry tested
 
 Example test:
+
 ```typescript
 describe('Authentication Security', () => {
   it('should reject weak passwords', () => {
     const weakPasswords = ['password', '12345678', 'qwerty'];
-    
+
     weakPasswords.forEach(pwd => {
       expect(() => validatePassword(pwd)).toThrow('Password too weak');
     });
   });
-  
+
   it('should enforce password requirements', () => {
     const schema = passwordSchema;
-    
+
     expect(schema.minLength).toBe(12);
     expect(schema.requireUppercase).toBe(true);
     expect(schema.requireLowercase).toBe(true);
@@ -18704,6 +18734,7 @@ describe('Authentication Security', () => {
 ## A08:2021 – Software and Data Integrity Failures ⚠️ PARTIAL
 
 Testing:
+
 - Code signing: ❌ NOT IMPLEMENTED
 - CI/CD pipeline security: ⚠️ Branch protection (not audited)
 - Unsigned updates: ❌ NOT TESTED
@@ -18715,18 +18746,20 @@ Testing:
 ## A09:2021 – Security Logging and Monitoring Failures ⚠️ PARTIAL
 
 Testing:
+
 - Logging coverage: ✅ Auth events logged
 - Log tampering: ❌ NOT TESTED (no immutability check)
 - Alerting: ❌ NOT TESTED (no automated alerts)
 
 Example logging:
+
 ```typescript
 // Auth events logged
 logger.info('User login', {
   userId: user.id,
   ip: req.ip,
   timestamp: new Date().toISOString(),
-  userAgent: req.headers['user-agent']
+  userAgent: req.headers['user-agent'],
 });
 ```
 
@@ -18737,10 +18770,12 @@ logger.info('User login', {
 ## A10:2021 – Server-Side Request Forgery (SSRF) ✅ TESTED
 
 Testing:
+
 - URL validation: ✅ Whitelist validation
 - Internal IP blocking: ✅ Tested
 
 Example test:
+
 ```typescript
 describe('SSRF Prevention', () => {
   it('should block requests to internal IPs', async () => {
@@ -18748,9 +18783,9 @@ describe('SSRF Prevention', () => {
       'http://localhost',
       'http://127.0.0.1',
       'http://192.168.1.1',
-      'http://169.254.169.254' // AWS metadata
+      'http://169.254.169.254', // AWS metadata
     ];
-    
+
     for (const url of internalUrls) {
       await expect(fetchUrl(url)).rejects.toThrow('Blocked URL');
     }
@@ -18761,6 +18796,7 @@ describe('SSRF Prevention', () => {
 **Coverage**: ✅ GOOD
 
 **Gaps**:
+
 - No automated OWASP ZAP or Burp Suite scanning
 - No formal penetration testing program
 - No brute force attack simulation
@@ -18769,12 +18805,14 @@ describe('SSRF Prevention', () => {
 - Code signing pipeline absent
 
 **External Validation**:
+
 - ✅ Aligned with **OWASP ASVS v4.0.3** Level 2 requirements (comprehensive testing standard)
 - ✅ Follows **NIST SP 800-115** Technical Testing guidance (recommends automated + manual testing)
 - 📚 Reference: **PCI DSS v4.0** Requirement 11 (vulnerability scanning and penetration testing annually)
 - 📚 See: **SANS Top 25 CWE** mapping for comprehensive coverage
 
 **Recommendation**:
+
 1. **Implement Annual Penetration Testing**: Engage third-party security firm for external/internal pentesting (Q1 2026)
 2. **Automate Misconfiguration Scanning**: Integrate OWASP ZAP into CI/CD pipeline for baseline scans
 3. **Conduct Formal Threat Modeling**: Run STRIDE workshop for high-risk features (authentication, voting, moderation)
@@ -18784,6 +18822,7 @@ describe('SSRF Prevention', () => {
 7. **Quarterly Security Metrics Dashboard**: Track OWASP Top 10 coverage percentages over time
 
 **Sources**:
+
 - OWASP Top 10 2021: https://owasp.org/Top10/
 - OWASP ASVS v4.0.3: https://owasp.org/www-project-application-security-verification-standard/
 - NIST SP 800-115: https://csrc.nist.gov/publications/detail/sp/800-115/final
@@ -18800,11 +18839,14 @@ describe('SSRF Prevention', () => {
 **Evidence**:
 
 **GDPR Compliance Documentation**:
+
 ```markdown
 # docs/03-legal-and-compliance/compliance.md
+
 ## Data Protection Compliance
 
 Meet GDPR/CCPA requirements:
+
 - Maintain Records of Processing Activities (ROPA)
 - Conduct DPIAs (Data Protection Impact Assessments) for high-risk features
 - Document lawful basis for all personal data processing
@@ -18812,6 +18854,7 @@ Meet GDPR/CCPA requirements:
 - Support all data subject rights
 
 ## Data Subject Rights (SLAs)
+
 - **Access** (provide data copy within 30 days)
 - **Deletion** (complete deletion within 30 days)
 - **Correction** (update inaccurate data within 30 days)
@@ -18819,6 +18862,7 @@ Meet GDPR/CCPA requirements:
 ```
 
 **GDPR Implementation in Code** (Data Subject Rights):
+
 ```typescript
 // libs/data-user/src/lib/user-data.service.ts (inferred implementation)
 export class UserDataService {
@@ -18827,36 +18871,36 @@ export class UserDataService {
     const user = await this.userRepo.findById(userId);
     const votes = await this.voteRepo.findByUserId(userId);
     const posts = await this.postRepo.findByUserId(userId);
-    
+
     return {
       personalData: {
         id: user.id,
         email: user.email,
         name: user.name,
-        createdAt: user.createdAt
+        createdAt: user.createdAt,
       },
       activityData: {
         votes: votes.map(sanitizeVote),
-        posts: posts.map(sanitizePost)
+        posts: posts.map(sanitizePost),
       },
       exportDate: new Date(),
-      format: 'JSON'
+      format: 'JSON',
     };
   }
 
   // GDPR Article 17: Right to Erasure
   async deleteUserData(userId: string): Promise<void> {
-    await this.db.transaction(async (trx) => {
+    await this.db.transaction(async trx => {
       await trx.delete('user_votes').where({ userId });
       await trx.delete('user_posts').where({ userId });
       await trx.delete('user_sessions').where({ userId });
       await trx.delete('users').where({ id: userId });
-      
+
       await this.auditLog.record({
         event: 'USER_DATA_DELETED',
         userId,
         timestamp: new Date(),
-        reason: 'GDPR_ERASURE_REQUEST'
+        reason: 'GDPR_ERASURE_REQUEST',
       });
     });
   }
@@ -18870,8 +18914,10 @@ export class UserDataService {
 ```
 
 **GDPR Lawful Basis Documentation** (from copilot-instructions.md):
+
 ```markdown
 ### Data Protection
+
 - Maintain Records of Processing Activities (ROPA)
 - Conduct Data Protection Impact Assessments (DPIAs)
 - Document lawful basis for personal data processing
@@ -18879,9 +18925,12 @@ export class UserDataService {
 ```
 
 **EU AI Act Awareness** (from ai-governance.md):
+
 ```markdown
 ## Transparency Requirements
+
 Document ALL AI systems with:
+
 - Model/agent purpose and scope
 - Known limitations and failure modes
 - Training data sources and methodology
@@ -18889,6 +18938,7 @@ Document ALL AI systems with:
 - Model cards (standardized format)
 
 ## Political Neutrality (Critical)
+
 ❌ NO AI system may manipulate political outcomes
 ✅ Implement neutrality tests
 ✅ Build manipulation resistance
@@ -18897,12 +18947,14 @@ Document ALL AI systems with:
 
 **High-Risk AI System Classification**:
 Political Sphere likely qualifies as **high-risk under EU AI Act Annex III** due to:
+
 - Category 8(a): "AI systems intended to be used for making decisions on access to educational institutions or for admission to them" → Similar civic participation context
 - Potential Category 1: "Biometric identification and categorisation of natural persons" → If user profiling/behavior analysis implemented
 
 **Analysis**:
 
 **GDPR Compliance Strengths**:
+
 1. **Data Subject Rights**: All 5 primary rights implemented (Access, Erasure, Rectification, Portability, Restriction)
 2. **30-Day SLA**: Documented response timeframes aligned with GDPR Article 12
 3. **Lawful Basis**: Processing based on consent (registration) and legitimate interests (platform operation)
@@ -18910,6 +18962,7 @@ Political Sphere likely qualifies as **high-risk under EU AI Act Annex III** due
 5. **Audit Logging**: GDPR Article 30 Records of Processing Activities maintained through structured logs
 
 **GDPR Compliance Gaps**:
+
 1. **No Formal ROPA**: No structured document cataloging processing activities, retention periods, third-party processors
 2. **No Conducted DPIAs**: Data Protection Impact Assessments not performed for high-risk features (voting, AI moderation)
 3. **Consent Management**: Cookie consent/tracking consent mechanisms not visible in codebase
@@ -18920,12 +18973,14 @@ Political Sphere likely qualifies as **high-risk under EU AI Act Annex III** due
 **EU AI Act Compliance Status**:
 
 **Implemented Safeguards**:
+
 1. **Transparency**: AI governance documentation exists (model cards encouraged)
 2. **Human Oversight**: Constitutional requirement for human-in-the-loop on political content
 3. **Explainability**: Audit trails for AI decisions mandated
 4. **Bias Monitoring**: Fairness testing requirements documented
 
 **Missing EU AI Act Requirements**:
+
 1. **Risk Classification**: No formal assessment whether Political Sphere is "high-risk AI system"
 2. **Conformity Assessment**: No third-party audit or self-assessment conducted
 3. **Technical Documentation**: No comprehensive technical file (Article 11) for AI systems
@@ -18934,6 +18989,7 @@ Political Sphere likely qualifies as **high-risk under EU AI Act Annex III** due
 6. **Fundamental Rights Impact Assessment**: Article 27 requirement not conducted
 
 **EU AI Act Timeline Context**:
+
 - **Current Status (Nov 2025)**: EU AI Act entered into force August 2024
 - **Phased Implementation**:
   - February 2025: Prohibited practices banned (not applicable to Political Sphere)
@@ -18942,8 +18998,10 @@ Political Sphere likely qualifies as **high-risk under EU AI Act Annex III** due
 - **Implication**: 21 months to achieve full compliance if classified as high-risk
 
 **Example GDPR Data Processing Record** (should exist):
+
 ```markdown
 # ROPA Entry: User Voting Data
+
 - **Purpose**: Record democratic voting preferences
 - **Lawful Basis**: Consent (GDPR Article 6(1)(a))
 - **Data Categories**: User ID, Vote Choice, Timestamp, Constituency
@@ -18954,6 +19012,7 @@ Political Sphere likely qualifies as **high-risk under EU AI Act Annex III** due
 ```
 
 **Gaps**:
+
 - No ROPA document exists (GDPR Article 30 violation for organizations >250 employees, recommended best practice for all)
 - No DPIAs conducted (GDPR Article 35 requirement for high-risk processing)
 - No privacy policy published
@@ -18964,6 +19023,7 @@ Political Sphere likely qualifies as **high-risk under EU AI Act Annex III** due
 - No post-market AI monitoring system
 
 **External Validation**:
+
 - ✅ GDPR compliance framework documented aligns with **ICO (UK Information Commissioner's Office) GDPR guidance**
 - ⚠️ Missing formal DPIA violates **GDPR Article 35** for high-risk processing (voting = democratic participation = high-risk)
 - 📚 EU AI Act Annex III: Political Sphere may qualify as **high-risk AI system** requiring conformity assessment
@@ -18971,6 +19031,7 @@ Political Sphere likely qualifies as **high-risk under EU AI Act Annex III** due
 - 📚 Reference: **NIST Privacy Framework v1.0** for comprehensive privacy risk management
 
 **Recommendation**:
+
 1. **Create ROPA Document (Immediate)**: Catalog all personal data processing activities with lawful basis, retention, transfers (GDPR Article 30)
 2. **Conduct DPIA for Voting System (Q1 2026)**: Formal assessment of privacy risks in democratic participation features (GDPR Article 35)
 3. **Publish Privacy Policy (Immediate)**: User-facing document explaining data practices, rights, contact details (GDPR Article 13/14)
@@ -18982,6 +19043,7 @@ Political Sphere likely qualifies as **high-risk under EU AI Act Annex III** due
 9. **Data Breach Response Plan (Immediate)**: 72-hour notification procedure, breach register, communication templates
 
 **Sources**:
+
 - UK GDPR (retained EU law): https://ico.org.uk/for-organisations/uk-gdpr-guidance-and-resources/
 - EU AI Act (Regulation 2024/1689): https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32024R1689
 - ICO GDPR Checklists: https://ico.org.uk/for-organisations/sme-web-hub/checklists/
@@ -18999,10 +19061,11 @@ Political Sphere likely qualifies as **high-risk under EU AI Act Annex III** due
 **Evidence**:
 
 **Pseudonymization in Authentication** (User IDs vs Identifiable Data):
+
 ```typescript
 // libs/platform/auth/src/lib/auth.service.ts (inferred structure)
 export interface AuthToken {
-  userId: string;        // Pseudonymous identifier (UUID)
+  userId: string; // Pseudonymous identifier (UUID)
   role: string;
   permissions: string[];
   // NO email, name, or PII in JWT payload
@@ -19011,25 +19074,26 @@ export interface AuthToken {
 export class AuthService {
   async generateToken(user: User): Promise<string> {
     const payload: AuthToken = {
-      userId: user.id,     // UUID only, not email
+      userId: user.id, // UUID only, not email
       role: user.role,
       permissions: user.permissions,
-      iat: Date.now()
+      iat: Date.now(),
     };
-    
+
     return jwt.sign(payload, process.env.JWT_SECRET!, {
-      expiresIn: process.env.JWT_EXPIRES_IN || '15m'
+      expiresIn: process.env.JWT_EXPIRES_IN || '15m',
     });
   }
 }
 ```
 
 **Pseudonymization in Voting Data**:
+
 ```typescript
 // libs/domain-election/src/lib/vote.repository.ts (inferred)
 export interface VoteRecord {
-  id: string;              // Vote transaction ID
-  userId: string;          // Pseudonymous UUID
+  id: string; // Vote transaction ID
+  userId: string; // Pseudonymous UUID
   proposalId: string;
   choice: 'FOR' | 'AGAINST' | 'ABSTAIN';
   timestamp: Date;
@@ -19038,7 +19102,8 @@ export interface VoteRecord {
 
 // Analytics aggregation - k-anonymity approach
 export async function getVotingPatterns(minGroupSize: number = 10): Promise<AggregatedVotes> {
-  const results = await db.query(`
+  const results = await db.query(
+    `
     SELECT 
       constituency_id,
       age_bracket,
@@ -19048,23 +19113,30 @@ export async function getVotingPatterns(minGroupSize: number = 10): Promise<Aggr
     JOIN users ON votes.user_id = users.id
     GROUP BY constituency_id, age_bracket
     HAVING COUNT(*) >= $1  -- k-anonymity threshold
-  `, [minGroupSize]);
-  
+  `,
+    [minGroupSize]
+  );
+
   return results;
 }
 ```
 
 **Data Minimization in Logs**:
+
 ```markdown
 # docs/copilot-instructions.md (Logging Standards)
+
 ## Logging
+
 Use structured logging:
+
 - Include context (userId, action, timestamp)
 - Log errors with stack traces
 - **NO sensitive data in logs** (passwords, tokens, PII)
 ```
 
 **No Privacy-Preserving ML Techniques**:
+
 ```bash
 # Search for differential privacy, federated learning, homomorphic encryption
 $ grep -r "differential privacy\|federated learning\|homomorphic" libs/ apps/
@@ -19076,6 +19148,7 @@ $ grep -r "anonymize\|k-anonymity\|l-diversity" package.json libs/
 ```
 
 **AI Analytics Current State** (from codebase structure):
+
 - No `/libs/ml-analytics/` or `/libs/ai-insights/` libraries detected
 - Game simulation uses deterministic algorithms, not ML-trained models
 - No evidence of user behavior profiling or predictive analytics
@@ -19084,6 +19157,7 @@ $ grep -r "anonymize\|k-anonymity\|l-diversity" package.json libs/
 **Analysis**:
 
 **Pseudonymization Strengths**:
+
 1. **UUID-Based Identification**: User IDs are UUIDs, not sequential integers (prevents enumeration attacks)
 2. **Separation of Identity from Action**: Vote records link to userId, not email/name directly
 3. **Minimal JWT Payload**: Tokens contain only userId + roles, no PII
@@ -19091,6 +19165,7 @@ $ grep -r "anonymize\|k-anonymity\|l-diversity" package.json libs/
 5. **Logging Standards**: Explicit prohibition of PII in logs
 
 **Pseudonymization Limitations**:
+
 1. **Not True Anonymization**: Data can be re-identified by joining `users` table (userId → email)
 2. **No Unlinkability**: All user actions linkable to single pseudonymous ID (behavioral profiling risk)
 3. **No Differential Privacy**: Aggregated statistics vulnerable to differencing attacks
@@ -19098,27 +19173,31 @@ $ grep -r "anonymize\|k-anonymity\|l-diversity" package.json libs/
 
 **Privacy-Preserving Techniques Assessment**:
 
-| Technique | Status | Evidence | Gap Impact |
-|-----------|--------|----------|------------|
-| **Pseudonymization** | ✅ Implemented | UUIDs, separation of identity from activity | Basic protection, reversible |
-| **Anonymization (Irreversible)** | ❌ Not Implemented | No one-way hashing or data destruction | Cannot make "anonymous data" claims |
-| **Differential Privacy** | ❌ Not Implemented | No noise injection, no ε-δ privacy budgets | Aggregated stats vulnerable to inference attacks |
-| **k-Anonymity** | ⚠️ Partial (k=10) | Voting analytics grouping | Too low for GDPR "anonymous" threshold |
-| **l-Diversity** | ❌ Not Implemented | No sensitive attribute diversity checks | Homogeneity attacks possible |
-| **t-Closeness** | ❌ Not Implemented | No distribution distance constraints | Skewness attacks possible |
-| **Federated Learning** | ❌ Not Applicable | No ML model training on user data | N/A (not using ML currently) |
-| **Homomorphic Encryption** | ❌ Not Implemented | No encrypted computation | Cannot perform analytics on encrypted data |
-| **Secure Multi-Party Computation** | ❌ Not Implemented | No SMPC protocols | Cannot compute joint statistics without revealing individual data |
+| Technique                          | Status             | Evidence                                    | Gap Impact                                                        |
+| ---------------------------------- | ------------------ | ------------------------------------------- | ----------------------------------------------------------------- |
+| **Pseudonymization**               | ✅ Implemented     | UUIDs, separation of identity from activity | Basic protection, reversible                                      |
+| **Anonymization (Irreversible)**   | ❌ Not Implemented | No one-way hashing or data destruction      | Cannot make "anonymous data" claims                               |
+| **Differential Privacy**           | ❌ Not Implemented | No noise injection, no ε-δ privacy budgets  | Aggregated stats vulnerable to inference attacks                  |
+| **k-Anonymity**                    | ⚠️ Partial (k=10)  | Voting analytics grouping                   | Too low for GDPR "anonymous" threshold                            |
+| **l-Diversity**                    | ❌ Not Implemented | No sensitive attribute diversity checks     | Homogeneity attacks possible                                      |
+| **t-Closeness**                    | ❌ Not Implemented | No distribution distance constraints        | Skewness attacks possible                                         |
+| **Federated Learning**             | ❌ Not Applicable  | No ML model training on user data           | N/A (not using ML currently)                                      |
+| **Homomorphic Encryption**         | ❌ Not Implemented | No encrypted computation                    | Cannot perform analytics on encrypted data                        |
+| **Secure Multi-Party Computation** | ❌ Not Implemented | No SMPC protocols                           | Cannot compute joint statistics without revealing individual data |
 
 **GDPR Anonymization Standard**:
+
 ```markdown
 # GDPR Recital 26: Definition of Anonymous Data
-"...the principles of data protection should therefore not apply to anonymous 
-information, namely information which does not relate to an identified or 
+
+"...the principles of data protection should therefore not apply to anonymous
+information, namely information which does not relate to an identified or
 identifiable natural person..."
 
 # ICO Anonymisation Code of Practice (2012)
+
 For data to be truly anonymous:
+
 1. Is it still possible to identify the individual?
 2. Is it still possible to link records to identify an individual?
 3. Can information be inferred about an individual?
@@ -19127,6 +19206,7 @@ If ANY answer is "yes" → data is NOT anonymous, remains personal data under GD
 ```
 
 **Political Sphere Analysis Against ICO Tests**:
+
 1. **Individual Identification**: YES — userId can be joined with `users` table to retrieve email/name
 2. **Record Linkability**: YES — All user actions (votes, posts, logins) linked via persistent userId
 3. **Inference Possibility**: YES — Behavioral patterns (voting history, activity times) can profile users
@@ -19134,35 +19214,40 @@ If ANY answer is "yes" → data is NOT anonymous, remains personal data under GD
 **Conclusion**: Data is **pseudonymized, not anonymized** → Full GDPR obligations apply.
 
 **Privacy-Preserving Analytics Example** (NOT IMPLEMENTED):
+
 ```typescript
 // Example: Differential Privacy for Vote Aggregation
 import { LaplaceMechanism } from 'differential-privacy-library'; // Hypothetical
 
 export async function getDifferentiallyPrivateVotingResults(
   proposalId: string,
-  epsilon: number = 1.0  // Privacy budget
+  epsilon: number = 1.0 // Privacy budget
 ): Promise<VoteResults> {
-  const trueResults = await db.query(`
+  const trueResults = await db.query(
+    `
     SELECT 
       COUNT(CASE WHEN choice = 'FOR' THEN 1 END) as votes_for,
       COUNT(CASE WHEN choice = 'AGAINST' THEN 1 END) as votes_against
     FROM votes
     WHERE proposal_id = $1
-  `, [proposalId]);
+  `,
+    [proposalId]
+  );
 
   // Add calibrated Laplace noise for differential privacy
-  const laplace = new LaplaceMechanism(epsilon, sensitivity = 1);
-  
+  const laplace = new LaplaceMechanism(epsilon, (sensitivity = 1));
+
   return {
     votesFor: Math.max(0, trueResults.votes_for + laplace.addNoise()),
     votesAgainst: Math.max(0, trueResults.votes_against + laplace.addNoise()),
     epsilon,
-    privacyGuarantee: `(ε=${epsilon})-differential privacy`
+    privacyGuarantee: `(ε=${epsilon})-differential privacy`,
   };
 }
 ```
 
 **Gaps**:
+
 - No differential privacy implementation for aggregated statistics
 - No anonymization (irreversible) techniques for released datasets
 - k-anonymity threshold too low (k=10, should be k≥25 for GDPR)
@@ -19172,6 +19257,7 @@ export async function getDifferentiallyPrivateVotingResults(
 - No privacy-preserving ML techniques (federated learning, encrypted computation)
 
 **External Validation**:
+
 - ⚠️ **ICO Anonymisation Code of Practice (2012)**: Political Sphere data fails all 3 anonymity tests → remains personal data
 - ⚠️ **GDPR Article 4(5)**: Pseudonymization defined; Article 32(1)(a) requires it as security measure (✅ implemented) but doesn't exempt from GDPR
 - 📚 **NIST SP 800-188** (De-Identifying Government Datasets): Recommends k≥25, l≥3, t≤0.2 for public release
@@ -19179,6 +19265,7 @@ export async function getDifferentiallyPrivateVotingResults(
 - 📚 Reference: **Article 29 Working Party Opinion 05/2014** on anonymization techniques (definitive EU guidance)
 
 **Recommendation**:
+
 1. **Implement Differential Privacy for Public Statistics (Q2 2026)**: Add Laplace/Gaussian noise to all aggregated vote counts, user activity metrics
    - Target: ε=1.0 for high-utility use cases, ε=0.1 for sensitive analytics
    - Use established libraries: Google's Differential Privacy library, OpenDP, or Tumult Analytics
@@ -19194,6 +19281,7 @@ export async function getDifferentiallyPrivateVotingResults(
 8. **Update Privacy Policy (Immediate)**: Clarify data is pseudonymized (GDPR obligations apply), not anonymous
 
 **Sources**:
+
 - ICO Anonymisation Code of Practice (2012): https://ico.org.uk/media/1061/anonymisation-code.pdf
 - GDPR Article 4(5) Pseudonymisation: https://gdpr-info.eu/art-4-gdpr/
 - Article 29 WP Opinion 05/2014: https://ec.europa.eu/justice/article-29/documentation/opinion-recommendation/files/2014/wp216_en.pdf
@@ -19212,10 +19300,14 @@ export async function getDifferentiallyPrivateVotingResults(
 **Evidence**:
 
 **Incident Response Documentation Exists**:
+
 ```markdown
 # docs/copilot-instructions.md
+
 ## Incident Management
+
 Prepare for failures:
+
 - **Runbooks** (step-by-step issue resolution)
 - **Playbooks** (incident response procedures)
 - **Escalation paths** (clear ownership chains)
@@ -19224,13 +19316,17 @@ Prepare for failures:
 ```
 
 **Security Documentation References**:
+
 ```markdown
 # docs/06-security-and-risk/security.md
+
 ## Reporting
-- If you discover a security vulnerability, open a private issue in this 
+
+- If you discover a security vulnerability, open a private issue in this
   repository or contact the maintainers listed in CODEOWNERS.
-  
+
 ## Immediate Response (if you committed secrets):
+
 1. Revoke the leaked credential immediately
 2. Remove the secret from git history
 3. Add the new, rotated credential via secured secret storage
@@ -19238,6 +19334,7 @@ Prepare for failures:
 ```
 
 **No Evidence of Drills Conducted**:
+
 ```bash
 # Search for incident response drill documentation
 $ find docs/ -type f -name "*drill*" -o -name "*tabletop*" -o -name "*exercise*"
@@ -19257,6 +19354,7 @@ $ find docs/09-observability-and-ops/ -name "*runbook*"
 ```
 
 **CI/CD Failure Handling** (Operational, Not Security):
+
 ```yaml
 # .github/workflows/ci.yml (inferred security-relevant section)
 name: Security Checks
@@ -19282,14 +19380,14 @@ jobs:
 
 **Incident Response Preparedness Layers**:
 
-| Layer | Status | Evidence | Drill Requirement |
-|-------|--------|----------|-------------------|
-| **Detection** | ✅ Partial | Gitleaks CI, Snyk monitoring | ⚠️ Not tested: Simulated breach detection time |
-| **Triage** | ⚠️ Theoretical | Documented escalation (CODEOWNERS contact) | ❌ Never executed: No drill to test contact procedures |
-| **Containment** | ⚠️ Theoretical | Revoke credentials, remove from git | ❌ Never tested: No simulation of credential rotation speed |
-| **Eradication** | ⚠️ Theoretical | Fix vulnerability, deploy patch | ❌ Never tested: Patch deployment time unknown |
-| **Recovery** | ⚠️ Theoretical | Restore service, validate fix | ❌ Never tested: No recovery time metrics |
-| **Lessons Learned** | ⚠️ Theoretical | Blameless postmortems documented | ❌ Zero postmortems exist (no incidents OR not recorded) |
+| Layer               | Status         | Evidence                                   | Drill Requirement                                           |
+| ------------------- | -------------- | ------------------------------------------ | ----------------------------------------------------------- |
+| **Detection**       | ✅ Partial     | Gitleaks CI, Snyk monitoring               | ⚠️ Not tested: Simulated breach detection time              |
+| **Triage**          | ⚠️ Theoretical | Documented escalation (CODEOWNERS contact) | ❌ Never executed: No drill to test contact procedures      |
+| **Containment**     | ⚠️ Theoretical | Revoke credentials, remove from git        | ❌ Never tested: No simulation of credential rotation speed |
+| **Eradication**     | ⚠️ Theoretical | Fix vulnerability, deploy patch            | ❌ Never tested: Patch deployment time unknown              |
+| **Recovery**        | ⚠️ Theoretical | Restore service, validate fix              | ❌ Never tested: No recovery time metrics                   |
+| **Lessons Learned** | ⚠️ Theoretical | Blameless postmortems documented           | ❌ Zero postmortems exist (no incidents OR not recorded)    |
 
 **Why Incident Response Drills Matter**:
 
@@ -19307,13 +19405,13 @@ jobs:
 
 **Industry Standard Incident Response Drills**:
 
-| Drill Type | Frequency | Scope | Example Scenario |
-|------------|-----------|-------|------------------|
-| **Tabletop Exercise** | Quarterly | Discussion-based, no systems interaction | "AWS credentials leaked on GitHub — walk through response steps" |
-| **Simulated Breach** | Bi-annually | Red team injects mock vulnerability, blue team responds | Inject fake SQL injection, measure detection → patch time |
-| **Disaster Recovery Test** | Annually | Full system restoration from backups | Delete staging database, restore from backup, validate data integrity |
-| **Communication Drill** | Quarterly | Test escalation contacts, notification templates | Send test page to on-call, verify 15-minute acknowledgment SLA |
-| **GDPR Breach Notification** | Annually | Practice 72-hour notification to data protection authority | Simulate user data exposure, draft ICO notification, measure completion time |
+| Drill Type                   | Frequency   | Scope                                                      | Example Scenario                                                             |
+| ---------------------------- | ----------- | ---------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| **Tabletop Exercise**        | Quarterly   | Discussion-based, no systems interaction                   | "AWS credentials leaked on GitHub — walk through response steps"             |
+| **Simulated Breach**         | Bi-annually | Red team injects mock vulnerability, blue team responds    | Inject fake SQL injection, measure detection → patch time                    |
+| **Disaster Recovery Test**   | Annually    | Full system restoration from backups                       | Delete staging database, restore from backup, validate data integrity        |
+| **Communication Drill**      | Quarterly   | Test escalation contacts, notification templates           | Send test page to on-call, verify 15-minute acknowledgment SLA               |
+| **GDPR Breach Notification** | Annually    | Practice 72-hour notification to data protection authority | Simulate user data exposure, draft ICO notification, measure completion time |
 
 **Political Sphere Drill Gaps** (Zero Conducted):
 
@@ -19327,15 +19425,18 @@ jobs:
 7. **No Postmortem Process Execution**: Blameless postmortem process documented but never used
 
 **Example Tabletop Exercise Scenario** (NOT CONDUCTED):
+
 ```markdown
 # Scenario: Dependency Vulnerability (Log4Shell-style)
 
-**Setup**: 
+**Setup**:
+
 - Critical RCE vulnerability discovered in `express` package (hypothetical)
 - CVE-2025-XXXX published Friday 5 PM GMT
 - Exploit code public, active scanning detected
 
 **Drill Questions**:
+
 1. **Detection**: How do we learn about this? (Snyk alert, GitHub Advisory, manual monitoring?)
 2. **Assessment**: Who evaluates severity and decides to patch? (Solo dev, TGC, automated?)
 3. **Patching**: What's the process? (Update package.json, run tests, deploy to staging, production?)
@@ -19344,6 +19445,7 @@ jobs:
 6. **Rollback**: If patch breaks production, how fast can we rollback? (Deployment rollback tested?)
 
 **Findings** (Hypothetical Drill Results):
+
 - ❌ No 24/7 on-call → Incident discovered Monday 9 AM (60-hour delay)
 - ❌ Snyk alert goes to email, not monitored on weekends
 - ⚠️ Patching process clear (update, test, deploy) but never timed
@@ -19356,12 +19458,14 @@ jobs:
 **Comparison to NIST Incident Response Lifecycle**:
 
 **NIST SP 800-61r2 Phases**:
+
 1. **Preparation** ← ✅ Partially covered (procedures documented)
 2. **Detection & Analysis** ← ⚠️ Tooling exists, but never tested
 3. **Containment, Eradication, Recovery** ← ❌ Theoretical only
 4. **Post-Incident Activity** ← ❌ Never executed (no postmortems)
 
 **Gaps**:
+
 - Zero incident response drills conducted (tabletop, technical, full-scale)
 - No on-call rotation or 24/7 incident response coverage
 - No backup restoration testing
@@ -19373,6 +19477,7 @@ jobs:
 - Zero postmortem records (either no incidents occurred, or lessons not captured)
 
 **External Validation**:
+
 - ⚠️ **NIST SP 800-61r2** (Incident Response Guide): Recommends quarterly tabletop exercises, annual full-scale drills
 - ⚠️ **ISO 27035-3:2020** (Incident Response Testing): Requires regular testing of IR capabilities (annually minimum)
 - 📚 **PCI DSS v4.0 Requirement 12.10.6**: Incident response plan must be tested at least annually
@@ -19380,13 +19485,13 @@ jobs:
 - 📚 Reference: **SANS Incident Handler's Handbook** (free resource for tabletop scenarios)
 
 **Recommendation**:
-1. **Conduct First Tabletop Exercise (Immediate - Q1 2026)**: 
+
+1. **Conduct First Tabletop Exercise (Immediate - Q1 2026)**:
    - **Scenario**: Leaked AWS credentials discovered in public GitHub repository
    - **Participants**: Solo developer + any stakeholders (TGC if applicable)
    - **Duration**: 90 minutes
    - **Deliverable**: Action items list, updated playbook with lessons learned
-   
-2. **Establish Quarterly Tabletop Cadence (2026)**: 
+2. **Establish Quarterly Tabletop Cadence (2026)**:
    - Q1: Secrets leak scenario
    - Q2: Dependency vulnerability (Log4Shell-style)
    - Q3: GDPR data breach (user database exposure)
@@ -19410,7 +19515,7 @@ jobs:
    - Draft user notification email
    - Measure time to complete both (target: <72 hours)
 
-6. **Red Team Exercise (Q4 2026)**: 
+6. **Red Team Exercise (Q4 2026)**:
    - Engage external security consultant or use automated penetration testing tools
    - Simulate attacker attempting to compromise system
    - Measure detection time, response effectiveness
@@ -19426,6 +19531,7 @@ jobs:
    - Public security advisory template (for disclosed vulnerabilities)
 
 **Sources**:
+
 - NIST SP 800-61r2 (Incident Response): https://csrc.nist.gov/publications/detail/sp/800-61/rev-2/final
 - ISO 27035-3:2020 (IR Testing): https://www.iso.org/standard/78974.html
 - PCI DSS v4.0 Requirement 12.10: https://www.pcisecuritystandards.org/document_library
@@ -19436,7 +19542,6 @@ jobs:
 
 ---
 
-
 **6.2.11 How does the project balance security requirements with usability to avoid creating barriers for legitimate users?**
 
 **Assessment**: **BALANCED — Security-usability trade-offs actively managed with user-friendly defaults; minimal friction authentication balanced against brute-force protection; some usability sacrifices documented and justified**
@@ -19444,34 +19549,42 @@ jobs:
 **Evidence**:
 
 **Authentication Usability** (Password Requirements):
-```markdown
+
+````markdown
 # docs/06-security-and-risk/security.md
+
 ## Required Secrets & Credentials
 
 Generate secure secrets with:
+
 ```bash
 node -e "console.log(require('crypto').randomBytes(64).toString('hex'))"
 ```
+````
 
 # Enforcement in code (inferred from JWT secret validation)
+
 - Minimum 32 characters for JWT secrets (security requirement)
 - User passwords likely 12+ characters (bcrypt 12-round minimum seen in 6.2.7)
-```
+
+````
 
 **JWT Token Expiry Balance** (Security vs. User Experience):
 ```bash
 # .env.example (from security.md documentation)
 JWT_EXPIRES_IN=15m          # Short-lived access tokens (high security)
 JWT_REFRESH_EXPIRES_IN=7d   # Longer refresh tokens (usability)
-```
+````
 
 **Analysis of 15-Minute Expiry**:
+
 - **Security Benefit**: Stolen tokens valid only briefly (reduces attack window)
 - **Usability Cost**: Users logged out after 15 minutes of inactivity
 - **Mitigation**: Refresh token mechanism (7-day refresh) allows seamless re-authentication without re-entering credentials
 - **Trade-off Assessment**: **BALANCED** — Industry standard (Auth0/Firebase use 15-60 minute defaults)
 
 **Rate Limiting Balance** (Abuse Prevention vs. Legitimate Use):
+
 ```typescript
 // apps/api/src/main.ts (inferred from backend.md examples)
 import rateLimit from 'express-rate-limit';
@@ -19486,8 +19599,9 @@ app.use(
 ```
 
 **Analysis**:
+
 - **100 requests per 15 minutes** = ~6.7 requests/minute average
-- **Legitimate User Impact**: 
+- **Legitimate User Impact**:
   - Single-page application making 5-10 API calls per page load
   - User browsing 6 pages over 15 minutes = 30-60 requests (within limit)
   - **Conclusion**: Normal use **unaffected**
@@ -19495,9 +19609,12 @@ app.use(
 - **Trade-off Assessment**: **EXCELLENT** — Conservative limit with minimal false positives
 
 **Accessibility Usability** (WCAG Compliance):
+
 ```markdown
 # docs/copilot-instructions.md
+
 ## Accessibility Requirements (Mandatory)
+
 - WCAG 2.2 AA minimum
 - Full keyboard navigation
 - Screen reader compatibility
@@ -19506,6 +19623,7 @@ app.use(
 ```
 
 **Security-Accessibility Conflict Resolution**:
+
 - **CAPTCHA Dilemma**: CAPTCHAs block bots but exclude visually impaired users
   - **Political Sphere Solution**: No CAPTCHA detected in codebase (relies on rate limiting instead)
   - **Trade-off**: Some bot risk accepted to maintain accessibility
@@ -19514,6 +19632,7 @@ app.use(
   - **Implication**: Lower security but better usability for less technical users
 
 **Error Message Usability** (Security vs. Helpful Feedback):
+
 ```typescript
 // libs/platform/auth/src/lib/auth.service.ts (inferred best practice)
 
@@ -19532,21 +19651,26 @@ if (!user || !passwordMatch) {
 ```
 
 **Political Sphere Implementation** (from backend.md):
+
 ```markdown
 ## Error Handling
+
 Use structured error responses:
+
 - Clear, actionable error messages
 - Specific recovery paths
 - Contextual help
 ```
 
 **Analysis**:
+
 - Generic "Invalid email or password" prevents attackers from discovering valid emails
 - **Usability Cost**: Legitimate users unsure if email typo or password misremembered
 - **Mitigation**: Password reset flow, account recovery options
 - **Trade-off Assessment**: **ACCEPTABLE** — Industry standard security practice
 
 **Password Strength Requirements** (Examined from bcrypt usage):
+
 ```typescript
 // libs/platform/auth/src/lib/password.service.ts (inferred)
 export async function hashPassword(password: string): Promise<string> {
@@ -19554,29 +19678,31 @@ export async function hashPassword(password: string): Promise<string> {
   const hasUppercase = /[A-Z]/.test(password);
   const hasLowercase = /[a-z]/.test(password);
   const hasNumber = /[0-9]/.test(password);
-  
+
   if (password.length < MIN_LENGTH) {
     throw new Error('Password must be at least 12 characters');
   }
-  
+
   if (!hasUppercase || !hasLowercase || !hasNumber) {
     throw new Error('Password must include uppercase, lowercase, and numbers');
   }
-  
+
   return bcrypt.hash(password, 12); // 12 rounds = ~250ms hashing time
 }
 ```
 
 **Analysis**:
+
 - **12-character minimum** (NIST SP 800-63B recommends 8-64)
 - **Complexity requirements** (uppercase, lowercase, numbers)
-- **Usability Impact**: 
+- **Usability Impact**:
   - Users may struggle to remember complex passwords
   - Encourages password reuse or weak patterns ("Password123!")
 - **Security Benefit**: Resists brute-force attacks (12 chars + complexity = 10^21 possibilities)
 - **Trade-off Assessment**: **JUSTIFIED** — Balances security with memorability (no special chars required = friendlier than some systems)
 
 **Session Management Usability**:
+
 ```typescript
 // Inferred: Remember Me functionality
 export interface LoginOptions {
@@ -19585,17 +19711,18 @@ export interface LoginOptions {
 
 export async function login(email: string, password: string, options: LoginOptions) {
   const user = await authenticateUser(email, password);
-  
+
   const accessToken = generateAccessToken(user);
-  const refreshToken = options.rememberMe 
-    ? generateRefreshToken(user, '30d')  // Extended for "Remember Me"
-    : generateRefreshToken(user, '7d');  // Standard
-  
+  const refreshToken = options.rememberMe
+    ? generateRefreshToken(user, '30d') // Extended for "Remember Me"
+    : generateRefreshToken(user, '7d'); // Standard
+
   return { accessToken, refreshToken };
 }
 ```
 
 **Analysis**:
+
 - **Remember Me Option**: Gives users control over security-convenience trade-off
 - **Usability Win**: Users on trusted devices stay logged in longer
 - **Security Consideration**: Stolen refresh token valid for 30 days (increased risk)
@@ -19603,38 +19730,41 @@ export async function login(email: string, password: string, options: LoginOptio
 
 **Comparison: Security vs. Usability Spectrum**:
 
-| Feature | High Security (Friction) | Political Sphere (Balanced) | High Usability (Risk) |
-|---------|-------------------------|----------------------------|----------------------|
-| **Password Requirement** | 16+ chars, all character types | **12+ chars, uppercase/lowercase/numbers** | 8 chars, any format |
-| **Token Expiry** | 5 minutes | **15 minutes (with refresh)** | 24 hours |
-| **Rate Limiting** | 10 requests/15 min | **100 requests/15 min** | No limit |
-| **MFA** | Required for all users | **Not implemented (TBD)** | Optional or absent |
-| **CAPTCHA** | On all logins | **Absent (relies on rate limiting)** | Absent |
-| **Account Lockout** | 3 failed attempts = 1 hour lock | **Not implemented (relies on rate limiting)** | No lockout |
+| Feature                  | High Security (Friction)        | Political Sphere (Balanced)                   | High Usability (Risk) |
+| ------------------------ | ------------------------------- | --------------------------------------------- | --------------------- |
+| **Password Requirement** | 16+ chars, all character types  | **12+ chars, uppercase/lowercase/numbers**    | 8 chars, any format   |
+| **Token Expiry**         | 5 minutes                       | **15 minutes (with refresh)**                 | 24 hours              |
+| **Rate Limiting**        | 10 requests/15 min              | **100 requests/15 min**                       | No limit              |
+| **MFA**                  | Required for all users          | **Not implemented (TBD)**                     | Optional or absent    |
+| **CAPTCHA**              | On all logins                   | **Absent (relies on rate limiting)**          | Absent                |
+| **Account Lockout**      | 3 failed attempts = 1 hour lock | **Not implemented (relies on rate limiting)** | No lockout            |
 
 **Security Hardening at Usability Cost** (Not Implemented):
+
 1. **Password Expiry**: Force password change every 90 days (NIST now discourages this — causes weak passwords)
 2. **Strict Account Lockout**: 3 failed logins = permanent lock until admin intervention (high support burden)
 3. **IP Whitelisting**: Restrict login to known IPs (blocks mobile users, VPNs)
 4. **Mandatory MFA**: Required for all users (excludes less technical users)
 
 **Usability Enhancements at Security Cost** (Implemented Wisely):
+
 1. **No CAPTCHA**: Accessibility prioritized over bot prevention (rate limiting compensates)
 2. **No Password Expiry**: Prevents forced weak passwords (NIST SP 800-63B compliant)
 3. **Generous Rate Limits**: 100 requests/15 min allows normal browsing (6.7/min average)
 4. **Clear Error Messages**: "Invalid email or password" is generic for security, but recovery flows exist
 
 **User-Centered Security Examples**:
+
 ```typescript
 // Example: Progressive security (increase friction only when suspicious)
 export async function analyzeLoginRisk(req: Request, user: User): Promise<RiskLevel> {
   const risk: RiskLevel = 'LOW';
-  
+
   // Suspicious indicators
   if (req.ip !== user.lastLoginIP) risk = 'MEDIUM'; // New IP
   if (isVPNorTor(req.ip)) risk = 'HIGH'; // Anonymizer
   if (isRecentPasswordChange(user)) risk = 'HIGH'; // Account compromise indicator
-  
+
   return risk;
 }
 
@@ -19653,6 +19783,7 @@ export async function applyRiskBasedSecurity(risk: RiskLevel, user: User) {
 **Note**: Risk-based authentication **not implemented** in Political Sphere but represents industry best practice for balancing security/usability.
 
 **Gaps**:
+
 - No multi-factor authentication option (even opt-in)
 - No risk-based authentication (progressive friction based on login context)
 - No account lockout mechanism (relies solely on rate limiting)
@@ -19661,11 +19792,12 @@ export async function applyRiskBasedSecurity(risk: RiskLevel, user: User) {
 - No session activity dashboard (users can't see active sessions, revoke tokens)
 
 **External Validation**:
-- ✅ **NIST SP 800-63B** (Digital Identity Guidelines): 
+
+- ✅ **NIST SP 800-63B** (Digital Identity Guidelines):
   - Recommends 8-char minimum (Political Sphere exceeds at 12)
   - Discourages forced password expiry (✅ not implemented)
   - Discourages composition rules (Political Sphere requires complexity — acceptable trade-off)
-- ✅ **OWASP Authentication Cheat Sheet**: 
+- ✅ **OWASP Authentication Cheat Sheet**:
   - Rate limiting implemented (✅)
   - Generic error messages (✅)
   - No CAPTCHA unless high-risk (⚠️ no CAPTCHA at all, could add for failed logins)
@@ -19673,7 +19805,8 @@ export async function applyRiskBasedSecurity(risk: RiskLevel, user: User) {
 - 📚 Reference: **UX Security** by Kainda Oladejo (balancing security UX principles)
 
 **Recommendation**:
-1. **Add Optional MFA (Q2 2026)**: 
+
+1. **Add Optional MFA (Q2 2026)**:
    - TOTP (Google Authenticator, Authy) for users who want extra security
    - **Critical**: Provide backup codes and recovery options (accessibility)
    - Don't mandate MFA (preserves usability for less technical users)
@@ -19714,6 +19847,7 @@ export async function applyRiskBasedSecurity(risk: RiskLevel, user: User) {
    - Iterate on confusing flows
 
 **Sources**:
+
 - NIST SP 800-63B (Digital Identity): https://pages.nist.gov/800-63-3/sp800-63b.html
 - OWASP Authentication Cheat Sheet: https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html
 - WCAG 2.2 (Accessibility): https://www.w3.org/WAI/WCAG22/quickref/
@@ -19726,7 +19860,6 @@ export async function applyRiskBasedSecurity(risk: RiskLevel, user: User) {
 
 [Continuing with questions 6.2.12-6.2.20...]
 
-
 **6.2.12 To what extent does the project's architecture align with zero-trust security principles?**
 
 **Assessment**: **GOOD — Core zero-trust principles documented and partially implemented; strong authentication boundaries but incomplete network segmentation and continuous verification**
@@ -19734,46 +19867,53 @@ export async function applyRiskBasedSecurity(risk: RiskLevel, user: User) {
 **Evidence**:
 
 **Zero-Trust Principles Documentation**:
+
 ```markdown
 # docs/copilot-instructions.md
+
 ### Security Practices
+
 - Apply zero-trust principles (never assume trust)
 - Use least-privilege access for all operations
 - Validate and sanitize all user inputs
 - Implement rate limiting and abuse prevention
 
 # docs/06-security-and-risk/security.md
+
 ## Zero-Trust Model
+
 Zero-trust security at ALL layers
 Never commit secrets to repository
 ```
 
 **Zero-Trust Pillar 1: Verify Explicitly** (Authentication on Every Request):
+
 ```typescript
 // apps/api/src/middleware/auth.middleware.ts (inferred from backend.md)
 export const authenticate = async (req, res, next) => {
   const token = req.headers.authorization?.split(' ')[1];
-  
+
   if (!token) {
     return res.status(401).json({ error: 'No token provided' });
   }
 
   try {
-    const payload = await verifyToken(token);  // Verify EVERY request
+    const payload = await verifyToken(token); // Verify EVERY request
     req.user = payload;
     next();
   } catch (error) {
-    res.status(401).json({ error: 'Invalid token' });  // Fail closed
+    res.status(401).json({ error: 'Invalid token' }); // Fail closed
   }
 };
 
 // Apply to all protected routes
-app.use('/api/v1/*', authenticate);  // No request bypasses auth
+app.use('/api/v1/*', authenticate); // No request bypasses auth
 ```
 
 **Analysis**: ✅ **STRONG** — No caching of authentication checks, every API call validated independently
 
 **Zero-Trust Pillar 2: Least Privilege Access** (Role-Based Access Control):
+
 ```typescript
 // apps/api/src/middleware/authz.middleware.ts (inferred)
 export const authorize = (...roles: string[]) => {
@@ -19794,6 +19934,7 @@ app.delete('/api/posts/:id', authenticate, authorize('moderator', 'admin'), dele
 **Analysis**: ✅ **GOOD** — Role-based access control (RBAC) enforced per endpoint, not blanket permissions
 
 **Zero-Trust Pillar 3: Assume Breach** (Input Validation):
+
 ```typescript
 // All inputs validated (from backend.md Zod examples)
 import { z } from 'zod';
@@ -19806,7 +19947,7 @@ const createUserSchema = z.object({
 
 app.post('/users', async (req, res) => {
   try {
-    const data = createUserSchema.parse(req.body);  // Validate untrusted input
+    const data = createUserSchema.parse(req.body); // Validate untrusted input
     // Proceed only if validation passes
   } catch (error) {
     res.status(400).json({ errors: error.errors });
@@ -19817,19 +19958,23 @@ app.post('/users', async (req, res) => {
 **Analysis**: ✅ **STRONG** — All external inputs treated as untrusted, validated before processing
 
 **Zero-Trust Pillar 4: Encrypt Everything** (Data Protection):
+
 ```markdown
 # docs/copilot-instructions.md
+
 ### Data Classification
-| Level        | Protection                          |
-|--------------|-------------------------------------|
+
+| Level        | Protection                            |
+| ------------ | ------------------------------------- |
 | Restricted   | Full encryption + tamper-evident logs |
-| Confidential | Encryption + audit logs             |
+| Confidential | Encryption + audit logs               |
 
 - Use TLS 1.3+ for transport
 - AES-256-GCM for at-rest encryption
 ```
 
 **Implementation Evidence**:
+
 ```typescript
 // JWT secret length enforcement (from security.md)
 if (process.env.JWT_SECRET!.length < 32) {
@@ -19837,19 +19982,23 @@ if (process.env.JWT_SECRET!.length < 32) {
 }
 
 // Bcrypt password hashing (from 6.2.7)
-await bcrypt.hash(password, 12);  // 12 rounds = strong KDF
+await bcrypt.hash(password, 12); // 12 rounds = strong KDF
 
 // TLS required (inferred from production deployment)
-const server = https.createServer({
-  key: fs.readFileSync('server-key.pem'),
-  cert: fs.readFileSync('server-cert.pem'),
-  minVersion: 'TLSv1.3'
-}, app);
+const server = https.createServer(
+  {
+    key: fs.readFileSync('server-key.pem'),
+    cert: fs.readFileSync('server-cert.pem'),
+    minVersion: 'TLSv1.3',
+  },
+  app
+);
 ```
 
 **Analysis**: ✅ **GOOD** — Encryption at rest (bcrypt for passwords) and in transit (TLS 1.3), but no evidence of database-level encryption
 
 **Zero-Trust Pillar 5: Micro-Segmentation** (Network Isolation):
+
 ```bash
 # Search for network segmentation evidence
 $ grep -r "firewall\|network.*segment\|VLAN\|service mesh" apps/infrastructure/
@@ -19857,6 +20006,7 @@ $ grep -r "firewall\|network.*segment\|VLAN\|service mesh" apps/infrastructure/
 ```
 
 **Kubernetes Network Policies** (Expected but Not Found):
+
 ```bash
 $ find apps/infrastructure/kubernetes/ -name "*network-policy*"
 # Result: No network policy manifests found
@@ -19865,6 +20015,7 @@ $ find apps/infrastructure/kubernetes/ -name "*network-policy*"
 **Analysis**: ⚠️ **PARTIAL** — No evidence of micro-segmentation (Kubernetes NetworkPolicies, service mesh, firewall rules between services). All services likely on same network segment.
 
 **Zero-Trust Pillar 6: Continuous Verification** (Session Validation):
+
 ```typescript
 // JWT expiry enforcement (from 6.2.11)
 JWT_EXPIRES_IN=15m  // Short-lived tokens force re-validation
@@ -19877,21 +20028,22 @@ const payload = await verifyToken(token);  // Cryptographic validation each time
 
 **Zero-Trust Maturity Model Assessment**:
 
-| Zero-Trust Principle | Political Sphere Status | Evidence | Maturity Level |
-|----------------------|-------------------------|----------|----------------|
-| **1. Verify Explicitly** | ✅ Implemented | Auth middleware on all protected routes | **Level 3: Defined** |
-| **2. Least Privilege** | ✅ Implemented | RBAC with per-endpoint role checks | **Level 3: Defined** |
-| **3. Assume Breach** | ✅ Implemented | Input validation, rate limiting, logging | **Level 3: Defined** |
-| **4. Encrypt Everything** | ⚠️ Partial | TLS, password hashing, no DB encryption | **Level 2: Managed** |
-| **5. Micro-Segmentation** | ❌ Not Implemented | No network policies, all services same segment | **Level 1: Initial** |
-| **6. Continuous Verification** | ✅ Implemented | Short-lived tokens, no auth caching | **Level 3: Defined** |
-| **7. Monitor & Audit** | ⚠️ Partial | Logging exists, no SIEM/anomaly detection | **Level 2: Managed** |
+| Zero-Trust Principle           | Political Sphere Status | Evidence                                       | Maturity Level       |
+| ------------------------------ | ----------------------- | ---------------------------------------------- | -------------------- |
+| **1. Verify Explicitly**       | ✅ Implemented          | Auth middleware on all protected routes        | **Level 3: Defined** |
+| **2. Least Privilege**         | ✅ Implemented          | RBAC with per-endpoint role checks             | **Level 3: Defined** |
+| **3. Assume Breach**           | ✅ Implemented          | Input validation, rate limiting, logging       | **Level 3: Defined** |
+| **4. Encrypt Everything**      | ⚠️ Partial              | TLS, password hashing, no DB encryption        | **Level 2: Managed** |
+| **5. Micro-Segmentation**      | ❌ Not Implemented      | No network policies, all services same segment | **Level 1: Initial** |
+| **6. Continuous Verification** | ✅ Implemented          | Short-lived tokens, no auth caching            | **Level 3: Defined** |
+| **7. Monitor & Audit**         | ⚠️ Partial              | Logging exists, no SIEM/anomaly detection      | **Level 2: Managed** |
 
 **Overall Zero-Trust Maturity**: **Level 2.5 — Managed to Defined** (out of 5: Initial, Managed, Defined, Quantitatively Managed, Optimizing)
 
 **Comparison to NIST SP 800-207 Zero Trust Architecture**:
 
 **Core ZTA Tenets (NIST)**:
+
 1. ✅ "All data sources and computing services are considered resources" — Political Sphere treats all API endpoints as protected resources
 2. ✅ "All communication is secured regardless of network location" — TLS enforced
 3. ✅ "Access to individual enterprise resources is granted on a per-session basis" — JWT per-request validation
@@ -19905,6 +20057,7 @@ const payload = await verifyToken(token);  // Cryptographic validation each time
 **Zero-Trust Gaps**:
 
 **Network Segmentation (Critical Gap)**:
+
 ```yaml
 # MISSING: Kubernetes NetworkPolicy example
 apiVersion: networking.k8s.io/v1
@@ -19916,21 +20069,22 @@ spec:
     matchLabels:
       app: api-server
   policyTypes:
-  - Ingress
-  - Egress
+    - Ingress
+    - Egress
   ingress:
-  - from:
-    - podSelector:
-        matchLabels:
-          app: web-frontend  # Only frontend can reach API
+    - from:
+        - podSelector:
+            matchLabels:
+              app: web-frontend # Only frontend can reach API
   egress:
-  - to:
-    - podSelector:
-        matchLabels:
-          app: database  # API can only reach database
+    - to:
+        - podSelector:
+            matchLabels:
+              app: database # API can only reach database
 ```
 
 **Context-Aware Access Control (Missing)**:
+
 ```typescript
 // MISSING: Adaptive authentication based on risk signals
 export async function authorizeWithContext(req, user) {
@@ -19939,27 +20093,30 @@ export async function authorizeWithContext(req, user) {
     deviceFingerprint: req.headers['user-agent'],
     timeOfDay: new Date().getHours(),
     geoLocation: getGeoFromIP(req.ip),
-    previousBehavior: await getUserBehaviorProfile(user.id)
+    previousBehavior: await getUserBehaviorProfile(user.id),
   });
 
   if (riskScore > 0.7) {
     return { allow: false, reason: 'High-risk context', requireMFA: true };
   }
-  
+
   return { allow: true };
 }
 ```
 
 **Continuous Monitoring (Missing)**:
+
 - No Security Information and Event Management (SIEM) system
 - No User and Entity Behavior Analytics (UEBA)
 - No anomaly detection (e.g., user logs in from new country without MFA challenge)
 
 **Device Posture Validation (Missing)**:
+
 - No device trust verification (managed device, security patches up-to-date)
 - No device inventory or compliance checks
 
 **Gaps**:
+
 - No micro-segmentation between services (Kubernetes NetworkPolicies, service mesh)
 - No database encryption at rest (passwords encrypted via bcrypt, but bulk data unencrypted)
 - No context-aware access control (IP geolocation, device trust, time-of-day policies)
@@ -19969,12 +20126,14 @@ export async function authorizeWithContext(req, user) {
 - No data loss prevention (DLP) controls
 
 **External Validation**:
+
 - ✅ **NIST SP 800-207** (Zero Trust Architecture): 4/7 core tenets implemented (57%)
 - ⚠️ **Forrester Zero Trust eXtended (ZTX) Framework**: Strong identity verification, weak micro-segmentation
 - 📚 **Google BeyondCorp**: Similar strong authentication, missing network context awareness
 - 📚 Reference: **CISA Zero Trust Maturity Model** (Level 2-3 out of 5)
 
 **Recommendation**:
+
 1. **Implement Kubernetes NetworkPolicies (Q2 2026)**:
    - Default deny all ingress/egress
    - Explicit allow rules per service (frontend ↔ API, API ↔ database)
@@ -20010,6 +20169,7 @@ export async function authorizeWithContext(req, user) {
    - Integrate with mobile device management (MDM) for mobile access
 
 **Sources**:
+
 - NIST SP 800-207 (Zero Trust Architecture): https://csrc.nist.gov/publications/detail/sp/800-207/final
 - CISA Zero Trust Maturity Model: https://www.cisa.gov/zero-trust-maturity-model
 - Forrester ZTX Framework: https://www.forrester.com/report/the-zero-trust-extended-ztx-ecosystem/RES176165
@@ -20027,10 +20187,14 @@ export async function authorizeWithContext(req, user) {
 **Evidence**:
 
 **Logging Infrastructure** (Structured Logs Documented):
+
 ```markdown
 # docs/copilot-instructions.md
+
 ## Logging
+
 Use structured logging:
+
 - Use structured logging (JSON format)
 - Include context (userId, action, timestamp)
 - Log errors with stack traces
@@ -20038,13 +20202,14 @@ Use structured logging:
 ```
 
 **Backend Logging Implementation** (from backend.md):
+
 ```typescript
 // Structured logging example
 import { logger } from './logger';
 
 logger.info('User created', {
   userId: user.id,
-  email: user.email,  // Pseudonymous identifier
+  email: user.email, // Pseudonymous identifier
   ip: req.ip,
   userAgent: req.headers['user-agent'],
 });
@@ -20058,15 +20223,19 @@ logger.error('Failed to process payment', {
 ```
 
 **Audit Logging for Governance Actions** (from ai-governance.md):
+
 ```markdown
 ## Interrogability & Explainability
+
 Make AI decisions auditable:
+
 - Retain decision traces (privacy-safe)
 - Support contestability
 - Log AI actions with full context
 ```
 
 **Log Encryption at Rest** (Not Explicitly Configured):
+
 ```bash
 # Search for log encryption configuration
 $ grep -r "encrypt.*log\|log.*encrypt" apps/ libs/ config/
@@ -20078,6 +20247,7 @@ $ grep -r "winston\|bunyan\|pino\|cloudwatch\|elasticsearch" package.json
 ```
 
 **Log Access Control** (Inferred from Infrastructure):
+
 ```bash
 # logs/ directory permissions (from file-structure.md)
 logs/
@@ -20090,8 +20260,10 @@ logs/
 ```
 
 **Log Storage Duration** (from operations.md):
+
 ```markdown
 ## Observability
+
 - Logs (structured JSON format)
 - Link traces to business outcomes
 - Enable end-to-end traceability
@@ -20103,20 +20275,22 @@ logs/
 
 **Log Encryption Status**:
 
-| Encryption Layer | Status | Evidence | Gap Impact |
-|------------------|--------|----------|------------|
-| **In Transit** | ⚠️ Likely (HTTPS) | TLS 1.3 for log shipping (if centralized) | Logs transmitted securely if using cloud logging (e.g., CloudWatch) |
-| **At Rest** | ❌ Not Implemented | No encryption configuration for log files | Logs stored as plaintext on disk (readable if filesystem compromised) |
-| **Application-Level** | ❌ Not Implemented | No field-level encryption for sensitive log entries | PII (if accidentally logged) is plaintext |
+| Encryption Layer      | Status             | Evidence                                            | Gap Impact                                                            |
+| --------------------- | ------------------ | --------------------------------------------------- | --------------------------------------------------------------------- |
+| **In Transit**        | ⚠️ Likely (HTTPS)  | TLS 1.3 for log shipping (if centralized)           | Logs transmitted securely if using cloud logging (e.g., CloudWatch)   |
+| **At Rest**           | ❌ Not Implemented | No encryption configuration for log files           | Logs stored as plaintext on disk (readable if filesystem compromised) |
+| **Application-Level** | ❌ Not Implemented | No field-level encryption for sensitive log entries | PII (if accidentally logged) is plaintext                             |
 
 **Log Access Control**:
 
 **Positive Controls** (Implemented):
+
 1. **OS-Level Permissions**: Log files owned by application user, readable only by root/admin (standard Unix permissions)
 2. **No Sensitive Data Policy**: Explicit prohibition of passwords, tokens, PII in logs (see copilot-instructions.md)
 3. **Structured Format**: JSON logs easier to parse and audit than unstructured text
 
 **Missing Controls**:
+
 1. **Write-Once Storage**: Logs can be modified or deleted by administrators (no immutability)
 2. **Cryptographic Integrity**: No HMAC or digital signatures to detect log tampering
 3. **Centralized Access Control**: No RBAC for log access (filesystem ACLs only)
@@ -20125,15 +20299,18 @@ logs/
 **Log Tampering Prevention**:
 
 **Threat Model**:
+
 - **Insider Threat**: Administrator with root access deletes incriminating logs
 - **Attacker Post-Compromise**: Hacker gains access, modifies logs to hide tracks
 - **Accidental Modification**: Operator error corrupts log files
 
 **Current Defenses** (Weak):
+
 - OS permissions prevent casual modification
 - Git history for code logs (not runtime logs)
 
 **Missing Defenses** (Critical Gaps):
+
 ```typescript
 // MISSING: Log integrity verification
 import crypto from 'crypto';
@@ -20148,42 +20325,46 @@ export class TamperProofLogger {
   log(entry: LogEntry): void {
     const entryJson = JSON.stringify(entry);
     const hmac = crypto.createHmac('sha256', this.hmacKey).update(entryJson).digest('hex');
-    
+
     const signedEntry = {
       ...entry,
       signature: hmac,
-      previousHash: this.getLastLogHash()  // Chain logs
+      previousHash: this.getLastLogHash(), // Chain logs
     };
-    
+
     fs.appendFileSync('/var/log/app/audit.log', JSON.stringify(signedEntry) + '\n');
   }
 
   verifyIntegrity(logFilePath: string): boolean {
     const logs = fs.readFileSync(logFilePath, 'utf-8').split('\n').filter(Boolean);
-    
+
     for (let i = 0; i < logs.length; i++) {
       const entry = JSON.parse(logs[i]);
       const { signature, previousHash, ...data } = entry;
-      
-      const expectedHmac = crypto.createHmac('sha256', this.hmacKey).update(JSON.stringify(data)).digest('hex');
-      
+
+      const expectedHmac = crypto
+        .createHmac('sha256', this.hmacKey)
+        .update(JSON.stringify(data))
+        .digest('hex');
+
       if (signature !== expectedHmac) {
         console.error(`Log tampering detected at entry ${i}`);
         return false;
       }
-      
+
       if (i > 0 && previousHash !== this.hashEntry(logs[i - 1])) {
         console.error(`Log chain broken at entry ${i}`);
         return false;
       }
     }
-    
+
     return true;
   }
 }
 ```
 
 **Write-Once Storage Solutions** (Not Implemented):
+
 1. **AWS S3 Object Lock**: Immutable log storage (WORM — Write Once Read Many)
 2. **HDFS Append-Only**: Hadoop filesystem with append-only semantics
 3. **Blockchain Anchoring**: Hash of logs periodically written to blockchain (extreme, expensive)
@@ -20192,6 +20373,7 @@ export class TamperProofLogger {
 **Log Encryption Best Practices** (Not Implemented):
 
 **Encryption at Rest**:
+
 ```bash
 # Example: Encrypted log volume (not implemented)
 # - Use LUKS (Linux Unified Key Setup) for disk encryption
@@ -20202,15 +20384,16 @@ mount -t ext4 /dev/mapper/encrypted-logs /var/log/app
 ```
 
 **Field-Level Encryption** (for sensitive log entries):
+
 ```typescript
 // Example: Encrypt PII in logs before writing
 export async function logSensitiveEvent(userId: string, action: string) {
   const encryptedUserId = await encryptField(userId, LOG_ENCRYPTION_KEY);
-  
+
   logger.info('Sensitive action', {
-    userId: encryptedUserId,  // Encrypted in log file
+    userId: encryptedUserId, // Encrypted in log file
     action,
-    timestamp: new Date()
+    timestamp: new Date(),
   });
 }
 
@@ -20219,18 +20402,21 @@ export async function investigateLogs(logEntry: LogEntry, investigatorRole: stri
   if (investigatorRole !== 'security-admin') {
     throw new Error('Unauthorized log access');
   }
-  
+
   const decryptedUserId = await decryptField(logEntry.userId, LOG_ENCRYPTION_KEY);
   return { ...logEntry, userId: decryptedUserId };
 }
 ```
 
 **Log Retention and Deletion** (Compliance Requirement):
+
 ```markdown
 # MISSING: Log retention policy
+
 # GDPR Article 5(1)(e): Personal data should be kept no longer than necessary
 
 # Example policy (not implemented):
+
 - Operational logs: 90 days
 - Security logs (auth, access control): 1 year
 - Audit logs (governance actions): 7 years (UK electoral retention alignment)
@@ -20238,6 +20424,7 @@ export async function investigateLogs(logEntry: LogEntry, investigatorRole: stri
 ```
 
 **Gaps**:
+
 - No log encryption at rest (plaintext files on disk)
 - No cryptographic log integrity verification (HMAC, digital signatures)
 - No write-once storage (logs can be tampered/deleted by administrators)
@@ -20249,6 +20436,7 @@ export async function investigateLogs(logEntry: LogEntry, investigatorRole: stri
 - No log backup/recovery procedures
 
 **External Validation**:
+
 - ⚠️ **PCI DSS v4.0 Requirement 10.5**: Protect audit trail files from unauthorized modification (write-once storage recommended)
 - ⚠️ **NIST SP 800-92** (Log Management): Recommends log encryption, integrity verification, centralized storage
 - ⚠️ **ISO 27001:2022 A.12.4.1**: Log information shall be protected against tampering and unauthorized access
@@ -20256,6 +20444,7 @@ export async function investigateLogs(logEntry: LogEntry, investigatorRole: stri
 - 📚 Reference: **OWASP Logging Cheat Sheet** (secure logging best practices)
 
 **Recommendation**:
+
 1. **Implement Cryptographic Log Integrity (Q2 2026)**:
    - Add HMAC signatures to all audit logs (governance actions, admin operations)
    - Chain logs with previous entry hash (blockchain-lite)
@@ -20295,6 +20484,7 @@ export async function investigateLogs(logEntry: LogEntry, investigatorRole: stri
    - Dashboard showing log volume, error rates, security events
 
 **Sources**:
+
 - NIST SP 800-92 (Log Management): https://csrc.nist.gov/publications/detail/sp/800-92/final
 - PCI DSS v4.0 Requirement 10: https://www.pcisecuritystandards.org/document_library
 - ISO 27001:2022 A.12.4 (Logging and Monitoring): https://www.iso.org/standard/27001
@@ -20307,7 +20497,6 @@ export async function investigateLogs(logEntry: LogEntry, investigatorRole: stri
 
 [Continuing with remaining questions 6.2.14-6.2.20...]
 
-
 **6.2.14 How does the project track and verify the provenance of AI-generated content to maintain transparency?**
 
 **Assessment**: **NOT IMPLEMENTED — No content provenance tracking system; AI-generated content not watermarked or distinguished from human-authored content; lack of audit trails for AI contributions**
@@ -20315,20 +20504,27 @@ export async function investigateLogs(logEntry: LogEntry, investigatorRole: stri
 **Evidence**:
 
 **AI System Usage Documentation** (from copilot-instructions.md):
+
 ```markdown
 ## AI Governance and Ethics
+
 ### Transparency Requirements
+
 Document ALL AI systems with:
+
 - Model/agent purpose and scope
 - Known limitations and failure modes
 - Training data sources and methodology
 
 ## When to Suggest Updates
+
 Propose changes when you notice:
+
 1. Outdated standards - New versions of WCAG, OWASP, NIST
 ```
 
 **No Provenance Tracking Implementation**:
+
 ```bash
 # Search for AI content tracking or watermarking
 $ grep -r "watermark\|provenance\|ai.*generated\|ai.*authored" libs/ apps/
@@ -20344,13 +20540,14 @@ $ grep -r "blockchain\|merkle\|hash.*chain\|digital.*signature" libs/
 ```
 
 **Content Creation Models** (Inferred):
+
 ```typescript
 // libs/domain-legislation/src/lib/proposal.model.ts (inferred)
 export interface Proposal {
   id: string;
   title: string;
   description: string;
-  authorId: string;          // User who submitted
+  authorId: string; // User who submitted
   createdAt: Date;
   status: 'DRAFT' | 'ACTIVE' | 'PASSED' | 'FAILED';
   // NO FIELD: generatedBy?: 'HUMAN' | 'AI' | 'HYBRID'
@@ -20387,23 +20584,24 @@ Political Sphere currently uses AI exclusively for development assistance (GitHu
 **Content Provenance Best Practices** (Not Implemented):
 
 **Metadata Tagging**:
+
 ```typescript
 // MISSING: Content provenance metadata
 export interface ContentProvenance {
   source: 'HUMAN' | 'AI' | 'HYBRID';
-  
+
   // If AI-generated
-  aiModel?: string;           // "gpt-4-turbo", "claude-3-opus"
-  aiVersion?: string;         // Model version for reproducibility
-  promptHash?: string;        // SHA-256 of prompt (privacy-preserving)
-  humanReviewedBy?: string;   // User ID who approved AI output
-  humanEdited?: boolean;      // Whether human modified AI output
-  
+  aiModel?: string; // "gpt-4-turbo", "claude-3-opus"
+  aiVersion?: string; // Model version for reproducibility
+  promptHash?: string; // SHA-256 of prompt (privacy-preserving)
+  humanReviewedBy?: string; // User ID who approved AI output
+  humanEdited?: boolean; // Whether human modified AI output
+
   // Provenance chain
-  contentHash: string;        // SHA-256 of final content
-  previousVersionHash?: string;  // For tracking edits
+  contentHash: string; // SHA-256 of final content
+  previousVersionHash?: string; // For tracking edits
   timestamp: Date;
-  verificationSignature?: string;  // Cryptographic signature
+  verificationSignature?: string; // Cryptographic signature
 }
 
 export interface ProposalWithProvenance extends Proposal {
@@ -20412,40 +20610,42 @@ export interface ProposalWithProvenance extends Proposal {
 ```
 
 **Cryptographic Watermarking** (Advanced, Not Implemented):
+
 ```typescript
 // Example: Embed invisible watermark in AI-generated text
-import { watermarkText, verifyWatermark } from 'ai-watermark-library';  // Hypothetical
+import { watermarkText, verifyWatermark } from 'ai-watermark-library'; // Hypothetical
 
 export async function generateAIProposal(userPrompt: string): Promise<string> {
   const aiResponse = await callLLM(userPrompt);
-  
+
   // Embed cryptographic watermark (imperceptible to humans)
   const watermarked = watermarkText(aiResponse, {
     model: 'gpt-4-turbo',
     timestamp: Date.now(),
-    sessionId: generateSessionId()
+    sessionId: generateSessionId(),
   });
-  
+
   return watermarked;
 }
 
 export async function verifyContentProvenance(text: string): Promise<ProvenanceResult> {
   const watermark = await verifyWatermark(text);
-  
+
   if (!watermark) {
     return { source: 'HUMAN', confidence: 0.95 };
   }
-  
+
   return {
     source: 'AI',
     model: watermark.model,
     timestamp: watermark.timestamp,
-    confidence: 0.99
+    confidence: 0.99,
   };
 }
 ```
 
 **Blockchain Provenance Ledger** (Extreme, Not Implemented):
+
 ```typescript
 // Example: Immutable record of AI-generated content
 export class ProvenanceLedger {
@@ -20458,23 +20658,24 @@ export class ProvenanceLedger {
       authorId: metadata.authorId,
       promptHash: sha256(metadata.prompt),
     };
-    
+
     // Write to blockchain or append-only ledger
     const txHash = await this.blockchain.recordTransaction(provenanceRecord);
-    
-    return txHash;  // Immutable proof of AI generation
+
+    return txHash; // Immutable proof of AI generation
   }
-  
+
   async verifyProvenance(content: string, claimedHash: string): Promise<boolean> {
     const actualHash = sha256(content);
     const ledgerRecord = await this.blockchain.getRecord(claimedHash);
-    
+
     return actualHash === ledgerRecord.contentHash;
   }
 }
 ```
 
 **User-Facing Transparency** (Not Implemented):
+
 ```tsx
 // Example: Visual indicator for AI-generated content
 export function ProposalCard({ proposal }: { proposal: ProposalWithProvenance }) {
@@ -20482,7 +20683,7 @@ export function ProposalCard({ proposal }: { proposal: ProposalWithProvenance })
     <div className="proposal-card">
       <h3>{proposal.title}</h3>
       <p>{proposal.description}</p>
-      
+
       {proposal.provenance.source === 'AI' && (
         <div className="ai-disclosure" role="alert">
           <Icon name="ai-sparkle" />
@@ -20492,7 +20693,7 @@ export function ProposalCard({ proposal }: { proposal: ProposalWithProvenance })
           </button>
         </div>
       )}
-      
+
       {proposal.provenance.source === 'HYBRID' && (
         <div className="hybrid-disclosure">
           <span>Collaboratively authored by human and AI</span>
@@ -20504,27 +20705,29 @@ export function ProposalCard({ proposal }: { proposal: ProposalWithProvenance })
 ```
 
 **Audit Trail for AI Actions** (Missing):
+
 ```typescript
 // MISSING: AI decision logging
 export async function moderateContent(content: string): Promise<ModerationResult> {
   const aiDecision = await aiModerator.analyze(content);
-  
+
   // Should log: AI model used, confidence score, decision rationale
   await auditLog.record({
     event: 'AI_MODERATION',
     contentId: content.id,
-    decision: aiDecision.action,  // 'APPROVE' | 'FLAG' | 'REMOVE'
+    decision: aiDecision.action, // 'APPROVE' | 'FLAG' | 'REMOVE'
     confidence: aiDecision.confidence,
     model: 'content-moderator-v2',
     reasoning: aiDecision.explanation,
-    timestamp: new Date()
+    timestamp: new Date(),
   });
-  
+
   return aiDecision;
 }
 ```
 
 **Gaps**:
+
 - No content provenance tracking (AI vs human authorship)
 - No metadata fields in content models to record AI generation
 - No cryptographic watermarking or hashing of AI outputs
@@ -20534,6 +20737,7 @@ export async function moderateContent(content: string): Promise<ModerationResult
 - No compliance with EU AI Act Article 52 transparency requirements
 
 **External Validation**:
+
 - ⚠️ **EU AI Act Article 52**: AI-generated content must be disclosed to users (Political Sphere: not implemented for future AI features)
 - ⚠️ **C2PA (Coalition for Content Provenance and Authenticity)**: Industry standard for content provenance metadata (Political Sphere: not adopted)
 - 📚 **OpenAI GPT-4 Watermarking Research**: Cryptographic watermarking for LLM outputs (Political Sphere: not implemented)
@@ -20541,6 +20745,7 @@ export async function moderateContent(content: string): Promise<ModerationResult
 - 📚 Reference: **IEEE P2145 Standard for AI Transparency** (draft)
 
 **Recommendation**:
+
 1. **Add Provenance Metadata to Content Models (Q2 2026)**:
    - Add `provenance` field to Proposal, Post, and all user-generated content types
    - Record: source (HUMAN/AI/HYBRID), aiModel, timestamp, contentHash
@@ -20582,6 +20787,7 @@ export async function moderateContent(content: string): Promise<ModerationResult
    - Report discrepancies to governance team
 
 **Sources**:
+
 - EU AI Act Article 52 (Transparency): https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32024R1689#d1e5725-1-1
 - C2PA (Content Provenance): https://c2pa.org/specifications/specifications/1.0/index.html
 - OpenAI Watermarking Research: https://arxiv.org/abs/2301.10226
@@ -20599,15 +20805,19 @@ export async function moderateContent(content: string): Promise<ModerationResult
 **Evidence**:
 
 **Input Validation Standard** (from backend.md):
+
 ```markdown
 ## Request Validation
+
 Validate all inputs at the boundary:
+
 - Use Zod for schema validation
 - Validate email format, string length, numeric ranges
 - Return structured 400 errors with field-specific messages
 ```
 
 **Zod Validation Examples** (from backend.md):
+
 ```typescript
 import { z } from 'zod';
 
@@ -20631,6 +20841,7 @@ app.post('/users', async (req, res) => {
 ```
 
 **API Validation Coverage** (Systematic Pattern):
+
 ```bash
 # Search for Zod validation across APIs
 $ grep -r "z\\.object\|z\\.string\|z\\.number" apps/api/ libs/platform/
@@ -20644,16 +20855,17 @@ $ grep -r "z\\.object\|z\\.string\|z\\.number" apps/api/ libs/platform/
 
 **Input Validation Layers** (Defense in Depth):
 
-| Layer | Status | Evidence | Coverage |
-|-------|--------|----------|----------|
-| **Client-Side (React)** | ✅ Implemented | Form validation with Zod, real-time feedback | Prevents accidental bad input, UX improvement |
-| **API Layer (Backend)** | ✅ Implemented | Zod schemas on all POST/PUT endpoints | Blocks malicious input, primary defense |
-| **Business Logic** | ⚠️ Partial | Some custom validation in service layer | Domain-specific rules (e.g., vote must be FOR/AGAINST/ABSTAIN) |
-| **Database Layer** | ✅ Implemented | Prisma ORM with type safety | Prevents SQL injection, type coercion |
+| Layer                   | Status         | Evidence                                     | Coverage                                                       |
+| ----------------------- | -------------- | -------------------------------------------- | -------------------------------------------------------------- |
+| **Client-Side (React)** | ✅ Implemented | Form validation with Zod, real-time feedback | Prevents accidental bad input, UX improvement                  |
+| **API Layer (Backend)** | ✅ Implemented | Zod schemas on all POST/PUT endpoints        | Blocks malicious input, primary defense                        |
+| **Business Logic**      | ⚠️ Partial     | Some custom validation in service layer      | Domain-specific rules (e.g., vote must be FOR/AGAINST/ABSTAIN) |
+| **Database Layer**      | ✅ Implemented | Prisma ORM with type safety                  | Prevents SQL injection, type coercion                          |
 
 **Comprehensive Validation Coverage**:
 
 **Authentication Endpoints** (High Security):
+
 ```typescript
 // apps/api/src/routes/auth.ts (inferred)
 const loginSchema = z.object({
@@ -20663,14 +20875,17 @@ const loginSchema = z.object({
 
 const registerSchema = z.object({
   email: z.string().email(),
-  password: z.string().min(12).regex(/[A-Z]/, 'Must include uppercase')
-                           .regex(/[a-z]/, 'Must include lowercase')
-                           .regex(/[0-9]/, 'Must include number'),
+  password: z
+    .string()
+    .min(12)
+    .regex(/[A-Z]/, 'Must include uppercase')
+    .regex(/[a-z]/, 'Must include lowercase')
+    .regex(/[0-9]/, 'Must include number'),
   name: z.string().min(1).max(100),
 });
 
 app.post('/auth/login', async (req, res) => {
-  const data = loginSchema.parse(req.body);  // Throws if invalid
+  const data = loginSchema.parse(req.body); // Throws if invalid
   // Proceed with authentication
 });
 ```
@@ -20678,6 +20893,7 @@ app.post('/auth/login', async (req, res) => {
 **Analysis**: ✅ **EXCELLENT** — Strict validation prevents weak passwords, malformed emails
 
 **User-Generated Content** (XSS Prevention):
+
 ```typescript
 // libs/domain-legislation/src/lib/proposal.validation.ts (inferred)
 const proposalSchema = z.object({
@@ -20693,7 +20909,9 @@ export function sanitizeProposal(input: z.infer<typeof proposalSchema>) {
   return {
     ...input,
     title: DOMPurify.sanitize(input.title),
-    description: DOMPurify.sanitize(input.description, { ALLOWED_TAGS: ['p', 'b', 'i', 'ul', 'li'] }),
+    description: DOMPurify.sanitize(input.description, {
+      ALLOWED_TAGS: ['p', 'b', 'i', 'ul', 'li'],
+    }),
   };
 }
 ```
@@ -20701,6 +20919,7 @@ export function sanitizeProposal(input: z.infer<typeof proposalSchema>) {
 **Analysis**: ✅ **GOOD** — Combination of validation (length, format) + sanitization (XSS removal)
 
 **Voting Endpoints** (Constitutional Integrity):
+
 ```typescript
 // libs/domain-election/src/lib/vote.validation.ts (inferred)
 const voteSchema = z.object({
@@ -20716,7 +20935,7 @@ export async function validateVoteEligibility(userId: string, proposalId: string
   if (existing) {
     throw new ValidationError('User already voted on this proposal');
   }
-  
+
   const proposal = await proposalRepo.findById(proposalId);
   if (proposal.status !== 'ACTIVE') {
     throw new ValidationError('Proposal voting period has ended');
@@ -20727,21 +20946,22 @@ export async function validateVoteEligibility(userId: string, proposalId: string
 **Analysis**: ✅ **STRONG** — Both schema validation AND business rule validation
 
 **File Upload Validation** (Security-Critical):
+
 ```typescript
 // apps/api/src/middleware/file-upload.ts (inferred)
 const fileUploadSchema = z.object({
-  file: z.custom<Express.Multer.File>((file) => {
+  file: z.custom<Express.Multer.File>(file => {
     const allowedTypes = ['image/jpeg', 'image/png', 'application/pdf'];
-    const maxSize = 5 * 1024 * 1024;  // 5MB
-    
+    const maxSize = 5 * 1024 * 1024; // 5MB
+
     if (!allowedTypes.includes(file.mimetype)) {
       throw new Error('File type not allowed');
     }
-    
+
     if (file.size > maxSize) {
       throw new Error('File size exceeds 5MB limit');
     }
-    
+
     return true;
   }),
 });
@@ -20751,11 +20971,11 @@ import fileType from 'file-type';
 
 export async function validateFileContent(buffer: Buffer): Promise<boolean> {
   const type = await fileType.fromBuffer(buffer);
-  
+
   if (!type || !['image/jpeg', 'image/png', 'application/pdf'].includes(type.mime)) {
     throw new ValidationError('File content does not match declared type');
   }
-  
+
   return true;
 }
 ```
@@ -20765,6 +20985,7 @@ export async function validateFileContent(buffer: Buffer): Promise<boolean> {
 **Validation Consistency Across Entry Points**:
 
 **Entry Points Audited**:
+
 1. **REST API Endpoints** — ✅ Zod validation on all POST/PUT/PATCH
 2. **GraphQL Mutations** — N/A (GraphQL not detected in codebase)
 3. **WebSocket Events** — ⚠️ Unknown (real-time features not examined)
@@ -20773,11 +20994,13 @@ export async function validateFileContent(buffer: Buffer): Promise<boolean> {
 6. **URL Path Parameters** — ✅ UUID validation for resource IDs
 
 **Gaps Identified**:
+
 1. **WebSocket Input Validation**: If real-time features exist (e.g., live voting updates), unclear if inputs validated
 2. **Client-Side Only Validation**: Some forms may rely solely on client validation (bypassable)
 3. **Incomplete Sanitization**: Not all user content passed through DOMPurify (potential XSS)
 
 **Validation Error Handling** (User Experience):
+
 ```typescript
 // Structured error responses (from backend.md)
 app.use((err: Error, req, res, next) => {
@@ -20800,21 +21023,22 @@ app.use((err: Error, req, res, next) => {
 
 **Comparison: OWASP Input Validation Guidelines**:
 
-| OWASP Recommendation | Political Sphere Implementation | Status |
-|----------------------|--------------------------------|--------|
-| **Validate All Inputs** | Zod schemas on all API endpoints | ✅ Implemented |
-| **Whitelist Validation** | Enums for categorical data (e.g., vote choices) | ✅ Implemented |
-| **Reject Invalid Inputs** | 400 errors returned, request not processed | ✅ Implemented |
-| **Canonicalization** | Unicode normalization (not explicitly found) | ⚠️ Unknown |
-| **Sanitize Output** | DOMPurify for HTML sanitization | ⚠️ Partial |
-| **Validate Data Types** | TypeScript + Zod enforce types | ✅ Implemented |
-| **Validate Length** | min/max constraints on all strings | ✅ Implemented |
-| **Validate Ranges** | Numeric ranges validated | ✅ Implemented |
-| **Validate Format** | Email, UUID, enum validation | ✅ Implemented |
+| OWASP Recommendation      | Political Sphere Implementation                 | Status         |
+| ------------------------- | ----------------------------------------------- | -------------- |
+| **Validate All Inputs**   | Zod schemas on all API endpoints                | ✅ Implemented |
+| **Whitelist Validation**  | Enums for categorical data (e.g., vote choices) | ✅ Implemented |
+| **Reject Invalid Inputs** | 400 errors returned, request not processed      | ✅ Implemented |
+| **Canonicalization**      | Unicode normalization (not explicitly found)    | ⚠️ Unknown     |
+| **Sanitize Output**       | DOMPurify for HTML sanitization                 | ⚠️ Partial     |
+| **Validate Data Types**   | TypeScript + Zod enforce types                  | ✅ Implemented |
+| **Validate Length**       | min/max constraints on all strings              | ✅ Implemented |
+| **Validate Ranges**       | Numeric ranges validated                        | ✅ Implemented |
+| **Validate Format**       | Email, UUID, enum validation                    | ✅ Implemented |
 
 **OWASP Compliance Score**: **8.5 of 9** (94%)
 
 **Testing Evidence** (from 6.2.7):
+
 ```typescript
 // Example: Input validation tests exist
 describe('User input validation', () => {
@@ -20834,6 +21058,7 @@ describe('User input validation', () => {
 **Analysis**: ✅ **STRONG** — Security validation tested systematically
 
 **Gaps**:
+
 - WebSocket input validation coverage unknown
 - Unicode canonicalization not explicitly implemented (edge case attacks possible)
 - Some forms may lack server-side validation (relying only on client-side)
@@ -20841,6 +21066,7 @@ describe('User input validation', () => {
 - CSV import validation not examined (if bulk data upload exists)
 
 **External Validation**:
+
 - ✅ **OWASP Input Validation Cheat Sheet**: Political Sphere aligns with 8.5/9 recommendations (94%)
 - ✅ **CWE-20 (Improper Input Validation)**: Mitigated through systematic Zod validation
 - ✅ **OWASP Top 10 A03 (Injection)**: Prevented via parameterized queries + input validation (see 6.2.7)
@@ -20848,6 +21074,7 @@ describe('User input validation', () => {
 - 📚 Reference: **Zod Documentation** (industry-standard TypeScript validation library)
 
 **Recommendation**:
+
 1. **Audit WebSocket Input Validation (Q1 2026)**:
    - If real-time features exist, ensure all WebSocket events validate inputs
    - Apply same Zod schemas as REST API endpoints
@@ -20884,6 +21111,7 @@ describe('User input validation', () => {
    - Track validation test coverage (should be 100% of schemas)
 
 **Sources**:
+
 - OWASP Input Validation Cheat Sheet: https://cheatsheetseries.owasp.org/cheatsheets/Input_Validation_Cheat_Sheet.html
 - CWE-20 (Improper Input Validation): https://cwe.mitre.org/data/definitions/20.html
 - NIST SP 800-53 SI-10 (Information Input Validation): https://csrc.nist.gov/projects/cprt/catalog#/cprt/framework/version/SP_800_53_5_1_0/home?element=SI-10
@@ -20895,7 +21123,6 @@ describe('User input validation', () => {
 ---
 
 [Due to length, I'll continue with the final 5 questions in the next response to stay within reasonable token limits per operation...]
-
 
 **6.2.16 Are privacy impact assessments (PIAs) or data protection impact assessments (DPIAs) conducted for high-risk features?**
 
@@ -20911,16 +21138,18 @@ Data Protection Impact Assessments are **mandatory** when processing is likely t
 3. **Systematic monitoring of publicly accessible areas on a large scale**
 
 **Political Sphere High-Risk Processing**:
+
 ```markdown
-| Feature | High-Risk Reason | DPIA Required? | Status |
-|---------|------------------|----------------|--------|
-| **Voting System** | Records political opinions (special category data under GDPR Art. 9) | ✅ YES | ❌ NOT DONE |
-| **User Profiling** | Analyzes voting patterns, policy preferences | ✅ YES | ❌ NOT DONE |
-| **Content Moderation** | Automated processing of political speech | ✅ YES | ❌ NOT DONE |
-| **AI Recommendation** | Algorithmic shaping of political content exposure | ✅ YES | ❌ NOT DONE |
+| Feature                | High-Risk Reason                                                     | DPIA Required? | Status      |
+| ---------------------- | -------------------------------------------------------------------- | -------------- | ----------- |
+| **Voting System**      | Records political opinions (special category data under GDPR Art. 9) | ✅ YES         | ❌ NOT DONE |
+| **User Profiling**     | Analyzes voting patterns, policy preferences                         | ✅ YES         | ❌ NOT DONE |
+| **Content Moderation** | Automated processing of political speech                             | ✅ YES         | ❌ NOT DONE |
+| **AI Recommendation**  | Algorithmic shaping of political content exposure                    | ✅ YES         | ❌ NOT DONE |
 ```
 
 **DPIA Search Results**:
+
 ```bash
 # Search for DPIA documentation
 $ grep -r "DPIA\|Data Protection Impact\|Privacy Impact Assessment" docs/
@@ -20936,13 +21165,16 @@ $ find docs/ -name "*dpia*" -o -name "*pia*"
 ```
 
 **Compliance Documentation Gap** (from 6.2.8):
+
 ```markdown
 ## Data Protection Compliance
+
 Meet GDPR/CCPA requirements:
-- Maintain Records of Processing Activities (ROPA).  ❌ NOT DONE
-- Conduct DPIAs for high-risk features.              ❌ NOT DONE
+
+- Maintain Records of Processing Activities (ROPA). ❌ NOT DONE
+- Conduct DPIAs for high-risk features. ❌ NOT DONE
 - Document lawful basis for personal data processing. ⚠️ PARTIAL
-- Implement consent management.                       ⚠️ PARTIAL
+- Implement consent management. ⚠️ PARTIAL
 ```
 
 **Analysis**: ⚠️ **CRITICAL GAP** — Political Sphere processes **special category data** (political opinions via voting) WITHOUT conducting mandatory DPIAs
@@ -20950,6 +21182,7 @@ Meet GDPR/CCPA requirements:
 **Why Voting Requires DPIA**:
 
 **GDPR Article 9 - Special Category Data**:
+
 ```
 Processing of personal data revealing political opinions [...] shall be prohibited.
 
@@ -20959,6 +21192,7 @@ Exceptions include:
 ```
 
 **Political Sphere's Voting System**:
+
 - Records user's vote choice (FOR/AGAINST/ABSTAIN) on political proposals
 - Vote choice **reveals political opinions** → Special category data
 - Even pseudonymized (UUIDs), still linked to user account → Personal data
@@ -20967,53 +21201,63 @@ Exceptions include:
 **DPIA Process (Not Implemented)**:
 
 **ICO DPIA Template** (Not Used):
+
 ```markdown
 # Data Protection Impact Assessment Template
 
 ## 1. Project Description
+
 - **What**: [Describe feature/processing activity]
 - **Why**: [Purpose and lawful basis]
 - **How**: [Technical implementation]
 - **Who**: [Data subjects affected, data processors involved]
 
 ## 2. Necessity and Proportionality
+
 - Is data processing necessary to achieve purpose?
 - Could less invasive methods achieve the same result?
 - Is data collection proportionate to the purpose?
 
 ## 3. Risks to Individuals
+
 - What could go wrong? (e.g., unauthorized access, profiling bias)
 - Who would be harmed? (users, specific demographics)
 - How severe would the impact be? (financial, emotional, reputational)
 - How likely is the risk? (probability assessment)
 
 ## 4. Compliance and Consultation
+
 - Does processing comply with GDPR principles?
 - Have data subjects been consulted?
 - Has the Data Protection Officer (DPO) been consulted?
 - Are third-party processors compliant?
 
 ## 5. Mitigations
+
 - Technical measures (encryption, access controls, anonymization)
 - Organizational measures (staff training, policies, audits)
 - Monitoring and review processes
 
 ## 6. Approval and Sign-Off
+
 - DPIA Author: [Name, Date]
 - DPO Review: [Name, Date, Approval]
 - Senior Management Approval: [Name, Date]
 
 ## 7. Review Schedule
+
 - Next review date: [6-12 months, or when processing changes]
 ```
 
 **Example: Voting System DPIA (Not Conducted)**:
 
 **What SHOULD Have Been Assessed**:
+
 ```markdown
 ### Voting System DPIA (MISSING)
 
 **1. Project Description**:
+
 - **Feature**: User voting on legislative proposals
 - **Data Collected**: User ID, proposal ID, vote choice (FOR/AGAINST/ABSTAIN), timestamp
 - **Lawful Basis**: Explicit consent (GDPR Art. 6(1)(a) + Art. 9(2)(a) for special category data)
@@ -21021,6 +21265,7 @@ Exceptions include:
 - **Retention**: Votes retained indefinitely for audit/transparency
 
 **2. Necessity and Proportionality**:
+
 - ✅ Necessary: Voting is core game mechanic
 - ⚠️ Proportionality Question: Must votes be permanently linked to user accounts?
   - **Alternative**: Could use threshold anonymous aggregation (k-anonymity, see 6.2.9)
@@ -21036,12 +21281,14 @@ Exceptions include:
 | **Social pressure** | MEDIUM | MEDIUM | Friends/family discover voting choices |
 
 **4. Compliance Check**:
+
 - ⚠️ Consent mechanism: Not explicitly implemented (assumed via ToS acceptance)
 - ⚠️ Right to erasure: Can user delete vote history? (Not tested, see 6.2.8)
 - ⚠️ Data portability: Can user export voting record? (Not implemented)
 - ❌ DPO consultation: No DPO appointed (small project, not required under GDPR unless high-risk)
 
 **5. Mitigations** (Partially Implemented):
+
 - ✅ Pseudonymization via UUIDs (reduces identifiability)
 - ✅ Access control (votes not publicly visible)
 - ⚠️ Encryption at rest: Not implemented (see 6.2.12)
@@ -21075,11 +21322,13 @@ Exceptions include:
 **DPIA Best Practices (Not Followed)**:
 
 **When to Conduct DPIA** (GDPR Guidance):
+
 - **Before processing begins** (Political Sphere: Voting already implemented)
 - **When processing changes significantly** (e.g., adding AI moderation)
 - **Periodically review** (e.g., annually)
 
 **Who Should Be Involved**:
+
 - **Data Protection Officer (DPO)**: Not appointed (not required for small projects, but recommended for high-risk)
 - **Legal counsel**: Review compliance
 - **Technical team**: Assess implementation risks
@@ -21087,11 +21336,13 @@ Exceptions include:
 - **Senior management**: Approve DPIA and mitigations
 
 **DPIA Tools (Not Used)**:
+
 - **ICO DPIA Toolkit**: Free template and guidance (UK-specific)
 - **CNIL PIA Tool**: French data protection authority's DPIA software
 - **ISO 29134**: Privacy Impact Assessment standard (methodology framework)
 
 **Gaps**:
+
 - Zero DPIAs conducted for any feature
 - No DPIA process or template in place
 - No designated person responsible for DPIAs
@@ -21101,6 +21352,7 @@ Exceptions include:
 - No review schedule for reassessing privacy risks
 
 **External Validation**:
+
 - ❌ **GDPR Article 35**: DPIAs mandatory for high-risk processing (Political Sphere: Non-compliant)
 - ❌ **ICO Guidance**: Voting systems processing political opinions require DPIA (Political Sphere: Not done)
 - 📚 **WP29 Guidelines on DPIA** (now EDPB): Provides DPIA criteria and methodology
@@ -21108,6 +21360,7 @@ Exceptions include:
 - 📚 Reference: **ICO DPIA Toolkit** (free resource)
 
 **Recommendation**:
+
 1. **Conduct Voting System DPIA Immediately (Q1 2026)**:
    - Use ICO DPIA template as starting point
    - Assess risks: data breach, profiling, surveillance, discrimination
@@ -21151,6 +21404,7 @@ Exceptions include:
    - Unified view of all risks (security, privacy, compliance)
 
 **Sources**:
+
 - GDPR Article 35 (DPIA): https://gdpr-info.eu/art-35-gdpr/
 - GDPR Article 9 (Special Category Data): https://gdpr-info.eu/art-9-gdpr/
 - ICO DPIA Guidance: https://ico.org.uk/for-organisations/uk-gdpr-guidance-and-resources/accountability-and-governance/guide-to-accountability-and-governance/accountability-and-governance/data-protection-impact-assessments/
@@ -21168,24 +21422,29 @@ Exceptions include:
 **Evidence**:
 
 **Public Security Documentation** (SECURITY.md in repository):
+
 ```markdown
 # Security Policy
 
 This repository enforces a fail-closed secrets scanning policy and documents how to report and respond to security issues.
 
 ## Reporting
+
 - If you discover a security vulnerability, open a private issue in this repository or contact the maintainers listed in CODEOWNERS.
 
 ## Secrets Scanning
+
 - We run automated Gitleaks checks in CI and a fast staged scan locally via lefthook.
 - If the scanner finds a secret in a PR, CI will fail and a report will be posted to the PR with details.
 
 Immediate Response (if you committed secrets):
+
 1. Revoke the leaked credential immediately
 2. Remove the secret from the git history
 3. Add the new credential via secured secret storage — never commit it
 
 ## Contact
+
 - For urgent incidents, contact the security team as described in CODE_OF_CONDUCT
 ```
 
@@ -21194,11 +21453,13 @@ Immediate Response (if you committed secrets):
 **User-Facing Transparency**:
 
 **What Users CAN Currently Learn**:
+
 1. **How to report security issues**: Clear contact points (private GitHub issues, CODEOWNERS)
 2. **Secrets management practices**: Transparent about scanning and revocation process
 3. **Incident response ownership**: CODE_OF_CONDUCT references (though not security-specific)
 
 **What Users CANNOT Currently Learn**:
+
 1. **What data is collected**: No published privacy policy (see 6.2.8)
 2. **How data is secured**: No user-facing security posture statement
 3. **What could go wrong**: No risk disclosure (e.g., "Your voting choices could be exposed in a breach")
@@ -21207,21 +21468,22 @@ Immediate Response (if you committed secrets):
 
 **Transparency Scorecard**:
 
-| Disclosure Area | Status | Evidence | Public Access |
-|-----------------|--------|----------|---------------|
-| **Vulnerability Reporting** | ✅ Excellent | SECURITY.md | GitHub repo (public) |
-| **Secrets Management** | ✅ Good | SECURITY.md, .gitleaks.toml | GitHub repo (public) |
-| **Privacy Policy** | ❌ Missing | Not published | N/A |
-| **Data Collection Practices** | ❌ Missing | Not disclosed | N/A |
-| **Security Posture** | ⚠️ Partial | Documented in copilot-instructions.md | GitHub repo, but technical |
-| **Incident History** | ❌ Missing | No public incident log | N/A |
-| **Third-Party Processors** | ❌ Missing | Not disclosed | N/A |
-| **User Rights (GDPR)** | ⚠️ Partial | Compliance.md mentions, no user-facing version | GitHub repo, technical |
-| **Breach Notification Process** | ❌ Missing | Not published | N/A |
+| Disclosure Area                 | Status       | Evidence                                       | Public Access              |
+| ------------------------------- | ------------ | ---------------------------------------------- | -------------------------- |
+| **Vulnerability Reporting**     | ✅ Excellent | SECURITY.md                                    | GitHub repo (public)       |
+| **Secrets Management**          | ✅ Good      | SECURITY.md, .gitleaks.toml                    | GitHub repo (public)       |
+| **Privacy Policy**              | ❌ Missing   | Not published                                  | N/A                        |
+| **Data Collection Practices**   | ❌ Missing   | Not disclosed                                  | N/A                        |
+| **Security Posture**            | ⚠️ Partial   | Documented in copilot-instructions.md          | GitHub repo, but technical |
+| **Incident History**            | ❌ Missing   | No public incident log                         | N/A                        |
+| **Third-Party Processors**      | ❌ Missing   | Not disclosed                                  | N/A                        |
+| **User Rights (GDPR)**          | ⚠️ Partial   | Compliance.md mentions, no user-facing version | GitHub repo, technical     |
+| **Breach Notification Process** | ❌ Missing   | Not published                                  | N/A                        |
 
 **Comparison: Industry Transparency Standards**:
 
 **Mozilla's Security and Privacy Transparency** (Best Practice):
+
 ```markdown
 ✅ Public security advisories for all vulnerabilities (CVE disclosures)
 ✅ Bug bounty program transparency (payouts, scope, hall of fame)
@@ -21232,6 +21494,7 @@ Immediate Response (if you committed secrets):
 ```
 
 **Political Sphere Comparison**:
+
 ```markdown
 ✅ Vulnerability reporting process (SECURITY.md)
 ❌ No bug bounty program (understandable for non-commercial project)
@@ -21246,39 +21509,46 @@ Immediate Response (if you committed secrets):
 **Risk Communication to Users** (Missing):
 
 **What Users Should Be Told** (Not Currently Disclosed):
+
 ```markdown
 # Privacy and Security: What You Should Know
 
 ## What Data We Collect
+
 - Account information: Email, username
 - Voting choices: Your votes on proposals (reveals political opinions)
 - Activity logs: Timestamps of actions (login, voting, posting)
 
 ## How We Protect Your Data
+
 - Encryption: Passwords hashed with bcrypt (12 rounds)
 - Access control: Votes not publicly visible
 - Pseudonymization: Internal user IDs (UUIDs) used
 - ⚠️ Limitation: Votes permanently linked to your account (not anonymous)
 
 ## Risks You Should Understand
+
 - **Data Breach Risk**: If our system is compromised, your voting choices could be exposed
 - **Account Takeover**: Weak password could allow someone to impersonate you
 - **Permanence**: Votes cannot be deleted once cast (for audit integrity)
 - **Profiling**: Your voting pattern could reveal political affiliation
 
 ## Your Rights
+
 - Access your data: Request copy of all data we hold about you
 - Correct inaccurate data: Update your account information
 - Delete your account: Request full account deletion within 30 days
 - ⚠️ Limitation: Votes may be retained in anonymized form for historical records
 
 ## How to Protect Yourself
+
 - Use strong, unique password (12+ characters)
 - Enable MFA when available (coming Q2 2026)
 - Be aware that your votes reflect your political opinions
 - Review privacy settings regularly
 
 ## Report Security Issues
+
 - Email: security@political-sphere.example.com
 - Response time: 48 hours for acknowledgment
 ```
@@ -21288,8 +21558,10 @@ Immediate Response (if you committed secrets):
 **Transparency Best Practices (Partially Implemented)**:
 
 **1. Vulnerability Disclosure Policy** — ✅ Implemented
+
 ```markdown
 // SECURITY.md exists and is clear
+
 - How to report
 - Expected response time (48 hours implied by "urgent")
 - Responsible disclosure process
@@ -21297,6 +21569,7 @@ Immediate Response (if you committed secrets):
 
 **2. Privacy Policy** — ❌ Not Published
 Should Include:
+
 - What data is collected and why
 - How long data is retained
 - Who data is shared with (third parties)
@@ -21306,6 +21579,7 @@ Should Include:
 
 **3. Transparency Reports** — ❌ Not Published
 Should Include:
+
 - Number of data subject requests received and fulfilled
 - Security incidents (if any) and user impact
 - Government/legal requests for user data
@@ -21317,18 +21591,21 @@ Needed: Plain-language summary for users (e.g., "We encrypt your password, scan 
 
 **5. Breach Notification Process** — ❌ Not Published
 Should Disclose:
+
 - How users will be notified (email, in-app notification)
 - Timeline for notification (GDPR: 72 hours to regulator, "without undue delay" to users)
 - What information will be provided (what happened, data affected, steps to take)
 
 **6. Third-Party Disclosure** — ❌ Not Published
 Should List:
+
 - All external services processing user data
 - Purpose of each service (e.g., "Stripe for payment processing")
 - Links to third-party privacy policies
 - Data transfer safeguards (if non-EU)
 
 **Gaps**:
+
 - No plain-language privacy policy published
 - No user-facing security posture statement
 - No transparency reports (data requests, incidents, system changes)
@@ -21339,6 +21616,7 @@ Should List:
 - No regular security updates to users (e.g., "We fixed 12 vulnerabilities this month")
 
 **External Validation**:
+
 - ✅ **CIS Controls v8 (16.3)**: Establish and maintain a security awareness program (Political Sphere: Partial, developer-focused, not user-focused)
 - 📚 **GDPR Article 12**: Transparent information, communication, and modalities (Political Sphere: Gap in user-facing transparency)
 - 📚 **ISO 27001 A.6.1.3**: Contact with authorities and special interest groups (Political Sphere: SECURITY.md provides contact, good)
@@ -21346,6 +21624,7 @@ Should List:
 - 📚 Reference: **Mozilla's Transparency Reports** (best practice example)
 
 **Recommendation**:
+
 1. **Publish Plain-Language Privacy Policy (Q1 2026)**:
    - Use ICO privacy policy template or generator
    - Maximum 8th-grade reading level (Flesch-Kincaid score >60)
@@ -21393,6 +21672,7 @@ Should List:
    - Inspiration: Cloudflare Transparency Report, Mozilla Security Advisories
 
 **Sources**:
+
 - GDPR Article 12 (Transparent Information): https://gdpr-info.eu/art-12-gdpr/
 - GDPR Article 13 (Information to be Provided): https://gdpr-info.eu/art-13-gdpr/
 - ICO Privacy Policy Generator: https://ico.org.uk/for-organisations/sme-web-hub/make-your-own-privacy-notice/
@@ -21410,16 +21690,20 @@ Should List:
 **Evidence**:
 
 **AI Partnership Documentation** (from Section 4):
+
 ```markdown
 # Section 4: AI Development Partnership
 
 ## 4.1 Descriptive Layer
+
 Political Sphere leverages AI systems as collaborative coding partners:
+
 - GitHub Copilot for code generation and suggestion
 - ChatGPT for architectural decisions, documentation, and problem-solving
 - AI assistants help identify code smells, security anti-patterns, and compliance gaps
 
 ## AI Usage Pattern
+
 - Development Assistance: Primary use case
 - Code Review Support: AI suggests improvements
 - Documentation Generation: AI drafts and refines docs
@@ -21429,6 +21713,7 @@ Political Sphere leverages AI systems as collaborative coding partners:
 **AI Risk Identification Examples** (Inferred from Development Process):
 
 **Ad-Hoc Risk Detection**:
+
 ```bash
 # Example: Developer asks ChatGPT
 "What security risks exist in this authentication endpoint?"
@@ -21447,6 +21732,7 @@ ChatGPT Response:
 **Systematic AI Risk Identification** (Not Implemented):
 
 **What Could Be Automated** (Future State):
+
 ```typescript
 // Example: AI-powered threat modeling (NOT IMPLEMENTED)
 export class AIThreatModeler {
@@ -21454,16 +21740,16 @@ export class AIThreatModeler {
     const prompt = `
       Analyze this code change for security risks:
       ${diff}
-      
+
       Consider:
       - OWASP Top 10 vulnerabilities
       - STRIDE threat model (Spoofing, Tampering, Repudiation, Info Disclosure, DoS, Elevation)
       - Data flow and trust boundaries
       - Political neutrality violations (this is a political simulation platform)
     `;
-    
+
     const threats = await callLLM(prompt);
-    
+
     return {
       threats: threats.map(t => ({
         category: t.strideCategory,  // e.g., "Information Disclosure"
@@ -21475,7 +21761,7 @@ export class AIThreatModeler {
       riskScore: calculateRiskScore(threats),
     };
   }
-  
+
   async generateRiskRegisterEntry(threat: Threat): Promise<RiskEntry> {
     // Auto-populate risk register with AI-identified threats
     return {
@@ -21512,6 +21798,7 @@ jobs:
 **Current AI Risk Identification Workflow** (Manual):
 
 **Step-by-Step Process**:
+
 1. **Developer writes code** (may or may not use GitHub Copilot)
 2. **GitHub Copilot suggests code** (some security context, e.g., parameterized queries)
 3. **Developer reviews Copilot suggestions** (may accept insecure suggestions if not vigilant)
@@ -21519,6 +21806,7 @@ jobs:
 5. **Post-merge**: Snyk/Dependabot scans for known vulnerabilities (reactive, not proactive)
 
 **Gaps**:
+
 - No proactive AI scanning of new code for novel threats
 - No AI analysis of architecture changes for systemic risks
 - No AI-powered risk register updates
@@ -21527,12 +21815,14 @@ jobs:
 **AI Limitations in Risk Identification**:
 
 **What AI Does Well**:
+
 - ✅ Detecting known vulnerability patterns (e.g., SQL injection, XSS)
 - ✅ Suggesting secure alternatives (e.g., "Use bcrypt instead of MD5")
 - ✅ Identifying OWASP Top 10 issues in code snippets
 - ✅ Explaining security concepts and threat models
 
 **What AI Does Poorly** (Current State):
+
 - ❌ Understanding novel attack vectors specific to Political Sphere (e.g., vote manipulation via timing attacks)
 - ❌ Assessing business logic flaws (e.g., "Can user vote twice by exploiting race condition?")
 - ❌ Evaluating constitutional integrity risks (e.g., "Does this feature enable political bias?")
@@ -21540,25 +21830,25 @@ jobs:
 
 **Comparison: AI-Powered Security Tools** (Not Used):
 
-| Tool | Capability | Political Sphere Status |
-|------|-----------|------------------------|
+| Tool                         | Capability                                 | Political Sphere Status                               |
+| ---------------------------- | ------------------------------------------ | ----------------------------------------------------- |
 | **GitHub Advanced Security** | AI-powered code scanning, secret detection | ⚠️ Secret scanning via Gitleaks (not GitHub Advanced) |
-| **Snyk Code** | Static analysis with AI suggestions | ❌ Uses Snyk for dependencies, not Snyk Code for SAST |
-| **Semgrep with AI** | Custom rule generation via AI | ❌ Not detected in codebase |
-| **ChatGPT Code Interpreter** | Interactive threat modeling | ⚠️ Used ad-hoc, not systematically |
-| **Amazon CodeGuru Reviewer** | ML-based code review | ❌ Not used (AWS-specific) |
-| **DeepCode (Snyk)** | AI-powered bug/vulnerability detection | ❌ Not explicitly configured |
+| **Snyk Code**                | Static analysis with AI suggestions        | ❌ Uses Snyk for dependencies, not Snyk Code for SAST |
+| **Semgrep with AI**          | Custom rule generation via AI              | ❌ Not detected in codebase                           |
+| **ChatGPT Code Interpreter** | Interactive threat modeling                | ⚠️ Used ad-hoc, not systematically                    |
+| **Amazon CodeGuru Reviewer** | ML-based code review                       | ❌ Not used (AWS-specific)                            |
+| **DeepCode (Snyk)**          | AI-powered bug/vulnerability detection     | ❌ Not explicitly configured                          |
 
 **AI Risk Identification Maturity Model**:
 
-| Level | Description | Political Sphere Status |
-|-------|-------------|------------------------|
-| **Level 0: Manual** | No AI assistance | ❌ Not here (Copilot used) |
-| **Level 1: Ad-Hoc AI** | Developers query AI for advice | ✅ **CURRENT STATE** |
-| **Level 2: Automated Suggestions** | AI auto-suggests security improvements in IDE | ⚠️ Partial (Copilot suggests, not security-focused) |
-| **Level 3: CI/CD Integration** | AI scans every PR for risks | ❌ Not implemented |
-| **Level 4: Predictive Risk Modeling** | AI predicts future vulnerabilities based on trends | ❌ Not implemented |
-| **Level 5: Autonomous Remediation** | AI auto-fixes low-severity issues | ❌ Not implemented |
+| Level                                 | Description                                        | Political Sphere Status                             |
+| ------------------------------------- | -------------------------------------------------- | --------------------------------------------------- |
+| **Level 0: Manual**                   | No AI assistance                                   | ❌ Not here (Copilot used)                          |
+| **Level 1: Ad-Hoc AI**                | Developers query AI for advice                     | ✅ **CURRENT STATE**                                |
+| **Level 2: Automated Suggestions**    | AI auto-suggests security improvements in IDE      | ⚠️ Partial (Copilot suggests, not security-focused) |
+| **Level 3: CI/CD Integration**        | AI scans every PR for risks                        | ❌ Not implemented                                  |
+| **Level 4: Predictive Risk Modeling** | AI predicts future vulnerabilities based on trends | ❌ Not implemented                                  |
+| **Level 5: Autonomous Remediation**   | AI auto-fixes low-severity issues                  | ❌ Not implemented                                  |
 
 **Current Maturity**: **Level 1.5** (Ad-Hoc AI + Partial IDE Suggestions)
 
@@ -21567,6 +21857,7 @@ jobs:
 **Scenario: New Feature – Anonymous Voting Option**
 
 **Without AI Threat Modeling** (Current State):
+
 ```
 Developer: "We should add anonymous voting"
 Code Review: "Looks good, anonymity is a privacy feature"
@@ -21575,6 +21866,7 @@ Result: Introduces vulnerability – anonymous votes can't be audited, enabling 
 ```
 
 **With AI Threat Modeling** (Desired State):
+
 ```
 AI Threat Modeler: "Analyzing new AnonymousVoteService class..."
 
@@ -21601,6 +21893,7 @@ Confidence: 0.85 (HIGH)
 **Analysis**: ⚠️ **GAP** — Political Sphere lacks this level of proactive AI threat detection
 
 **Gaps**:
+
 - No automated AI threat modeling on code changes
 - No AI integration in CI/CD for security scanning
 - No AI-powered risk register maintenance
@@ -21610,12 +21903,14 @@ Confidence: 0.85 (HIGH)
 - No feedback loop: AI learns from past vulnerabilities to improve future detection
 
 **External Validation**:
+
 - 📚 **NIST AI RMF**: Recommends using AI for proactive risk identification (Political Sphere: Informal use only)
 - 📚 **OWASP AI Security and Privacy Guide**: Discusses AI for threat modeling (Political Sphere: Not systematically applied)
 - 📚 **Microsoft Security Copilot**: AI-powered threat detection and response (Political Sphere: Similar tool could be custom-built)
 - 📚 Reference: **GitHub Copilot for Security** (beta feature)
 
 **Recommendation**:
+
 1. **Systematize AI Threat Modeling (Q3 2026)**:
    - Create prompt templates for security analysis
    - Require developers to run AI threat model on all high-risk PRs
@@ -21657,6 +21952,7 @@ Confidence: 0.85 (HIGH)
    - Coverage: What % of actual vulnerabilities did AI catch?
 
 **Sources**:
+
 - NIST AI RMF (Manage Function): https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.100-1.pdf
 - OWASP AI Security Guide: https://owasp.org/www-project-ai-security-and-privacy-guide/
 - Microsoft Security Copilot: https://www.microsoft.com/en-us/security/business/ai-machine-learning/microsoft-security-copilot
@@ -21668,7 +21964,6 @@ Confidence: 0.85 (HIGH)
 
 [Continuing in next response with final 2 questions and Section 6.3 summary...]
 
-
 **6.2.19 Does the project have mechanisms for AI-driven adaptive compliance, where AI systems continuously audit compliance and suggest policy adjustments?**
 
 **Assessment**: **NOT IMPLEMENTED — No AI-driven compliance monitoring or policy adaptation; conceptualized in documentation but not built; compliance auditing is manual and periodic rather than continuous and adaptive**
@@ -21676,9 +21971,12 @@ Confidence: 0.85 (HIGH)
 **Evidence**:
 
 **AI Compliance Concepts** (from Section 5 - Documentation & Knowledge):
+
 ```markdown
 # Future Vision: Adaptive Compliance System
+
 Political Sphere envisions AI-powered compliance monitoring that:
+
 - Continuously scans codebase for GDPR, WCAG, OWASP compliance
 - Detects regulatory changes (e.g., EU AI Act updates) and suggests code adaptations
 - Auto-generates compliance artifacts (ROPA, DPIAs, transparency reports)
@@ -21688,6 +21986,7 @@ Political Sphere envisions AI-powered compliance monitoring that:
 **Analysis**: ✅ **DOCUMENTED** as future vision, ❌ **NOT IMPLEMENTED** in code
 
 **Search for AI Compliance Systems**:
+
 ```bash
 # Search for adaptive compliance or AI audit code
 $ grep -r "adaptive.*compliance\|ai.*audit\|compliance.*monitor" apps/ libs/
@@ -21705,8 +22004,10 @@ $ grep -r "regulatory.*change\|policy.*adapt\|compliance.*update" docs/
 **Current Compliance Approach** (Manual & Periodic):
 
 **Compliance Audit Process** (from 6.2.1-6.2.18 Evidence):
+
 ```markdown
 ## Current State (Non-AI Approach)
+
 1. **Manual Code Review**: Humans check for WCAG 2.2 AA violations
 2. **Periodic Risk Register Review**: Every 15 days (manual update lag, see 6.2.1)
 3. **Dependency Scanning**: Snyk/Dependabot (automated, not AI-powered)
@@ -21715,6 +22016,7 @@ $ grep -r "regulatory.*change\|policy.*adapt\|compliance.*update" docs/
 ```
 
 **Gaps**:
+
 - No continuous compliance monitoring (checks happen manually, periodically)
 - No AI-driven regulatory change detection
 - No automated policy adaptation (standards updates require human intervention)
@@ -21723,17 +22025,18 @@ $ grep -r "regulatory.*change\|policy.*adapt\|compliance.*update" docs/
 **What Adaptive Compliance COULD Look Like** (Not Implemented):
 
 **1. Continuous GDPR Compliance Monitoring** (Conceptual):
+
 ```typescript
 // Example: AI-powered GDPR compliance scanner (NOT IMPLEMENTED)
 export class AdaptiveGDPRMonitor {
   async scanCodebase(): Promise<ComplianceReport> {
     const files = await getAllSourceFiles();
     const issues: ComplianceIssue[] = [];
-    
+
     for (const file of files) {
       // AI analyzes code for GDPR violations
       const analysis = await this.aiAnalyzeGDPR(file.content);
-      
+
       if (analysis.collectsPersonalData && !analysis.hasLegalBasis) {
         issues.push({
           severity: 'HIGH',
@@ -21743,7 +22046,7 @@ export class AdaptiveGDPRMonitor {
           autofix: this.generateLegalBasisCode(analysis),
         });
       }
-      
+
       if (analysis.storesSpecialCategoryData && !analysis.hasExplicitConsent) {
         issues.push({
           severity: 'CRITICAL',
@@ -21754,19 +22057,19 @@ export class AdaptiveGDPRMonitor {
         });
       }
     }
-    
+
     return {
       complianceScore: calculateScore(issues),
       issues,
       recommendations: this.generatePolicyUpdates(issues),
     };
   }
-  
+
   private async aiAnalyzeGDPR(code: string): Promise<GDPRAnalysis> {
     const prompt = `
       Analyze this code for GDPR compliance:
       ${code}
-      
+
       Identify:
       - Personal data collection (Art. 4(1))
       - Special category data (Art. 9) - political opinions, biometric, health
@@ -21774,23 +22077,23 @@ export class AdaptiveGDPRMonitor {
       - Data minimization (Art. 5(1)(c)) - excessive data collection?
       - Retention limits (Art. 5(1)(e)) - retention period specified?
     `;
-    
+
     return await callLLM(prompt);
   }
-  
+
   async suggestPolicyAdaptation(issues: ComplianceIssue[]): Promise<PolicyUpdate[]> {
     // AI generates recommended policy changes based on compliance gaps
     const prompt = `
       Given these GDPR violations:
       ${JSON.stringify(issues)}
-      
+
       Suggest:
       1. Privacy policy updates
       2. Consent flow changes
       3. Data retention policy adjustments
       4. DPIA triggers (when needed)
     `;
-    
+
     return await callLLM(prompt);
   }
 }
@@ -21816,6 +22119,7 @@ jobs:
 **Analysis**: ❌ **NOT IMPLEMENTED** — No AI-driven GDPR monitoring in CI/CD
 
 **2. Regulatory Change Tracking** (Conceptual):
+
 ```typescript
 // Example: AI monitors regulatory updates (NOT IMPLEMENTED)
 export class RegulatoryIntelligence {
@@ -21825,16 +22129,16 @@ export class RegulatoryIntelligence {
       'https://www.legislation.gov.uk/ukpga/2018/12/contents',  // UK GDPR
       'https://www.w3.org/WAI/WCAG22/quickref/',  // WCAG 2.2
     ];
-    
+
     const updates: RegulatoryUpdate[] = [];
-    
+
     for (const source of sources) {
       const latest = await fetchDocument(source);
       const previousVersion = await this.getPreviousVersion(source);
-      
+
       if (latest.version !== previousVersion.version) {
         const changes = await this.aiCompareVersions(previousVersion, latest);
-        
+
         updates.push({
           standard: source,
           version: latest.version,
@@ -21845,25 +22149,25 @@ export class RegulatoryIntelligence {
         });
       }
     }
-    
+
     return updates;
   }
-  
+
   private async aiAssessImpact(changes: string[], codebase: CodebaseSnapshot): Promise<ImpactReport> {
     const prompt = `
       Regulatory changes:
       ${changes.join('\n')}
-      
+
       Current codebase:
       ${codebase.summary}
-      
+
       Assess:
       - Which changes affect Political Sphere?
       - What code needs to be updated?
       - Estimated effort (hours, complexity)
       - Deadline for compliance
     `;
-    
+
     return await callLLM(prompt);
   }
 }
@@ -21899,17 +22203,18 @@ RegulatoryUpdate {
 **Analysis**: ❌ **NOT IMPLEMENTED** — No automated regulatory tracking or impact assessment
 
 **3. Adaptive Policy Generation** (Conceptual):
+
 ```typescript
 // Example: AI auto-generates compliance documents (NOT IMPLEMENTED)
 export class PolicyAutomation {
   async generateRO PA(): Promise<ROPADocument> {
     // Records of Processing Activities (GDPR Article 30)
     const dataSources = await this.scanCodebaseForDataProcessing();
-    
+
     const prompt = `
       Detected data processing activities:
       ${JSON.stringify(dataSources)}
-      
+
       Generate ROPA (Records of Processing Activities) per GDPR Article 30:
       - Purpose of processing
       - Categories of data subjects
@@ -21919,36 +22224,36 @@ export class PolicyAutomation {
       - Retention periods
       - Security measures
     `;
-    
+
     const ropa = await callLLM(prompt);
-    
+
     // Auto-save to docs/03-legal-and-compliance/ropa.md
     await this.saveDocument('ropa.md', ropa);
-    
+
     return ropa;
   }
-  
+
   async updatePrivacyPolicy(newProcessing: DataProcessingActivity): Promise<void> {
     const currentPolicy = await readFile('PRIVACY_POLICY.md');
-    
+
     const prompt = `
       Current privacy policy:
       ${currentPolicy}
-      
+
       New data processing activity:
       ${JSON.stringify(newProcessing)}
-      
+
       Generate updated privacy policy section:
       - Explain what data is collected
       - Why it's collected (lawful basis)
       - How long it's retained
       - User rights regarding this data
-      
+
       Use plain language (8th-grade reading level).
     `;
-    
+
     const updatedPolicy = await callLLM(prompt);
-    
+
     // Auto-create PR with updated policy
     await this.createPR({
       title: 'Update Privacy Policy: New Data Processing Activity',
@@ -21963,28 +22268,29 @@ export class PolicyAutomation {
 
 **Comparison: Industry AI Compliance Tools** (Not Used):
 
-| Tool | Capability | Political Sphere Status |
-|------|-----------|------------------------|
-| **OneTrust** | AI-powered privacy compliance management | ❌ Not used (enterprise SaaS) |
-| **TrustArc** | Automated GDPR compliance and risk assessments | ❌ Not used |
-| **Securiti** | AI-driven data governance and compliance | ❌ Not used |
-| **Osano** | Consent management and compliance monitoring | ❌ Not used |
-| **Custom AI Scripts** | In-house AI compliance automation | ❌ Not implemented |
+| Tool                  | Capability                                     | Political Sphere Status       |
+| --------------------- | ---------------------------------------------- | ----------------------------- |
+| **OneTrust**          | AI-powered privacy compliance management       | ❌ Not used (enterprise SaaS) |
+| **TrustArc**          | Automated GDPR compliance and risk assessments | ❌ Not used                   |
+| **Securiti**          | AI-driven data governance and compliance       | ❌ Not used                   |
+| **Osano**             | Consent management and compliance monitoring   | ❌ Not used                   |
+| **Custom AI Scripts** | In-house AI compliance automation              | ❌ Not implemented            |
 
 **AI Adaptive Compliance Maturity Model**:
 
-| Level | Description | Political Sphere Status |
-|-------|-------------|------------------------|
-| **Level 0: Manual** | All compliance checks manual | ✅ Mostly here (some automated dependency scanning) |
-| **Level 1: Automated Rules** | Static rule-based compliance checks | ⚠️ Partial (Dependabot, Gitleaks) |
-| **Level 2: AI-Assisted** | AI suggests compliance improvements | ⚠️ Informal (Copilot suggestions) |
-| **Level 3: Continuous Monitoring** | AI scans codebase daily for violations | ❌ Not implemented |
-| **Level 4: Adaptive Policies** | AI auto-updates policies based on regulatory changes | ❌ Not implemented |
-| **Level 5: Autonomous Compliance** | AI auto-fixes low-severity compliance issues | ❌ Not implemented |
+| Level                              | Description                                          | Political Sphere Status                             |
+| ---------------------------------- | ---------------------------------------------------- | --------------------------------------------------- |
+| **Level 0: Manual**                | All compliance checks manual                         | ✅ Mostly here (some automated dependency scanning) |
+| **Level 1: Automated Rules**       | Static rule-based compliance checks                  | ⚠️ Partial (Dependabot, Gitleaks)                   |
+| **Level 2: AI-Assisted**           | AI suggests compliance improvements                  | ⚠️ Informal (Copilot suggestions)                   |
+| **Level 3: Continuous Monitoring** | AI scans codebase daily for violations               | ❌ Not implemented                                  |
+| **Level 4: Adaptive Policies**     | AI auto-updates policies based on regulatory changes | ❌ Not implemented                                  |
+| **Level 5: Autonomous Compliance** | AI auto-fixes low-severity compliance issues         | ❌ Not implemented                                  |
 
 **Current Maturity**: **Level 1.5** (Automated Rules + Informal AI Assistance)
 
 **Gaps**:
+
 - No continuous AI-driven compliance monitoring
 - No automated regulatory change tracking or impact assessment
 - No AI-generated compliance documents (ROPA, DPIAs, privacy policy)
@@ -21994,12 +22300,14 @@ export class PolicyAutomation {
 - Reliance on manual quarterly standards review
 
 **External Validation**:
+
 - 📚 **ISO 37301:2021 (Compliance Management Systems)**: Recommends continuous monitoring and improvement (Political Sphere: Periodic, not continuous)
 - 📚 **NIST AI RMF (Govern Function)**: AI systems should have ongoing compliance monitoring (Political Sphere: Not implemented for AI compliance)
 - 📚 **GDPR Article 32(1)(d)**: "Process for regularly testing, assessing, and evaluating effectiveness of security measures" (Political Sphere: Manual testing, not AI-driven)
 - 📚 Reference: **OneTrust AI Governance** (industry example of AI-driven compliance)
 
 **Recommendation**:
+
 1. **Prototype AI Compliance Scanner (Q4 2026)**:
    - Start with WCAG 2.2 AA accessibility scanning (most rule-based, easier to automate)
    - Expand to GDPR personal data detection
@@ -22041,6 +22349,7 @@ export class PolicyAutomation {
    - Coverage: What % of actual violations did AI catch?
 
 **Sources**:
+
 - ISO 37301:2021 (Compliance Management): https://www.iso.org/standard/75080.html
 - GDPR Article 32 (Security of Processing): https://gdpr-info.eu/art-32-gdpr/
 - NIST AI RMF (Govern Function): https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.100-1.pdf
@@ -22059,8 +22368,10 @@ export class PolicyAutomation {
 **Continuous Assurance** (Implemented):
 
 **1. Dependency Vulnerability Scanning** (from 6.2.6):
+
 ```markdown
 # Continuous Monitoring (24/7)
+
 - **Snyk**: Scans npm dependencies on every PR and daily scheduled runs
 - **Dependabot**: Auto-creates PRs for vulnerable dependency updates
 - **Coverage**: 100% of dependencies monitored
@@ -22072,8 +22383,10 @@ export class PolicyAutomation {
 **Analysis**: ✅ **EXCELLENT** — Dependency scanning is continuous and highly effective
 
 **2. Secrets Scanning** (from 6.2.13, SECURITY.md):
+
 ```markdown
 # Continuous Monitoring (On Every Commit)
+
 - **Gitleaks**: Pre-commit hooks scan for hardcoded secrets
 - **CI Integration**: GitHub Actions fail if secrets detected
 - **Scope**: All commits, all PRs, all branches
@@ -22083,8 +22396,10 @@ export class PolicyAutomation {
 **Analysis**: ✅ **GOOD** — Secrets detection is continuous and fail-closed
 
 **3. Automated Testing** (from 6.2.7, testing.md):
+
 ```markdown
 # Continuous Testing (On Every PR)
+
 - **Vitest**: Unit tests run on all PRs
 - **Accessibility Tests**: axe-core automated scans (when implemented)
 - **Coverage Tracking**: 80%+ target for critical paths
@@ -22094,6 +22409,7 @@ export class PolicyAutomation {
 **Analysis**: ⚠️ **GOOD** for test execution, ⚠️ **INCONSISTENT** coverage (see 6.2.7: some paths untested)
 
 **Continuous Assurance Gaps**:
+
 ```bash
 # Search for real-time monitoring or alerting
 $ grep -r "prometheus\|grafana\|datadog\|cloudwatch" apps/ libs/ tools/
@@ -22111,8 +22427,10 @@ $ grep -r "waf\|ids\|intrusion\|runtime.*protection" docs/
 **Periodic Assurance** (Documented but Incomplete):
 
 **1. Risk Register Reviews** (from 6.2.1):
+
 ```markdown
 # Current State: INCONSISTENT
+
 - **Frequency**: Should be continuous, actually updated every ~15 days (lag identified)
 - **Trigger**: Code changes should auto-update risk register (doesn't happen)
 - **Owner**: Not explicitly assigned
@@ -22122,8 +22440,10 @@ $ grep -r "waf\|ids\|intrusion\|runtime.*protection" docs/
 **Analysis**: ⚠️ **WEAK** — Risk reviews are periodic but lag significantly behind changes
 
 **2. OWASP Testing** (from 6.2.7):
+
 ```markdown
 # Current State: PARTIAL
+
 - **Penetration Testing**: NOT conducted (should be annual)
 - **Threat Modeling**: NOT systematic (ad-hoc only)
 - **OWASP Top 10 Checks**: 70% coverage (7/10 categories tested)
@@ -22133,8 +22453,10 @@ $ grep -r "waf\|ids\|intrusion\|runtime.*protection" docs/
 **Analysis**: ⚠️ **GAP** — No periodic penetration testing, threat modeling, or security audits
 
 **3. Incident Response Drills** (from 6.2.10):
+
 ```markdown
 # Current State: NOT CONDUCTED
+
 - **Tabletop Exercises**: Zero drills executed
 - **Breach Notification**: GDPR 72-hour deadline never tested
 - **Backup Restoration**: Not tested
@@ -22144,8 +22466,10 @@ $ grep -r "waf\|ids\|intrusion\|runtime.*protection" docs/
 **Analysis**: ❌ **CRITICAL GAP** — No periodic incident response drills
 
 **4. Compliance Audits** (from copilot-instructions.md, compliance.md):
+
 ```markdown
 # Current State: MANUAL & PERIODIC
+
 - **WCAG 2.2 AA Audits**: Manual testing, not automated or scheduled
 - **GDPR Compliance Review**: Annual review planned (not evidence of execution)
 - **ISO 27001 Gap Analysis**: Conducted once (see 6.2.5), not repeated
@@ -22156,19 +22480,19 @@ $ grep -r "waf\|ids\|intrusion\|runtime.*protection" docs/
 
 **Continuous vs. Periodic Balance**:
 
-| Assurance Area | Continuous | Periodic | Status |
-|---------------|-----------|----------|--------|
-| **Dependency Vulnerabilities** | ✅ Snyk/Dependabot (24/7) | N/A | EXCELLENT |
-| **Secrets Detection** | ✅ Gitleaks pre-commit + CI | N/A | GOOD |
-| **Unit/Integration Tests** | ✅ On every PR | N/A | GOOD |
-| **Code-Level SAST** | ❌ Not continuous | ❌ Not periodic | GAP |
-| **Penetration Testing** | N/A | ❌ Not conducted | CRITICAL GAP |
-| **Threat Modeling** | ❌ Not continuous | ❌ Ad-hoc only | GAP |
-| **Incident Response Drills** | N/A | ❌ Not conducted | CRITICAL GAP |
-| **Risk Register Review** | ❌ Not continuous (15-day lag) | ⚠️ Periodic but inconsistent | WEAK |
-| **Compliance Audits** | ❌ Not continuous | ⚠️ Documented, execution unclear | PARTIAL |
-| **Runtime Monitoring** | ❌ No APM/SIEM | N/A | GAP |
-| **Accessibility Audits** | ⚠️ Automated tests (when run) | ❌ Manual audits not scheduled | PARTIAL |
+| Assurance Area                 | Continuous                     | Periodic                         | Status       |
+| ------------------------------ | ------------------------------ | -------------------------------- | ------------ |
+| **Dependency Vulnerabilities** | ✅ Snyk/Dependabot (24/7)      | N/A                              | EXCELLENT    |
+| **Secrets Detection**          | ✅ Gitleaks pre-commit + CI    | N/A                              | GOOD         |
+| **Unit/Integration Tests**     | ✅ On every PR                 | N/A                              | GOOD         |
+| **Code-Level SAST**            | ❌ Not continuous              | ❌ Not periodic                  | GAP          |
+| **Penetration Testing**        | N/A                            | ❌ Not conducted                 | CRITICAL GAP |
+| **Threat Modeling**            | ❌ Not continuous              | ❌ Ad-hoc only                   | GAP          |
+| **Incident Response Drills**   | N/A                            | ❌ Not conducted                 | CRITICAL GAP |
+| **Risk Register Review**       | ❌ Not continuous (15-day lag) | ⚠️ Periodic but inconsistent     | WEAK         |
+| **Compliance Audits**          | ❌ Not continuous              | ⚠️ Documented, execution unclear | PARTIAL      |
+| **Runtime Monitoring**         | ❌ No APM/SIEM                 | N/A                              | GAP          |
+| **Accessibility Audits**       | ⚠️ Automated tests (when run)  | ❌ Manual audits not scheduled   | PARTIAL      |
 
 **Continuous Assurance Score**: **4/10** (40%) — Strong for dependencies/secrets, weak for code/runtime
 
@@ -22177,20 +22501,24 @@ $ grep -r "waf\|ids\|intrusion\|runtime.*protection" docs/
 **Best Practice: Layered Assurance Model** (Not Fully Implemented):
 
 **Continuous Assurance** (What SHOULD Be Automated):
+
 ```markdown
 ## Tier 1: Real-Time (Sub-Minute)
+
 ✅ Secrets detection (pre-commit hooks)
 ✅ Unit test failures (PR blocking)
 ❌ Runtime intrusion detection (MISSING - WAF, IDS)
 ❌ Anomaly detection (MISSING - unusual API patterns)
 
 ## Tier 2: Hourly/Daily
+
 ✅ Dependency vulnerability scans
 ❌ SAST (code-level vulnerability scanning) (MISSING)
 ❌ Dynamic Application Security Testing (DAST) (MISSING)
 ❌ Compliance drift detection (MISSING - GDPR, WCAG checks)
 
 ## Tier 3: Weekly
+
 ⚠️ Risk register updates (SHOULD BE weekly, currently 15-day lag)
 ❌ Threat intelligence integration (MISSING - CVE/threat feed monitoring)
 ❌ Compliance dashboard refresh (MISSING)
@@ -22200,12 +22528,14 @@ $ grep -r "waf\|ids\|intrusion\|runtime.*protection" docs/
 
 ```markdown
 ## Quarterly
+
 ⚠️ Incident response drill (DOCUMENTED, not executed)
 ⚠️ Standards review (WCAG, OWASP, NIST) (DOCUMENTED, adherence unclear)
 ❌ Security posture assessment (MISSING)
 ❌ Compliance audit (GDPR, WCAG) (MISSING)
 
 ## Annually
+
 ❌ External penetration testing (MISSING)
 ❌ ISO 27001 gap analysis (DONE ONCE in 6.2.5, not repeated)
 ❌ Architecture security review (MISSING)
@@ -22213,6 +22543,7 @@ $ grep -r "waf\|ids\|intrusion\|runtime.*protection" docs/
 ❌ Disaster recovery drill (MISSING - backup restoration test)
 
 ## Ad-Hoc (Trigger-Based)
+
 ⚠️ Post-incident review (PROCESS DOCUMENTED, never tested)
 ⚠️ Pre-deployment security review (HIGH-RISK features) (INFORMAL)
 ❌ Major architecture change security assessment (MISSING)
@@ -22221,30 +22552,35 @@ $ grep -r "waf\|ids\|intrusion\|runtime.*protection" docs/
 **Why Balance Matters**:
 
 **Continuous Assurance Strengths**:
+
 - ✅ Fast feedback (catches issues before they reach production)
 - ✅ Low cost per check (automated, scales infinitely)
 - ✅ Prevents regression (every commit validated)
 - ✅ Developer-friendly (fails fast, clear error messages)
 
 **Continuous Assurance Limitations**:
+
 - ❌ Can't catch novel attack vectors (relies on known patterns)
 - ❌ No human judgment (misses business logic flaws, constitutional violations)
 - ❌ False positive fatigue (developers ignore noisy alerts)
 - ❌ Doesn't test "impossible" scenarios (e.g., full system compromise)
 
 **Periodic Assurance Strengths**:
+
 - ✅ Human expertise (penetration testers find creative exploits)
 - ✅ Holistic view (architecture review, threat modeling)
 - ✅ Real-world simulation (incident drills test actual procedures)
 - ✅ Regulatory compliance (many standards require periodic audits)
 
 **Periodic Assurance Limitations**:
+
 - ❌ Slow feedback (annual pentest finds issues 6 months old)
 - ❌ High cost (expert consultants expensive)
 - ❌ Snapshot-only (point-in-time assessment, stale quickly)
 - ❌ Resource-intensive (disrupts normal development workflow)
 
 **Recommended Balance** (Not Achieved):
+
 ```
 ┌─────────────────────────────────────────────────────────┐
 │ Continuous Assurance (70%)                              │
@@ -22269,6 +22605,7 @@ Current Actual Balance: 30% Continuous, 5% Periodic = 35% Total Coverage
 ```
 
 **Gaps**:
+
 - Over-reliance on continuous dependency scanning (only 1 aspect of security)
 - Missing continuous SAST for code-level vulnerabilities
 - No runtime security monitoring (WAF, IDS, anomaly detection)
@@ -22278,6 +22615,7 @@ Current Actual Balance: 30% Continuous, 5% Periodic = 35% Total Coverage
 - No measurement of assurance effectiveness (metrics, KPIs)
 
 **External Validation**:
+
 - 📚 **NIST SP 800-53 CA-2 (Security Assessments)**: Requires both continuous monitoring AND periodic assessments (Political Sphere: Partial continuous, weak periodic)
 - �� **ISO 27001 A.12.6.1**: Technical vulnerability management should be continuous (Political Sphere: Dependencies yes, code no)
 - 📚 **PCI DSS v4.0 Requirement 11**: Continuous vulnerability scanning + quarterly penetration testing (Political Sphere: Dependency scanning yes, pentesting no)
@@ -22285,6 +22623,7 @@ Current Actual Balance: 30% Continuous, 5% Periodic = 35% Total Coverage
 - 📚 Reference: **OWASP SAMM (Security Assurance Maturity Model)** - Recommends layered continuous + periodic approach
 
 **Recommendation**:
+
 1. **Implement Continuous SAST (Q3 2026)**:
    - Integrate Snyk Code or Semgrep into CI/CD
    - Daily automated scans for code-level vulnerabilities (injection, XSS, auth bypasses)
@@ -22329,6 +22668,7 @@ Current Actual Balance: 30% Continuous, 5% Periodic = 35% Total Coverage
    - Auto-schedule periodic assessments to maintain balance
 
 **Sources**:
+
 - NIST SP 800-53 CA-2 (Security Assessments): https://csrc.nist.gov/projects/cprt/catalog#/cprt/framework/version/SP_800_53_5_1_0/home?element=CA-2
 - ISO 27001 A.12.6.1 (Vulnerability Management): https://www.iso.org/standard/54534.html
 - PCI DSS v4.0 Requirement 11: https://www.pcisecuritystandards.org/document_library/
@@ -22345,6 +22685,7 @@ Current Actual Balance: 30% Continuous, 5% Periodic = 35% Total Coverage
 This section evaluated Political Sphere's security posture, risk management practices, and compliance readiness across 20 reflective questions. The assessment reveals a **MATURING** security program with **STRONG foundational controls** for dependency management and secrets protection, but **CRITICAL GAPS** in privacy compliance (GDPR DPIAs), periodic assurance (penetration testing, incident drills), and proactive risk management.
 
 **Overall Security Maturity**: **Level 2.5 of 5** (between "Defined" and "Managed")
+
 - **Not Yet Reached**: Level 3 "Managed" (requires quantified risk metrics, continuous compliance monitoring, tested incident response)
 - **Path Forward**: Urgent DPIA completion, annual penetration testing, quarterly incident drills will elevate to Level 3
 
@@ -22352,47 +22693,47 @@ This section evaluated Political Sphere's security posture, risk management prac
 
 ### 6.3.1 Strengths (What Works Well)
 
-| Strength | Evidence | Impact |
-|----------|----------|--------|
-| **Dependency Security** | 96% fix rate, 6-hour average remediation, 47 scans in 30 days (6.2.6) | ✅ EXCELLENT — Best-in-class dependency management prevents supply chain attacks |
-| **Secrets Management** | Fail-closed Gitleaks scanning, pre-commit hooks, no committed secrets found (6.2.13, SECURITY.md) | ✅ STRONG — Zero hardcoded credentials risk |
-| **Input Validation** | 94% OWASP compliance (8.5/9), systematic Zod validation, injection prevention (6.2.15) | ✅ STRONG — Robust defense against injection attacks |
-| **Vulnerability Disclosure** | Public SECURITY.md, clear reporting process, responsible disclosure (6.2.17) | ✅ GOOD — Transparent, developer-friendly security reporting |
-| **Security-Usability Balance** | 15min tokens, 100 req/15min rate limiting, no CAPTCHA (accessibility-first) (6.2.11) | ✅ BALANCED — Security doesn't compromise usability or accessibility |
-| **Zero-Trust Foundations** | Auth middleware, RBAC, 15min JWT expiry, input validation (6.2.12) | ✅ GOOD — 4/7 NIST zero-trust tenets implemented (57%) |
+| Strength                       | Evidence                                                                                          | Impact                                                                           |
+| ------------------------------ | ------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
+| **Dependency Security**        | 96% fix rate, 6-hour average remediation, 47 scans in 30 days (6.2.6)                             | ✅ EXCELLENT — Best-in-class dependency management prevents supply chain attacks |
+| **Secrets Management**         | Fail-closed Gitleaks scanning, pre-commit hooks, no committed secrets found (6.2.13, SECURITY.md) | ✅ STRONG — Zero hardcoded credentials risk                                      |
+| **Input Validation**           | 94% OWASP compliance (8.5/9), systematic Zod validation, injection prevention (6.2.15)            | ✅ STRONG — Robust defense against injection attacks                             |
+| **Vulnerability Disclosure**   | Public SECURITY.md, clear reporting process, responsible disclosure (6.2.17)                      | ✅ GOOD — Transparent, developer-friendly security reporting                     |
+| **Security-Usability Balance** | 15min tokens, 100 req/15min rate limiting, no CAPTCHA (accessibility-first) (6.2.11)              | ✅ BALANCED — Security doesn't compromise usability or accessibility             |
+| **Zero-Trust Foundations**     | Auth middleware, RBAC, 15min JWT expiry, input validation (6.2.12)                                | ✅ GOOD — 4/7 NIST zero-trust tenets implemented (57%)                           |
 
 ---
 
 ### 6.3.2 Weaknesses (Critical Gaps)
 
-| Weakness | Evidence | Risk Level | Impact |
-|----------|----------|------------|--------|
-| **No DPIAs Conducted** | Zero DPIAs despite special category data processing (6.2.16) | 🚨 CRITICAL | GDPR Article 35 non-compliance, potential €10M fine |
-| **No Incident Response Drills** | Zero tabletop exercises, untested GDPR 72-hour breach notification (6.2.10) | 🚨 CRITICAL | Unproven incident response capability, regulatory penalties |
-| **No Penetration Testing** | Never conducted, no external security assessment (6.2.7, 6.2.20) | 🚨 CRITICAL | Unknown vulnerabilities, no validation of security controls |
-| **Risk Register Lag** | 15-day average delay between code changes and risk documentation (6.2.1) | ⚠️ HIGH | Stale risk assessments, reactive risk management |
-| **Inconsistent Severity Scoring** | No standardized risk matrix, subjective severity assignments (6.2.2) | ⚠️ MEDIUM | Prioritization errors, resource misallocation |
-| **No Data Anonymization** | Pseudonymization only (k=10 too low), fails ICO 3-test framework (6.2.9) | ⚠️ HIGH | Privacy risk, linkable voting patterns |
-| **Missing ROPA** | No Records of Processing Activities document (6.2.8, 6.2.16) | ⚠️ HIGH | GDPR Article 30 non-compliance |
-| **No Privacy Policy Published** | User-facing privacy disclosures missing (6.2.8, 6.2.17) | ⚠️ HIGH | GDPR Article 13 violation, user trust erosion |
-| **No Content Provenance Tracking** | AI-generated content not watermarked or distinguished (6.2.14) | ⚠️ MEDIUM | Future EU AI Act Article 52 non-compliance |
-| **Log Encryption Missing** | Logs plaintext on disk, no integrity verification, no SIEM (6.2.13) | ⚠️ MEDIUM | Tamper risk, difficult forensic investigation |
+| Weakness                           | Evidence                                                                    | Risk Level  | Impact                                                      |
+| ---------------------------------- | --------------------------------------------------------------------------- | ----------- | ----------------------------------------------------------- |
+| **No DPIAs Conducted**             | Zero DPIAs despite special category data processing (6.2.16)                | 🚨 CRITICAL | GDPR Article 35 non-compliance, potential €10M fine         |
+| **No Incident Response Drills**    | Zero tabletop exercises, untested GDPR 72-hour breach notification (6.2.10) | 🚨 CRITICAL | Unproven incident response capability, regulatory penalties |
+| **No Penetration Testing**         | Never conducted, no external security assessment (6.2.7, 6.2.20)            | 🚨 CRITICAL | Unknown vulnerabilities, no validation of security controls |
+| **Risk Register Lag**              | 15-day average delay between code changes and risk documentation (6.2.1)    | ⚠️ HIGH     | Stale risk assessments, reactive risk management            |
+| **Inconsistent Severity Scoring**  | No standardized risk matrix, subjective severity assignments (6.2.2)        | ⚠️ MEDIUM   | Prioritization errors, resource misallocation               |
+| **No Data Anonymization**          | Pseudonymization only (k=10 too low), fails ICO 3-test framework (6.2.9)    | ⚠️ HIGH     | Privacy risk, linkable voting patterns                      |
+| **Missing ROPA**                   | No Records of Processing Activities document (6.2.8, 6.2.16)                | ⚠️ HIGH     | GDPR Article 30 non-compliance                              |
+| **No Privacy Policy Published**    | User-facing privacy disclosures missing (6.2.8, 6.2.17)                     | ⚠️ HIGH     | GDPR Article 13 violation, user trust erosion               |
+| **No Content Provenance Tracking** | AI-generated content not watermarked or distinguished (6.2.14)              | ⚠️ MEDIUM   | Future EU AI Act Article 52 non-compliance                  |
+| **Log Encryption Missing**         | Logs plaintext on disk, no integrity verification, no SIEM (6.2.13)         | ⚠️ MEDIUM   | Tamper risk, difficult forensic investigation               |
 
 ---
 
 ### 6.3.3 Compliance Scorecard
 
-| Standard | Overall Score | Strengths | Gaps | Status |
-|----------|---------------|-----------|------|--------|
-| **ISO 27001:2022** | 43% (34/79 controls) | A.9 Access Control, A.14 Acquisition/Development | A.5 Information Security Policies, A.18 Compliance | ⚠️ PARTIAL |
-| **OWASP Top 10 2021** | 70% (7/10 tested) | A03 Injection, A01 Broken Access Control | Pentesting, Threat Modeling | ⚠️ GOOD |
-| **OWASP ASVS v4.0.3** | 65% (estimated) | V1 Architecture, V2 Authentication | V9 Communications, V14 Config | ⚠️ PARTIAL |
-| **NIST SP 800-207 (Zero Trust)** | 57% (4/7 tenets) | Identity/Credentials, Micro-segmentation (partial) | Context-Aware Access, SIEM | ⚠️ PARTIAL |
-| **GDPR (UK retained law)** | 50% (major gaps) | Data Subject Rights (30-day SLA), Pseudonymization | ROPA, DPIAs, Privacy Policy, Consent | ❌ NON-COMPLIANT |
-| **EU AI Act (2024/1689)** | 30% (conceptual only) | Transparency principles documented | Content provenance, Conformity assessment | ⚠️ 21-MONTH RUNWAY |
-| **WCAG 2.2 AA** | 85% (estimated, not formally audited) | Semantic HTML, Keyboard nav, No CAPTCHA | Automated testing incomplete | ⚠️ GOOD (estimated) |
-| **NIST SP 800-53 r5** | 48% (partial implementation) | AC (Access Control), SI (System Integrity) | AU (Audit), CA (Assessment), IR (Incident Response) | ⚠️ PARTIAL |
-| **CIS Controls v8** | 55% (estimated) | Control 7 (Vulnerability Mgmt), Control 16 (App Security) | Control 17 (Incident Response), Control 18 (Penetration Testing) | ⚠️ PARTIAL |
+| Standard                         | Overall Score                         | Strengths                                                 | Gaps                                                             | Status              |
+| -------------------------------- | ------------------------------------- | --------------------------------------------------------- | ---------------------------------------------------------------- | ------------------- |
+| **ISO 27001:2022**               | 43% (34/79 controls)                  | A.9 Access Control, A.14 Acquisition/Development          | A.5 Information Security Policies, A.18 Compliance               | ⚠️ PARTIAL          |
+| **OWASP Top 10 2021**            | 70% (7/10 tested)                     | A03 Injection, A01 Broken Access Control                  | Pentesting, Threat Modeling                                      | ⚠️ GOOD             |
+| **OWASP ASVS v4.0.3**            | 65% (estimated)                       | V1 Architecture, V2 Authentication                        | V9 Communications, V14 Config                                    | ⚠️ PARTIAL          |
+| **NIST SP 800-207 (Zero Trust)** | 57% (4/7 tenets)                      | Identity/Credentials, Micro-segmentation (partial)        | Context-Aware Access, SIEM                                       | ⚠️ PARTIAL          |
+| **GDPR (UK retained law)**       | 50% (major gaps)                      | Data Subject Rights (30-day SLA), Pseudonymization        | ROPA, DPIAs, Privacy Policy, Consent                             | ❌ NON-COMPLIANT    |
+| **EU AI Act (2024/1689)**        | 30% (conceptual only)                 | Transparency principles documented                        | Content provenance, Conformity assessment                        | ⚠️ 21-MONTH RUNWAY  |
+| **WCAG 2.2 AA**                  | 85% (estimated, not formally audited) | Semantic HTML, Keyboard nav, No CAPTCHA                   | Automated testing incomplete                                     | ⚠️ GOOD (estimated) |
+| **NIST SP 800-53 r5**            | 48% (partial implementation)          | AC (Access Control), SI (System Integrity)                | AU (Audit), CA (Assessment), IR (Incident Response)              | ⚠️ PARTIAL          |
+| **CIS Controls v8**              | 55% (estimated)                       | Control 7 (Vulnerability Mgmt), Control 16 (App Security) | Control 17 (Incident Response), Control 18 (Penetration Testing) | ⚠️ PARTIAL          |
 
 **Compliance Trend**: ⚠️ **Stagnant** — Strong controls not expanding fast enough to cover emerging risks (EU AI Act, privacy requirements)
 
@@ -22402,23 +22743,25 @@ This section evaluated Political Sphere's security posture, risk management prac
 
 **ISO 31000:2018 Alignment**: **PARTIAL** (50% of principles applied)
 
-| ISO 31000 Principle | Political Sphere Implementation | Status |
-|---------------------|--------------------------------|--------|
-| **Integrated** | Risk register exists but lags code changes by 15 days | ⚠️ PARTIAL |
-| **Structured & Comprehensive** | 23 risks tracked, but no formal risk categories (see 6.2.4) | ⚠️ PARTIAL |
-| **Customized** | Risk model tailored to political simulation context | ✅ GOOD |
-| **Inclusive** | Stakeholder input limited (no user privacy surveys) | ❌ WEAK |
-| **Dynamic** | Risk register should update continuously but doesn't | ❌ WEAK |
-| **Best Available Information** | Risks informed by OWASP, NIST, ISO standards | ✅ GOOD |
-| **Human & Cultural Factors** | Security-usability balance considered (6.2.11) | ✅ GOOD |
-| **Continual Improvement** | No closed-loop learning from incidents (drills never conducted) | ❌ WEAK |
+| ISO 31000 Principle            | Political Sphere Implementation                                 | Status     |
+| ------------------------------ | --------------------------------------------------------------- | ---------- |
+| **Integrated**                 | Risk register exists but lags code changes by 15 days           | ⚠️ PARTIAL |
+| **Structured & Comprehensive** | 23 risks tracked, but no formal risk categories (see 6.2.4)     | ⚠️ PARTIAL |
+| **Customized**                 | Risk model tailored to political simulation context             | ✅ GOOD    |
+| **Inclusive**                  | Stakeholder input limited (no user privacy surveys)             | ❌ WEAK    |
+| **Dynamic**                    | Risk register should update continuously but doesn't            | ❌ WEAK    |
+| **Best Available Information** | Risks informed by OWASP, NIST, ISO standards                    | ✅ GOOD    |
+| **Human & Cultural Factors**   | Security-usability balance considered (6.2.11)                  | ✅ GOOD    |
+| **Continual Improvement**      | No closed-loop learning from incidents (drills never conducted) | ❌ WEAK    |
 
 **Risk Identification Effectiveness**: **60%** (Good at known risks, poor at novel threats)
+
 - ✅ Dependency vulnerabilities: 96% detection rate
 - ❌ Business logic flaws: Untested (no threat modeling)
 - ❌ Constitutional integrity risks: Ad-hoc only (no systematic checks)
 
 **Risk Treatment Verification**: **26%** (Only 1 in 4 mitigations tested, see 6.2.3)
+
 - ⚠️ Most mitigations are theoretical ("we would do X if breach occurs")
 - ✅ Dependency fixes are verified (re-scan after patching)
 - ❌ Incident response procedures never tested
@@ -22427,19 +22770,19 @@ This section evaluated Political Sphere's security posture, risk management prac
 
 ### 6.3.5 Key Metrics Summary
 
-| Metric | Value | Target | Status | Source |
-|--------|-------|--------|--------|--------|
-| **Dependency Fix Rate** | 96% | 95%+ | ✅ EXCEEDS | 6.2.6 |
-| **Vulnerability Remediation Time** | 6 hours avg | <24 hours | ✅ EXCEEDS | 6.2.6 |
-| **Risk Register Lag** | 15 days | <3 days | ❌ FAILS | 6.2.1 |
-| **Mitigation Verification** | 26% | 80%+ | ❌ FAILS | 6.2.3 |
-| **ISO 27001 Controls** | 43% (34/79) | 70%+ | ❌ FAILS | 6.2.5 |
-| **OWASP Top 10 Coverage** | 70% (7/10) | 100% | ⚠️ PARTIAL | 6.2.7 |
-| **Zero-Trust Maturity** | 57% (4/7 tenets) | 85%+ | ⚠️ PARTIAL | 6.2.12 |
-| **Input Validation Compliance** | 94% (8.5/9 OWASP) | 100% | ⚠️ EXCELLENT | 6.2.15 |
-| **GDPR Compliance** | 50% (major gaps) | 100% | ❌ NON-COMPLIANT | 6.2.8, 6.2.16 |
-| **Incident Drills Conducted** | 0 | 4/year | ❌ FAILS | 6.2.10 |
-| **Penetration Tests** | 0 | 1/year | ❌ FAILS | 6.2.20 |
+| Metric                             | Value             | Target    | Status           | Source        |
+| ---------------------------------- | ----------------- | --------- | ---------------- | ------------- |
+| **Dependency Fix Rate**            | 96%               | 95%+      | ✅ EXCEEDS       | 6.2.6         |
+| **Vulnerability Remediation Time** | 6 hours avg       | <24 hours | ✅ EXCEEDS       | 6.2.6         |
+| **Risk Register Lag**              | 15 days           | <3 days   | ❌ FAILS         | 6.2.1         |
+| **Mitigation Verification**        | 26%               | 80%+      | ❌ FAILS         | 6.2.3         |
+| **ISO 27001 Controls**             | 43% (34/79)       | 70%+      | ❌ FAILS         | 6.2.5         |
+| **OWASP Top 10 Coverage**          | 70% (7/10)        | 100%      | ⚠️ PARTIAL       | 6.2.7         |
+| **Zero-Trust Maturity**            | 57% (4/7 tenets)  | 85%+      | ⚠️ PARTIAL       | 6.2.12        |
+| **Input Validation Compliance**    | 94% (8.5/9 OWASP) | 100%      | ⚠️ EXCELLENT     | 6.2.15        |
+| **GDPR Compliance**                | 50% (major gaps)  | 100%      | ❌ NON-COMPLIANT | 6.2.8, 6.2.16 |
+| **Incident Drills Conducted**      | 0                 | 4/year    | ❌ FAILS         | 6.2.10        |
+| **Penetration Tests**              | 0                 | 1/year    | ❌ FAILS         | 6.2.20        |
 
 **Overall Security Score**: **58/100** (Passing but needs improvement)
 
@@ -22448,6 +22791,7 @@ This section evaluated Political Sphere's security posture, risk management prac
 ### 6.3.6 Critical Recommendations (Prioritized)
 
 **TIER 0: URGENT (Complete by Q1 2026)** — Compliance & Legal Risks
+
 1. **Conduct Voting System DPIA** (6.2.16)
    - Assess GDPR Article 9 special category data risks
    - Document mitigations (encryption, access controls, anonymization options)
@@ -22466,12 +22810,12 @@ This section evaluated Political Sphere's security posture, risk management prac
    - Foundation for DPIA and privacy policy
    - **Risk if delayed**: GDPR compliance audit failure
 
-**TIER 1: HIGH PRIORITY (Complete by Q2 2026)** — Security Hardening
-4. **Schedule Annual Penetration Test** (6.2.7, 6.2.20)
-   - Hire external security firm
-   - Comprehensive assessment (web, API, auth, voting)
-   - Budget $5k-$15k
-   - **Risk if delayed**: Unknown critical vulnerabilities exploited
+**TIER 1: HIGH PRIORITY (Complete by Q2 2026)** — Security Hardening 4. **Schedule Annual Penetration Test** (6.2.7, 6.2.20)
+
+- Hire external security firm
+- Comprehensive assessment (web, API, auth, voting)
+- Budget $5k-$15k
+- **Risk if delayed**: Unknown critical vulnerabilities exploited
 
 5. **Conduct First Incident Response Drill** (6.2.10)
    - Tabletop exercise: Leaked credentials scenario
@@ -22491,12 +22835,12 @@ This section evaluated Political Sphere's security posture, risk management prac
    - Enable better risk aggregation and reporting
    - **Risk if delayed**: Inconsistent risk prioritization
 
-**TIER 2: MEDIUM PRIORITY (Complete by Q3-Q4 2026)** — Capability Building
-8. **Deploy SIEM and Centralized Logging** (6.2.13, 6.2.20)
-   - Encrypt logs at rest (AES-256)
-   - HMAC signatures for integrity
-   - Real-time security event correlation
-   - **Risk if delayed**: Difficult forensic investigation, compliance gap
+**TIER 2: MEDIUM PRIORITY (Complete by Q3-Q4 2026)** — Capability Building 8. **Deploy SIEM and Centralized Logging** (6.2.13, 6.2.20)
+
+- Encrypt logs at rest (AES-256)
+- HMAC signatures for integrity
+- Real-time security event correlation
+- **Risk if delayed**: Difficult forensic investigation, compliance gap
 
 9. **Increase Anonymization Threshold** (6.2.9)
    - Raise k-anonymity from k=10 to k=25+ for voting analytics
@@ -22516,12 +22860,7 @@ This section evaluated Political Sphere's security posture, risk management prac
     - Prepare for EU AI Act Article 52 compliance (August 2027 deadline)
     - **Risk if delayed**: EU AI Act non-compliance in 21 months
 
-**TIER 3: STRATEGIC (2027 and Beyond)** — Long-Term Maturity
-12. **Adaptive AI Compliance System** (6.2.19)
-    - Continuous GDPR/WCAG/OWASP monitoring
-    - Regulatory change tracking and impact assessment
-    - Auto-generated compliance documents (ROPA, privacy policy updates)
-    - **Value**: Shift from reactive to proactive compliance
+**TIER 3: STRATEGIC (2027 and Beyond)** — Long-Term Maturity 12. **Adaptive AI Compliance System** (6.2.19) - Continuous GDPR/WCAG/OWASP monitoring - Regulatory change tracking and impact assessment - Auto-generated compliance documents (ROPA, privacy policy updates) - **Value**: Shift from reactive to proactive compliance
 
 13. **Elevate to ISO 27001 Certification** (6.2.5)
     - Increase control implementation from 43% to 100%
@@ -22540,11 +22879,13 @@ This section evaluated Political Sphere's security posture, risk management prac
 ### 6.3.7 Path to Next Maturity Level
 
 **Current State**: Level 2.5 (Defined → Managed Transition)
+
 - Strong foundational controls (dependency management, secrets detection, input validation)
 - Documented processes (risk register, compliance standards, security policies)
 - Inconsistent execution (drills not conducted, risk lag, missing DPIAs)
 
 **Target State**: Level 3 (Managed) by Q4 2026
+
 - **Requirements to Reach Level 3**:
   1. ✅ Quantified risk metrics (likelihood × impact scoring) — IMPLEMENT Q1 2026
   2. ✅ Continuous compliance monitoring (WCAG, GDPR drift detection) — IMPLEMENT Q2 2026
@@ -22554,6 +22895,7 @@ This section evaluated Political Sphere's security posture, risk management prac
   6. ✅ Risk register synchronized with code changes (<3-day lag) — IMPLEMENT Q2 2026
 
 **Long-Term Vision**: Level 4 (Quantitatively Managed) by 2027
+
 - **Characteristics**:
   - Predictive risk modeling (AI forecasts vulnerabilities before they occur)
   - Real-time security dashboards (SIEM, compliance metrics, threat intelligence)
@@ -22566,18 +22908,21 @@ This section evaluated Political Sphere's security posture, risk management prac
 ### 6.3.8 Lessons Learned
 
 **What Went Well**:
+
 - **Dependency security excellence**: 96% fix rate proves continuous scanning + automation works
 - **Secrets management rigor**: Fail-closed approach prevents credential leaks
 - **Input validation systematization**: Zod schemas provide consistent, testable validation
 - **Accessibility-first security**: No CAPTCHA prioritizes inclusivity without compromising security
 
 **What Needs Improvement**:
+
 - **Privacy compliance**: GDPR preparation significantly underestimated (no DPIA, no ROPA, no privacy policy)
 - **Periodic assurance**: Over-reliance on continuous automation neglected human expert assessments (pentesting, drills)
 - **Risk management discipline**: 15-day lag indicates risk register treated as documentation rather than living artifact
 - **Constitutional integration**: Security and governance principles not systematically cross-validated (need automated checks for neutrality violations)
 
 **Surprises & Insights**:
+
 - **Insight 1**: Strong dependency security masked other gaps — Team assumed "no vulnerabilities found" = secure, but Snyk only checks libraries, not code logic
 - **Insight 2**: Privacy is harder than security — GDPR compliance requires legal expertise, process discipline, and cultural change beyond technical controls
 - **Insight 3**: AI effectiveness depends on systematization — Ad-hoc AI usage (ChatGPT queries) helpful but inconsistent; needs CI/CD integration to scale
@@ -22590,7 +22935,6 @@ This section evaluated Political Sphere's security posture, risk management prac
 **Next Section Preview**: Section 7 will examine **User Experience & Accessibility**, evaluating WCAG 2.2 AA compliance, inclusive design practices, accessibility testing infrastructure, and user-centered security/privacy controls.
 
 ---
-
 
 ---
 
@@ -22605,6 +22949,7 @@ This section evaluated Political Sphere's security posture, risk management prac
 ## Section 7.1: Performance & Scalability - Descriptive Layer
 
 **Infrastructure Context**:
+
 - **Monorepo Architecture**: Nx workspace managing 12+ applications and 17+ libraries
 - **Build System**: Nx with caching, Vite for frontend, TypeScript compilation
 - **Deployment**: Docker containerization, cloud-native architecture (Kubernetes-ready)
@@ -22616,6 +22961,7 @@ This section evaluated Political Sphere's security posture, risk management prac
 - **Hosting**: Zero-budget constraint (development-only, no production deployment yet)
 
 **Performance Monitoring Tools** (Planned/Partial):
+
 - **Build Performance**: Nx build cache, build time tracking
 - **Runtime Monitoring**: OpenTelemetry (documented, not fully deployed)
 - **Profiling**: Chrome DevTools, Node.js profiler (ad-hoc usage)
@@ -22623,6 +22969,7 @@ This section evaluated Political Sphere's security posture, risk management prac
 - **Load Testing**: k6/Artillery (apps/load-test exists, see file structure)
 
 **Resource Constraints**:
+
 - **Budget**: Zero-budget constraint (no paid hosting, CDN, or performance tools)
 - **Development Environment**: Local machines, GitHub Actions free tier (2000 minutes/month)
 - **Sustainability**: Energy efficiency not formally tracked but considered
@@ -22638,6 +22985,7 @@ This section evaluated Political Sphere's security posture, risk management prac
 **Evidence**:
 
 **Build-Time Resource Tracking**:
+
 ```bash
 # Nx provides built-in build performance metrics
 $ nx run-many --target=build --all --verbose
@@ -22657,6 +23005,7 @@ NX   Successfully ran target build for 12 projects (1m 23s)
 **Analysis**: ✅ **AVAILABLE** — Nx tracks build resource consumption
 
 **Search for Runtime Monitoring**:
+
 ```bash
 # Search for continuous resource monitoring
 $ grep -r "prometheus\|grafana\|datadog\|newrelic\|cloudwatch" apps/ libs/ tools/
@@ -22674,6 +23023,7 @@ $ grep -r "process.memoryUsage\|process.cpuUsage\|heapdump" apps/
 **Analysis**: ❌ **NOT IMPLEMENTED** — No runtime resource monitoring
 
 **Development Environment Resource Tracking** (Ad-Hoc):
+
 ```typescript
 // Example: Manual memory tracking (NOT systematically deployed)
 // Would be in apps/api/src/monitoring/resources.ts (DOESN'T EXIST)
@@ -22688,7 +23038,7 @@ export class ResourceMonitor {
       external: `${(usage.external / 1024 / 1024).toFixed(2)} MB`,
     });
   }
-  
+
   logCpuUsage(): void {
     const usage = process.cpuUsage();
     console.log({
@@ -22710,8 +23060,10 @@ jobs:
 **Analysis**: ⚠️ **AD-HOC** — Resource tracking exists but not continuous
 
 **GitHub Actions Resource Usage** (Partial Evidence):
+
 ```markdown
 # From GitHub Actions logs (visible in CI runs)
+
 - Average build time: 3-5 minutes
 - Cache hit rate: 40-60% (varies by PR)
 - Minutes consumed: ~150-200/month (out of 2000 free tier limit)
@@ -22719,6 +23071,7 @@ jobs:
 ```
 
 **Gaps**:
+
 - No production runtime monitoring (no deployment yet)
 - No continuous memory/CPU profiling in development
 - No automated alerts for resource spikes
@@ -22736,15 +23089,15 @@ export class ContinuousResourceMonitor {
   private meter = metrics.getMeter('political-sphere');
   private memoryGauge = this.meter.createObservableGauge('process.memory.usage');
   private cpuCounter = this.meter.createCounter('process.cpu.usage');
-  
+
   startMonitoring(): void {
     // Memory tracking every 30 seconds
-    this.memoryGauge.addCallback((result) => {
+    this.memoryGauge.addCallback(result => {
       const usage = process.memoryUsage();
       result.observe(usage.heapUsed, { type: 'heap' });
       result.observe(usage.rss, { type: 'rss' });
     });
-    
+
     // CPU tracking on every event loop tick
     setInterval(() => {
       const usage = process.cpuUsage();
@@ -22752,12 +23105,12 @@ export class ContinuousResourceMonitor {
       this.cpuCounter.add(usage.system, { type: 'system' });
     }, 1000);
   }
-  
+
   // Alert if memory exceeds threshold
   checkMemoryThreshold(): void {
     const usage = process.memoryUsage();
     const heapUsedMB = usage.heapUsed / 1024 / 1024;
-    
+
     if (heapUsedMB > 512) {
       console.warn(`High memory usage: ${heapUsedMB.toFixed(2)} MB`);
       // In production: Send alert to monitoring service
@@ -22777,11 +23130,13 @@ export class ContinuousResourceMonitor {
 | **Artillery Cloud Free Tier** | Free (1000 VUs) | ❌ Not used (load-test code exists, not run) |
 
 **External Validation**:
+
 - 📚 **SRE Best Practices (Google)**: Continuous monitoring via metrics, logs, traces (Political Sphere: Logs only, no metrics/traces)
 - 📚 **DORA Metrics**: Change failure rate, deployment frequency require continuous monitoring (Political Sphere: Not tracked)
 - 📚 **AWS Well-Architected Framework (Performance Efficiency Pillar)**: Monitor resources to maintain efficiency (Political Sphere: Build-time only)
 
 **Recommendation**:
+
 1. **Deploy OpenTelemetry Instrumentation (Q1 2026)**:
    - Implement metrics collection (memory, CPU, request latency)
    - Use free self-hosted Prometheus + Grafana (if hosting becomes available)
@@ -22808,6 +23163,7 @@ export class ContinuousResourceMonitor {
    - Alert if approaching 2000 minute/month limit
 
 **Sources**:
+
 - Nx Build Performance: https://nx.dev/ci/features/remote-cache
 - OpenTelemetry Node.js: https://opentelemetry.io/docs/instrumentation/js/
 - Google SRE Book (Monitoring): https://sre.google/sre-book/monitoring-distributed-systems/
@@ -22823,14 +23179,17 @@ export class ContinuousResourceMonitor {
 **Evidence**:
 
 **Reactive Bottleneck Identification** (Ad-Hoc):
+
 ```markdown
 # Evidence from TODO.md and CHANGELOG.md (hypothetical examples)
+
 - "Build taking 5 minutes, investigate TypeScript compilation" (discovered after complaint)
 - "Vitest tests timing out, added --testTimeout flag" (reactive fix)
 - "Bundle size exceeded 2MB, added code splitting" (noticed post-deployment)
 ```
 
 **Search for Profiling Tools/Scripts**:
+
 ```bash
 # Search for profiling scripts
 $ find scripts/ tools/ -name "*prof*" -o -name "*benchmark*"
@@ -22850,6 +23209,7 @@ $ grep -r "lighthouse\|pagespeed\|webpagetest" .github/ package.json
 ```
 
 **Nx Build Cache Analysis** (Proactive for Build Performance):
+
 ```bash
 # Nx provides build performance insights
 $ nx graph
@@ -22864,6 +23224,7 @@ $ nx affected:build --base=main
 **Analysis**: ✅ **GOOD** for build bottlenecks (Nx tooling), ❌ **WEAK** for runtime bottlenecks
 
 **Testing Performance** (Partial Bottleneck Identification):
+
 ```typescript
 // From vitest.config.ts (partial evidence)
 export default defineConfig({
@@ -22880,7 +23241,7 @@ export default defineConfig({
 export default defineConfig({
   test: {
     slowTestThreshold: 5000, // Warn if test takes >5 seconds
-    onSlowTest: (test) => {
+    onSlowTest: test => {
       console.warn(`Slow test detected: ${test.name} (${test.duration}ms)`);
       // Could fail CI or create GitHub issue automatically
     },
@@ -22891,8 +23252,10 @@ export default defineConfig({
 **Analysis**: ⚠️ **PARTIAL** — Test timeouts configured, but no automated slow test detection
 
 **Frontend Performance Profiling** (Ad-Hoc):
+
 ```markdown
 # React DevTools Profiler (manual usage)
+
 - Developer opens React DevTools
 - Records render performance
 - Identifies slow components
@@ -22902,6 +23265,7 @@ export default defineConfig({
 ```
 
 **Backend API Profiling** (Not Systematic):
+
 ```bash
 # Search for API performance monitoring
 $ grep -r "response.*time\|latency\|performance.now" apps/api/
@@ -22923,6 +23287,7 @@ app.use((req, res, next) => {
 **Analysis**: ⚠️ **INFORMAL** — Some manual timing, no systematic profiling
 
 **Database Query Performance** (Unknown):
+
 ```bash
 # Search for slow query logging
 $ grep -r "slow.*query\|query.*time\|EXPLAIN" apps/api/ libs/infrastructure/database/
@@ -22949,6 +23314,7 @@ $ grep -r "slow.*query\|query.*time\|EXPLAIN" apps/api/ libs/infrastructure/data
 **Proactive Profiling Score**: **1/7** (14%) — Only Nx build dependency graph is proactive
 
 **Gaps**:
+
 - No automated performance regression testing
 - No CI integration for profiling (every PR should profile critical paths)
 - No historical performance tracking (trend analysis)
@@ -22973,19 +23339,19 @@ jobs:
           npm run benchmark:api
           # Compares against baseline from main branch
           # Fails if >10% regression detected
-      
+
       - name: Profile frontend bundle size
         run: |
           npm run build
           npx bundlesize
           # Configured budget: main.js <500KB, vendor.js <1MB
-      
+
       - name: Detect slow tests
         run: |
           npm test -- --reporter=json > test-results.json
           node scripts/detect-slow-tests.js
           # Fails if any test takes >5 seconds
-      
+
       - name: Memory leak detection
         run: |
           npm run test:memory-leaks
@@ -22993,11 +23359,13 @@ jobs:
 ```
 
 **External Validation**:
+
 - 📚 **Web Performance Working Group**: Continuous profiling recommended (Political Sphere: Ad-hoc only)
 - 📚 **Google DevTools Documentation**: Lighthouse CI for automated profiling (Political Sphere: Not integrated)
 - 📚 **Netflix Engineering**: Automated performance testing on every deploy (Political Sphere: No deployment, no profiling)
 
 **Recommendation**:
+
 1. **Integrate Lighthouse CI (Q1 2026)**:
    - Run Lighthouse on every PR (already partially configured)
    - Fail CI if Core Web Vitals regress
@@ -23029,6 +23397,7 @@ jobs:
    - Alert on queries taking >1 second
 
 **Sources**:
+
 - Lighthouse CI: https://github.com/GoogleChrome/lighthouse-ci
 - Vitest Performance: https://vitest.dev/config/#slowtestthreshold
 - Bundlesize: https://github.com/siddharthkp/bundlesize
@@ -23037,7 +23406,6 @@ jobs:
 
 ---
 
-
 **7.2.3 Did our monorepo build time remain acceptable?**
 
 **Assessment**: **GOOD — Build times currently acceptable (3-5 minutes for full build, <2 minutes for affected builds); Nx caching provides 40-60% cache hit rate; within GitHub Actions free tier limits; proactive optimization via affected commands**
@@ -23045,14 +23413,17 @@ jobs:
 **Evidence**:
 
 **Build Time Metrics** (from GitHub Actions logs):
+
 ```markdown
 # Full monorepo build (all 12 apps + 17 libs)
+
 - Cold build (no cache): 8-10 minutes
 - Warm build (with Nx cache): 3-5 minutes
 - Cache hit rate: 40-60% average
 - GitHub Actions minutes consumed: ~150-200/month (10% of 2000 free tier)
 
 # Affected build (nx affected:build)
+
 - Typical PR: 1-3 projects affected
 - Build time: 1-2 minutes
 - Cache hit rate: 70-80% (fewer projects = higher cache reuse)
@@ -23061,6 +23432,7 @@ jobs:
 **Analysis**: ✅ **ACCEPTABLE** — Build times reasonable for monorepo scale
 
 **Nx Build Optimization** (Implemented):
+
 ```bash
 # Nx affected commands (proactive optimization)
 $ nx affected:build --base=main --head=HEAD
@@ -23077,6 +23449,7 @@ $ nx graph
 ```
 
 **Build Time Trends** (No Systematic Tracking):
+
 ```bash
 # Search for build time trending
 $ grep -r "build.*time.*trend\|performance.*dashboard" tools/ scripts/
@@ -23100,8 +23473,10 @@ $ grep -r "build.*time.*trend\|performance.*dashboard" tools/ scripts/
 | **Cache Hit Rate** | 40-60% | 30-50% | ✅ Above average |
 
 **Build Bottlenecks Identified** (Reactive):
+
 ```markdown
 # Known slow build steps (from developer experience):
+
 1. TypeScript compilation (all projects)
    - ~40% of build time
    - Mitigated by: Nx cache, project references
@@ -23120,6 +23495,7 @@ $ grep -r "build.*time.*trend\|performance.*dashboard" tools/ scripts/
 ```
 
 **Nx Cache Invalidation** (Managed):
+
 ```typescript
 // nx.json configuration (manages cache invalidation)
 {
@@ -23143,6 +23519,7 @@ $ grep -r "build.*time.*trend\|performance.*dashboard" tools/ scripts/
 **Analysis**: ✅ **WELL-MANAGED** — Nx handles cache invalidation automatically
 
 **Gaps**:
+
 - No automated build time regression detection
 - No alerts if build time exceeds threshold (e.g., >10 minutes)
 - No build time trending dashboard
@@ -23166,15 +23543,15 @@ jobs:
           nx run-many --target=build --all
           END_TIME=$(date +%s)
           BUILD_TIME=$((END_TIME - START_TIME))
-          
+
           echo "Build time: ${BUILD_TIME}s" >> build-metrics.txt
-          
+
           # Compare against baseline from main
           if [ $BUILD_TIME -gt 600 ]; then  # 10 minutes
             echo "⚠️ Build time exceeds 10 minutes!"
             exit 1
           fi
-      
+
       - name: Upload metrics
         uses: actions/upload-artifact@v3
         with:
@@ -23183,11 +23560,13 @@ jobs:
 ```
 
 **External Validation**:
+
 - 📚 **Nx Documentation**: Build times should be <10 min for monorepos <100 projects (Political Sphere: 3-5 min ✅)
 - 📚 **Google Monorepo (Bazel)**: Build times <5 min for incremental builds (Political Sphere: 1-2 min affected builds ✅)
 - 📚 **Meta Monorepo**: Cache hit rate >50% considered good (Political Sphere: 40-60% ✅)
 
 **Recommendation**:
+
 1. **Automated Build Time Tracking (Q1 2026)**:
    - Log build time to file on every CI run
    - Track trend over time (are builds getting slower?)
@@ -23209,6 +23588,7 @@ jobs:
    - Enable more parallel execution
 
 **Sources**:
+
 - Nx Build Performance: https://nx.dev/ci/features/remote-cache
 - Bazel Build Performance: https://bazel.build/basics/performance
 
@@ -23223,6 +23603,7 @@ jobs:
 **Evidence**:
 
 **Nx Cache Mechanism** (Automatic):
+
 ```json
 // nx.json - Nx cache configuration
 {
@@ -23234,7 +23615,7 @@ jobs:
         "cacheDirectory": ".nx/cache"
       }
     }
-  },
+  }
   // Nx automatically invalidates cache when:
   // 1. Source files change (SHA-256 file hashing)
   // 2. package.json or lock file changes
@@ -23245,6 +23626,7 @@ jobs:
 ```
 
 **Cache Invalidation Triggers** (Verified):
+
 ```bash
 # 1. File content changes
 $ echo "// comment" >> apps/api/src/main.ts
@@ -23270,6 +23652,7 @@ $ nx build api  # depends on shared/utils
 **Analysis**: ✅ **CORRECT** — Nx cache invalidation logic works as expected
 
 **Cache Invalidation Issues** (Rare):
+
 ```bash
 # Search for cache-related issues in git history
 $ git log --all --grep="cache\|stale\|invalidat" --oneline
@@ -23284,19 +23667,23 @@ $ nx reset
 **Analysis**: ⚠️ **RARE ISSUES** — Manual cache clearing occasionally needed, but not frequent
 
 **Cache Efficiency Metrics** (Partial):
+
 ```markdown
 # From GitHub Actions logs:
+
 - Cache hit rate: 40-60% (varies by PR)
 - False positives (stale cache used): 0 reported incidents
 - False negatives (unnecessary cache miss): Unknown (not tracked)
 
 # Example: Unnecessary cache invalidation
+
 - Changing README.md invalidates cache for all projects (should not)
 - Nx correctly excludes non-source files from hash calculation
 - .nxignore file used to exclude documentation from cache keys
 ```
 
 **Cache Storage** (Local Only):
+
 ```bash
 # Current: Local cache only (.nx/cache directory)
 $ du -sh .nx/cache
@@ -23310,6 +23697,7 @@ $ du -sh .nx/cache
 **Analysis**: ⚠️ **OPPORTUNITY** — Remote cache could improve hit rate
 
 **Cache Invalidation Best Practices** (Applied):
+
 ```typescript
 // project.json - Fine-grained cache inputs
 {
@@ -23336,6 +23724,7 @@ docs/
 **Analysis**: ✅ **OPTIMIZED** — Cache inputs properly configured
 
 **Gaps**:
+
 - No cache hit rate trending (is it improving or declining?)
 - No cache size monitoring (could grow unbounded?)
 - No automated cache cleanup policy
@@ -23343,11 +23732,13 @@ docs/
 - No cache performance metrics (cache lookup time)
 
 **External Validation**:
+
 - 📚 **Nx Documentation**: Cache invalidation should be conservative (better miss than false hit) (Political Sphere: ✅ Correct)
 - 📚 **Bazel Caching**: Use content-based hashing for cache keys (Political Sphere: ✅ Nx uses SHA-256)
 - 📚 **Build System Best Practices**: Cache hit rate >50% is good (Political Sphere: 40-60% ✅)
 
 **Recommendation**:
+
 1. **Enable Nx Cloud Remote Cache (Q1 2026)**:
    - Sign up for free tier (10GB storage)
    - Share cache across developers
@@ -23369,13 +23760,13 @@ docs/
    - Periodic cache optimization (defragmentation)
 
 **Sources**:
+
 - Nx Caching: https://nx.dev/concepts/how-caching-works
 - Nx Cloud: https://nx.app/
 
 🎯 **Confidence**: **HIGH** — Nx cache invalidation logic well-documented and observable. No reported cache-related bugs in git history. Cache hit rates visible in CI logs. Confidence HIGH because Nx caching is a core feature with extensive testing and Political Sphere shows no evidence of cache invalidation problems.
 
 ---
-
 
 **7.2.5 Did we minimize bundle size and load times?**
 
@@ -23384,6 +23775,7 @@ docs/
 **Evidence**:
 
 **Frontend Build Configuration** (Vite):
+
 ```typescript
 // apps/web/vite.config.ts
 import { defineConfig } from 'vite';
@@ -23414,6 +23806,7 @@ export default defineConfig({
 **Analysis**: ✅ **BASIC OPTIMIZATION** — Vite provides good defaults
 
 **Code Splitting Implementation** (React.lazy):
+
 ```bash
 # Search for code splitting patterns
 $ grep -r "React.lazy\|import()" apps/web/src/ apps/shell/src/
@@ -23434,6 +23827,7 @@ const Profile = React.lazy(() => import('./pages/Profile'));
 **Analysis**: ✅ **IMPLEMENTED** — Route-based code splitting active
 
 **Bundle Size Monitoring** (NOT SYSTEMATIC):
+
 ```bash
 # Search for bundle size tracking
 $ grep -r "bundlesize\|size-limit\|bundle-analyzer" package.json .github/
@@ -23451,6 +23845,7 @@ $ npm run build:web
 **Analysis**: ⚠️ **AD-HOC** — Bundle sizes visible in build output, not tracked over time
 
 **Load Time Measurement** (UNKNOWN):
+
 ```bash
 # Search for Lighthouse or Web Vitals tracking
 $ grep -r "lighthouse\|web-vitals\|core-web-vitals" apps/ libs/
@@ -23464,8 +23859,10 @@ $ grep -r "lighthouse\|web-vitals\|core-web-vitals" apps/ libs/
 **Analysis**: ❌ **NOT MEASURED** — No production or staging load times
 
 **Bundle Optimization Techniques** (Applied):
+
 ```markdown
 # Implemented optimizations:
+
 ✅ Tree shaking (Vite/Rollup automatic)
 ✅ Minification (esbuild)
 ✅ Code splitting (React.lazy, dynamic imports)
@@ -23474,6 +23871,7 @@ $ grep -r "lighthouse\|web-vitals\|core-web-vitals" apps/ libs/
 ✅ Image optimization (manual, no automated pipeline)
 
 # Not implemented:
+
 ❌ Preloading critical resources (<link rel="preload">)
 ❌ Prefetching next routes (<link rel="prefetch">)
 ❌ Brotli compression (only gzip)
@@ -23483,6 +23881,7 @@ $ grep -r "lighthouse\|web-vitals\|core-web-vitals" apps/ libs/
 ```
 
 **Image Optimization** (MANUAL):
+
 ```bash
 # Search for image optimization tooling
 $ grep -r "imagemin\|sharp\|squoosh" package.json tools/
@@ -23500,6 +23899,7 @@ $ du -sh assets/images/
 **Analysis**: ⚠️ **PARTIAL** — Images manually optimized, no automated pipeline
 
 **Performance Budgets** (NOT ENFORCED):
+
 ```bash
 # Search for bundle size budgets
 $ grep -r "maxSize\|budget" apps/web/ apps/shell/
@@ -23519,6 +23919,7 @@ $ grep -r "maxSize\|budget" apps/web/ apps/shell/
 **Analysis**: ✅ **WITHIN BUDGETS** — Bundle sizes appear reasonable, but not formally tracked
 
 **Gaps**:
+
 - No bundle size trending (is it growing over time?)
 - No CI checks to prevent bundle bloat
 - No alerts when bundles exceed thresholds
@@ -23540,7 +23941,7 @@ jobs:
     steps:
       - name: Build production bundles
         run: npm run build:web
-      
+
       - name: Check bundle sizes
         uses: andresz1/size-limit-action@v1
         with:
@@ -23570,11 +23971,13 @@ jobs:
 ```
 
 **External Validation**:
+
 - 📚 **Google Web.dev**: Initial load should be <500KB gzipped (Political Sphere: ~250KB ✅)
 - 📚 **Lighthouse Performance Budgets**: Main bundle <170KB, vendor <350KB (Political Sphere: estimated within range ✅)
 - 📚 **HTTP Archive**: Median JS bundle 450KB (Political Sphere: ~630KB uncompressed, competitive)
 
 **Recommendation**:
+
 1. **Bundle Size Budgets in CI (Q1 2026)**:
    - Install size-limit or bundlesize
    - Set budgets: main <200KB, vendor <300KB
@@ -23603,6 +24006,7 @@ jobs:
    - Track bundle size trends over time
 
 **Sources**:
+
 - Vite Build Optimizations: https://vitejs.dev/guide/build.html
 - Web.dev Performance Budgets: https://web.dev/performance-budgets-101/
 - Lighthouse Performance: https://developer.chrome.com/docs/lighthouse/performance/
@@ -23618,6 +24022,7 @@ jobs:
 **Evidence**:
 
 **Docker Configuration** (Basic):
+
 ```bash
 # Search for Dockerfiles
 $ find apps/ tools/ -name "Dockerfile*"
@@ -23630,6 +24035,7 @@ $ cat apps/api/Dockerfile
 **Analysis**: ⚠️ **BASIC DOCKERFILES** — Exist but optimization status unclear
 
 **Docker Image Scanning** (NOT FOUND):
+
 ```bash
 # Search for image security scanning
 $ grep -r "trivy\|snyk.*container\|docker.*scan\|clair" .github/ tools/
@@ -23643,6 +24049,7 @@ $ find . -name ".dockerignore"
 **Analysis**: ❌ **NO SECURITY SCANNING** — Images not scanned for vulnerabilities
 
 **Multi-Stage Builds** (NOT IMPLEMENTED):
+
 ```bash
 # Search for multi-stage build patterns
 $ grep -r "FROM.*as builder\|FROM.*as build" apps/*/Dockerfile
@@ -23704,6 +24111,7 @@ CMD ["node", "dist/main.js"]
 ```
 
 **Base Image Security** (UNKNOWN):
+
 ```bash
 # Search for base image pinning
 $ grep -r "FROM node:" apps/*/Dockerfile
@@ -23718,6 +24126,7 @@ $ grep -r "FROM node:" apps/*/Dockerfile
 **Analysis**: ⚠️ **PARTIAL** — Alpine Linux used (good), but no version pinning or scanning
 
 **Docker Layer Optimization** (NOT IMPLEMENTED):
+
 ```bash
 # Search for layer caching optimization
 $ grep -r "COPY package.*\.json\|RUN npm ci" apps/*/Dockerfile
@@ -23739,6 +24148,7 @@ $ grep -r "COPY package.*\.json\|RUN npm ci" apps/*/Dockerfile
 | **Worker** | ~500MB | ~150MB | -70% |
 
 **Gaps**:
+
 - No multi-stage builds (images include dev dependencies, source files)
 - No security scanning (Trivy, Snyk Container, Docker Scan)
 - No base image version pinning (using node:20-alpine without specific version)
@@ -23750,12 +24160,14 @@ $ grep -r "COPY package.*\.json\|RUN npm ci" apps/*/Dockerfile
 - No image size monitoring (no alerts for bloat)
 
 **External Validation**:
+
 - �� **Docker Best Practices**: Use multi-stage builds (Political Sphere: ❌ Not implemented)
 - 📚 **OWASP Docker Security**: Run as non-root user (Political Sphere: ❌ Not implemented)
 - 📚 **NIST SP 800-190**: Scan container images for vulnerabilities (Political Sphere: ❌ Not implemented)
 - 📚 **Google Distroless**: Use minimal base images (Political Sphere: ❌ Not implemented)
 
 **Recommendation**:
+
 1. **Implement Multi-Stage Builds (Q1 2026)**:
    - Separate build and runtime stages
    - Reduce image size by 60-70%
@@ -23782,6 +24194,7 @@ $ grep -r "COPY package.*\.json\|RUN npm ci" apps/*/Dockerfile
    - Target <100MB image sizes where possible
 
 **Sources**:
+
 - Docker Multi-Stage Builds: https://docs.docker.com/build/building/multi-stage/
 - Trivy Container Scanning: https://trivy.dev/
 - NIST Container Security: https://csrc.nist.gov/publications/detail/sp/800-190/final
@@ -23790,7 +24203,6 @@ $ grep -r "COPY package.*\.json\|RUN npm ci" apps/*/Dockerfile
 
 ---
 
-
 **7.2.7 Can our system handle expected concurrent user loads?**
 
 **Assessment**: **UNKNOWN — No production deployment means no real load testing data; load-test code exists in apps/load-test/ but not systematically run; architecture designed for horizontal scaling (microservices, stateless APIs) but unproven; no stress testing, capacity planning, or performance benchmarks**
@@ -23798,6 +24210,7 @@ $ grep -r "COPY package.*\.json\|RUN npm ci" apps/*/Dockerfile
 **Evidence**:
 
 **Load Testing Infrastructure** (EXISTS, NOT USED):
+
 ```bash
 # Load testing code exists
 $ ls -la apps/load-test/
@@ -23815,6 +24228,7 @@ $ grep -r "load.*test\|stress.*test\|performance.*test" .github/workflows/
 **Analysis**: ⚠️ **INFRASTRUCTURE EXISTS** — Load testing code written but not executed
 
 **Expected User Load** (NOT DEFINED):
+
 ```bash
 # Search for capacity planning docs
 $ grep -r "concurrent.*user\|peak.*load\|capacity.*planning" docs/
@@ -23829,8 +24243,10 @@ $ grep -r "concurrent.*user\|peak.*load\|capacity.*planning" docs/
 **Analysis**: ❌ **NO CAPACITY PLAN** — Expected load not formally defined
 
 **Architecture Scalability** (THEORETICAL):
+
 ```markdown
 # Scalability features (DESIGNED, NOT TESTED):
+
 ✅ Microservices architecture (API, game-server, worker independent)
 ✅ Stateless APIs (can scale horizontally)
 ✅ Redis caching (reduces database load)
@@ -23839,6 +24255,7 @@ $ grep -r "concurrent.*user\|peak.*load\|capacity.*planning" docs/
 ✅ Kubernetes-ready (deployment manifests exist)
 
 # Not implemented/tested:
+
 ❌ Horizontal pod autoscaling (HPA)
 ❌ Database connection pooling limits tested
 ❌ Redis cluster mode (single instance only)
@@ -23851,6 +24268,7 @@ $ grep -r "concurrent.*user\|peak.*load\|capacity.*planning" docs/
 **Analysis**: ✅ **SCALABLE DESIGN** — Architecture supports scaling, but untested
 
 **Database Capacity** (UNKNOWN):
+
 ```bash
 # Search for database connection pool configuration
 $ grep -r "pool.*size\|max.*connections" apps/api/ libs/infrastructure/database/
@@ -23865,6 +24283,7 @@ $ grep -r "pool.*size\|max.*connections" apps/api/ libs/infrastructure/database/
 **Analysis**: ⚠️ **LIKELY SUFFICIENT** — Default PostgreSQL limits should handle small-medium load
 
 **WebSocket Scalability** (UNKNOWN):
+
 ```bash
 # Search for WebSocket scaling strategy
 $ grep -r "socket.*cluster\|socket.*redis\|sticky.*session" apps/game-server/
@@ -23887,23 +24306,23 @@ import { check, sleep } from 'k6';
 
 export const options = {
   stages: [
-    { duration: '2m', target: 100 },   // Ramp-up to 100 users
-    { duration: '5m', target: 100 },   // Stay at 100 users
-    { duration: '2m', target: 500 },   // Ramp-up to 500 users
-    { duration: '5m', target: 500 },   // Stay at 500 users
-    { duration: '2m', target: 0 },     // Ramp-down
+    { duration: '2m', target: 100 }, // Ramp-up to 100 users
+    { duration: '5m', target: 100 }, // Stay at 100 users
+    { duration: '2m', target: 500 }, // Ramp-up to 500 users
+    { duration: '5m', target: 500 }, // Stay at 500 users
+    { duration: '2m', target: 0 }, // Ramp-down
   ],
   thresholds: {
     http_req_duration: ['p(95)<500'], // 95% of requests < 500ms
-    http_req_failed: ['rate<0.01'],   // <1% errors
+    http_req_failed: ['rate<0.01'], // <1% errors
   },
 };
 
 export default function () {
   const res = http.get('https://api.political-sphere.com/health');
   check(res, {
-    'status is 200': (r) => r.status === 200,
-    'response time < 500ms': (r) => r.timings.duration < 500,
+    'status is 200': r => r.status === 200,
+    'response time < 500ms': r => r.timings.duration < 500,
   });
   sleep(1);
 }
@@ -23913,9 +24332,9 @@ export default function () {
 # .github/workflows/load-test.yml (NOT EXISTS)
 name: Load Testing
 on:
-  workflow_dispatch:  # Manual trigger
+  workflow_dispatch: # Manual trigger
   schedule:
-    - cron: '0 2 * * 0'  # Weekly on Sunday 2 AM
+    - cron: '0 2 * * 0' # Weekly on Sunday 2 AM
 jobs:
   load-test:
     runs-on: ubuntu-latest
@@ -23924,7 +24343,7 @@ jobs:
         run: |
           docker run --rm -v $PWD:/scripts \
             grafana/k6 run /scripts/apps/load-test/scenarios/api-load.test.ts
-      
+
       - name: Upload results
         if: always()
         uses: actions/upload-artifact@v3
@@ -23934,8 +24353,10 @@ jobs:
 ```
 
 **Capacity Planning Metrics** (NOT TRACKED):
+
 ```markdown
 # Metrics needed for capacity planning (NOT MEASURED):
+
 - Requests per second (RPS) capability
 - Database queries per second (QPS)
 - WebSocket connections per server
@@ -23947,6 +24368,7 @@ jobs:
 ```
 
 **Gaps**:
+
 - No load testing execution (code exists but not run)
 - No capacity planning documentation
 - No performance benchmarks (baseline metrics unknown)
@@ -23958,11 +24380,13 @@ jobs:
 - No production-like load testing environment
 
 **External Validation**:
+
 - 📚 **Google SRE**: Conduct load testing before production launch (Political Sphere: ❌ Not done)
 - 📚 **Microsoft Azure Performance**: Test at 2x expected peak load (Political Sphere: ❌ Load undefined)
 - 📚 **AWS Well-Architected**: Define capacity and scalability requirements (Political Sphere: ❌ Not defined)
 
 **Recommendation**:
+
 1. **Define Capacity Requirements (Q1 2026)**:
    - Document expected concurrent user load (launch, growth, mature phases)
    - Define performance targets (response time, error rate)
@@ -23989,6 +24413,7 @@ jobs:
    - Plan for database sharding if needed
 
 **Sources**:
+
 - k6 Load Testing: https://k6.io/docs/
 - Google SRE Load Testing: https://sre.google/sre-book/load-balancing-datacenter/
 
@@ -24003,6 +24428,7 @@ jobs:
 **Evidence**:
 
 **Real-Time Communication** (IMPLEMENTED):
+
 ```bash
 # Search for WebSocket implementation
 $ grep -r "socket\.io\|ws\|websocket" apps/game-server/ libs/
@@ -24029,6 +24455,7 @@ io.on('connection', (socket) => {
 **Analysis**: ✅ **WEBSOCKET SERVER EXISTS** — Real-time communication layer implemented
 
 **Latency Measurement** (NOT FOUND):
+
 ```bash
 # Search for latency tracking
 $ grep -r "latency\|ping\|rtt\|round.*trip" apps/game-server/ libs/
@@ -24044,8 +24471,10 @@ $ grep -r "latency\|ping\|rtt\|round.*trip" apps/game-server/ libs/
 **Analysis**: ❌ **NOT MEASURED** — Network latency not tracked or analyzed
 
 **Latency Compensation Strategies** (NOT IMPLEMENTED):
+
 ```markdown
 # Common multiplayer latency compensation techniques (NOT FOUND):
+
 ❌ Client-side prediction (local simulation before server confirmation)
 ❌ Server reconciliation (correct client state on mismatch)
 ❌ Lag compensation (rewind time for hit detection)
@@ -24057,6 +24486,7 @@ $ grep -r "latency\|ping\|rtt\|round.*trip" apps/game-server/ libs/
 **Analysis**: ❌ **NO COMPENSATION** — Latency impact likely visible to players
 
 **Geographic Distribution** (NOT DEPLOYED):
+
 ```bash
 # Search for CDN or edge deployment
 $ grep -r "cloudflare\|fastly\|akamai\|edge.*worker" apps/infrastructure/
@@ -24070,20 +24500,24 @@ $ grep -r "cloudflare\|fastly\|akamai\|edge.*worker" apps/infrastructure/
 **Analysis**: ⚠️ **HIGH LATENCY RISK** — Single-region deployment = poor global experience
 
 **Impact on Game Mechanics** (THEORETICAL):
+
 ```markdown
 # Latency impact on different game types:
 
 **Turn-based Politics** (LOW IMPACT):
+
 - Voting actions: 200-500ms latency acceptable
 - Policy submission: Not time-critical
 - Impact: ✅ ACCEPTABLE (game design is latency-tolerant)
 
 **Real-time Debates** (MEDIUM IMPACT):
+
 - Live chat: 50-100ms ideal, 200ms acceptable
 - Polling: 100-200ms acceptable
 - Impact: ⚠️ NOTICEABLE but playable
 
 **Multiplayer Simulations** (HIGH IMPACT):
+
 - Simultaneous actions: <50ms ideal
 - Conflict resolution: Requires tight synchronization
 - Impact: ❌ DEGRADED experience with >100ms latency
@@ -24096,19 +24530,19 @@ $ grep -r "cloudflare\|fastly\|akamai\|edge.*worker" apps/infrastructure/
 export class LatencyTracker {
   trackClientLatency(socket: Socket): void {
     const startTime = Date.now();
-    
+
     socket.emit('ping', { timestamp: startTime });
-    
-    socket.on('pong', (data) => {
+
+    socket.on('pong', data => {
       const latency = Date.now() - data.timestamp;
-      
+
       // Log latency metrics
       logger.info('Client latency', {
         userId: socket.userId,
         latency,
         region: socket.handshake.headers['cf-ipcountry'], // Cloudflare
       });
-      
+
       // Alert on high latency
       if (latency > 200) {
         logger.warn('High latency detected', { userId: socket.userId, latency });
@@ -24124,12 +24558,12 @@ class GameClient {
   predictLocalAction(action: GameAction): void {
     // Optimistic UI update (instant feedback)
     this.applyActionLocally(action);
-    
+
     // Send to server for validation
     this.socket.emit('gameAction', action);
-    
+
     // Server confirms or corrects
-    this.socket.on('actionResult', (result) => {
+    this.socket.on('actionResult', result => {
       if (!result.success) {
         // Rollback local state
         this.revertAction(action);
@@ -24151,6 +24585,7 @@ class GameClient {
 **Analysis**: Multi-region deployment critical for global playability
 
 **Gaps**:
+
 - No latency measurement or profiling
 - No client-server synchronization testing
 - No latency compensation (prediction, reconciliation, interpolation)
@@ -24160,11 +24595,13 @@ class GameClient {
 - No adaptive features (reduce update frequency for high-latency clients)
 
 **External Validation**:
+
 - 📚 **Multiplayer Game Networking**: <100ms latency ideal, >200ms poor experience (Political Sphere: Unknown)
 - 📚 **Google QUIC Protocol**: WebSocket alternative with better latency (Political Sphere: Using standard WebSocket)
 - 📚 **AWS GameLift**: Multi-region deployment standard for global games (Political Sphere: Single region)
 
 **Recommendation**:
+
 1. **Implement Latency Tracking (Q1 2026)**:
    - Measure client-server RTT (ping/pong)
    - Log latency by user geography
@@ -24191,13 +24628,13 @@ class GameClient {
    - Graceful degradation for high-latency users
 
 **Sources**:
+
 - WebSocket Performance: https://socket.io/docs/v4/performance-tuning/
 - Multiplayer Networking: https://gafferongames.com/post/what_every_programmer_needs_to_know_about_game_networking/
 
 🎯 **Confidence**: **LOW-MEDIUM** — WebSocket server confirmed in file structure, but no latency profiling or compensation strategies found. Game design (turn-based politics) suggests latency tolerance, reducing urgency. Confidence LOW-MEDIUM because real-time infrastructure exists but performance characteristics are unknown.
 
 ---
-
 
 ---
 
@@ -24208,6 +24645,7 @@ class GameClient {
 **Context**: This section captures the meta-learning from Political Sphere's development journey—what worked, what failed, and how the human-AI partnership evolved over time. It examines the project's capacity for self-reflection, course correction, and continuous improvement.
 
 **Reflective Practice Framework**:
+
 - **Documentation**: All sections of this genesis document, ADRs in `docs/architecture/decisions/`, CHANGELOG.md, TODO.md
 - **Retrospective Cadence**: Ad-hoc (no formal retrospective schedule)
 - **Lesson Storage**: Scattered across git commit messages, PR descriptions, inline comments, TODO.md
@@ -24215,6 +24653,7 @@ class GameClient {
 - **AI Learning**: Stateless sessions (no persistent memory between conversations)
 
 **Development Journey Phases**:
+
 1. **Foundation (Q3 2024)**: Initial architecture, governance framework, zero-budget constraint established
 2. **Build-out (Q4 2024 - Q1 2025)**: Monorepo structure, 29 projects, microservices design
 3. **Quality Focus (Q2 2025)**: Testing infrastructure, security hardening, accessibility compliance
@@ -24222,6 +24661,7 @@ class GameClient {
 5. **Audit & Reflection (Q4 2025)**: This genesis document, systematic self-assessment
 
 **Key Artifacts for Lesson Mining**:
+
 - `CHANGELOG.md`: ~50+ entries documenting changes, decisions, pivots
 - `docs/TODO.md`: Active task list showing priorities and completed work
 - ADRs: Architecture decisions with rationale, alternatives considered
@@ -24229,6 +24669,7 @@ class GameClient {
 - Copilot instructions: Evolution from v1.0 → v2.5.0 (5 major versions)
 
 **AI Partnership Characteristics**:
+
 - **Primary AI**: GitHub Copilot (Claude Sonnet 4.5 model)
 - **Interaction Model**: Human-initiated sessions, AI suggests/implements, human reviews/approves
 - **AI Autonomy**: Moderate (AI proposes solutions, human decides strategic direction)
@@ -24236,6 +24677,7 @@ class GameClient {
 - **Feedback Loops**: Human edits AI output, updates instructions, AI adapts within session
 
 **Measurement of Improvement**:
+
 - **Code Quality**: No automated quality trend tracking (coverage stable ~60-80%)
 - **Velocity**: No formal tracking (sprints undefined, milestones informal)
 - **Error Rates**: No incident tracking system (zero production incidents, no production deployment)
@@ -24252,17 +24694,21 @@ class GameClient {
 **Evidence**:
 
 **Lesson 1: Zero-Budget Constraint as Architecture Driver** (VALUABLE):
+
 ```markdown
 # Context: $0 budget for hosting, CDN, paid tools
+
 # Initially viewed as limitation → Became strategic advantage
 
 **What happened**:
+
 - Forced use of free tier tools (GitHub Actions, Nx local cache, self-hosted monitoring)
 - Prevented vendor lock-in to expensive platforms (AWS, Azure, GCP paid tiers)
 - Encouraged lightweight, efficient architectures
 - Required creative solutions over "throw money at it"
 
 **Evidence from codebase**:
+
 - Nx monorepo with local caching (no Nx Cloud paid tier)
 - PostgreSQL + Redis (no expensive managed databases)
 - GitHub Actions free tier (150-200/2000 minutes used)
@@ -24275,11 +24721,14 @@ Constraints breed creativity. Zero-budget forced architectural decisions that wo
 ```
 
 **Lesson 2: Accessibility-First Design Prevents Technical Debt** (CRITICAL):
+
 ```markdown
 # Context: WCAG 2.2 AA compliance mandatory from start
+
 # Retrospective: Much cheaper than retrofitting
 
 **What happened**:
+
 - Semantic HTML from day one (no div soup)
 - ARIA labels considered during component design
 - Keyboard navigation built into all interactive elements
@@ -24287,9 +24736,11 @@ Constraints breed creativity. Zero-budget forced architectural decisions that wo
 
 **Evidence from codebase**:
 $ grep -r "aria-label\|aria-describedby\|role=" apps/web/src/ libs/ui/
+
 # Result: Extensive ARIA usage throughout components
 
 **Counterfactual** (what we avoided):
+
 - Retrofitting accessibility costs 3-10x more than building it in
 - Late-stage WCAG compliance audits often require major refactors
 - User complaints about inaccessibility damage reputation
@@ -24301,23 +24752,29 @@ Accessibility is architecture, not polish. Build it in from the start or pay exp
 ```
 
 **Lesson 3: Documentation Quality Multiplies AI Effectiveness** (FORCE MULTIPLIER):
+
 ```markdown
 # Context: Heavy reliance on AI (GitHub Copilot) for development
+
 # Discovery: AI output quality correlates with documentation completeness
 
 **What happened**:
+
 - Initial copilot-instructions v1.0: ~5,000 words → AI suggestions often off-target
 - Current copilot-instructions v2.5.0: ~25,000 words → AI suggestions highly relevant
 - Comprehensive docs/ structure (12 sections) → AI understands context faster
 - ADRs documenting "why" → AI respects architectural decisions
 
 **Measured impact**:
+
 - Code review correction rate: ~40% (v1.0) → ~15% (v2.5.0) (estimated from PR history)
 - First-pass acceptance: ~50% → ~75% (AI suggests correct approach more often)
 - Time to context: 5-10 minutes → 1-2 minutes (AI finds relevant info faster)
 
 **Evidence**:
+
 # copilot-instructions.md version history
+
 v1.0.0 (2025-08-01): 5,124 words, basic rules
 v1.5.0 (2025-09-15): 10,483 words, added testing guidance
 v2.0.0 (2025-10-05): 18,762 words, restructured with path-specific instructions
@@ -24330,25 +24787,33 @@ Investing in clear, comprehensive documentation pays exponential dividends when 
 ```
 
 **Lesson 4: Testing Infrastructure is Foundational, Not Optional** (PARADIGM SHIFT):
+
 ```markdown
 # Context: Initially viewed tests as "later" or "nice to have"
+
 # Realization: Testing is architectural foundation, not afterthought
 
 **What happened**:
+
 - Early development: Tests written after features (30% coverage)
 - Mid-project pivot: Test-first approach for critical paths (60-80% coverage)
 - Recognition: Tests enable refactoring confidence, prevent regressions
 
 **Evidence from git history**:
 $ git log --grep="test\|coverage" --since="2024-08-01" --oneline | wc -l
+
 # Result: ~150 test-related commits (30% of total commits)
 
 **Specific example** (from CHANGELOG.md):
+
 # 2025-06-12: Refactored auth service (500 lines changed)
+
 # Completed in 2 days with high confidence
+
 # Why? 85% test coverage on auth service caught 12 bugs before production
 
 **Counterfactual** (what we avoided):
+
 - Manual regression testing after every change
 - Fear of refactoring "working" code
 - Production bugs from unnoticed side effects
@@ -24360,23 +24825,31 @@ Tests are not overhead—they're infrastructure. Treat testing like build system
 ```
 
 **Lesson 5: Human Oversight Essential for Governance/Ethics** (SAFETY CRITICAL):
+
 ```markdown
 # Context: AI governance safeguards, political neutrality requirements
+
 # Lesson: AI cannot self-certify ethical compliance
 
 **What happened**:
+
 - AI suggested political examples (biased toward mainstream narratives)
 - AI proposed efficiency optimizations that undermined democratic principles
 - Human review caught all instances before merge
 - Established constitutional escalation checklist
 
 **Examples** (from PR reviews):
+
 # PR #47: AI suggested caching vote counts (efficiency)
+
 # Human rejected: Violates vote transparency, enables manipulation
+
 # Resolution: Real-time vote counting only, no caching
 
 # PR #89: AI generated seed data with UK political party names
+
 # Human rejected: Creates perception of favoritism
+
 # Resolution: Synthetic parties only (Party A, Party B, etc.)
 
 **Lesson learned**:
@@ -24386,6 +24859,7 @@ AI excels at technical optimization but cannot navigate ethical nuance. Human ju
 ```
 
 **Top 5 Lessons Summary**:
+
 1. **Zero-budget = sustainable architecture** (constraints breed creativity)
 2. **Accessibility-first = 10x cheaper than retrofitting** (build it in from start)
 3. **Documentation quality = AI force multiplier** (clear docs → better AI output)
@@ -24393,17 +24867,20 @@ AI excels at technical optimization but cannot navigate ethical nuance. Human ju
 5. **Human oversight = ethics safeguard** (AI can't self-certify neutrality)
 
 **Gaps**:
+
 - No formal retrospective process (lessons captured ad-hoc)
 - No systematic tracking of "lessons applied" (did we actually change behavior?)
 - No lesson database or searchable repository
 - No periodic review of past lessons (are they still relevant?)
 
 **External Validation**:
+
 - 📚 **Google SRE**: Postmortems should capture actionable lessons (Political Sphere: ✅ Partial, informal)
 - 📚 **Agile Retrospectives**: Regular reflection improves team performance (Political Sphere: ❌ No regular cadence)
 - 📚 **Learning Organization Theory**: Lessons must be accessible to be valuable (Political Sphere: ⚠️ Scattered across artifacts)
 
 **Recommendation**:
+
 1. **Formalize Lessons Database (Q1 2026)**:
    - Create `docs/lessons-learned.md`
    - Category: Architecture, Process, AI Partnership, Ethics
@@ -24420,13 +24897,13 @@ AI excels at technical optimization but cannot navigate ethical nuance. Human ju
    - Measure: Did behavior change?
 
 **Sources**:
+
 - Learning Organizations: https://hbr.org/1993/07/building-a-learning-organization
 - Agile Retrospectives: https://retrospectivewiki.org/
 
 🎯 **Confidence**: **HIGH** — Five lessons clearly identifiable from CHANGELOG, ADRs, copilot-instructions evolution, and PR history. Each lesson supported by concrete examples. Confidence HIGH because lessons are well-documented in project artifacts and measurably impacted development approach.
 
 ---
-
 
 **8.2.2 What did failure teach us about process design?**
 
@@ -24435,6 +24912,7 @@ AI excels at technical optimization but cannot navigate ethical nuance. Human ju
 **Evidence**:
 
 **Failure 1: Breaking Changes from Informal Change Control** (PROCESS GAP):
+
 ```bash
 # Search for breaking changes in CHANGELOG
 $ grep -i "breaking\|breaking change" CHANGELOG.md
@@ -24447,14 +24925,17 @@ $ grep -i "breaking\|breaking change" CHANGELOG.md
 ```
 
 **Analysis & Lesson**:
+
 ```markdown
 **Root cause**: No formal change control process for API contracts, data formats
 **What we learned**:
+
 - Breaking changes need: Deprecation notice, migration guide, backward compatibility period
 - Semver versioning must be enforced (major bump for breaking changes)
 - API contract tests should catch breaking changes in CI
 
 **Process improvement implemented**:
+
 - Created `docs/05-engineering-and-devops/development/api-versioning.md` (theoretical)
 - Added "breaking change" PR label
 - Requires TGC review for any API/data format changes
@@ -24463,6 +24944,7 @@ $ grep -i "breaking\|breaking change" CHANGELOG.md
 ```
 
 **Failure 2: Performance Optimization Without Baseline** (WASTED EFFORT):
+
 ```bash
 # Example from git history (reconstructed)
 # Commit: "Optimize database queries for user dashboard"
@@ -24472,14 +24954,17 @@ $ grep -i "breaking\|breaking change" CHANGELOG.md
 ```
 
 **Analysis & Lesson**:
+
 ```markdown
 **Root cause**: No performance monitoring = no baseline = can't measure improvement
 **What we learned**:
+
 - "Premature optimization is the root of all evil" (Knuth) - but so is unmeasured optimization
 - Without metrics: "Faster" is subjective, effort may be wasted
 - Benchmarking must happen BEFORE optimization work
 
 **Process improvement needed**:
+
 - Establish performance baseline (response times, query times, bundle sizes)
 - Automated performance regression tests
 - Require "before/after" metrics in optimization PRs
@@ -24488,12 +24973,16 @@ $ grep -i "breaking\|breaking change" CHANGELOG.md
 ```
 
 **Failure 3: Recurring Issues from Infrequent Retrospectives** (PATTERN BLINDNESS):
+
 ```markdown
 # Recurring issue: Accessibility violations caught in late PR review
+
 # Frequency: ~3-4 times over 6 months
+
 # Pattern: Developers forget ARIA labels, keyboard nav in new components
 
 **Timeline**:
+
 - 2025-05-10: PR #32 - Missing aria-labels on icon buttons
 - 2025-07-15: PR #54 - Keyboard nav broken in new modal
 - 2025-09-02: PR #71 - Screen reader can't access dropdown menu
@@ -24504,13 +24993,16 @@ $ grep -i "breaking\|breaking change" CHANGELOG.md
 ```
 
 **Analysis & Lesson**:
+
 ```markdown
 **What we learned**:
+
 - Ad-hoc retrospectives miss patterns visible in aggregate data
 - Regular reflection (monthly/quarterly) would have caught: "We keep forgetting accessibility"
 - Pattern identification enables root cause fixes (checklist, automated tests, better docs)
 
 **Process improvement implemented**:
+
 - Added accessibility checklist to PR template (2025-10-25)
 - Created `docs/05-engineering-and-devops/ui/accessibility-checklist.md`
 - Integrated axe-core automated testing (reduced violations by ~80%)
@@ -24519,12 +25011,18 @@ $ grep -i "breaking\|breaking change" CHANGELOG.md
 ```
 
 **Failure 4: Production-Like Issues from Lack of Staging** (UNREALISTIC TESTING):
+
 ```markdown
 # Scenario: No staging environment = testing only in local dev
+
 # Example issues that WOULD have been caught in staging:
+
 # - Environment variable differences (dev vs prod)
+
 # - Database migration failures at scale
+
 # - Network latency impacts on WebSocket
+
 # - Resource limits (memory, connections) under load
 
 **Current state**: Zero-budget constraint = no staging environment
@@ -24533,13 +25031,16 @@ $ grep -i "breaking\|breaking change" CHANGELOG.md
 ```
 
 **Analysis & Lesson**:
+
 ```markdown
 **What we learned**:
+
 - Local development ≠ production reality
 - Lack of staging is acceptable trade-off for zero-budget... until production launch
 - Cannot defer staging forever (required before first real deployment)
 
 **Process improvement planned**:
+
 - Deploy staging environment on free tier before production (Q1 2026)
 - Use Railway/Render free tiers, or GitHub Codespaces
 - Staging deployment must mirror production architecture
@@ -24556,17 +25057,20 @@ $ grep -i "breaking\|breaking change" CHANGELOG.md
 | **Unknown Prod Issues** | No staging environment | Local ≠ production | Staging deployment | ⏳ Planned Q1 2026 |
 
 **Gaps**:
+
 - No incident tracking system (failures not systematically recorded)
 - No root cause analysis template (ad-hoc investigation)
 - No "lessons learned" workflow (capture learnings inconsistently)
 - No regular retrospective cadence (monthly/quarterly)
 
 **External Validation**:
+
 - 📚 **Google SRE Postmortems**: Blameless, actionable, prevent recurrence (Political Sphere: ⚠️ Informal)
 - 📚 **DevOps Handbook**: Fast feedback loops catch issues early (Political Sphere: ⚠️ Partial)
 - 📚 **Agile Manifesto**: Inspect and adapt at regular intervals (Political Sphere: ❌ Irregular)
 
 **Recommendation**:
+
 1. **Formalize Change Control (Q1 2026)**:
    - Require ADR for breaking changes
    - Deprecation notice period (1-2 versions minimum)
@@ -24588,6 +25092,7 @@ $ grep -i "breaking\|breaking change" CHANGELOG.md
    - Test deployments, migrations, load before launch
 
 **Sources**:
+
 - SRE Postmortems: https://sre.google/sre-book/postmortem-culture/
 - DevOps Handbook: https://itrevolution.com/product/the-devops-handbook/
 
@@ -24602,44 +25107,58 @@ $ grep -i "breaking\|breaking change" CHANGELOG.md
 **Evidence**:
 
 **Poor Assumption #1: "Testing Can Wait Until Features Stabilize"** (MAJOR REWORK):
+
 ```markdown
 # Initial assumption (Q3 2024):
+
 "Write features first, add tests later when we know what works"
 
 **Reasoning**:
+
 - Features change frequently in early development
 - Writing tests for code that might be rewritten = wasted effort
 - Tests slow down velocity when iterating quickly
 
 **Reality check (Q2 2025)**:
+
 - Refactoring without tests = fear and regression bugs
 - "Later" never came (always new features to build)
 - Technical debt accumulated (30% coverage considered "good enough")
 
 **Turning point**:
+
 # CHANGELOG.md 2025-06-12: "Refactored auth service"
+
 # 500 lines changed, 85% test coverage enabled confident refactor in 2 days
+
 # Contrast: Earlier refactors (no tests) took 5-7 days, introduced bugs
 
 **Evidence**:
 $ git log --since="2024-08-01" --until="2025-03-01" --grep="test" | wc -l
+
 # Result: 23 test-related commits (15% of total)
 
 $ git log --since="2025-03-01" --grep="test" | wc -l
+
 # Result: 127 test-related commits (42% of total)
 
 # Test coverage evolution:
+
 # Q4 2024: ~30% coverage
+
 # Q2 2025: ~60% coverage
+
 # Q4 2025: ~75% coverage (critical paths 80%+)
 ```
 
 **Why assumption aged poorly**:
+
 - Tests ARE the stabilization mechanism (not something you add after stabilization)
 - Refactoring velocity depends on test coverage (10x faster with tests)
 - "Later" compounds interest (technical debt grows exponentially)
 
 **Lesson applied**:
+
 - Testing now in Definition of Done (mandatory, not optional)
 - Test-first for critical paths (auth, voting, permissions)
 - Coverage gates in CI (prevent regression)
@@ -24647,24 +25166,32 @@ $ git log --since="2025-03-01" --grep="test" | wc -l
 ---
 
 **Poor Assumption #2: "AI Will Understand Context from Code Alone"** (PRODUCTIVITY DRAG):
+
 ```markdown
 # Initial assumption (Q3 2024):
+
 "Copilot can read the codebase, no need for extensive docs"
 
 **Reasoning**:
+
 - AI has access to all source code
 - Code is self-documenting (clean code principles)
 - Writing docs is overhead
 
 **Reality check (Q3 2025)**:
+
 - AI suggestions often missed context (architectural intent, trade-offs considered)
 - Code shows "what" but not "why" (decisions, constraints, alternatives rejected)
 - Correction rate: ~40% of AI suggestions needed human editing
 
 **Turning point**:
+
 # copilot-instructions.md evolution:
+
 # v1.0 (Aug 2024): 5,124 words → AI correction rate ~40%
+
 # v2.0 (Oct 2025): 18,762 words → AI correction rate ~20%
+
 # v2.5 (Nov 2025): 24,891 words → AI correction rate ~15%
 
 **Measured impact**:
@@ -24677,11 +25204,13 @@ $ git log --since="2025-03-01" --grep="test" | wc -l
 ```
 
 **Why assumption aged poorly**:
+
 - AI lacks human context (project history, decisions made, constraints)
 - Code documents implementation, not intent or rationale
 - Documentation is AI force multiplier (ROI: 1 hour writing docs saves 5+ hours fixing AI errors)
 
 **Lesson applied**:
+
 - Invested heavily in copilot-instructions.md (now 25,000 words)
 - Created comprehensive docs/ structure (12 sections, ~100+ pages)
 - ADRs document architectural decisions with "why"
@@ -24689,38 +25218,49 @@ $ git log --since="2025-03-01" --grep="test" | wc -l
 ---
 
 **Poor Assumption #3: "Manual Performance Checks Are Sufficient"** (LATE DISCOVERY):
+
 ```markdown
 # Initial assumption (Q3 2024):
+
 "We'll notice if things get slow, can optimize later"
 
 **Reasoning**:
+
 - Premature optimization is bad (Knuth's wisdom)
 - Small user base = performance not critical yet
 - Manual testing catches obvious slowness
 
 **Reality check (Q4 2025)**:
+
 - Bottlenecks discovered during Section 7 analysis (15 months post-start)
 - No baseline metrics = can't measure if "optimizations" actually helped
 - Unknown: bundle sizes, API latency, database query performance
 
 **Examples of late discovery**:
+
 # Bundle sizes: No monitoring until Section 7 analysis
+
 # Estimate: ~750KB uncompressed (~250KB gzipped)
+
 # Question: Has this grown over time? Unknown (no tracking)
 
 # Build times: Acceptable now (3-5 min), but no trend tracking
+
 # Question: Are builds getting slower? Unknown (no historical data)
 
 # Database queries: No slow query logging
+
 # Potential issues: N+1 queries, missing indexes? Unknown (no profiling)
 ```
 
 **Why assumption aged poorly**:
+
 - "We'll notice" is reactive (problems discovered when already painful)
 - Without baseline: Can't distinguish normal from degraded performance
 - Manual checks don't scale (miss gradual degradation over time)
 
 **Lesson applied** (partially):
+
 - Added performance section to genesis document (awareness increased)
 - Identified gaps: bundle budgets, load testing, monitoring (not yet implemented)
 - Planned: Lighthouse CI, performance regression tests (Q1-Q2 2026)
@@ -24728,17 +25268,21 @@ $ git log --since="2025-03-01" --grep="test" | wc -l
 ---
 
 **Assumption That Held: "Zero-Budget Won't Limit Core Functionality"** (VALIDATED):
+
 ```markdown
 # Initial assumption (Q3 2024):
+
 "$0 budget constraint will drive creativity, not cripple the project"
 
 **Skepticism**:
+
 - How can you build a production app without AWS/Azure/GCP?
 - Free tiers have limits (compute, storage, bandwidth)
 - "You get what you pay for"
 
 **Reality check (Q4 2025)**:
 ✅ Core functionality NOT limited by zero-budget:
+
 - Monorepo (Nx free, local caching)
 - CI/CD (GitHub Actions 2000 min/month, using 150-200)
 - Databases (PostgreSQL, Redis self-hosted)
@@ -24748,12 +25292,14 @@ $ git log --since="2025-03-01" --grep="test" | wc -l
 - Monitoring (planned: Prometheus + Grafana, free/self-hosted)
 
 ✅ Architectural benefits from zero-budget:
+
 - Platform-agnostic (no vendor lock-in)
 - Portable (Docker, runs anywhere)
 - Lightweight (forced efficiency)
 - Sustainable (no recurring costs)
 
 ⚠️ Limitations from zero-budget:
+
 - No production deployment yet (hosting costs TBD)
 - No CDN (static assets served from origin)
 - No managed databases (self-hosting complexity)
@@ -24761,11 +25307,13 @@ $ git log --since="2025-03-01" --grep="test" | wc -l
 ```
 
 **Why assumption held**:
+
 - Free tier tools are production-grade (GitHub, Nx, PostgreSQL, Redis)
 - Constraints forced better architecture (portable, efficient, sustainable)
 - Core functionality ≠ production deployment (can defer hosting costs to launch)
 
 **Lesson applied**:
+
 - Zero-budget is strategic advantage (documented in Section 8.2.1 Lesson #1)
 - Embrace constraints (drive creativity)
 - Plan for eventual hosting costs (free tiers: Railway, Render, Vercel)
@@ -24781,15 +25329,18 @@ $ git log --since="2025-03-01" --grep="test" | wc -l
 | **"Zero-budget limits"** | Budget required for quality | Constraints drive creativity | ✅ Held up well | Embrace constraints strategically |
 
 **Gaps**:
+
 - No assumption tracking mechanism (should document assumptions explicitly)
 - No periodic assumption review (quarterly: which assumptions to revisit?)
 - No "assumption register" (like risk register)
 
 **External Validation**:
+
 - 📚 **Lean Startup**: Test assumptions early (Political Sphere: ⚠️ Learned through experience)
 - 📚 **Evidence-Based Management**: Challenge assumptions with data (Political Sphere: ⚠️ Reactive)
 
 **Recommendation**:
+
 1. **Create Assumption Register (Q1 2026)**:
    - Document key assumptions (architecture, process, tools, constraints)
    - Review quarterly: Still valid? Evidence?
@@ -24801,10 +25352,10 @@ $ git log --since="2025-03-01" --grep="test" | wc -l
    - Schedule assumption review checkpoints
 
 **Sources**:
+
 - Lean Startup Methodology: https://theleanstartup.com/
 - Evidence-Based Management: https://www.scrum.org/resources/evidence-based-management
 
 🎯 **Confidence**: **HIGH** — Assumptions traceable through project evolution (copilot-instructions versions, CHANGELOG, coverage metrics). Impact measurable (AI correction rate, refactoring velocity). Confidence HIGH because assumption outcomes are documented with concrete evidence.
 
 ---
-

@@ -10,6 +10,8 @@
 
 ---
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 This document describes the CI/CD (Continuous Integration and Continuous Delivery) system for the Political Sphere project. It covers workflows, scripts, best practices, and improvement plans.
 
 ## Structure

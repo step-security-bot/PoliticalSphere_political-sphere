@@ -1,83 +1,215 @@
-# Placeholder: API Deployment
-#
-# STATUS: PENDING_IMPLEMENTATION
-# REASON: Requires container registry, API image build, and K8s cluster
-# DEPENDENCIES: Docker image, secrets management, ingress controller
-# ESTIMATED_READINESS: After containerization (Sprint 29+)
-
 apiVersion: v1
 kind: Namespace
 metadata:
   name: political-sphere
+  labels:
+    name: political-sphere
 ---
-# TODO: Implement API deployment manifest
-# - Deployment with multiple replicas
-# - Health checks (liveness and readiness probes)
-# - Resource limits and requests
-# - Horizontal Pod Autoscaler
-# - ConfigMaps and Secrets
-# - Service account with RBAC
-
-# Example structure (to be implemented):
-#
-# apiVersion: apps/v1
-# kind: Deployment
-# metadata:
-#   name: api
-#   namespace: political-sphere
-#   labels:
-#     app: api
-#     version: v1
-# spec:
-#   replicas: 3
-#   selector:
-#     matchLabels:
-#       app: api
-#   template:
-#     metadata:
-#       labels:
-#         app: api
-#         version: v1
-#     spec:
-#       containers:
-#       - name: api
-#         image: political-sphere/api:latest
-#         ports:
-#         - containerPort: 3000
-#           name: http
-#         env:
-#         - name: NODE_ENV
-#           value: production
-#         - name: JWT_SECRET
-#           valueFrom:
-#             secretKeyRef:
-#               name: api-secrets
-#               key: jwt-secret
-#         livenessProbe:
-#           httpGet:
-#             path: /healthz
-#             port: 3000
-#           initialDelaySeconds: 30
-#           periodSeconds: 10
-#         readinessProbe:
-#           httpGet:
-#             path: /ready
-#             port: 3000
-#           initialDelaySeconds: 5
-#           periodSeconds: 5
-#         resources:
-#           requests:
-#             memory: "256Mi"
-#             cpu: "250m"
-#           limits:
-#             memory: "512Mi"
-#             cpu: "500m"
-
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: api-service-account
+  namespace: political-sphere
+  annotations:
+    eks.amazonaws.com/role-arn: "arn:aws:iam::123456789012:role/political-sphere-api-role"
+---
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: api-deployment-placeholder
-  namespace: default
+  name: api-config
+  namespace: political-sphere
 data:
-  status: 'PENDING_IMPLEMENTATION'
-  note: 'API deployment pending containerization and K8s cluster setup'
+  NODE_ENV: "production"
+  PORT: "3000"
+  LOG_LEVEL: "info"
+  CORS_ORIGIN: "https://political-sphere.com"
+  SESSION_SECRET: "change-me-in-production"
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: api-secrets
+  namespace: political-sphere
+type: Opaque
+data:
+  # Base64 encoded values - replace with actual secrets
+  JWT_SECRET: "Y2hhbmdlLW1lLWluLXByb2R1Y3Rpb24="  # change-me-in-production
+  DATABASE_URL: "cG9zdGdyZXM6Ly91c2VyOnBhc3NAZGJfaG9zdDo1NDMyL2RiX25hbWU="  # postgres://user:pass@db_host:5432/db_name
+  REDIS_URL: "cmVkaXM6Ly91c2VyOnBhc3NAcmVkaXNfaG9zdDo2Mzc5LzA="  # redis://user:pass@redis_host:6379/0
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api
+  namespace: political-sphere
+  labels:
+    app: api
+    version: v1
+    component: backend
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: api
+  template:
+    metadata:
+      labels:
+        app: api
+        version: v1
+        component: backend
+    spec:
+      serviceAccountName: api-service-account
+      containers:
+      - name: api
+        image: 123456789012.dkr.ecr.us-east-1.amazonaws.com/political-sphere/prod/api:latest
+        ports:
+        - containerPort: 3000
+          name: http
+          protocol: TCP
+        env:
+        - name: NODE_ENV
+          valueFrom:
+            configMapKeyRef:
+              name: api-config
+              key: NODE_ENV
+        - name: PORT
+          valueFrom:
+            configMapKeyRef:
+              name: api-config
+              key: PORT
+        - name: LOG_LEVEL
+          valueFrom:
+            configMapKeyRef:
+              name: api-config
+              key: LOG_LEVEL
+        - name: CORS_ORIGIN
+          valueFrom:
+            configMapKeyRef:
+              name: api-config
+              key: CORS_ORIGIN
+        - name: SESSION_SECRET
+          valueFrom:
+            configMapKeyRef:
+              name: api-config
+              key: SESSION_SECRET
+        - name: JWT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: api-secrets
+              key: JWT_SECRET
+        - name: DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: api-secrets
+              key: DATABASE_URL
+        - name: REDIS_URL
+          valueFrom:
+            secretKeyRef:
+              name: api-secrets
+              key: REDIS_URL
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 3000
+            scheme: HTTP
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+          successThreshold: 1
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: 3000
+            scheme: HTTP
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 3
+          successThreshold: 1
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+        securityContext:
+          allowPrivilegeEscalation: false
+          runAsNonRoot: true
+          runAsUser: 1001
+          readOnlyRootFilesystem: true
+          capabilities:
+            drop:
+            - ALL
+      securityContext:
+        fsGroup: 1001
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - api
+              topologyKey: kubernetes.io/hostname
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: api
+  namespace: political-sphere
+  labels:
+    app: api
+    component: backend
+spec:
+  type: ClusterIP
+  ports:
+  - port: 80
+    targetPort: 3000
+    protocol: TCP
+    name: http
+  selector:
+    app: api
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: api-hpa
+  namespace: political-sphere
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: api
+  minReplicas: 3
+  maxReplicas: 10
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 80
+  behavior:
+    scaleDown:
+      stabilizationWindowSeconds: 300
+      policies:
+      - type: Percent
+        value: 10
+        periodSeconds: 60
+    scaleUp:
+      stabilizationWindowSeconds: 60
+      policies:
+      - type: Percent
+        value: 50
+        periodSeconds: 60

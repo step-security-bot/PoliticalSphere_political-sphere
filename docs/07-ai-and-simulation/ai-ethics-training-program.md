@@ -10,6 +10,8 @@
 
 ---
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 This document outlines a comprehensive AI ethics training program for the Political Sphere project, designed to ensure all team members understand and apply ethical principles in AI development and deployment, in compliance with ISO 42001:2023 AI Management System requirements.
 
 ## Overview

@@ -10,6 +10,8 @@
 
 ---
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 This document outlines best practices for safely using GitHub in this repository, ensuring security, collaboration, and compliance with our security policies.
 
 ## General Guidelines

@@ -10,6 +10,8 @@
 
 ---
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 This document outlines the incident response procedures specific to AI system failures and incidents in the Political Sphere project, ensuring compliance with ISO 42001:2023 requirements for AI Management Systems (AMLS).
 
 ## Overview

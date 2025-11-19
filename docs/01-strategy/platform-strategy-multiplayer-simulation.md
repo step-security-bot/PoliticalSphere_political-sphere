@@ -10,6 +10,8 @@
 
 ---
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 ## Overview
 
 Political Sphere's platform strategy emphasizes a modular monolith architecture for reliability, server-authoritative gameplay for trust, and ethical AI integration. The focus is on persistent, fair multiplayer worlds with zero-budget scalability.

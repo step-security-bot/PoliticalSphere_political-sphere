@@ -12,6 +12,8 @@
 
 ---
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 ## 🎯 Reliability Goals
 
 - **Availability:** 99.9% MVP, target 99.95% with multi-AZ deployment.

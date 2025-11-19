@@ -6,11 +6,14 @@
 
 ---
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 ## Executive Summary
 
 Comprehensive CI/CD assessment completed with strategic improvement roadmap. Phase 1 implementation (caching infrastructure) is underway with significant progress on multi-layer caching strategy.
 
 **Key Achievements:**
+
 - ✅ Comprehensive assessment report (87 pages)
 - ✅ Multi-layer caching architecture designed
 - ✅ Reusable caching actions created
@@ -19,6 +22,7 @@ Comprehensive CI/CD assessment completed with strategic improvement roadmap. Pha
 - ✅ CHANGELOG updated with progress
 
 **Expected Impact (Week 1):**
+
 - npm install: 3-5 min → 30-60s (80% reduction)
 - Playwright setup: 3-5 min → 10-30s (90% reduction)
 - E2E tests: 12-18 min → 8-12 min (40% reduction)
@@ -31,6 +35,7 @@ Comprehensive CI/CD assessment completed with strategic improvement roadmap. Pha
 ### 1. Assessment & Planning ✅
 
 **Created: `docs/CI-CD-COMPREHENSIVE-ASSESSMENT-2025-11-18.md`**
+
 - 87-page comprehensive analysis
 - 24 GitHub Actions workflows audited
 - Enterprise Lefthook configuration analyzed (724 lines)
@@ -39,6 +44,7 @@ Comprehensive CI/CD assessment completed with strategic improvement roadmap. Pha
 - 6-phase improvement roadmap with 12-week timeline
 
 **Key Findings:**
+
 - Current pipeline: 35-50 min (P95)
 - Cache hit rate: ~40%
 - 24 workflows (7 redundant, consolidation opportunity)
@@ -48,22 +54,26 @@ Comprehensive CI/CD assessment completed with strategic improvement roadmap. Pha
 ### 2. Caching Infrastructure ✅
 
 **Created: `.github/actions/setup-node-deps/action.yml`**
+
 - Multi-layer dependency caching (npm + node_modules + Vitest)
 - Cache-aware installation logic (skip on hit)
 - Layered restore-keys for graceful degradation
 - Cache hit rate monitoring via outputs
 
 **Created: `.github/actions/setup-playwright/action.yml`**
+
 - Playwright browser binary caching
 - Version-specific cache keys
 - ~500 MB savings per E2E run
 
 **Updated: `.github/workflows/e2e.yml`**
+
 - Migrated to reusable caching actions
 - Node.js 20 → 22 (consistency with project standard)
 - Expected 70% time reduction (caching + future sharding)
 
 **Created: `docs/architecture/decisions/adr-007-comprehensive-caching-strategy.md`**
+
 - 5-layer caching approach documented
 - Cache key design patterns
 - Success metrics and validation plan
@@ -72,6 +82,7 @@ Comprehensive CI/CD assessment completed with strategic improvement roadmap. Pha
 ### 3. Documentation ✅
 
 **Updated: `CHANGELOG.md`**
+
 - New section: [2025-11-18] CI/CD Optimization
 - Performance baseline metrics
 - Week 1 targets
@@ -157,32 +168,33 @@ Comprehensive CI/CD assessment completed with strategic improvement roadmap. Pha
 
 ## Success Metrics - Week 1 Targets
 
-| Metric | Baseline | Current | Week 1 Target | Status |
-|--------|----------|---------|---------------|--------|
-| **PR validation time (P95)** | 35-50 min | TBD | 20-30 min | 🔄 Measuring |
-| **npm install time** | 3-5 min | TBD | 30-60s | 🔄 Measuring |
-| **Playwright setup** | 3-5 min | TBD | 10-30s | 🔄 Measuring |
-| **E2E tests (P95)** | 12-18 min | TBD | 8-12 min | 🔄 Measuring |
-| **Cache hit rate (deps)** | ~40% | TBD | ~60% | 🔄 Measuring |
-| **Cache hit rate (tools)** | ~0% | TBD | ~80% | 🔄 Measuring |
+| Metric                       | Baseline  | Current | Week 1 Target | Status       |
+| ---------------------------- | --------- | ------- | ------------- | ------------ |
+| **PR validation time (P95)** | 35-50 min | TBD     | 20-30 min     | 🔄 Measuring |
+| **npm install time**         | 3-5 min   | TBD     | 30-60s        | 🔄 Measuring |
+| **Playwright setup**         | 3-5 min   | TBD     | 10-30s        | 🔄 Measuring |
+| **E2E tests (P95)**          | 12-18 min | TBD     | 8-12 min      | 🔄 Measuring |
+| **Cache hit rate (deps)**    | ~40%      | TBD     | ~60%          | 🔄 Measuring |
+| **Cache hit rate (tools)**   | ~0%       | TBD     | ~80%          | 🔄 Measuring |
 
 ---
 
 ## Risk Register
 
-| Risk | Likelihood | Impact | Mitigation | Status |
-|------|------------|--------|------------|--------|
-| Cache corruption | MEDIUM | HIGH | Cache versioning, invalidation strategy | ✅ Addressed in ADR-007 |
-| 10 GB cache limit exceeded | LOW | MEDIUM | Monitor usage, cleanup automation | 📋 Planned |
-| Cache key collisions | LOW | HIGH | Unique keys per layer, SHA-based | ✅ Addressed in design |
-| Test flakiness increase | MEDIUM | MEDIUM | Retry logic, quarantine flaky tests | 📋 Phase 4B |
-| Performance regression | LOW | HIGH | Before/after metrics, rollback plan | ✅ Monitoring implemented |
+| Risk                       | Likelihood | Impact | Mitigation                              | Status                    |
+| -------------------------- | ---------- | ------ | --------------------------------------- | ------------------------- |
+| Cache corruption           | MEDIUM     | HIGH   | Cache versioning, invalidation strategy | ✅ Addressed in ADR-007   |
+| 10 GB cache limit exceeded | LOW        | MEDIUM | Monitor usage, cleanup automation       | 📋 Planned                |
+| Cache key collisions       | LOW        | HIGH   | Unique keys per layer, SHA-based        | ✅ Addressed in design    |
+| Test flakiness increase    | MEDIUM     | MEDIUM | Retry logic, quarantine flaky tests     | 📋 Phase 4B               |
+| Performance regression     | LOW        | HIGH   | Before/after metrics, rollback plan     | ✅ Monitoring implemented |
 
 ---
 
 ## Deliverables Summary
 
 **Week 1 (In Progress):**
+
 - [x] Comprehensive CI/CD assessment report
 - [x] ADR-007: Caching strategy
 - [x] Reusable caching actions (2)
@@ -193,12 +205,14 @@ Comprehensive CI/CD assessment completed with strategic improvement roadmap. Pha
 - [ ] Performance validation report
 
 **Week 2 (Planned):**
+
 - [ ] Test optimization (Nx affected, sharding)
 - [ ] Workflow consolidation (24 → 17)
 - [ ] Week 1 metrics report
 - [ ] Phase 4 completion validation
 
 **Week 3-4 (Security Hardening):**
+
 - [ ] SLSA Level 3 implementation
 - [ ] SBOM generation
 - [ ] OIDC authentication
@@ -209,11 +223,13 @@ Comprehensive CI/CD assessment completed with strategic improvement roadmap. Pha
 ## Resources & References
 
 **Documentation:**
+
 - [CI/CD Assessment](./CI-CD-COMPREHENSIVE-ASSESSMENT-2025-11-18.md) - Full analysis
 - [ADR-007](../architecture/decisions/adr-007-comprehensive-caching-strategy.md) - Caching strategy
 - [GitHub Actions Caching](https://docs.github.com/en/actions/using-workflows/caching-dependencies-to-speed-up-workflows) - Official docs
 
 **External Sources:**
+
 - Microsoft Learn: GitHub Actions CI/CD best practices
 - OWASP ASVS v4.0.3: Application security standards
 - SLSA Framework: Supply chain security levels
@@ -225,6 +241,7 @@ Comprehensive CI/CD assessment completed with strategic improvement roadmap. Pha
 
 **Implementation Lead:** AI Engineering Partner  
 **Reviewers Required:**
+
 - [ ] Platform Engineering Lead
 - [ ] DevOps Lead
 - [ ] CTO

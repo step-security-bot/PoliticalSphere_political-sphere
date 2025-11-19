@@ -1,5 +1,7 @@
 # Support
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 ## Community Support
 
 For general questions, discussions, and community help:

@@ -25,7 +25,7 @@ class AppError extends Error {
     public code: string,
     message: string,
     public details?: unknown,
-    public isOperational = true,
+    public isOperational = true
   ) {
     super(message);
     this.name = this.constructor.name;

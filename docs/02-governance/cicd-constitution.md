@@ -12,6 +12,8 @@ We, the engineering team of Political Sphere, establish this CI/CD Governance Co
 
 ---
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 ## Table of Contents
 
 - [Article I: Principles](#article-i-principles)

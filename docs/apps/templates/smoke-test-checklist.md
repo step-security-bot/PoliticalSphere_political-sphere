@@ -1,5 +1,7 @@
 # Smoke Test Checklist
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 Use this checklist after each deployment or disaster recovery exercise to ensure core Political Sphere functionality works.
 
 ## Environment

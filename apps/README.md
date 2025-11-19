@@ -31,8 +31,8 @@
 - `worker/`: Background job processing
 - `game-server/`: Real-time simulation engine
 - `shell/`: Module federation host
-- `feature-auth-remote/`: Authentication microfrontend
-- `feature-dashboard-remote/`: Dashboard microfrontend
+- `auth-remote/`: Authentication microfrontend
+- `dashboard-remote/`: Dashboard microfrontend
 - `infrastructure/`: IaC and deployments
 - `load-test/`: Performance testing
 - `e2e/`: End-to-end testing

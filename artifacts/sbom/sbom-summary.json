@@ -1,0 +1,12 @@
+{
+  "generated_at": "2025-11-19T12:37:51Z",
+  "generator": "syft",
+  "formats": ["SPDX", "CycloneDX"],
+  "files": 5,
+  "project": "political-sphere",
+  "compliance": {
+    "ntia_minimum_elements": true,
+    "sbom_formats": ["SPDX", "CycloneDX"],
+    "automation_level": "fully_automated"
+  }
+}

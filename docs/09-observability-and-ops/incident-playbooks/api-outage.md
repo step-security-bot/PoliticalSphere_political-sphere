@@ -1,5 +1,7 @@
 # API Outage Playbook
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 **Severity**: Critical (P0)  
 **Response Time**: < 15 minutes  
 **Owner**: Backend Team  
@@ -62,10 +64,12 @@ curl -f https://status.external-service.com
 ### Scenario 1: Recent Deployment Broke API
 
 **Symptoms**:
+
 - Errors started immediately after deployment
 - Only new pods are failing
 
 **Resolution**:
+
 ```bash
 # Immediate rollback
 kubectl rollout undo deployment/api -n production
@@ -83,10 +87,12 @@ for i in {1..10}; do curl -f https://api.political-sphere.com/health && echo " O
 ### Scenario 2: Database Connection Pool Exhausted
 
 **Symptoms**:
+
 - Error: "Connection pool timeout"
 - Slow API responses
 
 **Resolution**:
+
 ```bash
 # Check current connections
 kubectl exec -it deployment/api -n production -- psql -h db.internal -c \
@@ -106,10 +112,12 @@ kubectl set env deployment/api -n production API_DB_POOL_MAX=20
 ### Scenario 3: Memory Leak / OOM Kills
 
 **Symptoms**:
+
 - Pods restarting frequently
 - Error: "OOMKilled" in pod events
 
 **Resolution**:
+
 ```bash
 # Check pod resource usage
 kubectl top pods -l app=api -n production
@@ -131,10 +139,12 @@ kubectl rollout restart deployment/api -n production
 ### Scenario 4: Rate Limiting Triggered
 
 **Symptoms**:
+
 - HTTP 429 errors
 - Legitimate users blocked
 
 **Resolution**:
+
 ```bash
 # Check rate limiter status
 kubectl exec -it deployment/api -n production -- redis-cli --scan --pattern "rate:*" | wc -l
@@ -152,10 +162,12 @@ kubectl logs deployment/api -n production | grep "Rate limit exceeded" | awk '{p
 ### Scenario 5: Certificate Expired
 
 **Symptoms**:
+
 - Error: "SSL certificate expired"
 - HTTPS connections failing
 
 **Resolution**:
+
 ```bash
 # Check certificate expiry
 echo | openssl s_client -servername api.political-sphere.com -connect api.political-sphere.com:443 2>/dev/null | openssl x509 -noout -dates
@@ -173,10 +185,12 @@ kubectl rollout restart deployment/nginx-ingress-controller -n ingress
 ### Scenario 6: Cascading Failure
 
 **Symptoms**:
+
 - Multiple services failing simultaneously
 - Dependency chain breakdown
 
 **Resolution**:
+
 ```bash
 # Identify failing dependencies
 kubectl get pods --all-namespaces | grep -v Running
@@ -263,19 +277,19 @@ spec:
   template:
     spec:
       containers:
-      - name: api
-        readinessProbe:
-          httpGet:
-            path: /health
-            port: 3000
-          initialDelaySeconds: 10
-          periodSeconds: 5
-        livenessProbe:
-          httpGet:
-            path: /health
-            port: 3000
-          initialDelaySeconds: 30
-          periodSeconds: 10
+        - name: api
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 3000
+            initialDelaySeconds: 10
+            periodSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 3000
+            initialDelaySeconds: 30
+            periodSeconds: 10
 ```
 
 ### Canary Deployments

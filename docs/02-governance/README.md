@@ -12,6 +12,8 @@
 
 This section contains the governance framework and organizational policies for Political Sphere, ensuring responsible development and operation of our multiplayer political simulation game.
 
+> NOTE: See `docs/00-foundation/project-context.md` for the broader project context, vision, and AI collaboration model that governs these policies.
+
 ## Overview
 
 Governance at Political Sphere encompasses the structures, processes, and policies that guide our decision-making, risk management, and compliance efforts. Our governance model balances innovation with responsibility, particularly important given the political nature of our platform.

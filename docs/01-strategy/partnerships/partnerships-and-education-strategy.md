@@ -10,6 +10,8 @@
 
 ---
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 ## Overview
 
 Political Sphere does not currently have active partnerships or education strategies. This document outlines the potential framework for future collaborations and outreach, aligned with the mission of simulating politics as a system without real-world persuasion or activism.

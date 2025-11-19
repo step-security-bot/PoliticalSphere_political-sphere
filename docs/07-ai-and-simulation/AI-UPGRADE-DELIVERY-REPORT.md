@@ -8,6 +8,8 @@
 
 ---
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 ## Executive Summary
 
 Successfully upgraded Political Sphere's AI infrastructure with production-ready, open-source technologies from GitHub's ecosystem. All improvements use battle-tested libraries with millions of users, maintain strict security/privacy standards, and provide immediate value.

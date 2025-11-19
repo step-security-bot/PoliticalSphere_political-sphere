@@ -67,7 +67,7 @@ describe('UserService - Unit Tests', () => {
 
     // Act & Assert - Test error cases
     await expect(
-      userService.createUser({ email: 'test@example.com', password: 'pass' }),
+      userService.createUser({ email: 'test@example.com', password: 'pass' })
     ).rejects.toThrow('Email already exists');
 
     expect(mockUserRepo.create).not.toHaveBeenCalled();
@@ -132,7 +132,7 @@ describe('Bill Voting - Integration Tests', () => {
         billId: bill.id,
         userId: user.id,
         position: 'against',
-      }),
+      })
     ).rejects.toThrow('User has already voted on this bill');
   });
 });
@@ -368,7 +368,7 @@ describe('Bill Component - Snapshot Tests', () => {
 class UserService {
   constructor(
     private repo?: any,
-    private hashFn?: any,
+    private hashFn?: any
   ) {}
 
   async createUser(data: any) {
@@ -405,7 +405,7 @@ class BillService {
     await this.db.update(
       'bills',
       { id: voteData.billId },
-      { $inc: { [`votes${capitalize(voteData.position)}`]: 1 } },
+      { $inc: { [`votes${capitalize(voteData.position)}`]: 1 } }
     );
 
     return vote;

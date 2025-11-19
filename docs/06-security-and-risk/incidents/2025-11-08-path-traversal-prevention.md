@@ -246,6 +246,8 @@ test('validateTrustedPath allows subdirs', () => {
 
 ---
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 **Last Updated:** 2025-11-08  
 **Assignee:** AI Agent (GitHub Copilot)  
 **Reviewer:** Pending

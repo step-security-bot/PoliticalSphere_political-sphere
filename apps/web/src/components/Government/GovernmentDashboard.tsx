@@ -61,6 +61,7 @@ export const GovernmentDashboard: React.FC<GovernmentDashboardProps> = ({ userId
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<'cabinet' | 'actions' | 'policies'>('cabinet');
   const [showActionForm, setShowActionForm] = useState(false);
+  const [submittingAction, setSubmittingAction] = useState(false);
 
   // Form state for executive actions
   const [actionForm, setActionForm] = useState({
@@ -79,9 +80,9 @@ export const GovernmentDashboard: React.FC<GovernmentDashboardProps> = ({ userId
         throw new Error(response.error || 'Failed to fetch government data');
       }
 
-      setCabinet(response.data?.cabinet || null);
-      setActions(response.data?.actions || []);
-      setPolicies(response.data?.policies || []);
+      setCabinet((response.data?.cabinet as Cabinet) || null);
+      setActions((response.data?.actions as ExecutiveAction[]) || []);
+      setPolicies((response.data?.policies as Policy[]) || []);
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Failed to fetch government data';
       onError?.(message);
@@ -99,6 +100,7 @@ export const GovernmentDashboard: React.FC<GovernmentDashboardProps> = ({ userId
 
   const handleProposeAction = async (e: React.FormEvent) => {
     e.preventDefault();
+    setSubmittingAction(true);
 
     try {
       const response = await api.issueExecutiveAction(cabinet?.id || '', {
@@ -117,6 +119,8 @@ export const GovernmentDashboard: React.FC<GovernmentDashboardProps> = ({ userId
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Failed to propose action';
       onError?.(message);
+    } finally {
+      setSubmittingAction(false);
     }
   };
 
@@ -309,8 +313,8 @@ export const GovernmentDashboard: React.FC<GovernmentDashboardProps> = ({ userId
                   />
                 </div>
 
-                <button type="submit" className="btn-primary">
-                  Propose Action
+                <button type="submit" className="btn-primary" disabled={submittingAction}>
+                  {submittingAction ? 'Submitting...' : 'Propose Action'}
                 </button>
               </form>
             )}

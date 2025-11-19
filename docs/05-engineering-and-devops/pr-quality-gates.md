@@ -80,6 +80,8 @@ These checks provide feedback but don't block merge:
 
 ---
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 ## GitHub Configuration Steps
 
 ### 1. Enable Branch Protection
@@ -143,20 +145,20 @@ Auto-label PRs based on check failures:
 
 ## Quality Gate Enforcement Matrix
 
-| Gate | Severity | Block Merge | Override Path | Escalation |
-|------|----------|-------------|---------------|------------|
-| political-neutrality | Constitutional | ✅ Yes | TGC + ADR | P0 - Immediate |
-| nist-ai-rmf-compliance | Constitutional | ✅ Yes | TGC Review | P0 - Same Day |
-| validation-gate-tests | Constitutional | ✅ Yes | Not Permitted | P0 - Immediate |
-| change-budget-validation | Mandatory | ✅ Yes | Mode Switch/Split PR | P2 - Week |
-| test | Mandatory | ✅ Yes | Fix Required | P1 - Same Day |
-| lint-typecheck | Mandatory | ✅ Yes | Fix Required | P1 - Same Day |
-| security-scan | Mandatory | ✅ Yes | Security Team | P0 - Immediate |
-| accessibility | Mandatory | ✅ Yes | Fix Required | P1 - Same Day |
-| semantic-quality-check | Best-Practice | ❌ No | N/A | P3 - Best Effort |
-| competence-assessment | Best-Practice | ❌ No | N/A | P2 - Monitor |
-| context-quality-check | Best-Practice | ❌ No | N/A | P3 - Best Effort |
-| visual-regression | Best-Practice | ❌ No | Update Baselines | P2 - Week |
+| Gate                     | Severity       | Block Merge | Override Path        | Escalation       |
+| ------------------------ | -------------- | ----------- | -------------------- | ---------------- |
+| political-neutrality     | Constitutional | ✅ Yes      | TGC + ADR            | P0 - Immediate   |
+| nist-ai-rmf-compliance   | Constitutional | ✅ Yes      | TGC Review           | P0 - Same Day    |
+| validation-gate-tests    | Constitutional | ✅ Yes      | Not Permitted        | P0 - Immediate   |
+| change-budget-validation | Mandatory      | ✅ Yes      | Mode Switch/Split PR | P2 - Week        |
+| test                     | Mandatory      | ✅ Yes      | Fix Required         | P1 - Same Day    |
+| lint-typecheck           | Mandatory      | ✅ Yes      | Fix Required         | P1 - Same Day    |
+| security-scan            | Mandatory      | ✅ Yes      | Security Team        | P0 - Immediate   |
+| accessibility            | Mandatory      | ✅ Yes      | Fix Required         | P1 - Same Day    |
+| semantic-quality-check   | Best-Practice  | ❌ No       | N/A                  | P3 - Best Effort |
+| competence-assessment    | Best-Practice  | ❌ No       | N/A                  | P2 - Monitor     |
+| context-quality-check    | Best-Practice  | ❌ No       | N/A                  | P3 - Best Effort |
+| visual-regression        | Best-Practice  | ❌ No       | Update Baselines     | P2 - Week        |
 
 ---
 
@@ -186,19 +188,22 @@ Auto-label PRs based on check failures:
 ### Dashboard Metrics
 
 **Track in Grafana:**
+
 - Gate pass/fail rates by type
 - Time-to-fix for gate failures
 - Override frequency (should be <1% of PRs)
 - Recurring failure patterns
 
 **Alerts:**
+
 - Constitutional gate failures → PagerDuty
-- >10% PRs failing same gate in 24h → TGC notification
+- > 10% PRs failing same gate in 24h → TGC notification
 - Override rate >2% → Governance review
 
 ### Monthly Review
 
 **TGC Reviews:**
+
 - Gate effectiveness (catching real issues vs false positives)
 - Override rate and justifications
 - Patterns in failures (indicates training/tooling gaps)
@@ -240,11 +245,13 @@ npm run ai:refresh       # Update AI context
 ### Emergency Bypass (Rare)
 
 **Criteria:**
+
 - Production outage or security incident
 - Fix cannot wait for normal process
 - Must be constitutional-compliant
 
 **Process:**
+
 1. Create emergency incident
 2. Apply `emergency-merge` label
 3. Document bypass justification

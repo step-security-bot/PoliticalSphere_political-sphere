@@ -7,6 +7,7 @@
 import type React from 'react';
 import { useCallback, useEffect, useState } from 'react';
 import { api } from '../../services/api';
+import { z } from 'zod';
 import './JudiciarySystem.css';
 
 interface Judge {
@@ -49,7 +50,22 @@ interface JudiciarySystemProps {
   onError?: (error: string) => void;
 }
 
-export const JudiciarySystem: React.FC<JudiciarySystemProps> = ({ userId: _userId, onError }) => {
+const _FileCaseSchema = z.object({
+  title: z.string().min(1).max(200),
+  description: z.string().min(1).max(5000),
+  type: z.enum(['constitutional', 'criminal', 'civil', 'administrative']),
+  court: z.enum(['supreme', 'appeal', 'high']),
+  plaintiff: z.string().min(1),
+  defendant: z.string().min(1),
+  priority: z.enum(['low', 'medium', 'high', 'urgent']),
+});
+
+const _IssueRulingSchema = z.object({
+  decision: z.enum(['upheld', 'overturned', 'dismissed', 'remanded']),
+  reasoning: z.string().min(1).max(10000),
+});
+
+export const JudiciarySystem: React.FC<JudiciarySystemProps> = ({ userId, onError }) => {
   const [judges, setJudges] = useState<Judge[]>([]);
   const [cases, setCases] = useState<LegalCase[]>([]);
   const [selectedCase, setSelectedCase] = useState<LegalCase | null>(null);
@@ -92,54 +108,77 @@ export const JudiciarySystem: React.FC<JudiciarySystemProps> = ({ userId: _userI
     fetchJudiciary();
   }, [fetchJudiciary]);
 
-  const _handleFileCase = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleFileCase = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
-    const title = formData.get('caseTitle') as string;
-    const description = formData.get('caseDescription') as string;
-    const caseType = formData.get('caseType') as string;
+    const data = {
+      gameId: 'default',
+      plaintiffId: userId,
+      defendantId: null,
+      title: formData.get('caseTitle') as string,
+      description: formData.get('caseDescription') as string,
+      type: formData.get('caseType') as 'constitutional' | 'criminal' | 'civil' | 'administrative',
+      court: formData.get('caseCourt') as 'supreme' | 'appeal' | 'high',
+      plaintiff: formData.get('plaintiff') as string,
+      defendant: formData.get('defendant') as string,
+      priority: formData.get('priority') as 'low' | 'medium' | 'high' | 'urgent',
+      legalBasis: 'Filed via judiciary system',
+      targetLawId: null,
+      targetActionId: null,
+    };
 
-    if (title && description && caseType) {
-      try {
-        await api.fileCase({ title, description, type: caseType as LegalCase['type'] });
-        event.currentTarget.reset();
-        fetchJudiciary(); // Refresh data
-      } catch (error) {
-        const message = error instanceof Error ? error.message : 'Failed to file case';
-        onError?.(message);
-      }
+    try {
+      api
+        .fileCase(data)
+        .then(() => {
+          event.currentTarget.reset();
+          fetchJudiciary(); // Refresh data
+        })
+        .catch(_error => {
+          const message = _error instanceof Error ? _error.message : 'Failed to file case';
+          onError?.(message);
+        });
+    } catch {
+      onError?.('Invalid form data');
     }
   };
 
-  const _handleIssueRuling = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleIssueRuling = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!selectedCase) return;
 
     const formData = new FormData(event.currentTarget);
-    const decision = formData.get('decision') as string;
-    const reasoning = formData.get('reasoning') as string;
+    const data = {
+      caseId: selectedCase.id,
+      judgeId: userId,
+      decision: formData.get('decision') as 'upheld' | 'overturned' | 'dismissed' | 'remanded',
+      reasoning: formData.get('reasoning') as string,
+      precedentSetting: false,
+      constitutionalImpact: 'none' as const,
+    };
 
-    if (decision && reasoning) {
-      try {
-        await api.issueRuling(selectedCase.id, {
-          decision: decision as Ruling['decision'],
-          reasoning,
+    try {
+      api
+        .issueRuling(selectedCase.id, data)
+        .then(() => {
+          event.currentTarget.reset();
+          setSelectedCase(null);
+          fetchJudiciary(); // Refresh data
+        })
+        .catch(_error => {
+          const message = _error instanceof Error ? _error.message : 'Failed to issue ruling';
+          onError?.(message);
         });
-        event.currentTarget.reset();
-        setSelectedCase(null);
-        fetchJudiciary(); // Refresh data
-      } catch (error) {
-        const message = error instanceof Error ? error.message : 'Failed to issue ruling';
-        onError?.(message);
-      }
+    } catch {
+      onError?.('Invalid form data');
     }
   };
 
   if (loading) {
     return (
-      <div className="judiciary-system" role="status" aria-live="polite">
-        <p>Loading judiciary system...</p>
-      </div>
+      <output className="judiciary-system" aria-live="polite">
+        Loading judiciary system...
+      </output>
     );
   }
 
@@ -150,40 +189,42 @@ export const JudiciarySystem: React.FC<JudiciarySystemProps> = ({ userId: _userI
         <p className="judiciary-subtitle">Supreme Court and Legal System</p>
       </header>
 
-      <nav className="judiciary-tabs" role="tablist" aria-label="Judiciary sections">
-        <button
-          type="button"
-          role="tab"
-          aria-selected={activeTab === 'cases'}
-          aria-controls="cases-panel"
-          id="cases-tab"
-          onClick={() => setActiveTab('cases')}
-          className={activeTab === 'cases' ? 'active' : ''}
-        >
-          Legal Cases
-        </button>
-        <button
-          type="button"
-          role="tab"
-          aria-selected={activeTab === 'judges'}
-          aria-controls="judges-panel"
-          id="judges-tab"
-          onClick={() => setActiveTab('judges')}
-          className={activeTab === 'judges' ? 'active' : ''}
-        >
-          Judges
-        </button>
-        <button
-          type="button"
-          role="tab"
-          aria-selected={activeTab === 'rulings'}
-          aria-controls="rulings-panel"
-          id="rulings-tab"
-          onClick={() => setActiveTab('rulings')}
-          className={activeTab === 'rulings' ? 'active' : ''}
-        >
-          Rulings
-        </button>
+      <nav className="judiciary-tabs" aria-label="Judiciary sections">
+        <div role="tablist" aria-label="Judiciary sections">
+          <button
+            type="button"
+            role="tab"
+            aria-selected={activeTab === 'cases'}
+            aria-controls="cases-panel"
+            id="cases-tab"
+            onClick={() => setActiveTab('cases')}
+            className={activeTab === 'cases' ? 'active' : ''}
+          >
+            Legal Cases
+          </button>
+          <button
+            type="button"
+            role="tab"
+            aria-selected={activeTab === 'judges'}
+            aria-controls="judges-panel"
+            id="judges-tab"
+            onClick={() => setActiveTab('judges')}
+            className={activeTab === 'judges' ? 'active' : ''}
+          >
+            Judges
+          </button>
+          <button
+            type="button"
+            role="tab"
+            aria-selected={activeTab === 'rulings'}
+            aria-controls="rulings-panel"
+            id="rulings-tab"
+            onClick={() => setActiveTab('rulings')}
+            className={activeTab === 'rulings' ? 'active' : ''}
+          >
+            Rulings
+          </button>
+        </div>
       </nav>
 
       {activeTab === 'cases' && (
@@ -200,45 +241,36 @@ export const JudiciarySystem: React.FC<JudiciarySystemProps> = ({ userId: _userI
           ) : (
             <ul className="cases-list" aria-label="List of legal cases">
               {cases.map(legalCase => (
-                <li
-                  key={legalCase.id}
-                  className="case-card"
-                  onClick={() => setSelectedCase(legalCase)}
-                  onKeyDown={e => {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                      e.preventDefault();
-                      setSelectedCase(legalCase);
-                    }
-                  }}
-                  tabIndex={0}
-                  role="button"
-                  aria-pressed={selectedCase?.id === legalCase.id}
-                >
-                  <div className="case-header">
-                    <h3>
-                      {legalCase.caseNumber}: {legalCase.title}
-                    </h3>
-                    <span className={`case-status status-${legalCase.status}`}>
-                      {legalCase.status}
-                    </span>
-                  </div>
-                  <p className="case-description">{legalCase.description}</p>
-                  <div className="case-meta">
-                    <span className="case-type">{legalCase.type}</span>
-                    <span>Filed: {new Date(legalCase.filedAt).toLocaleDateString()}</span>
-                  </div>
-                  <div className="case-parties">
-                    <span>Plaintiff: {legalCase.plaintiff}</span>
-                    <span>Defendant: {legalCase.defendant}</span>
-                  </div>
+                <li key={legalCase.id} className="case-card">
+                  <button
+                    type="button"
+                    className="case-card-button"
+                    aria-pressed={selectedCase?.id === legalCase.id}
+                    onClick={() => setSelectedCase(legalCase)}
+                  >
+                    <div className="case-header">
+                      <h3>
+                        {legalCase.caseNumber}: {legalCase.title}
+                      </h3>
+                      <span className={`case-status status-${legalCase.status}`}>
+                        {legalCase.status}
+                      </span>
+                    </div>
+                    <p className="case-description">{legalCase.description}</p>
+                    <div className="case-meta">
+                      <span className="case-type">{legalCase.type}</span>
+                      <span>Filed: {new Date(legalCase.filedAt).toLocaleDateString()}</span>
+                    </div>
+                    <div className="case-parties">
+                      <span>Plaintiff: {legalCase.plaintiff}</span>
+                      <span>Defendant: {legalCase.defendant}</span>
+                    </div>
+                  </button>
                 </li>
               ))}
             </ul>
           )}
 
-          {/* Temporarily commented out due to TypeScript error:
-              TS2345: Argument of type 'FormEvent<HTMLFormElement>' is not assignable to parameter of type 'SyntheticEvent<any, Event>'.
-              // TODO[GH-567]: Fix type mismatch in handleFileCase signature and re-enable form.
           <form
             className="file-case-form"
             onSubmit={handleFileCase}
@@ -248,7 +280,7 @@ export const JudiciarySystem: React.FC<JudiciarySystemProps> = ({ userId: _userI
 
             <div className="form-group">
               <label htmlFor="case-title">
-                Case Title <span aria-label="required">*</span>
+                Case Title <span aria-hidden="true">*</span>
               </label>
               <input
                 type="text"
@@ -263,7 +295,7 @@ export const JudiciarySystem: React.FC<JudiciarySystemProps> = ({ userId: _userI
 
             <div className="form-group">
               <label htmlFor="case-type">
-                Case Type <span aria-label="required">*</span>
+                Case Type <span aria-hidden="true">*</span>
               </label>
               <select id="case-type" name="caseType" required aria-required="true">
                 <option value="">Select type...</option>
@@ -271,13 +303,65 @@ export const JudiciarySystem: React.FC<JudiciarySystemProps> = ({ userId: _userI
                 <option value="civil">Civil Case</option>
                 <option value="criminal">Criminal Case</option>
                 <option value="administrative">Administrative Law</option>
-                <option value="appeal">Appeal</option>
+              </select>
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="case-court">
+                Court <span aria-hidden="true">*</span>
+              </label>
+              <select id="case-court" name="caseCourt" required aria-required="true">
+                <option value="">Select court...</option>
+                <option value="supreme">Supreme Court</option>
+                <option value="appeal">Appeal Court</option>
+                <option value="high">High Court</option>
+              </select>
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="plaintiff">
+                Plaintiff <span aria-hidden="true">*</span>
+              </label>
+              <input
+                type="text"
+                id="plaintiff"
+                name="plaintiff"
+                required
+                aria-required="true"
+                placeholder="Enter plaintiff name"
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="defendant">
+                Defendant <span aria-hidden="true">*</span>
+              </label>
+              <input
+                type="text"
+                id="defendant"
+                name="defendant"
+                required
+                aria-required="true"
+                placeholder="Enter defendant name"
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="priority">
+                Priority <span aria-hidden="true">*</span>
+              </label>
+              <select id="priority" name="priority" required aria-required="true">
+                <option value="">Select priority...</option>
+                <option value="low">Low</option>
+                <option value="medium">Medium</option>
+                <option value="high">High</option>
+                <option value="urgent">Urgent</option>
               </select>
             </div>
 
             <div className="form-group">
               <label htmlFor="case-description">
-                Description <span aria-label="required">*</span>
+                Description <span aria-hidden="true">*</span>
               </label>
               <textarea
                 id="case-description"
@@ -294,9 +378,7 @@ export const JudiciarySystem: React.FC<JudiciarySystemProps> = ({ userId: _userI
               File Case
             </button>
           </form>
-          */}
 
-          {/* Temporarily commented out due to TypeScript error
           {selectedCase && (
             <form
               className="issue-ruling-form"
@@ -307,7 +389,7 @@ export const JudiciarySystem: React.FC<JudiciarySystemProps> = ({ userId: _userI
 
               <div className="form-group">
                 <label htmlFor="ruling-decision">
-                  Decision <span aria-label="required">*</span>
+                  Decision <span aria-hidden="true">*</span>
                 </label>
                 <select id="ruling-decision" name="decision" required aria-required="true">
                   <option value="">Select decision...</option>
@@ -320,7 +402,7 @@ export const JudiciarySystem: React.FC<JudiciarySystemProps> = ({ userId: _userI
 
               <div className="form-group">
                 <label htmlFor="ruling-reasoning">
-                  Reasoning <span aria-label="required">*</span>
+                  Reasoning <span aria-hidden="true">*</span>
                 </label>
                 <textarea
                   id="ruling-reasoning"
@@ -338,7 +420,6 @@ export const JudiciarySystem: React.FC<JudiciarySystemProps> = ({ userId: _userI
               </button>
             </form>
           )}
-          */}
         </section>
       )}
 

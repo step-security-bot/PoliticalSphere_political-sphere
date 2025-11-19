@@ -17,6 +17,8 @@ import { AnalyticsPipeline } from './pipelines/analytics-pipeline.js';
 import { GameStateSyncPipeline } from './pipelines/game-state-sync.js';
 import { UserDataPipeline } from './pipelines/user-data-pipeline.js';
 
+// Using console for logging here to avoid cross-package build coupling.
+
 export class DataServer {
   private database: DatabaseConnector;
   private apiConnector: ApiConnector;
@@ -157,6 +159,10 @@ export class DataServer {
     running: boolean;
     uptime: number;
     pipelines: Record<string, unknown>;
+    jobs: {
+      cleanupConfigured: boolean;
+      reportsConfigured: boolean;
+    };
   } {
     return {
       running: this.isRunning,
@@ -165,6 +171,10 @@ export class DataServer {
         user: this.userPipeline,
         analytics: this.analyticsPipeline,
         gameState: this.gameStatePipeline,
+      },
+      jobs: {
+        cleanupConfigured: !!this.cleanupJob,
+        reportsConfigured: !!this.reportsJob,
       },
     };
   }

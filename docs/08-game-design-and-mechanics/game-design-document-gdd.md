@@ -6,11 +6,13 @@
 
 | Classification | Version | Last Updated |        Owner        | Review Cycle |  Status   |
 | :------------: | :-----: | :----------: | :-----------------: | :----------: | :-------: |
-|  🔒 Internal   | `0.2.0` |  2025-10-30  | Game Design Council |  Quarterly   | **Draft** |
+|  🔒 Internal   | `0.3.0` |  2025-11-19  | Game Design Council |  Quarterly   | **Draft** |
 
 </div>
 
 ---
+
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
 
 ## 🎯 Vision
 
@@ -71,27 +73,49 @@ Players join as Members of Parliament (MPs) in a persistent world. Through debat
 
 ## 🔧 Core Mechanics
 
+### Game Flow
+
+- **Real-Time Continuous:** The game runs continuously, not in discrete turns
+- **Flexible Sessions:** Parliamentary sessions have no fixed duration; players can join in progress
+- **Persistent World:** Actions and decisions have lasting consequences across the game world
+
 ### Parliamentary Sessions
 
-- **Debates:** Structured speaking order, time limits, relevance enforcement
-- **Voting:** Secure, auditable votes on motions and bills
-- **Procedure:** Rules of order prevent chaos; moderators enforce
+- **Debates:** Structured speaking order managed by the Speaker; time limits enforced procedurally
+- **Interruptions:** Members can interrupt if the speaker gives way; points of order system for procedural challenges
+- **Voting:** Public, auditable votes on motions and bills (voting records are transparent)
+  - **Vote Types:** Simple majority by default; supermajority or unanimous consent when required by legislation
+  - **Abstention:** Players can abstain but may face reputation or political consequences
+- **Procedure:** Rules of order prevent chaos; Speaker and moderators enforce
 
 ### Progression Systems
 
 - **Reputation:** Earned through conduct, consistency, and achievements
-- **Roles:** MP → Minister → Party Leader → Prime Minister
-- **Unlocks:** New abilities, alliances, world influence
+- **Merit-Based Advancement:** All role progression based on reputation and performance, not time or payment
+- **Role Flexibility:** Players can advance or lose positions based on elections and performance
+- **Starting Roles:** Players can begin as MPs, Judges, Media personnel, or other institutional roles
 
 ### Social Systems
 
 - **Parties/Factions:** Form groups with shared goals
+  - **Independence:** Players can operate as independents but benefit from party membership (resources, influence, support)
+  - **Party Creation:** Players can create their own parties after meeting requirements
+  - **Ideological Drift:** Parties not constrained by rigid ideology, but diverging from core values affects reputation and media perception
 - **Alliances:** Binding agreements with consequences for breach
 - **Diplomacy:** Negotiate privately or publicly
 
+### Resource Management
+
+- **Campaign Finance:** Parties manage budgets and campaign resources
+- **Individual Resources:** MPs allocate time, staff, and influence points strategically
+- **Economic Constraints:** Resource limitations create strategic trade-offs
+
 ### AI Integration
 
-- **NPC MPs:** Fill seats, participate procedurally
+- **NPC MPs:** Parliamentary AI NPCs vote on legislation and participate procedurally
+- **NPC Leadership:** AI NPCs can hold leadership positions (PM, Ministers) but preference given to human players
+- **Dynamic Positions:** AI NPCs maintain evolving political positions that shift naturally as in real politics
+- **Non-Parliamentary NPCs:** AI characters in judiciary, media, and other institutions (do not vote)
 - **Moderation:** AI assists in content filtering
 - **World Events:** AI generates scenarios and reactions
 

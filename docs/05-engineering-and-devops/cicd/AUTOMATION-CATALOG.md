@@ -6,6 +6,7 @@
 ## Self-Healing Automations
 
 ### 1. Intelligent Retry Logic
+
 - **Location:** `scripts/ci/intelligent-retry.sh` + `.github/workflows/ci.yml`
 - **Trigger:** Transient failures (network, rate limits, npm install)
 - **Behavior:** Exponential backoff (5s → 10s → 20s max 60s), integrated into CI pipeline
@@ -13,6 +14,7 @@
 - **Maintenance:** Review retryable error patterns quarterly
 
 ### 2. Automatic Cache Invalidation
+
 - **Location:** `.github/actions/setup-node-deps/action.yml`
 - **Trigger:** package-lock.json change
 - **Behavior:** Invalidate old caches, generate new key
@@ -20,6 +22,7 @@
 - **Maintenance:** None required
 
 ### 3. Flaky Test Quarantine
+
 - **Location:** `vitest.config.ts` (retry: 3)
 - **Trigger:** Intermittent test failures
 - **Behavior:** Retry up to 3 times before reporting failure
@@ -27,6 +30,7 @@
 - **Maintenance:** Review quarantined tests monthly
 
 ### 4. Self-Healing Pipeline Diagnostics
+
 - **Location:** `.github/workflows/ci.yml` (self-healing checks)
 - **Trigger:** Pre-build phase, detects common CI issues
 - **Behavior:** Auto-fix npm cache, disk space, lock file conflicts
@@ -36,6 +40,7 @@
 ## Cost Optimization Automations
 
 ### 1. Concurrency Limits
+
 - **Location:** `.github/workflows/*.yml` (concurrency groups)
 - **Trigger:** Multiple PRs from same author
 - **Behavior:** Cancel older runs automatically
@@ -43,6 +48,7 @@
 - **Maintenance:** None required
 
 ### 2. Workflow Deduplication
+
 - **Location:** `.github/workflows/ci.yml` (paths filter)
 - **Trigger:** Non-code changes (docs, markdown)
 - **Behavior:** Skip CI for doc-only PRs
@@ -50,6 +56,7 @@
 - **Maintenance:** Update paths filter as project evolves
 
 ### 3. Dynamic Sharding
+
 - **Location:** `.github/workflows/ci.yml` (calculate-shards job)
 - **Trigger:** PR size analysis
 - **Behavior:** 3 shards (small), 5 (medium), 7 (large)
@@ -57,6 +64,7 @@
 - **Maintenance:** None required
 
 ### 4. Real-time Cost Monitoring
+
 - **Location:** `.github/workflows/ci.yml` + `scripts/ci/analyze-costs.sh`
 - **Trigger:** End of every workflow run + manual execution
 - **Behavior:** Fetch real GitHub Actions billing data, calculate costs, generate optimization reports
@@ -66,6 +74,7 @@
 ## Security Automations
 
 ### 1. Automatic Dependency Updates (Dependabot)
+
 - **Location:** `.github/dependabot.yml`
 - **Trigger:** Weekly schedule
 - **Behavior:** Create PRs for dependency updates
@@ -73,6 +82,7 @@
 - **Maintenance:** Review and merge PRs weekly
 
 ### 2. SBOM Generation
+
 - **Location:** `.github/workflows/sbom-generation.yml`
 - **Trigger:** Weekly schedule + release
 - **Behavior:** Generate CycloneDX + SPDX SBOMs
@@ -80,6 +90,7 @@
 - **Maintenance:** Quarterly audit
 
 ### 3. Workflow Permission Auditing
+
 - **Location:** `scripts/ci/audit-permissions.sh`
 - **Trigger:** Pre-merge checks
 - **Behavior:** Validate least-privilege model
@@ -89,6 +100,7 @@
 ## Developer Experience Automations
 
 ### 1. Pre-commit Hooks (Lefthook)
+
 - **Location:** `.lefthook.yml`
 - **Trigger:** Git commit
 - **Behavior:** Type check, lint, secrets scan
@@ -96,6 +108,7 @@
 - **Maintenance:** Quarterly performance review
 
 ### 2. Local CI Emulation (`act`)
+
 - **Location:** `scripts/dev/run-ci-locally.sh`
 - **Trigger:** Manual invocation
 - **Behavior:** Run workflows locally with Docker
@@ -103,6 +116,7 @@
 - **Maintenance:** None required
 
 ### 3. Fast Feedback Loop
+
 - **Location:** `scripts/dev/fast-feedback.sh`
 - **Trigger:** Manual invocation
 - **Behavior:** Run critical checks in <30s
@@ -112,6 +126,7 @@
 ## Monitoring & Alerting Automations
 
 ### 1. Metrics Collection
+
 - **Location:** `scripts/ci/collect-workflow-metrics.sh`
 - **Trigger:** End of every workflow run
 - **Behavior:** Append metrics to JSONL file
@@ -119,6 +134,7 @@
 - **Maintenance:** Weekly dashboard review
 
 ### 2. Dashboard Generation
+
 - **Location:** `scripts/ci/generate-dashboard.sh`
 - **Trigger:** Daily schedule (cron)
 - **Behavior:** Generate markdown dashboard
@@ -126,6 +142,7 @@
 - **Maintenance:** Monthly review
 
 ### 3. SLO Violation Alerts
+
 - **Location:** `.github/alerts-config.yml`
 - **Trigger:** Threshold breach (success rate, duration, cost)
 - **Behavior:** Slack/Discord webhook notification
@@ -134,18 +151,20 @@
 
 ## Automation Health Dashboard
 
-| Automation | Status | Last Run | Success Rate | Next Maintenance |
-|------------|--------|----------|--------------|------------------|
-| Intelligent Retry | ✅ Active | 2025-11-18 | 98% | 2026-02-18 |
-| Self-Healing Pipeline | ✅ Active | 2025-11-18 | 95% | 2026-02-18 |
-| Cache Management | ✅ Active | 2025-11-18 | 100% | None required |
-| Cost Monitoring | ✅ Active | 2025-11-18 | 100% | 2026-01-18 |
-| Cost Optimization | ✅ Active | 2025-11-18 | 100% | None required |
-| Local CI Simulation | ✅ Active | 2025-11-18 | 100% | None required |
-| SBOM Generation | ✅ Active | 2025-11-11 | 100% | 2026-02-11 |
-| Permission Audit | ✅ Active | 2025-11-18 | 93% | 2026-02-18 |
-| Metrics Collection | ✅ Active | 2025-11-18 | 100% | 2026-01-18 |
+| Automation            | Status    | Last Run   | Success Rate | Next Maintenance |
+| --------------------- | --------- | ---------- | ------------ | ---------------- |
+| Intelligent Retry     | ✅ Active | 2025-11-18 | 98%          | 2026-02-18       |
+| Self-Healing Pipeline | ✅ Active | 2025-11-18 | 95%          | 2026-02-18       |
+| Cache Management      | ✅ Active | 2025-11-18 | 100%         | None required    |
+| Cost Monitoring       | ✅ Active | 2025-11-18 | 100%         | 2026-01-18       |
+| Cost Optimization     | ✅ Active | 2025-11-18 | 100%         | None required    |
+| Local CI Simulation   | ✅ Active | 2025-11-18 | 100%         | None required    |
+| SBOM Generation       | ✅ Active | 2025-11-11 | 100%         | 2026-02-11       |
+| Permission Audit      | ✅ Active | 2025-11-18 | 93%          | 2026-02-18       |
+| Metrics Collection    | ✅ Active | 2025-11-18 | 100%         | 2026-01-18       |
 
 ---
 
-*Last Updated: 2025-11-18 (Phase 5 Continuous Improvement Integration)*
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
+_Last Updated: 2025-11-18 (Phase 5 Continuous Improvement Integration)_

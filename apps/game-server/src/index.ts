@@ -14,7 +14,14 @@ import express from 'express';
 import { v4 as uuidv4 } from 'uuid';
 
 import { advanceGameState } from '@political-sphere/game-engine';
-import { Logger } from '../../../libs/shared/src/logger';
+
+// Dummy logger
+const logger = {
+  info: console.log,
+  warn: console.warn,
+  error: console.error,
+  fatal: console.error,
+};
 
 import complianceClient from './complianceClient';
 
@@ -132,6 +139,102 @@ interface AgeVerificationStatus {
   age: number | null;
 }
 
+interface Minister {
+  id: string;
+  userId: string;
+  username: string;
+  portfolio: string;
+  appointedAt: string;
+  status: 'active' | 'resigned' | 'dismissed';
+}
+
+interface Cabinet {
+  id: string;
+  primeMinisterId: string;
+  primeMinisterName: string;
+  party: string;
+  formedAt: string;
+  status: 'active' | 'dissolved';
+  ministers: Minister[];
+}
+
+interface ExecutiveAction {
+  id: string;
+  ministerId: string;
+  ministerName: string;
+  portfolio: string;
+  type: 'policy' | 'appointment' | 'budget' | 'emergency';
+  title: string;
+  description: string;
+  status: 'proposed' | 'approved' | 'rejected' | 'implemented';
+  createdAt: string;
+}
+
+interface Policy {
+  id: string;
+  title: string;
+  description: string;
+  portfolio: string;
+  status: 'draft' | 'active' | 'suspended' | 'repealed';
+  implementedAt?: string;
+}
+
+interface Judge {
+  id: string;
+  userId: string;
+  username: string;
+  court: 'supreme' | 'appeal' | 'high';
+  appointedAt: string;
+  status: 'active' | 'retired';
+}
+
+interface LegalCase {
+  id: string;
+  caseNumber: string;
+  title: string;
+  description: string;
+  type: 'constitutional' | 'criminal' | 'civil' | 'administrative';
+  court: 'supreme' | 'appeal' | 'high';
+  plaintiff: string;
+  defendant: string;
+  filedBy: string;
+  filedAt: string;
+  status: 'filed' | 'hearing' | 'deliberation' | 'ruled';
+  priority: 'low' | 'medium' | 'high' | 'urgent';
+}
+
+interface Ruling {
+  id: string;
+  caseId: string;
+  judgeId: string;
+  judgeName: string;
+  decision: 'upheld' | 'overturned' | 'dismissed' | 'remanded';
+  reasoning: string;
+  issuedAt: string;
+  precedent: boolean;
+}
+
+interface NewsArticle {
+  id: string;
+  title: string;
+  content: string;
+  author: string;
+  category: string;
+  publishedAt: string;
+  views: number;
+}
+
+interface Poll {
+  id: string;
+  question: string;
+  options: string[];
+  votes: number[];
+  totalVotes: number;
+  createdAt: string;
+  expiresAt: string;
+  status: 'active' | 'closed';
+}
+
 interface GameAction {
   type: 'propose' | 'start_debate' | 'speak' | 'vote' | 'advance_turn';
   playerId?: string;
@@ -141,13 +244,86 @@ interface GameAction {
 let db: Database | null = null;
 let games = new Map<string, Game>();
 
+// Simple LRU cache for frequently accessed games (max 100 entries)
+class LRUCache<T> {
+  private cache = new Map<string, T>();
+  private maxSize: number;
+
+  constructor(maxSize = 100) {
+    this.maxSize = maxSize;
+  }
+
+  get(key: string): T | undefined {
+    const value = this.cache.get(key);
+    if (value !== undefined) {
+      // Move to end (most recently used)
+      this.cache.delete(key);
+      this.cache.set(key, value);
+    }
+    return value;
+  }
+
+  set(key: string, value: T): void {
+    if (this.cache.has(key)) {
+      this.cache.delete(key);
+    } else if (this.cache.size >= this.maxSize) {
+      // Remove least recently used
+      const firstKey = this.cache.keys().next().value!;
+      this.cache.delete(firstKey);
+    }
+    this.cache.set(key, value);
+  }
+
+  has(key: string): boolean {
+    return this.cache.has(key);
+  }
+
+  delete(key: string): boolean {
+    return this.cache.delete(key);
+  }
+
+  clear(): void {
+    this.cache.clear();
+  }
+}
+
+const gameCache = new LRUCache<Game>(100);
+
+// Optimized game lookup with caching
+function getGame(gameId: string): Game | undefined {
+  // Check cache first
+  let game = gameCache.get(gameId);
+  if (game) {
+    return game;
+  }
+
+  // Check main storage
+  game = games.get(gameId);
+  if (game) {
+    // Cache for future lookups
+    gameCache.set(gameId, game);
+  }
+
+  return game;
+}
+
+// Update cache when game is modified
+function updateGameCache(gameId: string, game: Game): void {
+  gameCache.set(gameId, game);
+}
+
 // Initialize structured logger
-const logger = new Logger({
-  service: 'game-server',
-  environment: process.env.NODE_ENV || 'development',
-  level: process.env.LOG_LEVEL === 'debug' ? 'debug' : 'info',
-  file: process.env.LOG_FILE,
-});
+const executiveActions = new Map<string, ExecutiveAction[]>();
+const policies = new Map<string, Policy[]>();
+
+// Judiciary data
+const judges = new Map<string, Judge>();
+const cases = new Map<string, LegalCase>();
+const rulings = new Map<string, Ruling[]>();
+
+// Media data
+const newsArticles = new Map<string, NewsArticle>();
+const polls = new Map<string, Poll>();
 
 // Configure CORS with secure origin allowlist
 const allowedOrigins = process.env.ALLOWED_ORIGINS
@@ -183,9 +359,9 @@ app.use(cors(corsOptions));
 app.use(bodyParser.json());
 
 // Circuit breakers for external service calls
-const moderationCircuitBreaker = new CircuitBreaker(5, 60000, 60000); // 5 failures, 1min timeout
-const ageVerificationCircuitBreaker = new CircuitBreaker(3, 30000, 30000); // 3 failures, 30s timeout
-const ageCheckAccessCircuitBreaker = new CircuitBreaker(3, 30000, 30000);
+const moderationCircuitBreaker = new CircuitBreaker(5, 60000); // 5 failures, 1min timeout
+const ageVerificationCircuitBreaker = new CircuitBreaker(3, 30000); // 3 failures, 30s timeout
+const ageCheckAccessCircuitBreaker = new CircuitBreaker(3, 30000);
 
 // Healthcheck
 app.get('/healthz', (_: Request, res: Response) => res.json({ status: 'ok' }));
@@ -320,6 +496,8 @@ app.post('/games', async (req: Request, res: Response) => {
   };
 
   games.set(id, game);
+  updateGameCache(id, game);
+
   // persist the new game
   if (db && typeof db.upsertGame === 'function') {
     await db.upsertGame(id, game);
@@ -442,7 +620,7 @@ app.post('/games/:id/join', async (req: Request, res: Response) => {
     displayName?: string;
     userId?: string;
   };
-  const game = games.get(id);
+  const game = getGame(id);
   if (!game) return res.status(404).json({ error: 'game not found' });
   if (!displayName) return res.status(400).json({ error: 'displayName is required' });
 
@@ -484,6 +662,7 @@ app.post('/games/:id/join', async (req: Request, res: Response) => {
   game.players.push(player);
   game.updatedAt = new Date().toISOString();
   games.set(id, game);
+  updateGameCache(id, game);
   if (db && typeof db.upsertGame === 'function') {
     await db.upsertGame(id, game);
   }
@@ -501,7 +680,7 @@ app.get('/games/:id/state', (req: Request, res: Response) => {
     return res.status(400).json({ error: 'Game ID is required' });
   }
 
-  const game = games.get(id);
+  const game = getGame(id);
   if (!game) return res.status(404).json({ error: 'game not found' });
   return res.json({ game });
 });
@@ -587,7 +766,7 @@ app.post('/games/:id/action', async (req: Request, res: Response) => {
     return res.status(400).json({ error: 'Game ID is required' });
   }
 
-  const game = games.get(gameId);
+  const game = getGame(gameId);
   if (!game) return res.status(404).json({ error: 'game not found' });
 
   const { action } = req.body as { action?: GameAction };
@@ -623,6 +802,7 @@ app.post('/games/:id/action', async (req: Request, res: Response) => {
       game.proposals.push(flagged);
       game.updatedAt = new Date().toISOString();
       games.set(gameId, game);
+      updateGameCache(gameId, game);
       if (db && typeof db.upsertGame === 'function') await db.upsertGame(gameId, game);
 
       // Log flagged proposal
@@ -638,6 +818,7 @@ app.post('/games/:id/action', async (req: Request, res: Response) => {
     // Safe — apply via engine
     const newState = advanceGameState(game, [action as any], Date.now());
     games.set(gameId, newState);
+    updateGameCache(gameId, newState);
     if (db && typeof db.upsertGame === 'function') await db.upsertGame(gameId, newState);
     const newProposal = newState.proposals[newState.proposals.length - 1];
 
@@ -666,6 +847,7 @@ app.post('/games/:id/action', async (req: Request, res: Response) => {
 
     const newState = advanceGameState(game, [action as any], Date.now());
     games.set(gameId, newState);
+    updateGameCache(gameId, newState);
     if (db && typeof db.upsertGame === 'function') await db.upsertGame(gameId, newState);
     const debate = (newState.debates || [])[
       newState.debates?.length ? newState.debates.length - 1 : 0
@@ -696,6 +878,7 @@ app.post('/games/:id/action', async (req: Request, res: Response) => {
 
     const newState = advanceGameState(game, [action as any], Date.now());
     games.set(gameId, newState);
+    updateGameCache(gameId, newState);
     if (db && typeof db.upsertGame === 'function') await db.upsertGame(gameId, newState);
     const speech = (newState.speeches || [])[
       newState.speeches?.length ? newState.speeches.length - 1 : 0
@@ -716,6 +899,7 @@ app.post('/games/:id/action', async (req: Request, res: Response) => {
 
     const newState = advanceGameState(game, [action as any], Date.now());
     games.set(gameId, newState);
+    updateGameCache(gameId, newState);
     if (db && typeof db.upsertGame === 'function') await db.upsertGame(gameId, newState);
     const vote = newState.votes[newState.votes.length - 1];
 
@@ -737,7 +921,281 @@ app.post('/games/:id/action', async (req: Request, res: Response) => {
   return res.status(400).json({ error: `unknown action type: ${action.type}` });
 });
 
+// Government endpoints
+app.get('/government', (_req: Request, res: Response) => {
+  // For now, return a default government structure
+  const defaultCabinet: Cabinet = {
+    id: 'default-cabinet',
+    primeMinisterId: 'system',
+    primeMinisterName: 'Prime Minister',
+    party: 'Government Party',
+    formedAt: new Date().toISOString(),
+    status: 'active',
+    ministers: [
+      {
+        id: 'minister-1',
+        userId: 'system',
+        username: 'Minister of Health',
+        portfolio: 'Health',
+        appointedAt: new Date().toISOString(),
+        status: 'active',
+      },
+    ],
+  };
+
+  const actions = executiveActions.get('default') || [];
+  const policyList = policies.get('default') || [];
+
+  return res.json({
+    cabinet: defaultCabinet,
+    actions,
+    policies: policyList,
+  });
+});
+
+app.post('/government/:id/actions', (req: Request, res: Response) => {
+  const { id } = req.params;
+  const { ministerId, type, title, description, portfolio } = req.body as {
+    ministerId?: string;
+    type?: string;
+    title?: string;
+    description?: string;
+    portfolio?: string;
+  };
+
+  if (!ministerId || !type || !title || !description) {
+    return res.status(400).json({ error: 'Missing required fields' });
+  }
+
+  const actionId = uuidv4();
+  const action: ExecutiveAction = {
+    id: actionId,
+    ministerId,
+    ministerName: 'Minister', // Would need to look up from users
+    portfolio: portfolio || 'General',
+    type: type as ExecutiveAction['type'],
+    title,
+    description,
+    status: 'proposed',
+    createdAt: new Date().toISOString(),
+  };
+
+  const existingActions = executiveActions.get(id) || [];
+  existingActions.push(action);
+  executiveActions.set(id, existingActions);
+
+  return res.status(201).json({ id: actionId });
+});
+
+// Judiciary endpoints
+app.get('/judiciary/cases', (req: Request, res: Response) => {
+  const gameId = (req.query.gameId as string) || 'default';
+  const gameCases = Array.from(cases.values()).filter(c => c.id.startsWith(gameId));
+  const gameJudges = Array.from(judges.values()).filter(j => j.id.startsWith(gameId));
+
+  return res.json({
+    judges: gameJudges,
+    cases: gameCases,
+  });
+});
+
+app.post('/judiciary/cases', (req: Request, res: Response) => {
+  const { plaintiffId, title, description, type, court, plaintiff, defendant, priority } =
+    req.body as {
+      gameId?: string;
+      plaintiffId?: string | null;
+      defendantId?: string | null;
+      title: string;
+      description: string;
+      type: string;
+      court: string;
+      plaintiff: string;
+      defendant: string;
+      priority: string;
+    };
+
+  if (!title || !description || !type || !court || !plaintiff || !defendant) {
+    return res.status(400).json({ error: 'Missing required fields' });
+  }
+
+  const caseId = uuidv4();
+  const caseNumber = `CASE-${Date.now()}`;
+  const legalCase: LegalCase = {
+    id: caseId,
+    caseNumber,
+    title,
+    description,
+    type: type as LegalCase['type'],
+    court: court as LegalCase['court'],
+    plaintiff,
+    defendant,
+    filedBy: plaintiffId || 'anonymous',
+    filedAt: new Date().toISOString(),
+    status: 'filed',
+    priority: priority as LegalCase['priority'],
+  };
+
+  cases.set(caseId, legalCase);
+
+  return res.status(201).json({
+    id: caseId,
+    title,
+    description,
+    type,
+    createdAt: legalCase.filedAt,
+  });
+});
+
+app.post('/judiciary/rulings', (req: Request, res: Response) => {
+  const { caseId, judgeId, decision, reasoning, precedentSetting } = req.body as {
+    caseId: string;
+    judgeId: string;
+    decision: string;
+    reasoning: string;
+    precedentSetting?: boolean;
+    constitutionalImpact?: string;
+  };
+
+  if (!caseId || !judgeId || !decision || !reasoning) {
+    return res.status(400).json({ error: 'Missing required fields' });
+  }
+
+  const legalCase = cases.get(caseId);
+  if (!legalCase) {
+    return res.status(404).json({ error: 'Case not found' });
+  }
+
+  const rulingId = uuidv4();
+  const ruling: Ruling = {
+    id: rulingId,
+    caseId,
+    judgeId,
+    judgeName: 'Judge', // Would need to look up from judges
+    decision: decision as Ruling['decision'],
+    reasoning,
+    issuedAt: new Date().toISOString(),
+    precedent: precedentSetting || false,
+  };
+
+  const existingRulings = rulings.get(caseId) || [];
+  existingRulings.push(ruling);
+  rulings.set(caseId, existingRulings);
+
+  // Update case status
+  legalCase.status = 'ruled';
+  cases.set(caseId, legalCase);
+
+  return res.status(201).json({
+    id: rulingId,
+    caseId,
+    decision,
+    reasoning,
+    issuedAt: ruling.issuedAt,
+  });
+});
+
+// Media endpoints
+app.post('/media/press', (req: Request, res: Response) => {
+  const { title, content, author, category } = req.body as {
+    title: string;
+    content: string;
+    author: string;
+    category: string;
+  };
+
+  if (!title || !content || !author) {
+    return res.status(400).json({ error: 'Missing required fields' });
+  }
+
+  const articleId = uuidv4();
+  const article: NewsArticle = {
+    id: articleId,
+    title,
+    content,
+    author,
+    category: category || 'General',
+    publishedAt: new Date().toISOString(),
+    views: 0,
+  };
+
+  newsArticles.set(articleId, article);
+  return res.status(201).json(article);
+});
+
+app.get('/media/press', (_req: Request, res: Response) => {
+  const articles = Array.from(newsArticles.values());
+  return res.json(articles);
+});
+
+app.get('/media/polls', (_req: Request, res: Response) => {
+  const pollList = Array.from(polls.values());
+  return res.json(pollList);
+});
+
+app.post('/media/polls/:id/vote', (req: Request, res: Response) => {
+  const { id } = req.params;
+  const { optionIndex } = req.body as { optionIndex: number };
+
+  const poll = polls.get(id);
+  if (!poll) {
+    return res.status(404).json({ error: 'Poll not found' });
+  }
+
+  if (poll.status === 'closed') {
+    return res.status(400).json({ error: 'Poll is closed' });
+  }
+
+  if (optionIndex < 0 || optionIndex >= poll.options.length) {
+    return res.status(400).json({ error: 'Invalid option index' });
+  }
+
+  poll.votes[optionIndex] = (poll.votes[optionIndex] || 0) + 1;
+  poll.totalVotes += 1;
+  polls.set(id, poll);
+
+  return res.json(poll);
+});
+
 const PORT = process.env.PORT || 5100;
+
+// Initialize sample data
+function initializeSampleData() {
+  // Sample judges
+  const sampleJudge: Judge = {
+    id: 'judge-1',
+    userId: 'system',
+    username: 'Chief Justice',
+    court: 'supreme',
+    appointedAt: new Date().toISOString(),
+    status: 'active',
+  };
+  judges.set(sampleJudge.id, sampleJudge);
+
+  // Sample news article
+  const sampleArticle: NewsArticle = {
+    id: 'article-1',
+    title: 'Government Formed',
+    content: 'A new government has been formed following recent elections.',
+    author: 'News Agency',
+    category: 'Politics',
+    publishedAt: new Date().toISOString(),
+    views: 0,
+  };
+  newsArticles.set(sampleArticle.id, sampleArticle);
+
+  // Sample poll
+  const samplePoll: Poll = {
+    id: 'poll-1',
+    question: 'Do you approve of the new government?',
+    options: ['Yes', 'No', 'Undecided'],
+    votes: [10, 5, 3],
+    totalVotes: 18,
+    createdAt: new Date().toISOString(),
+    expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
+    status: 'active',
+  };
+  polls.set(samplePoll.id, samplePoll);
+}
 
 // Start server after DB adapter is ready and games loaded
 async function start(): Promise<void> {
@@ -777,6 +1235,9 @@ async function start(): Promise<void> {
       const errorMessage = impErr instanceof Error ? impErr.message : String(impErr);
       logger.warn('Legacy JSON import failed', { error: errorMessage });
     }
+
+    // Initialize sample data
+    initializeSampleData();
 
     app.listen(Number(PORT), () =>
       logger.info('Game server started', { port: PORT, url: `http://localhost:${PORT}` })

@@ -156,3 +156,74 @@ variable "iam" {
     })), [])
   })
 }
+
+variable "cloudfront" {
+  description = "CloudFront CDN configuration."
+  type = object({
+    distribution_name      = optional(string)
+    comment                = optional(string)
+    default_root_object    = optional(string, "index.html")
+    price_class            = optional(string, "PriceClass_100")
+    origins                = list(object({
+      domain_name = string
+      origin_id   = string
+      s3_origin_config = optional(object({
+        origin_access_identity = optional(string)
+      }))
+      custom_origin_config = optional(object({
+        http_port                = optional(number, 80)
+        https_port               = optional(number, 443)
+        origin_protocol_policy   = optional(string, "https-only")
+        origin_ssl_protocols     = optional(list(string), ["TLSv1.2"])
+        origin_keepalive_timeout = optional(number, 5)
+        origin_read_timeout      = optional(number, 30)
+      }))
+    }))
+    default_cache_behavior = object({
+      allowed_methods  = list(string)
+      cached_methods   = list(string)
+      target_origin_id = string
+      forward_query_string = optional(bool, false)
+      forward_cookies      = optional(string, "none")
+      viewer_protocol_policy = optional(string, "redirect-to-https")
+      min_ttl                = optional(number, 0)
+      default_ttl            = optional(number, 86400)
+      max_ttl                = optional(number, 31536000)
+      compress               = optional(bool, true)
+      lambda_function_associations = optional(list(object({
+        event_type   = string
+        lambda_arn   = string
+        include_body = optional(bool, false)
+      })), [])
+    })
+    ordered_cache_behaviors = optional(list(object({
+      path_pattern     = string
+      allowed_methods  = list(string)
+      cached_methods   = list(string)
+      target_origin_id = string
+      forward_query_string = optional(bool, false)
+      forward_cookies      = optional(string, "none")
+      viewer_protocol_policy = optional(string, "redirect-to-https")
+      min_ttl                = optional(number, 0)
+      default_ttl            = optional(number, 86400)
+      max_ttl                = optional(number, 31536000)
+      compress               = optional(bool, true)
+    })), [])
+    custom_error_responses = optional(list(object({
+      error_code            = number
+      response_code         = optional(number)
+      response_page_path    = optional(string)
+      error_caching_min_ttl = optional(number, 300)
+    })), [])
+    geo_restriction = optional(object({
+      restriction_type = string
+      locations        = optional(list(string), [])
+    }), { restriction_type = "none" })
+    viewer_certificate = object({
+      acm_certificate_arn      = string
+      minimum_protocol_version = optional(string, "TLSv1.2_2021")
+    })
+    web_acl_id = optional(string)
+  })
+  default = null
+}

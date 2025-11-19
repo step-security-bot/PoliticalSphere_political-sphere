@@ -7,7 +7,7 @@ import { getTestToken } from '../../tests/helpers/auth-token.mjs';
 import { dispatchRequest } from '../../tests/utils/express-request.js';
 /* eslint-enable no-restricted-imports */
 import authRoutes from '../auth/auth.routes.ts';
-import { closeDatabase, getDatabase } from '../modules/stores/index.ts';
+import { closeDatabase, getDatabase } from '../stores/index.ts';
 import { CreateReportSchema, ReviewContentSchema } from '../utils/shared-shim.js';
 import moderationRouter from './moderation.js';
 import usersRouter from './users.js';

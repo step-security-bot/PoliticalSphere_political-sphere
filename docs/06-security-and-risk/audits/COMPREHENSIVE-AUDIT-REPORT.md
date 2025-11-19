@@ -7,6 +7,8 @@
 
 ---
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 ## Executive Summary
 
 This comprehensive audit assessed the Political Sphere project against industry standards including:

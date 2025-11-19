@@ -12,6 +12,8 @@
 
 ---
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 ## 🎯 Overview
 
 This document outlines the main challenges and risks facing Political Sphere, along with mitigation strategies. These are the "bets" we're making and the assumptions that could undermine them.

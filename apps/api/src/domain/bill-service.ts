@@ -5,7 +5,8 @@ import {
   CreateBillSchema,
 } from '@political-sphere/shared';
 
-import { getDatabase } from '../modules/stores/index.js';
+import { getDatabase } from '../stores/index.js';
+import type { DatabaseRecord } from '../services/prisma-database.service.js';
 
 export class BillService {
   // Lazy getter to avoid stale DB connections in tests
@@ -54,7 +55,7 @@ export class BillService {
 
   async getAllBills(
     page: number = 1,
-    limit: number = 10
+    limit: number = 10,
   ): Promise<{
     bills: Bill[];
     total: number;
@@ -64,7 +65,7 @@ export class BillService {
     const allBills = await this.db.bills.getAll();
 
     // Map database results to Bill type
-    const bills = allBills.map(bill => ({
+    const bills = allBills.map((bill: DatabaseRecord) => ({
       ...bill,
       status: bill.status as BillStatus,
       description: bill.description ?? undefined,
@@ -86,8 +87,8 @@ export class BillService {
     // BillStore doesn't have getByProposerId, so filter all bills
     const allBills = await this.db.bills.getAll();
     return allBills
-      .filter(bill => bill.proposerId === proposerId)
-      .map(bill => ({
+      .filter((bill: DatabaseRecord) => bill.proposerId === proposerId)
+      .map((bill: DatabaseRecord) => ({
         ...bill,
         status: bill.status as BillStatus,
         description: bill.description ?? undefined,

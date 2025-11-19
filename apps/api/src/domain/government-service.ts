@@ -1,0 +1,339 @@
+/**
+ * Government Service
+ * Handles government-related operations using Prisma database
+ */
+
+import { getLogger } from '@political-sphere/shared';
+import { GovernmentDB } from '../services/database.service.js';
+
+const logger = getLogger({ service: 'government' });
+
+export interface CreateGovernmentData {
+  name: string;
+  leaderId?: string;
+}
+
+export interface CreateMinisterData {
+  userId: string;
+  governmentId: string;
+  portfolio: string;
+}
+
+export interface CreateExecutiveActionData {
+  title: string;
+  description?: string;
+  type: 'decree' | 'order' | 'policy';
+}
+
+export interface CreateCabinetMeetingData {
+  title: string;
+  agenda?: string;
+  scheduledAt: Date;
+}
+
+export class GovernmentService {
+  /**
+   * Create a new government
+   */
+  async createGovernment(data: CreateGovernmentData) {
+    try {
+      logger.info('Creating government', { name: data.name });
+      const government = await GovernmentDB.createGovernment({
+        name: data.name,
+        leaderId: data.leaderId,
+        status: 'active',
+        formedAt: new Date(),
+      });
+      logger.info('Government created', { id: government.id });
+      return government;
+    } catch (error) {
+      logger.error('Failed to create government', { error: error.message, data });
+      throw error;
+    }
+  }
+
+  /**
+   * Get government by ID
+   */
+  async getGovernment(id: string) {
+    try {
+      const government = await GovernmentDB.getGovernment(id);
+      if (!government) {
+        throw new Error(`Government with id ${id} not found`);
+      }
+      return government;
+    } catch (error) {
+      logger.error('Failed to get government', { id, error: error.message });
+      throw error;
+    }
+  }
+
+  /**
+   * List governments with optional filtering
+   */
+  async listGovernments(options: { status?: string; limit?: number } = {}) {
+    try {
+      const where: any = {};
+      if (options.status) {
+        where.status = options.status;
+      }
+
+      const governments = await GovernmentDB.listGovernments(where, {
+        orderBy: { formedAt: 'desc' },
+        take: options.limit || 50,
+      });
+
+      return governments;
+    } catch (error) {
+      logger.error('Failed to list governments', { options, error: error.message });
+      throw error;
+    }
+  }
+
+  /**
+   * Update government
+   */
+  async updateGovernment(
+    id: string,
+    data: Partial<CreateGovernmentData & { status: string; dissolvedAt?: Date }>,
+  ) {
+    try {
+      logger.info('Updating government', { id, data });
+      const government = await GovernmentDB.updateGovernment(id, data);
+      logger.info('Government updated', { id });
+      return government;
+    } catch (error) {
+      logger.error('Failed to update government', { id, data, error: error.message });
+      throw error;
+    }
+  }
+
+  /**
+   * Dissolve government
+   */
+  async dissolveGovernment(id: string) {
+    try {
+      logger.info('Dissolving government', { id });
+      const government = await this.updateGovernment(id, {
+        status: 'dissolved',
+        dissolvedAt: new Date(),
+      });
+      logger.info('Government dissolved', { id });
+      return government;
+    } catch (error) {
+      logger.error('Failed to dissolve government', { id, error: error.message });
+      throw error;
+    }
+  }
+
+  /**
+   * Create minister
+   */
+  async createMinister(data: CreateMinisterData) {
+    try {
+      logger.info('Creating minister', { userId: data.userId, portfolio: data.portfolio });
+      const minister = await GovernmentDB.createMinister({
+        userId: data.userId,
+        governmentId: data.governmentId,
+        portfolio: data.portfolio,
+        appointedAt: new Date(),
+      });
+      logger.info('Minister created', { id: minister.id });
+      return minister;
+    } catch (error) {
+      logger.error('Failed to create minister', { error: error.message, data });
+      throw error;
+    }
+  }
+
+  /**
+   * Get minister by ID
+   */
+  async getMinister(id: string) {
+    try {
+      const minister = await GovernmentDB.getMinister(id);
+      if (!minister) {
+        throw new Error(`Minister with id ${id} not found`);
+      }
+      return minister;
+    } catch (error) {
+      logger.error('Failed to get minister', { id, error: error.message });
+      throw error;
+    }
+  }
+
+  /**
+   * List ministers for a government
+   */
+  async listMinisters(governmentId: string) {
+    try {
+      const ministers = await GovernmentDB.listMinisters({ governmentId });
+      return ministers;
+    } catch (error) {
+      logger.error('Failed to list ministers', { governmentId, error: error.message });
+      throw error;
+    }
+  }
+
+  /**
+   * Update minister
+   */
+  async updateMinister(id: string, data: Partial<CreateMinisterData & { resignedAt?: Date }>) {
+    try {
+      logger.info('Updating minister', { id, data });
+      const minister = await GovernmentDB.updateMinister(id, data);
+      logger.info('Minister updated', { id });
+      return minister;
+    } catch (error) {
+      logger.error('Failed to update minister', { id, data, error: error.message });
+      throw error;
+    }
+  }
+
+  /**
+   * Resign minister
+   */
+  async resignMinister(id: string) {
+    try {
+      logger.info('Minister resigning', { id });
+      const minister = await this.updateMinister(id, { resignedAt: new Date() });
+      logger.info('Minister resigned', { id });
+      return minister;
+    } catch (error) {
+      logger.error('Failed to resign minister', { id, error: error.message });
+      throw error;
+    }
+  }
+
+  /**
+   * Create executive action
+   */
+  async createExecutiveAction(data: CreateExecutiveActionData) {
+    try {
+      logger.info('Creating executive action', { title: data.title, type: data.type });
+      const action = await GovernmentDB.createExecutiveAction({
+        title: data.title,
+        description: data.description,
+        type: data.type,
+        status: 'proposed',
+      });
+      logger.info('Executive action created', { id: action.id });
+      return action;
+    } catch (error) {
+      logger.error('Failed to create executive action', { error: error.message, data });
+      throw error;
+    }
+  }
+
+  /**
+   * Get executive action by ID
+   */
+  async getExecutiveAction(id: string) {
+    try {
+      const action = await GovernmentDB.getExecutiveAction(id);
+      if (!action) {
+        throw new Error(`Executive action with id ${id} not found`);
+      }
+      return action;
+    } catch (error) {
+      logger.error('Failed to get executive action', { id, error: error.message });
+      throw error;
+    }
+  }
+
+  /**
+   * List executive actions
+   */
+  async listExecutiveActions(options: { type?: string; status?: string; limit?: number } = {}) {
+    try {
+      const where: any = {};
+      if (options.type) where.type = options.type;
+      if (options.status) where.status = options.status;
+
+      const actions = await GovernmentDB.listExecutiveActions(where, {
+        orderBy: { createdAt: 'desc' },
+        take: options.limit || 50,
+      });
+
+      return actions;
+    } catch (error) {
+      logger.error('Failed to list executive actions', { options, error: error.message });
+      throw error;
+    }
+  }
+
+  /**
+   * Sign executive action
+   */
+  async signExecutiveAction(id: string) {
+    try {
+      logger.info('Signing executive action', { id });
+      const action = await GovernmentDB.updateExecutiveAction(id, {
+        status: 'signed',
+        signedAt: new Date(),
+      });
+      logger.info('Executive action signed', { id });
+      return action;
+    } catch (error) {
+      logger.error('Failed to sign executive action', { id, error: error.message });
+      throw error;
+    }
+  }
+
+  /**
+   * Create cabinet meeting
+   */
+  async createCabinetMeeting(data: CreateCabinetMeetingData) {
+    try {
+      logger.info('Creating cabinet meeting', { title: data.title });
+      const meeting = await GovernmentDB.createCabinetMeeting({
+        title: data.title,
+        agenda: data.agenda,
+        scheduledAt: data.scheduledAt,
+        status: 'scheduled',
+      });
+      logger.info('Cabinet meeting created', { id: meeting.id });
+      return meeting;
+    } catch (error) {
+      logger.error('Failed to create cabinet meeting', { error: error.message, data });
+      throw error;
+    }
+  }
+
+  /**
+   * Get cabinet meeting by ID
+   */
+  async getCabinetMeeting(id: string) {
+    try {
+      const meeting = await GovernmentDB.getCabinetMeeting(id);
+      if (!meeting) {
+        throw new Error(`Cabinet meeting with id ${id} not found`);
+      }
+      return meeting;
+    } catch (error) {
+      logger.error('Failed to get cabinet meeting', { id, error: error.message });
+      throw error;
+    }
+  }
+
+  /**
+   * Update cabinet meeting
+   */
+  async updateCabinetMeeting(
+    id: string,
+    data: Partial<CreateCabinetMeetingData & { status: string; minutes?: string }>,
+  ) {
+    try {
+      logger.info('Updating cabinet meeting', { id, data });
+      const meeting = await GovernmentDB.updateCabinetMeeting(id, data);
+      logger.info('Cabinet meeting updated', { id });
+      return meeting;
+    } catch (error) {
+      logger.error('Failed to update cabinet meeting', { id, data, error: error.message });
+      throw error;
+    }
+  }
+}
+
+// Export singleton instance
+export const governmentService = new GovernmentService();

@@ -4,9 +4,27 @@
   "sourceRoot": "libs/ai-system/src",
   "projectType": "library",
   "tags": ["scope:ai", "type:library"],
+  "namedInputs": {
+    "default": ["{projectRoot}/**/*", "sharedGlobals"],
+    "production": [
+      "default",
+      "!{projectRoot}/**/?(*.)+(spec|test).[jt]s?(x)?(.snap)",
+      "!{projectRoot}/tsconfig.spec.json",
+      "!{projectRoot}/jest.config.[jt]s",
+      "!{projectRoot}/src/test-setup.[jt]s",
+      "!{projectRoot}/test-setup.[jt]s",
+      "!{projectRoot}/.eslintrc.json",
+      "!{projectRoot}/eslint.config.js"
+    ],
+    "sharedGlobals": [],
+    "buildInputs": [
+      "production"
+    ]
+  },
   "targets": {
     "build": {
       "executor": "@nx/js:tsc",
+      "inputs": ["buildInputs"],
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/libs/ai-system",

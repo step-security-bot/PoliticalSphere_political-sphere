@@ -28,7 +28,7 @@
   position: relative;
 }
 
-[data-high-contrast="true"] .report-content-content {
+[data-high-contrast='true'] .report-content-content {
   border: 2px solid #000;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
@@ -48,7 +48,7 @@
   color: #1a202c;
 }
 
-[data-large-text="true"] .report-content-header h2 {
+[data-large-text='true'] .report-content-header h2 {
   font-size: 1.5rem;
 }
 
@@ -76,7 +76,7 @@
   line-height: 1.4;
 }
 
-[data-large-text="true"] .report-content-description {
+[data-large-text='true'] .report-content-description {
   font-size: 1rem;
 }
 
@@ -95,7 +95,7 @@
   color: #2d3748;
 }
 
-[data-large-text="true"] .report-content-field label {
+[data-large-text='true'] .report-content-field label {
   font-size: 1.125rem;
 }
 
@@ -111,8 +111,8 @@
     box-shadow 0.2s;
 }
 
-[data-large-text="true"] .report-content-field select,
-[data-large-text="true"] .report-content-field textarea {
+[data-large-text='true'] .report-content-field select,
+[data-large-text='true'] .report-content-field textarea {
   font-size: 1.125rem;
   padding: 1rem;
 }
@@ -136,7 +136,7 @@
   font-size: 0.75rem;
 }
 
-[data-large-text="true"] .report-content-field small {
+[data-large-text='true'] .report-content-field small {
   font-size: 0.875rem;
 }
 
@@ -150,7 +150,7 @@
   font-size: 0.875rem;
 }
 
-[data-high-contrast="true"] .report-content-error {
+[data-high-contrast='true'] .report-content-error {
   background-color: #fff;
   color: #000;
   border: 2px solid #c53030;
@@ -174,8 +174,8 @@
   border: 1px solid #e2e8f0;
 }
 
-[data-large-text="true"] .report-content-cancel,
-[data-large-text="true"] .report-content-submit {
+[data-large-text='true'] .report-content-cancel,
+[data-large-text='true'] .report-content-submit {
   padding: 1rem 1.75rem;
   font-size: 1.125rem;
 }
@@ -226,14 +226,14 @@
   line-height: 1.4;
 }
 
-[data-large-text="true"] .report-content-footer p {
+[data-large-text='true'] .report-content-footer p {
   font-size: 0.875rem;
 }
 
 /* Reduced motion preferences */
-[data-reduced-motion="true"] .report-content-close,
-[data-reduced-motion="true"] .report-content-cancel,
-[data-reduced-motion="true"] .report-content-submit {
+[data-reduced-motion='true'] .report-content-close,
+[data-reduced-motion='true'] .report-content-cancel,
+[data-reduced-motion='true'] .report-content-submit {
   transition: none;
 }
 

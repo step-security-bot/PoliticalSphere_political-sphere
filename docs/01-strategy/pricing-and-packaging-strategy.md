@@ -10,6 +10,8 @@
 
 ---
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 ## Strategic Overview
 
 Political Sphere’s pricing philosophy is built on one non-negotiable idea:

@@ -10,6 +10,8 @@
 
 ---
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 This document establishes guidelines and templates for external communication about AI governance in the Political Sphere project, ensuring transparency, accountability, and compliance with ISO 42001:2023 AI Management System requirements.
 
 ## Overview

@@ -60,6 +60,25 @@ const rateLimitStore = new Map<string, { count: number; resetTime: number }>();
 const csrfTokenStore = new Map<string, { token: string; created: number }>();
 
 /**
+ * Sanitizes general input to prevent injection attacks
+ */
+export function sanitizeInput(input: string): string {
+  if (typeof input !== 'string') {
+    return '';
+  }
+
+  return input
+    .trim()
+    .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
+    .replace(/<iframe\b[^<]*(?:(?!<\/iframe>)<[^<]*)*<\/iframe>/gi, '')
+    .replace(/<object\b[^<]*(?:(?!<\/object>)<[^<]*)*<\/object>/gi, '')
+    .replace(/<embed\b[^<]*(?:(?!<\/embed>)<[^<]*)*<\/embed>/gi, '')
+    .replace(/javascript:/gi, '')
+    .replace(/on\w+\s*=/gi, '')
+    .replace(/<[^>]*>/g, ''); // Remove all remaining HTML tags
+}
+
+/**
  * Sanitizes HTML input to prevent XSS attacks
  */
 export function sanitizeHtml(input: string): string {
@@ -125,7 +144,7 @@ export function isValidEmail(email: string): boolean {
  */
 export function isValidUrl(
   url: string,
-  allowedProtocols: string[] = DEFAULT_ALLOWED_PROTOCOLS
+  allowedProtocols: string[] = DEFAULT_ALLOWED_PROTOCOLS,
 ): boolean {
   if (typeof url !== 'string') {
     return false;
@@ -141,7 +160,7 @@ export function isValidUrl(
 
     // Check for localhost in production
     if (
-      env['NODE_ENV'] === 'production' &&
+      env.NODE_ENV === 'production' &&
       (parsedUrl.hostname === 'localhost' || parsedUrl.hostname === '127.0.0.1')
     ) {
       return false;
@@ -247,7 +266,7 @@ export function validateTag(tag: string): string | null {
 export function checkRateLimit(
   key: string,
   optionsOrMaxRequests?: number | { maxRequests?: number; windowMs?: number },
-  windowMs?: number
+  windowMs?: number,
 ): boolean {
   let maxRequests: number;
   let windowDuration: number;
@@ -293,7 +312,7 @@ export function checkRateLimit(
  */
 export function getRateLimitInfo(
   key: string,
-  options?: { maxRequests?: number; windowMs?: number }
+  options?: { maxRequests?: number; windowMs?: number },
 ): { remaining: number; reset: number; limit: number } {
   const maxRequests = options?.maxRequests ?? DEFAULT_RATE_LIMIT.maxRequests;
   const windowMs = options?.windowMs ?? DEFAULT_RATE_LIMIT.windowMs;
@@ -429,7 +448,7 @@ export const SECURITY_HEADERS: Record<string, string> = {
 export function getCorsHeaders(origin: string): Record<string, string> {
   const isAllowedOrigin =
     DEFAULT_ALLOWED_ORIGINS.includes(origin) ||
-    (env['NODE_ENV'] !== 'production' && origin?.includes('localhost'));
+    (env.NODE_ENV !== 'production' && origin?.includes('localhost'));
 
   return {
     'Access-Control-Allow-Origin': isAllowedOrigin ? origin : '',

@@ -6,6 +6,7 @@
 ## Overview
 
 `AppError` is a standardized error handling class that implements Node.js Best Practices 2.2 and 2.3:
+
 - Extends built-in `Error` with proper prototype chain
 - Distinguishes operational (expected) vs catastrophic (unexpected) errors
 - Provides machine-readable error codes and HTTP status codes
@@ -14,12 +15,12 @@
 ## Installation
 
 ```typescript
-import { 
-  AppError, 
-  ErrorFactory, 
-  ErrorCodes, 
-  isAppError, 
-  normalizeError 
+import {
+  AppError,
+  ErrorFactory,
+  ErrorCodes,
+  isAppError,
+  normalizeError,
 } from '@political-sphere/shared';
 ```
 
@@ -60,11 +61,11 @@ throw ErrorFactory.externalService('PaymentAPI', originalError);
 ```typescript
 // Custom error with specific code
 const error = new AppError(
-  418,                          // HTTP status code
-  'TEAPOT_ERROR',               // Machine-readable code
-  "I'm a teapot",               // Human-readable message
-  false,                        // Not catastrophic (operational)
-  { teapotId: 'brew-123' }      // Optional details
+  418, // HTTP status code
+  'TEAPOT_ERROR', // Machine-readable code
+  "I'm a teapot", // Human-readable message
+  false, // Not catastrophic (operational)
+  { teapotId: 'brew-123' } // Optional details
 );
 
 throw error;
@@ -94,12 +95,12 @@ app.use((error: unknown, req, res, next) => {
 class UserService {
   async getUser(id: string): Promise<User> {
     const user = await db.users.findById(id);
-    
+
     if (!user) {
       // Operational error - expected scenario
       throw ErrorFactory.notFound('User', id);
     }
-    
+
     return user;
   }
 
@@ -137,7 +138,7 @@ class UserService {
 async function processPayment(orderId: string): Promise<void> {
   try {
     const order = await getOrder(orderId);
-    
+
     if (!order) {
       throw ErrorFactory.notFound('Order', orderId);
     }
@@ -249,33 +250,33 @@ logger.error(logEntry);
 
 ### 4xx Client Errors
 
-| Code | Status | Usage |
-|------|--------|-------|
-| `BAD_REQUEST` | 400 | Invalid request format or parameters |
-| `UNAUTHORIZED` | 401 | Missing or invalid authentication |
-| `FORBIDDEN` | 403 | Authenticated but insufficient permissions |
-| `NOT_FOUND` | 404 | Resource does not exist |
-| `CONFLICT` | 409 | Resource already exists or state conflict |
-| `VALIDATION_ERROR` | 400 | Input validation failed |
-| `RATE_LIMIT_EXCEEDED` | 429 | Too many requests |
+| Code                  | Status | Usage                                      |
+| --------------------- | ------ | ------------------------------------------ |
+| `BAD_REQUEST`         | 400    | Invalid request format or parameters       |
+| `UNAUTHORIZED`        | 401    | Missing or invalid authentication          |
+| `FORBIDDEN`           | 403    | Authenticated but insufficient permissions |
+| `NOT_FOUND`           | 404    | Resource does not exist                    |
+| `CONFLICT`            | 409    | Resource already exists or state conflict  |
+| `VALIDATION_ERROR`    | 400    | Input validation failed                    |
+| `RATE_LIMIT_EXCEEDED` | 429    | Too many requests                          |
 
 ### 5xx Server Errors
 
-| Code | Status | Usage |
-|------|--------|-------|
-| `INTERNAL_SERVER_ERROR` | 500 | Unexpected server error |
-| `SERVICE_UNAVAILABLE` | 503 | Server temporarily unavailable |
-| `DATABASE_ERROR` | 500 | Database operation failed |
-| `EXTERNAL_SERVICE_ERROR` | 502 | Third-party service failed |
+| Code                     | Status | Usage                          |
+| ------------------------ | ------ | ------------------------------ |
+| `INTERNAL_SERVER_ERROR`  | 500    | Unexpected server error        |
+| `SERVICE_UNAVAILABLE`    | 503    | Server temporarily unavailable |
+| `DATABASE_ERROR`         | 500    | Database operation failed      |
+| `EXTERNAL_SERVICE_ERROR` | 502    | Third-party service failed     |
 
 ### Application-Specific
 
-| Code | Status | Usage |
-|------|--------|-------|
-| `USER_NOT_FOUND` | 404 | User ID does not exist |
-| `INVALID_CREDENTIALS` | 401 | Wrong username/password |
-| `SESSION_EXPIRED` | 401 | Session token expired |
-| `INSUFFICIENT_PERMISSIONS` | 403 | User lacks required role |
+| Code                       | Status | Usage                    |
+| -------------------------- | ------ | ------------------------ |
+| `USER_NOT_FOUND`           | 404    | User ID does not exist   |
+| `INVALID_CREDENTIALS`      | 401    | Wrong username/password  |
+| `SESSION_EXPIRED`          | 401    | Session token expired    |
+| `INSUFFICIENT_PERMISSIONS` | 403    | User lacks required role |
 
 ## Best Practices
 
@@ -387,7 +388,7 @@ app.get('/users/:id', async (req, res, next) => {
 // Error handling middleware
 app.use((error: unknown, req, res, next) => {
   const appError = isAppError(error) ? error : normalizeError(error);
-  
+
   // Log error
   logger.error('Request failed', {
     path: req.path,
@@ -414,7 +415,7 @@ const server = http.createServer(async (req, res) => {
     res.end(JSON.stringify({ data }));
   } catch (error) {
     const appError = normalizeError(error);
-    
+
     res.statusCode = appError.statusCode;
     res.setHeader('Content-Type', 'application/json');
     res.end(JSON.stringify(appError.toJSON()));
@@ -430,9 +431,7 @@ import { ErrorFactory, isAppError } from '@political-sphere/shared';
 
 describe('UserService', () => {
   it('should throw NotFound error for missing user', async () => {
-    await expect(
-      userService.getUser('nonexistent')
-    ).rejects.toMatchObject({
+    await expect(userService.getUser('nonexistent')).rejects.toMatchObject({
       statusCode: 404,
       code: 'NOT_FOUND',
       isOperational: true,
@@ -503,11 +502,13 @@ throw ErrorFactory.notFound('User', id);
 ## Security Considerations
 
 ✅ **Safe**:
+
 - Error messages are sanitized (no stack traces in production)
 - Details field is optional and controlled by you
 - HTTP status codes prevent information leakage
 
 ⚠️ **Caution**:
+
 - Never include passwords, tokens, or PII in error details
 - Stack traces contain file paths - don't expose in production
 - Use `isCatastrophic` to distinguish internal failures
@@ -545,5 +546,7 @@ console.log(appError.statusCode); // Always defined
 - **Implementation**: `libs/shared/src/errors/AppError.ts`
 
 ---
+
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
 
 **Questions or Issues?** See `docs/05-engineering-and-devops/RESEARCH-FINDINGS-2025-11-17.md` for full context.

@@ -6,11 +6,12 @@
  */
 
 import { v4 as uuidv4 } from 'uuid';
+import { info } from '../logger.js';
 
 const name = '003_sample_data';
 
 function up(db) {
-  console.log('Running sample data migration up function...');
+  info('Running sample data migration up function...');
 
   // Sample users
   const users = [
@@ -162,7 +163,7 @@ function up(db) {
     insertNews.run(news.id, news.title, news.content, news.category, news.tags);
   });
 
-  console.log('Sample data migration up function completed');
+  info('Sample data migration up function completed');
 }
 
 function down(db) {

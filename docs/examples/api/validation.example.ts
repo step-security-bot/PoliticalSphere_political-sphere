@@ -24,7 +24,7 @@ export const CreateUserSchema = z.object({
     .max(50, 'Username must not exceed 50 characters')
     .regex(
       /^[a-z0-9_-]+$/,
-      'Username can only contain lowercase letters, numbers, hyphens, and underscores',
+      'Username can only contain lowercase letters, numbers, hyphens, and underscores'
     ),
 
   email: z
@@ -92,7 +92,7 @@ export const CreateBillSchema = z
     {
       message: 'Voting end date must be after start date',
       path: ['votingEndsAt'],
-    },
+    }
   );
 
 export type CreateBillInput = z.infer<typeof CreateBillSchema>;
@@ -273,7 +273,7 @@ export const UpdateUserSchema = z
     },
     {
       message: 'At least one field must be provided for update',
-    },
+    }
   );
 
 /**
@@ -377,7 +377,7 @@ describe('validate middleware', () => {
             message: expect.stringContaining('at least 3 characters'),
           }),
         ]),
-      }),
+      })
     );
     expect(next).not.toHaveBeenCalled();
   });

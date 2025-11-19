@@ -2,7 +2,7 @@ import express from 'express';
 import request from 'supertest';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
-import usersRouter from '../../src/routes/users.js';
+import usersRouter from '../../src/routes/users.ts';
 import { closeDatabase, getDatabase } from '../index.js';
 
 describe('users routes', () => {

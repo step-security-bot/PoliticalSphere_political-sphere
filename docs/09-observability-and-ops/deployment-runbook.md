@@ -472,6 +472,8 @@ aws elbv2 describe-target-health \
 
 ---
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 **Document Version**: 1.0.0  
 **Last Tested**: 2025-10-29  
 **Next Review**: 2025-11-29

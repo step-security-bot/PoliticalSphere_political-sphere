@@ -144,7 +144,10 @@ const projects =
         createProject('ai-integration', ['tools/**/ai-system.integration.test.{js,mjs,cjs,ts}']),
       ]
     : [
-        createProject('apps', ['apps/*/src/**/*.{test,spec}.{js,mjs,ts,tsx,jsx}']),
+        createProject('apps', [
+          'apps/*/src/**/*.{test,spec}.{js,mjs,ts,tsx,jsx}',
+          'apps/*/tests/**/*.{test,spec}.{js,mjs,ts,tsx,jsx}',
+        ]),
         createProject('libs', ['libs/*/src/**/*.{test,spec}.{js,mjs,ts,tsx,jsx}']),
         createProject('ai-integration', ['tools/**/ai-system.integration.test.{js,mjs,cjs,ts}']),
       ];

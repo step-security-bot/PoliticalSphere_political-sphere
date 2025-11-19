@@ -1,5 +1,7 @@
 # ADR-0001: Supply Chain Hardening & SLSA Plan
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 - Date: 2025-11-02
 - Status: Proposed
 

@@ -120,6 +120,8 @@ For ethical concerns or questions about this policy:
 
 ---
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 **Last Updated**: December 2024
 **Next Review**: December 2025
 **Approved By**: Board of Directors

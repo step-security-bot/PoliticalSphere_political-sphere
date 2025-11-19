@@ -66,6 +66,24 @@ module "route53" {
   tags       = local.common_tags
 }
 
+module "cloudfront" {
+  count  = var.cloudfront != null ? 1 : 0
+  source = "./modules/cloudfront"
+
+  distribution_name      = lookup(var.cloudfront, "distribution_name", "${var.environment}-cdn")
+  comment                = lookup(var.cloudfront, "comment", "Political Sphere ${var.environment} CDN")
+  default_root_object    = lookup(var.cloudfront, "default_root_object", "index.html")
+  price_class            = lookup(var.cloudfront, "price_class", "PriceClass_100")
+  origins                = lookup(var.cloudfront, "origins", [])
+  default_cache_behavior = var.cloudfront.default_cache_behavior
+  ordered_cache_behaviors = lookup(var.cloudfront, "ordered_cache_behaviors", [])
+  custom_error_responses = lookup(var.cloudfront, "custom_error_responses", [])
+  geo_restriction        = lookup(var.cloudfront, "geo_restriction", { restriction_type = "none" })
+  viewer_certificate     = var.cloudfront.viewer_certificate
+  web_acl_id             = lookup(var.cloudfront, "web_acl_id", null)
+  tags                   = local.common_tags
+}
+
 module "acm" {
   source = "./modules/acm"
 
@@ -225,4 +243,16 @@ output "kms_key_arn" {
 
 output "github_roles" {
   value = module.iam.role_arns
+}
+
+output "cloudfront_distribution_id" {
+  value = var.cloudfront != null ? module.cloudfront[0].distribution_id : null
+}
+
+output "cloudfront_distribution_domain_name" {
+  value = var.cloudfront != null ? module.cloudfront[0].distribution_domain_name : null
+}
+
+output "cloudfront_distribution_arn" {
+  value = var.cloudfront != null ? module.cloudfront[0].distribution_arn : null
 }

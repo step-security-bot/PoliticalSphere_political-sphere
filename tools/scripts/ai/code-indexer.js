@@ -22,12 +22,14 @@ import { execSync } from 'child_process';
 import { createHash } from 'crypto';
 import { existsSync, mkdirSync, readdirSync, readFileSync, statSync, writeFileSync } from 'fs';
 import { extname, join, relative } from 'path';
+import { gzipSync, gunzipSync } from 'zlib';
 
-const INDEX_FILE = 'ai-index/codebase-index.json';
+const INDEX_FILE = 'ai-index/codebase-index.json.gz';
 const _METRICS_FILE = 'ai-index/quality-metrics.json';
 const _GRAPH_FILE = 'ai-index/dependency-graph.json';
 const SUPPORTED_EXTS = ['.js', '.ts', '.tsx', '.jsx', '.json', '.md'];
 const MAX_INDEX_SIZE = 20_000_000; // 20MB limit (increased for metrics)
+const COMPRESSED_MAX_SIZE = 8_000_000; // 8MB compressed limit (60% reduction target)
 
 // Ensure index directory exists
 if (!existsSync('ai-index')) {
@@ -35,28 +37,58 @@ if (!existsSync('ai-index')) {
 }
 
 function tokenize(text) {
-  // Enhanced tokenization: lowercase, remove duplicates, filter short tokens, include semantic context
+  // Optimized tokenization: reduce redundancy and filter aggressively to save space
   const tokens = text
     .toLowerCase()
     .split(/[^A-Za-z0-9_]+/)
-    .filter(token => token.length > 2);
+    .filter(token => token.length > 2 && token.length < 20); // Length limits to reduce noise
 
-  // Add semantic variations for better recall
+  // Add semantic variations but limit to essential ones
   const semanticTokens = new Set(tokens);
   for (const token of tokens) {
-    // Add camelCase splits (e.g., "getUserData" -> "get", "user", "data")
-    const camelSplits = token.replace(/([a-z])([A-Z])/g, '$1 $2').split(' ');
-    camelSplits.forEach(split => {
-      if (split.length > 2) semanticTokens.add(split);
-    });
+    // Only add camelCase splits for longer tokens to avoid explosion
+    if (token.length > 6) {
+      const camelSplits = token.replace(/([a-z])([A-Z])/g, '$1 $2').split(' ');
+      camelSplits.forEach(split => {
+        if (split.length > 2) semanticTokens.add(split);
+      });
+    }
 
-    // Add common abbreviations
+    // Limit abbreviations to most common
     if (token === 'function') semanticTokens.add('func');
     if (token === 'component') semanticTokens.add('comp');
-    if (token === 'interface') semanticTokens.add('iface');
   }
 
   return semanticTokens;
+}
+
+function saveCompressedIndex(index) {
+  const indexString = JSON.stringify(index, null, 0); // No pretty-printing to save space
+  const compressed = gzipSync(indexString);
+
+  if (compressed.length > COMPRESSED_MAX_SIZE) {
+    console.warn(
+      `Compressed index size (${compressed.length} bytes) exceeds limit (${COMPRESSED_MAX_SIZE} bytes).`,
+    );
+  }
+
+  writeFileSync(INDEX_FILE, compressed);
+  console.log(
+    `Index saved (compressed: ${compressed.length} bytes, original: ${indexString.length} bytes)`,
+  );
+}
+
+function loadCompressedIndex() {
+  if (!existsSync(INDEX_FILE)) return null;
+
+  try {
+    const compressed = readFileSync(INDEX_FILE);
+    const decompressed = gunzipSync(compressed);
+    return JSON.parse(decompressed.toString());
+  } catch (error) {
+    console.warn('Failed to load compressed index:', error.message);
+    return null;
+  }
 }
 
 function validateIndex(index) {
@@ -162,21 +194,20 @@ async function buildIndex(rootDir = '.') {
   const indexString = JSON.stringify(index, null, 2);
   if (indexString.length > MAX_INDEX_SIZE) {
     console.warn(
-      `Index size (${indexString.length} bytes) exceeds limit (${MAX_INDEX_SIZE} bytes). Consider incremental indexing.`
+      `Index size (${indexString.length} bytes) exceeds limit (${MAX_INDEX_SIZE} bytes). Using compression.`,
     );
   }
 
-  writeFileSync(INDEX_FILE, indexString);
+  saveCompressedIndex(index);
   console.log(`Index built with ${Object.keys(index.files).length} files`);
 }
 
 function searchIndex(query) {
-  if (!existsSync(INDEX_FILE)) {
+  const index = loadCompressedIndex();
+  if (!index) {
     console.error('Index not found. Run "build" first.');
     process.exit(1);
   }
-
-  const index = JSON.parse(readFileSync(INDEX_FILE, 'utf8'));
   const queryTokens = tokenize(query);
   const scores = {};
 
@@ -209,7 +240,7 @@ function searchIndex(query) {
     r =>
       !r.file.endsWith('codebase-index.json') &&
       !r.file.startsWith('ai/index/') &&
-      !r.file.startsWith('ai/index/')
+      !r.file.startsWith('ai/index/'),
   );
 
   // Return valid JSON structure for programmatic consumption
@@ -308,18 +339,22 @@ function analyzeFileQuality(filePath) {
 
 // Show index statistics
 function showStats() {
-  if (!existsSync(INDEX_FILE)) {
+  const index = loadCompressedIndex();
+  if (!index) {
     console.error('Index not found. Run "build" first.');
     process.exit(1);
   }
 
-  const index = JSON.parse(readFileSync(INDEX_FILE, 'utf8'));
+  const uncompressedSize = JSON.stringify(index).length;
+  const compressedSize = gzipSync(JSON.stringify(index)).length;
 
   const stats = {
     totalFiles: Object.keys(index.files).length,
     totalTokens: Object.keys(index.tokens).length,
     lastUpdated: index.lastUpdated,
-    indexSize: JSON.stringify(index).length,
+    indexSize: uncompressedSize,
+    compressedSize: compressedSize,
+    compressionRatio: Math.round((1 - compressedSize / uncompressedSize) * 100),
     averageTokensPerFile: 0,
     largestFile: null,
     mostCommonTokens: [],
@@ -328,7 +363,7 @@ function showStats() {
   // Calculate average tokens per file
   const tokenCounts = Object.values(index.files).map(f => f.tokens.length);
   stats.averageTokensPerFile = Math.round(
-    tokenCounts.reduce((a, b) => a + b, 0) / tokenCounts.length
+    tokenCounts.reduce((a, b) => a + b, 0) / tokenCounts.length,
   );
 
   // Find largest file
@@ -353,12 +388,11 @@ function showStats() {
 
 // Incremental update - only reindex changed files
 async function updateIndex(rootDir = '.') {
-  if (!existsSync(INDEX_FILE)) {
+  const index = loadCompressedIndex();
+  if (!index) {
     console.log('No existing index found. Running full build...');
     return buildIndex(rootDir);
   }
-
-  const index = JSON.parse(readFileSync(INDEX_FILE, 'utf8'));
   let changedCount = 0;
 
   // Get list of changed files from git (if in git repo)
@@ -369,7 +403,7 @@ async function updateIndex(rootDir = '.') {
       encoding: 'utf8',
     });
     changedFiles = [...gitStatus.split('\n'), ...untrackedFiles.split('\n')].filter(
-      f => f && SUPPORTED_EXTS.includes(extname(f))
+      f => f && SUPPORTED_EXTS.includes(extname(f)),
     );
   } catch (_e) {
     console.log('Not a git repository or git not available. Checking all files...');
@@ -424,7 +458,7 @@ async function updateIndex(rootDir = '.') {
 
   // Validate and save
   validateIndex(index);
-  writeFileSync(INDEX_FILE, JSON.stringify(index, null, 2));
+  saveCompressedIndex(index);
 
   console.log(`Incremental update complete: ${changedCount} files reindexed`);
   return index;
@@ -446,6 +480,6 @@ if (command === 'build') {
   }
 } else {
   console.log(
-    'Usage: node scripts/ai/code-indexer.js build|update|search <query>|stats|analyze <file>'
+    'Usage: node scripts/ai/code-indexer.js build|update|search <query>|stats|analyze <file>',
   );
 }

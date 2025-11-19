@@ -1,5 +1,7 @@
 # ADR-0016: Test Orchestration and Coverage Strategy
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 **Status:** Accepted  
 **Date:** 2025-11-07  
 **Deciders:** Engineering Team  

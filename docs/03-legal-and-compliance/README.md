@@ -12,6 +12,8 @@
 
 This section contains all legal, regulatory, and compliance documentation for Political Sphere, ensuring our multiplayer political simulation game operates within legal boundaries and meets regulatory requirements.
 
+> NOTE: For executive-level context and the project's development model (including AI-assisted development and governance), see `docs/00-foundation/project-context.md`.
+
 ## Overview
 
 Legal and compliance considerations are critical for Political Sphere given the political nature of our platform. This documentation covers all aspects of legal compliance, from user-facing policies to internal regulatory requirements.

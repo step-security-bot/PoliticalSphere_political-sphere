@@ -11,7 +11,7 @@ vi.mock('../../src/logger.js', () => ({
   },
 }));
 
-vi.mock('../../src/modules/stores/index.ts', () => ({
+vi.mock('../../stores/index.ts', () => ({
   getDatabase: vi.fn(() => ({
     moderation: {
       create: vi.fn(),
@@ -27,7 +27,7 @@ describe('ModerationService', () => {
 
   beforeEach(async () => {
     vi.clearAllMocks();
-    const { getDatabase } = await import('../../src/modules/stores/index.ts');
+    const { getDatabase } = await import('../../stores/index.ts');
     mockDb = getDatabase();
     service = new ModerationService(mockDb.moderation);
   });
@@ -126,7 +126,7 @@ describe('ModerationService', () => {
 
       expect(result).toEqual(mockHistory);
       expect(mockDb.moderation.getAll).toHaveBeenCalledWith(
-        expect.objectContaining({ userId: 'user-123' })
+        expect.objectContaining({ userId: 'user-123' }),
       );
     });
   });
@@ -153,7 +153,7 @@ describe('ModerationService', () => {
       };
 
       await expect(service.updateModerationRules(invalidRules)).rejects.toThrow(
-        'Invalid threshold value'
+        'Invalid threshold value',
       );
     });
   });

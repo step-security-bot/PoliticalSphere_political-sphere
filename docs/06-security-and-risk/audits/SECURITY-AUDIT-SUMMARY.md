@@ -7,6 +7,8 @@
 
 ---
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 ## Executive Summary
 
 This document summarizes the comprehensive security audit and Phase 1 remediation work completed for the Political Sphere platform. The audit followed industry-standard frameworks including:

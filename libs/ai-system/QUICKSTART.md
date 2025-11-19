@@ -31,9 +31,7 @@ const orchestrator = createOrchestrator({
 });
 
 // 3. Run
-const result = await orchestrator.run([
-  { role: 'user', content: 'Say hello!' }
-]);
+const result = await orchestrator.run([{ role: 'user', content: 'Say hello!' }]);
 
 console.log(result.finalMessage.content);
 // Output: "Hello! How can I help you today?"
@@ -47,25 +45,27 @@ Track execution with built-in logging, tracing, and metrics:
 import { createOrchestrator, defineAgent } from '@political-sphere/ai-system';
 import { tracer, metrics, logger } from '@political-sphere/ai-system/observability';
 
-const agent = defineAgent({ /* ... */ });
+const agent = defineAgent({
+  /* ... */
+});
 
 const orchestrator = createOrchestrator({
   pattern: 'sequential',
   agents: [agent],
   observability: {
-    onStart: async (ctx) => {
+    onStart: async ctx => {
       const spanId = tracer.startSpan('ai-operation', {
         'agent.id': agent.id,
         'run.id': ctx.runId,
       });
-      
+
       logger.info('AI operation started', { runId: ctx.runId, spanId });
     },
     onComplete: async (ctx, result) => {
       metrics.recordLatency('ai-operation', result.durationMs || 0, {
         status: result.success ? 'success' : 'error',
       });
-      
+
       logger.info('AI operation completed', {
         runId: ctx.runId,
         success: result.success,
@@ -91,16 +91,12 @@ const orchestrator = createOrchestrator({
     postExecution: async (messages, result) => {
       // Validate output for political neutrality
       const neutralityEnforcer = new PoliticalNeutralityEnforcer();
-      const check = await neutralityEnforcer.checkNeutrality(
-        result.finalMessage.content
-      );
-      
+      const check = await neutralityEnforcer.checkNeutrality(result.finalMessage.content);
+
       if (!check.passed) {
-        throw new Error(
-          `Neutrality violation: ${check.biases.map(b => b.description).join(', ')}`
-        );
+        throw new Error(`Neutrality violation: ${check.biases.map(b => b.description).join(', ')}`);
       }
-      
+
       return true;
     },
   },
@@ -120,18 +116,18 @@ const orchestrator = createOrchestrator({
   pattern: 'sequential',
   agents: [agent],
   validators: {
-    preExecution: async (messages) => {
+    preExecution: async messages => {
       // Validate input before processing
       const result = await securityGate.validate({
         messages,
         requiresAuth: true,
         user: { id: 'user-123', permissions: ['read'] },
       });
-      
+
       if (!result.passed) {
         throw new Error('Security validation failed');
       }
-      
+
       return true;
     },
   },
@@ -170,7 +166,7 @@ const needsApproval = governance.govern.requiresApproval('my-chatbot', 'speech')
 
 // Measure bias
 const biasCheck = await governance.measure.measureBias('my-chatbot', [
-  { text: 'Sample output to check for bias' }
+  { text: 'Sample output to check for bias' },
 ]);
 
 if (!biasCheck.passed) {
@@ -271,9 +267,15 @@ npm run example:complete-system
 ### Multi-Agent Workflow
 
 ```typescript
-const researchAgent = defineAgent({ /* ... */ });
-const analysisAgent = defineAgent({ /* ... */ });
-const reviewAgent = defineAgent({ /* ... */ });
+const researchAgent = defineAgent({
+  /* ... */
+});
+const analysisAgent = defineAgent({
+  /* ... */
+});
+const reviewAgent = defineAgent({
+  /* ... */
+});
 
 const orchestrator = createOrchestrator({
   pattern: 'sequential', // Or 'concurrent', 'handoff', 'group-chat'
@@ -286,7 +288,7 @@ const orchestrator = createOrchestrator({
 ```typescript
 try {
   const result = await orchestrator.run(messages);
-  
+
   if (!result.success) {
     console.error('Operation failed:', result.error);
   }
@@ -308,7 +310,7 @@ const customGate = new ValidationGate({
   validators: [
     async (context): Promise<ValidationFinding[]> => {
       const findings: ValidationFinding[] = [];
-      
+
       // Your validation logic
       if (/* condition */) {
         findings.push({
@@ -318,7 +320,7 @@ const customGate = new ValidationGate({
           details: { /* ... */ },
         });
       }
-      
+
       return findings;
     },
   ],
@@ -330,6 +332,7 @@ const customGate = new ValidationGate({
 **Q: How do I enable distributed tracing?**
 
 Set the OpenTelemetry endpoint:
+
 ```bash
 export OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318
 ```
@@ -337,6 +340,7 @@ export OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318
 **Q: How do I adjust bias thresholds?**
 
 Configure via environment:
+
 ```bash
 export NIST_AI_RMF_BIAS_THRESHOLD=0.1
 export POLITICAL_NEUTRALITY_THRESHOLD=0.9
@@ -345,13 +349,16 @@ export POLITICAL_NEUTRALITY_THRESHOLD=0.9
 **Q: How do I handle DSAR requests in production?**
 
 Implement data retrieval and deletion in the DSAR handler:
+
 ```typescript
 class CustomDSARHandler extends DSARHandler {
   protected async retrieveUserData(userId: string): Promise<Record<string, unknown>> {
     // Fetch from your databases
-    return { /* user data */ };
+    return {
+      /* user data */
+    };
   }
-  
+
   protected async deleteUserData(userId: string): Promise<void> {
     // Delete from your databases
   }

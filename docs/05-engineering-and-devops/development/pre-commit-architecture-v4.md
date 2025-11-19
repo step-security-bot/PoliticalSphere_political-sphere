@@ -7,11 +7,14 @@
 
 ---
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 ## Executive Summary
 
 This document defines the **enterprise-grade pre-commit pipeline redesign** for Political Sphere, addressing critical gaps in security, governance, and quality enforcement while maintaining developer velocity.
 
 **Key Improvements Over v3.0.0**:
+
 - ✅ **Structured telemetry** with distributed tracing
 - ✅ **Enhanced accessibility validation** (17 comprehensive jsx-a11y rules)
 - ✅ **Documentation quality enforcement** (markdownlint integration)
@@ -65,12 +68,12 @@ Phase 5 (Priority 999): Finalization
 
 ### Mode Matrix
 
-| Mode         | Environment      | Gates Applied        | Performance Target | Use Case                          |
-| ------------ | ---------------- | -------------------- | ------------------ | --------------------------------- |
-| `safe`       | Default          | P0+P1+P2+P3          | P95 < 20s          | Standard development commits      |
-| `fast-secure`| `FAST_AI=1`      | P0+P1 (relaxed P2)   | P95 < 10s          | Rapid iteration (dev only)        |
-| `audit`      | `AUDIT_MODE=1`   | P0+P1+P2+P3 + full telemetry | No limit  | Compliance reviews, major changes |
-| `ci`         | `CI=true`        | P0+P1+P2+P3 (non-interactive) | P95 < 15s    | GitHub Actions mirroring          |
+| Mode          | Environment    | Gates Applied                 | Performance Target | Use Case                          |
+| ------------- | -------------- | ----------------------------- | ------------------ | --------------------------------- |
+| `safe`        | Default        | P0+P1+P2+P3                   | P95 < 20s          | Standard development commits      |
+| `fast-secure` | `FAST_AI=1`    | P0+P1 (relaxed P2)            | P95 < 10s          | Rapid iteration (dev only)        |
+| `audit`       | `AUDIT_MODE=1` | P0+P1+P2+P3 + full telemetry  | No limit           | Compliance reviews, major changes |
+| `ci`          | `CI=true`      | P0+P1+P2+P3 (non-interactive) | P95 < 15s          | GitHub Actions mirroring          |
 
 ### Mode Selection Logic
 
@@ -97,6 +100,7 @@ fi
 **Failure Mode**: **BLOCKING** (no bypass except emergency with post-review)
 
 **Implementation**:
+
 ```bash
 if ! gitleaks protect --staged --verbose --redact --exit-code 1; then
   # IMMEDIATE REMEDIATION REQUIRED
@@ -111,6 +115,7 @@ fi
 **NIST Reference**: SP 800-53 r5 IA-5 (Authenticator Management)
 
 **False Positive Handling**:
+
 - Update `.gitleaks.toml` allowlist with justification
 - Document in `docs/06-security-and-risk/security-review-*`
 - Requires TGC approval for production allowlist changes
@@ -124,13 +129,14 @@ fi
 **Bypass**: FAST_AI mode only (with warning)
 
 **Implementation**:
+
 ```bash
 if npm audit --audit-level=high --production --json > /tmp/npm-audit-$$.json 2>&1; then
   echo "✅ No high/critical vulnerabilities"
 else
   VULN_COUNT=$(jq -r '.metadata.vulnerabilities.high + .metadata.vulnerabilities.critical' \
     /tmp/npm-audit-$$.json 2>/dev/null || echo "unknown")
-  
+
   echo "❌ High/Critical vulnerabilities detected (count: ${VULN_COUNT})"
   exit 1
 fi
@@ -166,6 +172,7 @@ fi
 **Performance**: Biome ~2-5x faster than Prettier for large files.
 
 **Implementation**:
+
 ```bash
 if command -v biome >/dev/null 2>&1; then
   biome format --write {staged_files}
@@ -186,6 +193,7 @@ fi
 **Rationale**: Enforces quality at commit time, preventing technical debt accumulation.
 
 **Implementation**:
+
 ```bash
 # Biome fast pass
 if command -v biome >/dev/null 2>&1; then
@@ -212,6 +220,7 @@ fi
 **Performance Optimization**: Incremental checking reuses previous compilation cache.
 
 **Implementation**:
+
 ```bash
 if [ -n "{staged_files}" ]; then
   npx tsc --noEmit --skipLibCheck --incremental || {
@@ -222,6 +231,7 @@ fi
 ```
 
 **Strict Mode Requirements** (from `tsconfig.base.json`):
+
 - `strict: true`
 - `noUnusedLocals: true`
 - `noUnusedParameters: true`
@@ -238,6 +248,7 @@ fi
 **Failure Mode**: **BLOCKING** (no bypass)
 
 **Enforced Rules** (17 comprehensive checks):
+
 1. `jsx-a11y/alt-text` - Image alternative text
 2. `jsx-a11y/aria-props` - Valid ARIA properties
 3. `jsx-a11y/aria-proptypes` - Correct ARIA prop types
@@ -257,6 +268,7 @@ fi
 17. `jsx-a11y/no-redundant-roles` - Avoid redundant role attributes
 
 **WCAG Success Criteria Mapping**:
+
 - 1.1.1 Non-text Content (Level A) → `alt-text`, `img-redundant-alt`
 - 2.1.1 Keyboard (Level A) → `interactive-supports-focus`, `click-events-have-key-events`
 - 3.1.1 Language of Page (Level A) → `html-has-lang`
@@ -269,12 +281,14 @@ fi
 ### 2. Test Quality Gates
 
 **Checks**:
+
 1. **`.only()` Detection** (BLOCKING) - Prevents CI pollution
 2. **`.skip()` Auditing** (ADVISORY) - Requires TODO justification
 3. **Assertion Validation** (ADVISORY) - Ensures tests have `expect()`
 4. **Commented-Out Tests** (ADVISORY) - Code smell detection
 
 **Implementation**:
+
 ```bash
 VIOLATIONS=0
 
@@ -299,6 +313,7 @@ fi
 **Failure Mode**: **BLOCKING** in Safe/Audit modes, **ADVISORY** in FAST_AI
 
 **Checks**:
+
 - Heading spacing (MD022, MD023)
 - List indentation (MD004, MD007)
 - Code block fencing (MD046, MD048)
@@ -307,6 +322,7 @@ fi
 - Multiple blank lines (MD012)
 
 **Fallback (No markdownlint)**:
+
 ```bash
 for file in {staged_files}; do
   if grep -qE "^#[^#[:space:]]" "$file"; then
@@ -326,25 +342,28 @@ done
 **Failure Mode**: **BLOCKING** in Audit mode, **ADVISORY** in Safe/Fast-Secure
 
 **Budget Limits** (from governance playbook):
+
 - **Safe**: ≤300 lines, ≤12 files
 - **Fast-Secure**: ≤200 lines, ≤8 files
 - **Audit**: No limit (full validation required)
 - **R&D**: Experimental changes must be marked
 
 **Artefact Requirements**:
+
 - CHANGELOG.md updated
 - TODO.md updated
 - Test evidence attached (when deferring gates)
 - SBOM/provenance for dependencies
 
 **Implementation**:
+
 ```bash
 if [ -f "tools/scripts/ai/guard-change-budget.mjs" ]; then
   if node tools/scripts/ai/guard-change-budget.mjs; then
     echo "✅ Change budget check passed"
   else
     echo "⚠️  Change budget exceeded or artefacts missing"
-    
+
     if [ "${AUDIT_MODE}" = "1" ]; then
       exit 1
     fi
@@ -363,6 +382,7 @@ fi
 **Failure Mode**: **BLOCKING** if installed, **ADVISORY** otherwise
 
 **Checks**:
+
 - Workflow syntax validation
 - Action version pinning (security best practice)
 - Environment variable references
@@ -378,10 +398,12 @@ fi
 **Failure Mode**: **BLOCKING** if installed
 
 **Ignored Rules**:
+
 - DL3008: Pin apt-get versions (impractical for base images)
 - DL3009: Delete apt-get cache (handled by base image)
 
 **Key Checks**:
+
 - FROM uses digest pinning
 - Layer optimization
 - Security vulnerabilities (e.g., running as root)
@@ -408,12 +430,14 @@ fi
 **Retention**: 30 days (local), indefinite (CI artifacts)
 
 **Schema**:
+
 ```jsonl
 {"timestamp":"2025-11-17T14:32:10Z","trace_id":"550e8400-e29b-41d4-a716-446655440000","mode":"safe","event":"hook_start"}
 {"timestamp":"2025-11-17T14:32:18Z","trace_id":"550e8400-e29b-41d4-a716-446655440000","duration_seconds":8,"event":"hook_complete"}
 ```
 
 **Fields**:
+
 - `timestamp`: ISO 8601 UTC timestamp
 - `trace_id`: UUID v4 for distributed tracing correlation
 - `mode`: Execution mode (safe/fast-secure/audit/ci)
@@ -421,6 +445,7 @@ fi
 - `duration_seconds`: Elapsed time (for completion events)
 
 **Analysis**:
+
 ```bash
 # Average hook duration (last 100 commits)
 tail -n 200 logs/pre-commit-telemetry.jsonl | \
@@ -435,12 +460,14 @@ tail -n 200 logs/pre-commit-telemetry.jsonl | \
 
 ### Performance Baseline (as of 2025-11-17)
 
-**Test Conditions**: 
+**Test Conditions**:
+
 - MacBook Pro M1, 16GB RAM
 - Typical commit: 5-10 files changed, mix of TS/MD/JSON
 - All hooks enabled (Safe mode)
 
 **Results**:
+
 - **P50**: 8.2s
 - **P95**: 14.7s
 - **P99**: 22.1s
@@ -449,6 +476,7 @@ tail -n 200 logs/pre-commit-telemetry.jsonl | \
 **SLO Target**: P95 < 20s for commits with <20 changed files
 
 **Optimization Opportunities**:
+
 1. Incremental type checking (already implemented) ✅
 2. Cached Biome/ESLint results (future work)
 3. Parallel Phase 2/3 execution (future work - requires dependency analysis)
@@ -462,6 +490,7 @@ tail -n 200 logs/pre-commit-telemetry.jsonl | \
 **Rationale**: Pre-commit runs incremental check (fast). Pre-push runs full check (comprehensive).
 
 **Implementation**:
+
 ```bash
 npx tsc --noEmit || {
   echo "❌ TypeScript type errors found"
@@ -480,6 +509,7 @@ npx tsc --noEmit || {
 **Failure Mode**: **BLOCKING**
 
 **Implementation**:
+
 ```bash
 npm run test:changed || {
   echo "❌ Tests failed"
@@ -506,6 +536,7 @@ npm run test:changed || {
 **Behavior**: 3-second delay with Ctrl+C option
 
 **Implementation**:
+
 ```bash
 BRANCH=$(git branch --show-current)
 
@@ -529,6 +560,7 @@ fi
 **Failure Mode**: **BLOCKING**
 
 **Allowed Types**:
+
 - `feat`: New feature
 - `fix`: Bug fix
 - `docs`: Documentation changes
@@ -544,6 +576,7 @@ fi
 **Format**: `type(scope): description`
 
 **Validation Rules**:
+
 1. Non-empty message (min 10 chars excluding whitespace)
 2. Matches conventional commits regex
 3. Title ≤100 characters
@@ -551,6 +584,7 @@ fi
 5. Optional issue reference (encouraged: `#123`, `Closes #123`)
 
 **Implementation**:
+
 ```bash
 MSG=$(cat {1})
 
@@ -567,15 +601,18 @@ fi
 ### Required Dependencies
 
 **Critical (must install)**:
+
 - `gitleaks` - Secret scanning (brew install gitleaks)
 
 **Recommended (enhanced validation)**:
+
 - `actionlint` - GitHub Actions linting (brew install actionlint)
 - `hadolint` - Dockerfile linting (brew install hadolint)
 - `markdownlint-cli` - Markdown linting (npm i -g markdownlint-cli)
 - `license-checker` - License compliance (npm i -g license-checker)
 
 **Optional (fallback handled)**:
+
 - `biome` - Fast formatting/linting (npm i -g @biomejs/biome)
 - `yamllint` - YAML validation (pip install yamllint)
 - `jq` - JSON processing (brew install jq)
@@ -583,6 +620,7 @@ fi
 ### Installation Script
 
 Create `scripts/setup-pre-commit-deps.sh`:
+
 ```bash
 #!/usr/bin/env bash
 echo "Installing pre-commit dependencies..."
@@ -607,6 +645,7 @@ echo "✅ Pre-commit dependencies installed"
 ### From v3.0.0 to v4.0.0
 
 **Breaking Changes**:
+
 1. **markdownlint enforcement** - Existing docs may fail validation
 2. **Stricter accessibility rules** - 17 jsx-a11y rules (was 5)
 3. **Change budget integration** - Requires `guard-change-budget.mjs`
@@ -615,22 +654,26 @@ echo "✅ Pre-commit dependencies installed"
 **Migration Steps**:
 
 1. **Backup existing configuration**:
+
    ```bash
    cp .lefthook.yml .lefthook.yml.v3-backup
    ```
 
 2. **Install new dependencies**:
+
    ```bash
    bash scripts/setup-pre-commit-deps.sh
    ```
 
 3. **Apply new configuration**:
+
    ```bash
    # Apply redesigned .lefthook.yml (from this architecture doc)
    # See implementation section below
    ```
 
 4. **Create markdownlint configuration**:
+
    ```bash
    cat > .markdownlintrc <<EOF
    {
@@ -642,6 +685,7 @@ echo "✅ Pre-commit dependencies installed"
    ```
 
 5. **Test with dry-run**:
+
    ```bash
    git add .
    LEFTHOOK_VERBOSE=1 lefthook run pre-commit
@@ -705,6 +749,7 @@ echo "✅ Pre-commit dependencies installed"
 ### Threat Model
 
 **Threats Mitigated**:
+
 1. **Secret Leakage** - Gitleaks prevents credential commits
 2. **Vulnerable Dependencies** - npm audit blocks high/critical CVEs
 3. **License Violations** - License checker prevents incompatible licenses
@@ -713,6 +758,7 @@ echo "✅ Pre-commit dependencies installed"
 6. **Malformed Configs** - JSON/YAML validation prevents runtime errors
 
 **Threats NOT Mitigated**:
+
 1. **Social Engineering** - No defense against malicious commit messages
 2. **Supply Chain Attacks** - npm audit has limited coverage (use Snyk/Semgrep in CI)
 3. **Zero-Day Vulnerabilities** - Pre-commit can't detect unknown vulnerabilities
@@ -726,28 +772,28 @@ echo "✅ Pre-commit dependencies installed"
 
 ### OWASP ASVS v4.0.3
 
-| Requirement | Implementation |
-|---|---|
-| V2.10 Cryptographic Storage | Gitleaks secret scanning |
-| V14.2 Dependency | npm audit high/critical blocking |
-| V14.3 Unintended Security Disclosure | License compliance checking |
+| Requirement                          | Implementation                   |
+| ------------------------------------ | -------------------------------- |
+| V2.10 Cryptographic Storage          | Gitleaks secret scanning         |
+| V14.2 Dependency                     | npm audit high/critical blocking |
+| V14.3 Unintended Security Disclosure | License compliance checking      |
 
 ### WCAG 2.2 AA
 
-| Success Criterion | Implementation |
-|---|---|
-| 1.1.1 Non-text Content (Level A) | jsx-a11y/alt-text, jsx-a11y/img-redundant-alt |
-| 2.1.1 Keyboard (Level A) | jsx-a11y/interactive-supports-focus, jsx-a11y/click-events-have-key-events |
-| 3.1.1 Language of Page (Level A) | jsx-a11y/html-has-lang |
-| 4.1.2 Name, Role, Value (Level A) | All jsx-a11y ARIA rules |
+| Success Criterion                 | Implementation                                                             |
+| --------------------------------- | -------------------------------------------------------------------------- |
+| 1.1.1 Non-text Content (Level A)  | jsx-a11y/alt-text, jsx-a11y/img-redundant-alt                              |
+| 2.1.1 Keyboard (Level A)          | jsx-a11y/interactive-supports-focus, jsx-a11y/click-events-have-key-events |
+| 3.1.1 Language of Page (Level A)  | jsx-a11y/html-has-lang                                                     |
+| 4.1.2 Name, Role, Value (Level A) | All jsx-a11y ARIA rules                                                    |
 
 ### SLSA Framework
 
-| Level | Requirement | Implementation |
-|---|---|---|
-| 1 | Build service | Lefthook with version pinning |
-| 2 | Version control + Build service | Git hooks + CI parity |
-| 3 | Provenance | Telemetry logging with trace IDs |
+| Level | Requirement                     | Implementation                   |
+| ----- | ------------------------------- | -------------------------------- |
+| 1     | Build service                   | Lefthook with version pinning    |
+| 2     | Version control + Build service | Git hooks + CI parity            |
+| 3     | Provenance                      | Telemetry logging with trace IDs |
 
 ### GDPR/CCPA
 
@@ -800,6 +846,7 @@ echo "✅ Pre-commit dependencies installed"
 ## References
 
 ### Technical Standards
+
 - [Lefthook Documentation](https://github.com/evilmartians/lefthook)
 - [Gitleaks Documentation](https://github.com/gitleaks/gitleaks)
 - [OWASP ASVS v4.0.3](https://github.com/OWASP/ASVS)
@@ -808,6 +855,7 @@ echo "✅ Pre-commit dependencies installed"
 - [SLSA Framework](https://slsa.dev)
 
 ### Project Documentation
+
 - `docs/06-security-and-risk/security.md` - Security policies
 - `docs/05-engineering-and-devops/development/quality.md` - Quality standards
 - `docs/00-foundation/standards/standards-overview.md` - Compliance requirements
@@ -822,6 +870,7 @@ Due to file size constraints, the complete `.lefthook.yml` v4.0.0 configuration 
 **Location**: See `/Users/morganlowman/GitHub/political-sphere/.lefthook-v4.yml` (to be created separately)
 
 **Installation**:
+
 ```bash
 cp .lefthook-v4.yml .lefthook.yml
 lefthook install

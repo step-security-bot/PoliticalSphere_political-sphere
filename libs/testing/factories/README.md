@@ -98,9 +98,10 @@ const user2 = UserFactory.buildSeeded(12345);
 ```typescript
 // Generate realistic vote distribution
 const votes = VoteFactory.buildDistribution(
-  100,               // Total votes
-  'bill-id-123',     // Bill ID
-  {                  // Distribution percentages
+  100, // Total votes
+  'bill-id-123', // Bill ID
+  {
+    // Distribution percentages
     for: 55,
     against: 35,
     abstain: 10,

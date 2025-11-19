@@ -1,4 +1,7 @@
 ---
+
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 description: 'User experience, ethical design, and WCAG 2.2 AA+ accessibility requirements'
 applyTo: '**/apps/frontend/**/*,**/libs/ui/**/*'
 ---

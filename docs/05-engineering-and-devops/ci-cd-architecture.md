@@ -327,6 +327,8 @@ Political Sphere's CI/CD infrastructure is designed with security, quality, and 
 
 ---
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 **Document Control**:
 
 - **Version**: 1.0.0

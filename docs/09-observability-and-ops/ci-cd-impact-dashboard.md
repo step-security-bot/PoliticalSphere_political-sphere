@@ -19,6 +19,8 @@
 
 ---
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 ## ⏱️ Time Efficiency Metrics
 
 ### Time Saved by Automation

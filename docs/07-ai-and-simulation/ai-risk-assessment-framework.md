@@ -10,6 +10,8 @@
 
 ---
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 This document provides a standardized framework for assessing AI-related risks in the Political Sphere project, aligned with ISO 42001:2023 requirements for AI Management Systems (AMLS).
 
 ## Overview

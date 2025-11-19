@@ -61,6 +61,8 @@ app.delete('/api/users/:id', authenticate, authorize('admin'), deleteUser);
 
 ---
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 #### `voting.example.ts`
 
 **Purpose:** Democratic voting system with integrity enforcement  

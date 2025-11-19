@@ -298,5 +298,7 @@ All strategies enforce:
 
 ---
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 **Approved by:** DevOps Team, Platform Engineering  
 **Review Date:** 2026-05-07 (6-month review cycle)

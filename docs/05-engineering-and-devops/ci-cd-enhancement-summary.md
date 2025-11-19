@@ -383,4 +383,6 @@ Test Coverage:
 
 ---
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 _This summary provides a complete overview of the CI/CD enhancements. For detailed technical information, refer to the documentation links above._

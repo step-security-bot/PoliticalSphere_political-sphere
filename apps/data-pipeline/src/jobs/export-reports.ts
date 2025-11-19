@@ -46,7 +46,7 @@ export class ExportReportsJob {
       formattedData,
       config.name,
       config.format,
-      config.destination
+      config.destination,
     );
 
     // Send to recipients if configured
@@ -115,10 +115,10 @@ export class ExportReportsJob {
    * Export data to specified destination
    */
   private async exportData(
-    data: string,
+    _data: string,
     reportName: string,
     format: string,
-    destination: string
+    destination: string,
   ): Promise<string> {
     const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
     const filename = `${reportName}-${timestamp}.${format}`;

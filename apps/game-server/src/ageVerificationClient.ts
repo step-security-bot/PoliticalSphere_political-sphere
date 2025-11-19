@@ -6,10 +6,12 @@
 import type { AxiosInstance } from 'axios';
 import axios from 'axios';
 
-import { getLogger } from '@political-sphere/shared';
 import { CircuitBreaker } from './utils/circuit-breaker';
 
-const logger = getLogger({ service: 'game-server' });
+// Dummy logger
+const logger = {
+  error: console.error,
+};
 
 interface VerificationStatus {
   verified: boolean;
@@ -46,7 +48,7 @@ class AgeVerificationClient {
     });
 
     // Circuit breaker for age verification API calls
-    this.circuitBreaker = new CircuitBreaker(3, 30000, 30000); // 3 failures, 30s timeout
+    this.circuitBreaker = new CircuitBreaker(3, 30000); // 3 failures, 30s timeout
   }
 
   /**

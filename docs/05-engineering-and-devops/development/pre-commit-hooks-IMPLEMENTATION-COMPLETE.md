@@ -6,6 +6,8 @@
 
 ---
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 ## Summary
 
 Successfully upgraded Political Sphere's pre-commit hooks from Lefthook v2.0.0 to v3.0.0 with industry-standard validation layers, priority-based execution, and enhanced developer experience.
@@ -13,32 +15,38 @@ Successfully upgraded Political Sphere's pre-commit hooks from Lefthook v2.0.0 t
 ## What Was Implemented
 
 ### Phase 0: Branding ✅
+
 - **ASCII Logo**: Centered "PS" logo with perfect alignment
 - **Banner**: Displays before all checks (priority: -1)
 - **Output**: Clean, professional presentation
 
 ### Phase 1: Security Layer ✅ (Priority: 0 - BLOCKING)
+
 - **Gitleaks**: Enhanced secret scanning with `--exit-code 1`
 - **Dependency Check**: Vulnerability scanning on package.json changes
 - **License Check**: Automated license compatibility validation (advisory)
 - **Environment Validation**: Secret detection and env var validation
 
 ### Phase 2: Code Quality Layer ✅ (Priority: 1 - Auto-fix)
+
 - **Format**: Biome (preferred) or Prettier fallback
 - **Lint**: Dual-layer (Biome + ESLint) with auto-fix and staging
 - **Type Check**: Incremental TypeScript validation
 
 ### Phase 3: Governance Layer ✅ (Priority: 2 - Blocking on violations)
+
 - **Accessibility Lint**: WCAG 2.2 AA validation for React components
 - **Neutrality Check**: Political neutrality validation (constitutional requirement)
 - **Test Quality**: Detects `.only()`, missing test cases, commented tests
 
 ### Phase 4: Infrastructure Validation ✅ (Priority: 3 - Conditional)
+
 - **Actionlint**: GitHub Actions workflow validation
 - **Hadolint**: Dockerfile linting with common false-positive ignores
 - **JSON/YAML Validation**: Syntax checking
 
 ### Phase 5: Commit Message Hooks ✅
+
 - **Empty Message Check**: Blocks commits with empty or whitespace-only messages
 - **Minimum Length**: Requires 10+ characters (excluding whitespace)
 - **Conventional Commits**: Enforces `type(scope): message` format
@@ -47,6 +55,7 @@ Successfully upgraded Political Sphere's pre-commit hooks from Lefthook v2.0.0 t
 - **Issue References**: Encourages linking to issues (advisory)
 
 ### Phase 6: Pre-Push Hooks ✅
+
 - **Full Type Check**: Comprehensive TypeScript validation
 - **Test Changed**: Runs tests on modified files only
 - **Security Audit**: Dependency vulnerability scan (advisory)
@@ -95,12 +104,14 @@ Successfully upgraded Political Sphere's pre-commit hooks from Lefthook v2.0.0 t
 ## Installation & Usage
 
 ### Installation
+
 ```bash
 # Hooks were installed during implementation
 npx lefthook install
 ```
 
 ### Normal Usage
+
 ```bash
 # Commit normally - hooks run automatically
 git add <files>
@@ -109,6 +120,7 @@ git push
 ```
 
 ### Emergency Skip (Use Sparingly)
+
 ```bash
 # Skip all hooks (emergencies only)
 LEFTHOOK=0 git commit -m "emergency fix"
@@ -118,6 +130,7 @@ LEFTHOOK_EXCLUDE=gitleaks git commit -m "fix: urgent change"
 ```
 
 ### Testing Hooks
+
 ```bash
 # Dry run to see what would execute
 lefthook run pre-commit --force
@@ -130,16 +143,17 @@ lefthook run --name gitleaks pre-commit
 
 ## Performance Metrics
 
-| Phase | Typical Duration | Status |
-|-------|------------------|--------|
-| Banner | < 0.05s | ✅ |
-| Security (Phase 1) | 0.1-0.5s | ✅ |
-| Quality (Phase 2) | 2-10s | ✅ |
-| Governance (Phase 3) | 0.5-2s | ✅ |
-| Infrastructure (Phase 4) | 0.1-1s | ✅ |
-| **Total** | **3-14s** | ✅ Acceptable |
+| Phase                    | Typical Duration | Status        |
+| ------------------------ | ---------------- | ------------- |
+| Banner                   | < 0.05s          | ✅            |
+| Security (Phase 1)       | 0.1-0.5s         | ✅            |
+| Quality (Phase 2)        | 2-10s            | ✅            |
+| Governance (Phase 3)     | 0.5-2s           | ✅            |
+| Infrastructure (Phase 4) | 0.1-1s           | ✅            |
+| **Total**                | **3-14s**        | ✅ Acceptable |
 
 **Optimization Notes:**
+
 - File-specific globs prevent unnecessary executions
 - Parallel execution where safe
 - Incremental TypeScript compilation
@@ -150,6 +164,7 @@ lefthook run --name gitleaks pre-commit
 ## Architectural Improvements
 
 ### Priority System
+
 - **-1**: Banner (cosmetic, runs first)
 - **0**: Security (critical, blocking)
 - **1**: Quality (auto-fix, staging)
@@ -157,12 +172,14 @@ lefthook run --name gitleaks pre-commit
 - **3**: Infrastructure (conditional, file-specific)
 
 ### Error Handling
+
 - Clear, actionable error messages
 - Explicit exit codes (0 = success, 1 = block)
 - Advisory warnings vs. blocking failures
 - Recovery instructions included
 
 ### Developer Experience
+
 - Professional banner with project identity
 - Color-coded emoji indicators
 - Progress feedback during execution
@@ -174,21 +191,25 @@ lefthook run --name gitleaks pre-commit
 ## Compliance Validation
 
 ### Security Standards
+
 - ✅ Zero-trust principles (secret scanning, env validation)
 - ✅ OWASP ASVS requirements (dependency scanning, license checking)
 - ✅ Fail-closed on security violations
 
 ### Accessibility Standards
+
 - ✅ WCAG 2.2 AA validation via jsx-a11y
 - ✅ Blocking on accessibility violations
 - ✅ Comprehensive ARIA and semantic HTML checks
 
 ### Governance Requirements
+
 - ✅ Political neutrality validation (constitutional)
 - ✅ Test quality gates (no .only(), structure validation)
 - ✅ Conventional commit enforcement
 
 ### Documentation Standards
+
 - ✅ Implementation guide (1630 lines, 8 phases)
 - ✅ This completion summary
 - ✅ Error messages reference relevant docs
@@ -198,6 +219,7 @@ lefthook run --name gitleaks pre-commit
 ## Next Steps
 
 ### Immediate (Completed)
+
 - [x] Backup original .lefthook.yml
 - [x] Implement all 6 phases
 - [x] Install hooks
@@ -206,6 +228,7 @@ lefthook run --name gitleaks pre-commit
 - [x] Document completion
 
 ### Short-term (Recommended within 1 week)
+
 - [ ] Install missing optional tools:
   ```bash
   brew install actionlint hadolint yamllint
@@ -218,6 +241,7 @@ lefthook run --name gitleaks pre-commit
 - [ ] Team onboarding: Share this document with contributors
 
 ### Long-term (Ongoing)
+
 - [ ] Monitor hook performance metrics
 - [ ] Collect developer feedback
 - [ ] Quarterly review and optimization
@@ -247,6 +271,7 @@ Backup preserved at: `.lefthook.yml.backup.20251117-HHMMSS`
 ## References
 
 ### Documentation
+
 - **Implementation Guide**: `docs/05-engineering-and-devops/development/pre-commit-hooks-implementation-guide.md`
 - **Testing Standards**: `docs/05-engineering-and-devops/development/testing.md`
 - **Security Policy**: `docs/06-security-and-risk/security.md`
@@ -254,6 +279,7 @@ Backup preserved at: `.lefthook.yml.backup.20251117-HHMMSS`
 - **AI Governance**: `docs/07-ai-and-simulation/ai-governance.md`
 
 ### External Resources
+
 - **Lefthook Docs**: https://github.com/evilmartians/lefthook
 - **Conventional Commits**: https://www.conventionalcommits.org/
 - **Pre-commit.com**: https://pre-commit.com/

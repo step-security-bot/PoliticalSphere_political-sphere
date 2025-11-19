@@ -1,17 +1,22 @@
 # AI Compliance Testing Pipeline
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 ## Overview
+
 This document defines the automated AI compliance testing pipeline for Political Sphere, ensuring all AI systems meet governance, ethical, and regulatory requirements.
 
 ## Compliance Framework
 
 ### Regulatory Requirements
+
 - **EU AI Act**: High-risk AI system classification and requirements
 - **NIST AI RMF**: Risk management framework implementation
 - **ISO/IEC 42001**: AI management system standards
 - **GDPR**: Data protection and automated decision-making rights
 
 ### Ethical Requirements
+
 - **Political Neutrality**: Zero bias in political content generation
 - **Transparency**: Explainable AI decisions and processes
 - **Accountability**: Audit trails for all AI actions
@@ -20,6 +25,7 @@ This document defines the automated AI compliance testing pipeline for Political
 ## Testing Pipeline Architecture
 
 ### Pre-Commit Testing
+
 ```yaml
 # .github/workflows/ai-compliance-pr.yml
 name: AI Compliance PR Checks
@@ -34,12 +40,14 @@ jobs:
 ```
 
 ### CI/CD Integration
+
 - **Unit Tests**: AI component functionality testing
 - **Integration Tests**: AI system interactions
 - **Compliance Tests**: Regulatory requirement validation
 - **Performance Tests**: AI system resource usage limits
 
 ### Staging Environment Testing
+
 - **Load Testing**: AI system performance under load
 - **Security Testing**: AI system vulnerability assessment
 - **Bias Testing**: Neutrality validation across diverse inputs
@@ -50,6 +58,7 @@ jobs:
 ### 1. Governance Compliance Tests
 
 #### Constitutional Alignment
+
 ```typescript
 describe('AI Constitutional Compliance', () => {
   test('rejects politically biased content generation', async () => {
@@ -66,6 +75,7 @@ describe('AI Constitutional Compliance', () => {
 ```
 
 #### Transparency Requirements
+
 - All AI decisions include explainability data
 - Audit trails maintained for 7 years
 - Public access to AI system documentation
@@ -73,6 +83,7 @@ describe('AI Constitutional Compliance', () => {
 ### 2. Ethical Boundary Tests
 
 #### Neutrality Validation
+
 ```typescript
 describe('Political Neutrality', () => {
   test('detects political bias in content', async () => {
@@ -90,6 +101,7 @@ describe('Political Neutrality', () => {
 ```
 
 #### Content Safety
+
 - Automatic detection of harmful content
 - Age-appropriate content filtering
 - Cultural sensitivity validation
@@ -97,6 +109,7 @@ describe('Political Neutrality', () => {
 ### 3. Technical Compliance Tests
 
 #### Security Testing
+
 ```typescript
 describe('AI Security Compliance', () => {
   test('prevents prompt injection attacks', async () => {
@@ -113,6 +126,7 @@ describe('AI Security Compliance', () => {
 ```
 
 #### Performance Requirements
+
 - Response time <500ms for real-time interactions
 - Resource usage within defined limits
 - Scalability testing for concurrent users
@@ -120,6 +134,7 @@ describe('AI Security Compliance', () => {
 ### 4. Regulatory Compliance Tests
 
 #### GDPR Compliance
+
 ```typescript
 describe('GDPR AI Compliance', () => {
   test('provides data subject rights', async () => {
@@ -136,6 +151,7 @@ describe('GDPR AI Compliance', () => {
 ```
 
 #### EU AI Act Requirements
+
 - High-risk classification documentation
 - Risk management system implementation
 - Transparency information provision
@@ -143,6 +159,7 @@ describe('GDPR AI Compliance', () => {
 ## Automated Testing Tools
 
 ### Custom Test Framework
+
 ```typescript
 // libs/testing/src/ai-compliance-tester.ts
 export class AIComplianceTester {
@@ -151,7 +168,7 @@ export class AIComplianceTester {
       this.testNeutrality(),
       this.testTransparency(),
       this.testSecurity(),
-      this.testPerformance()
+      this.testPerformance(),
     ]);
 
     return this.generateReport(results);
@@ -160,6 +177,7 @@ export class AIComplianceTester {
 ```
 
 ### Integration with Existing Tools
+
 - **Vitest**: Unit and integration test execution
 - **Playwright**: E2E testing with AI interaction simulation
 - **OWASP ZAP**: Automated security scanning
@@ -168,11 +186,13 @@ export class AIComplianceTester {
 ## Monitoring and Alerting
 
 ### Real-time Compliance Monitoring
+
 - Continuous scanning of AI outputs for bias
 - Automated alerts for compliance violations
 - Performance monitoring of AI systems
 
 ### Dashboard Integration
+
 - Compliance status visualization
 - Trend analysis of compliance metrics
 - Automated report generation
@@ -180,16 +200,19 @@ export class AIComplianceTester {
 ## Implementation Phases
 
 ### Phase 1: Foundation (Q1 2026)
+
 - Basic compliance test framework
 - Unit tests for AI components
 - Initial CI/CD integration
 
 ### Phase 2: Expansion (Q2 2026)
+
 - Integration and E2E tests
 - Performance and security testing
 - Automated reporting
 
 ### Phase 3: Maturity (Q3 2026)
+
 - Full regulatory compliance testing
 - Advanced bias detection
 - Continuous monitoring
@@ -197,12 +220,14 @@ export class AIComplianceTester {
 ## Quality Gates
 
 ### PR Gates
+
 - All AI compliance tests must pass
 - Neutrality score >90%
 - Security scan clean
 - Performance within limits
 
 ### Release Gates
+
 - Comprehensive compliance audit
 - Independent security review
 - Regulatory compliance verification
@@ -211,11 +236,13 @@ export class AIComplianceTester {
 ## Documentation and Training
 
 ### Developer Training
+
 - AI compliance requirements training
 - Testing best practices
 - Ethical AI development guidelines
 
 ### Documentation
+
 - Compliance testing procedures
 - Regulatory requirement mapping
 - Incident response procedures
@@ -223,12 +250,14 @@ export class AIComplianceTester {
 ## Continuous Improvement
 
 ### Metrics Tracking
+
 - Compliance test pass rates
 - Time to detect violations
 - False positive/negative rates
 - Performance impact of compliance checks
 
 ### Regular Reviews
+
 - Quarterly compliance assessment
 - Annual regulatory requirement review
 - Technology and methodology updates

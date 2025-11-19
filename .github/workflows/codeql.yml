@@ -89,7 +89,7 @@ jobs:
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@e12f0178983d466f2f6028f5cc7a6d786fd97f4b # v3.27.5
         with:
-          category: "/language:${{ matrix.language }}"
+          category: '/language:${{ matrix.language }}'
           # Upload SARIF results to GitHub Security
           upload: true
 

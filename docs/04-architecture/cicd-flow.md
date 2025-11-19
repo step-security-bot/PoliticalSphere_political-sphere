@@ -16,6 +16,8 @@
 
 ---
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 ## Overview
 
 This document describes the architecture and data flow of the Political Sphere CI/CD pipeline. Our pipeline is designed for:

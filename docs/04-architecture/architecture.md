@@ -22,31 +22,65 @@
 
 ---
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 ## System Architecture
 
-The Political Sphere platform is built as a modern, scalable web application using microservices architecture with the following key components:
+The Political Sphere platform is built as a modern, scalable web application using **microservices architecture** with **domain-driven design** principles. The system is organized as an **Nx monorepo** with clear separation between applications and shared libraries.
+
+### Architecture Context
+
+**Scale**: 12+ deployable applications, 17+ shared libraries  
+**Development Model**: Solo developer + AI collaboration  
+**Quality Standards**: Enterprise-grade (80%+ test coverage, WCAG 2.2 AA+, zero-trust security)  
+**Deployment**: Containerized microservices with Kubernetes orchestration  
+**Observability**: Comprehensive logging, metrics, and distributed tracing
 
 ### Core Services
 
-#### Frontend Application (`apps/frontend`)
+#### Frontend Application (`apps/web`)
 
-- **Framework**: React 18 with TypeScript
+- **Framework**: React 19 with TypeScript (strict mode)
 - **State Management**: Redux Toolkit + RTK Query
 - **Styling**: Tailwind CSS with custom design system
 - **Routing**: React Router v6
-- **Build Tool**: Vite
+- **Build Tool**: Vite (fast HMR, optimized production builds)
 - **Module Federation**: Webpack Module Federation for micro-frontends
+- **Accessibility**: WCAG 2.2 AA+ compliance with axe-core testing
 
 #### Backend API (`apps/api`)
 
-- **Framework**: Node.js with Express.js
-- **Language**: TypeScript
-- **Database**: PostgreSQL with Prisma ORM
-- **Authentication**: JWT with refresh tokens
-- **API Specification**: GraphQL with REST fallback
-- **Caching**: Redis for session and data caching
+- **Framework**: Node.js 22+ with Fastify (high-performance)
+- **Language**: TypeScript with strict type checking
+- **Database**: PostgreSQL 15+ with Prisma ORM
+- **Authentication**: JWT with secure refresh token rotation
+- **API Specification**: REST + GraphQL with OpenAPI/JSON Schema
+- **Validation**: Zod schemas for runtime type safety
+- **Caching**: Redis for sessions, queries, and pub/sub
 
-#### AI Assistant (`apps/dev/ai/ai-assistant`)
+#### Game Simulation Engine (`apps/game-server`)
+
+- **Runtime**: Node.js with TypeScript
+- **Real-time**: WebSockets for live game events
+- **Simulation**: Custom deterministic simulation engine
+- **AI NPCs**: Ollama-powered local AI models
+- **Event System**: NATS/Redis pub/sub for game events
+- **State Management**: PostgreSQL with transactional consistency
+
+#### Background Workers (`apps/worker`)
+
+- **Framework**: Node.js with BullMQ
+- **Queue**: Redis-backed job queues
+- **Purpose**: Async processing, scheduled tasks, data aggregation
+- **Reliability**: Retry logic, dead-letter queues, monitoring
+
+#### AI Assistant (`tools/scripts/ai/`)
+
+- **Framework**: Node.js with MCP (Model Context Protocol)
+- **Purpose**: AI-powered code assistance and automation
+- **Features**: Code generation, review, testing, optimization
+- **Safety**: Built-in governance and ethical AI constraints
+- **Integration**: GitHub Copilot + custom MCP servers
 
 - **Framework**: Node.js with MCP (Model Context Protocol)
 - **Purpose**: AI-powered code assistance and automation

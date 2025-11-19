@@ -18,7 +18,6 @@ locals {
   base_tags = merge({
     Environment = var.environment
     Project     = "political-sphere"
-    Tier        = "production"
   }, var.extra_tags)
 
   vpc = {
@@ -35,27 +34,21 @@ locals {
     cluster_version = "1.29"
     node_groups = {
       general = {
-        instance_types = ["m6i.xlarge"]
-        desired_size   = 4
+        instance_types = ["m6g.large"]
+        desired_size   = 3
         min_size       = 3
-        max_size       = 8
+        max_size       = 10
         disk_size      = 100
       }
-      spot = {
-        instance_types = ["m6i.xlarge", "m6a.xlarge", "m5n.xlarge"]
+      game = {
+        instance_types = ["c6g.xlarge"]
         desired_size   = 2
-        min_size       = 0
-        max_size       = 6
-        capacity_type  = "SPOT"
-        disk_size      = 80
+        min_size       = 2
+        max_size       = 8
+        disk_size      = 50
         labels = {
-          lifecycle = "spot"
+          workload = "game-server"
         }
-        taints = [{
-          key    = "workload"
-          value  = "batch"
-          effect = "PREFER_NO_SCHEDULE"
-        }]
       }
     }
     log_types  = ["api", "audit", "authenticator", "controllerManager", "scheduler"]
@@ -68,25 +61,26 @@ locals {
     password                = var.rds_password
     database_name           = "politicalsphere"
     multi_az                = true
-    allocated_storage       = 200
+    allocated_storage       = 100
     max_allocated_storage   = 1000
-    instance_class          = "db.m6g.xlarge"
-    backup_retention_period = 35
-    preferred_backup_window = "01:00-03:00"
-    preferred_maintenance_window = "sat:04:00-sat:05:00"
+    instance_class          = "db.r6g.large"
+    backup_retention_period = 30
+    preferred_backup_window = "03:00-05:00"
+    preferred_maintenance_window = "sat:06:00-sat:07:00"
     deletion_protection     = true
     storage_encrypted       = true
     kms_key_id              = ""
+    enabled_cloudwatch_logs_exports = ["postgresql"]
   }
 
-  redis = var.enable_redis ? {
+  redis = {
     replication_group_id  = "${var.environment}-redis"
     engine_version        = "7.1"
-    node_type             = "cache.m6g.large"
+    node_type             = "cache.r6g.large"
     number_cache_clusters = 3
     multi_az_enabled      = true
     auth_token            = var.redis_auth_token
-  } : null
+  }
 
   s3_buckets = {
     "political-sphere-${var.environment}-artifacts" = {
@@ -97,12 +91,9 @@ locals {
         transition = [{
           days          = 30
           storage_class = "STANDARD_IA"
-        }, {
-          days          = 180
-          storage_class = "GLACIER"
         }]
         expiration = {
-          days = 730
+          days = 365
         }
       }]
       public_access_block = {
@@ -118,30 +109,12 @@ locals {
     "political-sphere-${var.environment}-logs" = {
       versioning_enabled = true
       force_destroy      = false
-      logging = {
-        target_bucket = "political-sphere-${var.environment}-backups"
-        target_prefix = "log-delivery/"
-      }
       tags = {
         DataClassification = "logs"
       }
     }
-    "political-sphere-${var.environment}-backups" = {
+    "political-sphere-${var.environment}-assets" = {
       versioning_enabled = true
-      lifecycle_rules = [{
-        id      = "retain-backups"
-        enabled = true
-        transition = [{
-          days          = 30
-          storage_class = "STANDARD_IA"
-        }, {
-          days          = 90
-          storage_class = "GLACIER_IR"
-        }]
-        expiration = {
-          days = 1095
-        }
-      }]
       public_access_block = {
         block_public_acls       = true
         ignore_public_acls      = true
@@ -149,7 +122,7 @@ locals {
         restrict_public_buckets = true
       }
       tags = {
-        DataClassification = "backups"
+        DataClassification = "public"
       }
     }
   }
@@ -159,28 +132,21 @@ locals {
       image_tag_mutability = "IMMUTABLE"
       lifecycle_policy = {
         tag_status = "any"
-        count      = 150
+        count      = 100
       }
     }
-    "political-sphere/${var.environment}/frontend" = {
+    "political-sphere/${var.environment}/web" = {
       image_tag_mutability = "IMMUTABLE"
       lifecycle_policy = {
         tag_status = "any"
-        count      = 150
+        count      = 100
       }
     }
-    "political-sphere/${var.environment}/worker" = {
+    "political-sphere/${var.environment}/game-server" = {
       image_tag_mutability = "IMMUTABLE"
       lifecycle_policy = {
         tag_status = "any"
-        count      = 150
-      }
-    }
-    "political-sphere/${var.environment}/agents" = {
-      image_tag_mutability = "IMMUTABLE"
-      lifecycle_policy = {
-        tag_status = "any"
-        count      = 150
+        count      = 100
       }
     }
   }
@@ -198,6 +164,51 @@ locals {
     zone_id                   = ""
   }
 
+  cloudfront = {
+    distribution_name = "${var.environment}-cdn"
+    comment           = "Political Sphere ${var.environment} CDN"
+    default_root_object = "index.html"
+    price_class       = "PriceClass_All"
+    origins = [
+      {
+        domain_name = "${var.environment}-web.${var.primary_domain}"
+        origin_id   = "web-origin"
+        custom_origin_config = {
+          http_port              = 80
+          https_port             = 443
+          origin_protocol_policy = "https-only"
+          origin_ssl_protocols   = ["TLSv1.2"]
+        }
+      }
+    ]
+    default_cache_behavior = {
+      allowed_methods  = ["GET", "HEAD", "OPTIONS", "PUT", "POST", "PATCH", "DELETE"]
+      cached_methods   = ["GET", "HEAD"]
+      target_origin_id = "web-origin"
+      forward_query_string = true
+      forward_cookies      = "all"
+      viewer_protocol_policy = "redirect-to-https"
+      min_ttl                = 0
+      default_ttl            = 86400
+      max_ttl                = 31536000
+      compress               = true
+    }
+    custom_error_responses = [
+      {
+        error_code = 404
+        response_code = 200
+        response_page_path = "/index.html"
+        error_caching_min_ttl = 300
+      }
+    ]
+    geo_restriction = {
+      restriction_type = "none"
+    }
+    viewer_certificate = {
+      acm_certificate_arn = ""  # Will be set after ACM module is created
+    }
+  }
+
   kms = {
     description             = "Political Sphere ${var.environment} key"
     enable_key_rotation     = true
@@ -205,6 +216,14 @@ locals {
     aliases                 = ["alias/political-sphere-${var.environment}"]
     key_administrators      = var.kms_administrators
     key_users               = var.kms_users
+  }
+
+  iam = {
+    github_org               = var.github_org
+    repositories             = var.github_repositories
+    role_name_prefix         = "politicalsphere-${var.environment}"
+    permissions_boundary_arn = var.github_permissions_boundary
+    policy_statements        = local.github_policy_statements
   }
 
   github_policy_statements = [
@@ -246,14 +265,6 @@ locals {
       ]
     }
   ]
-
-  iam = {
-    github_org               = var.github_org
-    repositories             = var.github_repositories
-    role_name_prefix         = "politicalsphere-${var.environment}"
-    permissions_boundary_arn = var.github_permissions_boundary
-    policy_statements        = local.github_policy_statements
-  }
 }
 
 module "environment" {
@@ -263,14 +274,14 @@ module "environment" {
   environment = var.environment
   tags        = local.base_tags
 
-  vpc              = local.vpc
-  eks              = local.eks
-  rds              = local.rds
-  redis            = local.redis
+  vpc             = local.vpc
+  eks             = local.eks
+  rds             = local.rds
+  redis           = local.redis
   ecr_repositories = local.ecr_repositories
-  route53_zone     = local.route53_zone
-  acm              = local.acm
-  s3_buckets       = local.s3_buckets
-  kms              = local.kms
-  iam              = local.iam
+  route53_zone    = local.route53_zone
+  acm             = local.acm
+  s3_buckets      = local.s3_buckets
+  kms             = local.kms
+  iam             = local.iam
 }

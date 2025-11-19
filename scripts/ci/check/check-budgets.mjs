@@ -8,10 +8,16 @@ function fail(msg) {
 
 // Expect k6 JSON summary path via SUMMARY_JSON and budgets via BUDGETS_JSON
 const summaryPath = process.env.SUMMARY_JSON || 'artifacts/k6-summary.json';
-const budgetsPath = process.env.BUDGETS_JSON || 'apps/api/budgets.json';
+const budgetsPath = process.env.BUDGETS_JSON || 'config/performance-budgets.json';
+const serviceType = process.env.SERVICE_TYPE || 'api';
 
 const summary = JSON.parse(readFileSync(summaryPath, 'utf8'));
-const budgets = JSON.parse(readFileSync(budgetsPath, 'utf8'));
+const allBudgets = JSON.parse(readFileSync(budgetsPath, 'utf8'));
+const budgets = allBudgets[serviceType];
+
+if (!budgets) {
+  fail(`No budgets found for service type: ${serviceType}`);
+}
 
 // Extract p(95) from default HTTP req_duration
 const p95 =

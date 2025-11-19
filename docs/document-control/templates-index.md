@@ -12,6 +12,8 @@
 
 ---
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 ## 🎯 Purpose
 
 This Templates Index serves as the central registry for all standardized document templates used across the Political Sphere project. Templates ensure consistency, completeness, and compliance across documentation while reducing cognitive load and accelerating document creation.

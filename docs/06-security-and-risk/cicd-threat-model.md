@@ -14,6 +14,8 @@ This document identifies threats to our CI/CD pipeline and defines mitigations t
 
 ---
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 ## Table of Contents
 
 - [Threat Model Overview](#threat-model-overview)

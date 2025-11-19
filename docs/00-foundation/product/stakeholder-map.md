@@ -12,6 +12,8 @@
 
 ---
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 ## 🎯 Purpose
 
 Our Stakeholder Map provides a comprehensive analysis of all individuals, groups, and organizations that can affect or be affected by Political Sphere. This document guides our engagement strategies, communication approaches, and relationship management to ensure successful platform adoption and impact.

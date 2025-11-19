@@ -1,5 +1,7 @@
 # [Number]. [Short Title of Solved Problem and Solution]
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 Date: YYYY-MM-DD  
 Status: [Proposed | Accepted | Deprecated | Superseded by ADR-XXX]  
 Deciders: [list of people involved in the decision]  

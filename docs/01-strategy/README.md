@@ -12,6 +12,8 @@
 
 This section contains the strategic planning and roadmap documentation for Political Sphere, our multiplayer political simulation game set in the UK.
 
+> NOTE: For a consolidated project overview, development model, and strategic project context see `docs/00-foundation/project-context.md`.
+
 ## Overview
 
 The strategy documents outline our long-term vision, market positioning, and tactical plans for achieving our goals. These documents guide decision-making across product development, business operations, and growth initiatives.

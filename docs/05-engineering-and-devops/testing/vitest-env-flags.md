@@ -1,10 +1,13 @@
 # Vitest Environment Flags
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 This document describes the environment variables that control Vitest behavior in the Political Sphere project.
 
 ## Environment Variables
 
 ### VITEST_ENV
+
 Override the test environment.
 
 - **Values**: `jsdom`, `happy-dom`
@@ -13,6 +16,7 @@ Override the test environment.
 - **Example**: `VITEST_ENV=jsdom npm test`
 
 ### VITEST_SCOPE
+
 Limit test execution to specific scopes.
 
 - **Values**: `shared`
@@ -23,6 +27,7 @@ Limit test execution to specific scopes.
 When set to `shared`, only runs tests in `libs/shared/src/__tests__/` and the AI integration test.
 
 ### VITEST_CHANGED
+
 Enable changed-files mode for faster development feedback.
 
 - **Truthy values**: `1`, `true`, `yes` (case-insensitive)
@@ -30,6 +35,7 @@ Enable changed-files mode for faster development feedback.
 - **Example**: `VITEST_CHANGED=1 npm run test:watch`
 
 ### CI
+
 Force serial, deterministic test execution.
 
 - **Truthy values**: `1`, `true`, `yes` (case-insensitive)

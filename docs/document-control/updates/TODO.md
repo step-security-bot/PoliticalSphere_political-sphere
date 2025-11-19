@@ -10,6 +10,8 @@
 
 ---
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 ## Overview
 
 Complete the document-control folder by filling in content for placeholder documents. The templates-index.md is already complete. All content must be production-grade, aligned with Political Sphere's context (political simulation, AI, microservices), and comply with .blackboxrules (security, GDPR, EU AI Act, etc.).

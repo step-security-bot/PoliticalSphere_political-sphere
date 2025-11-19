@@ -1,8 +1,12 @@
 # Security Audit and Remediation Report
+
 ## Date: 2025-11-16
+
 ## Status: COMPLETE ✅
 
 ---
+
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
 
 ## Executive Summary
 
@@ -22,6 +26,7 @@ All critical and high severity security vulnerabilities have been successfully r
 ### Priority 1: Dependabot Alerts (CRITICAL/HIGH)
 
 #### Alert #10 - CRITICAL: gh-pages Prototype Pollution
+
 - **Package**: gh-pages
 - **Severity**: Critical (CVSS 9.8)
 - **CVE**: GHSA-8mmm-9v2q-x3f9
@@ -31,6 +36,7 @@ All critical and high severity security vulnerabilities have been successfully r
 - **Status**: ✅ RESOLVED
 
 #### Alert #8 - HIGH: nanoid Information Exposure
+
 - **Package**: nanoid
 - **Severity**: Medium (CVSS 5.3)
 - **CVE**: GHSA-qrpm-p2h7-hrv2, GHSA-mwcw-c2x4-8c55
@@ -40,11 +46,12 @@ All critical and high severity security vulnerabilities have been successfully r
 - **Status**: ✅ RESOLVED
 
 #### Alerts #3-5 - MEDIUM: js-yaml Prototype Pollution
+
 - **Package**: js-yaml
 - **Severity**: Moderate (CVSS 5.5)
 - **CVE**: GHSA-mh29-5h37-fv8m
 - **Impact**: Prototype pollution in merge operator
-- **Resolution**: 
+- **Resolution**:
   - Upgraded mocha 8.4.0 → 11.7.5
   - Upgraded nyc 15.1.0 → 17.1.0
   - Upgraded eslint to 9.39.1 (already in use)
@@ -60,19 +67,20 @@ All critical and high severity security vulnerabilities have been successfully r
 
 All GitHub Actions have been pinned to full 40-character commit SHAs:
 
-| Action | Previous | New Commit SHA | Version | File |
-|--------|----------|----------------|---------|------|
-| actions/checkout | v4.2.2 (tag) | 11bd71901bbe5b1630ceea73d27597364c9af683 | v4.2.2 | Multiple workflows |
-| actions/setup-node | v4 (tag) | 39370e3970a6d050c480ffad4ff0ed4d3fdee5af | v4.1.0 | accessibility.yml, build-and-test.yml |
-| actions/cache | v4 (tag) | 1bd1e32a3bdc45362d1e726936510720a7c30a57 | v4.2.0 | build-and-test.yml |
-| actions/upload-artifact | v4 (tag) | 330a01c490aca151604b8cf639adc76d48f6c5d4 | v4 | accessibility.yml |
-| docker/setup-buildx-action | v3 (tag) | c47758b77c9736f4b2ef4073d4d51994fabfe349 | v3.7.1 | docker.yml |
-| docker/login-action | v3 (tag) | 28fdb31ff34708d19615a74d67103ddc2ea9725c | v3 | docker.yml |
-| docker/metadata-action | v5 (tag) | 369eb591f429131d6889c46b94e711f089e6ca96 | v5.6.1 | docker.yml |
-| github/codeql-action/upload-sarif | v3 (tag) | c1a2b73420f0c02efb863cc6921c531bc1a54f4f | v3 | scorecard.yml |
-| ossf/scorecard-action | v2.4.3 (tag) | 99c09fe975337306107572b4fdf4db224cf8e2f2 | v2.4.3 | scorecard.yml |
+| Action                            | Previous     | New Commit SHA                           | Version | File                                  |
+| --------------------------------- | ------------ | ---------------------------------------- | ------- | ------------------------------------- |
+| actions/checkout                  | v4.2.2 (tag) | 11bd71901bbe5b1630ceea73d27597364c9af683 | v4.2.2  | Multiple workflows                    |
+| actions/setup-node                | v4 (tag)     | 39370e3970a6d050c480ffad4ff0ed4d3fdee5af | v4.1.0  | accessibility.yml, build-and-test.yml |
+| actions/cache                     | v4 (tag)     | 1bd1e32a3bdc45362d1e726936510720a7c30a57 | v4.2.0  | build-and-test.yml                    |
+| actions/upload-artifact           | v4 (tag)     | 330a01c490aca151604b8cf639adc76d48f6c5d4 | v4      | accessibility.yml                     |
+| docker/setup-buildx-action        | v3 (tag)     | c47758b77c9736f4b2ef4073d4d51994fabfe349 | v3.7.1  | docker.yml                            |
+| docker/login-action               | v3 (tag)     | 28fdb31ff34708d19615a74d67103ddc2ea9725c | v3      | docker.yml                            |
+| docker/metadata-action            | v5 (tag)     | 369eb591f429131d6889c46b94e711f089e6ca96 | v5.6.1  | docker.yml                            |
+| github/codeql-action/upload-sarif | v3 (tag)     | c1a2b73420f0c02efb863cc6921c531bc1a54f4f | v3      | scorecard.yml                         |
+| ossf/scorecard-action             | v2.4.3 (tag) | 99c09fe975337306107572b4fdf4db224cf8e2f2 | v2.4.3  | scorecard.yml                         |
 
 **Files Modified:**
+
 - `.github/workflows/accessibility.yml`
 - `.github/workflows/build-and-test.yml`
 - `.github/workflows/docker.yml`
@@ -88,6 +96,7 @@ All GitHub Actions have been pinned to full 40-character commit SHAs:
 Added security documentation and verified pinning for npm/pip commands:
 
 #### Scripts Updated:
+
 1. **scripts/ci/a11y-check.sh**
    - Added comment: "Pinned version for security - update via security review process only"
    - Versions: `@axe-core/playwright@4.11.0`, `playwright@1.56.1`
@@ -121,12 +130,14 @@ Added security documentation and verified pinning for npm/pip commands:
 ## Verification Results
 
 ### Production Dependencies
+
 ```bash
 npm audit --production
 # Result: 0 vulnerabilities ✅
 ```
 
 ### All Dependencies
+
 ```bash
 npm audit
 # Critical: 0 ✅
@@ -139,11 +150,13 @@ npm audit
 **Location**: `vendor/js-yaml-patched/node_modules/`
 
 The 3 remaining moderate vulnerabilities are:
+
 1. `js-yaml <4.1.1` in vendor build tools
 2. `@eslint/eslintrc` depending on old js-yaml
 3. `nyc` depending on build-time js-yaml
 
 **Risk Assessment**: ✅ ACCEPTABLE
+
 - These are development dependencies used only for building the vendored js-yaml package
 - Not executed in production or runtime
 - Isolated to vendor directory
@@ -154,10 +167,12 @@ The 3 remaining moderate vulnerabilities are:
 ## OpenSSF Scorecard Improvements
 
 ### Pinned-Dependencies Check
+
 - **Before**: ❌ Failed (unpinned actions in 5 workflows)
 - **After**: ✅ Passing (all actions pinned to commit SHAs)
 
 ### Token-Permissions Check
+
 - **Status**: ✅ Already compliant (hardened in previous PR #113)
 
 ---
@@ -165,12 +180,14 @@ The 3 remaining moderate vulnerabilities are:
 ## Compliance Verification
 
 ### Standards Met
+
 - ✅ **OWASP ASVS**: Dependency management (V14.2)
 - ✅ **NIST SP 800-53**: Supply chain risk management (SR-3, SR-4)
 - ✅ **OpenSSF Scorecard**: Pinned dependencies, secure workflows
 - ✅ **Zero-Trust Security**: No implicit trust in external dependencies
 
 ### Audit Trail
+
 - All changes documented in `CHANGELOG.md`
 - Commit messages reference specific CVE/GHSA identifiers
 - Security review process documented in commit comments
@@ -180,11 +197,13 @@ The 3 remaining moderate vulnerabilities are:
 ## Files Changed
 
 ### Direct Security Fixes
+
 - `vendor/js-yaml-patched/package.json` - Dependency upgrades
 - `vendor/js-yaml-patched/package-lock.json` - New lockfile with secure versions
 - `package-lock.json` - Root lockfile updated
 
 ### Workflow Hardening
+
 - `.github/workflows/accessibility.yml`
 - `.github/workflows/build-and-test.yml`
 - `.github/workflows/docker.yml`
@@ -192,6 +211,7 @@ The 3 remaining moderate vulnerabilities are:
 - `.github/workflows/test-setup-node-action.yml`
 
 ### Script Hardening
+
 - `scripts/ci/a11y-check.sh`
 - `scripts/ci/a11y/a11y-check.sh`
 - `tools/scripts/ai/install-upgrades.sh`
@@ -200,6 +220,7 @@ The 3 remaining moderate vulnerabilities are:
 - `.devcontainer/scripts/post-create.sh`
 
 ### Documentation
+
 - `CHANGELOG.md` - Comprehensive security update entry
 - `docs/SECURITY-AUDIT-2025-11-16.md` - This report
 
@@ -211,21 +232,22 @@ The 3 remaining moderate vulnerabilities are:
 
 ## Success Criteria
 
-| Criterion | Target | Actual | Status |
-|-----------|--------|--------|--------|
-| Zero critical vulnerabilities | 0 | 0 | ✅ MET |
-| Zero high vulnerabilities | 0 | 0 | ✅ MET |
-| Production vulnerabilities | 0 | 0 | ✅ MET |
-| Actions pinned to SHAs | 100% | 100% | ✅ MET |
-| Shell scripts documented | 100% | 100% | ✅ MET |
-| CHANGELOG updated | Yes | Yes | ✅ MET |
-| Compliance standards met | All | All | ✅ MET |
+| Criterion                     | Target | Actual | Status |
+| ----------------------------- | ------ | ------ | ------ |
+| Zero critical vulnerabilities | 0      | 0      | ✅ MET |
+| Zero high vulnerabilities     | 0      | 0      | ✅ MET |
+| Production vulnerabilities    | 0      | 0      | ✅ MET |
+| Actions pinned to SHAs        | 100%   | 100%   | ✅ MET |
+| Shell scripts documented      | 100%   | 100%   | ✅ MET |
+| CHANGELOG updated             | Yes    | Yes    | ✅ MET |
+| Compliance standards met      | All    | All    | ✅ MET |
 
 ---
 
 ## Next Steps
 
 ### Immediate (Completed ✅)
+
 - [x] Create security fix branch
 - [x] Upgrade vulnerable dependencies
 - [x] Pin all GitHub Actions
@@ -234,6 +256,7 @@ The 3 remaining moderate vulnerabilities are:
 - [x] Commit and push changes
 
 ### Short-term (Recommended)
+
 - [ ] Create pull request for review
 - [ ] Run full CI/CD pipeline on branch
 - [ ] Review and merge PR
@@ -241,6 +264,7 @@ The 3 remaining moderate vulnerabilities are:
 - [ ] Verify OpenSSF Scorecard improvements
 
 ### Long-term (Ongoing)
+
 - [ ] Enable Dependabot auto-merge for minor/patch updates
 - [ ] Set up automated security scanning in pre-commit hooks
 - [ ] Quarterly review of pinned action SHAs
@@ -251,18 +275,21 @@ The 3 remaining moderate vulnerabilities are:
 ## References
 
 ### CVE/GHSA Identifiers
+
 - **GHSA-8mmm-9v2q-x3f9**: tschaub gh-pages prototype pollution
 - **GHSA-qrpm-p2h7-hrv2**: nanoid information exposure
 - **GHSA-mwcw-c2x4-8c55**: nanoid predictable results
 - **GHSA-mh29-5h37-fv8m**: js-yaml prototype pollution in merge
 
 ### External Resources
+
 - [OpenSSF Scorecard](https://github.com/ossf/scorecard)
 - [OWASP ASVS v4.0.3](https://owasp.org/www-project-application-security-verification-standard/)
 - [NIST SP 800-53 Rev. 5](https://csrc.nist.gov/publications/detail/sp/800-53/rev-5/final)
 - [GitHub Actions Security Hardening](https://docs.github.com/en/actions/security-guides/security-hardening-for-github-actions)
 
 ### Internal Documentation
+
 - `SECURITY.md` - Vulnerability reporting process
 - `docs/06-security-and-risk/security.md` - Security architecture
 - `.github/copilot-instructions.md` - Security standards
@@ -278,13 +305,14 @@ The 3 remaining moderate vulnerabilities are:
 **Commit**: 9781cf0
 
 **Review Status**: ⏳ PENDING HUMAN REVIEW  
-**Merge Status**: ⏳ AWAITING PR APPROVAL  
+**Merge Status**: ⏳ AWAITING PR APPROVAL
 
 ---
 
 ## Appendix: Command Reference
 
 ### Verification Commands
+
 ```bash
 # Check production vulnerabilities
 npm audit --production
@@ -303,6 +331,7 @@ gh run view <run-id> --log-failed
 ```
 
 ### Maintenance Commands
+
 ```bash
 # Update dependencies (with caution)
 npm update --save

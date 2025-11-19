@@ -50,4 +50,6 @@ Templates will integrate with:
 
 ---
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 **Status**: 🚧 Templates in development Q4 2025 - Q1 2026

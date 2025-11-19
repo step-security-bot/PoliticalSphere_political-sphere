@@ -10,6 +10,8 @@
 
 ---
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 ## Purpose
 
 This document lists recommended dashboards and alerting rules for the Political Sphere platform. It is intended to be concise and point-runbooks and SLO definitions.

@@ -4,9 +4,36 @@
  */
 
 import { getLogger } from '@political-sphere/shared';
+import path from 'node:path';
 import { PrismaClient } from '@prisma/client';
 
 const logger = getLogger({ service: 'database' });
+
+// Type definitions for database operations
+export type DatabaseRecord = Record<string, unknown>;
+export type WhereClause = Record<string, unknown>;
+export type QueryOptions = {
+  skip?: number;
+  take?: number;
+  orderBy?: Record<string, 'asc' | 'desc'>;
+};
+
+// Type-safe access to Prisma models
+type _PrismaModels = {
+  [K in keyof PrismaClient]: PrismaClient[K] extends {
+    create: (args: unknown) => unknown;
+    findUnique: (args: unknown) => unknown;
+  }
+    ? PrismaClient[K]
+    : never;
+};
+
+// Ensure test DATABASE_URL is set as Prisma requires a file: URL for SQLite
+// This default is safe for test runs only and will not override an existing env var.
+if (!process.env.DATABASE_URL && process.env.NODE_ENV === 'test') {
+  const dbPath = path.join(process.cwd(), 'test.db');
+  process.env.DATABASE_URL = `file:${dbPath}`;
+}
 
 // Initialize Prisma client with connection pooling and logging
 const prisma = new PrismaClient({
@@ -16,6 +43,12 @@ const prisma = new PrismaClient({
     { level: 'warn', emit: 'event' },
     { level: 'error', emit: 'event' },
   ],
+  // Connection pooling configuration for PostgreSQL
+  datasources: {
+    db: {
+      url: process.env.DATABASE_URL,
+    },
+  },
 });
 
 // Log database queries in development
@@ -43,9 +76,18 @@ class PrismaDatabaseService {
   /**
    * Create a new record
    */
-  async create(model: string, data: any) {
+  async create(model: string, data: DatabaseRecord): Promise<DatabaseRecord> {
     try {
-      const result = await (prisma as any)[model].create({ data });
+      const modelClient = (
+        prisma as unknown as Record<
+          string,
+          { create: (args: { data: DatabaseRecord }) => Promise<DatabaseRecord> }
+        >
+      )[model];
+      if (!modelClient) {
+        throw new Error(`Model ${model} not found`);
+      }
+      const result = await modelClient.create({ data });
       logger.debug('Record created', { model, id: result.id });
       return result;
     } catch (error) {
@@ -58,9 +100,18 @@ class PrismaDatabaseService {
   /**
    * Find a record by ID
    */
-  async findById(model: string, id: string) {
+  async findById(model: string, id: string): Promise<DatabaseRecord | null> {
     try {
-      const result = await (prisma as any)[model].findUnique({
+      const modelClient = (
+        prisma as unknown as Record<
+          string,
+          { findUnique: (args: { where: { id: string } }) => Promise<DatabaseRecord | null> }
+        >
+      )[model];
+      if (!modelClient) {
+        throw new Error(`Model ${model} not found`);
+      }
+      const result = await modelClient.findUnique({
         where: { id },
       });
       return result;
@@ -74,9 +125,29 @@ class PrismaDatabaseService {
   /**
    * Find records matching criteria
    */
-  async findMany(model: string, where: any = {}, options: any = {}) {
+  async findMany(
+    model: string,
+    where: WhereClause = {},
+    options: QueryOptions = {},
+  ): Promise<DatabaseRecord[]> {
     try {
-      const result = await (prisma as any)[model].findMany({
+      const modelClient = (
+        prisma as unknown as Record<
+          string,
+          {
+            findMany: (args: {
+              where?: WhereClause;
+              skip?: number;
+              take?: number;
+              orderBy?: Record<string, string>;
+            }) => Promise<DatabaseRecord[]>;
+          }
+        >
+      )[model];
+      if (!modelClient) {
+        throw new Error(`Model ${model} not found`);
+      }
+      const result = await modelClient.findMany({
         where,
         skip: options.skip,
         take: options.take,
@@ -93,9 +164,18 @@ class PrismaDatabaseService {
   /**
    * Count records matching criteria
    */
-  async count(model: string, where: any = {}) {
+  async count(model: string, where: WhereClause = {}): Promise<number> {
     try {
-      return await (prisma as any)[model].count({ where });
+      const modelClient = (
+        prisma as unknown as Record<
+          string,
+          { count: (args: { where?: WhereClause }) => Promise<number> }
+        >
+      )[model];
+      if (!modelClient) {
+        throw new Error(`Model ${model} not found`);
+      }
+      return await modelClient.count({ where });
     } catch (error) {
       const err = error as Error;
       logger.error('Failed to count records', { model, where, error: err.message });
@@ -106,9 +186,23 @@ class PrismaDatabaseService {
   /**
    * Update a record
    */
-  async update(model: string, id: string, data: any) {
+  async update(model: string, id: string, data: DatabaseRecord): Promise<DatabaseRecord> {
     try {
-      const result = await (prisma as any)[model].update({
+      const modelClient = (
+        prisma as unknown as Record<
+          string,
+          {
+            update: (args: {
+              where: { id: string };
+              data: DatabaseRecord;
+            }) => Promise<DatabaseRecord>;
+          }
+        >
+      )[model];
+      if (!modelClient) {
+        throw new Error(`Model ${model} not found`);
+      }
+      const result = await modelClient.update({
         where: { id },
         data: {
           ...data,
@@ -129,7 +223,16 @@ class PrismaDatabaseService {
    */
   async delete(model: string, id: string) {
     try {
-      await (prisma as any)[model].delete({
+      const modelClient = (
+        prisma as unknown as Record<
+          string,
+          { delete: (args: { where: { id: string } }) => Promise<void> }
+        >
+      )[model];
+      if (!modelClient) {
+        throw new Error(`Model ${model} not found`);
+      }
+      await modelClient.delete({
         where: { id },
       });
       logger.debug('Record deleted', { model, id });
@@ -144,7 +247,11 @@ class PrismaDatabaseService {
   /**
    * Execute a transaction
    */
-  async transaction(callback: (tx: any) => Promise<any>) {
+  async transaction<T>(
+    callback: (
+      tx: Omit<PrismaClient, '$connect' | '$disconnect' | '$on' | '$transaction' | '$extends'>,
+    ) => Promise<T>,
+  ): Promise<T> {
     try {
       return await prisma.$transaction(async tx => {
         return await callback(tx);
@@ -159,7 +266,7 @@ class PrismaDatabaseService {
   /**
    * Check if a record exists
    */
-  async exists(model: string, where: any) {
+  async exists(model: string, where: WhereClause): Promise<boolean> {
     try {
       const count = await this.count(model, where);
       return count > 0;
@@ -191,92 +298,105 @@ export const prismaDb = new PrismaDatabaseService();
 
 // Parliament-specific operations
 export const ParliamentDB = {
-  createChamber: (data: any) => prismaDb.create('chamber', data),
+  createChamber: (data: DatabaseRecord) => prismaDb.create('chamber', data),
   getChamber: (id: string) => prismaDb.findById('chamber', id),
-  listChambers: (where: any = {}, options: any = {}) =>
+  listChambers: (where: WhereClause = {}, options: QueryOptions = {}) =>
     prismaDb.findMany('chamber', where, options),
 
-  createMotion: (data: any) => prismaDb.create('motion', data),
+  createMotion: (data: DatabaseRecord) => prismaDb.create('motion', data),
   getMotion: (id: string) => prismaDb.findById('motion', id),
-  listMotions: (where: any = {}, options: any = {}) => prismaDb.findMany('motion', where, options),
-  updateMotion: (id: string, data: any) => prismaDb.update('motion', id, data),
+  listMotions: (where: WhereClause = {}, options: QueryOptions = {}) =>
+    prismaDb.findMany('motion', where, options),
+  updateMotion: (id: string, data: DatabaseRecord) => prismaDb.update('motion', id, data),
 
-  createDebate: (data: any) => prismaDb.create('debate', data),
+  createDebate: (data: DatabaseRecord) => prismaDb.create('debate', data),
   getDebate: (id: string) => prismaDb.findById('debate', id),
+  updateDebate: (id: string, data: DatabaseRecord) => prismaDb.update('debate', id, data),
 
-  createVote: (data: any) => prismaDb.create('vote', data),
-  listVotes: (where: any = {}) => prismaDb.findMany('vote', where),
-  voteExists: (where: any) => prismaDb.exists('vote', where),
+  createVote: (data: DatabaseRecord) => prismaDb.create('vote', data),
+  listVotes: (where: WhereClause = {}) => prismaDb.findMany('vote', where),
+  voteExists: (where: WhereClause) => prismaDb.exists('vote', where),
+  countVotes: (where: WhereClause = {}) => prismaDb.count('vote', where),
 };
 
 // Government-specific operations
 export const GovernmentDB = {
-  createGovernment: (data: any) => prismaDb.create('government', data),
+  createGovernment: (data: DatabaseRecord) => prismaDb.create('government', data),
   getGovernment: (id: string) => prismaDb.findById('government', id),
-  listGovernments: (where: any = {}, options: any = {}) =>
+  listGovernments: (where: WhereClause = {}, options: QueryOptions = {}) =>
     prismaDb.findMany('government', where, options),
-  updateGovernment: (id: string, data: any) => prismaDb.update('government', id, data),
+  updateGovernment: (id: string, data: DatabaseRecord) => prismaDb.update('government', id, data),
 
-  createMinister: (data: any) => prismaDb.create('minister', data),
+  createMinister: (data: DatabaseRecord) => prismaDb.create('minister', data),
   getMinister: (id: string) => prismaDb.findById('minister', id),
-  listMinisters: (where: any = {}) => prismaDb.findMany('minister', where),
-  updateMinister: (id: string, data: any) => prismaDb.update('minister', id, data),
+  listMinisters: (where: WhereClause = {}) => prismaDb.findMany('minister', where),
+  updateMinister: (id: string, data: DatabaseRecord) => prismaDb.update('minister', id, data),
 
-  createExecutiveAction: (data: any) => prismaDb.create('executiveAction', data),
+  createExecutiveAction: (data: DatabaseRecord) => prismaDb.create('executiveAction', data),
   getExecutiveAction: (id: string) => prismaDb.findById('executiveAction', id),
-  listExecutiveActions: (where: any = {}) => prismaDb.findMany('executiveAction', where),
+  listExecutiveActions: (where: WhereClause = {}, options: QueryOptions = {}) =>
+    prismaDb.findMany('executiveAction', where, options),
+  updateExecutiveAction: (id: string, data: DatabaseRecord) =>
+    prismaDb.update('executiveAction', id, data),
 
-  createCabinetMeeting: (data: any) => prismaDb.create('cabinetMeeting', data),
+  createCabinetMeeting: (data: DatabaseRecord) => prismaDb.create('cabinetMeeting', data),
   getCabinetMeeting: (id: string) => prismaDb.findById('cabinetMeeting', id),
+  updateCabinetMeeting: (id: string, data: DatabaseRecord) =>
+    prismaDb.update('cabinetMeeting', id, data),
 };
 
 // Judiciary-specific operations
 export const JudiciaryDB = {
-  createCase: (data: any) => prismaDb.create('case', data),
+  createCase: (data: DatabaseRecord) => prismaDb.create('case', data),
   getCase: (id: string) => prismaDb.findById('case', id),
-  listCases: (where: any = {}, options: any = {}) => prismaDb.findMany('case', where, options),
-  updateCase: (id: string, data: any) => prismaDb.update('case', id, data),
+  listCases: (where: WhereClause = {}, options: QueryOptions = {}) =>
+    prismaDb.findMany('case', where, options),
+  updateCase: (id: string, data: DatabaseRecord) => prismaDb.update('case', id, data),
 
-  createJudge: (data: any) => prismaDb.create('judge', data),
+  createJudge: (data: DatabaseRecord) => prismaDb.create('judge', data),
   getJudge: (id: string) => prismaDb.findById('judge', id),
-  listJudges: (where: any = {}) => prismaDb.findMany('judge', where),
-  updateJudge: (id: string, data: any) => prismaDb.update('judge', id, data),
+  listJudges: (where: WhereClause = {}) => prismaDb.findMany('judge', where),
+  updateJudge: (id: string, data: DatabaseRecord) => prismaDb.update('judge', id, data),
 
-  createRuling: (data: any) => prismaDb.create('ruling', data),
+  createRuling: (data: DatabaseRecord) => prismaDb.create('ruling', data),
   getRuling: (id: string) => prismaDb.findById('ruling', id),
-  listRulings: (where: any = {}) => prismaDb.findMany('ruling', where),
+  listRulings: (where: WhereClause = {}) => prismaDb.findMany('ruling', where),
 
-  createReview: (data: any) => prismaDb.create('review', data),
+  createReview: (data: DatabaseRecord) => prismaDb.create('review', data),
   getReview: (id: string) => prismaDb.findById('review', id),
-  listReviews: (where: any = {}, options: any = {}) => prismaDb.findMany('review', where, options),
+  listReviews: (where: WhereClause = {}, options: QueryOptions = {}) =>
+    prismaDb.findMany('review', where, options),
+  updateReview: (id: string, data: DatabaseRecord) => prismaDb.update('review', id, data),
 
-  createPrecedent: (data: any) => prismaDb.create('precedent', data),
-  listPrecedents: (where: any = {}) => prismaDb.findMany('precedent', where),
+  createPrecedent: (data: DatabaseRecord) => prismaDb.create('precedent', data),
+  listPrecedents: (where: WhereClause = {}) => prismaDb.findMany('precedent', where),
 };
 
 // Media-specific operations
 export const MediaDB = {
-  createPressRelease: (data: any) => prismaDb.create('pressRelease', data),
+  createPressRelease: (data: DatabaseRecord) => prismaDb.create('pressRelease', data),
   getPressRelease: (id: string) => prismaDb.findById('pressRelease', id),
-  listPressReleases: (where: any = {}, options: any = {}) =>
+  listPressReleases: (where: WhereClause = {}, options: QueryOptions = {}) =>
     prismaDb.findMany('pressRelease', where, options),
-  updatePressRelease: (id: string, data: any) => prismaDb.update('pressRelease', id, data),
+  updatePressRelease: (id: string, data: DatabaseRecord) =>
+    prismaDb.update('pressRelease', id, data),
 
-  createPoll: (data: any) => prismaDb.create('poll', data),
+  createPoll: (data: DatabaseRecord) => prismaDb.create('poll', data),
   getPoll: (id: string) => prismaDb.findById('poll', id),
-  listPolls: (where: any = {}, options: any = {}) => prismaDb.findMany('poll', where, options),
-  updatePoll: (id: string, data: any) => prismaDb.update('poll', id, data),
+  listPolls: (where: WhereClause = {}, options: QueryOptions = {}) =>
+    prismaDb.findMany('poll', where, options),
+  updatePoll: (id: string, data: DatabaseRecord) => prismaDb.update('poll', id, data),
 
-  createPollVote: (data: any) => prismaDb.create('pollVote', data),
-  pollVoteExists: (where: any) => prismaDb.exists('pollVote', where),
+  createPollVote: (data: DatabaseRecord) => prismaDb.create('pollVote', data),
+  pollVoteExists: (where: WhereClause) => prismaDb.exists('pollVote', where),
 
-  createCoverage: (data: any) => prismaDb.create('coverage', data),
-  listCoverage: (where: any = {}, options: any = {}) =>
+  createCoverage: (data: DatabaseRecord) => prismaDb.create('coverage', data),
+  listCoverage: (where: WhereClause = {}, options: QueryOptions = {}) =>
     prismaDb.findMany('coverage', where, options),
 
-  createNarrative: (data: any) => prismaDb.create('narrative', data),
+  createNarrative: (data: DatabaseRecord) => prismaDb.create('narrative', data),
   getNarrative: (id: string) => prismaDb.findById('narrative', id),
-  listNarratives: (where: any = {}, options: any = {}) =>
+  listNarratives: (where: WhereClause = {}, options: QueryOptions = {}) =>
     prismaDb.findMany('narrative', where, options),
 
   getApprovalRating: async (key: string) => {
@@ -289,12 +409,12 @@ export const MediaDB = {
           entityId,
           entityType,
         },
-        { orderBy: { measuredAt: 'desc' }, take: 1 }
+        { orderBy: { measuredAt: 'desc' }, take: 1 },
       )
       .then(r => r[0]);
   },
 
-  setApprovalRating: async (key: string, data: any) => {
+  setApprovalRating: async (key: string, data: DatabaseRecord) => {
     const [entityId, entityType] = key.split(':');
     return await prismaDb.create('approvalRating', {
       entityId,
@@ -303,30 +423,31 @@ export const MediaDB = {
     });
   },
 
-  listApprovalRatings: (where: any = {}) => prismaDb.findMany('approvalRating', where),
+  listApprovalRatings: (where: WhereClause = {}) => prismaDb.findMany('approvalRating', where),
 };
 
 // Elections-specific operations
 export const ElectionsDB = {
-  createElection: (data: any) => prismaDb.create('election', data),
+  createElection: (data: DatabaseRecord) => prismaDb.create('election', data),
   getElection: (id: string) => prismaDb.findById('election', id),
-  listElections: (where: any = {}, options: any = {}) =>
+  listElections: (where: WhereClause = {}, options: QueryOptions = {}) =>
     prismaDb.findMany('election', where, options),
-  updateElection: (id: string, data: any) => prismaDb.update('election', id, data),
+  updateElection: (id: string, data: DatabaseRecord) => prismaDb.update('election', id, data),
 
-  createCampaign: (data: any) => prismaDb.create('campaign', data),
-  listCampaigns: (where: any = {}) => prismaDb.findMany('campaign', where),
+  createCampaign: (data: DatabaseRecord) => prismaDb.create('campaign', data),
+  listCampaigns: (where: WhereClause = {}) => prismaDb.findMany('campaign', where),
 
-  createConstituency: (data: any) => prismaDb.create('constituency', data),
+  createConstituency: (data: DatabaseRecord) => prismaDb.create('constituency', data),
   getConstituency: (id: string) => prismaDb.findById('constituency', id),
-  listConstituencies: (where: any = {}) => prismaDb.findMany('constituency', where),
-  updateConstituency: (id: string, data: any) => prismaDb.update('constituency', id, data),
+  listConstituencies: (where: WhereClause = {}) => prismaDb.findMany('constituency', where),
+  updateConstituency: (id: string, data: DatabaseRecord) =>
+    prismaDb.update('constituency', id, data),
 
-  createCandidate: (data: any) => prismaDb.create('candidate', data),
+  createCandidate: (data: DatabaseRecord) => prismaDb.create('candidate', data),
   getCandidate: (id: string) => prismaDb.findById('candidate', id),
-  listCandidates: (where: any = {}) => prismaDb.findMany('candidate', where),
-  updateCandidate: (id: string, data: any) => prismaDb.update('candidate', id, data),
+  listCandidates: (where: WhereClause = {}) => prismaDb.findMany('candidate', where),
+  updateCandidate: (id: string, data: DatabaseRecord) => prismaDb.update('candidate', id, data),
 
-  createVote: (data: any) => prismaDb.create('electionVote', data),
-  voteExists: (where: any) => prismaDb.exists('electionVote', where),
+  createVote: (data: DatabaseRecord) => prismaDb.create('electionVote', data),
+  voteExists: (where: WhereClause) => prismaDb.exists('electionVote', where),
 };

@@ -6,6 +6,8 @@
 
 ---
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 ## Directory Placement
 
 NEVER place files in root. Always use these structured locations:

@@ -79,5 +79,84 @@ describe('PoliticalNeutralityEnforcer', () => {
       expect(result.detected).toBe(true);
       expect(result.findings.length).toBeGreaterThan(0);
     });
+
+    it('should detect vote weighting manipulation', () => {
+      const manipulatedData = { voteWeight: 2.0 };
+
+      const result = enforcer.detectVotingManipulation(manipulatedData);
+
+      expect(result.detected).toBe(true);
+      expect(result.findings.some(f => f.includes('weighting'))).toBe(true);
+    });
+  });
+
+  describe('detectModerationBias()', () => {
+    it('should pass objective moderation', () => {
+      const action = {
+        type: 'remove' as const,
+        content: 'spam content',
+        reason: 'spam',
+      };
+
+      const result = enforcer.detectModerationBias(action);
+
+      expect(result.biased).toBe(false);
+    });
+
+    it('should detect politically biased moderation', () => {
+      const action = {
+        type: 'remove' as const,
+        content: 'political opinion',
+        reason: 'wrong ideology',
+      };
+
+      const result = enforcer.detectModerationBias(action);
+
+      expect(result.biased).toBe(true);
+      expect(result.findings.length).toBeGreaterThan(0);
+    });
+
+    it('should detect lack of objective justification', () => {
+      const action = {
+        type: 'flag' as const,
+        content: 'content',
+        reason: 'I disagree with this',
+      };
+
+      const result = enforcer.detectModerationBias(action);
+
+      expect(result.biased).toBe(true);
+      expect(result.findings.some(f => f.includes('objective justification'))).toBe(true);
+    });
+  });
+
+  describe('detectPowerManipulation()', () => {
+    it('should always flag power changes as suspicious', () => {
+      const change = {
+        userId: 'user-123',
+        action: 'grant' as const,
+        permission: 'admin',
+        reason: 'needed for work',
+      };
+
+      const result = enforcer.detectPowerManipulation(change);
+
+      expect(result.suspicious).toBe(true);
+      expect(result.findings.length).toBeGreaterThan(0);
+    });
+
+    it('should detect politically motivated permission changes', () => {
+      const change = {
+        userId: 'user-123',
+        action: 'revoke' as const,
+        permission: 'voting',
+        reason: 'political alignment issues',
+      };
+
+      const result = enforcer.detectPowerManipulation(change);
+
+      expect(result.suspicious).toBe(true);
+      expect(result.findings.some(f => f.includes('Politically motivated'))).toBe(true);
+    });
   });
 });

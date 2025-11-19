@@ -1,72 +1,99 @@
-// Prisma schema for Political Sphere
+ // Prisma schema for Political Sphere
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider = "sqlite"
 }
 
 // Parliament Models
 model Chamber {
   id        String   @id @default(cuid())
+  gameId    String
   name      String
-  type      String // "house" | "senate"
-  seats     Int
+  type      String // "commons" | "lords"
+  maxSeats  Int
+  quorumPercentage Float   @default(50.0)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   motions Motion[]
   debates Debate[]
 
+  @@index([gameId])
   @@map("chambers")
 }
 
 model Motion {
   id          String   @id @default(cuid())
+  gameId      String
+  chamberId   String
+  proposerId  String
+  type        String // "debate" | "vote" | "amendment" | "procedural"
   title       String
   description String?
-  status      String   @default("proposed") // "proposed" | "debating" | "passed" | "failed"
-  chamberId   String
+  status      String   @default("proposed") // "proposed" | "debate" | "voting" | "completed"
+  votingStarted DateTime?
+  votingEnded DateTime?
+  result      String? // "passed" | "failed"
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
   chamber Chamber @relation(fields: [chamberId], references: [id], onDelete: Cascade)
   debate  Debate?
 
+  @@index([gameId])
+  @@index([chamberId])
+  @@index([chamberId, status])
+
   @@map("motions")
 }
 
 model Debate {
   id          String    @id @default(cuid())
+  gameId      String
   motionId    String    @unique
-  status      String    @default("scheduled") // "scheduled" | "active" | "completed"
-  scheduledAt DateTime?
-  startedAt   DateTime?
-  endedAt     DateTime?
   chamberId   String
+  startTime   DateTime
+  duration    Int // seconds
+  speakingOrder String // JSON array of user IDs
+  timePerSpeaker Int @default(180) // seconds
+  status      String    @default("scheduled") // "scheduled" | "active" | "completed"
+  currentSpeakerIndex Int @default(0)
+  speeches    Json? // array of speech objects
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
 
   motion  Motion  @relation(fields: [motionId], references: [id], onDelete: Cascade)
   chamber Chamber @relation(fields: [chamberId], references: [id], onDelete: Cascade)
-  votes   Vote[]
+  votes   DebateVote[]
+
+  @@index([gameId])
+  @@index([motionId])
+  @@index([chamberId])
+  @@index([chamberId, status])
 
   @@map("debates")
 }
 
-model Vote {
+model DebateVote {
   id        String   @id @default(cuid())
+  gameId    String
+  motionId  String
   debateId  String
   userId    String
-  position  String // "aye" | "nay" | "abstain"
+  vote      String // "aye" | "no" | "abstain"
   createdAt DateTime @default(now())
 
   debate Debate @relation(fields: [debateId], references: [id], onDelete: Cascade)
 
-  @@unique([debateId, userId])
-  @@map("votes")
+  @@index([gameId])
+  @@index([motionId])
+  @@index([debateId])
+  @@index([debateId, vote])
+  @@unique([motionId, userId])
+  @@map("debate_votes")
 }
 
 // Government Models
@@ -82,6 +109,9 @@ model Government {
 
   ministers Minister[]
 
+  @@index([status])
+  @@index([formedAt])
+  @@index([leaderId])
   @@map("governments")
 }
 
@@ -97,13 +127,15 @@ model Minister {
 
   government Government @relation(fields: [governmentId], references: [id], onDelete: Cascade)
 
+  @@index([governmentId])
+
   @@map("ministers")
 }
 
 model ExecutiveAction {
   id          String    @id @default(cuid())
   title       String
-  description String?
+  description String
   type        String // "decree" | "order" | "policy"
   status      String    @default("proposed") // "proposed" | "signed" | "vetoed"
   signedAt    DateTime?
@@ -119,6 +151,7 @@ model CabinetMeeting {
   agenda      String?
   scheduledAt DateTime
   status      String   @default("scheduled") // "scheduled" | "in_progress" | "completed"
+  attendees   Json? // array of user IDs
   minutes     String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
@@ -130,7 +163,7 @@ model CabinetMeeting {
 model Case {
   id          String    @id @default(cuid())
   title       String
-  description String?
+  description String
   type        String // "constitutional" | "civil" | "criminal"
   status      String    @default("filed") // "filed" | "under_review" | "decided" | "appealed"
   filedAt     DateTime  @default(now())
@@ -141,6 +174,10 @@ model Case {
   rulings Ruling[]
   reviews Review[]
 
+  @@index([status])
+  @@index([type])
+  @@index([filedAt])
+  @@index([status, type])
   @@map("cases")
 }
 
@@ -156,6 +193,9 @@ model Judge {
 
   rulings Ruling[]
 
+  @@index([userId])
+  @@index([court])
+  @@index([position])
   @@map("judges")
 }
 
@@ -172,6 +212,10 @@ model Ruling {
   case  Case  @relation(fields: [caseId], references: [id], onDelete: Cascade)
   judge Judge @relation(fields: [judgeId], references: [id], onDelete: Cascade)
 
+  @@index([caseId])
+  @@index([judgeId])
+  @@index([caseId, judgeId])
+
   @@map("rulings")
 }
 
@@ -187,6 +231,8 @@ model Review {
 
   case Case @relation(fields: [caseId], references: [id], onDelete: Cascade)
 
+  @@index([caseId])
+
   @@map("reviews")
 }
 
@@ -198,6 +244,8 @@ model Precedent {
   holding   String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@index([caseId])
 
   @@map("precedents")
 }
@@ -237,6 +285,7 @@ model PollVote {
 
   poll Poll @relation(fields: [pollId], references: [id], onDelete: Cascade)
 
+  @@index([pollId])
   @@unique([pollId, userId])
   @@map("poll_votes")
 }
@@ -308,6 +357,8 @@ model Campaign {
 
   election Election @relation(fields: [electionId], references: [id], onDelete: Cascade)
 
+  @@index([electionId])
+
   @@map("campaigns")
 }
 
@@ -324,6 +375,8 @@ model Constituency {
   election   Election    @relation(fields: [electionId], references: [id], onDelete: Cascade)
   candidates Candidate[]
 
+  @@index([electionId])
+
   @@map("constituencies")
 }
 
@@ -339,6 +392,8 @@ model Candidate {
 
   constituency Constituency @relation(fields: [constituencyId], references: [id], onDelete: Cascade)
 
+  @@index([constituencyId])
+
   @@map("candidates")
 }
 
@@ -352,17 +407,96 @@ model ElectionVote {
 
   election Election @relation(fields: [electionId], references: [id], onDelete: Cascade)
 
+  @@index([electionId])
   @@unique([electionId, userId])
   @@map("election_votes")
 }
 
-// User and Auth Models (simplified - would integrate with actual auth system)
-model User {
+// Game Models
+model Game {
   id        String   @id @default(cuid())
-  email     String   @unique
-  username  String?  @unique
+  name      String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  // Game state stored as JSON
+  state     Json
+
+  @@map("games")
+}
+
+// User and Auth Models
+enum UserRole {
+  ADMIN
+  MODERATOR
+  VIEWER
+}
+
+model User {
+  id            String   @id @default(cuid())
+  email         String   @unique
+  username      String?  @unique
+  passwordHash  String?
+  role          UserRole @default(VIEWER)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  // Relations
+  proposedBills Bill[]
+  votes         Vote[]
+
+  @@index([username])
+  @@index([email])
   @@map("users")
+}
+
+// Bill Models
+model Bill {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  proposerId  String
+  status      String   @default("proposed")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  proposer User  @relation(fields: [proposerId], references: [id], onDelete: Cascade)
+  votes    Vote[]
+
+  @@index([proposerId])
+  @@index([status])
+  @@index([createdAt])
+  @@map("bills")
+}
+
+// Party Models
+model Party {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  description String?
+  color       String?
+  createdAt   DateTime @default(now())
+
+  @@index([name])
+  @@map("parties")
+}
+
+// Vote Models (updated to match bill votes)
+model Vote {
+  id        String   @id @default(cuid())
+  billId    String
+  userId    String
+  vote      String // "aye" | "nay" | "abstain"
+  createdAt DateTime @default(now())
+
+  // Relations
+  bill Bill @relation(fields: [billId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([billId])
+  @@index([userId])
+  @@index([billId, userId])
+  @@unique([billId, userId])
+  @@map("votes")
 }

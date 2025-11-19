@@ -8,6 +8,8 @@
 
 ---
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 ## Executive Summary
 
 Political Sphere is a multiplayer strategy game set in a simulated UK political system. Players compete for power, form parties, campaign for votes, debate policies, and navigate the complexities of governance. The goal is to create engaging, strategic gameplay where political skill—coalition-building, negotiation, timing, persuasion—determines success.

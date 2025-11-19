@@ -45,21 +45,21 @@ HTTP server exposing AI metrics in Prometheus format for scraping.
 
 **Metrics Exported:**
 
-| Metric | Type | Description |
-|--------|------|-------------|
-| `ai_competence_score` | Gauge | Current AI code quality score (0-1) |
-| `ai_tool_execution_duration_seconds` | Histogram | Tool execution latency distribution |
-| `ai_cache_hits_total` | Counter | Total cache hits |
-| `ai_cache_misses_total` | Counter | Total cache misses |
-| `ai_workflow_success_total` | Counter | Successful workflow runs |
-| `ai_workflow_total` | Counter | Total workflow runs |
-| `ai_neutrality_violations_total` | Counter | Political bias detections by category |
-| `ai_index_size_bytes` | Gauge | Size of code index |
-| `ai_index_file_count` | Gauge | Number of indexed files |
-| `ai_tool_errors_total` | Counter | Tool error count by tool name |
-| `ai_smoke_test_success_total` | Counter | Passing smoke tests |
-| `ai_smoke_test_total` | Counter | Total smoke tests run |
-| `ai_context_bundle_last_update_timestamp` | Gauge | Last context refresh time (Unix timestamp) |
+| Metric                                    | Type      | Description                                |
+| ----------------------------------------- | --------- | ------------------------------------------ |
+| `ai_competence_score`                     | Gauge     | Current AI code quality score (0-1)        |
+| `ai_tool_execution_duration_seconds`      | Histogram | Tool execution latency distribution        |
+| `ai_cache_hits_total`                     | Counter   | Total cache hits                           |
+| `ai_cache_misses_total`                   | Counter   | Total cache misses                         |
+| `ai_workflow_success_total`               | Counter   | Successful workflow runs                   |
+| `ai_workflow_total`                       | Counter   | Total workflow runs                        |
+| `ai_neutrality_violations_total`          | Counter   | Political bias detections by category      |
+| `ai_index_size_bytes`                     | Gauge     | Size of code index                         |
+| `ai_index_file_count`                     | Gauge     | Number of indexed files                    |
+| `ai_tool_errors_total`                    | Counter   | Tool error count by tool name              |
+| `ai_smoke_test_success_total`             | Counter   | Passing smoke tests                        |
+| `ai_smoke_test_total`                     | Counter   | Total smoke tests run                      |
+| `ai_context_bundle_last_update_timestamp` | Gauge     | Last context refresh time (Unix timestamp) |
 
 **Usage:**
 
@@ -147,30 +147,30 @@ groups:
         expr: ai_competence_score < 0.5
         for: 72h
         annotations:
-          summary: "AI competence score below threshold"
-          description: "Competence score has been below 0.5 for 3 days"
-        
+          summary: 'AI competence score below threshold'
+          description: 'Competence score has been below 0.5 for 3 days'
+
       - alert: AIWorkflowFailureRate
         expr: rate(ai_workflow_total[24h]) - rate(ai_workflow_success_total[24h]) > 0.02
         for: 1h
         annotations:
-          summary: "AI workflow failure rate high"
-          description: "More than 2% of workflows failing in 24h window"
-        
+          summary: 'AI workflow failure rate high'
+          description: 'More than 2% of workflows failing in 24h window'
+
       - alert: AINeutralityViolation
         expr: increase(ai_neutrality_violations_total[1h]) > 0
         for: 1m
         annotations:
-          summary: "Political neutrality violation detected"
-          description: "{{ $labels.category }} neutrality violation in last hour"
+          summary: 'Political neutrality violation detected'
+          description: '{{ $labels.category }} neutrality violation in last hour'
           severity: critical
-        
+
       - alert: AIToolLatencyHigh
         expr: histogram_quantile(0.95, ai_tool_execution_duration_seconds_bucket) > 0.5
         for: 15m
         annotations:
-          summary: "AI tool p95 latency exceeds 500ms"
-          description: "{{ $labels.tool }} latency too high"
+          summary: 'AI tool p95 latency exceeds 500ms'
+          description: '{{ $labels.tool }} latency too high'
 ```
 
 ## Monitoring Best Practices

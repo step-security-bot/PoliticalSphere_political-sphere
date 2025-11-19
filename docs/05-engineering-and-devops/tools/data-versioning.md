@@ -1,5 +1,7 @@
 # Data Versioning with DVC
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 Political Sphere now ships DVC (Data Version Control) hooks so that large fixtures and seeds can live outside Git history while remaining reproducible.
 
 ## Toolchain

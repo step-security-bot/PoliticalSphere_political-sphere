@@ -40,14 +40,15 @@ export const MediaCenter: React.FC<MediaCenterProps> = ({ userId: _userId, onErr
   const [polls, setPolls] = useState<Poll[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<'news' | 'polls'>('news');
+  const [votingPollId, setVotingPollId] = useState<string | null>(null);
 
   const fetchMedia = useCallback(async () => {
     try {
       setLoading(true);
       const [newsRes, pollsRes] = await Promise.all([api.getPressReleases(), api.getPolls()]);
 
-      if (newsRes.success) setNews(newsRes.data || []);
-      if (pollsRes.success) setPolls(pollsRes.data || []);
+      if (newsRes.success) setNews((newsRes.data as NewsArticle[]) || []);
+      if (pollsRes.success) setPolls((pollsRes.data as Poll[]) || []);
     } catch (error) {
       onError?.(error instanceof Error ? error.message : 'Failed to fetch media');
     } finally {
@@ -62,6 +63,9 @@ export const MediaCenter: React.FC<MediaCenterProps> = ({ userId: _userId, onErr
   }, [fetchMedia]);
 
   const handleVote = async (pollId: string, optionIndex: number) => {
+    if (votingPollId) return; // Prevent multiple votes
+
+    setVotingPollId(pollId);
     try {
       const response = await api.votePoll(pollId, optionIndex);
       if (response.success) {
@@ -71,6 +75,8 @@ export const MediaCenter: React.FC<MediaCenterProps> = ({ userId: _userId, onErr
       }
     } catch (error) {
       onError?.(error instanceof Error ? error.message : 'Failed to vote');
+    } finally {
+      setVotingPollId(null);
     }
   };
 
@@ -135,7 +141,7 @@ export const MediaCenter: React.FC<MediaCenterProps> = ({ userId: _userId, onErr
                         type="button"
                         onClick={() => handleVote(poll.id, idx)}
                         className="poll-option"
-                        disabled={poll.status === 'closed'}
+                        disabled={poll.status === 'closed' || votingPollId === poll.id}
                       >
                         <span>{option}</span>
                         <span className="poll-votes">

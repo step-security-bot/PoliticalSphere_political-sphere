@@ -6,6 +6,8 @@
 
 ---
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 ## Overview
 
 This document describes the configuration for GitHub Copilot's coding agent, including the development environment setup and firewall settings. The configuration ensures fast, consistent, and secure agent operations while maintaining compliance with our security standards.
@@ -41,10 +43,10 @@ jobs:
   copilot-setup-steps:
     runs-on: ubuntu-latest
     timeout-minutes: 30
-    
+
     permissions:
       contents: read # Minimal permissions
-    
+
     steps:
       - Checkout code
       - Setup Node.js 22 with npm cache
@@ -94,16 +96,20 @@ GitHub Copilot agent access to the internet is limited by a firewall to prevent 
 The following are automatically allowed:
 
 ✅ **Package Repositories:**
+
 - Debian, Ubuntu, Red Hat, Alpine package managers
 - npm, PyPI, RubyGems, Maven, NuGet, Cargo registries
 
 ✅ **Container Registries:**
+
 - Docker Hub, Azure Container Registry, AWS ECR, Google Container Registry
 
 ✅ **Certificate Authorities:**
+
 - Common CAs for SSL certificate validation
 
 ✅ **Browser Downloads:**
+
 - Playwright browser binaries
 
 ### Custom Allowlist Configuration
@@ -139,10 +145,12 @@ https://artifacts.example.com/maven2/
 **Important Limitations:**
 
 ⚠️ Firewall **only applies to**:
+
 - Processes started by the agent via Bash tool
 - Operations within GitHub Actions appliance
 
 ⚠️ Firewall **does NOT apply to**:
+
 - Model Context Protocol (MCP) servers
 - Processes in Copilot setup steps
 - Processes outside GitHub Actions environment
@@ -352,9 +360,9 @@ All configuration changes are tracked:
 
 ## Change History
 
-| Version | Date       | Author   | Changes                             |
-| ------- | ---------- | -------- | ----------------------------------- |
-| 1.0.0   | 2025-11-16 | AI Agent | Initial documentation and setup     |
+| Version | Date       | Author   | Changes                         |
+| ------- | ---------- | -------- | ------------------------------- |
+| 1.0.0   | 2025-11-16 | AI Agent | Initial documentation and setup |
 
 ---
 

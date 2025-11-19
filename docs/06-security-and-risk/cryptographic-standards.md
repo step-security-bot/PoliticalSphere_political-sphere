@@ -1,5 +1,7 @@
 # Cryptographic Security Guidelines
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 **Version:** 1.0.0  
 **Last Updated:** 2025-11-06  
 **Applies To:** All code in the Political Sphere project

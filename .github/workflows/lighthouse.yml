@@ -56,6 +56,13 @@ jobs:
           timeout 60 bash -c 'until curl -f http://localhost:3000 > /dev/null 2>&1; do sleep 2; done' || echo "Server startup timeout"
         continue-on-error: true
 
+      - name: Extract Lighthouse Budget
+        run: |
+          node -e "
+            const budgets = JSON.parse(require('fs').readFileSync('config/performance-budgets.json', 'utf8'));
+            require('fs').writeFileSync('.github/lighthouse/budget.json', JSON.stringify(budgets.web.lighthouse, null, 2));
+          "
+
       - name: Run Lighthouse CI
         uses: treosh/lighthouse-ci-action@fcd65974f7c4c2bf0ee9d09b84d2489183c29726 # v12.6.1
         with:

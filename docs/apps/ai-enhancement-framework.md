@@ -1,5 +1,7 @@
 # AI Enhancement Framework
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 ## Overview
 
 Political Sphere implements a comprehensive AI enhancement framework that maximizes the capabilities of AI assistants like GitHub Copilot and Blackbox through standardized processes, governance controls, performance optimization, and continuous learning.

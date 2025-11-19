@@ -7,6 +7,8 @@
 
 ---
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 ## Quick Start & Visual Overview
 
 > **This document is the single source of truth for all file placement and structure decisions.**

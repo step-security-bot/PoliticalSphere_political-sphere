@@ -1,5 +1,7 @@
 # EU AI Act Compliance Assessment
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 ## Overview
 
 This document outlines Political Sphere's compliance with the EU AI Act (Regulation (EU) 2024/1689). The AI Act classifies AI systems by risk level and imposes requirements accordingly. Use this assessment as a living record: update when systems change.

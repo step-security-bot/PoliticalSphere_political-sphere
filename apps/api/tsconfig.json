@@ -5,7 +5,7 @@
     "rootDir": "../../",
     "baseUrl": "../../",
     "paths": {
-      "@political-sphere/shared": ["libs/shared/src"],
+      "@political-sphere/shared": ["libs/shared/dist/index.js"],
       "@political-sphere/game-engine": ["libs/game-engine/src/index.ts"]
     },
     "module": "es2022",

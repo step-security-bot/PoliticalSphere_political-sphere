@@ -12,6 +12,8 @@
 
 ---
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 ## Conventions (apply to all tables)
 
 - `id UUID` (v7 preferred), `tenant_id UUID` (world), `created_at`, `updated_at`, `deleted_at NULL`, `version INT`.

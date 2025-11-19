@@ -1,5 +1,7 @@
 # ADR-023: Supply Chain Security Architecture
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 **Status:** Approved  
 **Date:** 2025-11-18  
 **Deciders:** Platform Team, Security Team  
@@ -8,6 +10,7 @@
 ## Context
 
 Modern software supply chains are vulnerable to:
+
 - **Dependency confusion attacks**: Malicious packages with similar names
 - **Compromised dependencies**: Legitimate packages hijacked by attackers
 - **Build tampering**: Artifacts modified during CI/CD pipeline
@@ -22,6 +25,7 @@ We implement **SLSA Level 3** supply chain security with:
 ### 1. Artifact Signing (Sigstore/Cosign)
 
 **Keyless signing** using GitHub OIDC:
+
 - No long-lived signing keys to manage
 - Certificates issued by Sigstore Fulcio CA
 - Transparency log (Rekor) for public auditability
@@ -43,12 +47,14 @@ We implement **SLSA Level 3** supply chain security with:
 ### 2. SLSA Provenance
 
 Generate **provenance attestations** for all artifacts:
+
 - Build metadata (workflow, commit, runner)
 - Dependencies (SBOM integration)
 - Cryptographic digest (SHA256)
 - Signed with Cosign
 
 **Provenance format** (in-toto SLSA v1):
+
 ```json
 {
   "_type": "https://in-toto.io/Statement/v0.1",
@@ -69,6 +75,7 @@ Generate **provenance attestations** for all artifacts:
 ### 3. SBOM Generation
 
 Weekly **Software Bill of Materials** (SBOM):
+
 - CycloneDX format (OWASP standard)
 - SPDX format (Linux Foundation standard)
 - Generated with Anchore Syft
@@ -77,6 +84,7 @@ Weekly **Software Bill of Materials** (SBOM):
 ### 4. Dependency Verification
 
 Pre-deployment verification:
+
 - Package lock file integrity (SHA256 hash)
 - License compliance scanning
 - Vulnerability scanning (npm audit)
@@ -107,12 +115,14 @@ Pre-deployment verification:
 ## Implementation
 
 **Phase 4 Deliverables:**
+
 1. SLSA provenance workflow (`.github/workflows/slsa-provenance.yml`)
 2. SBOM generation workflow (`.github/workflows/sbom-generation.yml`)
 3. Dependency verification script (`scripts/ci/verify-dependencies.sh`)
 4. Deployment verification gates
 
 **Integration Points:**
+
 - CI pipeline: Sign build artifacts
 - Release workflow: Sign release packages
 - Deployment: Verify signatures before deployment
@@ -120,12 +130,12 @@ Pre-deployment verification:
 
 ## Compliance Mapping
 
-| Requirement | Implementation | Status |
-|-------------|----------------|--------|
-| SLSA Level 3 | Keyless signing + provenance | ✅ Implemented |
-| OWASP CICD-SEC-4 | Dependency verification | ✅ Implemented |
-| Supply Chain | SBOM generation | ✅ Implemented |
-| NIST SSDF | Software attestation | ✅ Implemented |
+| Requirement      | Implementation               | Status         |
+| ---------------- | ---------------------------- | -------------- |
+| SLSA Level 3     | Keyless signing + provenance | ✅ Implemented |
+| OWASP CICD-SEC-4 | Dependency verification      | ✅ Implemented |
+| Supply Chain     | SBOM generation              | ✅ Implemented |
+| NIST SSDF        | Software attestation         | ✅ Implemented |
 
 ## References
 

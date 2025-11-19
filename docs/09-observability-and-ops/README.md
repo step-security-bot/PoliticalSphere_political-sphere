@@ -49,10 +49,7 @@
 
 ### Telemetry Collection
 
-- **Metrics:** Prometheus for system and application metrics.
-- **Logs:** Structured logging with correlation IDs.
-- **Traces:** Distributed tracing for request flows.
-- **Events:** Custom events for business logic monitoring.
+> NOTE: Operational priorities map to the broader project context in `docs/00-foundation/project-context.md`. Read that document to understand strategic requirements for observability, SLOs, and incident response.
 
 ### Monitoring Tools
 

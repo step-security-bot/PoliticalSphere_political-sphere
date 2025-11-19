@@ -11,34 +11,45 @@
 A comprehensive, enterprise-grade AI Development System with **6 architectural layers**:
 
 ### ✅ Layer 1: Orchestration
+
 Multi-agent workflow patterns (sequential, concurrent, handoff, group-chat) with memory management and type-safe interfaces.
 
 ### ✅ Layer 2: Validation
+
 3-tier validation system:
+
 - **Tier 0 (Constitutional)**: Political neutrality - cannot be bypassed
 - **Tier 1 (Mandatory)**: OWASP ASVS security, WCAG accessibility, GDPR compliance
 - **Tier 2 (Best-practice)**: Code quality, documentation, performance
 
 ### ✅ Layer 3: Governance
+
 Complete NIST AI RMF 1.0 implementation:
+
 - **GOVERN**: System registration, approval workflows
 - **MAP**: Impact assessment, model cards, risk identification
 - **MEASURE**: Bias measurement (threshold 0.1), performance tracking
 - **MANAGE**: Control implementation, incident response
 
 ### ✅ Layer 4: Observability
+
 OpenTelemetry-compatible:
+
 - **Tracing**: Distributed tracing with span management
 - **Metrics**: SLI/SLO calculation, error budget tracking
 - **Logging**: Structured JSON with trace correlation
 
 ### ✅ Layer 5: Accessibility
+
 WCAG 2.2 AA compliance:
+
 - **Automated**: 86 success criteria validator + axe-core integration
 - **Manual**: 17-item testing checklist (43% requires human verification)
 
 ### ✅ Layer 6: Privacy
+
 Full GDPR compliance:
+
 - **DSAR**: 30-day SLA for access, erasure, portability, rectification
 - **Consent**: Granular opt-in consent management
 - **Retention**: Automated deletion with 7 default policies
@@ -90,6 +101,7 @@ Full GDPR compliance:
 ## What Works Now
 
 ### Political Content Analysis
+
 ```typescript
 import { createOrchestrator } from '@political-sphere/ai-system';
 import { PoliticalNeutralityEnforcer } from '@political-sphere/ai-system/governance';
@@ -99,7 +111,7 @@ const orchestrator = createOrchestrator({
     postExecution: async (messages, result) => {
       const neutralityEnforcer = new PoliticalNeutralityEnforcer();
       const check = await neutralityEnforcer.checkNeutrality(result.finalMessage.content);
-      
+
       if (!check.passed) {
         throw new Error('Political neutrality violation');
       }
@@ -109,6 +121,7 @@ const orchestrator = createOrchestrator({
 ```
 
 ### GDPR Data Subject Requests
+
 ```typescript
 import { DSARHandler } from '@political-sphere/ai-system/privacy';
 
@@ -118,6 +131,7 @@ const result = await dsarHandler.processAccessRequest(request.requestId);
 ```
 
 ### Accessibility Testing
+
 ```typescript
 import { WCAGValidator } from '@political-sphere/ai-system/accessibility';
 
@@ -126,6 +140,7 @@ const result = await validator.validate(htmlContent);
 ```
 
 ### Distributed Tracing
+
 ```typescript
 import { tracer, metrics, logger } from '@political-sphere/ai-system/observability';
 
@@ -140,17 +155,20 @@ tracer.endSpan(spanId);
 ## What's Next
 
 ### Immediate (This Week)
+
 1. ⏳ Fix 2 compilation errors (block comment syntax)
 2. ⏳ Create unit tests for 16 validators
 3. ⏳ Run full linting pass
 
 ### Short-term (Next 2 Weeks)
+
 4. ⏳ Complete test suite (80%+ coverage requirement)
 5. ⏳ Create integration examples
 6. ⏳ Migrate from `/tools/scripts/ai/` (Integration Strategy B)
 7. ⏳ Update package.json and build configuration
 
 ### Medium-term (Next Month)
+
 8. ⏳ Set up observability stack (Prometheus/Grafana/Jaeger/Loki)
 9. ⏳ Create comprehensive architecture documentation
 10. ⏳ Security audit and penetration testing
@@ -170,11 +188,13 @@ tracer.endSpan(spanId);
 ## How to Use It
 
 ### 1. Import the library
+
 ```typescript
 import { createOrchestrator, defineAgent } from '@political-sphere/ai-system';
 ```
 
 ### 2. Define agents
+
 ```typescript
 const agent = defineAgent({
   id: 'my-agent',
@@ -185,20 +205,24 @@ const agent = defineAgent({
 ```
 
 ### 3. Create orchestrator with validation
+
 ```typescript
 const orchestrator = createOrchestrator({
   pattern: 'concurrent',
   agents: [agent],
-  validators: { /* validation gates */ },
-  observability: { /* tracing/metrics */ },
+  validators: {
+    /* validation gates */
+  },
+  observability: {
+    /* tracing/metrics */
+  },
 });
 ```
 
 ### 4. Run
+
 ```typescript
-const result = await orchestrator.run([
-  { role: 'user', content: 'Your prompt here' }
-]);
+const result = await orchestrator.run([{ role: 'user', content: 'Your prompt here' }]);
 ```
 
 See **QUICKSTART.md** for detailed examples.
@@ -213,6 +237,7 @@ npm run example:complete-system
 ```
 
 This demonstrates all 6 layers working together:
+
 - Political content analysis with neutrality validation
 - GDPR DSAR processing
 - Automated data retention

@@ -2,6 +2,8 @@
 
 > **Ethical AI framework for Political Sphere’s simulation and NPC systems**
 
+> NOTE: This AI documentation links to the main project context and development model in `docs/00-foundation/project-context.md`—review project-level governance before making AI-related changes.
+
 <div align="center">
 
 | Classification | Version | Last Updated |       Owner       | Review Cycle |

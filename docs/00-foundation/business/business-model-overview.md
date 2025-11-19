@@ -12,6 +12,8 @@
 
 ---
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 ## 🎯 Purpose
 
 This Business Model Overview documents the intended revenue approach and the guiding principles that will fund and sustain Political Sphere. It explains the single-tier subscription model we intend to use, why that model is chosen, and the constraints we place on monetisation so the simulation remains fair, and accessible. The primary audience for this document includes the developer, contributors, community members, and potential partners who need a clear, auditable statement of the project's funding strategy and ethical boundaries.

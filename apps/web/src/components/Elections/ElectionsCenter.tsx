@@ -12,7 +12,7 @@ import './ElectionsCenter.css';
 interface Election {
   id: string;
   name: string;
-  type: 'general' | 'by-election' | 'local';
+  type: string;
   status: 'upcoming' | 'active' | 'completed';
   startDate: string;
   endDate: string;
@@ -23,19 +23,19 @@ interface Election {
 interface Constituency {
   id: string;
   name: string;
-  region: string;
-  population: number;
-  registeredVoters: number;
-  candidates: Candidate[];
+  region?: string;
+  population?: number;
+  registeredVoters?: number;
+  candidates?: Candidate[];
 }
 
 interface Candidate {
   id: string;
-  userId: string;
-  username: string;
-  party: string;
-  votes: number;
-  manifesto: string;
+  userId?: string;
+  username?: string;
+  party?: string;
+  votes?: number;
+  manifesto?: string;
 }
 
 interface ElectionsCenterProps {
@@ -158,19 +158,19 @@ export const ElectionsCenter: React.FC<ElectionsCenterProps> = ({ userId: _userI
                   <p className="region">{constituency.region}</p>
                   <dl>
                     <dt>Population:</dt>
-                    <dd>{constituency.population.toLocaleString()}</dd>
+                    <dd>{constituency.population?.toLocaleString() || 'N/A'}</dd>
                     <dt>Registered Voters:</dt>
-                    <dd>{constituency.registeredVoters.toLocaleString()}</dd>
+                    <dd>{constituency.registeredVoters?.toLocaleString() || 'N/A'}</dd>
                     <dt>Candidates:</dt>
-                    <dd>{constituency.candidates.length}</dd>
+                    <dd>{constituency.candidates?.length || 0}</dd>
                   </dl>
-                  {constituency.candidates.length > 0 && (
+                  {(constituency.candidates?.length || 0) > 0 && (
                     <div className="candidates-list">
-                      {constituency.candidates.map(candidate => (
+                      {constituency.candidates?.map(candidate => (
                         <div key={candidate.id} className="candidate-item">
-                          <span className="candidate-name">{candidate.username}</span>
-                          <span className="candidate-party">{candidate.party}</span>
-                          <span className="candidate-votes">{candidate.votes} votes</span>
+                          <span className="candidate-name">{candidate.username || 'Unknown'}</span>
+                          <span className="candidate-party">{candidate.party || 'Independent'}</span>
+                          <span className="candidate-votes">{candidate.votes || 0} votes</span>
                         </div>
                       ))}
                     </div>

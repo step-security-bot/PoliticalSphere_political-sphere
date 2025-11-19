@@ -6,8 +6,10 @@ generator client {
   provider = "prisma-client-js"
 }
 
+// NOTE: Using Prisma 6.19.0 - url property is correct for this version
+// Prisma 7 will require migration to prisma.config.ts (when upgrading)
 datasource db {
-  provider = "postgresql"
+  provider = "sqlite"
   url      = env("DATABASE_URL")
 }
 
@@ -39,7 +41,7 @@ model Motion {
   proposerId      String
   type            String    // 'debate' | 'vote' | 'amendment' | 'procedural'
   title           String
-  description     String    @db.Text
+  description     String    
   status          String    @default("proposed") // 'proposed' | 'debate' | 'voting' | 'completed'
   votingStarted   DateTime?
   votingEnded     DateTime?
@@ -62,7 +64,7 @@ model Debate {
   motionId            String   @unique
   startTime           DateTime
   duration            Int      // seconds
-  speakingOrder       String[] // array of user IDs
+  speakingOrder       Json // array of user IDs
   timePerSpeaker      Int      @default(180)
   status              String   @default("scheduled") // 'scheduled' | 'active' | 'completed'
   currentSpeakerIndex Int      @default(0)
@@ -79,7 +81,7 @@ model Speech {
   id        String   @id @default(uuid())
   debateId  String
   speakerId String
-  content   String   @db.Text
+  content   String   
   timestamp DateTime @default(now())
   
   debate    Debate   @relation(fields: [debateId], references: [id], onDelete: Cascade)
@@ -150,7 +152,7 @@ model ExecutiveAction {
   governmentId String
   type         String   // 'order' | 'regulation' | 'treaty' | 'appointment'
   title        String
-  description  String   @db.Text
+  description  String   
   issuedBy     String
   status       String   @default("pending") // 'pending' | 'active' | 'revoked'
   issuedAt     DateTime @default(now())
@@ -167,9 +169,9 @@ model CabinetMeeting {
   id           String   @id @default(uuid())
   governmentId String
   scheduledAt  DateTime
-  agenda       String   @db.Text
-  attendees    String[] // array of user IDs
-  minutes      String?  @db.Text
+  agenda       String   
+  attendees    Json // array of user IDs
+  minutes      String?  
   status       String   @default("scheduled") // 'scheduled' | 'completed' | 'cancelled'
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
@@ -191,8 +193,8 @@ model LegalCase {
   defendantId     String?
   caseType        String    // 'constitutional_review' | 'legal_challenge' | 'appeal' | 'judicial_review'
   title           String
-  description     String    @db.Text
-  legalBasis      String    @db.Text
+  description     String    
+  legalBasis      String    
   targetLawId     String?
   targetActionId  String?
   status          String    @default("filed") // 'filed' | 'scheduled' | 'decided'
@@ -238,7 +240,7 @@ model Ruling {
   caseId                String
   judgeId               String
   decision              String   // 'upheld' | 'overturned' | 'remanded' | 'dismissed'
-  reasoning             String   @db.Text
+  reasoning             String   
   precedentSetting      Boolean  @default(false)
   constitutionalImpact  String   @default("none") // 'none' | 'minor' | 'major' | 'landmark'
   issuedAt              DateTime @default(now())
@@ -261,7 +263,7 @@ model ConstitutionalReview {
   requesterId    String
   targetType     String    // 'law' | 'executive_action' | 'parliamentary_procedure'
   targetId       String
-  grounds        String    @db.Text
+  grounds        String    
   urgency        String    @default("routine") // 'routine' | 'expedited' | 'emergency'
   status         String    @default("pending")
   requestedAt    DateTime  @default(now())
@@ -280,7 +282,7 @@ model Precedent {
   caseId        String
   rulingId      String   @unique
   title         String
-  principle     String   @db.Text
+  principle     String   
   impact        String   // 'none' | 'minor' | 'major' | 'landmark'
   establishedAt DateTime @default(now())
   citations     Int      @default(0)
@@ -302,7 +304,7 @@ model PressRelease {
   authorId    String
   authorType  String   // 'government' | 'party' | 'individual' | 'organization'
   title       String
-  content     String   @db.Text
+  content     String   
   category    String   // 'policy' | 'announcement' | 'response' | 'statement' | 'emergency'
   visibility  String   @default("public") // 'public' | 'restricted' | 'embargoed'
   embargoUntil DateTime?
@@ -323,7 +325,7 @@ model Poll {
   gameId         String
   creatorId      String
   question       String
-  options        String[] // array of option strings
+  options        Json // array of option strings
   pollType       String   // 'approval' | 'preference' | 'issue' | 'election'
   duration       Int      // seconds
   targetAudience String   @default("all") // 'all' | 'voters' | 'members' | 'specific'
@@ -361,7 +363,7 @@ model MediaCoverage {
   prominence String   // 'minor' | 'moderate' | 'major' | 'headline'
   source     String
   headline   String
-  summary    String?  @db.Text
+  summary    String?  
   impact     Int      // calculated impact score
   recordedAt DateTime @default(now())
   createdAt  DateTime @default(now())
@@ -376,9 +378,9 @@ model Narrative {
   id            String   @id @default(uuid())
   gameId        String
   title         String
-  description   String   @db.Text
+  description   String   
   narrativeType String   // 'scandal' | 'achievement' | 'controversy' | 'trend' | 'crisis'
-  participants  String[] // array of user IDs
+  participants  Json // array of user IDs
   sentiment     String   // 'negative' | 'neutral' | 'positive'
   virality      Int      @default(0)
   startedAt     DateTime @default(now())
@@ -421,7 +423,7 @@ model Election {
   electionType String   // 'general' | 'by_election' | 'local' | 'referendum'
   startDate    DateTime
   endDate      DateTime
-  description  String?  @db.Text
+  description  String?  
   status       String   @default("scheduled") // 'scheduled' | 'active' | 'closed' | 'certified'
   totalVotes   Int      @default(0)
   turnout      Float    @default(0)
@@ -445,11 +447,11 @@ model Campaign {
   candidateId String
   name        String
   slogan      String?
-  platform    String   @db.Text
+  platform    String   
   budget      Float    @default(0)
   spending    Float    @default(0)
   events      Int      @default(0)
-  endorsements String[] // array of endorser IDs
+  endorsements Json // array of endorser IDs
   registeredAt DateTime @default(now())
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
@@ -511,13 +513,29 @@ model ElectionVote {
   candidateId    String
   userId         String
   votedAt        DateTime @default(now())
-  
+
   election       Election     @relation(fields: [electionId], references: [id], onDelete: Cascade)
   constituency   Constituency @relation(fields: [constituencyId], references: [id], onDelete: Cascade)
   candidate      Candidate    @relation(fields: [candidateId], references: [id], onDelete: Cascade)
-  
+
   @@unique([electionId, constituencyId, userId])
   @@index([electionId])
   @@index([constituencyId])
   @@index([candidateId])
+}
+
+// ============================================================================
+// GAME SYSTEM
+// ============================================================================
+
+model Game {
+  id        String   @id @default(uuid())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Game state stored as JSON
+  state     Json
+
+  @@map("games")
 }

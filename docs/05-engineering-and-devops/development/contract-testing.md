@@ -1,4 +1,7 @@
 ---
+
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 description: 'API contract testing with Pact for consumer-driven contracts'
 applyTo: '**/apps/api/**/*,**/libs/platform/api-client/**/*'
 ---
@@ -269,16 +272,18 @@ Pact provides matchers to validate structure without exact values:
 import { like, eachLike, term, iso8601DateTime } from '@pact-foundation/pact/dsl/matchers';
 
 // Type matching (any string, number, boolean)
-body: like({ email: 'user@example.com' }) // Accepts any string
+body: like({ email: 'user@example.com' }); // Accepts any string
 
 // Array with at least one element
-body: eachLike({ id: '123', name: 'User' }, { min: 1 })
+body: eachLike({ id: '123', name: 'User' }, { min: 1 });
 
 // Regex pattern matching
-body: term({ matcher: '\\d{4}-\\d{2}-\\d{2}', generate: '2025-11-14' })
+body: term({ matcher: '\\d{4}-\\d{2}-\\d{2}', generate: '2025-11-14' });
 
 // ISO 8601 datetime
-body: { createdAt: iso8601DateTime() }
+body: {
+  createdAt: iso8601DateTime();
+}
 ```
 
 ## Provider Contract Verification

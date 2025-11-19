@@ -6,11 +6,14 @@
 
 ---
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 ## Overview
 
 This guide covers migrating from the custom logger (`libs/shared/src/logger.js`) to the production-ready Pino-based logger (`libs/shared/src/logger-pino.js`).
 
 **Why Pino?**
+
 - ✅ **Performance**: 5x faster than Winston, minimal overhead
 - ✅ **JSON-first**: Native JSON output for log aggregation tools
 - ✅ **Standards-compliant**: Follows Node.js Best Practice 3.1
@@ -141,8 +144,8 @@ Use environment variable to toggle logger:
 
 ```javascript
 // libs/shared/src/index.ts
-export * from process.env.USE_PINO_LOGGER === 'true' 
-  ? './logger-pino' 
+export * from process.env.USE_PINO_LOGGER === 'true'
+  ? './logger-pino'
   : './logger';
 ```
 
@@ -192,6 +195,7 @@ const logger = createLogger({
 ```
 
 **Mapping:**
+
 - `level: LOG_LEVELS.INFO` → `level: 'info'`
 - `console: true` → `prettyPrint: true` (dev only)
 - `file: path` → `destination: path`
@@ -229,6 +233,7 @@ const logger = createLogger({
 ```
 
 **Key Differences:**
+
 - `level`: Lowercase string
 - `time`: Unix timestamp (milliseconds)
 - `msg`: Instead of `message`
@@ -251,6 +256,7 @@ Pino Logger:    0.5ms per log (80% reduction)
 ```
 
 **Memory Usage:**
+
 - Custom Logger: ~12MB heap per 100k logs
 - Pino Logger: ~3MB heap per 100k logs (75% reduction)
 
@@ -301,12 +307,12 @@ app.use(correlationIdMiddleware);
 app.get('/api/users/:id', async (req, res) => {
   // This log will include correlation ID automatically
   logger.info('Fetching user', { userId: req.params.id });
-  
+
   const user = await db.getUser(req.params.id);
-  
+
   // This log will have the same correlation ID
   logger.info('User fetched', { userId: user.id, email: user.email });
-  
+
   res.json(user);
 });
 ```
@@ -323,7 +329,7 @@ class UserService {
   async createUser(data) {
     this.logger.info('Creating user', { email: data.email });
     // All logs from this service will have component: 'UserService'
-    
+
     try {
       const user = await db.createUser(data);
       this.logger.info('User created', { userId: user.id });
@@ -349,13 +355,13 @@ setupGracefulShutdown(server, {
   logger,
   onShutdown: async () => {
     logger.info('Graceful shutdown initiated');
-    
+
     await db.disconnect();
     await cache.close();
-    
+
     // Flush all pending logs before exit
     await logger.flush();
-    
+
     logger.info('Shutdown complete');
   },
 });
@@ -425,10 +431,11 @@ const logger = getLogger({
 If issues arise, rollback is straightforward:
 
 1. **Revert imports**: Change back to old logger
+
    ```javascript
    // Before
    import { getLogger } from '@political-sphere/shared/logger-pino';
-   
+
    // After rollback
    import { getLogger } from '@political-sphere/shared';
    ```

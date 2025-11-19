@@ -8,21 +8,23 @@
 
 ---
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 ## Executive Summary
 
 This comprehensive assessment evaluates Political Sphere's current CI/CD infrastructure across **24 GitHub Actions workflows** and an enterprise-grade **Lefthook pre-commit system** (724 lines), identifying critical opportunities for optimization, security hardening, and developer experience improvements.
 
 ### Key Findings
 
-| Category | Current State | Target State | Priority |
-|----------|--------------|--------------|----------|
-| **Workflow Count** | 24 workflows | 15-18 workflows (consolidated) | HIGH |
-| **Caching Strategy** | Partial implementation | Full multi-layer caching | CRITICAL |
-| **Test Execution** | 3-shard parallelization | Dynamic sharding + matrix optimization | HIGH |
-| **Security Posture** | Good (Gitleaks, Semgrep) | Excellent (add SLSA, SBOM, provenance) | CRITICAL |
-| **Developer Feedback** | ~10-15 min PR validation | <5 min target (P95) | HIGH |
-| **Lefthook Performance** | P95: 14.7s | P95: <10s target | MEDIUM |
-| **Dependency Management** | Manual updates | Automated Dependabot + policy enforcement | HIGH |
+| Category                  | Current State            | Target State                              | Priority |
+| ------------------------- | ------------------------ | ----------------------------------------- | -------- |
+| **Workflow Count**        | 24 workflows             | 15-18 workflows (consolidated)            | HIGH     |
+| **Caching Strategy**      | Partial implementation   | Full multi-layer caching                  | CRITICAL |
+| **Test Execution**        | 3-shard parallelization  | Dynamic sharding + matrix optimization    | HIGH     |
+| **Security Posture**      | Good (Gitleaks, Semgrep) | Excellent (add SLSA, SBOM, provenance)    | CRITICAL |
+| **Developer Feedback**    | ~10-15 min PR validation | <5 min target (P95)                       | HIGH     |
+| **Lefthook Performance**  | P95: 14.7s               | P95: <10s target                          | MEDIUM   |
+| **Dependency Management** | Manual updates           | Automated Dependabot + policy enforcement | HIGH     |
 
 ### Strategic Recommendations
 
@@ -32,6 +34,7 @@ This comprehensive assessment evaluates Political Sphere's current CI/CD infrast
 4. **Long-term (Month 4-6):** Self-hosted runner evaluation, advanced observability
 
 **Estimated ROI:**
+
 - **Developer Time Saved:** 15-25 hours/week (team-wide)
 - **CI/CD Cost Reduction:** 30-40% (compute time)
 - **Security Posture:** +35% (measured by OWASP ASVS compliance)
@@ -58,6 +61,7 @@ This comprehensive assessment evaluates Political Sphere's current CI/CD infrast
 ### 1.1 GitHub Actions Workflows (24 Total)
 
 #### Core CI/CD Workflows
+
 1. **`ci.yml`** (878 lines) - Primary CI pipeline
    - **Scope:** Preflight, lint, test (3 shards), build, security, integration, E2E
    - **Triggers:** Push to main, PRs, manual
@@ -87,6 +91,7 @@ This comprehensive assessment evaluates Political Sphere's current CI/CD infrast
    - **Weaknesses:** No layer caching strategy
 
 #### Specialized Workflows
+
 6. **`accessibility.yml`** - WCAG 2.2 AA validation
 7. **`lighthouse.yml`** - Performance testing
 8. **`visual-regression.yml`** - Screenshot comparison
@@ -103,6 +108,7 @@ This comprehensive assessment evaluates Political Sphere's current CI/CD infrast
 19. **`vault-client.yml`** - Secrets management integration
 
 #### Testing & Validation Workflows
+
 20. **`test-setup-node-action.yml`** - Action testing
 21. **`test-run-tests-action.yml`** - Action testing
 22. **`build-and-test.yml`** - Alternative build pipeline
@@ -117,32 +123,38 @@ This comprehensive assessment evaluates Political Sphere's current CI/CD infrast
 #### Execution Phases
 
 **Phase 0: Initialization & Telemetry (Priority -100)**
+
 - Context detection (FAST_AI, AUDIT_MODE, CI modes)
 - Performance tracing (HOOK_TRACE_ID)
 - Execution mode determination
 - Branding display
 
 **Phase 1: Critical Security Gates (Priority 0 - BLOCKING)**
+
 1. **Secrets Scanning** - Gitleaks (fail-closed)
 2. **Dependency Security** - npm audit (high/critical vulnerabilities)
 3. **License Compliance** - Advisory checks for incompatible licenses
 
 **Phase 2: Code Quality & Formatting (Priority 1 - Auto-fix + Block)**
+
 1. **Code Formatting** - Biome (preferred) or Prettier (with stage_fixed)
 2. **Linting** - ESLint strict (--max-warnings 0)
 3. **TypeScript Type Checking** - Incremental tsc (strict mode)
 
 **Phase 3: Governance & Compliance (Priority 2 - MANDATORY)**
+
 1. **Accessibility Validation** - WCAG 2.2 AA (jsx-a11y rules)
 2. **Test Quality Gates** - No .only(), .skip() justification
 3. **Documentation Linting** - Markdown quality (markdownlint)
 4. **AI Neutrality Check** - Political bias detection
 
 **Performance Baseline:**
+
 - P50: 8.2s | P95: 14.7s | P99: 22.1s (5-10 changed files)
 - Target SLO: P95 < 20s for commits with <20 changed files
 
 **Execution Modes:**
+
 - `FAST_AI=1` - Reduced gates for rapid iteration (dev only)
 - `AUDIT_MODE=1` - Full gates + evidence capture + telemetry
 - `CI=1` - CI-optimized execution
@@ -150,6 +162,7 @@ This comprehensive assessment evaluates Political Sphere's current CI/CD infrast
 ### 1.3 Reusable GitHub Actions
 
 **Custom Composite Actions** (5 identified):
+
 1. **`setup-node-deps/`** - Node.js + dependency installation with caching
 2. **`quality-checks/`** - Lint, typecheck, format validation
 3. **`run-tests/`** - Test execution wrapper
@@ -157,11 +170,13 @@ This comprehensive assessment evaluates Political Sphere's current CI/CD infrast
 5. **`deploy/`** - Deployment orchestration
 
 **Strengths:**
+
 - DRY principle applied across workflows
 - Consistent environment setup
 - Version pinning for reproducibility
 
 **Weaknesses:**
+
 - No centralized action version management
 - Limited error handling in composite actions
 - Missing comprehensive caching strategies
@@ -169,23 +184,27 @@ This comprehensive assessment evaluates Political Sphere's current CI/CD infrast
 ### 1.4 Testing Infrastructure
 
 **Test Framework:** Vitest with multiple projects
+
 - **Apps:** `apps/*/src/**/*.{test,spec}.{js,mjs,ts,tsx,jsx}`
 - **Libs:** `libs/*/src/**/*.{test,spec}.{js,mjs,ts,tsx,jsx}`
 - **AI Integration:** `tools/**/ai-system.integration.test.{js,mjs,cjs,ts}`
 
 **Execution Strategy:**
+
 - **CI Mode:** Single-threaded, deterministic (singleThread: true)
 - **Local Mode:** Multi-threaded, parallel (singleThread: false)
 - **Sharding:** 3-shard matrix in CI (configurable via env)
 - **Coverage:** 80%+ target, uploaded to Codecov
 
 **Test Environment Configuration:**
+
 - Environment: node (default), jsdom, happy-dom (configurable)
 - Pool: threads (with isolation)
 - Mocks: Auto-cleanup (mockReset, restoreMocks, clearMocks)
 - Changed Mode: `VITEST_CHANGED=1` for incremental testing
 
 **Coverage Aggregation:**
+
 - Istanbul-combine for merging shard coverage
 - Combined coverage validation (80% threshold)
 - Retention: 90 days for combined coverage artifacts
@@ -193,17 +212,20 @@ This comprehensive assessment evaluates Political Sphere's current CI/CD infrast
 ### 1.5 Build & Dependency Management
 
 **Package Manager:** npm (migrated from pnpm)
+
 - **Lock File:** package-lock.json
 - **Workspace:** Nx monorepo (apps + libs structure)
 - **Cache:** Nx Cloud (with access token)
 
 **Build Orchestration:**
+
 - **Nx Daemon:** Enabled for faster builds
 - **Affected Commands:** Nx affected for incremental builds
 - **Target Defaults:** Build, lint, test, e2e with caching
 - **Named Inputs:** Production, test files, shared globals
 
 **Dependency Graph:**
+
 - **Named Inputs:** Exclude AI cache, logs, metrics
 - **Cache Invalidation:** Based on input changes
 - **Workspace Layout:** appsDir: apps, libsDir: libs
@@ -215,6 +237,7 @@ This comprehensive assessment evaluates Political Sphere's current CI/CD infrast
 ### 2.1 Workflow Architecture Analysis
 
 **Current Design Pattern:**
+
 ```mermaid
 graph TD
     A[Push/PR Trigger] --> B[pre-flight]
@@ -226,7 +249,7 @@ graph TD
     E --> F1[security-scan]
     E --> F2[integration-test]
     E --> F3[e2e-test]
-    
+
     style A fill:#e1f5fe
     style B fill:#fff3e0
     style C1 fill:#f3e5f5
@@ -239,6 +262,7 @@ graph TD
 ```
 
 **Strengths:**
+
 1. ✅ **Clear separation of concerns** - Distinct jobs for each validation stage
 2. ✅ **Parallel execution** - Test shards run concurrently
 3. ✅ **Dependency management** - `needs:` keyword ensures proper sequencing
@@ -246,6 +270,7 @@ graph TD
 5. ✅ **Artifact management** - Build outputs, coverage, and test results preserved
 
 **Weaknesses:**
+
 1. ❌ **Job overhead** - Each job incurs setup time (~30-60s per job)
 2. ❌ **Redundant workflows** - `test.yml` duplicates `ci.yml` functionality
 3. ❌ **Limited concurrency control** - No job-level concurrency limits
@@ -256,16 +281,17 @@ graph TD
 
 **Current Implementation:**
 
-| Workflow/Job | Cache Strategy | Effectiveness | Opportunity |
-|--------------|---------------|---------------|-------------|
-| **setup-node-deps** | actions/setup-node@v6 with `cache: npm` | ⚠️ Partial | Add restore-keys, layer caching |
-| **Test shards** | Implicit via setup-node-deps | ⚠️ Partial | Add Vitest cache, coverage cache |
-| **Build** | Nx Cloud (build artifacts) | ✅ Good | Add dist/ caching |
-| **Docker builds** | None (buildx default) | ❌ Poor | Add layer caching, registry cache |
-| **E2E tests** | None | ❌ Poor | Add Playwright browser cache |
-| **Security scans** | None | ❌ Poor | Add vulnerability database cache |
+| Workflow/Job        | Cache Strategy                          | Effectiveness | Opportunity                       |
+| ------------------- | --------------------------------------- | ------------- | --------------------------------- |
+| **setup-node-deps** | actions/setup-node@v6 with `cache: npm` | ⚠️ Partial    | Add restore-keys, layer caching   |
+| **Test shards**     | Implicit via setup-node-deps            | ⚠️ Partial    | Add Vitest cache, coverage cache  |
+| **Build**           | Nx Cloud (build artifacts)              | ✅ Good       | Add dist/ caching                 |
+| **Docker builds**   | None (buildx default)                   | ❌ Poor       | Add layer caching, registry cache |
+| **E2E tests**       | None                                    | ❌ Poor       | Add Playwright browser cache      |
+| **Security scans**  | None                                    | ❌ Poor       | Add vulnerability database cache  |
 
 **GitHub Actions Cache Limits:**
+
 - **Total Size:** 10 GB per repository
 - **Eviction:** 7 days of inactivity
 - **Scope:** Branch-based with fallback to default branch
@@ -283,7 +309,7 @@ graph TD
     key: ${{ runner.os }}-deps-${{ hashFiles('**/package-lock.json') }}
     restore-keys: |
       ${{ runner.os }}-deps-
-      
+
 # Layer 2: Build artifacts (changes frequently)
 - name: Cache build outputs
   uses: actions/cache@v4
@@ -316,12 +342,14 @@ graph TD
 ### 2.3 Test Execution Analysis
 
 **Current Strategy:**
+
 - **3-shard matrix** - Fixed parallelization
 - **Manual sharding** - `--shard=1/3`, `--shard=2/3`, `--shard=3/3`
 - **Coverage per shard** - Uploaded separately, then aggregated
 - **Execution time:** ~5-8 min per shard (varies by test distribution)
 
 **Limitations:**
+
 1. Fixed shard count doesn't adapt to PR size
 2. Uneven test distribution across shards
 3. No retry mechanism for flaky tests
@@ -333,8 +361,8 @@ graph TD
 strategy:
   fail-fast: false
   matrix:
-    shard: [1, 2, 3, 4, 5]  # Dynamic based on PR size
-    
+    shard: [1, 2, 3, 4, 5] # Dynamic based on PR size
+
 steps:
   - name: Run tests with smart sharding
     run: |
@@ -349,6 +377,7 @@ steps:
 ### 2.4 Security Scanning Architecture
 
 **Current Tools:**
+
 1. **Gitleaks** (v2) - Secret scanning
 2. **Semgrep** (v1.67.0) - SAST (p/default, p/owasp-top-ten)
 3. **Trivy** (v0.67.2) - Vulnerability scanning
@@ -358,16 +387,16 @@ steps:
 
 **Gap Analysis:**
 
-| Security Control | Current | Recommended | Priority |
-|------------------|---------|-------------|----------|
-| **SAST** | ✅ Semgrep OSS | ✅ Semgrep + CodeQL | HIGH |
-| **Secret Scanning** | ✅ Gitleaks | ✅ Gitleaks + GitHub Secret Scanning | MEDIUM |
-| **Dependency Scanning** | ✅ npm audit, Trivy, Grype | ✅ Add Snyk/OWASP Dependency-Check | MEDIUM |
-| **Container Scanning** | ✅ Trivy, Grype | ✅ Add Docker Scout | LOW |
-| **SBOM Generation** | ❌ None | ✅ Syft/CycloneDX | CRITICAL |
-| **SLSA Provenance** | ❌ None | ✅ SLSA Level 3 | CRITICAL |
-| **License Compliance** | ⚠️ Lefthook (advisory) | ✅ FOSSA/Black Duck | MEDIUM |
-| **IaC Scanning** | ❌ None | ✅ Checkov/tfsec for Terraform | HIGH |
+| Security Control        | Current                    | Recommended                          | Priority |
+| ----------------------- | -------------------------- | ------------------------------------ | -------- |
+| **SAST**                | ✅ Semgrep OSS             | ✅ Semgrep + CodeQL                  | HIGH     |
+| **Secret Scanning**     | ✅ Gitleaks                | ✅ Gitleaks + GitHub Secret Scanning | MEDIUM   |
+| **Dependency Scanning** | ✅ npm audit, Trivy, Grype | ✅ Add Snyk/OWASP Dependency-Check   | MEDIUM   |
+| **Container Scanning**  | ✅ Trivy, Grype            | ✅ Add Docker Scout                  | LOW      |
+| **SBOM Generation**     | ❌ None                    | ✅ Syft/CycloneDX                    | CRITICAL |
+| **SLSA Provenance**     | ❌ None                    | ✅ SLSA Level 3                      | CRITICAL |
+| **License Compliance**  | ⚠️ Lefthook (advisory)     | ✅ FOSSA/Black Duck                  | MEDIUM   |
+| **IaC Scanning**        | ❌ None                    | ✅ Checkov/tfsec for Terraform       | HIGH     |
 
 ---
 
@@ -395,6 +424,7 @@ steps:
 ```
 
 **Critical Path Analysis:**
+
 ```
 pre-flight (3-5m) → test (5-8m) → coverage (1-2m) → build (8-12m) → e2e (12-18m)
                                                                       ↓
@@ -431,6 +461,7 @@ pre-flight (3-5m) → test (5-8m) → coverage (1-2m) → build (8-12m) → e2e 
 ### 3.2 Lefthook Performance Analysis
 
 **Current Performance (from .lefthook.yml):**
+
 - P50: 8.2s
 - P95: 14.7s
 - P99: 22.1s
@@ -481,6 +512,7 @@ pre-flight (3-5m) → test (5-8m) → coverage (1-2m) → build (8-12m) → e2e 
    - Expected Savings: ~15-20% reduction
 
 **Target Performance:**
+
 - P50: 5-6s (27% improvement)
 - P95: 8-10s (32-46% improvement)
 - P99: 12-15s (32-46% improvement)
@@ -489,14 +521,14 @@ pre-flight (3-5m) → test (5-8m) → coverage (1-2m) → build (8-12m) → e2e 
 
 **Estimated Cache Hit Rates (Current):**
 
-| Cache Type | Hit Rate | Potential | Impact if Improved |
-|------------|----------|-----------|-------------------|
-| npm dependencies | ~70% | ~90% | 2-3 min savings/job |
-| Build artifacts (Nx) | ~50% | ~85% | 5-8 min savings/job |
-| Test artifacts | ~0% | ~70% | 1-2 min savings/shard |
-| Docker layers | ~0% | ~80% | 8-12 min savings/build |
-| Playwright browsers | ~0% | ~95% | 3-5 min savings/E2E run |
-| Security DBs | ~0% | ~85% | 2-3 min savings/scan |
+| Cache Type           | Hit Rate | Potential | Impact if Improved      |
+| -------------------- | -------- | --------- | ----------------------- |
+| npm dependencies     | ~70%     | ~90%      | 2-3 min savings/job     |
+| Build artifacts (Nx) | ~50%     | ~85%      | 5-8 min savings/job     |
+| Test artifacts       | ~0%      | ~70%      | 1-2 min savings/shard   |
+| Docker layers        | ~0%      | ~80%      | 8-12 min savings/build  |
+| Playwright browsers  | ~0%      | ~95%      | 3-5 min savings/E2E run |
+| Security DBs         | ~0%      | ~85%      | 2-3 min savings/scan    |
 
 **Caching Improvement ROI:**
 
@@ -517,46 +549,48 @@ Team Savings (10 PRs/day): 2.5-4 hours/day
 **Current Compliance Level:** ~65-70%  
 **Target Compliance Level:** 90%+ (Level 3)
 
-| OWASP ASVS Control | Current | Target | Gap |
-|--------------------|---------|--------|-----|
-| **V2: Authentication** | ⚠️ Partial | ✅ Full | Add OIDC for cloud auth |
-| **V3: Session Management** | ✅ Good | ✅ Good | None |
-| **V4: Access Control** | ⚠️ Partial | ✅ Full | Add RBAC policy enforcement |
-| **V5: Validation** | ✅ Good | ✅ Good | None |
-| **V6: Cryptography** | ✅ Good | ✅ Good | None |
-| **V7: Error Handling** | ⚠️ Partial | ✅ Full | Mask sensitive errors in logs |
-| **V8: Data Protection** | ⚠️ Partial | ✅ Full | Add data classification labels |
-| **V9: Communications** | ✅ Good | ✅ Good | None |
-| **V10: Malicious Code** | ⚠️ Partial | ✅ Full | Add SBOM generation |
-| **V11: Business Logic** | ✅ Good | ✅ Good | None |
-| **V12: Files & Resources** | ⚠️ Partial | ✅ Full | Add file upload validation |
-| **V13: API & Web Services** | ⚠️ Partial | ✅ Full | Add API rate limiting |
-| **V14: Configuration** | ⚠️ Partial | ✅ Full | Add config validation tests |
+| OWASP ASVS Control          | Current    | Target  | Gap                            |
+| --------------------------- | ---------- | ------- | ------------------------------ |
+| **V2: Authentication**      | ⚠️ Partial | ✅ Full | Add OIDC for cloud auth        |
+| **V3: Session Management**  | ✅ Good    | ✅ Good | None                           |
+| **V4: Access Control**      | ⚠️ Partial | ✅ Full | Add RBAC policy enforcement    |
+| **V5: Validation**          | ✅ Good    | ✅ Good | None                           |
+| **V6: Cryptography**        | ✅ Good    | ✅ Good | None                           |
+| **V7: Error Handling**      | ⚠️ Partial | ✅ Full | Mask sensitive errors in logs  |
+| **V8: Data Protection**     | ⚠️ Partial | ✅ Full | Add data classification labels |
+| **V9: Communications**      | ✅ Good    | ✅ Good | None                           |
+| **V10: Malicious Code**     | ⚠️ Partial | ✅ Full | Add SBOM generation            |
+| **V11: Business Logic**     | ✅ Good    | ✅ Good | None                           |
+| **V12: Files & Resources**  | ⚠️ Partial | ✅ Full | Add file upload validation     |
+| **V13: API & Web Services** | ⚠️ Partial | ✅ Full | Add API rate limiting          |
+| **V14: Configuration**      | ⚠️ Partial | ✅ Full | Add config validation tests    |
 
 ### 4.2 Supply Chain Security (SLSA Framework)
 
 **Current SLSA Level:** Level 1 (Partial)  
 **Target SLSA Level:** Level 3
 
-| SLSA Requirement | Level 1 | Level 2 | Level 3 | Current | Target |
-|------------------|---------|---------|---------|---------|--------|
-| **Provenance** | ⚠️ Partial | ❌ None | ❌ None | Level 1 | Level 3 |
-| **Build Isolation** | ✅ Yes | ✅ Yes | ⚠️ Partial | Level 2 | Level 3 |
-| **Hermetic Builds** | ❌ No | ⚠️ Partial | ⚠️ Partial | Level 1 | Level 3 |
-| **Verification** | ⚠️ Manual | ⚠️ Manual | ❌ None | Level 1 | Level 3 |
+| SLSA Requirement    | Level 1    | Level 2    | Level 3    | Current | Target  |
+| ------------------- | ---------- | ---------- | ---------- | ------- | ------- |
+| **Provenance**      | ⚠️ Partial | ❌ None    | ❌ None    | Level 1 | Level 3 |
+| **Build Isolation** | ✅ Yes     | ✅ Yes     | ⚠️ Partial | Level 2 | Level 3 |
+| **Hermetic Builds** | ❌ No      | ⚠️ Partial | ⚠️ Partial | Level 1 | Level 3 |
+| **Verification**    | ⚠️ Manual  | ⚠️ Manual  | ❌ None    | Level 1 | Level 3 |
 
 **Required SLSA Level 3 Components:**
 
 1. **Provenance Generation** - CRITICAL GAP
+
    ```yaml
    # Add to build workflow
    - name: Generate SLSA Provenance
      uses: slsa-framework/slsa-github-generator/.github/workflows/generator_generic_slsa3.yml@v1.9.0
      with:
-       attestation-name: "build-provenance"
+       attestation-name: 'build-provenance'
    ```
 
 2. **SBOM Generation** - CRITICAL GAP
+
    ```yaml
    # Add SBOM generation
    - name: Generate SBOM
@@ -578,6 +612,7 @@ Team Savings (10 PRs/day): 2.5-4 hours/day
 ### 4.3 Secrets Management Assessment
 
 **Current Implementation:**
+
 - ✅ Gitleaks pre-commit scanning (fail-closed)
 - ✅ GitHub Secret Scanning (repository settings)
 - ✅ Environment-based secrets (GitHub Secrets)
@@ -588,6 +623,7 @@ Team Savings (10 PRs/day): 2.5-4 hours/day
 **Recommended Enhancements:**
 
 1. **Vault Integration** (if using HashiCorp Vault)
+
    ```yaml
    - name: Retrieve secrets from Vault
      uses: hashicorp/vault-action@v2
@@ -600,6 +636,7 @@ Team Savings (10 PRs/day): 2.5-4 hours/day
    ```
 
 2. **OIDC for Cloud Authentication** - Eliminate long-lived credentials
+
    ```yaml
    - name: Configure AWS credentials
      uses: aws-actions/configure-aws-credentials@v4
@@ -621,6 +658,7 @@ Team Savings (10 PRs/day): 2.5-4 hours/day
 ### 4.4 Third-Party Action Security
 
 **Current Practices:**
+
 - ⚠️ **SHA Pinning:** Partial (some actions pinned to commit SHA)
 - ❌ **Dependabot for Actions:** Not configured
 - ❌ **Action Provenance Verification:** Not implemented
@@ -628,17 +666,17 @@ Team Savings (10 PRs/day): 2.5-4 hours/day
 
 **Security Audit of Current Actions:**
 
-| Action | Current Version | Pinned? | Verified Creator? | Risk | Recommendation |
-|--------|----------------|---------|------------------|------|----------------|
-| `actions/checkout` | v5.0.0 (SHA) | ✅ Yes | ✅ Official | LOW | Keep |
-| `actions/setup-node` | v6.0.0 (SHA) | ✅ Yes | ✅ Official | LOW | Keep |
-| `actions/cache` | v4 (SHA) | ✅ Yes | ✅ Official | LOW | Keep |
-| `actions/upload-artifact` | v5.0.0 (SHA) | ✅ Yes | ✅ Official | LOW | Keep |
-| `codecov/codecov-action` | v5.5.1 (SHA) | ✅ Yes | ✅ Verified | LOW | Keep |
-| `docker/setup-buildx-action` | v3.7.1 (SHA) | ✅ Yes | ✅ Verified | LOW | Keep |
-| `gitleaks/gitleaks-action` | v2 (SHA) | ✅ Yes | ✅ Verified | LOW | Keep |
-| `returntocorp/semgrep` | v1.67.0 (Docker) | ⚠️ Tag | ✅ Verified | MEDIUM | Pin to SHA |
-| Custom actions | Various | ⚠️ Mixed | N/A | MEDIUM | Audit + pin |
+| Action                       | Current Version  | Pinned?  | Verified Creator? | Risk   | Recommendation |
+| ---------------------------- | ---------------- | -------- | ----------------- | ------ | -------------- |
+| `actions/checkout`           | v5.0.0 (SHA)     | ✅ Yes   | ✅ Official       | LOW    | Keep           |
+| `actions/setup-node`         | v6.0.0 (SHA)     | ✅ Yes   | ✅ Official       | LOW    | Keep           |
+| `actions/cache`              | v4 (SHA)         | ✅ Yes   | ✅ Official       | LOW    | Keep           |
+| `actions/upload-artifact`    | v5.0.0 (SHA)     | ✅ Yes   | ✅ Official       | LOW    | Keep           |
+| `codecov/codecov-action`     | v5.5.1 (SHA)     | ✅ Yes   | ✅ Verified       | LOW    | Keep           |
+| `docker/setup-buildx-action` | v3.7.1 (SHA)     | ✅ Yes   | ✅ Verified       | LOW    | Keep           |
+| `gitleaks/gitleaks-action`   | v2 (SHA)         | ✅ Yes   | ✅ Verified       | LOW    | Keep           |
+| `returntocorp/semgrep`       | v1.67.0 (Docker) | ⚠️ Tag   | ✅ Verified       | MEDIUM | Pin to SHA     |
+| Custom actions               | Various          | ⚠️ Mixed | N/A               | MEDIUM | Audit + pin    |
 
 **Recommended Policy:**
 
@@ -646,16 +684,16 @@ Team Savings (10 PRs/day): 2.5-4 hours/day
 # .github/dependabot.yml
 version: 2
 updates:
-  - package-ecosystem: "github-actions"
-    directory: "/"
+  - package-ecosystem: 'github-actions'
+    directory: '/'
     schedule:
-      interval: "weekly"
+      interval: 'weekly'
     open-pull-requests-limit: 10
     reviewers:
-      - "security-team"
+      - 'security-team'
     labels:
-      - "dependencies"
-      - "github-actions"
+      - 'dependencies'
+      - 'github-actions'
 ```
 
 ---
@@ -666,52 +704,52 @@ updates:
 
 **Based on Official GitHub Documentation & Microsoft Learn**
 
-| Best Practice | Current | Target | Priority |
-|---------------|---------|--------|----------|
-| **Pin actions to full SHA** | ⚠️ 80% | ✅ 100% | HIGH |
-| **Use intermediate env vars** | ✅ Yes | ✅ Yes | - |
-| **Minimize GITHUB_TOKEN permissions** | ⚠️ Partial | ✅ Full | HIGH |
-| **Use concurrency controls** | ✅ Yes | ✅ Yes | - |
-| **Implement caching** | ⚠️ 40% | ✅ 90% | CRITICAL |
-| **Matrix parallelization** | ✅ Yes | ✅ Yes | - |
-| **Artifact retention policies** | ✅ Yes | ✅ Yes | - |
-| **Fail-fast strategies** | ✅ Yes | ✅ Yes | - |
-| **Reusable workflows** | ⚠️ Partial | ✅ Extensive | MEDIUM |
-| **Secrets rotation** | ❌ No | ✅ Yes | HIGH |
-| **OIDC authentication** | ❌ No | ✅ Yes | MEDIUM |
-| **Dependabot for actions** | ❌ No | ✅ Yes | MEDIUM |
-| **CODEOWNERS enforcement** | ⚠️ Exists | ✅ Enforced | MEDIUM |
+| Best Practice                         | Current    | Target       | Priority |
+| ------------------------------------- | ---------- | ------------ | -------- |
+| **Pin actions to full SHA**           | ⚠️ 80%     | ✅ 100%      | HIGH     |
+| **Use intermediate env vars**         | ✅ Yes     | ✅ Yes       | -        |
+| **Minimize GITHUB_TOKEN permissions** | ⚠️ Partial | ✅ Full      | HIGH     |
+| **Use concurrency controls**          | ✅ Yes     | ✅ Yes       | -        |
+| **Implement caching**                 | ⚠️ 40%     | ✅ 90%       | CRITICAL |
+| **Matrix parallelization**            | ✅ Yes     | ✅ Yes       | -        |
+| **Artifact retention policies**       | ✅ Yes     | ✅ Yes       | -        |
+| **Fail-fast strategies**              | ✅ Yes     | ✅ Yes       | -        |
+| **Reusable workflows**                | ⚠️ Partial | ✅ Extensive | MEDIUM   |
+| **Secrets rotation**                  | ❌ No      | ✅ Yes       | HIGH     |
+| **OIDC authentication**               | ❌ No      | ✅ Yes       | MEDIUM   |
+| **Dependabot for actions**            | ❌ No      | ✅ Yes       | MEDIUM   |
+| **CODEOWNERS enforcement**            | ⚠️ Exists  | ✅ Enforced  | MEDIUM   |
 
 ### 5.2 Monorepo CI/CD Best Practices
 
 **Based on Nx, Turborepo, and Industry Standards**
 
-| Practice | Current | Target | Gap |
-|----------|---------|--------|-----|
-| **Affected-based testing** | ⚠️ Partial | ✅ Full | Nx affected not fully utilized |
-| **Remote caching** | ✅ Nx Cloud | ✅ Nx Cloud | None |
-| **Incremental builds** | ⚠️ Partial | ✅ Full | Add dist/ caching |
-| **Parallel task execution** | ✅ Yes | ✅ Yes | None |
-| **Dependency graph enforcement** | ✅ Yes | ✅ Yes | None |
-| **Code ownership boundaries** | ✅ Yes | ✅ Yes | None |
-| **Workspace-wide linting** | ✅ Yes | ✅ Yes | None |
-| **Monorepo-aware E2E** | ⚠️ Partial | ✅ Full | Selective E2E based on affected |
+| Practice                         | Current     | Target      | Gap                             |
+| -------------------------------- | ----------- | ----------- | ------------------------------- |
+| **Affected-based testing**       | ⚠️ Partial  | ✅ Full     | Nx affected not fully utilized  |
+| **Remote caching**               | ✅ Nx Cloud | ✅ Nx Cloud | None                            |
+| **Incremental builds**           | ⚠️ Partial  | ✅ Full     | Add dist/ caching               |
+| **Parallel task execution**      | ✅ Yes      | ✅ Yes      | None                            |
+| **Dependency graph enforcement** | ✅ Yes      | ✅ Yes      | None                            |
+| **Code ownership boundaries**    | ✅ Yes      | ✅ Yes      | None                            |
+| **Workspace-wide linting**       | ✅ Yes      | ✅ Yes      | None                            |
+| **Monorepo-aware E2E**           | ⚠️ Partial  | ✅ Full     | Selective E2E based on affected |
 
 ### 5.3 Performance Optimization Best Practices
 
 **Source: GitHub Actions Performance Tuning Guide**
 
-| Optimization | Current | Potential Improvement |
-|--------------|---------|----------------------|
-| **Cache npm dependencies** | ⚠️ Basic | Advanced with layered keys |
-| **Cache build artifacts** | ⚠️ Nx only | Add dist/ + .nx/cache |
-| **Cache test artifacts** | ❌ No | .vitest/cache |
-| **Cache Docker layers** | ❌ No | buildx cache backend |
-| **Cache tools** | ❌ No | Playwright, security DBs |
-| **Parallel jobs** | ✅ 3 shards | Dynamic 3-7 shards |
-| **Conditional jobs** | ⚠️ Partial | path-based skipping |
-| **Workflow concurrency** | ✅ Yes | Optimize limits |
-| **Artifact compression** | ✅ Default | Custom compression |
+| Optimization               | Current     | Potential Improvement      |
+| -------------------------- | ----------- | -------------------------- |
+| **Cache npm dependencies** | ⚠️ Basic    | Advanced with layered keys |
+| **Cache build artifacts**  | ⚠️ Nx only  | Add dist/ + .nx/cache      |
+| **Cache test artifacts**   | ❌ No       | .vitest/cache              |
+| **Cache Docker layers**    | ❌ No       | buildx cache backend       |
+| **Cache tools**            | ❌ No       | Playwright, security DBs   |
+| **Parallel jobs**          | ✅ 3 shards | Dynamic 3-7 shards         |
+| **Conditional jobs**       | ⚠️ Partial  | path-based skipping        |
+| **Workflow concurrency**   | ✅ Yes      | Optimize limits            |
+| **Artifact compression**   | ✅ Default  | Custom compression         |
 
 ---
 
@@ -724,6 +762,7 @@ updates:
 #### 1.1 Implement Comprehensive Caching (Priority: CRITICAL)
 
 **Tasks:**
+
 1. Add layered npm dependency caching
 2. Implement Vitest cache persistence
 3. Add Playwright browser caching
@@ -749,11 +788,13 @@ updates:
 ```
 
 **Expected Impact:**
+
 - npm install: 3-5 min → 30-60s (80% reduction)
 - Playwright setup: 3-5 min → 10-30s (90% reduction)
 - Security scans: 5-8 min → 2-4 min (50% reduction)
 
 **Success Metrics:**
+
 - Cache hit rate > 80%
 - Average job time reduction: 30-40%
 - Total pipeline time: 35-50 min → 20-30 min
@@ -761,6 +802,7 @@ updates:
 #### 1.2 Optimize Test Execution (Priority: HIGH)
 
 **Tasks:**
+
 1. Implement Nx affected for incremental testing
 2. Add test result caching (Vitest)
 3. Enable parallel test execution (5-7 shards based on PR size)
@@ -784,17 +826,20 @@ strategy:
 ```
 
 **Expected Impact:**
+
 - PR tests: 5-8 min → 2-4 min (50% reduction via affected)
 - Full suite: 5-8 min → 3-5 min (30% reduction via parallelization)
 
 #### 1.3 Consolidate Redundant Workflows (Priority: MEDIUM)
 
 **Tasks:**
+
 1. Merge `test.yml` into `ci.yml` (eliminate duplication)
 2. Convert `security-scan.yml` to composite action
 3. Combine `build-and-test.yml` with primary `ci.yml`
 
 **Expected Impact:**
+
 - Reduced workflow maintenance burden
 - Eliminated duplicate execution (saves ~5-10 min on PRs)
 - Clearer CI/CD architecture
@@ -806,6 +851,7 @@ strategy:
 #### 2.1 Implement SLSA Provenance (Priority: CRITICAL)
 
 **Tasks:**
+
 1. Integrate `slsa-github-generator` into build workflow
 2. Generate SPDX SBOM for all artifacts
 3. Sign artifacts with Sigstore
@@ -817,15 +863,15 @@ strategy:
 - name: Generate SLSA Provenance
   uses: slsa-framework/slsa-github-generator/.github/workflows/generator_generic_slsa3.yml@v1.9.0
   with:
-    provenance-name: "build-provenance.intoto.jsonl"
-    
+    provenance-name: 'build-provenance.intoto.jsonl'
+
 - name: Generate SBOM
   uses: anchore/sbom-action@v0
   with:
     format: spdx-json
     artifact-name: sbom.spdx.json
     upload-artifact: true
-    
+
 - name: Sign artifacts
   uses: sigstore/gh-action-sigstore-python@v2.1.1
   with:
@@ -835,6 +881,7 @@ strategy:
 ```
 
 **Success Metrics:**
+
 - All builds produce verifiable SLSA Level 3 provenance
 - 100% artifact coverage with SBOMs
 - Supply chain security score (OpenSSF Scorecard) > 8.0/10
@@ -842,6 +889,7 @@ strategy:
 #### 2.2 Enhanced Security Scanning (Priority: HIGH)
 
 **Tasks:**
+
 1. Add CodeQL SAST
 2. Implement IaC scanning (Checkov for Terraform)
 3. Add container image scanning to Docker workflow
@@ -854,10 +902,10 @@ strategy:
   uses: github/codeql-action/init@v3
   with:
     languages: typescript, javascript
-    
+
 - name: Perform CodeQL Analysis
   uses: github/codeql-action/analyze@v3
-  
+
 - name: Run Checkov IaC scan
   uses: bridgecrewio/checkov-action@v12
   with:
@@ -866,6 +914,7 @@ strategy:
 ```
 
 **Success Metrics:**
+
 - Zero high/critical vulnerabilities unaddressed > 7 days
 - All IaC changes scanned pre-merge
 - OWASP ASVS compliance > 90%
@@ -873,12 +922,14 @@ strategy:
 #### 2.3 Secrets Management Enhancement (Priority: HIGH)
 
 **Tasks:**
+
 1. Enable OIDC for AWS/Azure authentication
 2. Implement secret rotation policy (90-day rotation)
 3. Add TruffleHog secret scanning to CI
 4. Audit and document all secrets
 
 **Expected Impact:**
+
 - Eliminate long-lived cloud credentials
 - Reduce secret exposure risk by 80%
 - Automated secret detection coverage: 95%+
@@ -890,6 +941,7 @@ strategy:
 #### 3.1 Advanced Build Optimization (Priority: HIGH)
 
 **Tasks:**
+
 1. Implement full Nx affected builds
 2. Add dist/ caching with restore-keys
 3. Enable incremental TypeScript compilation
@@ -900,7 +952,7 @@ strategy:
 ```yaml
 - name: Build (affected only)
   run: npx nx affected --target=build --parallel=3 --skip-nx-cache=false
-  
+
 - name: Cache build outputs
   uses: actions/cache@v4
   with:
@@ -916,12 +968,14 @@ strategy:
 ```
 
 **Expected Impact:**
+
 - Build time (affected): 8-12 min → 2-4 min (75% reduction)
 - Build time (full): 8-12 min → 6-9 min (25% reduction)
 
 #### 3.2 E2E Test Optimization (Priority: HIGH)
 
 **Tasks:**
+
 1. Implement Playwright test sharding
 2. Add browser binary caching
 3. Enable parallel E2E execution
@@ -934,10 +988,10 @@ strategy:
   fail-fast: false
   matrix:
     shard: [1, 2, 3, 4]
-    
+
 - name: Run E2E tests (sharded)
   run: npx playwright test --shard=${{ matrix.shard }}/4
-  
+
 - name: Cache Playwright browsers
   uses: actions/cache@v4
   with:
@@ -946,11 +1000,13 @@ strategy:
 ```
 
 **Expected Impact:**
+
 - E2E time: 12-18 min → 4-6 min (70% reduction via sharding)
 
 #### 3.3 Lefthook Performance Tuning (Priority: MEDIUM)
 
 **Tasks:**
+
 1. Enable ESLint caching (`.eslintcache`)
 2. Enable TypeScript incremental mode (`.tsbuildinfo`)
 3. Optimize dependency security caching
@@ -974,6 +1030,7 @@ typecheck:
 ```
 
 **Expected Impact:**
+
 - P50: 8.2s → 5-6s (27% reduction)
 - P95: 14.7s → 8-10s (32-46% reduction)
 
@@ -984,12 +1041,14 @@ typecheck:
 #### 4.1 Metrics & Dashboards (Priority: MEDIUM)
 
 **Tasks:**
+
 1. Implement CI/CD metrics collection (Datadog/Prometheus)
 2. Create performance dashboards (Grafana)
 3. Set up alerting for SLO violations
 4. Track key metrics (DORA metrics)
 
 **Metrics to Track:**
+
 - **Deployment Frequency**
 - **Lead Time for Changes**
 - **Change Failure Rate**
@@ -1000,12 +1059,14 @@ typecheck:
 #### 4.2 Cost Optimization (Priority: LOW)
 
 **Tasks:**
+
 1. Analyze GitHub Actions compute costs
 2. Optimize matrix strategy for cost efficiency
 3. Implement conditional workflow execution
 4. Evaluate self-hosted runner ROI
 
 **Expected Impact:**
+
 - Compute cost reduction: 30-40%
 - Developer time saved: 15-25 hours/week
 
@@ -1018,20 +1079,17 @@ typecheck:
 #### **Week 1: Foundation & Quick Wins**
 
 **Monday-Tuesday:**
+
 1. ✅ Implement layered npm dependency caching
 2. ✅ Add Vitest cache persistence
 3. ✅ Enable Playwright browser caching
 
-**Wednesday-Thursday:**
-4. ✅ Consolidate `test.yml` into `ci.yml`
-5. ✅ Convert `security-scan.yml` to composite action
-6. ✅ Add Docker layer caching
+**Wednesday-Thursday:** 4. ✅ Consolidate `test.yml` into `ci.yml` 5. ✅ Convert `security-scan.yml` to composite action 6. ✅ Add Docker layer caching
 
-**Friday:**
-7. ✅ Measure baseline performance (before/after comparison)
-8. ✅ Document caching strategy in ADR
+**Friday:** 7. ✅ Measure baseline performance (before/after comparison) 8. ✅ Document caching strategy in ADR
 
 **Deliverables:**
+
 - ADR: `docs/architecture/decisions/adr-XXX-comprehensive-caching-strategy.md`
 - Updated workflows with caching
 - Performance comparison report
@@ -1039,20 +1097,17 @@ typecheck:
 #### **Week 2: Test Optimization & Consolidation**
 
 **Monday-Tuesday:**
+
 1. ✅ Implement Nx affected for PR tests
 2. ✅ Add dynamic test sharding (5-7 shards)
 3. ✅ Enable test retry logic
 
-**Wednesday-Thursday:**
-4. ✅ Merge redundant workflows
-5. ✅ Add path-based conditional execution
-6. ✅ Optimize coverage aggregation
+**Wednesday-Thursday:** 4. ✅ Merge redundant workflows 5. ✅ Add path-based conditional execution 6. ✅ Optimize coverage aggregation
 
-**Friday:**
-7. ✅ Validate test execution improvements
-8. ✅ Update testing documentation
+**Friday:** 7. ✅ Validate test execution improvements 8. ✅ Update testing documentation
 
 **Deliverables:**
+
 - Consolidated CI workflows
 - Test performance metrics
 - Updated testing guide
@@ -1060,20 +1115,17 @@ typecheck:
 #### **Week 3: Security Hardening - SLSA & SBOM**
 
 **Monday-Tuesday:**
+
 1. ✅ Integrate SLSA provenance generation
 2. ✅ Add SBOM generation (Syft/CycloneDX)
 3. ✅ Configure Sigstore artifact signing
 
-**Wednesday-Thursday:**
-4. ✅ Add CodeQL SAST
-5. ✅ Implement Checkov IaC scanning
-6. ✅ Enable Dependabot for Actions
+**Wednesday-Thursday:** 4. ✅ Add CodeQL SAST 5. ✅ Implement Checkov IaC scanning 6. ✅ Enable Dependabot for Actions
 
-**Friday:**
-7. ✅ Security scan validation
-8. ✅ SLSA compliance verification
+**Friday:** 7. ✅ Security scan validation 8. ✅ SLSA compliance verification
 
 **Deliverables:**
+
 - SLSA Level 3 provenance for all builds
 - SBOMs for all artifacts
 - Security scanning report
@@ -1081,20 +1133,17 @@ typecheck:
 #### **Week 4: Secrets & OIDC**
 
 **Monday-Tuesday:**
+
 1. ✅ Configure OIDC for AWS/Azure
 2. ✅ Migrate to short-lived credentials
 3. ✅ Add TruffleHog secret scanning
 
-**Wednesday-Thursday:**
-4. ✅ Document secret rotation policy
-5. ✅ Audit existing secrets
-6. ✅ Implement secret expiration monitoring
+**Wednesday-Thursday:** 4. ✅ Document secret rotation policy 5. ✅ Audit existing secrets 6. ✅ Implement secret expiration monitoring
 
-**Friday:**
-7. ✅ Secrets management audit
-8. ✅ Update security documentation
+**Friday:** 7. ✅ Secrets management audit 8. ✅ Update security documentation
 
 **Deliverables:**
+
 - OIDC authentication for cloud providers
 - Secret rotation policy documentation
 - Secrets audit report
@@ -1107,6 +1156,7 @@ typecheck:
 4. ✅ Integration test parallelization
 
 **Deliverables:**
+
 - Build performance improvements
 - E2E test execution < 6 min
 - Updated build documentation
@@ -1119,6 +1169,7 @@ typecheck:
 4. ✅ Parallel execution tuning
 
 **Deliverables:**
+
 - Lefthook P95 < 10s
 - Developer onboarding improvements
 - Local development guide updates
@@ -1131,6 +1182,7 @@ typecheck:
 4. ✅ Cost optimization analysis
 
 **Deliverables:**
+
 - Grafana dashboards for CI/CD metrics
 - DORA metrics tracking
 - Cost optimization recommendations
@@ -1141,41 +1193,41 @@ typecheck:
 
 ### 8.1 Performance Metrics
 
-| Metric | Baseline | Week 2 Target | Week 6 Target | Week 12 Target |
-|--------|----------|---------------|---------------|----------------|
-| **PR Validation Time (P95)** | 35-50 min | 20-30 min | 15-20 min | 10-15 min |
-| **Build Time (affected, P95)** | 8-12 min | 6-9 min | 3-5 min | 2-4 min |
-| **Test Time (affected, P95)** | 5-8 min | 3-5 min | 2-3 min | 1-2 min |
-| **E2E Time (P95)** | 12-18 min | 10-14 min | 6-9 min | 4-6 min |
-| **Lefthook P95** | 14.7s | 12s | 10s | 8s |
-| **Cache Hit Rate** | ~40% | ~60% | ~75% | ~85% |
+| Metric                         | Baseline  | Week 2 Target | Week 6 Target | Week 12 Target |
+| ------------------------------ | --------- | ------------- | ------------- | -------------- |
+| **PR Validation Time (P95)**   | 35-50 min | 20-30 min     | 15-20 min     | 10-15 min      |
+| **Build Time (affected, P95)** | 8-12 min  | 6-9 min       | 3-5 min       | 2-4 min        |
+| **Test Time (affected, P95)**  | 5-8 min   | 3-5 min       | 2-3 min       | 1-2 min        |
+| **E2E Time (P95)**             | 12-18 min | 10-14 min     | 6-9 min       | 4-6 min        |
+| **Lefthook P95**               | 14.7s     | 12s           | 10s           | 8s             |
+| **Cache Hit Rate**             | ~40%      | ~60%          | ~75%          | ~85%           |
 
 ### 8.2 Security Metrics
 
-| Metric | Baseline | Week 4 Target | Week 12 Target |
-|--------|----------|---------------|----------------|
-| **SLSA Level** | Level 1 | Level 3 | Level 3 |
-| **OWASP ASVS Compliance** | ~65% | ~80% | ~90% |
-| **OpenSSF Scorecard** | 6.5/10 | 7.5/10 | 8.5/10 |
-| **Unpatched High/Critical CVEs** | ~5-10 | <3 | 0 |
-| **Secret Exposure Incidents** | - | 0 | 0 |
+| Metric                           | Baseline | Week 4 Target | Week 12 Target |
+| -------------------------------- | -------- | ------------- | -------------- |
+| **SLSA Level**                   | Level 1  | Level 3       | Level 3        |
+| **OWASP ASVS Compliance**        | ~65%     | ~80%          | ~90%           |
+| **OpenSSF Scorecard**            | 6.5/10   | 7.5/10        | 8.5/10         |
+| **Unpatched High/Critical CVEs** | ~5-10    | <3            | 0              |
+| **Secret Exposure Incidents**    | -        | 0             | 0              |
 
 ### 8.3 Developer Experience Metrics
 
-| Metric | Baseline | Week 2 Target | Week 12 Target |
-|--------|----------|---------------|----------------|
-| **Developer Time Saved** | - | 10 hrs/week | 20 hrs/week |
-| **PR Merge Rate (< 24hr)** | ~60% | ~75% | ~85% |
-| **CI/CD Failure Rate** | ~15% | ~10% | ~5% |
-| **Flaky Test Rate** | ~5% | ~2% | <1% |
+| Metric                     | Baseline | Week 2 Target | Week 12 Target |
+| -------------------------- | -------- | ------------- | -------------- |
+| **Developer Time Saved**   | -        | 10 hrs/week   | 20 hrs/week    |
+| **PR Merge Rate (< 24hr)** | ~60%     | ~75%          | ~85%           |
+| **CI/CD Failure Rate**     | ~15%     | ~10%          | ~5%            |
+| **Flaky Test Rate**        | ~5%      | ~2%           | <1%            |
 
 ### 8.4 Cost Metrics
 
-| Metric | Baseline | Week 12 Target |
-|--------|----------|----------------|
-| **GitHub Actions Compute Cost** | $X/month | -30-40% |
-| **Developer Time Cost** | $Y/month | -20-30% |
-| **Total CI/CD Cost** | $Z/month | -25-35% |
+| Metric                          | Baseline | Week 12 Target |
+| ------------------------------- | -------- | -------------- |
+| **GitHub Actions Compute Cost** | $X/month | -30-40%        |
+| **Developer Time Cost**         | $Y/month | -20-30%        |
+| **Total CI/CD Cost**            | $Z/month | -25-35%        |
 
 ---
 
@@ -1183,24 +1235,26 @@ typecheck:
 
 ### 9.1 Implementation Risks
 
-| Risk | Probability | Impact | Mitigation |
-|------|-------------|--------|------------|
-| **Cache Corruption** | MEDIUM | HIGH | Implement cache versioning, automated cache invalidation |
-| **Test Flakiness** | MEDIUM | MEDIUM | Add retry logic, quarantine flaky tests, monitor trends |
-| **Security Scan False Positives** | HIGH | LOW | Configure suppressions, manual review process |
-| **Workflow Complexity** | LOW | MEDIUM | Comprehensive documentation, ADRs for major changes |
-| **Performance Regression** | LOW | HIGH | Baseline metrics, automated performance testing |
-| **Secret Exposure** | LOW | CRITICAL | Multi-layer scanning, automated rotation, OIDC adoption |
+| Risk                              | Probability | Impact   | Mitigation                                               |
+| --------------------------------- | ----------- | -------- | -------------------------------------------------------- |
+| **Cache Corruption**              | MEDIUM      | HIGH     | Implement cache versioning, automated cache invalidation |
+| **Test Flakiness**                | MEDIUM      | MEDIUM   | Add retry logic, quarantine flaky tests, monitor trends  |
+| **Security Scan False Positives** | HIGH        | LOW      | Configure suppressions, manual review process            |
+| **Workflow Complexity**           | LOW         | MEDIUM   | Comprehensive documentation, ADRs for major changes      |
+| **Performance Regression**        | LOW         | HIGH     | Baseline metrics, automated performance testing          |
+| **Secret Exposure**               | LOW         | CRITICAL | Multi-layer scanning, automated rotation, OIDC adoption  |
 
 ### 9.2 Rollback Plans
 
 **For Each Phase:**
+
 1. **Git tagging** - Tag workflows before major changes
 2. **Gradual rollout** - Test on feature branches first
 3. **Monitoring** - Track metrics before/after changes
 4. **Quick revert** - Keep previous workflow versions in git history
 
 **Emergency Rollback Procedure:**
+
 ```bash
 # Revert to previous workflow version
 git checkout <previous-commit> .github/workflows/
@@ -1262,47 +1316,47 @@ git push origin main
 
 **Before (24 workflows) → After (15-18 workflows)**
 
-| Current Workflow | Action | Merged Into/Replaced By |
-|------------------|--------|-------------------------|
-| `ci.yml` | Keep (Enhanced) | Primary CI pipeline |
-| `test.yml` | **MERGE** | `ci.yml` |
-| `build-and-test.yml` | **MERGE** | `ci.yml` |
-| `security-scan.yml` | Convert to composite action | Used by `ci.yml` |
-| `e2e.yml` | Keep (Enhanced) | Standalone E2E |
-| `docker.yml` | Keep (Enhanced) | Container builds |
-| `accessibility.yml` | Keep | Specialized validation |
-| `lighthouse.yml` | Keep | Performance testing |
-| `visual-regression.yml` | Keep | Visual testing |
-| `ai-governance.yml` | Keep | AI compliance |
-| `ai-maintenance.yml` | Keep | AI operations |
-| `dependency-updates.yml` | Keep | Dependabot integration |
-| `scorecard.yml` | Keep | Security posture |
-| `health-check.yml` | Keep | Monitoring |
-| `application-release.yml` | Keep | Release automation |
-| `release.yml` | **MERGE** | `application-release.yml` |
-| `iac-plan.yml` | Keep | Infrastructure changes |
-| `deploy-argocd.yml` | Keep | Deployment |
-| `migrate.yml` | Keep | Database migrations |
-| `vault-client.yml` | Convert to composite action | Secrets management |
-| `test-setup-node-action.yml` | **REMOVE** | Dev testing only |
-| `test-run-tests-action.yml` | **REMOVE** | Dev testing only |
-| `copilot-setup-steps.yml` | Keep | AI assistant |
-| `security.yml` | **MERGE** | `ci.yml` security job |
+| Current Workflow             | Action                      | Merged Into/Replaced By   |
+| ---------------------------- | --------------------------- | ------------------------- |
+| `ci.yml`                     | Keep (Enhanced)             | Primary CI pipeline       |
+| `test.yml`                   | **MERGE**                   | `ci.yml`                  |
+| `build-and-test.yml`         | **MERGE**                   | `ci.yml`                  |
+| `security-scan.yml`          | Convert to composite action | Used by `ci.yml`          |
+| `e2e.yml`                    | Keep (Enhanced)             | Standalone E2E            |
+| `docker.yml`                 | Keep (Enhanced)             | Container builds          |
+| `accessibility.yml`          | Keep                        | Specialized validation    |
+| `lighthouse.yml`             | Keep                        | Performance testing       |
+| `visual-regression.yml`      | Keep                        | Visual testing            |
+| `ai-governance.yml`          | Keep                        | AI compliance             |
+| `ai-maintenance.yml`         | Keep                        | AI operations             |
+| `dependency-updates.yml`     | Keep                        | Dependabot integration    |
+| `scorecard.yml`              | Keep                        | Security posture          |
+| `health-check.yml`           | Keep                        | Monitoring                |
+| `application-release.yml`    | Keep                        | Release automation        |
+| `release.yml`                | **MERGE**                   | `application-release.yml` |
+| `iac-plan.yml`               | Keep                        | Infrastructure changes    |
+| `deploy-argocd.yml`          | Keep                        | Deployment                |
+| `migrate.yml`                | Keep                        | Database migrations       |
+| `vault-client.yml`           | Convert to composite action | Secrets management        |
+| `test-setup-node-action.yml` | **REMOVE**                  | Dev testing only          |
+| `test-run-tests-action.yml`  | **REMOVE**                  | Dev testing only          |
+| `copilot-setup-steps.yml`    | Keep                        | AI assistant              |
+| `security.yml`               | **MERGE**                   | `ci.yml` security job     |
 
 **Result:** 24 → 17 workflows (29% reduction)
 
 ### Appendix D: Caching Strategy Decision Matrix
 
-| Data Type | Cache? | Cache Key | Restore Keys | TTL |
-|-----------|--------|-----------|--------------|-----|
-| **npm dependencies** | ✅ Yes | `${{ runner.os }}-deps-${{ hashFiles('**/package-lock.json') }}` | `${{ runner.os }}-deps-` | 7 days |
-| **Build artifacts** | ✅ Yes | `${{ runner.os }}-build-${{ github.sha }}` | `${{ runner.os }}-build-${{ github.base_ref }}-` | 7 days |
-| **Vitest cache** | ✅ Yes | `${{ runner.os }}-vitest-${{ github.sha }}` | `${{ runner.os }}-vitest-` | 7 days |
-| **Playwright browsers** | ✅ Yes | `${{ runner.os }}-playwright-${{ hashFiles('**/package-lock.json') }}` | None (exact match only) | 7 days |
-| **Docker layers** | ✅ Yes | `type=gha,mode=max` (buildx) | None (buildx managed) | 7 days |
-| **Security DBs** | ✅ Yes | `${{ runner.os }}-security-${{ env.TRIVY_VERSION }}-{{ env.DATE }}` | `${{ runner.os }}-security-` | 1 day |
-| **ESLint cache** | ✅ Yes | `.eslintcache` (git-ignored) | N/A (local only) | - |
-| **TSC buildinfo** | ✅ Yes | `.tsbuildinfo` (git-ignored) | N/A (local only) | - |
+| Data Type               | Cache? | Cache Key                                                              | Restore Keys                                     | TTL    |
+| ----------------------- | ------ | ---------------------------------------------------------------------- | ------------------------------------------------ | ------ |
+| **npm dependencies**    | ✅ Yes | `${{ runner.os }}-deps-${{ hashFiles('**/package-lock.json') }}`       | `${{ runner.os }}-deps-`                         | 7 days |
+| **Build artifacts**     | ✅ Yes | `${{ runner.os }}-build-${{ github.sha }}`                             | `${{ runner.os }}-build-${{ github.base_ref }}-` | 7 days |
+| **Vitest cache**        | ✅ Yes | `${{ runner.os }}-vitest-${{ github.sha }}`                            | `${{ runner.os }}-vitest-`                       | 7 days |
+| **Playwright browsers** | ✅ Yes | `${{ runner.os }}-playwright-${{ hashFiles('**/package-lock.json') }}` | None (exact match only)                          | 7 days |
+| **Docker layers**       | ✅ Yes | `type=gha,mode=max` (buildx)                                           | None (buildx managed)                            | 7 days |
+| **Security DBs**        | ✅ Yes | `${{ runner.os }}-security-${{ env.TRIVY_VERSION }}-{{ env.DATE }}`    | `${{ runner.os }}-security-`                     | 1 day  |
+| **ESLint cache**        | ✅ Yes | `.eslintcache` (git-ignored)                                           | N/A (local only)                                 | -      |
+| **TSC buildinfo**       | ✅ Yes | `.tsbuildinfo` (git-ignored)                                           | N/A (local only)                                 | -      |
 
 ---
 
@@ -1311,12 +1365,14 @@ git push origin main
 This comprehensive assessment provides a clear roadmap for transforming Political Sphere's CI/CD infrastructure from a solid foundation into an **enterprise-grade, highly optimized, security-hardened** system. The phased approach ensures minimal disruption while delivering measurable improvements every 2 weeks.
 
 **Key Takeaways:**
+
 1. **40-50% pipeline time reduction** is achievable through caching optimization alone
 2. **SLSA Level 3 compliance** is within reach with focused effort in Weeks 3-4
 3. **Developer experience improvements** will compound over time, saving 15-25 hours/week
 4. **Security posture enhancement** will elevate OWASP ASVS compliance to 90%+
 
 **Next Steps:**
+
 1. Review and approve this assessment
 2. Allocate resources for Week 1-2 implementation
 3. Establish baseline metrics for comparison
@@ -1325,9 +1381,9 @@ This comprehensive assessment provides a clear roadmap for transforming Politica
 ---
 
 **Document Control:**
+
 - **Version:** 1.0.0
 - **Last Updated:** 2025-11-18
 - **Next Review:** 2025-12-18 (Monthly)
 - **Owner:** Platform Engineering Team
 - **Approvers:** CTO, Security Lead, DevOps Lead
-

@@ -5,7 +5,7 @@ import express from 'express';
 import { afterEach, beforeAll, beforeEach, describe, it } from 'vitest';
 
 import { dispatchRequest } from '../../tests/utils/express-request.js';
-import { closeDatabase, getDatabase } from '../modules/stores/index.ts';
+import { closeDatabase, getDatabase } from '../stores/index.ts';
 import authRoutes from './auth.js';
 
 describe('Auth Routes - Input Validation', () => {

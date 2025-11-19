@@ -205,6 +205,8 @@ node --test tools/scripts/automation/self-heal.test.mjs
 
 ---
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 **Reviewed by:** AI Agent (GitHub Copilot)  
 **Approved by:** Pending human review  
 **Next Review:** 2026-02-08 (Quarterly)

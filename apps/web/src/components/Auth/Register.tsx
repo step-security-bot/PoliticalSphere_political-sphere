@@ -141,7 +141,7 @@ const Register: React.FC<RegisterProps> = ({
               minLength={3}
               maxLength={50}
             />
-            <div id="username-requirements" className="field-help">
+            <div id="username-requirements" className="field-help" role="note">
               3-50 characters: letters, numbers, underscores, and hyphens only
             </div>
           </div>
@@ -318,7 +318,7 @@ const Register: React.FC<RegisterProps> = ({
                 aria-required="true"
                 disabled={registerLoading}
               />
-              <span>
+              <span className="policy-chip">
                 I agree to the{' '}
                 <a href="/terms" target="_blank" rel="noopener noreferrer">
                   Terms of Service

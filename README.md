@@ -11,14 +11,27 @@ Experience the thrill of governance as your choices ripple through realistic sim
 
 Our mission: Deliver captivating gameplay that authentically mirrors the chaos and brilliance of real-world politics, while fostering civic understanding through experiential learning. No agendas, no biases—just pure, consequence-driven democracy in action.
 
+### Project Characteristics
+
+- **Development Model**: Solo developer project leveraging AI systems as collaborative coding partners
+- **Scale**: Nx monorepo with 12+ applications and 17+ shared libraries
+- **Architecture**: Microservices with domain-driven design and event-driven patterns
+- **Technology Focus**: TypeScript-first with strict type safety, modern React patterns, and high-performance Node.js backend
+- **Quality Standards**: Enterprise-grade testing (80%+ coverage), security (zero-trust), and accessibility (WCAG 2.2 AA+)
+- **Documentation**: Comprehensive documentation across 12+ structured sections with 100+ documents
+- **Governance**: Constitutional framework ensuring democratic neutrality and ethical AI use
+- **CI/CD**: Automated testing, security scanning, and deployment with quality gates
+- **Observability**: Structured logging, distributed tracing (OpenTelemetry), and metrics (Prometheus)
+
 **AI Integration:**
 
 - **🤖 Development**: AI assistants are used for the vast majority of development tasks — including drafting code, generating documentation, and creating tests. This use of AI is experimental and operates within evolving guardrails that focus on governance, compliance, and security. Because of the experimental nature of AI, unexpected or incorrect outputs may occur, and every AI-generated change is monitored, reviewed, and ultimately approved by a human developer.
 
 The review process prioritises iteration over perfection. At times, code that contains known issues or incomplete logic is intentionally committed to the codebase — not as a final implementation, but as a checkpoint to capture progress and context. These issues are then revisited at the appropriate stage in development, allowing the project to maintain momentum. The sole human developer uses structured prompts to encourage the AI to identify, reflect on, and correct its own mistakes as part of the iterative review process. External validation tools (linters, type checkers, test suites, and security scanners) are used wherever possible to verify AI-generated work.
 
-- **Gameplay**: AI-driven NPCs participate in voting, providing realistic opposition and filling empty parliamentary seats.
-- **Governance**: Constitutional framework ensures AI systems cannot manipulate political outcomes or violate democratic principles.
+- **🎮 Gameplay**: AI-driven NPCs participate in voting, providing realistic opposition and filling empty parliamentary seats using locally-hosted Ollama models
+- **🏛️ Governance**: Constitutional framework ensures AI systems cannot manipulate political outcomes or violate democratic principles (see `docs/02-governance/`)
+- **🔍 Transparency**: All AI decisions are auditable, explainable, and subject to human oversight with comprehensive logging
 
 ## Table of Contents
 
@@ -44,12 +57,75 @@ The review process prioritises iteration over perfection. At times, code that co
 
 ## ✨ Features
 
-- 🏛️ **Democratic Governance**: Constitutional framework with transparent decision-making and parliamentary procedures
-- 👥 **Multiplayer Simulation**: Real-time political scenario modeling with up to multiple concurrent players
-- 🤖 **Ethical AI Integration**: AI assistants with strict governance boundaries and constitutional compliance
-- 🧪 **Comprehensive Testing**: Unit, integration, e2e, accessibility, and security testing infrastructure
-- 🔒 **Zero-Trust Security**: End-to-end encryption, auditability, and compliance monitoring
-- ♿ **Accessibility First**: WCAG 2.2 AA+ compliance across all interfaces with automated testing
+### Core Gameplay Features
+
+- 🏛️ **Parliamentary Democracy Simulation**: Full UK-inspired parliamentary system with Westminster-style procedures, Question Time, and legislative processes
+- 🗳️ **Electoral System**: FPTP and proportional representation voting mechanisms with constituency simulation
+- 📜 **Legislative Framework**: Draft, debate, amend, and vote on bills with realistic parliamentary procedures
+- 🤝 **Coalition Building**: Form parties, create coalitions, negotiate deals, and manage political relationships
+- 📊 **Dynamic Political Landscape**: Public opinion polls, media influence, and real-time reputation systems
+- 🎭 **Role Progression**: Start as backbencher, rise to party leadership, cabinet positions, or Prime Minister
+- 💼 **Government Formation**: Cabinet appointments, shadow cabinet, ministerial responsibilities
+
+### Technical Excellence
+
+- 🧪 **Comprehensive Testing Infrastructure**:
+  - Unit tests (Vitest) with 80%+ coverage targets
+  - Integration tests with Testcontainers for database/service testing
+  - E2E tests (Playwright) for critical user journeys
+  - Accessibility tests (axe-core, pa11y) for WCAG 2.2 AA+ validation
+  - Security tests (OWASP ZAP, Snyk) integrated in CI/CD
+  - Performance tests (k6) for load testing and benchmarking
+- 🔒 **Zero-Trust Security Architecture**:
+  - End-to-end encryption (TLS 1.3+ in transit, AES-256-GCM at rest)
+  - JWT authentication with secure refresh token rotation
+  - Input validation and sanitization (Zod schemas)
+  - Rate limiting and DDoS protection
+  - Comprehensive audit logging with tamper-evident trails
+  - OWASP ASVS v5.0.0 compliance
+- ♿ **Accessibility First**:
+  - WCAG 2.2 AA+ compliance across all interfaces
+  - Full keyboard navigation support
+  - Screen reader optimization with semantic HTML and ARIA labels
+  - High contrast modes and customizable text scaling
+  - Automated accessibility testing in CI pipeline
+- 🤖 **Ethical AI Integration**:
+  - Constitutional governance boundaries preventing political manipulation
+  - AI NPCs powered by locally-hosted Ollama models (privacy-first)
+  - Transparent, explainable AI decisions with comprehensive audit logs
+  - Human-in-the-loop oversight for critical political content
+  - Bias monitoring and fairness metrics
+
+### Developer Experience
+
+- 📦 **Modern Monorepo**: Nx workspace with intelligent build caching and affected command support
+- 🔄 **Hot Module Replacement**: Instant feedback with Vite for frontend and tsx watch for backend
+- 🎯 **TypeScript Strict Mode**: Full type safety across the entire codebase
+- 📝 **Comprehensive Documentation**: 100+ documents across 12 structured sections
+- 🛠️ **Developer Tools**:
+  - AI-assisted development with Model Context Protocol (MCP) integration
+  - Automated code generation and scaffolding
+  - Performance monitoring and optimization tools
+  - Database migrations and seeding scripts
+  - Visual regression testing
+
+### Infrastructure & Operations
+
+- 🐳 **Containerized Development**: Docker Compose for consistent local environments
+- ☸️ **Kubernetes Ready**: Helm charts and manifests for production deployment
+- 📊 **Observability Built-In**:
+  - Structured JSON logging with Pino
+  - Distributed tracing with OpenTelemetry
+  - Metrics collection with Prometheus
+  - Grafana dashboards for system health
+  - Alert management with configurable thresholds
+- 🚀 **GitOps Deployment**: ArgoCD for declarative, version-controlled deployments
+- 🔐 **Secrets Management**: Secure handling with AWS Secrets Manager / HashiCorp Vault
+- 📈 **Performance Optimization**:
+  - Redis caching for frequently accessed data
+  - PostgreSQL query optimization and indexing
+  - CDN integration for static assets
+  - Load balancing with health checks
 
 ## Installation
 
@@ -255,14 +331,114 @@ Political Sphere embraces a **human-AI collaborative development model** where A
 
 ## Architecture Overview
 
-Political Sphere is built as an Nx monorepo with microservices architecture:
+Political Sphere is built as an **Nx monorepo** with **microservices architecture** and **domain-driven design** principles:
 
-- **Frontend**: React 19 + Vite + TypeScript + WCAG 2.2 AA accessibility
-- **Backend**: Express.js + TypeScript + SQLite/PostgreSQL
-- **Game Engine**: Custom deterministic simulation with AI NPCs
-- **Infrastructure**: Docker + Kubernetes + GitOps deployment
-- **Testing**: Vitest + Playwright + axe-core accessibility testing
-- **Security**: Zero-trust architecture with comprehensive auditing
+### Core Technology Stack
+
+#### Frontend Layer
+
+- **Framework**: React 19 + TypeScript (strict mode)
+- **Build Tool**: Vite with ESM support
+- **State Management**: Redux Toolkit + RTK Query
+- **Styling**: Tailwind CSS with custom design system
+- **Module Federation**: Micro-frontends for independent deployability
+- **Accessibility**: WCAG 2.2 AA+ compliance with automated testing (axe-core)
+- **Testing**: Vitest + Testing Library + Playwright E2E
+
+#### Backend Layer
+
+- **Runtime**: Node.js 22+ (LTS)
+- **Framework**: Fastify (lightweight, high-performance REST/GraphQL APIs)
+- **Language**: TypeScript with strict type checking
+- **API Style**: REST + GraphQL with OpenAPI/JSON Schema validation
+- **Authentication**: JWT with secure session management and refresh tokens
+- **Validation**: Zod schemas for runtime type safety
+
+#### Data Layer
+
+- **Primary Database**: PostgreSQL 15+ with Prisma ORM
+- **Caching**: Redis for sessions, pub/sub, and data caching
+- **Search**: PostgreSQL full-text search (with future Elasticsearch consideration)
+- **Storage**: Local file storage (S3-compatible for production)
+- **Migrations**: Prisma migrations with version control
+
+#### Game Engine
+
+- **Simulation Engine**: Custom deterministic simulation in TypeScript
+- **AI NPCs**: Ollama-powered local AI models for realistic political opponents
+- **Event System**: NATS/Redis pub/sub for real-time game events
+- **State Management**: PostgreSQL with transactional consistency
+
+#### Infrastructure & DevOps
+
+- **Containerization**: Docker + Docker Compose for local development
+- **Orchestration**: Kubernetes with Helm charts (production)
+- **IaC**: Terraform for infrastructure provisioning
+- **GitOps**: ArgoCD for declarative deployments
+- **CI/CD**: GitHub Actions with comprehensive quality gates
+- **Monitoring**: Prometheus + Grafana + OpenTelemetry for observability
+
+#### Testing Infrastructure
+
+- **Unit Testing**: Vitest with 80%+ coverage targets
+- **Integration Testing**: Testcontainers for database/service testing
+- **E2E Testing**: Playwright for critical user journeys
+- **Accessibility Testing**: axe-core + pa11y for WCAG validation
+- **Security Testing**: OWASP ZAP, npm audit, Snyk
+- **Performance Testing**: k6 for load testing and benchmarking
+
+#### Security & Compliance
+
+- **Architecture**: Zero-trust security model with principle of least privilege
+- **Encryption**: TLS 1.3+ in transit, AES-256-GCM at rest
+- **Secrets Management**: AWS Secrets Manager / HashiCorp Vault
+- **Audit Logging**: Tamper-evident structured logs with retention policies
+- **Compliance**: GDPR-first design, OWASP ASVS v5.0.0, NIST guidelines
+
+### Architectural Patterns
+
+- **Microservices**: Independently deployable services with clear bounded contexts
+- **Domain-Driven Design**: Rich domain models with ubiquitous language
+- **CQRS**: Command-Query separation for complex domains (elections, legislation)
+- **Event-Driven**: Asynchronous communication via message queues and pub/sub
+- **API Gateway**: Centralized API routing with rate limiting and authentication
+- **Repository Pattern**: Data access abstraction with Prisma
+- **Factory Pattern**: Test data generation with Fishery + Faker
+
+### Monorepo Structure
+
+```
+apps/           # 12+ deployable applications
+  ├── api/              # Main REST/GraphQL API service
+  ├── web/              # Primary React web application
+  ├── game-server/      # Real-time game simulation engine
+  ├── worker/           # Background job processing
+  ├── shell/            # Module federation host
+  ├── *-remote/         # Micro-frontend applications
+  └── infrastructure/   # IaC and deployment configurations
+
+libs/           # 17+ shared libraries
+  ├── shared/           # Common utilities and types
+  ├── platform/         # Platform services (auth, API client, state)
+  ├── ui/               # Design system and React components
+  ├── game-engine/      # Game logic and simulation
+  ├── domain-*/         # Domain-specific business logic
+  ├── data-*/           # Data access layers
+  └── testing/          # Test utilities and factories
+
+docs/           # Comprehensive documentation (12+ sections)
+tools/          # Development tools and scripts
+config/         # Configuration files
+```
+
+### Key Design Principles
+
+1. **Democratic Integrity**: Absolute political neutrality with constitutional governance
+2. **Security First**: Zero-trust model, encryption everywhere, comprehensive auditing
+3. **Accessibility Mandatory**: WCAG 2.2 AA+ compliance, keyboard navigation, screen reader support
+4. **Test-Driven Quality**: 80%+ coverage, automated testing at all levels
+5. **Observability Built-In**: Structured logging, distributed tracing, metrics collection
+6. **Privacy by Design**: Data minimization, GDPR compliance, user data sovereignty
 
 ## API Overview
 
@@ -298,18 +474,23 @@ npm run dev              # Start all services with Docker
 ## FAQ
 
 ### What is Political Sphere?
+
 Political Sphere is a multiplayer simulation game that lets players experience democratic governance through parliamentary procedures, policy-making, and coalition-building in a virtual UK-inspired political system.
 
 ### How does AI integration work?
+
 AI assistants help with development tasks and power in-game NPCs for realistic opposition. All AI systems are governed by strict ethical frameworks to ensure neutrality and prevent manipulation of political outcomes.
 
 ### Is the game free?
+
 Yes, Political Sphere is open-source and free to play. The project focuses on educational and entertainment value rather than monetization.
 
 ### Can I contribute?
+
 Absolutely! See the Contributing section above and our [.blackboxrules](.blackboxrules) for governance guidelines. We welcome contributions that align with our principles of democratic integrity and security.
 
 ### What technologies are used?
+
 The project is built with Node.js, TypeScript, React, and various modern web technologies. It uses an Nx monorepo structure for scalable development.
 
 ## Troubleshooting

@@ -1,5 +1,7 @@
 ## Module Federation (Module Federation / Microfrontends)
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 This document explains the recommended conventions and a small starter scaffold for using Webpack Module Federation in this monorepo.
 
 Goals

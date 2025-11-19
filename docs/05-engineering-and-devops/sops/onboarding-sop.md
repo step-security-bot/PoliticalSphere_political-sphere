@@ -10,6 +10,8 @@ em# Onboarding SOP
 
 ---
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 ## Purpose
 
 This SOP ensures new team members are onboarded efficiently and effectively, providing them with the knowledge and tools needed to contribute to the Political Sphere project.
@@ -28,30 +30,35 @@ Applies to all new hires, contractors, and team transfers joining the developmen
 ## Onboarding Checklist
 
 ### Pre-Start Preparation
+
 - [ ] **Workspace Setup**: Desk, computer, and peripherals ready
 - [ ] **Access Provisioned**: Email, Slack, GitHub, AWS accounts created
 - [ ] **Development Environment**: Laptop configured with required software
 - [ ] **Documentation Access**: All required docs and credentials shared
 
 ### Day 1: Welcome & Setup
+
 - [ ] **Welcome Meeting**: Team introductions and overview
 - [ ] **Equipment Handover**: Laptop, access cards, security badges
 - [ ] **Account Setup**: Email, Slack, GitHub, and other tools configured
 - [ ] **Development Environment**: IDE, repositories, and local setup completed
 
 ### Week 1: Core Training
+
 - [ ] **Project Overview**: Mission, architecture, and current work
 - [ ] **Code Standards**: TypeScript, React, testing, and security practices
 - [ ] **Development Workflow**: Git, PR process, CI/CD pipeline
 - [ ] **Security Training**: Zero-trust, secrets management, compliance
 
 ### Week 2: Hands-On Development
+
 - [ ] **First Task Assignment**: Small, guided development task
 - [ ] **Code Review Process**: Submit PR and participate in review
 - [ ] **Testing Practices**: Write and run tests for assigned task
 - [ ] **Deployment Experience**: Follow deployment process for changes
 
 ### Ongoing: Skill Development
+
 - [ ] **Mentorship Program**: Regular check-ins with assigned mentor
 - [ ] **Documentation Review**: Read and understand key project docs
 - [ ] **Cross-Team Collaboration**: Participate in team meetings and rituals
@@ -60,12 +67,14 @@ Applies to all new hires, contractors, and team transfers joining the developmen
 ## Development Environment Setup
 
 ### Required Software
+
 - [ ] **Node.js**: Version 18+ with npm
 - [ ] **Git**: Version control system
 - [ ] **VS Code**: Primary IDE with required extensions
 - [ ] **Docker**: Container runtime for local development
 
 ### Project Setup
+
 - [ ] **Repository Clone**: Clone political-sphere repository
 - [ ] **Dependencies Install**: Run npm install
 - [ ] **Environment Config**: Set up local environment variables
@@ -74,12 +83,14 @@ Applies to all new hires, contractors, and team transfers joining the developmen
 ## Access & Permissions
 
 ### Development Access
+
 - [ ] **GitHub**: Repository read/write access
 - [ ] **AWS**: Development environment access
 - [ ] **CI/CD**: Pipeline access and deployment permissions
 - [ ] **Monitoring**: Access to logs and metrics dashboards
 
 ### Security Training
+
 - [ ] **Security Awareness**: Complete mandatory security training
 - [ ] **Compliance Requirements**: Understand GDPR, accessibility, and neutrality
 - [ ] **Incident Response**: Familiarize with incident response procedures

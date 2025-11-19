@@ -1,5 +1,7 @@
 # TODO.md - Political Sphere Development Tasks
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 ## Legend
 
 - `[x]` Completed · `[ ]` Not completed yet (see `Status` for details like In Progress or Blocked).

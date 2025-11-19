@@ -8,11 +8,14 @@
 
 ---
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 ## Executive Summary
 
 This SOP defines maintenance procedures for Political Sphere's AI development system, covering nightly automation, troubleshooting, metrics monitoring, and escalation workflows. Following this SOP ensures AI tools remain operational, accurate, and integrated into daily development practice.
 
 **Critical Success Factors:**
+
 - AI indices updated nightly with <2% failure rate
 - Competence scores maintained above 0.6 threshold
 - Context bundles refreshed weekly minimum
@@ -43,6 +46,7 @@ This SOP defines maintenance procedures for Political Sphere's AI development sy
 **Owner:** GitHub Actions automation
 
 **Tasks:**
+
 - ✅ Incremental code index update (index-if-changed.js)
 - ✅ Context bundle refresh (build-context-bundles.js)
 - ✅ Cache pre-warming (pre-cache.js)
@@ -52,12 +56,14 @@ This SOP defines maintenance procedures for Political Sphere's AI development sy
 - ✅ Artifact publication to ai-index-cache branch
 
 **Success Criteria:**
+
 - All jobs complete without failure
 - Index metadata shows updated timestamp
 - Competence score ≥ 0.5
 - Smoke tests pass 100%
 
 **Failure Actions:**
+
 - Auto-create GitHub issue with label `ai-system`, `maintenance`
 - Alert on-call team if 3+ consecutive failures
 - Rollback to previous index if corruption detected
@@ -69,6 +75,7 @@ This SOP defines maintenance procedures for Political Sphere's AI development sy
 **Owner:** Lead Developer / AI System Steward
 
 **Tasks:**
+
 1. **Review Competence Trends**
    - Check weekly competence score trend (ai-metrics/stats.json)
    - Investigate declining scores (target: maintain > 0.6)
@@ -95,6 +102,7 @@ This SOP defines maintenance procedures for Political Sphere's AI development sy
    - Remove stale cache entries
 
 **Documentation:**
+
 - Document findings in weekly report: `ai-metrics/weekly-report-YYYY-MM-DD.md`
 - Update AI_TOOLS_STATUS.md if tool status changes
 - Create ADRs for significant AI system changes
@@ -106,6 +114,7 @@ This SOP defines maintenance procedures for Political Sphere's AI development sy
 **Owner:** Technical Governance Committee
 
 **Tasks:**
+
 1. **Strategic Assessment**
    - Review AI assistance effectiveness KPIs
    - Measure value delivered (time saved, errors prevented)
@@ -127,6 +136,7 @@ This SOP defines maintenance procedures for Political Sphere's AI development sy
    - Budget for AI API costs (if applicable)
 
 **Outputs:**
+
 - Monthly AI system health report
 - Updated AI roadmap and priorities
 - Governance attestation for compliance
@@ -139,11 +149,13 @@ This SOP defines maintenance procedures for Political Sphere's AI development sy
 
 **Location:** `.github/workflows/ai-maintenance.yml`  
 **Triggers:**
+
 - Schedule: 2 AM UTC daily
 - Manual: workflow_dispatch
 - Push: main branch changes to AI tools
 
 **Jobs:**
+
 1. `build-ai-indices` - Update code indices and context bundles
 2. `competence-assessment` - Evaluate AI-generated code quality
 3. `performance-monitoring` - Collect metrics and analytics
@@ -154,6 +166,7 @@ This SOP defines maintenance procedures for Political Sphere's AI development sy
 ### Monitoring Nightly Runs
 
 **Check Workflow Status:**
+
 ```bash
 # View recent AI maintenance runs
 gh run list --workflow=ai-maintenance.yml --limit=10
@@ -166,12 +179,14 @@ gh run download --name ai-indices-<run-number>
 ```
 
 **Success Indicators:**
+
 - ✅ All jobs show green checkmarks
 - ✅ Artifacts uploaded successfully
 - ✅ ai-index-cache branch updated with commit
 - ✅ Index metadata shows current timestamp
 
 **Failure Patterns:**
+
 - 🔴 `build-ai-indices` fails → Index corruption or file access issue
 - 🔴 `competence-assessment` fails → Metrics file corruption or invalid data
 - 🔴 `smoke-test` fails → AI tool regression or dependency issue
@@ -180,11 +195,13 @@ gh run download --name ai-indices-<run-number>
 ### Manual Workflow Execution
 
 **Force Full Rebuild:**
+
 ```bash
 gh workflow run ai-maintenance.yml --field full_rebuild=true
 ```
 
 **Trigger After Code Changes:**
+
 ```bash
 # Workflow auto-triggers on push to main affecting AI tools
 git push origin main
@@ -199,11 +216,13 @@ git push origin main
 AI validations run automatically before each commit:
 
 **Enabled Hooks:**
+
 1. **ai-neutrality-check** - Political neutrality validation
 2. **ai-semantic-quality** - Semantic code quality analysis
 3. **ai-competence-quick** - Quick competence assessment on changed files
 
 **Workflow:**
+
 ```bash
 # Stage changes
 git add src/feature.ts
@@ -220,6 +239,7 @@ git commit -m "feat: add new feature"
 ```
 
 **Hook Behavior:**
+
 - Non-blocking warnings (don't fail commit)
 - Logs written to `.git/hooks/lefthook.log`
 - Can be skipped in emergencies: `LEFTHOOK=0 git commit`
@@ -239,6 +259,7 @@ git push origin feature-branch
 ```
 
 **Manual Index Update:**
+
 ```bash
 node tools/scripts/ai/update-recent-changes.js
 ```
@@ -248,6 +269,7 @@ node tools/scripts/ai/update-recent-changes.js
 AI validations run on every PR:
 
 **Jobs:**
+
 1. **political-neutrality** - Neutrality check on changed files
 2. **nist-ai-rmf-compliance** - NIST AI RMF governance validation
 3. **validation-gate-tests** - 3-tier validation gate tests
@@ -257,6 +279,7 @@ AI validations run on every PR:
 7. **change-budget-validation** - Enforce change budget limits
 
 **PR Comment Feedback:**
+
 - Semantic quality report added as comment
 - Competence score displayed in artifacts
 - Failures block PR merge (except warnings)
@@ -270,6 +293,7 @@ AI validations run on every PR:
 #### Issue: Code Indexer Fails with "Invalid file entry"
 
 **Symptoms:**
+
 ```
 Error: Invalid file entry for <file>: missing required fields
 ```
@@ -278,6 +302,7 @@ Error: Invalid file entry for <file>: missing required fields
 File metadata missing required fields (path, size, content, etc.)
 
 **Solution:**
+
 ```bash
 # Rebuild index from scratch
 node tools/scripts/ai/code-indexer.js build --full
@@ -290,6 +315,7 @@ cat <failing-file> > /dev/null
 ```
 
 **Prevention:**
+
 - Run incremental updates, not full rebuilds daily
 - Validate file access before indexing
 - Add .gitignore patterns for problematic files
@@ -299,6 +325,7 @@ cat <failing-file> > /dev/null
 #### Issue: Index Server Fails to Start
 
 **Symptoms:**
+
 ```
 Error: listen EADDRINUSE :::3001
 ```
@@ -307,6 +334,7 @@ Error: listen EADDRINUSE :::3001
 Port 3001 already in use by another process
 
 **Solution:**
+
 ```bash
 # Find process using port 3001
 lsof -i :3001
@@ -319,6 +347,7 @@ PORT=3030 node tools/scripts/ai/index-server.js
 ```
 
 **Prevention:**
+
 - Use dynamic port allocation in tests
 - Add port availability check before starting server
 - Kill orphaned processes in cleanup scripts
@@ -328,15 +357,18 @@ PORT=3030 node tools/scripts/ai/index-server.js
 #### Issue: Competence Score Dropping
 
 **Symptoms:**
+
 - Competence score < 0.5 for multiple weeks
 - Increased code quality issues in AI-generated code
 
 **Root Cause:**
+
 - Declining code quality in recent commits
 - Increased complexity without test coverage
 - Outdated AI context bundles
 
 **Investigation:**
+
 ```bash
 # Review recent competence assessments
 ls -lrt ai-metrics/stats.json
@@ -349,6 +381,7 @@ git log --since="2 weeks ago" --grep="ai:" --oneline
 ```
 
 **Solution:**
+
 1. Review recent AI-generated code commits
 2. Improve test coverage for recent features
 3. Refresh AI context bundles: `npm run ai:refresh`
@@ -356,6 +389,7 @@ git log --since="2 weeks ago" --grep="ai:" --oneline
 5. Retrain developers on AI assistance best practices
 
 **Prevention:**
+
 - Maintain >80% test coverage
 - Regular context bundle updates
 - Human review of all AI-generated code
@@ -366,11 +400,13 @@ git log --since="2 weeks ago" --grep="ai:" --oneline
 #### Issue: Context Bundles Outdated
 
 **Symptoms:**
+
 - Context quality check warnings
 - Irrelevant AI suggestions
 - Missing context for new feature areas
 
 **Solution:**
+
 ```bash
 # Rebuild all context bundles
 node tools/scripts/ai/build-context-bundles.js
@@ -383,6 +419,7 @@ node tools/scripts/ai/context-preloader.js preload
 ```
 
 **Prevention:**
+
 - Run weekly context bundle refresh
 - Add new bundles when starting new feature areas
 - Monitor context freshness in CI checks
@@ -392,10 +429,12 @@ node tools/scripts/ai/context-preloader.js preload
 #### Issue: AI Neutrality Check False Positives
 
 **Symptoms:**
+
 - Legitimate political terminology flagged incorrectly
 - Commit blocked despite neutral content
 
 **Investigation:**
+
 ```bash
 # Run neutrality check manually
 node tools/scripts/ai/ci-neutrality-check.mts <file>
@@ -405,12 +444,14 @@ cat tools/scripts/ai/neutrality-patterns.json
 ```
 
 **Solution:**
+
 1. Review flagged content for actual bias
 2. If false positive, update neutrality patterns
 3. Add context-aware exceptions
 4. Document rationale in ADR
 
 **Prevention:**
+
 - Regularly review and refine neutrality patterns
 - Use context-aware analysis (not just keyword matching)
 - Human review for borderline cases
@@ -445,6 +486,7 @@ cat tools/scripts/ai/neutrality-patterns.json
 **Grafana Dashboard: AI System Health**
 
 **Panels:**
+
 1. Competence Score Trend (line chart, 30 days)
 2. Index Update Status (gauge: success/failure)
 3. AI Tool Latency (histogram, p50/p95/p99)
@@ -453,12 +495,14 @@ cat tools/scripts/ai/neutrality-patterns.json
 6. Artifact Size Growth (line chart, 90 days)
 
 **Alerts:**
+
 - Competence score <0.5 for 3 consecutive days
 - AI maintenance workflow fails 3+ times in 7 days
 - p95 latency >500ms for 1 hour
 - Cache hit rate <60% for 24 hours
 
 **Access:**
+
 ```bash
 # Local Grafana (if running)
 open http://localhost:3000/dashboards/ai-system-health
@@ -470,12 +514,14 @@ open https://monitoring.political-sphere.com/dashboards/ai-system
 ### Metrics Files
 
 **Locations:**
+
 - `ai-metrics/stats.json` - Competence and quality metrics
 - `ai-metrics/performance.json` - Latency and throughput metrics
 - `ai-metrics/usage.json` - Tool usage statistics
 - `ai-index/metadata.json` - Index metadata (size, files, timestamp)
 
 **Schema (ai-metrics/stats.json):**
+
 ```json
 {
   "competenceScore": 0.72,
@@ -498,11 +544,13 @@ open https://monitoring.political-sphere.com/dashboards/ai-system
 ### Log Files
 
 **AI Tool Logs:**
+
 - `.git/hooks/lefthook.log` - Pre-commit hook execution logs
 - `logs/ai/` - Individual tool execution logs (if configured)
 - GitHub Actions logs - Workflow execution logs (90 days retention)
 
 **Log Retention:**
+
 - Local logs: 30 days rolling
 - GitHub Actions: 90 days
 - Archived metrics: Indefinite (compressed)
@@ -516,12 +564,14 @@ open https://monitoring.political-sphere.com/dashboards/ai-system
 **P0 - Critical (Immediate Response)**
 
 **Criteria:**
+
 - AI system completely unavailable for >1 hour
 - Data corruption detected in indices
 - Security vulnerability in AI tools discovered
 - Political bias detected and merged to production
 
 **Response:**
+
 1. Page on-call engineer immediately
 2. Create incident in incident management system
 3. Notify Technical Governance Committee
@@ -535,12 +585,14 @@ open https://monitoring.political-sphere.com/dashboards/ai-system
 **P1 - High (Same Day Response)**
 
 **Criteria:**
+
 - AI maintenance workflow fails 3+ consecutive days
 - Competence score <0.3
 - AI tool availability <95% for 24 hours
 - Critical AI validation bypass detected
 
 **Response:**
+
 1. Create high-priority GitHub issue
 2. Assign to AI System Steward
 3. Investigate within 4 hours
@@ -553,12 +605,14 @@ open https://monitoring.political-sphere.com/dashboards/ai-system
 **P2 - Medium (Week Response)**
 
 **Criteria:**
+
 - Competence score declining trend (0.5-0.7)
 - AI tool latency degradation
 - Context bundles outdated >14 days
 - Minor neutrality check false positives
 
 **Response:**
+
 1. Create GitHub issue with label `ai-system`, `maintenance`
 2. Schedule for weekly review
 3. Document in TODO.md
@@ -571,11 +625,13 @@ open https://monitoring.political-sphere.com/dashboards/ai-system
 **P3 - Low (Best Effort)**
 
 **Criteria:**
+
 - Feature requests for AI tools
 - Performance optimization opportunities
 - Documentation updates
 
 **Response:**
+
 1. Add to AI system backlog
 2. Prioritize in quarterly planning
 3. No specific SLA
@@ -584,14 +640,15 @@ open https://monitoring.political-sphere.com/dashboards/ai-system
 
 ### Escalation Contacts
 
-| Role | Primary Contact | Backup Contact |
-|------|----------------|----------------|
-| AI System Steward | Lead Developer | TGC Chair |
-| On-Call Engineer | Rotation schedule | Backup rotation |
-| Incident Commander | TGC Chair | Lead Developer |
-| Security Team | Security Lead | CISO |
+| Role               | Primary Contact   | Backup Contact  |
+| ------------------ | ----------------- | --------------- |
+| AI System Steward  | Lead Developer    | TGC Chair       |
+| On-Call Engineer   | Rotation schedule | Backup rotation |
+| Incident Commander | TGC Chair         | Lead Developer  |
+| Security Team      | Security Lead     | CISO            |
 
 **Contact Methods:**
+
 - Critical (P0): Phone call + Slack ping + PagerDuty
 - High (P1): Slack mention + GitHub issue assignment
 - Medium/Low (P2/P3): GitHub issue only
@@ -603,34 +660,40 @@ open https://monitoring.political-sphere.com/dashboards/ai-system
 ### Index Corruption Recovery
 
 **Symptoms:**
+
 - Search returns no results
 - Index validation fails
 - Files missing from index
 
 **Recovery Steps:**
+
 1. **Stop all AI tools using index:**
+
    ```bash
    # Kill index server if running
    pkill -f index-server.js
    ```
 
 2. **Backup corrupted index:**
+
    ```bash
    mv ai-index/ ai-index-corrupted-$(date +%Y%m%d)
    mv ai-cache/ ai-cache-corrupted-$(date +%Y%m%d)
    ```
 
 3. **Restore from last good artifacts:**
+
    ```bash
    # Download latest ai-maintenance.yml artifacts
    gh run download --name ai-indices-<recent-run>
-   
+
    # Or pull from ai-index-cache branch
    git fetch origin ai-index-cache
    git checkout origin/ai-index-cache -- ai-index/ ai-cache/
    ```
 
 4. **Rebuild if no good backup:**
+
    ```bash
    # Full rebuild (takes 10-20 minutes)
    node tools/scripts/ai/code-indexer.js build --full
@@ -639,10 +702,11 @@ open https://monitoring.political-sphere.com/dashboards/ai-system
    ```
 
 5. **Validate recovery:**
+
    ```bash
    # Run smoke test
    bash tools/scripts/ai/smoke.sh
-   
+
    # Check index health
    node tools/scripts/ai/code-indexer.js validate
    ```
@@ -654,6 +718,7 @@ open https://monitoring.political-sphere.com/dashboards/ai-system
    ```
 
 **Post-Recovery:**
+
 - Document root cause in incident report
 - Update index validation logic
 - Add additional health checks
@@ -664,12 +729,15 @@ open https://monitoring.political-sphere.com/dashboards/ai-system
 ### AI Maintenance Workflow Failure Recovery
 
 **Symptoms:**
+
 - Nightly run fails repeatedly
 - Artifacts not published
 - No index updates for >3 days
 
 **Recovery Steps:**
+
 1. **Check workflow logs:**
+
    ```bash
    gh run view <failed-run-id> --log
    ```
@@ -681,6 +749,7 @@ open https://monitoring.political-sphere.com/dashboards/ai-system
    - publish-indices → Git push issue
 
 3. **Run failed job manually:**
+
    ```bash
    # Example: Re-run index build locally
    node tools/scripts/ai/code-indexer.js build
@@ -692,6 +761,7 @@ open https://monitoring.political-sphere.com/dashboards/ai-system
    - Resolve Git conflicts if push failed
 
 5. **Trigger workflow manually:**
+
    ```bash
    gh workflow run ai-maintenance.yml
    ```
@@ -702,6 +772,7 @@ open https://monitoring.political-sphere.com/dashboards/ai-system
    - Confirm index updated
 
 **Prevent Recurrence:**
+
 - Add more robust error handling
 - Improve retry logic
 - Enhance validation checks
@@ -716,16 +787,19 @@ open https://monitoring.political-sphere.com/dashboards/ai-system
 **Purpose:** Build and search semantic code index
 
 **Maintenance:**
+
 - Monitor index size (warn if >500MB)
 - Validate index integrity weekly
 - Rebuild from scratch monthly (during low-traffic period)
 
 **Common Issues:**
+
 - File validation errors → Check file permissions
 - Out of memory → Increase Node.js heap size: `NODE_OPTIONS=--max-old-space-size=4096`
 - Slow indexing → Reduce concurrency: `INDEXER_CONCURRENCY=2`
 
 **Health Check:**
+
 ```bash
 node tools/scripts/ai/code-indexer.js validate
 ```
@@ -737,16 +811,19 @@ node tools/scripts/ai/code-indexer.js validate
 **Purpose:** Assess AI-assisted code quality
 
 **Maintenance:**
+
 - Review metrics weekly
 - Calibrate thresholds quarterly
 - Add new quality indicators as needed
 
 **Common Issues:**
+
 - No metrics file → Run initial assessment: `node tools/scripts/ai/competence-monitor.js assess`
 - Low scores → Review recent commits, improve test coverage
 - Metric drift → Recalibrate baselines
 
 **Health Check:**
+
 ```bash
 node tools/scripts/ai/competence-monitor.js assess
 cat ai-metrics/stats.json | jq '.competenceScore'
@@ -759,15 +836,18 @@ cat ai-metrics/stats.json | jq '.competenceScore'
 **Purpose:** Advanced semantic code analysis
 
 **Maintenance:**
+
 - Update embedding models quarterly
 - Tune similarity thresholds based on feedback
 - Add new code patterns to pattern library
 
 **Dependencies:**
+
 - embedding-engine.cjs (AI model API)
 - vector-store.cjs (vector database)
 
 **Health Check:**
+
 ```bash
 node tools/scripts/ai/semantic-indexer.cjs test
 ```
@@ -779,15 +859,18 @@ node tools/scripts/ai/semantic-indexer.cjs test
 **Purpose:** Preload AI context bundles
 
 **Maintenance:**
+
 - Refresh context bundles weekly
 - Add new bundles for new feature areas
 - Remove obsolete bundles
 
 **Common Issues:**
+
 - Missing bundles → Run build-context-bundles.js
 - Stale context → Check lastUpdated timestamp
 
 **Health Check:**
+
 ```bash
 node tools/scripts/ai/context-preloader.js validate
 ```
@@ -799,6 +882,7 @@ node tools/scripts/ai/context-preloader.js validate
 ### Quick Reference Commands
 
 **Daily Operations:**
+
 ```bash
 # Check AI system health
 npm run ai:status
@@ -814,6 +898,7 @@ cat ai-metrics/stats.json | jq '.competenceScore'
 ```
 
 **Troubleshooting:**
+
 ```bash
 # Rebuild index from scratch
 node tools/scripts/ai/code-indexer.js build --full
@@ -830,6 +915,7 @@ gh run view <run-id> --log
 ```
 
 **Maintenance:**
+
 ```bash
 # Manual workflow trigger
 gh workflow run ai-maintenance.yml
@@ -851,9 +937,9 @@ cat ai-metrics/stats.json | jq '.history'
 
 ### Revision History
 
-| Version | Date | Author | Changes |
-|---------|------|--------|---------|
-| 1.0.0 | 2025-01-XX | AI Agent | Initial SOP creation |
+| Version | Date       | Author   | Changes              |
+| ------- | ---------- | -------- | -------------------- |
+| 1.0.0   | 2025-01-XX | AI Agent | Initial SOP creation |
 
 ---
 

@@ -1,5 +1,7 @@
 # ADR-024: Pre-Commit Hook Infrastructure Redesign (v4.0.0)
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 **Status:** Accepted  
 **Date:** 2025-11-17  
 **Deciders:** AI Engineering System, DevOps Team  
@@ -34,12 +36,12 @@ Redesign pre-commit infrastructure as **Lefthook v4.0.0** with:
 
 ### 2. Execution Mode Matrix
 
-| Mode | Environment | Gates | Target | Use Case |
-|------|-------------|-------|--------|----------|
-| **safe** | Default | All (P0+P1+P2+P3) | P95 <20s | Production commits |
-| **fast-secure** | `FAST_AI=1` | P0+P1+limited P2 | P95 <10s | Rapid dev iteration |
-| **audit** | `AUDIT_MODE=1` | All + evidence | No limit | Compliance reviews |
-| **ci** | `CI=1` | All, non-interactive | Optimized | GitHub Actions |
+| Mode            | Environment    | Gates                | Target    | Use Case            |
+| --------------- | -------------- | -------------------- | --------- | ------------------- |
+| **safe**        | Default        | All (P0+P1+P2+P3)    | P95 <20s  | Production commits  |
+| **fast-secure** | `FAST_AI=1`    | P0+P1+limited P2     | P95 <10s  | Rapid dev iteration |
+| **audit**       | `AUDIT_MODE=1` | All + evidence       | No limit  | Compliance reviews  |
+| **ci**          | `CI=1`         | All, non-interactive | Optimized | GitHub Actions      |
 
 ### 3. Enhanced Security Gates
 
@@ -50,6 +52,7 @@ Redesign pre-commit infrastructure as **Lefthook v4.0.0** with:
 ### 4. Comprehensive Accessibility
 
 17 jsx-a11y rules covering WCAG 2.2 AA Success Criteria:
+
 - 1.1.1 Non-text Content (alt-text, aria-label)
 - 2.1.1 Keyboard (interactive-supports-focus, click-events-have-key-events)
 - 3.1.1 Language (html-has-lang)
@@ -58,12 +61,14 @@ Redesign pre-commit infrastructure as **Lefthook v4.0.0** with:
 ### 5. Structured Telemetry
 
 JSONL logging to `logs/pre-commit-telemetry.jsonl`:
+
 ```json
 {"timestamp":"2025-11-17T14:32:10Z","trace_id":"abc-123","mode":"safe","event":"hook_start"}
 {"timestamp":"2025-11-17T14:32:18Z","trace_id":"abc-123","duration_seconds":8,"event":"hook_complete"}
 ```
 
 Enables performance analysis:
+
 ```bash
 jq -s 'map(select(.event=="hook_complete")) | map(.duration_seconds) | sort | .[95]' \
   logs/pre-commit-telemetry.jsonl
@@ -81,6 +86,7 @@ jq -s 'map(select(.event=="hook_complete")) | map(.duration_seconds) | sort | .[
 ### 7. Performance Baseline
 
 Established measurable targets:
+
 - P50: 8.2 seconds
 - P95: 14.7 seconds (SLO: <20s)
 - P99: 22.1 seconds
@@ -122,6 +128,7 @@ Established measurable targets:
 **Rationale:** Avoid breaking changes, gradual improvement
 
 **Rejected because:**
+
 - 30-40% of tools already installed but unused (sunk cost)
 - No execution mode flexibility (all-or-nothing gates)
 - No observability foundation
@@ -132,6 +139,7 @@ Established measurable targets:
 **Rationale:** Popular Node.js-native solution
 
 **Rejected because:**
+
 - Lefthook is language-agnostic (better for polyglot future)
 - Lefthook parallel execution faster (~30% in benchmarks)
 - No telemetry support in Husky
@@ -142,6 +150,7 @@ Established measurable targets:
 **Rationale:** Rich ecosystem, strong community
 
 **Rejected because:**
+
 - Adds Python dependency to Node.js project
 - Slower execution vs Go-based Lefthook
 - No native execution mode concept
@@ -152,6 +161,7 @@ Established measurable targets:
 **Rationale:** Simplify local development, rely on CI
 
 **Rejected because:**
+
 - Violates fail-fast principle (delays feedback by minutes)
 - Increases CI costs (failed runs still consume minutes)
 - Poor developer experience (wait for CI to find typos)
@@ -197,17 +207,20 @@ Established measurable targets:
 ### Rollout Plan
 
 **Phase 1 (Week 1): Soft Launch**
+
 - Deploy v4.0.0 configuration
 - Enable `FAST_AI=1` for all contributors (gradual adoption)
 - Monitor telemetry for performance issues
 - Collect feedback on new rules
 
 **Phase 2 (Week 2): Standard Enforcement**
+
 - Disable `FAST_AI=1` for `main` branch commits
 - Require full gate compliance for production changes
 - Update CI to mirror local validation
 
 **Phase 3 (Week 3+): Optimization**
+
 - Analyze telemetry to identify bottlenecks
 - Tune rule severity based on violation patterns
 - Add remote validation for expensive checks (future)
@@ -225,7 +238,7 @@ Established measurable targets:
 ### Alerts
 
 - P95 duration >25 seconds for 7 days (performance degradation)
-- >10% of commits using `LEFTHOOK=0` (bypass abuse)
+- > 10% of commits using `LEFTHOOK=0` (bypass abuse)
 - Secrets scan failure rate >1% (potential leak attempts)
 
 ## References

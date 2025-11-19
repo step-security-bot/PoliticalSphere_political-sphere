@@ -1,5 +1,7 @@
 # Contract Testing Implementation Plan
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 ## Overview
 
 Contract testing ensures that API interactions between services remain compatible. We'll implement Pact for consumer-driven contract testing.

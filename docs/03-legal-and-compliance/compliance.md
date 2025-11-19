@@ -1,4 +1,7 @@
 ---
+
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 description: 'Compliance, privacy, and auditability requirements for Political Sphere'
 applyTo: '**/*'
 ---

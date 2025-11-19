@@ -8,6 +8,7 @@ import importPlugin from 'eslint-plugin-import';
 import prettier from 'eslint-plugin-prettier';
 import react from 'eslint-plugin-react';
 import reactHooks from 'eslint-plugin-react-hooks';
+import jsxA11y from 'eslint-plugin-jsx-a11y';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
 
@@ -56,6 +57,7 @@ export default [
       '@nx': nxEslintPlugin,
       react: react,
       'react-hooks': reactHooks,
+      'jsx-a11y': jsxA11y,
       import: importPlugin,
       prettier: prettier,
       '@vitest': vitest,
@@ -78,6 +80,7 @@ export default [
       'import/order': 'off', // Disabled due to TypeScript resolver issues
       'no-console': 'off',
       '@nx/enforce-module-boundaries': ['error', { enforceBuildableLibDependency: true }],
+      ...jsxA11y.configs.recommended.rules,
     },
     settings: {
       react: { version: 'detect' },
@@ -173,6 +176,15 @@ export default [
     files: ['scripts/**/*.{js,mjs,ts}', 'tools/**/*.{js,mjs,cjs,ts}', 'docs/**/*.{js,mjs,ts}'],
     rules: {
       'no-console': 'off',
+    },
+  },
+
+  // Enable no-console for production code (apps and libs, excluding tests)
+  {
+    files: ['apps/**/*.{ts,tsx,js,jsx}', 'libs/**/*.{ts,tsx,js,jsx}'],
+    ignores: ['**/*.test.{ts,tsx,js,jsx}', '**/*.spec.{ts,tsx,js,jsx}', '**/tests/**/*'],
+    rules: {
+      'no-console': 'error',
     },
   },
 

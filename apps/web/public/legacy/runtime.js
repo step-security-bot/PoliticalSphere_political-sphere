@@ -6,9 +6,9 @@
     var o = t[e];
     if (void 0 !== o) return o.exports;
     var i = (t[e] = { exports: {} });
-    return r[e](i, i.exports, n), i.exports;
+    return (r[e](i, i.exports, n), i.exports);
   }
-  (n.m = r),
+  ((n.m = r),
     (e = []),
     (n.O = (r, t, o, i) => {
       if (!t) {
@@ -32,7 +32,7 @@
     }),
     (n.n = e => {
       var r = e && e.__esModule ? () => e.default : () => e;
-      return n.d(r, { a: r }), r;
+      return (n.d(r, { a: r }), r);
     }),
     (n.d = (e, r) => {
       for (var t in r)
@@ -48,10 +48,10 @@
     })()),
     (n.o = (e, r) => Object.hasOwn(e, r)),
     (n.r = e => {
-      'undefined' != typeof Symbol &&
+      ('undefined' != typeof Symbol &&
         Symbol.toStringTag &&
         Object.defineProperty(e, Symbol.toStringTag, { value: 'Module' }),
-        Object.defineProperty(e, '__esModule', { value: !0 });
+        Object.defineProperty(e, '__esModule', { value: !0 }));
     }),
     (() => {
       var e = { 121: 0 };
@@ -65,10 +65,11 @@
             for (o in l) n.o(l, o) && (n.m[o] = l[o]);
             if (u) var c = u(n);
           }
-          for (r && r(t); f < a.length; f++) (i = a[f]), n.o(e, i) && e[i] && e[i][0](), (e[i] = 0);
+          for (r && r(t); f < a.length; f++)
+            ((i = a[f]), n.o(e, i) && e[i] && e[i][0](), (e[i] = 0));
           return n.O(c);
         },
         t = (self.webpackChunk_nx_graph_client = self.webpackChunk_nx_graph_client || []);
-      t.forEach(r.bind(null, 0)), (t.push = r.bind(null, t.push.bind(t)));
-    })();
+      (t.forEach(r.bind(null, 0)), (t.push = r.bind(null, t.push.bind(t))));
+    })());
 })();

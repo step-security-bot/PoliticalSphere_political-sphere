@@ -5,10 +5,12 @@
  * @see docs/architecture/decisions/adr-0001-database-migrations.md
  */
 
+const { info } = require('../logger');
+
 const name = '002_performance_indexes';
 
 function up(db) {
-  console.log('Running performance optimization migration up function...');
+  info('Running performance optimization migration up function...');
 
   db.exec(`
     -- Composite indexes for vote queries
@@ -37,7 +39,7 @@ function up(db) {
   CREATE INDEX IF NOT EXISTS idx_votes_recent ON votes(created_at);
   `);
 
-  console.log('Performance optimization migration up function completed');
+  info('Performance optimization migration up function completed');
 }
 
 function down(db) {

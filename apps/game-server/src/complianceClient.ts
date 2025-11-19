@@ -6,10 +6,12 @@
 import type { AxiosInstance } from 'axios';
 import axios from 'axios';
 
-import { getLogger } from '@political-sphere/shared';
 import { CircuitBreaker } from './utils/circuit-breaker';
 
-const logger = getLogger({ service: 'game-server' });
+// Dummy logger
+const logger = {
+  warn: console.warn,
+};
 
 interface ComplianceLogEntry {
   category: string;
@@ -31,7 +33,7 @@ class ComplianceClient {
     });
 
     // Circuit breaker for compliance logging (more lenient since it's non-critical)
-    this.circuitBreaker = new CircuitBreaker(10, 120000, 30000); // 10 failures, 2min timeout, 30s recovery
+    this.circuitBreaker = new CircuitBreaker(10, 120000); // 10 failures, 2min timeout
   }
 
   /**

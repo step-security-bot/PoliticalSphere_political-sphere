@@ -1,5 +1,7 @@
 # Observability: Azure Monitor & OpenTelemetry
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 This note summarises how to get started with OpenTelemetry on Azure (Application Insights / Azure Monitor) for the project's services. It emphasises a low-risk rollout (staging → canary → prod) and cost-aware sampling.
 
 ## Key points

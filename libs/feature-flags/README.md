@@ -172,13 +172,8 @@ import { useState, useEffect } from 'react';
 import { featureFlags } from '@libs/feature-flags';
 import type { FlagContext } from '@libs/feature-flags';
 
-export function useFeatureFlag(
-  flagName: string,
-  context?: FlagContext
-): boolean {
-  const [isEnabled, setIsEnabled] = useState(() =>
-    featureFlags.isEnabled(flagName, context)
-  );
+export function useFeatureFlag(flagName: string, context?: FlagContext): boolean {
+  const [isEnabled, setIsEnabled] = useState(() => featureFlags.isEnabled(flagName, context));
 
   useEffect(() => {
     setIsEnabled(featureFlags.isEnabled(flagName, context));

@@ -1,5 +1,7 @@
 # Postmortem: {{INCIDENT_NAME}}
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 - **Date:** {{DATE}}
 - **Prepared by:** {{AUTHOR}}
 - **Severity:** {{SEVERITY}}

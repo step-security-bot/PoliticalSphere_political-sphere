@@ -65,7 +65,9 @@ psql -h localhost -U postgres -c 'SELECT 1;' || createuser -s postgres
 ```
 
 ### Seeding
+
 `prisma/seed.ts` creates:
+
 - 2 chambers
 - 1 demo election
 - 3 constituencies
@@ -76,11 +78,13 @@ psql -h localhost -U postgres -c 'SELECT 1;' || createuser -s postgres
 Re‑run safely; it uses idempotent upserts where appropriate.
 
 ### Troubleshooting
+
 - Prisma env var conflict: remove duplicate `DATABASE_URL` from root `.env` (done).
 - Auth failure: ensure container started with `POSTGRES_PASSWORD` and env matches.
 - Port collision: fall back to mapping `5433:5432` if `5432` occupied.
 
 ### Security (Dev Only)
+
 Never reuse the `postgres:postgres` credentials in staging or production. Rotate and manage secrets via the approved secret store.
 
 ## Testing

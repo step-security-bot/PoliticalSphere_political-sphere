@@ -10,6 +10,8 @@
 
 ---
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 ## Purpose
 
 This SOP defines the deployment process for Political Sphere applications, ensuring safe, reliable releases with minimal downtime and comprehensive validation.
@@ -28,18 +30,21 @@ Applies to all production deployments across environments (staging, production) 
 ## Pre-Deployment Checklist
 
 ### Environment Validation
+
 - [ ] **Infrastructure Ready**: Target environment healthy and scaled
 - [ ] **Dependencies Available**: All required services running
 - [ ] **Network Connectivity**: Service-to-service communication verified
 - [ ] **Certificates Valid**: SSL/TLS certificates current and valid
 
 ### Code Validation
+
 - [ ] **Build Success**: Application builds successfully
 - [ ] **Tests Passing**: All test suites pass (unit, integration, E2E)
 - [ ] **Security Scans**: SAST/DAST scans pass, no critical issues
 - [ ] **Performance Benchmarks**: Meet established performance targets
 
 ### Deployment Preparation
+
 - [ ] **Feature Flags**: New features disabled by default
 - [ ] **Database Migrations**: Tested and rollback scripts ready
 - [ ] **Configuration**: Environment-specific configs verified
@@ -48,6 +53,7 @@ Applies to all production deployments across environments (staging, production) 
 ## Deployment Process
 
 ### Phase 1: Staging Deployment
+
 - [ ] Deploy to staging environment first
 - [ ] Run smoke tests against staging
 - [ ] Validate core functionality works
@@ -55,6 +61,7 @@ Applies to all production deployments across environments (staging, production) 
 - [ ] Obtain stakeholder approval for production
 
 ### Phase 2: Production Deployment
+
 - [ ] Schedule deployment window (business hours preferred)
 - [ ] Notify stakeholders of deployment
 - [ ] Execute deployment with monitoring
@@ -62,6 +69,7 @@ Applies to all production deployments across environments (staging, production) 
 - [ ] Monitor for 30 minutes post-deployment
 
 ### Phase 3: Post-Deployment
+
 - [ ] Enable feature flags gradually
 - [ ] Monitor key metrics (error rate, latency, throughput)
 - [ ] Communicate successful deployment
@@ -70,12 +78,14 @@ Applies to all production deployments across environments (staging, production) 
 ## Rollback Procedures
 
 ### Trigger Conditions
+
 - Error rate > 5% above baseline
 - Critical functionality broken
 - Performance degradation > 20%
 - Security incident detected
 
 ### Rollback Steps
+
 - [ ] Stop deployment immediately
 - [ ] Execute rollback to previous version
 - [ ] Restore database if migration failed
@@ -85,12 +95,14 @@ Applies to all production deployments across environments (staging, production) 
 ## Monitoring & Alerting
 
 ### Key Metrics
+
 - Application response time (p95 < 200ms)
 - Error rate (< 0.1%)
 - Availability (99.9% uptime)
 - Resource utilization (CPU, memory < 80%)
 
 ### Alert Thresholds
+
 - Critical: Immediate response required
 - Warning: Monitor and plan remediation
 - Info: Track for trends
@@ -98,11 +110,13 @@ Applies to all production deployments across environments (staging, production) 
 ## Environment Management
 
 ### Staging Environment
+
 - Mirrors production configuration
 - Used for final validation
 - May have reduced data volume
 
 ### Production Environment
+
 - Full production configuration
 - Real user traffic
 - Maximum availability requirements

@@ -6,10 +6,12 @@
 import type { AxiosInstance } from 'axios';
 import axios from 'axios';
 
-import { getLogger } from '@political-sphere/shared';
 import { CircuitBreaker } from './utils/circuit-breaker';
 
-const logger = getLogger({ service: 'game-server' });
+// Dummy logger
+const logger = {
+  error: console.error,
+};
 
 interface ModerationResult {
   isSafe: boolean;
@@ -35,7 +37,7 @@ class ModerationClient {
     });
 
     // Circuit breaker for moderation API calls
-    this.circuitBreaker = new CircuitBreaker(5, 60000, 60000); // 5 failures, 1min timeout
+    this.circuitBreaker = new CircuitBreaker(5, 60000); // 5 failures, 1min timeout
   }
 
   /**

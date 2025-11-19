@@ -5,6 +5,7 @@
 
 import express from 'express';
 import { z } from 'zod';
+import { nlpService } from '../../libs/ai-system/src/nlp/index.js';
 
 const router = express.Router();
 
@@ -54,6 +55,15 @@ const TrackNarrativeSchema = z.object({
   participants: z.array(z.string().uuid()),
   sentiment: z.enum(['negative', 'neutral', 'positive']),
   virality: z.number().min(0).max(100).default(0),
+});
+
+const GenerateContentSchema = z.object({
+  gameId: z.string().uuid(),
+  contentType: z.enum(['press-release', 'headline', 'summary', 'opinion']),
+  topic: z.string().min(1).max(500),
+  tone: z.enum(['neutral', 'positive', 'negative', 'formal', 'casual']).default('neutral'),
+  length: z.enum(['short', 'medium', 'long']).default('medium'),
+  context: z.record(z.any()).optional(),
 });
 
 // In-memory storage
@@ -147,7 +157,7 @@ router.get('/press-releases', (req, res) => {
   }
 
   let filtered = Array.from(pressReleases.values()).filter(
-    pr => pr.gameId === gameId && pr.status === 'published'
+    pr => pr.gameId === gameId && pr.status === 'published',
   );
 
   if (authorId) {
@@ -613,5 +623,146 @@ function updateApprovalRating(gameId, targetId, sentiment) {
 
   approvalRatings.set(ratingKey, rating);
 }
+
+/**
+ * Generate automated content using NLP
+ * POST /api/media/generate-content
+ */
+router.post('/generate-content', async (req, res) => {
+  try {
+    const validated = GenerateContentSchema.parse(req.body);
+
+    // Create content generation prompt based on type
+    let prompt = '';
+    const lengthMap = { short: 100, medium: 300, long: 600 };
+    let maxLength = lengthMap[validated.length];
+
+    switch (validated.contentType) {
+      case 'press-release':
+        prompt = `Write a ${validated.tone} press release about: ${validated.topic}. Make it professional and informative.`;
+        break;
+      case 'headline':
+        prompt = `Create a compelling ${validated.tone} headline for a news story about: ${validated.topic}.`;
+        maxLength = 80;
+        break;
+      case 'summary':
+        prompt = `Write a ${validated.length} ${validated.tone} summary of: ${validated.topic}.`;
+        break;
+      case 'opinion':
+        prompt = `Write a ${validated.tone} opinion piece about: ${validated.topic}. Include balanced arguments.`;
+        break;
+    }
+
+    // Add context if provided
+    if (validated.context) {
+      prompt += ` Additional context: ${JSON.stringify(validated.context)}`;
+    }
+
+    // Generate content using NLP
+    const generatedContent = await nlpService.generateText(prompt, {
+      maxLength,
+      temperature: validated.tone === 'creative' ? 0.8 : 0.6,
+    });
+
+    // Analyze generated content
+    const analysis = await nlpService.analyzeText(generatedContent[0] || '');
+
+    const result = {
+      id: `generated-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+      gameId: validated.gameId,
+      contentType: validated.contentType,
+      topic: validated.topic,
+      generatedContent: generatedContent[0] || '',
+      analysis: {
+        sentiment: analysis.sentiment,
+        readability: analysis.readability,
+        keywords: analysis.keywords?.slice(0, 5),
+      },
+      generatedAt: new Date().toISOString(),
+    };
+
+    res.status(201).json({
+      success: true,
+      data: result,
+    });
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      return res.status(400).json({
+        success: false,
+        error: 'Validation failed',
+        details: error.errors,
+      });
+    }
+
+    res.status(500).json({
+      success: false,
+      error: 'Failed to generate content',
+      message: error.message,
+    });
+  }
+});
+
+/**
+ * Analyze content sentiment and topics
+ * POST /api/media/analyze-content
+ */
+router.post('/analyze-content', async (req, res) => {
+  try {
+    const { content, gameId } = req.body;
+
+    if (!content || typeof content !== 'string') {
+      return res.status(400).json({
+        success: false,
+        error: 'Content is required and must be a string',
+      });
+    }
+
+    if (!gameId) {
+      return res.status(400).json({
+        success: false,
+        error: 'gameId is required',
+      });
+    }
+
+    // Analyze content using NLP
+    const analysis = await nlpService.analyzeText(content);
+
+    // Classify into political categories
+    const categories = [
+      'domestic policy',
+      'foreign affairs',
+      'economy',
+      'social issues',
+      'environment',
+      'security',
+    ];
+    const classification = await nlpService.classifyPoliticalText(content, categories);
+
+    const result = {
+      gameId,
+      content: content.substring(0, 200) + (content.length > 200 ? '...' : ''),
+      analysis: {
+        sentiment: analysis.sentiment,
+        entities: analysis.entities?.slice(0, 10),
+        keywords: analysis.keywords?.slice(0, 10),
+        categories: classification.slice(0, 3),
+        readability: analysis.readability,
+        bias: analysis.bias,
+      },
+      analyzedAt: new Date().toISOString(),
+    };
+
+    res.json({
+      success: true,
+      data: result,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      error: 'Failed to analyze content',
+      message: error.message,
+    });
+  }
+});
 
 export default router;

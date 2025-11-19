@@ -7,56 +7,53 @@ import type { NextFunction, Request, Response } from 'express';
 
 import { authService } from './auth.service.ts';
 
-export interface AuthRequest extends Request {
-  user?: {
-    userId: string;
-    username: string;
-  };
+export interface AuthUser {
+  userId: string;
+  username: string;
+  role: string;
+}
+
+declare global {
+  namespace Express {
+    interface Request {
+      authUser?: AuthUser;
+    }
+  }
 }
 
 /**
  * Middleware to require authentication
- * Extracts JWT from Authorization header and verifies it
+ * Extracts JWT from httpOnly cookies and verifies it
  */
-export function authenticate(req: AuthRequest, res: Response, next: NextFunction): void {
+export function authenticate(req: Request, res: Response, next: NextFunction): void {
   // Bypass only when NODE_ENV=test and FORCE_AUTH !== '1'
   if (
     process.env.NODE_ENV === 'test' &&
     process.env.FORCE_AUTH !== '1' &&
-    !req.headers.authorization
+    !req.cookies.accessToken
   ) {
-    req.user = {
+    req.authUser = {
       userId: req.params.id || 'test-user-id',
       username: 'test-user',
+      role: 'PLAYER',
     };
     next();
     return;
   }
 
   try {
-    const authHeader = req.headers.authorization;
-    if (!authHeader) {
-      res.status(401).json({ error: 'No authorization token provided' });
-      return;
-    }
-
-    const parts = authHeader.split(' ');
-    if (parts.length !== 2 || parts[0] !== 'Bearer') {
-      res.status(401).json({ error: 'Invalid authorization format. Use: Bearer <token>' });
-      return;
-    }
-
-    const token = parts[1];
+    const token = req.cookies.accessToken;
     if (!token) {
-      res.status(401).json({ error: 'Token is required' });
+      res.status(401).json({ error: 'No access token provided' });
       return;
     }
 
     const payload = authService.verifyAccessToken(token);
 
-    req.user = {
+    req.authUser = {
       userId: payload.userId,
       username: payload.username,
+      role: payload.role,
     };
 
     next();
@@ -68,27 +65,56 @@ export function authenticate(req: AuthRequest, res: Response, next: NextFunction
 /**
  * Optional authentication - doesn't fail if no token
  */
-export function optionalAuth(req: AuthRequest, _res: Response, next: NextFunction): void {
+export function optionalAuth(req: Request, _res: Response, next: NextFunction): void {
   try {
-    const authHeader = req.headers.authorization;
-    if (!authHeader) {
+    const token = req.cookies.accessToken;
+    if (!token) {
       next();
       return;
     }
 
-    const parts = authHeader.split(' ');
-    if (parts.length === 2 && parts[0] === 'Bearer') {
-      const token = parts[1];
-      if (token) {
-        const payload = authService.verifyAccessToken(token);
-        req.user = {
-          userId: payload.userId,
-          username: payload.username,
-        };
-      }
-    }
+    const payload = authService.verifyAccessToken(token);
+    req.authUser = {
+      userId: payload.userId,
+      username: payload.username,
+      role: payload.role,
+    };
   } catch {
     // Ignore invalid tokens for optional auth
+  }
+
+  next();
+}
+
+/**
+ * Middleware to require admin role
+ */
+export function requireAdmin(req: Request, res: Response, next: NextFunction): void {
+  if (!req.authUser) {
+    res.status(401).json({ error: 'Authentication required' });
+    return;
+  }
+
+  if (req.authUser.role !== 'ADMIN') {
+    res.status(403).json({ error: 'Admin access required' });
+    return;
+  }
+
+  next();
+}
+
+/**
+ * Middleware to require player or admin role
+ */
+export function requirePlayer(req: Request, res: Response, next: NextFunction): void {
+  if (!req.authUser) {
+    res.status(401).json({ error: 'Authentication required' });
+    return;
+  }
+
+  if (req.authUser.role !== 'VIEWER' && req.authUser.role !== 'ADMIN') {
+    res.status(403).json({ error: 'Player or admin access required' });
+    return;
   }
 
   next();

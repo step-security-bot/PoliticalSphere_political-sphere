@@ -1,5 +1,7 @@
 # Political Sphere Platform Architecture
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 Political Sphere runs as an Nx monorepo with three delivery verticals:
 
 - **Infrastructure** – Terraform modules that provision the AWS foundation (VPC, EKS, RDS, Redis, Route53, ACM, KMS, IAM, ECR, S3).

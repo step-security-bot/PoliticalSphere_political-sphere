@@ -16,9 +16,10 @@ async function main() {
     update: {},
     create: {
       id: 'chamber-commons-1',
+      gameId: 'game-demo-1',
       name: 'House of Commons',
-      type: 'house',
-      seats: 650,
+      type: 'commons',
+      maxSeats: 650,
     },
   });
 
@@ -30,9 +31,10 @@ async function main() {
     update: {},
     create: {
       id: 'chamber-lords-1',
+      gameId: 'game-demo-1',
       name: 'House of Lords',
-      type: 'senate',
-      seats: 800,
+      type: 'lords',
+      maxSeats: 800,
     },
   });
 
@@ -87,7 +89,10 @@ async function main() {
   // Create demo motion
   const _motion = await prisma.motion.create({
     data: {
+      gameId: 'game-demo-1',
       chamberId: commons.id,
+      proposerId: 'user-demo-1',
+      type: 'debate',
       title: 'Climate Change Action Bill',
       description:
         'A motion to debate comprehensive climate change legislation including carbon reduction targets and renewable energy investment.',

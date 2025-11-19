@@ -48,6 +48,7 @@ The Political Sphere AI System is a comprehensive, enterprise-grade AI orchestra
 ## Layer 1: Orchestration
 
 ### Purpose
+
 Coordinate multiple AI agents using proven patterns for complex workflows.
 
 ### Components
@@ -93,23 +94,27 @@ interface Orchestrator {
 ## Layer 2: Validation
 
 ### Purpose
+
 Enforce quality gates at three tiers of criticality.
 
 ### Validation Tiers
 
 #### Tier 0: Constitutional (Cannot be bypassed)
+
 - Political neutrality enforcement
 - Democratic integrity checks
 - Bias detection (threshold: 0.1)
 - **Block on failure**: YES
 
 #### Tier 1: Mandatory (Required for production)
+
 - OWASP ASVS security checks
 - WCAG accessibility validation
 - GDPR compliance verification
 - **Block on failure**: YES
 
 #### Tier 2: Best-Practice (Recommended)
+
 - Code quality standards
 - Documentation completeness
 - Performance benchmarks
@@ -138,29 +143,34 @@ interface ValidationGate {
 ## Layer 3: Governance
 
 ### Purpose
+
 Implement NIST AI Risk Management Framework for comprehensive AI governance.
 
 ### NIST AI RMF Functions
 
 #### GOVERN
+
 - System registration
 - Approval workflows
 - Stakeholder accountability
 - Organizational oversight
 
 #### MAP
+
 - Impact assessment
 - Risk identification
 - Model card generation
 - Context documentation
 
 #### MEASURE
+
 - Bias measurement
 - Performance tracking
 - Fairness metrics
 - Continuous monitoring
 
 #### MANAGE
+
 - Control implementation
 - Incident response
 - Risk mitigation
@@ -172,7 +182,7 @@ Implement NIST AI Risk Management Framework for comprehensive AI governance.
 class BiasMonitoringSystem {
   // Constitutional threshold: 0.1
   private threshold = 0.1;
-  
+
   recordMetric(metric: BiasMetric): void;
   getBiasTrend(systemId: string, days: number): BiasTrend;
   getActiveAlerts(systemId: string): BiasAlert[];
@@ -193,11 +203,13 @@ class PoliticalNeutralityEnforcer {
 ## Layer 4: Observability
 
 ### Purpose
+
 Provide comprehensive visibility into AI system behavior using OpenTelemetry standards.
 
 ### Components
 
 #### Tracing
+
 - Distributed tracing with span management
 - Trace correlation across services
 - Performance measurement
@@ -212,6 +224,7 @@ class AITracer {
 ```
 
 #### Metrics
+
 - SLI/SLO tracking
 - Error budget management
 - Performance benchmarks
@@ -227,6 +240,7 @@ class MetricsCollector {
 ```
 
 #### Logging
+
 - Structured JSON logging
 - Log level management
 - Trace correlation
@@ -244,11 +258,13 @@ class AILogger {
 ## Layer 5: Accessibility
 
 ### Purpose
+
 Ensure WCAG 2.2 AA compliance for all AI-generated and AI-influenced content.
 
 ### Components
 
 #### Automated Validation
+
 - 86 WCAG success criteria checks
 - axe-core integration
 - HTML structure validation
@@ -263,6 +279,7 @@ class WCAGValidator {
 ```
 
 #### Manual Testing Checklist
+
 - 17 items requiring human verification
 - 43% of WCAG criteria need manual review
 - Screen reader testing
@@ -277,11 +294,13 @@ class WCAGValidator {
 ## Layer 6: Privacy & GDPR
 
 ### Purpose
+
 Ensure full GDPR compliance and privacy protection.
 
 ### Components
 
 #### Data Subject Access Requests (DSAR)
+
 - 30-day SLA compliance
 - Access, erasure, portability, rectification
 - Automated request processing
@@ -296,6 +315,7 @@ class DSARHandler {
 ```
 
 #### Consent Management
+
 - Granular opt-in/opt-out
 - Consent versioning
 - Expiry tracking
@@ -310,12 +330,14 @@ class ConsentManager {
 ```
 
 #### Retention Policies
+
 - 7 default policies (30, 90, 180, 365, 730 days, indefinite, on-request)
 - Automated deletion
 - Retention overrides
 - Legal hold support
 
 #### Breach Notification
+
 - 72-hour authority notification
 - User notification workflows
 - Breach severity assessment
@@ -428,7 +450,7 @@ app.post('/api/dsar/access', async (req, res) => {
     userId: req.user.id,
     email: req.user.email,
   });
-  
+
   const data = await handler.processRequest(request.requestId, fetchUserData);
   res.json(data);
 });
@@ -456,14 +478,14 @@ Layer 1: Orchestration (Agent isolation)
 
 ### Threat Mitigation
 
-| Threat | Mitigation |
-|--------|-----------|
-| Prompt injection | Input validation, content filtering |
-| Data poisoning | Training data verification, bias monitoring |
-| Model inversion | Rate limiting, output sanitization |
-| Adversarial attacks | Input anomaly detection, robustness testing |
-| PII leakage | PII detection, output filtering, encryption |
-| Bias amplification | Continuous bias monitoring, threshold enforcement |
+| Threat              | Mitigation                                        |
+| ------------------- | ------------------------------------------------- |
+| Prompt injection    | Input validation, content filtering               |
+| Data poisoning      | Training data verification, bias monitoring       |
+| Model inversion     | Rate limiting, output sanitization                |
+| Adversarial attacks | Input anomaly detection, robustness testing       |
+| PII leakage         | PII detection, output filtering, encryption       |
+| Bias amplification  | Continuous bias monitoring, threshold enforcement |
 
 ## Performance Characteristics
 
@@ -526,26 +548,31 @@ Production Environment
 ## Testing Strategy
 
 ### Unit Tests
+
 - Individual components
 - Mock external dependencies
 - 80%+ coverage target
 
 ### Integration Tests
+
 - Layer interactions
 - End-to-end workflows
 - Real dependencies where possible
 
 ### Governance Tests
+
 - Policy enforcement
 - Bias detection accuracy
 - Neutrality threshold validation
 
 ### Accessibility Tests
+
 - WCAG compliance
 - Automated + manual testing
 - Screen reader compatibility
 
 ### Performance Tests
+
 - Latency benchmarks
 - Load testing
 - Resource utilization
@@ -602,4 +629,5 @@ Production Environment
 ---
 
 **Version History**:
+
 - 1.0.0 (2025-11-14): Initial architecture documentation

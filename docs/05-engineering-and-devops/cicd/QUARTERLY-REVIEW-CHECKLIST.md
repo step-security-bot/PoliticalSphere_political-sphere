@@ -7,24 +7,20 @@
 ## Performance Metrics
 
 - [ ] **Success Rate**: ≥95% across all workflows
-  - Current: ___% (Target: 95%)
-  
+  - Current: \_\_\_% (Target: 95%)
 - [ ] **P95 Duration**: CI pipeline <20 minutes
-  - Current: ___ min (Target: 20 min)
-  
+  - Current: \_\_\_ min (Target: 20 min)
 - [ ] **Cache Hit Rate**: ≥80% for all caches
-  - npm: ___% (Target: 80%)
-  - Nx: ___% (Target: 80%)
-  - Playwright: ___% (Target: 90%)
+  - npm: \_\_\_% (Target: 80%)
+  - Nx: \_\_\_% (Target: 80%)
+  - Playwright: \_\_\_% (Target: 90%)
 
 ## Cost Analysis
 
 - [ ] **Monthly Spend**: <$300/month
-  - Current: $___ (Target: $300)
-  
+  - Current: $\_\_\_ (Target: $300)
 - [ ] **Cost per PR**: <$0.50/PR
-  - Current: $___ (Target: $0.50)
-  
+  - Current: $\_\_\_ (Target: $0.50)
 - [ ] **Optimization Opportunities**: Identified and prioritized
   - [ ] Nx Cloud DTE evaluation
   - [ ] Self-hosted runner analysis
@@ -36,11 +32,9 @@
   - [ ] Provenance generation working
   - [ ] Artifact signing functional
   - [ ] SBOM generation up-to-date
-  
 - [ ] **Workflow Permissions**: Least-privilege model enforced
   - [ ] Audit script passing (>90% compliance)
   - [ ] No `write-all` permissions
-  
 - [ ] **Dependency Security**: No high/critical vulnerabilities
   - [ ] npm audit passing
   - [ ] Snyk scan passing
@@ -52,7 +46,6 @@
   - [ ] Dashboard generated weekly
   - [ ] Alerts configured and tested
   - [ ] SLO tracking active
-  
 - [ ] **Failure Analytics**: Trends identified
   - [ ] Flaky tests categorized
   - [ ] Root causes documented
@@ -61,13 +54,11 @@
 ## Developer Experience
 
 - [ ] **Feedback Speed**: <5 minutes for PR validation
-  - Current: ___ min (Target: 5 min)
-  
+  - Current: \_\_\_ min (Target: 5 min)
 - [ ] **Local Tooling**: Up-to-date and documented
   - [ ] `act` for local CI emulation
   - [ ] Fast feedback script
   - [ ] Pre-commit hooks
-  
 - [ ] **Documentation**: Current and comprehensive
   - [ ] ADRs updated
   - [ ] Runbooks reviewed
@@ -76,24 +67,29 @@
 ## Action Items
 
 ### High Priority
-1. _______________________________________________
-2. _______________________________________________
-3. _______________________________________________
+
+1. ***
+2. ***
+3. ***
 
 ### Medium Priority
-1. _______________________________________________
-2. _______________________________________________
+
+1. ***
+2. ***
 
 ### Low Priority
-1. _______________________________________________
+
+1. ***
 
 ## Review Sign-Off
 
-- **Date:** _______________
-- **Reviewed By:** _______________
-- **Next Review:** _______________ (3 months from today)
-- **Status:** ☐ PASS  ☐ PASS WITH ACTIONS  ☐ FAIL
+- **Date:** ******\_\_\_******
+- **Reviewed By:** ******\_\_\_******
+- **Next Review:** ******\_\_\_****** (3 months from today)
+- **Status:** ☐ PASS ☐ PASS WITH ACTIONS ☐ FAIL
 
 ---
 
-*Last Updated: 2025-11-18*
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
+_Last Updated: 2025-11-18_

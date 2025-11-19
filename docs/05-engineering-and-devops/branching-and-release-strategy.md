@@ -10,6 +10,8 @@
 
 ---
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 ## Overview
 
 This document outlines the branching and release strategy for the Political Sphere project, a democratically-governed multiplayer political simulation game. The strategy emphasizes security, testing, accessibility, and governance compliance as per the project's constitutional requirements.

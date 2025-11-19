@@ -1,5 +1,7 @@
 # 004. Lefthook for Git Hooks Management
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 Date: 2025-11-05  
 Status: Accepted  
 Deciders: Platform Engineering Team, DX Working Group  

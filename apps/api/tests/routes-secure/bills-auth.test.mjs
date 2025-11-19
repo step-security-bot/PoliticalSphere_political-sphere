@@ -2,14 +2,14 @@ import express from 'express';
 import request from 'supertest';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
-import { closeDatabase, getDatabase } from '../../src/modules/stores/index.ts';
+import { getTestDatabase, resetTestDatabase } from '../../src/test-support/database.ts';
 import authRouter from '../../src/routes/auth.js';
 import billsRouter from '../../src/routes/bills.js';
 
 // Helper to register + login and return { token, user }
 async function registerAndLogin(app, email = `user+${Date.now()}@example.com`) {
   const username = `tester_${Date.now()}`;
-  const password = 'password123';
+  const password = 'Password123';
 
   // Register
   const reg = await request(app)
@@ -29,12 +29,15 @@ async function registerAndLogin(app, email = `user+${Date.now()}@example.com`) {
 
 describe('bills routes (auth enforced)', () => {
   let app;
+  let testDb;
   const prev = process.env.FORCE_AUTH;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     // Enforce auth paths in test
     process.env.FORCE_AUTH = '1';
-    getDatabase();
+    resetTestDatabase();
+    testDb = getTestDatabase();
+    await testDb.setup();
 
     app = express();
     app.use(express.json());
@@ -42,9 +45,9 @@ describe('bills routes (auth enforced)', () => {
     app.use('/', billsRouter);
   });
 
-  afterEach(() => {
+  afterEach(async () => {
     process.env.FORCE_AUTH = prev;
-    closeDatabase();
+    await testDb.teardown();
   });
 
   it('creates a bill with valid token (POST /bills)', async () => {

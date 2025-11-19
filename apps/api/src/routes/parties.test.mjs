@@ -6,7 +6,7 @@ import { afterEach, beforeEach, describe, it } from 'vitest';
 import { bearer, getTestToken } from '../../tests/helpers/auth-token.mjs';
 import { dispatchRequest } from '../../tests/utils/express-request.js';
 import authRoutes from '../auth/auth.routes.ts';
-import { closeDatabase, getDatabase } from '../modules/stores/index.ts';
+import { closeDatabase, getDatabase } from '../stores/index.ts';
 import partiesRouter from './parties.js';
 
 describe('Parties Routes', () => {

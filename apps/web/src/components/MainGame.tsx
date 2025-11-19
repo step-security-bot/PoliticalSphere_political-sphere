@@ -11,6 +11,10 @@ import JudiciarySystem from './Judiciary/JudiciarySystem';
 import './MainGame.css';
 import MediaCenter from './Media/MediaCenter';
 import ParliamentChamber from './Parliament/ParliamentChamber';
+import UserProfile from './Profile/UserProfile';
+import { useLoading } from '../contexts/LoadingContext';
+import { useToast } from '../contexts/ToastContext';
+import { SkeletonCard, SkeletonList } from '../components/common/skeleton';
 
 interface MainGameProps {
   userId: string;
@@ -37,24 +41,26 @@ interface GameData {
 const MainGame: FC<MainGameProps> = ({ userId, username, onLogout }) => {
   const [currentView, setCurrentView] = useState<GameView>('overview');
   const [gameData, setGameData] = useState<GameData | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [notifications, setNotifications] = useState<string[]>([]);
+  const { withLoading, isLoading } = useLoading();
+  const { showToast } = useToast();
 
   const fetchGameData = useCallback(async () => {
     try {
-      // Fetch simulation state (single world)
-      const response = await fetch('/api/simulation/state');
-      if (!response.ok) throw new Error('Failed to fetch simulation data');
-      const data = await response.json();
-      if (data.success) {
-        setGameData(data.data);
-      }
+      const data = await withLoading('game-data', async () => {
+        // Fetch simulation state (single world)
+        const response = await fetch('/api/simulation/state');
+        if (!response.ok) throw new Error('Failed to fetch simulation data');
+        const result = await response.json();
+        if (!result.success) throw new Error('Failed to fetch simulation data');
+        return result.data;
+      });
+
+      setGameData(data);
     } catch (error) {
       console.error('Error fetching simulation data:', error);
-    } finally {
-      setLoading(false);
+      showToast('error', 'Failed to load game data', 'Please refresh the page to try again.');
     }
-  }, []);
+  }, [withLoading, showToast]);
 
   useEffect(() => {
     fetchGameData();
@@ -63,53 +69,58 @@ const MainGame: FC<MainGameProps> = ({ userId, username, onLogout }) => {
     return () => clearInterval(interval);
   }, [fetchGameData]);
 
-  const addNotification = (message: string) => {
-    setNotifications(prev => [...prev, message]);
-    setTimeout(() => {
-      setNotifications(prev => prev.slice(1));
-    }, 5000);
-  };
-
   // Placeholder handlers for future implementation
   const _handleParliamentAction = async (_action: Record<string, unknown>) => {
     try {
-      // Handle parliament actions
-      addNotification('Parliament action submitted');
+      await withLoading('parliament-action', async () => {
+        // Handle parliament actions
+        // Simulate API call
+        await new Promise(resolve => setTimeout(resolve, 1000));
+      });
+      showToast('success', 'Parliament action submitted', 'Your action has been recorded.');
       await fetchGameData();
     } catch (error) {
       console.error('Parliament action failed:', error);
-      addNotification('Action failed');
+      showToast('error', 'Action failed', 'Please try again.');
     }
   };
 
   const _handleGovernmentAction = async (_action: Record<string, unknown>) => {
     try {
-      // Handle government actions
-      addNotification('Government action submitted');
+      await withLoading('government-action', async () => {
+        // Handle government actions
+        // Simulate API call
+        await new Promise(resolve => setTimeout(resolve, 1000));
+      });
+      showToast('success', 'Government action submitted', 'Your action has been recorded.');
       await fetchGameData();
     } catch (error) {
       console.error('Government action failed:', error);
-      addNotification('Action failed');
+      showToast('error', 'Action failed', 'Please try again.');
     }
   };
 
   const _handleElectionAction = async (_action: Record<string, unknown>) => {
     try {
-      // Handle election actions
-      addNotification('Election action submitted');
+      await withLoading('election-action', async () => {
+        // Handle election actions
+        // Simulate API call
+        await new Promise(resolve => setTimeout(resolve, 1000));
+      });
+      showToast('success', 'Election action submitted', 'Your action has been recorded.');
       await fetchGameData();
     } catch (error) {
       console.error('Election action failed:', error);
-      addNotification('Action failed');
+      showToast('error', 'Action failed', 'Please try again.');
     }
   };
 
-  if (loading) {
+  if (isLoading('game-data')) {
     return (
-      <output className="main-game loading" aria-live="polite">
-        <output className="loading-spinner" />
+      <div className="main-game loading" aria-live="polite">
+        <div className="loading-spinner" />
         <p>Loading game...</p>
-      </output>
+      </div>
     );
   }
 
@@ -196,130 +207,134 @@ const MainGame: FC<MainGameProps> = ({ userId, username, onLogout }) => {
         </div>
       </header>
 
-      {/* Notifications */}
-      {notifications.length > 0 && (
-        <output className="notifications" aria-live="polite" aria-atomic="true">
-          {notifications.map(notification => (
-            <div key={notification} className="notification">
-              {notification}
-            </div>
-          ))}
-        </output>
-      )}
-
       {/* Main Content Area */}
       <main className="game-content">
         {currentView === 'overview' && (
           <div className="overview-view">
             <h2>Game Overview</h2>
 
-            <div className="overview-grid">
-              <section className="overview-card" aria-labelledby="parliament-overview">
-                <h3 id="parliament-overview">Parliament</h3>
-                <p>Active motions, debates, and voting sessions</p>
-                <button
-                  type="button"
-                  onClick={() => setCurrentView('parliament')}
-                  className="btn-primary"
-                >
-                  Go to Parliament
-                </button>
-              </section>
+            {isLoading('game-data') ? (
+              <SkeletonList
+                items={6}
+                className="overview-grid"
+                itemProps={{
+                  showAvatar: false,
+                  showTitle: true,
+                  showSubtitle: false,
+                  showContent: true,
+                  contentLines: 2,
+                }}
+              />
+            ) : (
+              <div className="overview-grid">
+                <section className="overview-card" aria-labelledby="parliament-overview">
+                  <h3 id="parliament-overview">Parliament</h3>
+                  <p>Active motions, debates, and voting sessions</p>
+                  <button
+                    type="button"
+                    onClick={() => setCurrentView('parliament')}
+                    className="btn-primary"
+                  >
+                    Go to Parliament
+                  </button>
+                </section>
 
-              <section className="overview-card" aria-labelledby="government-overview">
-                <h3 id="government-overview">Government</h3>
-                <p>Cabinet, ministers, and executive actions</p>
-                <button
-                  type="button"
-                  onClick={() => setCurrentView('government')}
-                  className="btn-primary"
-                >
-                  Go to Government
-                </button>
-              </section>
+                <section className="overview-card" aria-labelledby="government-overview">
+                  <h3 id="government-overview">Government</h3>
+                  <p>Cabinet, ministers, and executive actions</p>
+                  <button
+                    type="button"
+                    onClick={() => setCurrentView('government')}
+                    className="btn-primary"
+                  >
+                    Go to Government
+                  </button>
+                </section>
 
-              <section className="overview-card" aria-labelledby="judiciary-overview">
-                <h3 id="judiciary-overview">Judiciary</h3>
-                <p>Legal cases, rulings, and constitutional review</p>
-                <button
-                  type="button"
-                  onClick={() => setCurrentView('judiciary')}
-                  className="btn-primary"
-                >
-                  Go to Judiciary
-                </button>
-              </section>
+                <section className="overview-card" aria-labelledby="judiciary-overview">
+                  <h3 id="judiciary-overview">Judiciary</h3>
+                  <p>Legal cases, rulings, and constitutional review</p>
+                  <button
+                    type="button"
+                    onClick={() => setCurrentView('judiciary')}
+                    className="btn-primary"
+                  >
+                    Go to Judiciary
+                  </button>
+                </section>
 
-              <section className="overview-card" aria-labelledby="media-overview">
-                <h3 id="media-overview">Media</h3>
-                <p>Press releases, polls, and public opinion</p>
-                <button
-                  type="button"
-                  onClick={() => setCurrentView('media')}
-                  className="btn-primary"
-                >
-                  Go to Media
-                </button>
-              </section>
+                <section className="overview-card" aria-labelledby="media-overview">
+                  <h3 id="media-overview">Media</h3>
+                  <p>Press releases, polls, and public opinion</p>
+                  <button
+                    type="button"
+                    onClick={() => setCurrentView('media')}
+                    className="btn-primary"
+                  >
+                    Go to Media
+                  </button>
+                </section>
 
-              <section className="overview-card" aria-labelledby="elections-overview">
-                <h3 id="elections-overview">Elections</h3>
-                <p>Campaigns, constituencies, and voting</p>
-                <button
-                  type="button"
-                  onClick={() => setCurrentView('elections')}
-                  className="btn-primary"
-                >
-                  Go to Elections
-                </button>
-              </section>
+                <section className="overview-card" aria-labelledby="elections-overview">
+                  <h3 id="elections-overview">Elections</h3>
+                  <p>Campaigns, constituencies, and voting</p>
+                  <button
+                    type="button"
+                    onClick={() => setCurrentView('elections')}
+                    className="btn-primary"
+                  >
+                    Go to Elections
+                  </button>
+                </section>
 
-              <section className="overview-card" aria-labelledby="profile-overview">
-                <h3 id="profile-overview">Your Profile</h3>
-                <p>Settings, achievements, and statistics</p>
-                <button
-                  type="button"
-                  onClick={() => setCurrentView('profile')}
-                  className="btn-primary"
-                >
-                  Go to Profile
-                </button>
-              </section>
-            </div>
+                <section className="overview-card" aria-labelledby="profile-overview">
+                  <h3 id="profile-overview">Your Profile</h3>
+                  <p>Settings, achievements, and statistics</p>
+                  <button
+                    type="button"
+                    onClick={() => setCurrentView('profile')}
+                    className="btn-primary"
+                  >
+                    Go to Profile
+                  </button>
+                </section>
+              </div>
+            )}
 
             <section className="recent-activity" aria-labelledby="recent-activity-heading">
               <h3 id="recent-activity-heading">Recent Activity</h3>
-              <ul className="activity-list">
-                <li>No recent activity</li>
-              </ul>
+              {isLoading('game-data') ? (
+                <SkeletonList
+                  items={3}
+                  className="activity-list"
+                  itemProps={{
+                    showAvatar: false,
+                    showTitle: false,
+                    showSubtitle: false,
+                    showContent: true,
+                    contentLines: 1,
+                  }}
+                />
+              ) : (
+                <ul className="activity-list">
+                  <li>No recent activity</li>
+                </ul>
+              )}
             </section>
           </div>
         )}
 
-        {currentView === 'parliament' && (
-          <ParliamentChamber userId={userId} onError={addNotification} />
-        )}
+        {currentView === 'parliament' && <ParliamentChamber userId={userId} />}
 
-        {currentView === 'government' && (
-          <GovernmentDashboard userId={userId} onError={addNotification} />
-        )}
+        {currentView === 'government' && <GovernmentDashboard userId={userId} />}
 
-        {currentView === 'judiciary' && (
-          <JudiciarySystem userId={userId} onError={addNotification} />
-        )}
+        {currentView === 'judiciary' && <JudiciarySystem userId={userId} />}
 
-        {currentView === 'media' && <MediaCenter userId={userId} onError={addNotification} />}
+        {currentView === 'media' && <MediaCenter userId={userId} />}
 
-        {currentView === 'elections' && (
-          <ElectionsCenter userId={userId} onError={addNotification} />
-        )}
+        {currentView === 'elections' && <ElectionsCenter userId={userId} />}
 
-        {currentView === 'profile' && (
-          <div className="placeholder-view">
-            <h2>User Profile</h2>
-            <p>Profile management coming soon...</p>
-          </div>
-        )}
+        {currentView === 'profile' && <UserProfile userId={userId} />}
       </main>
 
       {/* Footer */}

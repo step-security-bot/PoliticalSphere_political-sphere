@@ -71,22 +71,64 @@ const Captcha = forwardRef<CaptchaRef, CaptchaProps>(
     }, []);
 
     return (
-      <div className="captcha-container">
-        <div ref={innerRef} className="captcha-inner">
-          <ReCAPTCHA
-            ref={recaptchaRef}
-            sitekey={siteKey}
-            onChange={onVerify}
-            onExpired={onExpired}
-            onError={onError}
-            size={size}
-            theme={theme}
-            aria-label="Complete the CAPTCHA challenge to verify you are not a robot"
-          />
+      <div
+        className="captcha-container"
+        style={{
+          margin: '1.5rem 0',
+          padding: 0,
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          width: '100%',
+          boxSizing: 'border-box',
+          overflow: 'hidden',
+        }}
+      >
+        <div
+          style={{
+            maxWidth: '100%',
+            width: '100%',
+            display: 'flex',
+            justifyContent: 'center',
+          }}
+        >
+          <div
+            ref={innerRef}
+            className="captcha-inner"
+            style={{
+              width: '100%',
+              maxWidth: '304px',
+              display: 'flex',
+              justifyContent: 'center',
+              margin: '0 auto',
+              overflow: 'hidden',
+            }}
+          >
+            <div style={{ width: '304px', maxWidth: '100%', overflow: 'hidden' }}>
+              <ReCAPTCHA
+                ref={recaptchaRef}
+                sitekey={siteKey}
+                onChange={onVerify}
+                onExpired={onExpired}
+                onError={onError}
+                size={size}
+                theme={theme}
+                aria-label="Complete the CAPTCHA challenge to verify you are not a robot"
+              />
+            </div>
+          </div>
         </div>
+        <style>{`
+          .captcha-container > div > .captcha-inner > div > div iframe:last-child:not(:first-child) {
+            display: none !important;
+          }
+          .captcha-container + iframe {
+            display: none !important;
+          }
+        `}</style>
       </div>
     );
-  }
+  },
 );
 
 Captcha.displayName = 'Captcha';

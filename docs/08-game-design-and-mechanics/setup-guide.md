@@ -24,6 +24,8 @@ This will:
 
 ---
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 ## 🚀 Running the Game
 
 ### Option 1: Development Mode (Recommended)

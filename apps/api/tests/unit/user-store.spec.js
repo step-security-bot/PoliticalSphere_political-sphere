@@ -3,7 +3,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import UserStore from '../stores/user-store.js';
 
 // Mock the database
-vi.mock('../../src/modules/stores/index.ts', () => ({
+vi.mock('../../stores/index.ts', () => ({
   getDatabase: vi.fn(() => ({
     users: {
       create: vi.fn(),
@@ -23,7 +23,7 @@ describe('UserStore', () => {
 
   beforeEach(async () => {
     vi.clearAllMocks();
-    const { getDatabase } = await import('../../src/modules/stores/index.ts');
+    const { getDatabase } = await import('../../stores/index.ts');
     mockDb = getDatabase();
     store = new UserStore(mockDb.users);
   });

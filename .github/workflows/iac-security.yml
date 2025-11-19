@@ -70,7 +70,7 @@ jobs:
         uses: github/codeql-action/upload-sarif@e12f0178983d466f2f6028f5cc7a6d786fd97f4b # v3.27.5
         with:
           sarif_file: checkov-results.sarif
-          category: "checkov-iac-scan"
+          category: 'checkov-iac-scan'
 
       - name: Upload Checkov results as artifact
         if: always()
@@ -89,29 +89,29 @@ jobs:
             const results = fs.existsSync('checkov-results.sarif') 
               ? JSON.parse(fs.readFileSync('checkov-results.sarif', 'utf8'))
               : null;
-            
+
             if (!results) {
               console.log('No Checkov results found');
               return;
             }
-            
+
             const runs = results.runs || [];
             const totalFindings = runs.reduce((sum, run) => sum + (run.results || []).length, 0);
-            
+
             const body = `## 🔒 Infrastructure Security Scan Results (Checkov)
-            
+
             **Total Findings:** ${totalFindings}
-            
+
             ${totalFindings > 0 ? '⚠️ Security issues detected in infrastructure code. Review the Security tab for details.' : '✅ No security issues detected in infrastructure code.'}
-            
+
             **Scanned Frameworks:**
             - Terraform
             - Dockerfile
             - Kubernetes
             - Secrets
-            
+
             [View detailed results in Security tab](https://github.com/${{ github.repository }}/security/code-scanning)`;
-            
+
             github.rest.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
@@ -145,7 +145,7 @@ jobs:
         uses: github/codeql-action/upload-sarif@e12f0178983d466f2f6028f5cc7a6d786fd97f4b # v3.27.5
         with:
           sarif_file: results.sarif
-          category: "tfsec-terraform-scan"
+          category: 'tfsec-terraform-scan'
 
   dockerfile-lint:
     name: Dockerfile Security Lint
@@ -159,7 +159,7 @@ jobs:
       - name: Run Hadolint
         uses: hadolint/hadolint-action@v3.3.0 # Latest stable version
         with:
-          dockerfile: "apps/*/Dockerfile"
+          dockerfile: 'apps/*/Dockerfile'
           failure-threshold: warning
           format: sarif
           output-file: hadolint-results.sarif
@@ -169,7 +169,7 @@ jobs:
         uses: github/codeql-action/upload-sarif@e12f0178983d466f2f6028f5cc7a6d786fd97f4b # v3.27.5
         with:
           sarif_file: hadolint-results.sarif
-          category: "hadolint-dockerfile-scan"
+          category: 'hadolint-dockerfile-scan'
 
   summary:
     name: IaC Security Summary

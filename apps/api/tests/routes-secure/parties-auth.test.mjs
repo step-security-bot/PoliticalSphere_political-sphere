@@ -2,13 +2,13 @@ import express from 'express';
 import request from 'supertest';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
-import { closeDatabase, getDatabase } from '../../src/modules/stores/index.ts';
+import { closeDatabase, getDatabase } from '../../src/stores/index.ts';
 import authRouter from '../../src/routes/auth.js';
 import partiesRouter from '../../src/routes/parties.js';
 
 async function registerAndLogin(app, email = `party+${Date.now()}@example.com`) {
   const username = `party_user_${Date.now()}`;
-  const password = 'password123';
+  const password = 'Password123';
   await request(app)
     .post('/register')
     .send({ username, email, password })

@@ -1,0 +1,367 @@
+name: E2E Tests
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to test against'
+        required: true
+        default: 'staging'
+        type: choice
+        options:
+          - development
+          - staging
+          - production
+      shard_count:
+        description: 'Number of test shards'
+        required: false
+        default: '4'
+        type: string
+
+env:
+  NODE_VERSION: '20'
+  PLAYWRIGHT_VERSION: '1.56.1'
+
+jobs:
+  e2e-tests:
+    name: 'E2E Tests (${{ matrix.shard }})'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1, 2, 3, 4]
+        browser: [chromium]
+        include:
+          - browser: chromium
+            shard: 1
+          - browser: chromium
+            shard: 2
+          - browser: chromium
+            shard: 3
+          - browser: chromium
+            shard: 4
+
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: political_sphere_test
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps
+
+      - name: Setup test database
+        run: |
+          npm run db:migrate:test
+          npm run db:seed:test
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/political_sphere_test
+          REDIS_URL: redis://localhost:6379
+
+      - name: Build applications
+        run: |
+          npm run build:api
+          npm run build:web
+
+      - name: Start test services
+        run: |
+          npm run start:test:api &
+          npm run start:test:web &
+          sleep 30
+
+      - name: Run E2E tests (sharded)
+        run: |
+          npx playwright test \
+            --shard=${{ matrix.shard }}/${{ github.event.inputs.shard_count || '4' }} \
+            --project=${{ matrix.browser }} \
+            --reporter=github,html,junit,json \
+            --output=reports/e2e-${{ matrix.shard }}
+        env:
+          E2E_BASE_URL: http://localhost:3001
+          E2E_API_URL: http://localhost:4000
+          CI: true
+          SHARD_INDEX: ${{ matrix.shard }}
+          SHARD_TOTAL: ${{ github.event.inputs.shard_count || '4' }}
+
+      - name: Upload test results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: e2e-results-shard-${{ matrix.shard }}
+          path: |
+            reports/e2e-${{ matrix.shard }}/
+            test-results/
+          retention-days: 30
+
+      - name: Upload screenshots on failure
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: e2e-screenshots-shard-${{ matrix.shard }}
+          path: test-results/screenshots/
+          retention-days: 7
+
+  accessibility-tests:
+    name: 'Accessibility Tests'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps
+
+      - name: Build and start applications
+        run: |
+          npm run build:web
+          npm run start:test:web &
+          sleep 20
+
+      - name: Run accessibility tests
+        run: npx playwright test --config playwright-a11y.config.ts
+        env:
+          BASE_URL: http://localhost:3001
+
+      - name: Upload accessibility results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: accessibility-results
+          path: test-results/accessibility-results.json
+          retention-days: 30
+
+  visual-regression-tests:
+    name: 'Visual Regression Tests'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps
+
+      - name: Build and start applications
+        run: |
+          npm run build:web
+          npm run start:test:web &
+          sleep 20
+
+      - name: Run visual regression tests
+        run: npx playwright test --config playwright-visual.config.ts
+        env:
+          BASE_URL: http://localhost:3001
+
+      - name: Upload visual regression results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: visual-regression-results
+          path: |
+            test-results/visual-results.json
+            tests/visual-regression.spec.ts-snapshots/
+          retention-days: 30
+
+  performance-tests:
+    name: 'Performance Tests'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps
+
+      - name: Build and start applications
+        run: |
+          npm run build:web
+          npm run build:api
+          npm run start:test:api &
+          npm run start:test:web &
+          sleep 30
+
+      - name: Run performance tests
+        run: npx playwright test tests/performance.spec.ts
+        env:
+          E2E_BASE_URL: http://localhost:3001
+          E2E_API_URL: http://localhost:4000
+
+      - name: Upload performance results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: performance-results
+          path: test-results/performance-results.json
+          retention-days: 30
+
+  e2e-summary:
+    name: 'E2E Test Summary'
+    runs-on: ubuntu-latest
+    needs: [e2e-tests, accessibility-tests, visual-regression-tests, performance-tests]
+    if: always()
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download test results
+        uses: actions/download-artifact@v4
+        with:
+          path: all-test-results/
+
+      - name: Generate test summary
+        run: |
+          echo "# E2E Test Summary" > test-summary.md
+          echo "" >> test-summary.md
+          echo "## Test Results" >> test-summary.md
+          echo "" >> test-summary.md
+
+          # Count total tests and failures
+          TOTAL_TESTS=$(find all-test-results/ -name "*.json" -exec jq -r '.stats.tests // 0' {} \; | awk '{sum += $1} END {print sum}')
+          PASSED_TESTS=$(find all-test-results/ -name "*.json" -exec jq -r '.stats.passes // 0' {} \; | awk '{sum += $1} END {print sum}')
+          FAILED_TESTS=$(find all-test-results/ -name "*.json" -exec jq -r '.stats.failures // 0' {} \; | awk '{sum += $1} END {print sum}')
+
+          echo "| Metric | Count |" >> test-summary.md
+          echo "|--------|-------|" >> test-summary.md
+          echo "| Total Tests | $TOTAL_TESTS |" >> test-summary.md
+          echo "| Passed | $PASSED_TESTS |" >> test-summary.md
+          echo "| Failed | $FAILED_TESTS |" >> test-summary.md
+          echo "" >> test-summary.md
+
+          # Add job status
+          echo "## Job Status" >> test-summary.md
+          echo "" >> test-summary.md
+          echo "| Job | Status |" >> test-summary.md
+          echo "|------|--------|" >> test-summary.md
+          echo "| E2E Tests | ${{ needs.e2e-tests.result }} |" >> test-summary.md
+          echo "| Accessibility | ${{ needs.accessibility-tests.result }} |" >> test-summary.md
+          echo "| Visual Regression | ${{ needs.visual-regression-tests.result }} |" >> test-summary.md
+          echo "| Performance | ${{ needs.performance-tests.result }} |" >> test-summary.md
+
+      - name: Upload test summary
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2e-test-summary
+          path: test-summary.md
+          retention-days: 30
+
+      - name: Comment PR with results
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const summary = fs.readFileSync('test-summary.md', 'utf8');
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `## E2E Test Results\n\n${summary}`
+            });
+
+  deploy-staging:
+    name: 'Deploy to Staging'
+    runs-on: ubuntu-latest
+    needs: [e2e-tests, accessibility-tests, visual-regression-tests]
+    if: github.ref == 'refs/heads/main' && needs.e2e-tests.result == 'success' && needs.accessibility-tests.result != 'failure' && needs.visual-regression-tests.result != 'failure'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Deploy to staging
+        run: |
+          echo "Deploying to staging environment..."
+          # Add your staging deployment commands here
+          # Example: kubectl apply -f k8s/staging/
+
+      - name: Run smoke tests on staging
+        run: |
+          npm run test:smoke
+        env:
+          E2E_BASE_URL: ${{ secrets.STAGING_URL }}
+
+  notify-failures:
+    name: 'Notify on Failures'
+    runs-on: ubuntu-latest
+    needs: [e2e-tests, accessibility-tests, visual-regression-tests, performance-tests]
+    if: failure() && github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Send failure notification
+        run: |
+          echo "Sending failure notification..."
+          # Add notification logic here (Slack, Teams, etc.)
+          # Example: curl -X POST -H 'Content-type: application/json' --data '{"text":"E2E tests failed"}' ${{ secrets.SLACK_WEBHOOK }}

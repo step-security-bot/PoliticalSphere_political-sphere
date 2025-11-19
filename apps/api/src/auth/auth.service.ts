@@ -7,7 +7,7 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import type { StringValue } from 'ms';
 
-import { getDatabase } from '../modules/stores/index.ts';
+import { getDatabase } from '../stores/index.js';
 
 const SALT_ROUNDS = 10;
 
@@ -59,12 +59,19 @@ export interface LoginInput {
 export interface TokenPayload {
   userId: string;
   username: string;
+  role: string;
   type: 'access' | 'refresh';
 }
 
 export class AuthService {
   async register(input: RegisterInput): Promise<{
-    user: { id: string; username: string; email?: string; createdAt: Date; updatedAt: Date };
+    user: {
+      id: string;
+      username: string;
+      email?: string;
+      createdAt: string;
+      updatedAt: string;
+    };
     tokens: { accessToken: string; refreshToken: string };
   }> {
     const { username, password, email } = input;
@@ -88,12 +95,14 @@ export class AuthService {
       role: 'VIEWER',
     });
 
+    console.log('user from create:', JSON.stringify(user, null, 2));
+
     // Ensure we have all required fields for token generation
-    if (!user.id || !user.username || !user.createdAt || !user.updatedAt) {
+    if (!user.id || !user.username || !user.role || !user.createdAt || !user.updatedAt) {
       throw new Error('User creation failed - missing required fields');
     }
 
-    const tokens = this.generateTokens({ id: user.id, username: user.username });
+    const tokens = this.generateTokens({ id: user.id, username: user.username, role: user.role });
 
     // Return user with guaranteed required fields
     return {
@@ -109,7 +118,13 @@ export class AuthService {
   }
 
   async login(input: LoginInput): Promise<{
-    user: { id: string; username: string; email?: string; createdAt: Date; updatedAt: Date };
+    user: {
+      id: string;
+      username: string;
+      email?: string;
+      createdAt: string;
+      updatedAt: string;
+    };
     tokens: { accessToken: string; refreshToken: string };
   }> {
     const { username, password } = input;
@@ -133,11 +148,11 @@ export class AuthService {
     }
 
     // Ensure we have all required fields for token generation
-    if (!user.id || !user.username) {
+    if (!user.id || !user.username || !userForAuth.role) {
       throw new Error('User data incomplete');
     }
 
-    const tokens = this.generateTokens({ id: user.id, username: user.username });
+    const tokens = this.generateTokens({ id: user.id, username: user.username, role: userForAuth.role });
 
     // Return user with guaranteed required fields
     return {
@@ -152,18 +167,20 @@ export class AuthService {
     };
   }
 
-  private generateTokens(user: { id: string; username: string }): {
+  private generateTokens(user: { id: string; username: string; role: string }): {
     accessToken: string;
     refreshToken: string;
   } {
     const accessPayload: TokenPayload = {
       userId: user.id,
       username: user.username,
+      role: user.role,
       type: 'access',
     };
     const refreshPayload: TokenPayload = {
       userId: user.id,
       username: user.username,
+      role: user.role,
       type: 'refresh',
     };
     const accessToken = jwt.sign(accessPayload, JWT_SECRET_VALIDATED, {
@@ -198,12 +215,13 @@ export class AuthService {
       }
       const db = getDatabase();
       const user = await db.users.getById(payload.userId);
-      if (!user || !user.id || !user.username) {
+      if (!user || !user.id || !user.username || !user.role) {
         throw new Error('User not found');
       }
       const accessPayload: TokenPayload = {
         userId: user.id,
         username: user.username,
+        role: user.role,
         type: 'access',
       };
       const newAccessToken = jwt.sign(accessPayload, JWT_SECRET_VALIDATED, {
@@ -223,13 +241,14 @@ export class AuthService {
     id: string;
     username: string;
     email?: string;
-    createdAt: Date;
-    updatedAt: Date;
+    role: string;
+    createdAt: string;
+    updatedAt: string;
   } | null> {
     const db = getDatabase();
     const user = await db.users.getById(userId);
 
-    if (!user || !user.id || !user.username || !user.createdAt || !user.updatedAt) {
+    if (!user || !user.id || !user.username || !user.role || !user.createdAt || !user.updatedAt) {
       return null;
     }
 
@@ -237,6 +256,7 @@ export class AuthService {
       id: user.id,
       username: user.username,
       email: user.email,
+      role: user.role,
       createdAt: user.createdAt,
       updatedAt: user.updatedAt,
     };

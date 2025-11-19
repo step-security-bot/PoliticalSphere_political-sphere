@@ -1,5 +1,7 @@
 # Incident Response Runbook
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 This runbook provides a structured approach for responding to platform incidents affecting Political Sphere environments.
 
 ## Detection

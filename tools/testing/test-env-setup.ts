@@ -27,7 +27,7 @@ process.env.JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '15m';
 process.env.JWT_REFRESH_EXPIRES_IN = process.env.JWT_REFRESH_EXPIRES_IN || '7d';
 
 // Database configuration for tests
-process.env.DATABASE_URL = process.env.DATABASE_URL || ':memory:';
+process.env.DATABASE_URL = process.env.DATABASE_URL || 'file:./test.db';
 process.env.NODE_ENV = process.env.NODE_ENV || 'test';
 
 // Disable external service calls in tests

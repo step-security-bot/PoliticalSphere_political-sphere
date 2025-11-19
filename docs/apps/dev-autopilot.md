@@ -1,5 +1,7 @@
 # Dev Autopilot
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 This document explains the automated development workflow implemented for the Political Sphere monorepo. All tools are free/open-source and maximize GitHub's free tier benefits.
 
 ## Overview

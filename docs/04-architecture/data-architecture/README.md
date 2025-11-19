@@ -18,6 +18,8 @@
 - Maintain clear ownership and tenancy boundaries per bounded context.
 - Instrument data flows for transparency, retention, and legal defensibility.
 
+> NOTE: Data architecture decisions must follow the overall project context (mission, legal constraints, AI usage) — see `docs/00-foundation/project-context.md` for strategic direction and compliance expectations.
+
 ---
 
 ## 🧱 Storage Stack

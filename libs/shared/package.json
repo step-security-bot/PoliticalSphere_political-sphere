@@ -14,6 +14,12 @@
       "require": "./cjs-shared.cjs",
       "default": "./dist/index.js",
       "types": "./dist/index.d.ts"
+    },
+    "./logger-pino": {
+      "import": "./dist/logger-pino.js",
+      "require": "./cjs-shared.cjs",
+      "default": "./dist/logger-pino.js",
+      "types": "./dist/logger-pino.d.ts"
     }
   }
 }

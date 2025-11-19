@@ -1,5 +1,7 @@
 # Database Failure Playbook
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 **Severity**: Critical (P0)  
 **Response Time**: < 15 minutes  
 **Owner**: Database Team  
@@ -53,10 +55,12 @@ journalctl -u postgresql -n 100 --no-pager
 ### Scenario 1: Disk Space Full
 
 **Symptoms**:
+
 - Error: "No space left on device"
 - Write operations failing
 
 **Resolution**:
+
 ```bash
 # Check what's using space
 du -sh /var/lib/postgresql/*
@@ -74,9 +78,11 @@ aws ec2 modify-volume --volume-id vol-xxx --size 200
 ### Scenario 2: Connection Limit Reached
 
 **Symptoms**:
+
 - Error: "FATAL: sorry, too many clients already"
 
 **Resolution**:
+
 ```bash
 # Check current connections
 psql -c "SELECT count(*) FROM pg_stat_activity;"
@@ -95,10 +101,12 @@ sudo systemctl restart postgresql
 ### Scenario 3: Database Process Crashed
 
 **Symptoms**:
+
 - PostgreSQL process not running
 - "Connection refused" errors
 
 **Resolution**:
+
 ```bash
 # Check if process is running
 systemctl status postgresql
@@ -117,10 +125,12 @@ rm /var/lib/postgresql/13/main/postmaster.pid  # If stale
 ### Scenario 4: Replication Lag
 
 **Symptoms**:
+
 - Read replicas showing old data
 - Lag metric exceeding threshold
 
 **Resolution**:
+
 ```bash
 # Check replication lag
 psql -h replica.internal -c "SELECT now() - pg_last_xact_replay_timestamp() AS replication_lag;"
@@ -138,10 +148,12 @@ psql -h primary.internal -c "SELECT * FROM pg_stat_activity WHERE state = 'activ
 ### Scenario 5: Corruption Detected
 
 **Symptoms**:
+
 - Error: "invalid page header"
 - Data inconsistencies
 
 **Resolution**:
+
 ```bash
 # DO NOT write to database
 # Immediately stop application writes

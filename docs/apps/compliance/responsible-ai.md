@@ -1,5 +1,7 @@
 # Responsible AI — Microsoft Learn summary
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 This short reference collects Microsoft Learn resources and practical guidance for implementing Responsible AI controls in Political Sphere. Use it as an authoritative starting point for internal checklists, reviews, and evidence required by the EU AI Act.
 
 ## Core Microsoft resources

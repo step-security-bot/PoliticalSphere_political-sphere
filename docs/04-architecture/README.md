@@ -12,6 +12,8 @@
 
 This section contains the technical architecture documentation for Political Sphere, providing comprehensive system design, patterns, and technical decisions that guide our multiplayer political simulation platform.
 
+> NOTE: This documentation is guided by the project context and strategic priorities in `docs/00-foundation/project-context.md`. For the complete technology stack reference, see `docs/00-foundation/technology-stack.md`.
+
 ## Overview
 
 The architecture documentation establishes the technical foundation for Political Sphere, covering system design, data architecture, scalability patterns, and operational excellence. These documents ensure consistent technical decisions and provide guidance for development teams.

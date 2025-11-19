@@ -316,6 +316,8 @@ export function classifyData(fields: string[]) {
 
 ---
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 **Last Updated**: 2025-10-29
 **Version**: 1.0
 **Owner**: Data Governance Committee

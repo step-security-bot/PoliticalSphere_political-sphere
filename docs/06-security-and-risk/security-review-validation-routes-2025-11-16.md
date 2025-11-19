@@ -11,19 +11,21 @@ Security review of validation implementation across API routes, focusing on XSS,
 
 ---
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 ## Executive Summary
 
 All reviewed routes implement proper input validation using Zod schemas or stub schema validators. No critical security vulnerabilities identified. Recommendations for additional hardening measures documented below.
 
 ### Risk Assessment
 
-| Category | Risk Level | Status |
-|----------|------------|--------|
-| XSS (Cross-Site Scripting) | 🟢 Low | Mitigated via validation + Content-Type headers |
-| SQL Injection | 🟢 Low | Mitigated via parameterized queries (where applicable) |
-| Command Injection | 🟢 Low | No shell command execution in reviewed routes |
-| Input Validation | 🟢 Low | Comprehensive validation implemented |
-| Rate Limiting | 🟢 Low | Applied globally via middleware |
+| Category                   | Risk Level | Status                                                 |
+| -------------------------- | ---------- | ------------------------------------------------------ |
+| XSS (Cross-Site Scripting) | 🟢 Low     | Mitigated via validation + Content-Type headers        |
+| SQL Injection              | 🟢 Low     | Mitigated via parameterized queries (where applicable) |
+| Command Injection          | 🟢 Low     | No shell command execution in reviewed routes          |
+| Input Validation           | 🟢 Low     | Comprehensive validation implemented                   |
+| Rate Limiting              | 🟢 Low     | Applied globally via middleware                        |
 
 ---
 
@@ -32,16 +34,19 @@ All reviewed routes implement proper input validation using Zod schemas or stub 
 ### 1. News Routes (`/api/news`)
 
 **Endpoints Reviewed:**
+
 - POST `/api/news` - Create news article
 - PUT `/api/news/:id` - Update news article
 - GET `/api/news` - List/search news
 
 **Validation:**
+
 - ✅ CreateNewsSchema validates: title, content, category, tags, author
 - ✅ UpdateNewsSchema validates partial updates
 - ✅ Search query parameters sanitized
 
 **XSS Vectors:**
+
 ```javascript
 // Potential XSS in tags/search if rendered without escaping
 // Example malicious input:
@@ -52,17 +57,20 @@ All reviewed routes implement proper input validation using Zod schemas or stub 
 ```
 
 **Mitigation Status:**
+
 - ✅ **Input Validation**: Tags validated as strings
 - ✅ **Storage**: Content stored as-is (no execution risk in database)
 - ⚠️ **Output**: Frontend MUST escape when rendering HTML
 - ✅ **Content-Type**: API returns `application/json` (not HTML)
 
 **Recommendations:**
+
 1. Add explicit tag format validation (alphanumeric + hyphens only)
 2. Implement maximum tag length (e.g., 50 characters)
 3. Document frontend XSS prevention requirements
 
 **SQL Injection:**
+
 - ✅ Using FileNewsStore (file-based, no SQL)
 - ✅ If migrating to SQL: use parameterized queries via prepared statements
 
@@ -71,16 +79,19 @@ All reviewed routes implement proper input validation using Zod schemas or stub 
 ### 2. Moderation Routes (`/api/moderation`)
 
 **Endpoints Reviewed:**
+
 - POST `/api/moderation/analyze` - Analyze content
 - POST `/api/moderation/report` - Create report
 - PUT `/api/moderation/review/:contentId` - Review content
 
 **Validation:**
+
 - ✅ AnalyzeContentSchema validates content field
 - ✅ CreateReportSchema validates contentId, reason, description
 - ✅ ReviewContentSchema validates decision, reviewerId
 
 **Security Concerns:**
+
 ```javascript
 // Potential injection in reason/description fields
 {
@@ -90,12 +101,14 @@ All reviewed routes implement proper input validation using Zod schemas or stub 
 ```
 
 **Mitigation Status:**
+
 - ✅ **Validation**: All fields validated as strings with required checks
 - ✅ **SQL Injection**: N/A (in-memory storage currently)
 - ✅ **XSS**: Content-Type headers prevent script execution
 - ✅ **Command Injection**: No system calls with user input
 
 **Recommendations:**
+
 1. Add reason enum validation (e.g., 'spam', 'harassment', 'inappropriate')
 2. Limit description length to prevent DoS via large payloads
 3. Sanitize decision field to enum: ['approved', 'rejected', 'flagged']
@@ -105,14 +118,17 @@ All reviewed routes implement proper input validation using Zod schemas or stub 
 ### 3. Age Verification Routes (`/api/age-verification`)
 
 **Endpoints Reviewed:**
+
 - POST `/api/age-verification/initiate` - Start verification
 - POST `/api/age-verification/verify` - Complete verification
 
 **Validation:**
+
 - ✅ InitiateVerificationSchema validates method, userId
 - ✅ CompleteVerificationSchema validates verificationId, token
 
 **Security Concerns:**
+
 ```javascript
 // Potential issues with token validation
 {
@@ -122,18 +138,21 @@ All reviewed routes implement proper input validation using Zod schemas or stub 
 ```
 
 **Mitigation Status:**
+
 - ✅ **Path Traversal**: Token validated as string, no file operations
 - ✅ **SQL Injection**: Using in-memory storage (Map)
 - ✅ **Token Security**: Tokens should be cryptographically secure
 - ⚠️ **Token Format**: No explicit format validation
 
 **Recommendations:**
+
 1. Validate token format (e.g., UUID or hex string)
 2. Add token expiration checks
 3. Implement rate limiting on verification attempts (prevent brute force)
 4. Use constant-time comparison for token validation
 
 **Example Secure Token Validation:**
+
 ```javascript
 import { timingSafeEqual } from 'crypto';
 
@@ -150,14 +169,17 @@ function validateToken(provided, expected) {
 ### 4. Compliance Routes (`/api/compliance`)
 
 **Endpoints Reviewed:**
+
 - POST `/api/compliance/events` - Log compliance event
 - POST `/api/compliance/breach-notification` - Report breach
 
 **Validation:**
+
 - ✅ ComplianceEventSchema validates category, action
 - ✅ BreachNotificationSchema validates date, time, categories, approximateNumber
 
 **Security Concerns:**
+
 ```javascript
 // Audit log injection
 {
@@ -167,12 +189,14 @@ function validateToken(provided, expected) {
 ```
 
 **Mitigation Status:**
+
 - ✅ **Log Injection**: Category/action validated as strings
 - ✅ **Newline Injection**: Should use structured logging (JSON)
 - ✅ **SQL Injection**: N/A (current implementation)
 - ✅ **Tampering**: Audit logs should be write-only/append-only
 
 **Recommendations:**
+
 1. Enforce category enum: ['data_access', 'data_modification', 'authentication']
 2. Validate action format (alphanumeric + underscore only)
 3. Implement tamper-evident audit logging (hash chain or external service)
@@ -194,15 +218,17 @@ function validateToken(provided, expected) {
 ### Additional Hardening Recommendations
 
 1. **Input Sanitization Library**
+
    ```javascript
    import DOMPurify from 'isomorphic-dompurify';
-   
+
    function sanitizeHtml(input) {
      return DOMPurify.sanitize(input, { ALLOWED_TAGS: [] });
    }
    ```
 
 2. **Field-Level Validation Patterns**
+
    ```javascript
    const SAFE_STRING = /^[a-zA-Z0-9\s\-_.,!?'"]+$/;
    const ALPHANUMERIC_HYPHEN = /^[a-zA-Z0-9\-_]+$/;
@@ -231,14 +257,15 @@ function validateToken(provided, expected) {
 ### Security Test Cases to Add
 
 1. **XSS Tests**
+
    ```javascript
    it('should reject XSS in news tags', async () => {
-     const payload = { 
+     const payload = {
        title: 'Test',
        content: 'Test',
        category: 'politics',
        tags: ['<script>alert(1)</script>'],
-       author: 'test'
+       author: 'test',
      };
      const response = await post('/api/news', payload);
      expect(response.status).toBe(400);
@@ -246,14 +273,16 @@ function validateToken(provided, expected) {
    ```
 
 2. **SQL Injection Tests** (when using database)
+
    ```javascript
    it('should prevent SQL injection in search', async () => {
-     const response = await get('/api/news?search=\' OR \'1\'=\'1');
+     const response = await get("/api/news?search=' OR '1'='1");
      expect(response.status).toBe(400);
    });
    ```
 
 3. **Command Injection Tests**
+
    ```javascript
    it('should prevent command injection in file operations', async () => {
      const payload = { token: '../../etc/passwd' };
@@ -265,7 +294,9 @@ function validateToken(provided, expected) {
 4. **Rate Limit Tests**
    ```javascript
    it('should enforce rate limits', async () => {
-     const requests = Array(101).fill(null).map(() => post('/api/news', validPayload));
+     const requests = Array(101)
+       .fill(null)
+       .map(() => post('/api/news', validPayload));
      const responses = await Promise.all(requests);
      expect(responses.filter(r => r.status === 429).length).toBeGreaterThan(0);
    });
@@ -290,14 +321,17 @@ function validateToken(provided, expected) {
 ## Action Items
 
 **Immediate (P0)**:
+
 - None - no critical vulnerabilities
 
 **Short-term (P1)**:
+
 1. Add enum validation for category/action/decision fields
 2. Implement field-level format validation (tags, tokens)
 3. Add security test cases to CI/CD
 
 **Long-term (P2)**:
+
 1. Integrate DOMPurify for input sanitization
 2. Implement tamper-evident audit logging
 3. Add token format validation with timing-safe comparison
@@ -313,4 +347,3 @@ All reviewed routes have appropriate validation in place. No critical vulnerabil
 
 **Sign-off**: Security review completed 2025-11-16  
 **Next Review**: Recommended when migrating to SQL database or adding file upload features
-

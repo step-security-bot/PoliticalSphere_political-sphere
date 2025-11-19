@@ -9,3 +9,5 @@
 </div>
 
 ---
+
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.

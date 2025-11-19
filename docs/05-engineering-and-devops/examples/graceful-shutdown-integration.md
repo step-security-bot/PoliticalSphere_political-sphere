@@ -6,6 +6,8 @@
 
 ---
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 ## Table of Contents
 
 1. [Basic HTTP Server](#basic-http-server)
@@ -41,7 +43,7 @@ server.listen(3000, () => {
 });
 
 // Optional: Manual cleanup on specific conditions
-process.on('uncaughtException', (error) => {
+process.on('uncaughtException', error => {
   logger.error('Uncaught exception', { error });
   cleanup(); // Trigger shutdown manually
 });
@@ -85,15 +87,15 @@ setupGracefulShutdown(server, {
   logger,
   onShutdown: async () => {
     logger.info('Running cleanup tasks...');
-    
+
     // Close database connections
     await db.close();
     logger.info('Database connections closed');
-    
+
     // Close cache connections
     await cache.disconnect();
     logger.info('Cache disconnected');
-    
+
     // Close any other resources (message queues, file handles, etc.)
   },
 });
@@ -118,10 +120,7 @@ Advanced integration tracking active connections:
 
 ```typescript
 import http from 'node:http';
-import {
-  setupGracefulShutdown,
-  ConnectionTracker,
-} from '@political-sphere/shared';
+import { setupGracefulShutdown, ConnectionTracker } from '@political-sphere/shared';
 import { logger } from './logger.js';
 
 // Create connection tracker
@@ -131,7 +130,7 @@ const server = http.createServer(async (req, res) => {
   // Register connection at start of request
   const connectionId = `req-${Date.now()}-${Math.random()}`;
   connectionTracker.register(connectionId);
-  
+
   try {
     // Simulate async work
     await processRequest(req, res);
@@ -149,10 +148,10 @@ setupGracefulShutdown(server, {
     logger.info('Waiting for active connections...', {
       activeConnections: connectionTracker.getActiveConnections(),
     });
-    
+
     // Wait for all connections to complete (with 15s timeout)
     const allCompleted = await connectionTracker.waitForCompletion(15000);
-    
+
     if (allCompleted) {
       logger.info('All connections completed gracefully');
     } else {
@@ -167,12 +166,9 @@ server.listen(3000, () => {
   logger.info('Server listening with connection tracking', { port: 3000 });
 });
 
-async function processRequest(
-  req: http.IncomingMessage,
-  res: http.ServerResponse,
-): Promise<void> {
+async function processRequest(req: http.IncomingMessage, res: http.ServerResponse): Promise<void> {
   // Your request processing logic
-  await new Promise((resolve) => setTimeout(resolve, 100));
+  await new Promise(resolve => setTimeout(resolve, 100));
   res.writeHead(200, { 'Content-Type': 'text/plain' });
   res.end('Request processed\n');
 }
@@ -211,14 +207,14 @@ describe('Server graceful shutdown', () => {
     if (cleanup) {
       cleanup();
     }
-    await new Promise((resolve) => {
+    await new Promise(resolve => {
       server.close(resolve);
     });
   });
 
   it('should execute cleanup callback on SIGTERM', async () => {
     const onShutdown = vi.fn().mockResolvedValue(undefined);
-    
+
     cleanup = setupGracefulShutdown(server, {
       timeout: 5000,
       onShutdown,
@@ -230,9 +226,9 @@ describe('Server graceful shutdown', () => {
     });
 
     process.emit('SIGTERM');
-    
+
     // Wait for async shutdown
-    await new Promise((resolve) => setTimeout(resolve, 100));
+    await new Promise(resolve => setTimeout(resolve, 100));
 
     expect(onShutdown).toHaveBeenCalledTimes(1);
     mockExit.mockRestore();
@@ -241,7 +237,7 @@ describe('Server graceful shutdown', () => {
   it('should enforce timeout if cleanup takes too long', async () => {
     const slowCleanup = vi.fn().mockImplementation(async () => {
       // Simulate slow cleanup (longer than timeout)
-      await new Promise((resolve) => setTimeout(resolve, 10000));
+      await new Promise(resolve => setTimeout(resolve, 10000));
     });
 
     cleanup = setupGracefulShutdown(server, {
@@ -255,16 +251,16 @@ describe('Server graceful shutdown', () => {
 
     const start = Date.now();
     process.emit('SIGTERM');
-    
+
     // Wait for timeout to expire
-    await new Promise((resolve) => setTimeout(resolve, 200));
+    await new Promise(resolve => setTimeout(resolve, 200));
 
     const duration = Date.now() - start;
-    
+
     // Should complete around timeout duration (100ms), not full cleanup (10000ms)
     expect(duration).toBeLessThan(500);
     expect(slowCleanup).toHaveBeenCalled();
-    
+
     mockExit.mockRestore();
   });
 });
@@ -315,9 +311,9 @@ setupGracefulShutdown(server, {
       timestamp: new Date().toISOString(),
       activeConnections: getActiveConnectionCount(),
     });
-    
+
     // Your cleanup logic
-    
+
     logger.info('Cleanup completed successfully');
   },
 });
@@ -352,10 +348,10 @@ setupGracefulShutdown(server, {
     // Immediately mark as shutting down
     isShuttingDown = true;
     logger.info('Health check now returns 503');
-    
+
     // Give load balancer time to detect unhealthy state
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-    
+    await new Promise(resolve => setTimeout(resolve, 2000));
+
     // Continue with cleanup
     await db.close();
   },
@@ -442,10 +438,10 @@ setupGracefulShutdown(server, {
       throw error;
     } finally {
       const duration = (Date.now() - startTime) / 1000;
-      
+
       shutdownCounter.inc({ signal: 'SIGTERM', success: String(success) });
       shutdownDuration.observe(duration);
-      
+
       logger.info('Shutdown metrics recorded', {
         duration,
         success,
@@ -488,7 +484,7 @@ setupGracefulShutdown(server, {
     if (errors.length > 0) {
       logger.warn('Shutdown completed with errors', {
         errorCount: errors.length,
-        errors: errors.map((e) => e.message),
+        errors: errors.map(e => e.message),
       });
     }
   },

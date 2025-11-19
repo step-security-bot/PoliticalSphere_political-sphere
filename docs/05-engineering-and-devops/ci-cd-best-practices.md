@@ -623,6 +623,8 @@ jobs:
 
 ---
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 **Document Version**: 1.0.0  
 **Last Updated**: 2025-10-29  
 **Next Review**: 2026-01-29

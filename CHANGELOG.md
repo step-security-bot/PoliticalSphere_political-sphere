@@ -2,7 +2,115 @@
 
 This file is the canonical, repository-root changelog for Political Sphere. It consolidates notable changes and serves as the single source of truth. For full historical drafts and verbose automation-generated entries, see `docs/archive/`.
 
+## [2025-11-19] - Workspace Expansion & Security / Quality Tooling
+
+### Added
+- Expanded npm workspaces scope to include `apps/*` alongside `libs/*` for consistent monorepo installs and dependency graph accuracy.
+- Implemented central `security:scan` script (npm audit + optional OSV) with baseline vulnerability thresholds; integrated into `fast-secure` pipeline mode.
+- Added `perf:enforce` script for performance budget gating (reads `config/performance-budgets.json`, fails on breaches).
+- Added `ai:health` script producing structured JSON health telemetry (cache hit rate, index size, accessibility failures).
+- Introduced component-level accessibility test runner `test:a11y:components` using `jest-axe` under Vitest.
+- Added `.nvmrc` to pin Node.js runtime (22.0.0) improving environment consistency.
+- ADR-001 documenting workspace scope change & security scan rationale.
+
+### Changed
+- Replaced obsolete `test:frontend` (referenced non-existent path) with focused accessibility component test script.
+- Updated `fast-secure` script to mandate security scan rather than optional invocation.
+
+### Security
+- Restored integrity of fast-secure execution mode (previous silent skip of security scan).
+- Established artifact outputs under `artifacts/security` for future SARIF / trend integration.
+
+### Performance & DX
+- Performance budget enforcement enables earlier detection of latency regressions.
+- Workspace expansion improves hoisting efficiency and reduces install duplication.
+
+### Accessibility
+- Shift-left a11y validation via component suite; reduces reliance solely on E2E axe scans.
+
+### AI Governance
+- `ai:health` surfaces stale indices / low cache hit rate indicators for proactive remediation.
+
+### Documentation
+- Added ADR-001; CHANGELOG updated with structural & process changes.
+
+### Operational Status
+- Workspace scope: OPERATIONAL
+- Security scan script: OPERATIONAL
+- Performance enforce: OPERATIONAL
+- AI health script: OPERATIONAL
+- Accessibility component tests: OPERATIONAL
+
+---
+
 The format follows Keep a Changelog (<https://keepachangelog.com/en/1.0.0/>) and the project follows Semantic Versioning (<https://semver.org/>).
+
+## [2025-11-19] - Production Readiness Documentation Complete
+
+### Added
+
+**Comprehensive Production Readiness Documentation Suite**
+- **Risk Register Updates**: Added 4 new production-specific risks (PROD-1 through PROD-4) covering deployment failures, data loss, monitoring blind spots, and scalability limitations with mitigation strategies and monitoring plans
+- **Documentation Completeness Assessment**: Verified all production readiness documentation is current and comprehensive, including:
+  - Database schema documentation (data-models-and-erd.md) - complete entity relationships and SQL examples
+  - Deployment runbook (deployment-runbook.md) - staging/production procedures, monitoring, rollback strategies
+  - Disaster recovery plan (DISASTER-RECOVERY-RUNBOOK.md) - comprehensive recovery scenarios and procedures
+  - Security audit documentation (SECURITY-AUDIT-2025-11-16.md) - vulnerability remediation and compliance verification
+  - Architecture diagrams (context-diagrams-c4.md, system-overview.md) - current Mermaid diagrams and system topology
+- **Onboarding Readiness Verification**: Confirmed documentation provides sufficient context for new engineers to onboard smoothly, with role-based navigation guides and comprehensive cross-references
+
+### Documentation
+
+- **Production Risk Assessment**: Enhanced risk register with deployment, monitoring, and scalability risks critical for production operations
+- **Documentation Status**: All production readiness documentation verified complete and up-to-date
+- **New Engineer Onboarding**: Documentation structure supports smooth onboarding with clear navigation and comprehensive technical references
+
+---
+
+## [2025-11-19] - Documentation Context Enhancement
+
+### Added
+
+**Comprehensive Documentation Context Improvements**
+- Created `docs/00-foundation/technology-stack.md` - Complete technology stack reference with versions, purposes, and decision rationale
+- Created `docs/00-foundation/project-context.md` - Executive project overview with development model, architecture, and strategic direction
+- Enhanced `README.md` with comprehensive project context including:
+  - Detailed technology stack breakdown (frontend, backend, data, infrastructure)
+  - Architectural patterns and design principles
+  - Project characteristics and development model
+  - Enhanced features section with technical excellence details
+- Enhanced `docs/README.md` with quick navigation guide organized by role:
+  - Developers, Architects, Security, Game Designers, Governance, Operations
+  - Quick start paths for different user types
+- Enhanced `docs/04-architecture/architecture.md` with updated architecture context and service details
+
+**Documentation Organization**
+- Added comprehensive cross-references between related documents
+- Improved navigation structure with role-based quick links
+- Added project metrics and current state information
+- Documented AI collaboration workflow and quality safeguards
+
+### Changed
+
+**README.md Improvements**
+- Expanded architecture overview from brief list to comprehensive multi-layer breakdown
+- Enhanced project description with project characteristics and key differentiators
+- Improved features section with categorization (Core Gameplay, Technical Excellence, Developer Experience, Infrastructure)
+- Added detailed technology versions and purposes
+
+**Documentation Navigation**
+- Restructured docs/README.md with quick navigation section
+- Added visual navigation indicators (emojis for categories)
+- Improved document discovery with role-based organization
+
+### Documentation
+
+- Technology Stack Reference: Complete reference for all technologies, frameworks, and tools
+- Project Context: Executive overview of project identity, development model, and strategic direction
+- Enhanced navigation: Role-based quick links for developers, architects, security, operations
+- Cross-references: Improved linking between related documentation sections
+
+---
 
 ## [2025-11-18] - CI/CD Enterprise Improvement Initiative: All 5 Phases Complete
 

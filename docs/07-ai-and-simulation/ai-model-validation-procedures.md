@@ -10,6 +10,8 @@
 
 ---
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 This document establishes comprehensive validation procedures for AI models and systems in the Political Sphere project, ensuring compliance with ISO 42001:2023 AI Management System requirements and maintaining ethical, reliable AI operations.
 
 ## Overview

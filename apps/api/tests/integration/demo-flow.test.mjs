@@ -2,7 +2,7 @@ import assert from 'node:assert';
 
 import express from 'express';
 
-import { closeDatabase, getDatabase } from '../../src/modules/stores/index.ts';
+import { closeDatabase, getDatabase } from '../../s../stores/index.ts';
 import billsRouter from '../../src/routes/bills.js';
 import partiesRouter from '../../src/routes/parties.js';
 import usersRouter from '../../src/routes/users.js';

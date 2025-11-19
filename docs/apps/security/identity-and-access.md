@@ -1,5 +1,7 @@
 # Identity & Access (Azure / Microsoft Entra)
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 This note summarises Microsoft Learn resources and practical guidance for Identity and Access relevant to Political Sphere. It focuses on Microsoft Entra ID (Azure AD), consumer identity (Azure AD B2C), and Azure RBAC for resource access governance.
 
 ## Key concepts

@@ -152,6 +152,8 @@ This will:
 
 ---
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 **Approved By**: [Pending]  
 **Executed By**: GitHub Copilot (AI Agent)  
 **Execution Date**: [Pending]

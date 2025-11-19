@@ -10,6 +10,8 @@
 
 ---
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 ## Overview
 
 This document defines the Roles and Responsibilities using the RACI matrix (Responsible, Accountable, Consulted, Informed) for key activities in Political Sphere. RACI clarifies who does what, ensuring accountability and preventing overlaps or gaps.

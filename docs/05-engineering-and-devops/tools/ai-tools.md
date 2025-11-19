@@ -7,6 +7,8 @@ This document catalogs all AI and automated tools integrated into Political Sphe
 
 ---
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 ## 🎯 Active AI Tools
 
 ### 1. **GitHub Copilot** (Paid)

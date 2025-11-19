@@ -7,6 +7,8 @@
 
 ---
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 ## 1. Purpose & Scope
 
 This Incident Response Plan provides structured procedures for identifying, responding to, and recovering from security incidents affecting the Political Sphere platform.

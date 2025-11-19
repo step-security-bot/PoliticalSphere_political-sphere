@@ -1,6 +1,6 @@
 import { type CreateUserInput, CreateUserSchema, type User } from '@political-sphere/shared';
 
-import { getDatabase } from '../modules/stores/index.js';
+import { getDatabase } from '../stores/index.js';
 
 export class UserService {
   // Use a lazy getter so the service always obtains the current database connection.
@@ -25,7 +25,15 @@ export class UserService {
       throw new Error('Username or email already exists');
     }
 
-    return this.db.users.create(input);
+    const result = await this.db.users.create(input);
+    // Map store result (ISO date strings) to domain types (Date)
+    return {
+      id: result.id,
+      username: result.username || '',
+      email: result.email || '',
+      createdAt: new Date(result.createdAt),
+      updatedAt: new Date(result.updatedAt),
+    };
   }
 
   async getUserById(id: string): Promise<User | null> {

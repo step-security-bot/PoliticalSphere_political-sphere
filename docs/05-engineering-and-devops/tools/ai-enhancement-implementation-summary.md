@@ -7,6 +7,8 @@
 
 ---
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 ## Executive Summary
 
 Successfully implemented 10 prioritized AI development enhancement solutions to improve GitHub Copilot effectiveness and developer productivity. All solutions are operational, tested, and documented.

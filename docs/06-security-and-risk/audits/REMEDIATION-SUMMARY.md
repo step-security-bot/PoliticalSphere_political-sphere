@@ -6,6 +6,8 @@
 
 ---
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 ## Executive Summary
 
 This document summarizes the security remediations implemented to address critical vulnerabilities identified in the comprehensive audit. All Phase 1 critical security issues have been addressed.

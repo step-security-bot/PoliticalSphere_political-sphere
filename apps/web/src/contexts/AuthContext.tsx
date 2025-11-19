@@ -9,24 +9,26 @@ import { api } from '../services/api';
 // TODO: Deprecate api-client.ts in favor of secure api.ts
 // import { apiClient } from '../utils/api-client';
 
-interface User {
+interface AuthUser {
   id: string;
   username: string;
-  email: string;
-  role?: string;
+  email?: string;
 }
 
 interface AuthContextType {
-  user: User | null;
+  user: AuthUser | null;
   isAuthenticated: boolean;
   isLoading: boolean;
   loginLoading: boolean;
   registerLoading: boolean;
-  login: (email: string, password: string) => Promise<{ success: boolean; error?: string }>;
+  login: (
+    emailOrUsername: string,
+    password: string,
+  ) => Promise<{ success: boolean; error?: string }>;
   register: (
     username: string,
     email: string,
-    password: string
+    password: string,
   ) => Promise<{ success: boolean; error?: string }>;
   logout: () => Promise<void>;
 }
@@ -46,7 +48,7 @@ interface AuthProviderProps {
 }
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<AuthUser | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [loginLoading, setLoginLoading] = useState(false);
   const [registerLoading, setRegisterLoading] = useState(false);
@@ -67,10 +69,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     setIsLoading(false);
   }, []);
 
-  const login = async (email: string, password: string) => {
+  const login = async (emailOrUsername: string, password: string) => {
     setLoginLoading(true);
     try {
-      const response = await api.login(email, password);
+      const response = await api.login(emailOrUsername, password);
 
       if (response.success && response.data) {
         const userData = response.data.user;
@@ -101,7 +103,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
       if (response.success && response.data) {
         try {
-          const userData = response.data.user || response.data;
+          // Register response has user data in response.data.user
+          const userData = {
+            id: response.data.user.id,
+            username: response.data.user.username,
+            email: response.data.user.email || '',
+          };
           setUser(userData);
           sessionStorage.setItem('user', JSON.stringify(userData));
           setRegisterLoading(false);
@@ -130,7 +137,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   };
 
   const logout = async () => {
-    await api.logout();
+    try {
+      await api.logout();
+    } catch (error) {
+      // Even if logout fails, we should clear local state
+      console.warn('Logout API call failed:', error);
+    }
     setUser(null);
     sessionStorage.removeItem('user');
   };

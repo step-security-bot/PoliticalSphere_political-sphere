@@ -141,4 +141,66 @@ describe('MetricsCollector', () => {
     expect(Object.keys(report.gauges).length).toBe(0);
     expect(Object.keys(report.histograms).length).toBe(0);
   });
+
+  it('should calculate SLO metrics', () => {
+    // Record some metrics
+    metrics.recordSuccess('api');
+    metrics.recordSuccess('api');
+    metrics.recordError('api');
+    metrics.recordLatency('api', 100);
+    metrics.recordLatency('api', 200);
+    metrics.recordLatency('api', 300);
+
+    const slo = metrics.calculateSLO('api', 60000); // 1 minute window
+
+    expect(slo.service).toBe('api');
+    expect(slo.availability).toBe(2 / 3); // 2 successes out of 3 total
+    expect(slo.errorRate).toBe(1 / 3);
+    expect(slo.latency.p50).toBe(200);
+    expect(slo.latency.p95).toBe(300);
+    expect(slo.latency.p99).toBe(300);
+  });
+
+  it('should calculate error budget', () => {
+    // Record metrics for 90% availability (10% error rate)
+    for (let i = 0; i < 9; i++) {
+      metrics.recordSuccess('api');
+    }
+    for (let i = 0; i < 1; i++) {
+      metrics.recordError('api');
+    }
+
+    const budget = metrics.getErrorBudget('api', 0.95); // 95% target
+
+    expect(budget.budget).toBeCloseTo(0.05); // 5% error budget
+    expect(budget.consumed).toBeCloseTo(0.1); // 10% consumed
+    expect(budget.remaining).toBe(0); // Over budget
+    expect(budget.percentConsumed).toBeGreaterThan(100);
+  });
+
+  it('should export counters with default labels in Prometheus format', () => {
+    metrics.incrementCounter('test_counter'); // No labels = default
+
+    const prometheusOutput = metrics.exportPrometheus();
+
+    expect(prometheusOutput).toContain('test_counter 1');
+    expect(prometheusOutput).not.toContain('test_counter{');
+  });
+
+  it('should handle empty SLO data', () => {
+    metrics.defineSLO('empty_slo', {
+      target: 100,
+      threshold: 0.99,
+      window: '1h',
+    });
+
+    const status = metrics.checkSLO('empty_slo');
+
+    expect(status.compliant).toBe(true);
+    expect(status.successRate).toBe(1.0);
+  });
+
+  it('should throw error for undefined SLO', () => {
+    expect(() => metrics.checkSLO('nonexistent')).toThrow('SLO "nonexistent" not defined');
+  });
 });

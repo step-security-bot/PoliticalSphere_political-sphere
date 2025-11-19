@@ -1,5 +1,7 @@
 # Political Sphere Security Overview
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 This document captures the security controls that ship with the baseline platform and highlights work still in flight.
 
 ## Identity & Access Management

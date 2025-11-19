@@ -1,4 +1,7 @@
 ---
+
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 description: 'Backend API design, validation, security, database operations, and health check patterns'
 applyTo: '**/apps/api/**/*,**/apps/worker/**/*,**/apps/game-server/**/*'
 ---
@@ -14,6 +17,7 @@ applyTo: '**/apps/api/**/*,**/apps/worker/**/*,**/apps/game-server/**/*'
 All API routes implement input validation using Zod schemas or stub schema validators. This ensures type safety, prevents injection attacks, and provides consistent error responses.
 
 **Validation Test Coverage**: 19/19 tests passing (100%)
+
 - Moderation routes: 3 tests
 - News routes: 4 tests
 - Age verification routes: 4 tests
@@ -86,8 +90,10 @@ All validation errors follow this structure:
 Use shared test helpers for consistent assertions:
 
 ```javascript
-import { assertValidationError, assertValidationSuccess } 
-  from '../tests/helpers/validation-assertions.mjs';
+import {
+  assertValidationError,
+  assertValidationSuccess,
+} from '../tests/helpers/validation-assertions.mjs';
 
 it('should reject missing required fields', async () => {
   const response = await post('/api/news', { title: 'Test' }); // missing content
@@ -111,8 +117,7 @@ it('should accept valid payload', async () => {
 Track validation performance and success rates:
 
 ```javascript
-import { recordValidation, getValidationMetrics } 
-  from './validation-metrics.js';
+import { recordValidation, getValidationMetrics } from './validation-metrics.js';
 
 // In route handler
 const startTime = performance.now();
@@ -154,12 +159,14 @@ const metrics = getValidationMetrics();
 ### Security Considerations
 
 **Input Validation**:
+
 - ✅ All fields validated for type and format
 - ✅ String length limits enforced
 - ✅ Enum validation for categorical fields
 - ✅ Array size limits where applicable
 
 **Injection Prevention**:
+
 - ✅ XSS: Content validated, returned as JSON (not HTML)
 - ✅ SQL: Use parameterized queries (when applicable)
 - ✅ Command: No shell command execution with user input

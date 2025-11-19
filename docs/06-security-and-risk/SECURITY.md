@@ -1,5 +1,7 @@
 # Security Policy
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 This repository enforces a fail-closed secrets scanning policy and documents how to report and respond to security issues.
 
 ## Reporting

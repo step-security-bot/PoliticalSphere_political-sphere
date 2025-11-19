@@ -10,6 +10,8 @@
 
 ---
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 ## Purpose
 
 This SOP provides structured procedures for responding to operational incidents in the Political Sphere platform, minimizing impact and ensuring rapid recovery.
@@ -27,30 +29,35 @@ Applies to all production incidents affecting availability, security, data integ
 ## Incident Response Checklist
 
 ### Detection & Assessment
+
 - [ ] **Incident Confirmed**: Verify incident is real, not false positive
 - [ ] **Severity Determined**: Classify as P0 (critical), P1 (high), P2 (medium), P3 (low)
 - [ ] **Impact Assessed**: Identify affected users, services, and data
 - [ ] **Scope Defined**: Determine blast radius and potential escalation
 
 ### Containment
+
 - [ ] **Immediate Actions**: Isolate affected systems if needed
 - [ ] **Traffic Management**: Block malicious traffic or redirect users
 - [ ] **Data Protection**: Secure compromised data and prevent further exposure
 - [ ] **Communication**: Notify stakeholders of incident status
 
 ### Investigation
+
 - [ ] **Root Cause Analysis**: Identify what caused the incident
 - [ ] **Timeline Reconstruction**: Document sequence of events
 - [ ] **Evidence Collection**: Gather logs, metrics, and forensic data
 - [ ] **Impact Quantification**: Measure actual vs. potential damage
 
 ### Recovery
+
 - [ ] **Fix Implementation**: Apply remediation to resolve incident
 - [ ] **System Restoration**: Bring affected services back online
 - [ ] **Data Recovery**: Restore from backups if data loss occurred
 - [ ] **Validation**: Confirm systems functioning normally
 
 ### Post-Incident
+
 - [ ] **Post-Mortem**: Conduct blameless review within 48 hours
 - [ ] **Action Items**: Create and assign preventive measures
 - [ ] **Documentation**: Update runbooks and incident database
@@ -59,24 +66,28 @@ Applies to all production incidents affecting availability, security, data integ
 ## Response Process
 
 ### Phase 1: Triage (0-15 minutes)
+
 - [ ] Alert incident response team
 - [ ] Assess severity and activate appropriate response
 - [ ] Create incident ticket and communication channel
 - [ ] Gather initial diagnostic information
 
 ### Phase 2: Response (15-60 minutes)
+
 - [ ] Implement immediate containment measures
 - [ ] Begin investigation while containing damage
 - [ ] Communicate status updates every 15 minutes
 - [ ] Escalate if incident worsens
 
 ### Phase 3: Resolution (1-4 hours)
+
 - [ ] Complete root cause analysis
 - [ ] Implement permanent fix
 - [ ] Validate fix effectiveness
 - [ ] Begin recovery procedures
 
 ### Phase 4: Follow-up (4-72 hours)
+
 - [ ] Conduct post-mortem meeting
 - [ ] Implement preventive measures
 - [ ] Update monitoring and alerting

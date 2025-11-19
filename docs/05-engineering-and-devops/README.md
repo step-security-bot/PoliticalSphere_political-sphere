@@ -12,6 +12,8 @@
 
 This section contains engineering practices, development workflows, DevOps processes, and operational standards for the Political Sphere platform. These documents establish consistent practices across development teams and ensure reliable, scalable software delivery.
 
+> NOTE: See `docs/00-foundation/project-context.md` for the broader mission and development model. This helps align engineering priorities with the project's strategic goals.
+
 ## Overview
 
 Engineering and DevOps documentation covers the entire software development lifecycle, from coding standards and testing practices to deployment automation and operational excellence. These standards ensure high-quality, maintainable code and reliable system operations.

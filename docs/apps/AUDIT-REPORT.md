@@ -1,5 +1,7 @@
 # Global Audit & Remediation Report — Political Sphere Dev Infra
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 **Audit Date:** 2024-12-19
 **Auditor:** BLACKBOXAI
 **Scope:** Infra & IaC, CI/CD, Code Quality, Security, Testing, AI Automation, Renovate, Documentation, Governance

@@ -7,12 +7,13 @@ var __getProtoOf = Object.getPrototypeOf;
 var __hasOwnProp = Object.prototype.hasOwnProperty;
 var __esm = (fn, res) =>
   function __init() {
-    return fn && (res = (0, fn[__getOwnPropNames(fn)[0]])((fn = 0))), res;
+    return (fn && (res = (0, fn[__getOwnPropNames(fn)[0]])((fn = 0))), res);
   };
 var __commonJS = (cb, mod) =>
   function __require() {
     return (
-      mod || (0, cb[__getOwnPropNames(cb)[0]])((mod = { exports: {} }).exports, mod), mod.exports
+      mod || (0, cb[__getOwnPropNames(cb)[0]])((mod = { exports: {} }).exports, mod),
+      mod.exports
     );
   };
 var __copyProps = (to, from, except, desc) => {
@@ -36,7 +37,7 @@ var __toESM = (mod, isNodeMode, target2) => (
     isNodeMode || !mod || !mod.__esModule
       ? __defProp(target2, 'default', { value: mod, enumerable: true })
       : target2,
-    mod,
+    mod
   )
 );
 var init_esm_shims = __esm({
@@ -372,7 +373,7 @@ function serialTaskCaller(hooks2, args) {
   const task = createTask(name);
   return hooks2.reduce(
     (promise, hookFunction) => promise.then(() => task.run(() => hookFunction(...args))),
-    Promise.resolve(),
+    Promise.resolve()
   );
 }
 function parallelTaskCaller(hooks2, args) {
@@ -563,12 +564,13 @@ var __getProtoOf2 = Object.getPrototypeOf;
 var __hasOwnProp2 = Object.prototype.hasOwnProperty;
 var __esm2 = (fn, res) =>
   function __init() {
-    return fn && (res = (0, fn[__getOwnPropNames2(fn)[0]])((fn = 0))), res;
+    return (fn && (res = (0, fn[__getOwnPropNames2(fn)[0]])((fn = 0))), res);
   };
 var __commonJS2 = (cb, mod) =>
   function __require() {
     return (
-      mod || (0, cb[__getOwnPropNames2(cb)[0]])((mod = { exports: {} }).exports, mod), mod.exports
+      mod || (0, cb[__getOwnPropNames2(cb)[0]])((mod = { exports: {} }).exports, mod),
+      mod.exports
     );
   };
 var __copyProps2 = (to, from, except, desc) => {
@@ -592,7 +594,7 @@ var __toESM2 = (mod, isNodeMode, target22) => (
     isNodeMode || !mod || !mod.__esModule
       ? __defProp2(target22, 'default', { value: mod, enumerable: true })
       : target22,
-    mod,
+    mod
   )
 );
 var init_esm_shims2 = __esm2({
@@ -601,7 +603,7 @@ var init_esm_shims2 = __esm2({
 var require_speakingurl = __commonJS2({
   '../../node_modules/.pnpm/speakingurl@14.0.1/node_modules/speakingurl/lib/speakingurl.js'(
     exports,
-    module,
+    module
   ) {
     init_esm_shims2();
     (root => {
@@ -2586,7 +2588,7 @@ function isReactive(value) {
       value[
         '__v_raw'
         /* RAW */
-      ],
+      ]
     );
   }
   return !!(
@@ -2797,7 +2799,7 @@ function getActiveInspectors() {
         id: options.id,
         label: options.label,
         logo: descriptor.logo,
-        icon: `custom-ic-baseline-${((_a25 = options == null ? void 0 : options.icon)) == null ? void 0 : _a25.replace(/_/g, '-')}`,
+        icon: `custom-ic-baseline-${(_a25 = options == null ? void 0 : options.icon) == null ? void 0 : _a25.replace(/_/g, '-')}`,
         packageName: descriptor.packageName,
         homepage: descriptor.homepage,
         pluginId: descriptor.id,
@@ -2806,7 +2808,7 @@ function getActiveInspectors() {
 }
 function getInspector(id, app) {
   return devtoolsInspector.find(
-    inspector => inspector.options.id === id && (app ? inspector.descriptor.app === app : true),
+    inspector => inspector.options.id === id && (app ? inspector.descriptor.app === app : true)
   );
 }
 var DevToolsV6PluginAPIHookKeys = (DevToolsV6PluginAPIHookKeys2 => {
@@ -2873,7 +2875,7 @@ function createDevToolsCtxHooks() {
           await Promise.all(callbacks.map(cb => cb(_payload)));
           resolve();
         },
-        'getInspectorTree',
+        'getInspectorTree'
         /* GET_INSPECTOR_TREE */
       );
     });
@@ -2884,11 +2886,11 @@ function createDevToolsCtxHooks() {
             cb({
               inspectorId,
               rootNodes: _payload.rootNodes,
-            }),
-          ),
+            })
+          )
         );
       },
-      'sendInspectorTreeToClient',
+      'sendInspectorTreeToClient'
       /* SEND_INSPECTOR_TREE_TO_CLIENT */
     );
   }, 120);
@@ -2918,7 +2920,7 @@ function createDevToolsCtxHooks() {
             await Promise.all(callbacks.map(cb => cb(_payload, ctx)));
             resolve();
           },
-          'getInspectorState',
+          'getInspectorState'
           /* GET_INSPECTOR_STATE */
         );
       });
@@ -2931,11 +2933,11 @@ function createDevToolsCtxHooks() {
               inspectorId,
               nodeId: _payload.nodeId,
               state: _payload.state,
-            }),
-          ),
+            })
+          )
         );
       },
-      'sendInspectorStateToClient',
+      'sendInspectorStateToClient'
       /* SEND_INSPECTOR_STATE_TO_CLIENT */
     );
   }, 120);
@@ -2963,7 +2965,7 @@ function createDevToolsCtxHooks() {
       async callbacks => {
         await Promise.all(callbacks.map(cb => cb(options)));
       },
-      'sendTimelineEventToClient',
+      'sendTimelineEventToClient'
       /* SEND_TIMELINE_EVENT_TO_CLIENT */
     );
   });
@@ -3261,10 +3263,10 @@ function setPluginSettings(pluginId, key, value) {
           oldValue: parsedLocalSettings[key],
           newValue: value,
           settings: updated,
-        }),
+        })
       );
     },
-    'setPluginSettings',
+    'setPluginSettings'
     /* SET_PLUGIN_SETTINGS */
   );
 }
@@ -3370,7 +3372,7 @@ var DevToolsV6PluginAPI = class {
       return;
     }
     const inspector = getActiveInspectors().find(
-      i => i.packageName === this.plugin.descriptor.packageName,
+      i => i.packageName === this.plugin.descriptor.packageName
     );
     if (inspector == null ? void 0 : inspector.id) {
       if (instance) {
@@ -3383,7 +3385,7 @@ var DevToolsV6PluginAPI = class {
         devtoolsHooks.callHook('component:updated', ...args);
       } else {
         devtoolsHooks.callHook(
-          'component:updated',
+          'component:updated'
           /* COMPONENT_UPDATED */
         );
       }
@@ -3435,7 +3437,7 @@ var DevToolsV6PluginAPI = class {
   getSettings(pluginId) {
     return getPluginSettings(
       pluginId != null ? pluginId : this.plugin.descriptor.id,
-      this.plugin.descriptor.settings,
+      this.plugin.descriptor.settings
     );
   }
   // utilities
@@ -3454,7 +3456,7 @@ var DevToolsV6PluginAPI = class {
   }
   unhighlightElement() {
     return this.hooks.callHook(
-      'componentUnhighlight',
+      'componentUnhighlight'
       /* COMPONENT_UNHIGHLIGHT */
     );
   }
@@ -3555,7 +3557,7 @@ var devtoolsRouter = new Proxy(target[ROUTER_KEY], {
 function getRoutes(router) {
   const routesMap = /* @__PURE__ */ new Map();
   return ((router == null ? void 0 : router.getRoutes()) || []).filter(
-    i => !routesMap.has(i.path) && routesMap.set(i.path, 1),
+    i => !routesMap.has(i.path) && routesMap.set(i.path, 1)
   );
 }
 function filterRoutes(routes) {
@@ -3609,7 +3611,7 @@ function normalizeRouterInfo(appRecord, activeAppRecord2) {
       init();
       if (devtoolsState.highPerfModeEnabled) return;
       devtoolsContext.hooks.callHook('routerInfoUpdated', { state: target[ROUTER_INFO_KEY] });
-    }, 200),
+    }, 200)
   );
 }
 function createDevToolsApi(hooks2) {
@@ -3627,7 +3629,7 @@ function createDevToolsApi(hooks2) {
             await Promise.all(callbacks.map(cb => cb(_payload)));
             resolve();
           },
-          'getInspectorTree',
+          'getInspectorTree'
           /* GET_INSPECTOR_TREE */
         );
       });
@@ -3649,7 +3651,7 @@ function createDevToolsApi(hooks2) {
             await Promise.all(callbacks.map(cb => cb(_payload, ctx)));
             resolve();
           },
-          'getInspectorState',
+          'getInspectorState'
           /* GET_INSPECTOR_STATE */
         );
       });
@@ -3666,7 +3668,7 @@ function createDevToolsApi(hooks2) {
             obj,
             path,
             value,
-            cb || stateEditor2.createDefaultSetCallback(payload.state),
+            cb || stateEditor2.createDefaultSetCallback(payload.state)
           );
         },
       };
@@ -3674,7 +3676,7 @@ function createDevToolsApi(hooks2) {
         callbacks => {
           callbacks.forEach(cb => cb(_payload));
         },
-        'editInspectorState',
+        'editInspectorState'
         /* EDIT_INSPECTOR_STATE */
       );
     },
@@ -4022,7 +4024,7 @@ var simpleRules = [
     isUndefined,
     'undefined',
     () => null,
-    () => void 0,
+    () => void 0
   ),
   simpleTransformation(
     isBigint,
@@ -4034,13 +4036,13 @@ var simpleRules = [
       }
       console.error('Please add a BigInt polyfill.');
       return v;
-    },
+    }
   ),
   simpleTransformation(
     isDate,
     'Date',
     v => v.toISOString(),
-    v => new Date(v),
+    v => new Date(v)
   ),
   simpleTransformation(
     isError,
@@ -4063,7 +4065,7 @@ var simpleRules = [
         e[prop] = v[prop];
       });
       return e;
-    },
+    }
   ),
   simpleTransformation(
     isRegExp,
@@ -4073,7 +4075,7 @@ var simpleRules = [
       const body = regex.slice(1, regex.lastIndexOf('/'));
       const flags = regex.slice(regex.lastIndexOf('/') + 1);
       return new RegExp(body, flags);
-    },
+    }
   ),
   simpleTransformation(
     isSet,
@@ -4081,13 +4083,13 @@ var simpleRules = [
     // (sets only exist in es6+)
     // eslint-disable-next-line es5/no-es6-methods
     v => [...v.values()],
-    v => new Set(v),
+    v => new Set(v)
   ),
   simpleTransformation(
     isMap,
     'map',
     v => [...v.entries()],
-    v => new Map(v),
+    v => new Map(v)
   ),
   simpleTransformation(
     v => isNaNValue(v) || isInfinite(v),
@@ -4102,7 +4104,7 @@ var simpleRules = [
         return '-Infinity';
       }
     },
-    Number,
+    Number
   ),
   simpleTransformation(
     v => v === 0 && 1 / v === -Infinity,
@@ -4110,13 +4112,13 @@ var simpleRules = [
     () => {
       return '-0';
     },
-    Number,
+    Number
   ),
   simpleTransformation(
     isURL,
     'URL',
     v => v.toString(),
-    v => new URL(v),
+    v => new URL(v)
   ),
 ];
 function compositeTransformation(isApplicable, annotation, transform, untransform) {
@@ -4146,7 +4148,7 @@ var symbolRule = compositeTransformation(
       throw new Error('Trying to deserialize unknown symbol');
     }
     return value;
-  },
+  }
 );
 var constructorToName = [
   Int8Array,
@@ -4172,7 +4174,7 @@ var typedArrayRule = compositeTransformation(
       throw new Error('Trying to deserialize unknown typed array');
     }
     return new ctor(v);
-  },
+  }
 );
 function isInstanceOfRegisteredClass(potentialClass, superJson) {
   if (potentialClass == null ? void 0 : potentialClass.constructor) {
@@ -4202,11 +4204,11 @@ var classRule = compositeTransformation(
     const clazz = superJson.classRegistry.getValue(a[1]);
     if (!clazz) {
       throw new Error(
-        `Trying to deserialize unknown class '${a[1]}' - check https://github.com/blitz-js/superjson/issues/116#issuecomment-773996564`,
+        `Trying to deserialize unknown class '${a[1]}' - check https://github.com/blitz-js/superjson/issues/116#issuecomment-773996564`
       );
     }
     return Object.assign(Object.create(clazz.prototype), v);
-  },
+  }
 );
 var customRule = compositeTransformation(
   (value, superJson) => {
@@ -4226,12 +4228,12 @@ var customRule = compositeTransformation(
       throw new Error('Trying to deserialize unknown custom value');
     }
     return transformer.deserialize(v);
-  },
+  }
 );
 var compositeRules = [classRule, symbolRule, customRule, typedArrayRule];
 var transformValue = (value, superJson) => {
   const applicableCompositeRule = findArr(compositeRules, rule =>
-    rule.isApplicable(value, superJson),
+    rule.isApplicable(value, superJson)
   );
   if (applicableCompositeRule) {
     return {
@@ -4478,7 +4480,7 @@ var walker = (
   dedupe,
   path = [],
   objectsInThisPath = [],
-  seenObjects = /* @__PURE__ */ new Map(),
+  seenObjects = /* @__PURE__ */ new Map()
 ) => {
   var _a25;
   const primitive = isPrimitive2(object);
@@ -4523,7 +4525,7 @@ var walker = (
   forEach(transformed, (value, index) => {
     if (index === '__proto__' || index === 'constructor' || index === 'prototype') {
       throw new Error(
-        `Detected property ${index}. This is a prototype pollution risk, please remove it from your object.`,
+        `Detected property ${index}. This is a prototype pollution risk, please remove it from your object.`
       );
     }
     const recursiveResult = walker(
@@ -4533,7 +4535,7 @@ var walker = (
       dedupe,
       [...path, index],
       [...objectsInThisPath, object],
-      seenObjects,
+      seenObjects
     );
     transformedValue[index] = recursiveResult.transformedValue;
     if (isArray(recursiveResult.annotations)) {
@@ -4694,7 +4696,7 @@ SuperJSON.registerClass = SuperJSON.defaultInstance.registerClass.bind(SuperJSON
 SuperJSON.registerSymbol = SuperJSON.defaultInstance.registerSymbol.bind(SuperJSON.defaultInstance);
 SuperJSON.registerCustom = SuperJSON.defaultInstance.registerCustom.bind(SuperJSON.defaultInstance);
 SuperJSON.allowErrorProps = SuperJSON.defaultInstance.allowErrorProps.bind(
-  SuperJSON.defaultInstance,
+  SuperJSON.defaultInstance
 );
 var serialize = SuperJSON.serialize;
 var deserialize = SuperJSON.deserialize;

@@ -10,6 +10,8 @@ Comprehensive review and enhancement of the CI/CD pipeline with focus on securit
 
 ---
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 ## 🔍 Issues Identified
 
 ### Critical Issues Fixed

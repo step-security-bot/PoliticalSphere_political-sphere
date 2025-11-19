@@ -18,7 +18,7 @@ const raw = fs.readFileSync(REPORT, 'utf8');
 let data;
 try {
   data = JSON.parse(raw);
-} catch (e) {
+} catch {
   console.error('Invalid JSON');
   process.exit(3);
 }

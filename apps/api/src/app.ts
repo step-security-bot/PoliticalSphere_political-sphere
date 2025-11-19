@@ -1,6 +1,9 @@
 /**
  * Express App (without server listen) for testing and composition
  */
+import 'dotenv/config';
+import compression from 'compression';
+import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import express from 'express';
 import expressRateLimit from 'express-rate-limit';
@@ -8,7 +11,18 @@ import helmet from 'helmet';
 import morgan from 'morgan';
 
 import authRoutes from './auth/auth.routes.ts';
+import billsRoutes from './routes/bills.ts';
 import gameRoutes from './game/game.routes.ts';
+import parliamentRoutes from './routes/parliament.ts';
+import partiesRoutes from './routes/parties.ts';
+import usersRoutes from './routes/users.ts';
+import votesRoutes from './routes/votes.ts';
+import { governmentService } from './domain/government-service.ts';
+import { judiciaryService } from './domain/judiciary-service.ts';
+import { gameEventEmitter } from './events';
+import { sanitizeRequest, validateContentType } from './middleware/validation.middleware.ts';
+import { authenticate, requirePlayer } from './auth/auth.middleware.ts';
+import { auditAuth, auditApiAccess } from './middleware/audit.middleware.ts';
 
 export const createApp = () => {
   const app = express();
@@ -42,7 +56,23 @@ export const createApp = () => {
     cors({
       origin: process.env.CORS_ORIGIN || 'http://localhost:5173',
       credentials: true,
-    })
+    }),
+  );
+
+  // Compression middleware (must be before other middleware)
+  app.use(
+    compression({
+      level: 6, // Good balance between compression and speed
+      threshold: 1024, // Only compress responses larger than 1KB
+      filter: (req: express.Request, res: express.Response) => {
+        // Don't compress responses with this request header
+        if (req.headers['x-no-compression']) {
+          return false;
+        }
+        // Use compression filter function
+        return compression.filter(req, res);
+      },
+    }),
   );
 
   // Logging
@@ -51,6 +81,13 @@ export const createApp = () => {
   // Body parsing
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
+
+  // Input validation and sanitization
+  app.use(validateContentType);
+  app.use(sanitizeRequest);
+
+  // Cookie parsing
+  app.use(cookieParser());
 
   // Health check
   app.get('/health', (_req, res) => {
@@ -87,55 +124,172 @@ export const createApp = () => {
     });
   });
 
-  // Government endpoints (stubs for now)
-  app.get('/government', (_req, res) => {
-    res.json({
-      success: true,
-      data: null,
-    });
+  // Government endpoints
+  app.get('/government', requirePlayer, async (_req, res) => {
+    try {
+      const governments = await governmentService.listGovernments({ status: 'active', limit: 1 });
+      const currentGovernment = governments[0] || null;
+      res.json({
+        success: true,
+        data: currentGovernment,
+      });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        error: 'Failed to fetch government data',
+      });
+    }
   });
 
-  app.post('/government', (_req, res) => {
-    res.json({
-      success: true,
-      data: { id: '1', name: 'Government', createdAt: new Date().toISOString() },
-    });
+  app.post('/government', requirePlayer, async (req, res) => {
+    try {
+      const { name, leaderId } = req.body;
+      if (!name) {
+        return res.status(400).json({
+          success: false,
+          error: 'Government name is required',
+        });
+      }
+      const government = await governmentService.createGovernment({ name, leaderId });
+      res.json({
+        success: true,
+        data: government,
+      });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        error: 'Failed to create government',
+      });
+    }
   });
 
-  app.post('/government/:id/ministers', (_req, res) => {
-    res.json({
-      success: true,
-      data: { id: '1', appointed: true },
-    });
+  app.post('/government/:id/ministers', requirePlayer, async (req, res) => {
+    try {
+      const { id } = req.params;
+      const { userId, portfolio } = req.body;
+      if (!userId || !portfolio) {
+        return res.status(400).json({
+          success: false,
+          error: 'userId and portfolio are required',
+        });
+      }
+      const minister = await governmentService.createMinister({
+        userId,
+        governmentId: id,
+        portfolio,
+      });
+      res.json({
+        success: true,
+        data: minister,
+      });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        error: 'Failed to appoint minister',
+      });
+    }
   });
 
-  app.post('/government/:id/actions', (_req, res) => {
-    res.json({
-      success: true,
-      data: { id: '1', executed: true },
-    });
+  app.post('/government/:id/actions', requirePlayer, async (req, res) => {
+    try {
+      const { id } = req.params;
+      const { title, description, type } = req.body;
+      if (!title || !type) {
+        return res.status(400).json({
+          success: false,
+          error: 'title and type are required',
+        });
+      }
+      const action = await governmentService.createExecutiveAction({
+        title,
+        description,
+        type,
+      });
+      res.json({
+        success: true,
+        data: action,
+      });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        error: 'Failed to create executive action',
+      });
+    }
   });
 
-  // Judiciary endpoints (stubs for now)
-  app.get('/judiciary/cases', (_req, res) => {
-    res.json({
-      success: true,
-      data: [],
-    });
+  // Judiciary endpoints
+  app.get('/judiciary/cases', requirePlayer, async (req, res) => {
+    try {
+      const { status, type, limit } = req.query;
+      const cases = await judiciaryService.listCases({
+        status: status as string,
+        type: type as string,
+        limit: limit ? parseInt(limit as string) : undefined,
+      });
+      res.json({
+        success: true,
+        data: cases,
+      });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        error: 'Failed to fetch cases',
+      });
+    }
   });
 
-  app.post('/judiciary/cases', (_req, res) => {
-    res.json({
-      success: true,
-      data: { id: '1', caseNumber: 'CASE-001', createdAt: new Date().toISOString() },
-    });
+  app.post('/judiciary/cases', requirePlayer, async (req, res) => {
+    try {
+      const { title, description, type } = req.body;
+      if (!title || !type) {
+        return res.status(400).json({
+          success: false,
+          error: 'title and type are required',
+        });
+      }
+      const caseData = await judiciaryService.createCase({
+        title,
+        description,
+        type,
+      });
+      res.json({
+        success: true,
+        data: caseData,
+      });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        error: 'Failed to create case',
+      });
+    }
   });
 
-  app.post('/judiciary/cases/:id/ruling', (_req, res) => {
-    res.json({
-      success: true,
-      data: { id: '1', ruled: true },
-    });
+  app.post('/judiciary/cases/:id/ruling', requirePlayer, async (req, res) => {
+    try {
+      const { id } = req.params;
+      const { judgeId, decision, reasoning } = req.body;
+      if (!judgeId || !decision) {
+        return res.status(400).json({
+          success: false,
+          error: 'judgeId and decision are required',
+        });
+      }
+      const ruling = await judiciaryService.createRuling({
+        caseId: id,
+        judgeId,
+        decision,
+        reasoning,
+      });
+      res.json({
+        success: true,
+        data: ruling,
+      });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        error: 'Failed to create ruling',
+      });
+    }
   });
 
   // Media endpoints (stubs for now) - in-memory arrays for quick iteration
@@ -167,7 +321,7 @@ export const createApp = () => {
     res.json({ success: true, data: pressReleases });
   });
 
-  app.post('/media/press', (req, res) => {
+  app.post('/media/press', requirePlayer, (req, res) => {
     const body = req.body || {};
     const item = {
       id: String(Date.now()),
@@ -179,9 +333,13 @@ export const createApp = () => {
       views: 0,
     };
     pressReleases.unshift(item); // newest first
+
+    // Emit media press release event
+    gameEventEmitter.emitMediaPressRelease(body.gameId || 'general', item.id, item.title);
+
     res.json({ success: true, data: item });
   });
-  app.post('/api/media/press', (req, res) => {
+  app.post('/api/media/press', requirePlayer, (req, res) => {
     const body = req.body || {};
     const item = {
       id: String(Date.now()),
@@ -203,7 +361,7 @@ export const createApp = () => {
     res.json({ success: true, data: polls });
   });
 
-  app.post('/media/polls', (req, res) => {
+  app.post('/media/polls', requirePlayer, (req, res) => {
     const body = req.body || {};
     const poll = {
       id: String(Date.now()),
@@ -221,9 +379,18 @@ export const createApp = () => {
     // Ensure votes array matches options length
     poll.votes = poll.options.map(() => 0);
     polls.unshift(poll);
+
+    // Emit media poll created event
+    gameEventEmitter.emitGameEvent({
+      type: 'media-poll-created',
+      gameId: body.gameId || 'general',
+      data: { pollId: poll.id, question: poll.question },
+      timestamp: Date.now(),
+    });
+
     res.json({ success: true, data: poll });
   });
-  app.post('/api/media/polls', (req, res) => {
+  app.post('/api/media/polls', requirePlayer, (req, res) => {
     const body = req.body || {};
     const poll = {
       id: String(Date.now()),
@@ -243,9 +410,9 @@ export const createApp = () => {
     res.json({ success: true, data: poll });
   });
 
-  app.post('/media/polls/:id/vote', (req, res) => {
+  app.post('/media/polls/:id/vote', requirePlayer, (req, res) => {
     const { id } = req.params;
-    const { optionIndex } = req.body || {};
+    const { optionIndex, gameId } = req.body || {};
     const poll = polls.find(p => p.id === id);
     if (!poll) {
       return res.status(404).json({ success: false, error: 'Poll not found' });
@@ -263,9 +430,18 @@ export const createApp = () => {
     const index = optionIndex as number;
     votes[index] = (votes[index] ?? 0) + 1;
     poll.totalVotes += 1;
+
+    // Emit media poll voted event
+    gameEventEmitter.emitGameEvent({
+      type: 'media-poll-voted',
+      gameId: gameId || 'general',
+      data: { pollId: id, optionIndex, totalVotes: poll.totalVotes },
+      timestamp: Date.now(),
+    });
+
     return res.json({ success: true, data: poll });
   });
-  app.post('/api/media/polls/:id/vote', (req, res) => {
+  app.post('/api/media/polls/:id/vote', requirePlayer, (req, res) => {
     const { id } = req.params;
     const { optionIndex } = req.body || {};
     const poll = polls.find(p => p.id === id);
@@ -329,6 +505,15 @@ export const createApp = () => {
       gameId: body.gameId,
     };
     elections.unshift(election);
+
+    // Emit election started event
+    gameEventEmitter.emitGameEvent({
+      type: 'election-started',
+      gameId: body.gameId || 'general',
+      data: { electionId: election.id, name: election.name },
+      timestamp: Date.now(),
+    });
+
     res.json({ success: true, data: election });
   });
 
@@ -407,7 +592,17 @@ export const createApp = () => {
     res.json({ success: true, data: candidate });
   });
 
-  app.post('/elections/:id/vote', (_req, res) => {
+  app.post('/elections/:id/vote', (req, res) => {
+    const { id } = req.params;
+    const { candidateId, gameId } = req.body || {};
+
+    // Emit election results event (simplified - in real app would track votes)
+    gameEventEmitter.emitElectionResults(gameId || 'general', {
+      electionId: id,
+      candidateId,
+      voteCount: 1, // Simplified
+    });
+
     res.json({ success: true, data: { voted: true } });
   });
 
@@ -416,6 +611,16 @@ export const createApp = () => {
   });
 
   // Routes
+  app.use('/api', billsRoutes);
+  // Parliament routes - no auth required in development for testing
+  if (process.env.NODE_ENV === 'development') {
+    app.use('/api/parliament', parliamentRoutes);
+  } else {
+    app.use('/api/parliament', authenticate, auditApiAccess, parliamentRoutes);
+  }
+  app.use('/api', partiesRoutes);
+  app.use('/api', usersRoutes);
+  app.use('/api', votesRoutes);
   app.use('/auth', authRoutes);
   app.use('/game', gameRoutes);
 
@@ -436,7 +641,7 @@ export const createApp = () => {
         error: 'Internal server error',
         message: process.env.NODE_ENV === 'development' ? err.message : undefined,
       });
-    }
+    },
   );
 
   return app;

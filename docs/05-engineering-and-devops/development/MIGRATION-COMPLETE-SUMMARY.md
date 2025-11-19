@@ -6,6 +6,8 @@
 
 ---
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 ## ✅ Completed Work
 
 ### Phase 1: App Renames (SUCCESS)

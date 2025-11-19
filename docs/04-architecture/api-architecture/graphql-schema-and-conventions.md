@@ -10,6 +10,8 @@
 
 ---
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 > **Design rules for Political Sphere’s GraphQL gateway**
 
 ---

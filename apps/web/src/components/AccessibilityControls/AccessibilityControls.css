@@ -106,7 +106,7 @@
   user-select: none;
 }
 
-.accessibility-toggle input[type="checkbox"] {
+.accessibility-toggle input[type='checkbox'] {
   position: absolute;
   opacity: 0;
   width: 0;
@@ -123,7 +123,7 @@
 }
 
 .accessibility-toggle-slider::before {
-  content: "";
+  content: '';
   position: absolute;
   height: 18px;
   width: 18px;
@@ -253,51 +253,51 @@
 }
 
 /* High Contrast Mode */
-[data-high-contrast="true"] .accessibility-controls-panel {
+[data-high-contrast='true'] .accessibility-controls-panel {
   border: 2px solid var(--color-text, #000);
 }
 
-[data-high-contrast="true"] .accessibility-controls-header {
+[data-high-contrast='true'] .accessibility-controls-header {
   border-bottom-color: var(--color-text, #000);
 }
 
-[data-high-contrast="true"] .accessibility-toggle-slider {
+[data-high-contrast='true'] .accessibility-toggle-slider {
   --color-toggle-off: #000;
   --color-toggle-on: #fff;
   border: 1px solid #000;
 }
 
-[data-high-contrast="true"] .accessibility-controls-footer {
+[data-high-contrast='true'] .accessibility-controls-footer {
   border-top-color: var(--color-text, #000);
   background-color: var(--color-background, #fff);
 }
 
 /* Large Text Mode */
-[data-large-text="true"] .accessibility-controls-header h2 {
+[data-large-text='true'] .accessibility-controls-header h2 {
   font-size: 1.75rem;
 }
 
-[data-large-text="true"] .accessibility-controls-header p,
-[data-large-text="true"] .accessibility-description,
-[data-large-text="true"] .accessibility-shortcuts,
-[data-large-text="true"] .accessibility-link,
-[data-large-text="true"] .accessibility-disclaimer {
+[data-large-text='true'] .accessibility-controls-header p,
+[data-large-text='true'] .accessibility-description,
+[data-large-text='true'] .accessibility-shortcuts,
+[data-large-text='true'] .accessibility-link,
+[data-large-text='true'] .accessibility-disclaimer {
   font-size: 1rem;
 }
 
-[data-large-text="true"] .accessibility-toggle-label {
+[data-large-text='true'] .accessibility-toggle-label {
   font-size: 1rem;
 }
 
 /* Reduced Motion */
-[data-reduced-motion="true"] .accessibility-controls-close,
-[data-reduced-motion="true"] .accessibility-font-button,
-[data-reduced-motion="true"] .accessibility-link {
+[data-reduced-motion='true'] .accessibility-controls-close,
+[data-reduced-motion='true'] .accessibility-font-button,
+[data-reduced-motion='true'] .accessibility-link {
   transition: none;
 }
 
-[data-reduced-motion="true"] .accessibility-toggle-slider,
-[data-reduced-motion="true"] .accessibility-toggle-slider::before {
+[data-reduced-motion='true'] .accessibility-toggle-slider,
+[data-reduced-motion='true'] .accessibility-toggle-slider::before {
   transition: none;
 }
 

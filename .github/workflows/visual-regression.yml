@@ -29,7 +29,7 @@ jobs:
     timeout-minutes: 30
     permissions:
       contents: read
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5.0.1
@@ -109,7 +109,7 @@ jobs:
               `   \`\`\`\n` +
               `3. Commit updated baseline images to repository\n\n` +
               `[View Test Report](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})\n`;
-            
+
             github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,

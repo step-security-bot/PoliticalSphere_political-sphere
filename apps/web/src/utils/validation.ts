@@ -141,7 +141,7 @@ export function calculatePasswordStrength(password: string): PasswordStrength {
  */
 export function validatePasswordConfirmation(
   password: string,
-  confirmPassword: string
+  confirmPassword: string,
 ): ValidationResult {
   if (!confirmPassword) {
     return { isValid: false, error: 'Please confirm your password' };
@@ -155,7 +155,7 @@ export function validatePasswordConfirmation(
 }
 
 /**
- * Sanitizes input by trimming and removing potentially harmful characters
+ * Sanitizes input by trimming whitespace and removing potentially harmful characters
  */
 export function sanitizeInput(input: string): string {
   return input.trim().replace(/[<>]/g, '');
@@ -192,7 +192,7 @@ export function validateCaptcha(token: string | null): ValidationResult {
 export function validateLoginForm(
   email: string,
   password: string,
-  captchaToken?: string | null
+  captchaToken?: string | null,
 ): {
   isValid: boolean;
   errors: Record<string, string>;
@@ -231,7 +231,7 @@ export function validateRegistrationForm(
   password: string,
   confirmPassword: string,
   agreedToTerms: boolean,
-  captchaToken?: string | null
+  captchaToken?: string | null,
 ): {
   isValid: boolean;
   errors: Record<string, string>;

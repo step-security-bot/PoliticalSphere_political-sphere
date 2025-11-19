@@ -1,0 +1,13 @@
+[
+  {
+    "timestamp": "2025-11-18T19:15:01.897Z",
+    "summary": {
+      "total": 0,
+      "passed": 0,
+      "failed": 0,
+      "skipped": 0,
+      "successRate": 100
+    },
+    "failures": []
+  }
+]

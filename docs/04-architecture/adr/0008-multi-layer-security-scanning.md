@@ -1,5 +1,7 @@
 # 005. Multi-Layer Security Scanning
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 Date: 2025-11-05  
 Status: Accepted  
 Deciders: Security Team, Platform Engineering Team  

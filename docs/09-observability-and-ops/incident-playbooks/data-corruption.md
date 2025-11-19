@@ -1,5 +1,7 @@
 # Data Corruption Playbook
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 **Severity**: High (P1)  
 **Response Time**: < 30 minutes  
 **Owner**: Data Team  
@@ -74,10 +76,12 @@ aws s3 ls s3://backups/database/ --recursive | grep $(date +%Y-%m-%d)
 ### Scenario 1: Failed Migration Caused Corruption
 
 **Symptoms**:
+
 - Corruption started after database migration
 - Schema inconsistencies
 
 **Resolution**:
+
 ```bash
 # Rollback migration
 psql -c "DELETE FROM schema_migrations WHERE version='<bad-migration-version>';"
@@ -98,10 +102,12 @@ pg_wal_replay --start-lsn <backup-lsn> --end-lsn <current-lsn>
 ### Scenario 2: Race Condition Created Duplicates
 
 **Symptoms**:
+
 - Duplicate records in unique columns
 - Constraint violations
 
 **Resolution**:
+
 ```bash
 # Identify duplicates
 psql -c "SELECT email, COUNT(*) FROM users GROUP BY email HAVING COUNT(*) > 1;"
@@ -128,10 +134,12 @@ git checkout hotfix/fix-race-condition
 ### Scenario 3: Bulk Update Corrupted Data
 
 **Symptoms**:
+
 - Mass data changes
 - Unexpected NULL or incorrect values
 
 **Resolution**:
+
 ```bash
 # Identify affected rows
 psql -c "SELECT * FROM audit_log WHERE action_type='UPDATE' AND created_at > '<corruption-time>' ORDER BY created_at DESC;"
@@ -163,18 +171,20 @@ psql -c "SELECT COUNT(*) FROM affected_table WHERE <validation-condition>;"
 ### Scenario 4: Data Type Mismatch
 
 **Symptoms**:
+
 - Type conversion errors
 - Invalid data in columns
 
 **Resolution**:
+
 ```bash
 # Identify invalid data
 psql -c "SELECT * FROM table_name WHERE column_name !~ '^[0-9]+$';"  # Numeric validation
 
 # Clean invalid data
 psql <<EOF
-UPDATE table_name 
-SET column_name = NULL 
+UPDATE table_name
+SET column_name = NULL
 WHERE column_name !~ '^[0-9]+$';
 EOF
 
@@ -190,10 +200,12 @@ git checkout hotfix/add-data-validation
 ### Scenario 5: Encoding Issues
 
 **Symptoms**:
+
 - Corrupted UTF-8 characters
 - Mojibake (garbled text)
 
 **Resolution**:
+
 ```bash
 # Check database encoding
 psql -c "SHOW server_encoding;"
@@ -278,19 +290,19 @@ CREATE OR REPLACE FUNCTION check_data_integrity()
 RETURNS TABLE(check_name text, status text, details text) AS $$
 BEGIN
   -- Check for orphaned records
-  RETURN QUERY SELECT 
+  RETURN QUERY SELECT
     'orphaned_votes'::text,
     CASE WHEN COUNT(*) = 0 THEN 'PASS' ELSE 'FAIL' END,
     'Found ' || COUNT(*) || ' votes without users'
   FROM votes v LEFT JOIN users u ON v.user_id = u.id WHERE u.id IS NULL;
-  
+
   -- Check for duplicates
   RETURN QUERY SELECT
     'duplicate_users'::text,
     CASE WHEN COUNT(*) = 0 THEN 'PASS' ELSE 'FAIL' END,
     'Found ' || COUNT(*) || ' duplicate emails'
   FROM (SELECT email, COUNT(*) FROM users GROUP BY email HAVING COUNT(*) > 1) d;
-  
+
   -- Check for invalid dates
   RETURN QUERY SELECT
     'future_created_dates'::text,
@@ -314,27 +326,29 @@ $$ LANGUAGE plpgsql;
 // apps/api/src/validation/data-integrity.ts
 import { z } from 'zod';
 
-export const voteSchema = z.object({
-  userId: z.string().uuid(),
-  billId: z.string().uuid(),
-  value: z.enum(['yes', 'no', 'abstain']),
-  createdAt: z.date().max(new Date(), 'Date cannot be in the future'),
-}).refine(async (data) => {
-  // Validate user exists
-  const userExists = await db.query('SELECT 1 FROM users WHERE id = $1', [data.userId]);
-  return userExists.rowCount > 0;
-}, 'User does not exist');
+export const voteSchema = z
+  .object({
+    userId: z.string().uuid(),
+    billId: z.string().uuid(),
+    value: z.enum(['yes', 'no', 'abstain']),
+    createdAt: z.date().max(new Date(), 'Date cannot be in the future'),
+  })
+  .refine(async data => {
+    // Validate user exists
+    const userExists = await db.query('SELECT 1 FROM users WHERE id = $1', [data.userId]);
+    return userExists.rowCount > 0;
+  }, 'User does not exist');
 ```
 
 ### Database Constraints
 
 ```sql
 -- Add foreign key constraints
-ALTER TABLE votes ADD CONSTRAINT votes_user_id_fkey 
+ALTER TABLE votes ADD CONSTRAINT votes_user_id_fkey
   FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE;
 
 -- Add check constraints
-ALTER TABLE votes ADD CONSTRAINT votes_value_check 
+ALTER TABLE votes ADD CONSTRAINT votes_value_check
   CHECK (value IN ('yes', 'no', 'abstain'));
 
 -- Add unique constraints

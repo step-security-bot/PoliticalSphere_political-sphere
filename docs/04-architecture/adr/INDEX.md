@@ -1,5 +1,7 @@
 # Architecture Decision Records (ADR) Index
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 **Last Updated**: 2025-11-10  
 **Total ADRs**: 13
 

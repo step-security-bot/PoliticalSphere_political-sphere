@@ -1,5 +1,7 @@
 # AI on Dev: Local AI Helpers for Political Sphere
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 This document explains how to use the local AI-powered development tools in Political Sphere. All AI features run locally using Ollama and do not require any cloud APIs or paid services.
 
 ## Prerequisites

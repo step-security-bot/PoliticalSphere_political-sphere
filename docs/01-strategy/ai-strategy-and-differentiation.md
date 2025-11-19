@@ -10,6 +10,8 @@
 
 ---
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 ## Overview
 
 Political Sphere uses AI ethically and constrainedly to enhance gameplay without compromising safety, fairness, or the simulation's integrity. AI is a tool for immersion and efficiency, not persuasion or ideology.

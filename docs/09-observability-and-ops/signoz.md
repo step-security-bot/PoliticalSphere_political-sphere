@@ -1,5 +1,7 @@
 # SigNoz Local Observability Stack
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 The SigNoz stack provides a ClickHouse-backed observability plane for tracing, metrics, and alerting while developing Political Sphere services.
 
 ## Why SigNoz?

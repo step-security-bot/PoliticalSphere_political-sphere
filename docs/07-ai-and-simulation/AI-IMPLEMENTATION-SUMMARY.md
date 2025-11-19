@@ -6,6 +6,8 @@
 
 ---
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 ## ✅ Completed Improvements
 
 ### 1. Comprehensive Upgrade Plan (`docs/AI-INFRASTRUCTURE-UPGRADE.md`)

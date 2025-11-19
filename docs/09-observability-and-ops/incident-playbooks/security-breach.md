@@ -1,5 +1,7 @@
 # Security Breach Playbook
 
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 **Severity**: Critical (P0)  
 **Response Time**: Immediate  
 **Owner**: Security Team  
@@ -10,6 +12,7 @@
 Security incidents require **immediate action** and strict confidentiality. Do NOT discuss publicly or in open channels until containment is achieved.
 
 **Secure Communication Channels**:
+
 - Internal: #security-incidents (private Slack channel)
 - External: security@political-sphere.com (encrypted email)
 - Emergency: Security team on-call pager
@@ -97,11 +100,13 @@ pg_dump -t audit_log -h production-db.internal -U readonly > /evidence/audit_log
 ### Scenario 1: Credential Compromise
 
 **Symptoms**:
+
 - API keys leaked in public repository
 - User credentials stolen via phishing
 - Service account compromise
 
 **Resolution**:
+
 ```bash
 # Immediately revoke compromised credentials
 # GitHub token
@@ -127,11 +132,13 @@ aws cloudtrail lookup-events --lookup-attributes AttributeKey=AccessKeyId,Attrib
 ### Scenario 2: SQL Injection Attack
 
 **Symptoms**:
+
 - Unusual database queries in logs
 - Data exfiltration attempts
 - Database modifications
 
 **Resolution**:
+
 ```bash
 # Block attacker IP immediately
 kubectl exec -it deployment/api -n production -- iptables -A INPUT -s <attacker-ip> -j DROP
@@ -156,11 +163,13 @@ psql -c "SELECT * FROM audit_log WHERE action_type='SELECT' AND row_count > 1000
 ### Scenario 3: Unauthorized Access to User Data
 
 **Symptoms**:
+
 - Anomalous data access patterns
 - Bulk data downloads
 - Privileged escalation
 
 **Resolution**:
+
 ```bash
 # Identify accessed data
 psql -c "SELECT user_id, COUNT(*) FROM audit_log WHERE action_type='READ' AND created_at > NOW() - INTERVAL '1 hour' GROUP BY user_id ORDER BY COUNT(*) DESC;"
@@ -181,11 +190,13 @@ psql -c "DELETE FROM user_permissions WHERE user_id='<compromised-user-id>' AND 
 ### Scenario 4: Malware/Ransomware Detection
 
 **Symptoms**:
+
 - Unusual file modifications
 - Encryption of data files
 - Ransom demand message
 
 **Resolution**:
+
 ```bash
 # Immediately isolate affected systems
 kubectl drain node <infected-node> --ignore-daemonsets
@@ -210,11 +221,13 @@ kubectl run malware-scan --image=clamav/clamav --rm -it -- clamscan -r /
 ### Scenario 5: DDoS Attack
 
 **Symptoms**:
+
 - Massive traffic spike
 - Service degradation
 - Legitimate users unable to access
 
 **Resolution**:
+
 ```bash
 # Enable rate limiting
 kubectl set env deployment/api -n production RATE_LIMIT_ENABLED=true RATE_LIMIT_MAX=100
@@ -253,6 +266,7 @@ kubectl scale deployment/api -n production --replicas=20
 **Timeline**: 72 hours from discovery
 
 **Steps**:
+
 1. Document breach details (what data, how many users affected)
 2. Assess risk to user rights and freedoms
 3. Notify Data Protection Officer
@@ -260,6 +274,7 @@ kubectl scale deployment/api -n production --replicas=20
 5. Notify affected users if high risk
 
 **Template**:
+
 ```
 Subject: Security Incident Notification
 
@@ -277,11 +292,13 @@ Contact: security@political-sphere.com
 ### Law Enforcement Notification
 
 **When to notify**:
+
 - Criminal activity suspected
 - Ongoing attack requiring assistance
 - Data breach affecting financial information
 
 **Contact**:
+
 - UK: National Cyber Security Centre (NCSC) - report@ncsc.gov.uk
 - US: FBI Cyber Division - https://www.fbi.gov/contact-us
 
@@ -324,26 +341,32 @@ Contact: security@political-sphere.com
 **Responders**: [Names]
 
 ## Summary
+
 [What happened]
 
 ## Attack Vector
+
 [How attackers gained access]
 
 ## Data Compromised
+
 - Personal Data: [Details]
 - Credentials: [Details]
 - System Access: [Details]
 
 ## Response Timeline
+
 - **HH:MM** - Incident detected
 - **HH:MM** - Containment initiated
 - **HH:MM** - Breach contained
 - **HH:MM** - Remediation completed
 
 ## Root Cause
+
 [Technical analysis]
 
 ## Action Items
+
 1. [ ] Security patch deployed - Owner: [Name] - Due: [Date]
 2. [ ] Users notified - Owner: [Name] - Due: [Date]
 3. [ ] ICO reported - Owner: [Name] - Due: [Date]

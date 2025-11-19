@@ -1,4 +1,7 @@
 ---
+
+> NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
+
 title: Pre-Commit Hooks Implementation Guide
 description: Comprehensive implementation guide for industry-standard pre-commit hooks using Lefthook
 version: 1.0.0
@@ -135,14 +138,15 @@ command -v hadolint && echo "✓ Hadolint installed"
 **File:** `.lefthook.yml`
 
 **Insert at the very beginning of pre-commit section:**
+
 ```yaml
 pre-commit:
   parallel: true
-  
+
   commands:
     # Display banner
     banner:
-      priority: -1  # Run first (before everything)
+      priority: -1 # Run first (before everything)
       run: |
         echo ""
         echo "╔══════════════════════════════════════════════════════════════════╗"
@@ -164,18 +168,20 @@ pre-commit:
 ```
 
 **Alternative (Minimal version for faster execution):**
+
 ```yaml
-    # Display banner (minimal)
-    banner:
-      priority: -1
-      run: |
-        echo ""
-        echo "🌐 Political Sphere - Pre-Commit Validation"
-        echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-        echo ""
+# Display banner (minimal)
+banner:
+  priority: -1
+  run: |
+    echo ""
+    echo "🌐 Political Sphere - Pre-Commit Validation"
+    echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    echo ""
 ```
 
 **Rationale:**
+
 - Priority -1 ensures it runs before everything else
 - Provides professional branding
 - Sets context for validation messages that follow
@@ -201,34 +207,37 @@ pre-commit:
 **File:** `.lefthook.yml`
 
 **Current code (lines ~35-42):**
+
 ```yaml
-    # Security: Secret scanning
-    gitleaks:
-      run: |
-        if command -v gitleaks >/dev/null 2>&1; then
-          gitleaks protect --staged --verbose --redact
-        else
-          echo "⚠️  gitleaks not installed (brew install gitleaks)"
-        fi
+# Security: Secret scanning
+gitleaks:
+  run: |
+    if command -v gitleaks >/dev/null 2>&1; then
+      gitleaks protect --staged --verbose --redact
+    else
+      echo "⚠️  gitleaks not installed (brew install gitleaks)"
+    fi
 ```
 
 **Replace with:**
+
 ```yaml
-    # Security: Secret scanning (BLOCKING)
-    gitleaks:
-      priority: 0
-      run: |
-        if command -v gitleaks >/dev/null 2>&1; then
-          gitleaks protect --staged --verbose --redact --exit-code 1
-        else
-          echo "❌ CRITICAL: gitleaks not installed"
-          echo "Install: brew install gitleaks"
-          echo "Or skip: LEFTHOOK_EXCLUDE=gitleaks git commit"
-          exit 1
-        fi
+# Security: Secret scanning (BLOCKING)
+gitleaks:
+  priority: 0
+  run: |
+    if command -v gitleaks >/dev/null 2>&1; then
+      gitleaks protect --staged --verbose --redact --exit-code 1
+    else
+      echo "❌ CRITICAL: gitleaks not installed"
+      echo "Install: brew install gitleaks"
+      echo "Or skip: LEFTHOOK_EXCLUDE=gitleaks git commit"
+      exit 1
+    fi
 ```
 
-**Rationale:** 
+**Rationale:**
+
 - Add explicit `--exit-code 1` to fail on detection
 - Make missing gitleaks a critical error (not just warning)
 - Provide clear remediation steps
@@ -238,26 +247,28 @@ pre-commit:
 **File:** `.lefthook.yml`
 
 **Insert after gitleaks block (~line 50):**
+
 ```yaml
-    # Security: Dependency vulnerability scan (BLOCKING)
-    dependency-check:
-      priority: 0
-      glob: '{package.json,package-lock.json,pnpm-lock.yaml,yarn.lock}'
-      run: |
-        if git diff --cached --name-only | grep -E 'package.*\.json|.*lock.*'; then
-          echo "📦 Scanning dependencies for vulnerabilities..."
-          npm audit --audit-level=high --production || {
-            echo ""
-            echo "❌ High/Critical vulnerabilities found"
-            echo "Fix: npm audit fix"
-            echo "Review: npm audit"
-            echo "Skip (not recommended): LEFTHOOK_EXCLUDE=dependency-check git commit"
-            exit 1
-          }
-        fi
+# Security: Dependency vulnerability scan (BLOCKING)
+dependency-check:
+  priority: 0
+  glob: '{package.json,package-lock.json,pnpm-lock.yaml,yarn.lock}'
+  run: |
+    if git diff --cached --name-only | grep -E 'package.*\.json|.*lock.*'; then
+      echo "📦 Scanning dependencies for vulnerabilities..."
+      npm audit --audit-level=high --production || {
+        echo ""
+        echo "❌ High/Critical vulnerabilities found"
+        echo "Fix: npm audit fix"
+        echo "Review: npm audit"
+        echo "Skip (not recommended): LEFTHOOK_EXCLUDE=dependency-check git commit"
+        exit 1
+      }
+    fi
 ```
 
 **Rationale:**
+
 - Only runs when dependency files change
 - Fails on high/critical vulnerabilities
 - Production-only scope (dev dependencies excluded)
@@ -268,28 +279,30 @@ pre-commit:
 **File:** `.lefthook.yml`
 
 **Insert after dependency-check (~line 65):**
+
 ```yaml
-    # Security: License compliance (ADVISORY)
-    license-check:
-      priority: 0
-      glob: 'package.json'
-      run: |
-        if git diff --cached --name-only | grep 'package.json'; then
-          echo "⚖️  Checking license compatibility..."
-          if command -v npx >/dev/null 2>&1; then
-            npx license-checker \
-              --onlyAllow 'MIT;Apache-2.0;BSD-2-Clause;BSD-3-Clause;ISC;0BSD' \
-              --excludePrivatePackages \
-              --summary || {
-              echo "⚠️  Incompatible licenses detected"
-              echo "Review: npx license-checker --summary"
-              echo "Note: This is advisory - commit will proceed"
-            }
-          fi
-        fi
+# Security: License compliance (ADVISORY)
+license-check:
+  priority: 0
+  glob: 'package.json'
+  run: |
+    if git diff --cached --name-only | grep 'package.json'; then
+      echo "⚖️  Checking license compatibility..."
+      if command -v npx >/dev/null 2>&1; then
+        npx license-checker \
+          --onlyAllow 'MIT;Apache-2.0;BSD-2-Clause;BSD-3-Clause;ISC;0BSD' \
+          --excludePrivatePackages \
+          --summary || {
+          echo "⚠️  Incompatible licenses detected"
+          echo "Review: npx license-checker --summary"
+          echo "Note: This is advisory - commit will proceed"
+        }
+      fi
+    fi
 ```
 
 **Rationale:**
+
 - Advisory only (doesn't block commits)
 - Whitelist common permissive licenses
 - Excludes private packages
@@ -300,32 +313,35 @@ pre-commit:
 **File:** `.lefthook.yml`
 
 **Current code (lines ~44-46):**
+
 ```yaml
-    # Security: Environment validation and secret detection
-    env-validation:
-      run: node tools/scripts/validation/validate-environment.mjs --mode=scan --files {staged_files}
+# Security: Environment validation and secret detection
+env-validation:
+  run: node tools/scripts/validation/validate-environment.mjs --mode=scan --files {staged_files}
 ```
 
 **Replace with:**
+
 ```yaml
-    # Security: Environment validation and secret detection (BLOCKING)
-    env-validation:
-      priority: 0
-      glob: '*.{ts,tsx,js,jsx,json,env*,sh,yml,yaml}'
-      run: |
-        node tools/scripts/validation/validate-environment.mjs \
-          --mode=scan \
-          --files {staged_files} \
-          --fail-on-warning || {
-          echo ""
-          echo "❌ Environment validation failed"
-          echo "Check for: hardcoded secrets, invalid env vars, missing required vars"
-          echo "Fix issues before committing"
-          exit 1
-        }
+# Security: Environment validation and secret detection (BLOCKING)
+env-validation:
+  priority: 0
+  glob: '*.{ts,tsx,js,jsx,json,env*,sh,yml,yaml}'
+  run: |
+    node tools/scripts/validation/validate-environment.mjs \
+      --mode=scan \
+      --files {staged_files} \
+      --fail-on-warning || {
+      echo ""
+      echo "❌ Environment validation failed"
+      echo "Check for: hardcoded secrets, invalid env vars, missing required vars"
+      echo "Fix issues before committing"
+      exit 1
+    }
 ```
 
 **Rationale:**
+
 - Add `--fail-on-warning` flag for stricter validation
 - Limit to relevant file types
 - Better error messaging
@@ -344,32 +360,35 @@ pre-commit:
 **File:** `.lefthook.yml`
 
 **Current code (lines ~17-20):**
+
 ```yaml
-    # Auto-fix code formatting
-    prettier:
-      glob: '*.{ts,tsx,js,jsx,json,css,scss,md,yml,yaml}'
-      run: npx prettier --write {staged_files}
-      stage_fixed: true
+# Auto-fix code formatting
+prettier:
+  glob: '*.{ts,tsx,js,jsx,json,css,scss,md,yml,yaml}'
+  run: npx prettier --write {staged_files}
+  stage_fixed: true
 ```
 
 **Replace with:**
+
 ```yaml
-    # Auto-fix code formatting (Biome preferred, Prettier fallback)
-    format:
-      priority: 1
-      glob: '*.{ts,tsx,js,jsx,json,css,scss,md,yml,yaml}'
-      run: |
-        if command -v biome >/dev/null 2>&1; then
-          echo "🎨 Formatting with Biome..."
-          biome format --write {staged_files}
-        else
-          echo "🎨 Formatting with Prettier..."
-          npx prettier --write --log-level warn {staged_files}
-        fi
-      stage_fixed: true
+# Auto-fix code formatting (Biome preferred, Prettier fallback)
+format:
+  priority: 1
+  glob: '*.{ts,tsx,js,jsx,json,css,scss,md,yml,yaml}'
+  run: |
+    if command -v biome >/dev/null 2>&1; then
+      echo "🎨 Formatting with Biome..."
+      biome format --write {staged_files}
+    else
+      echo "🎨 Formatting with Prettier..."
+      npx prettier --write --log-level warn {staged_files}
+    fi
+  stage_fixed: true
 ```
 
 **Rationale:**
+
 - Prefer Biome (faster, single tool for format+lint)
 - Fall back to Prettier if Biome unavailable
 - Stage fixed files automatically
@@ -379,38 +398,41 @@ pre-commit:
 **File:** `.lefthook.yml`
 
 **Current code (lines ~22-25):**
+
 ```yaml
-    eslint:
-      glob: '*.{ts,tsx,js,jsx}'
-      run: npx eslint --fix --max-warnings 0 {staged_files}
-      stage_fixed: true
+eslint:
+  glob: '*.{ts,tsx,js,jsx}'
+  run: npx eslint --fix --max-warnings 0 {staged_files}
+  stage_fixed: true
 ```
 
 **Replace with:**
+
 ```yaml
-    # Lint and fix code issues
-    lint:
-      priority: 1
-      glob: '*.{ts,tsx,js,jsx}'
-      run: |
-        # Biome for fast checks
-        if command -v biome >/dev/null 2>&1; then
-          echo "🔍 Linting with Biome..."
-          biome check --apply {staged_files} 2>/dev/null || true
-        fi
-        # ESLint for deep analysis
-        echo "🔍 Linting with ESLint..."
-        npx eslint --fix --max-warnings 0 {staged_files} || {
-          echo ""
-          echo "❌ Linting errors found"
-          echo "Fix: npx eslint --fix {staged_files}"
-          echo "Review: npx eslint {staged_files}"
-          exit 1
-        }
-      stage_fixed: true
+# Lint and fix code issues
+lint:
+  priority: 1
+  glob: '*.{ts,tsx,js,jsx}'
+  run: |
+    # Biome for fast checks
+    if command -v biome >/dev/null 2>&1; then
+      echo "🔍 Linting with Biome..."
+      biome check --apply {staged_files} 2>/dev/null || true
+    fi
+    # ESLint for deep analysis
+    echo "🔍 Linting with ESLint..."
+    npx eslint --fix --max-warnings 0 {staged_files} || {
+      echo ""
+      echo "❌ Linting errors found"
+      echo "Fix: npx eslint --fix {staged_files}"
+      echo "Review: npx eslint {staged_files}"
+      exit 1
+    }
+  stage_fixed: true
 ```
 
 **Rationale:**
+
 - Run Biome first for fast fixes
 - ESLint for comprehensive analysis
 - Stage all fixes automatically
@@ -421,33 +443,36 @@ pre-commit:
 **File:** `.lefthook.yml`
 
 **Current code (lines ~67-70):**
+
 ```yaml
-    # TypeScript validation
-    type-check:
-      glob: '*.{ts,tsx}'
-      run: npx tsc --noEmit --skipLibCheck
+# TypeScript validation
+type-check:
+  glob: '*.{ts,tsx}'
+  run: npx tsc --noEmit --skipLibCheck
 ```
 
 **Replace with:**
+
 ```yaml
-    # TypeScript validation (incremental)
-    type-check:
-      priority: 1
-      glob: '*.{ts,tsx}'
-      run: |
-        if [ -n "{staged_files}" ]; then
-          echo "🔍 Type checking TypeScript files..."
-          npx tsc --noEmit --skipLibCheck --incremental || {
-            echo ""
-            echo "❌ TypeScript type errors found"
-            echo "Fix type errors before committing"
-            echo "Run: npx tsc --noEmit"
-            exit 1
-          }
-        fi
+# TypeScript validation (incremental)
+type-check:
+  priority: 1
+  glob: '*.{ts,tsx}'
+  run: |
+    if [ -n "{staged_files}" ]; then
+      echo "🔍 Type checking TypeScript files..."
+      npx tsc --noEmit --skipLibCheck --incremental || {
+        echo ""
+        echo "❌ TypeScript type errors found"
+        echo "Fix type errors before committing"
+        echo "Run: npx tsc --noEmit"
+        exit 1
+      }
+    fi
 ```
 
 **Rationale:**
+
 - Only run if TypeScript files changed
 - Use incremental compilation (faster)
 - Clear error messaging
@@ -457,20 +482,22 @@ pre-commit:
 **File:** `.lefthook.yml`
 
 **Insert after type-check (~line 85):**
+
 ```yaml
-    # Organize imports
-    organize-imports:
-      priority: 1
-      glob: '*.{ts,tsx,js,jsx}'
-      run: |
-        if command -v organize-imports-cli >/dev/null 2>&1; then
-          echo "📋 Organizing imports..."
-          organize-imports-cli {staged_files}
-        fi
-      stage_fixed: true
+# Organize imports
+organize-imports:
+  priority: 1
+  glob: '*.{ts,tsx,js,jsx}'
+  run: |
+    if command -v organize-imports-cli >/dev/null 2>&1; then
+      echo "📋 Organizing imports..."
+      organize-imports-cli {staged_files}
+    fi
+  stage_fixed: true
 ```
 
 **Rationale:**
+
 - Optional enhancement (doesn't fail if missing)
 - Auto-stages organized imports
 - Improves code consistency
@@ -489,29 +516,31 @@ pre-commit:
 **File:** `.lefthook.yml`
 
 **Insert after organize-imports (~line 95):**
+
 ```yaml
-    # Accessibility validation (WCAG 2.2 AA)
-    a11y-lint:
-      priority: 2
-      glob: '*.{tsx,jsx}'
-      run: |
-        echo "♿ Checking accessibility compliance..."
-        npx eslint --plugin jsx-a11y \
-          --rule 'jsx-a11y/alt-text: error' \
-          --rule 'jsx-a11y/aria-props: error' \
-          --rule 'jsx-a11y/aria-role: error' \
-          --rule 'jsx-a11y/role-has-required-aria-props: error' \
-          --rule 'jsx-a11y/role-supports-aria-props: error' \
-          {staged_files} || {
-          echo ""
-          echo "❌ Accessibility violations detected"
-          echo "See: docs/05-engineering-and-devops/ui/ux-accessibility.md"
-          echo "WCAG 2.2 AA compliance is mandatory"
-          exit 1
-        }
+# Accessibility validation (WCAG 2.2 AA)
+a11y-lint:
+  priority: 2
+  glob: '*.{tsx,jsx}'
+  run: |
+    echo "♿ Checking accessibility compliance..."
+    npx eslint --plugin jsx-a11y \
+      --rule 'jsx-a11y/alt-text: error' \
+      --rule 'jsx-a11y/aria-props: error' \
+      --rule 'jsx-a11y/aria-role: error' \
+      --rule 'jsx-a11y/role-has-required-aria-props: error' \
+      --rule 'jsx-a11y/role-supports-aria-props: error' \
+      {staged_files} || {
+      echo ""
+      echo "❌ Accessibility violations detected"
+      echo "See: docs/05-engineering-and-devops/ui/ux-accessibility.md"
+      echo "WCAG 2.2 AA compliance is mandatory"
+      exit 1
+    }
 ```
 
 **Rationale:**
+
 - WCAG 2.2 AA is constitutionally mandated
 - Specific a11y rules enforced
 - Links to project documentation
@@ -521,40 +550,43 @@ pre-commit:
 **File:** `.lefthook.yml`
 
 **Current code (lines ~118-123):**
+
 ```yaml
-    # AI-powered validations
-    ai-neutrality-check:
-      glob: '*.{ts,tsx,js,jsx,md}'
-      run: |
-        if [ -f tools/scripts/ai/precommit-neutrality.mts ]; then
-          node tools/scripts/ai/precommit-neutrality.mts {staged_files} || echo "⚠️ AI neutrality check completed with warnings"
-        fi
+# AI-powered validations
+ai-neutrality-check:
+  glob: '*.{ts,tsx,js,jsx,md}'
+  run: |
+    if [ -f tools/scripts/ai/precommit-neutrality.mts ]; then
+      node tools/scripts/ai/precommit-neutrality.mts {staged_files} || echo "⚠️ AI neutrality check completed with warnings"
+    fi
 ```
 
 **Replace with:**
+
 ```yaml
-    # Political neutrality validation (CONSTITUTIONAL)
-    neutrality-check:
-      priority: 2
-      glob: '*.{ts,tsx,js,jsx,md,json}'
-      run: |
-        if [ -f tools/scripts/ai/precommit-neutrality.mts ]; then
-          echo "🤝 Checking political neutrality..."
-          node --loader ts-node/esm \
-            tools/scripts/ai/precommit-neutrality.mts {staged_files} || {
-            echo ""
-            echo "❌ BLOCKING: Political neutrality violation detected"
-            echo "Review changes for bias or political manipulation"
-            echo "See: docs/02-governance/ai-ethics.md"
-            echo "This is a constitutional requirement"
-            exit 1
-          }
-        else
-          echo "⚠️  Neutrality check script not found (non-blocking)"
-        fi
+# Political neutrality validation (CONSTITUTIONAL)
+neutrality-check:
+  priority: 2
+  glob: '*.{ts,tsx,js,jsx,md,json}'
+  run: |
+    if [ -f tools/scripts/ai/precommit-neutrality.mts ]; then
+      echo "🤝 Checking political neutrality..."
+      node --loader ts-node/esm \
+        tools/scripts/ai/precommit-neutrality.mts {staged_files} || {
+        echo ""
+        echo "❌ BLOCKING: Political neutrality violation detected"
+        echo "Review changes for bias or political manipulation"
+        echo "See: docs/02-governance/ai-ethics.md"
+        echo "This is a constitutional requirement"
+        exit 1
+      }
+    else
+      echo "⚠️  Neutrality check script not found (non-blocking)"
+    fi
 ```
 
 **Rationale:**
+
 - Elevate to blocking (constitutional requirement)
 - Add ts-node loader for .mts files
 - Clear constitutional context
@@ -565,47 +597,50 @@ pre-commit:
 **File:** `.lefthook.yml`
 
 **Current code (lines ~72-78):**
+
 ```yaml
-    # No .only() in tests
-    no-only-tests:
-      glob: '*.{test,spec}.{ts,tsx}'
-      run: |
-        if grep -nE "(describe|it|test)\\.only" {staged_files} 2>/dev/null; then
-          echo "❌ .only() found in tests"
-          exit 1
-        fi
+# No .only() in tests
+no-only-tests:
+  glob: '*.{test,spec}.{ts,tsx}'
+  run: |
+    if grep -nE "(describe|it|test)\\.only" {staged_files} 2>/dev/null; then
+      echo "❌ .only() found in tests"
+      exit 1
+    fi
 ```
 
 **Replace with:**
+
 ```yaml
-    # Test quality gates
-    test-quality:
-      priority: 2
-      glob: '*.{test,spec}.{ts,tsx,js,jsx}'
-      run: |
-        echo "🧪 Validating test quality..."
-        
-        # Check for .only()
-        if grep -rn "\\<only\\>(" {staged_files} 2>/dev/null; then
-          echo "❌ .only() detected in tests"
-          echo "Remove .only() before committing"
-          exit 1
-        fi
-        
-        # Ensure test files have test cases
-        for file in {staged_files}; do
-          if ! grep -q "describe\\|it\\|test" "$file" 2>/dev/null; then
-            echo "⚠️  Test file without test cases: $file"
-          fi
-        done
-        
-        # Check for commented-out tests (advisory)
-        if grep -rn "// *\\(it\\|test\\|describe\\)" {staged_files} 2>/dev/null; then
-          echo "⚠️  Commented-out tests detected (review needed)"
-        fi
+# Test quality gates
+test-quality:
+  priority: 2
+  glob: '*.{test,spec}.{ts,tsx,js,jsx}'
+  run: |
+    echo "🧪 Validating test quality..."
+
+    # Check for .only()
+    if grep -rn "\\<only\\>(" {staged_files} 2>/dev/null; then
+      echo "❌ .only() detected in tests"
+      echo "Remove .only() before committing"
+      exit 1
+    fi
+
+    # Ensure test files have test cases
+    for file in {staged_files}; do
+      if ! grep -q "describe\\|it\\|test" "$file" 2>/dev/null; then
+        echo "⚠️  Test file without test cases: $file"
+      fi
+    done
+
+    # Check for commented-out tests (advisory)
+    if grep -rn "// *\\(it\\|test\\|describe\\)" {staged_files} 2>/dev/null; then
+      echo "⚠️  Commented-out tests detected (review needed)"
+    fi
 ```
 
 **Rationale:**
+
 - Comprehensive test validation
 - Multiple quality checks
 - Advisory warnings for suspicious patterns
@@ -615,23 +650,25 @@ pre-commit:
 **File:** `.lefthook.yml`
 
 **Insert after test-quality (~line 115):**
+
 ```yaml
-    # Documentation completeness (advisory)
-    docs-check:
-      priority: 2
-      glob: '*.{ts,tsx}'
-      run: |
-        echo "📚 Checking documentation..."
-        
-        # Check for JSDoc on exported functions
-        for file in {staged_files}; do
-          if grep -l "^export " "$file" 2>/dev/null | xargs grep -L "/\\*\\*" 2>/dev/null; then
-            echo "⚠️  Exported functions missing JSDoc in: $file"
-          fi
-        done || true
+# Documentation completeness (advisory)
+docs-check:
+  priority: 2
+  glob: '*.{ts,tsx}'
+  run: |
+    echo "📚 Checking documentation..."
+
+    # Check for JSDoc on exported functions
+    for file in {staged_files}; do
+      if grep -l "^export " "$file" 2>/dev/null | xargs grep -L "/\\*\\*" 2>/dev/null; then
+        echo "⚠️  Exported functions missing JSDoc in: $file"
+      fi
+    done || true
 ```
 
 **Rationale:**
+
 - Advisory only (doesn't block)
 - Encourages documentation
 - Checks exported APIs
@@ -650,38 +687,41 @@ pre-commit:
 **File:** `.lefthook.yml`
 
 **Current code (lines ~97-103):**
+
 ```yaml
-    # GitHub workflows
-    actionlint:
-      glob: '.github/workflows/*.{yml,yaml}'
-      run: |
-        if command -v actionlint >/dev/null 2>&1; then
-          actionlint {staged_files}
-        fi
+# GitHub workflows
+actionlint:
+  glob: '.github/workflows/*.{yml,yaml}'
+  run: |
+    if command -v actionlint >/dev/null 2>&1; then
+      actionlint {staged_files}
+    fi
 ```
 
 **Replace with:**
+
 ```yaml
-    # GitHub Actions validation
-    actionlint:
-      priority: 3
-      glob: '.github/workflows/*.{yml,yaml}'
-      run: |
-        if command -v actionlint >/dev/null 2>&1; then
-          echo "⚙️  Validating GitHub Actions..."
-          actionlint {staged_files} || {
-            echo ""
-            echo "❌ GitHub Actions validation failed"
-            echo "Fix workflow syntax errors"
-            echo "Install: brew install actionlint"
-            exit 1
-          }
-        else
-          echo "⚠️  actionlint not installed (brew install actionlint)"
-        fi
+# GitHub Actions validation
+actionlint:
+  priority: 3
+  glob: '.github/workflows/*.{yml,yaml}'
+  run: |
+    if command -v actionlint >/dev/null 2>&1; then
+      echo "⚙️  Validating GitHub Actions..."
+      actionlint {staged_files} || {
+        echo ""
+        echo "❌ GitHub Actions validation failed"
+        echo "Fix workflow syntax errors"
+        echo "Install: brew install actionlint"
+        exit 1
+      }
+    else
+      echo "⚠️  actionlint not installed (brew install actionlint)"
+    fi
 ```
 
 **Rationale:**
+
 - Better error messaging
 - Installation hints
 - Conditional execution only on workflow files
@@ -691,38 +731,41 @@ pre-commit:
 **File:** `.lefthook.yml`
 
 **Current code (lines ~105-111):**
+
 ```yaml
-    # Docker linting
-    hadolint:
-      glob: '**/Dockerfile*'
-      run: |
-        if command -v hadolint >/dev/null 2>&1; then
-          hadolint {staged_files}
-        fi
+# Docker linting
+hadolint:
+  glob: '**/Dockerfile*'
+  run: |
+    if command -v hadolint >/dev/null 2>&1; then
+      hadolint {staged_files}
+    fi
 ```
 
 **Replace with:**
+
 ```yaml
-    # Docker linting
-    hadolint:
-      priority: 3
-      glob: '{**/Dockerfile*,**/*.dockerfile}'
-      run: |
-        if command -v hadolint >/dev/null 2>&1; then
-          echo "🐳 Linting Dockerfiles..."
-          hadolint --ignore DL3008 --ignore DL3009 {staged_files} || {
-            echo ""
-            echo "❌ Dockerfile linting failed"
-            echo "Fix Dockerfile issues"
-            echo "Install: brew install hadolint"
-            exit 1
-          }
-        else
-          echo "⚠️  hadolint not installed (brew install hadolint)"
-        fi
+# Docker linting
+hadolint:
+  priority: 3
+  glob: '{**/Dockerfile*,**/*.dockerfile}'
+  run: |
+    if command -v hadolint >/dev/null 2>&1; then
+      echo "🐳 Linting Dockerfiles..."
+      hadolint --ignore DL3008 --ignore DL3009 {staged_files} || {
+        echo ""
+        echo "❌ Dockerfile linting failed"
+        echo "Fix Dockerfile issues"
+        echo "Install: brew install hadolint"
+        exit 1
+      }
+    else
+      echo "⚠️  hadolint not installed (brew install hadolint)"
+    fi
 ```
 
 **Rationale:**
+
 - Ignore common false positives (DL3008, DL3009)
 - Support .dockerfile extension
 - Better error messages
@@ -732,25 +775,27 @@ pre-commit:
 **File:** `.lefthook.yml`
 
 **Insert after hadolint (~line 130):**
+
 ```yaml
-    # Kubernetes manifest validation
-    kubeval:
-      priority: 3
-      glob: '{**/k8s/**/*.yml,**/k8s/**/*.yaml,**/kubernetes/**/*.yml,**/kubernetes/**/*.yaml}'
-      run: |
-        if command -v kubeval >/dev/null 2>&1; then
-          echo "☸️  Validating Kubernetes manifests..."
-          kubeval --strict {staged_files} || {
-            echo ""
-            echo "❌ Kubernetes manifest validation failed"
-            echo "Fix manifest syntax errors"
-            echo "Install: brew install kubeval"
-            exit 1
-          }
-        fi
+# Kubernetes manifest validation
+kubeval:
+  priority: 3
+  glob: '{**/k8s/**/*.yml,**/k8s/**/*.yaml,**/kubernetes/**/*.yml,**/kubernetes/**/*.yaml}'
+  run: |
+    if command -v kubeval >/dev/null 2>&1; then
+      echo "☸️  Validating Kubernetes manifests..."
+      kubeval --strict {staged_files} || {
+        echo ""
+        echo "❌ Kubernetes manifest validation failed"
+        echo "Fix manifest syntax errors"
+        echo "Install: brew install kubeval"
+        exit 1
+      }
+    fi
 ```
 
 **Rationale:**
+
 - Only runs on K8s manifest files
 - Strict validation
 - Optional (doesn't block if not installed)
@@ -760,25 +805,27 @@ pre-commit:
 **File:** `.lefthook.yml`
 
 **Insert after kubeval (~line 145):**
+
 ```yaml
-    # Terraform validation
-    tflint:
-      priority: 3
-      glob: '**/*.tf'
-      run: |
-        if command -v tflint >/dev/null 2>&1; then
-          echo "🏗️  Validating Terraform files..."
-          for file in {staged_files}; do
-            dir=$(dirname "$file")
-            (cd "$dir" && tflint) || {
-              echo "❌ Terraform validation failed in $dir"
-              exit 1
-            }
-          done
-        fi
+# Terraform validation
+tflint:
+  priority: 3
+  glob: '**/*.tf'
+  run: |
+    if command -v tflint >/dev/null 2>&1; then
+      echo "🏗️  Validating Terraform files..."
+      for file in {staged_files}; do
+        dir=$(dirname "$file")
+        (cd "$dir" && tflint) || {
+          echo "❌ Terraform validation failed in $dir"
+          exit 1
+        }
+      done
+    fi
 ```
 
 **Rationale:**
+
 - Validates per directory (Terraform context)
 - Optional infrastructure validation
 - Only runs on .tf files
@@ -797,6 +844,7 @@ pre-commit:
 **File:** `.lefthook.yml`
 
 **Current code (lines ~160-168):**
+
 ```yaml
 commit-msg:
   commands:
@@ -810,13 +858,14 @@ commit-msg:
 ```
 
 **Replace with:**
+
 ```yaml
 commit-msg:
   commands:
     conventional-commits:
       run: |
         MSG=$(cat {1})
-        
+
         # Check for empty or whitespace-only message
         if [ -z "$MSG" ] || ! echo "$MSG" | grep -q '[^[:space:]]'; then
           echo "❌ Empty commit message"
@@ -828,7 +877,7 @@ commit-msg:
           echo "  docs: update documentation"
           exit 1
         fi
-        
+
         # Check for minimum message length
         MSG_NO_WHITESPACE=$(echo "$MSG" | tr -d '[:space:]')
         if [ ${#MSG_NO_WHITESPACE} -lt 10 ]; then
@@ -840,7 +889,7 @@ commit-msg:
           echo "Provide a descriptive commit message explaining the change"
           exit 1
         fi
-        
+
         # Conventional Commits validation
         if ! echo "$MSG" | grep -qE "^(feat|fix|docs|style|refactor|perf|test|build|ci|chore|revert)(\(.+\))?: .{1,}"; then
           echo "❌ Invalid commit message format"
@@ -856,7 +905,7 @@ commit-msg:
           echo "  $MSG"
           exit 1
         fi
-        
+
         # Check message length
         TITLE=$(echo "$MSG" | head -n 1)
         if [ ${#TITLE} -gt 100 ]; then
@@ -864,7 +913,7 @@ commit-msg:
           echo "Keep title under 100 characters"
           exit 1
         fi
-        
+
         # Block WIP commits on main branch
         BRANCH=$(git branch --show-current)
         if [[ "$BRANCH" == "main" ]] && echo "$MSG" | grep -iqE "^(wip|WIP|fixup|squash)"; then
@@ -873,7 +922,7 @@ commit-msg:
           echo "Or use a feature branch: git checkout -b feature/your-feature"
           exit 1
         fi
-        
+
         # Check for required issue reference (advisory)
         if ! echo "$MSG" | grep -qE "#[0-9]+|Closes #[0-9]+|Fixes #[0-9]+"; then
           echo "⚠️  Consider referencing an issue: #123 or Closes #123"
@@ -881,6 +930,7 @@ commit-msg:
 ```
 
 **Rationale:**
+
 - **Empty message detection** - Blocks commits with no message or whitespace-only
 - **Minimum length check** - Ensures meaningful commit messages (10+ characters)
 - Comprehensive commit message validation
@@ -903,6 +953,7 @@ commit-msg:
 **File:** `.lefthook.yml`
 
 **Current code (lines ~148-151):**
+
 ```yaml
 pre-push:
   commands:
@@ -914,10 +965,11 @@ pre-push:
 ```
 
 **Replace with:**
+
 ```yaml
 pre-push:
-  parallel: false  # Sequential for pre-push (expensive operations)
-  
+  parallel: false # Sequential for pre-push (expensive operations)
+
   commands:
     # Full type check
     full-type-check:
@@ -933,6 +985,7 @@ pre-push:
 ```
 
 **Rationale:**
+
 - Comprehensive type checking before push
 - Clear error messages
 - Blocking on errors
@@ -942,27 +995,30 @@ pre-push:
 **File:** `.lefthook.yml`
 
 **Current code (lines ~153-154):**
+
 ```yaml
-    tests:
-      run: npm test
+tests:
+  run: npm test
 ```
 
 **Replace with:**
+
 ```yaml
-    # Run tests on changed files
-    test-changed:
-      run: |
-        echo "🧪 Running tests on changed files..."
-        VITEST_CHANGED=1 npm run test:changed || {
-          echo ""
-          echo "❌ Tests failed"
-          echo "Fix failing tests before pushing"
-          echo "Run: npm run test:changed"
-          exit 1
-        }
+# Run tests on changed files
+test-changed:
+  run: |
+    echo "🧪 Running tests on changed files..."
+    VITEST_CHANGED=1 npm run test:changed || {
+      echo ""
+      echo "❌ Tests failed"
+      echo "Fix failing tests before pushing"
+      echo "Run: npm run test:changed"
+      exit 1
+    }
 ```
 
 **Rationale:**
+
 - Only test changed files (faster)
 - Environment variable for test runner
 - Clear failure messages
@@ -972,21 +1028,23 @@ pre-push:
 **File:** `.lefthook.yml`
 
 **Insert after test-changed (~line 170):**
+
 ```yaml
-    # Dependency security audit
-    audit:
-      run: |
-        echo "🔒 Running security audit..."
-        npm audit --audit-level=moderate || {
-          echo ""
-          echo "⚠️  Security vulnerabilities found"
-          echo "Review: npm audit"
-          echo "Fix: npm audit fix"
-          echo "Note: This is a warning - push will proceed"
-        }
+# Dependency security audit
+audit:
+  run: |
+    echo "🔒 Running security audit..."
+    npm audit --audit-level=moderate || {
+      echo ""
+      echo "⚠️  Security vulnerabilities found"
+      echo "Review: npm audit"
+      echo "Fix: npm audit fix"
+      echo "Note: This is a warning - push will proceed"
+    }
 ```
 
 **Rationale:**
+
 - Advisory only (doesn't block push)
 - Moderate level (high/critical in pre-commit)
 - Informational for security awareness
@@ -996,31 +1054,34 @@ pre-push:
 **File:** `.lefthook.yml`
 
 **Current code (lines ~143-148):**
+
 ```yaml
-    # Update AI index before push
-    update-ai-index:
-      run: |
-        if [ -f tools/scripts/ai/update-recent-changes.js ]; then
-          echo "📝 Updating AI index with recent changes..."
-          node tools/scripts/ai/update-recent-changes.js || echo "⚠️ AI index update failed (non-blocking)"
-        fi
+# Update AI index before push
+update-ai-index:
+  run: |
+    if [ -f tools/scripts/ai/update-recent-changes.js ]; then
+      echo "📝 Updating AI index with recent changes..."
+      node tools/scripts/ai/update-recent-changes.js || echo "⚠️ AI index update failed (non-blocking)"
+    fi
 ```
 
 **Keep as-is but add better messaging:**
+
 ```yaml
-    # Update AI index
-    ai-index:
-      run: |
-        if [ -f tools/scripts/ai/update-recent-changes.js ]; then
-          echo "📝 Updating AI index..."
-          node tools/scripts/ai/update-recent-changes.js || {
-            echo "⚠️  AI index update failed (non-blocking)"
-            echo "This won't prevent pushing"
-          }
-        fi
+# Update AI index
+ai-index:
+  run: |
+    if [ -f tools/scripts/ai/update-recent-changes.js ]; then
+      echo "📝 Updating AI index..."
+      node tools/scripts/ai/update-recent-changes.js || {
+        echo "⚠️  AI index update failed (non-blocking)"
+        echo "This won't prevent pushing"
+      }
+    fi
 ```
 
 **Rationale:**
+
 - Non-blocking (informational)
 - Updates AI context before sharing code
 - Graceful failure
@@ -1030,24 +1091,26 @@ pre-push:
 **File:** `.lefthook.yml`
 
 **Insert after ai-index (~line 185):**
+
 ```yaml
-    # Branch protection awareness
-    branch-protection:
-      run: |
-        BRANCH=$(git branch --show-current)
-        REMOTE_BRANCH=$(git rev-parse --abbrev-ref @{upstream} 2>/dev/null)
-        
-        if [[ "$BRANCH" == "main" ]]; then
-          echo "⚠️  You are pushing directly to main"
-          echo "Consider using a feature branch:"
-          echo "  git checkout -b feature/your-feature"
-          echo ""
-          echo "Press Ctrl+C to cancel or wait 3 seconds to continue..."
-          sleep 3
-        fi
+# Branch protection awareness
+branch-protection:
+  run: |
+    BRANCH=$(git branch --show-current)
+    REMOTE_BRANCH=$(git rev-parse --abbrev-ref @{upstream} 2>/dev/null)
+
+    if [[ "$BRANCH" == "main" ]]; then
+      echo "⚠️  You are pushing directly to main"
+      echo "Consider using a feature branch:"
+      echo "  git checkout -b feature/your-feature"
+      echo ""
+      echo "Press Ctrl+C to cancel or wait 3 seconds to continue..."
+      sleep 3
+    fi
 ```
 
 **Rationale:**
+
 - Awareness, not blocking
 - Encourages feature branches
 - 3-second pause for reconsideration
@@ -1066,6 +1129,7 @@ pre-push:
 **File:** `.lefthook.yml`
 
 **Insert at top of file (after version comment):**
+
 ```yaml
 # =============================================================================
 # Lefthook Configuration - Political Sphere Pre-Commit Hooks
@@ -1092,6 +1156,7 @@ piped: true
 ```
 
 **Rationale:**
+
 - Minimum version enforcement
 - Reduced output noise
 - Fail-fast behavior
@@ -1101,31 +1166,33 @@ piped: true
 **File:** `.lefthook.yml`
 
 **Insert before pre-commit section:**
+
 ```yaml
 # Global settings
 pre-commit:
   parallel: true
-  
+
   # Global environment
   settings:
     # Fail fast on critical errors
     fail_fast: true
-    
+
     # Skip output for passed hooks
     skip_output:
       - meta
       - execution
-  
+
   # Environment variables
   env:
     # Enable incremental checks
-    INCREMENTAL: "true"
-    
+    INCREMENTAL: 'true'
+
     # Fast mode for development (override in CI)
-    FAST_MODE: "{env:FAST_MODE}"
+    FAST_MODE: '{env:FAST_MODE}'
 ```
 
 **Rationale:**
+
 - Centralized settings
 - Environment-based configuration
 - CI/local differentiation
@@ -1144,7 +1211,8 @@ pre-commit:
 **File:** `docs/05-engineering-and-devops/development/git-hooks-onboarding.md`
 
 **Content:**
-```markdown
+
+````markdown
 # Git Hooks Onboarding Guide
 
 ## Quick Start
@@ -1161,6 +1229,7 @@ lefthook install
 # Verify installation
 lefthook run pre-commit --help
 ```
+````
 
 ### Common Commands
 
@@ -1196,7 +1265,8 @@ lefthook install
 ```
 
 See: [Pre-Commit Hooks Implementation Guide](./pre-commit-hooks-implementation-guide.md)
-```
+
+````
 
 #### Step 8.2: Update ADR
 
@@ -1206,8 +1276,8 @@ See: [Pre-Commit Hooks Implementation Guide](./pre-commit-hooks-implementation-g
 ```markdown
 # ADR XXX: Pre-Commit Hook Strategy
 
-**Status:** ACCEPTED  
-**Date:** 2025-11-17  
+**Status:** ACCEPTED
+**Date:** 2025-11-17
 **Deciders:** Development Team
 
 ## Context
@@ -1252,13 +1322,14 @@ Implement industry-standard pre-commit hooks using Lefthook with:
 - [Pre-Commit Hooks Implementation Guide](../05-engineering-and-devops/development/pre-commit-hooks-implementation-guide.md)
 - [Lefthook Documentation](https://github.com/evilmartians/lefthook)
 - [pre-commit.com Best Practices](https://pre-commit.com/)
-```
+````
 
 #### Step 8.3: Update TODO.md
 
 **File:** `docs/TODO.md`
 
 **Add section:**
+
 ```markdown
 ## Pre-Commit Hooks Enhancement
 
@@ -1279,10 +1350,12 @@ Implement industry-standard pre-commit hooks using Lefthook with:
 **File:** `CHANGELOG.md`
 
 **Add entry:**
+
 ```markdown
 ## [Unreleased]
 
 ### Added
+
 - Enhanced pre-commit hook system with industry-standard practices
   - Priority-based execution (fail-fast on critical errors)
   - Dependency vulnerability scanning
@@ -1294,12 +1367,14 @@ Implement industry-standard pre-commit hooks using Lefthook with:
   - Performance optimizations (parallel execution, caching)
 
 ### Changed
+
 - Upgraded Lefthook configuration to v3.0.0
 - Gitleaks now fails explicitly on secret detection
 - TypeScript type checking uses incremental compilation
 - Commit messages now validated for length and WIP status
 
 ### Improved
+
 - Error messages with clear remediation steps
 - Developer experience with auto-fix and staging
 - CI/CD parity (hooks match CI checks)
@@ -1584,21 +1659,21 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
+
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
-      
+
       - name: Install Lefthook
         run: npm install -g lefthook
-      
+
       - name: Install dependencies
         run: npm ci
-      
+
       - name: Run pre-commit hooks
         run: lefthook run pre-commit --all-files
         env:
-          FAST_MODE: "false"  # Full validation in CI
+          FAST_MODE: 'false' # Full validation in CI
 ```
 
 ---
