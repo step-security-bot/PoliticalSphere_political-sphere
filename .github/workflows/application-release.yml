@@ -66,7 +66,7 @@ jobs:
       image_tag: ${{ steps.image.outputs.image_tag }}
     steps:
       - name: Download image artifact
-        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v4
         with:
           name: image-uri
       - name: Extract image metadata
