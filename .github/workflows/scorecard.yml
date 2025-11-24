@@ -28,7 +28,7 @@ jobs:
       security-events: write
     steps:
       - name: Checkout
-        uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v4.2.2 (pinned SHA)
+        uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v4.2.2 (pinned SHA)
         with:
           fetch-depth: 0
 
