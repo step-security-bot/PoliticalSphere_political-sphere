@@ -31,7 +31,7 @@
   "author": "Political Sphere Team",
   "license": "MIT",
   "dependencies": {
-    "@huggingface/transformers": "^3.0.0"
+    "@huggingface/transformers": "^3.8.0"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",
