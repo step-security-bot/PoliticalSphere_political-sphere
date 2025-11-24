@@ -1,0 +1,693 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>political-sphere documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">political-sphere documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content interface">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Interfaces</li>
+  <li class="breadcrumb-item"
+  >
+  RegisterProps</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>apps/web/src/components/Auth/Register.tsx</code>
+        </p>
+
+
+
+
+        <section data-compodoc="block-index">
+            <h3 id="index">Index</h3>
+            <table class="table table-sm table-bordered index-table">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <h6><b>Properties</b></h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <ul class="index-list">
+                                <li>
+                                        <a href="#onRegisterSuccess" 
+>
+                                            onRegisterSuccess
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#onSwitchToLogin" 
+>
+                                            onSwitchToLogin
+                                        </a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+
+
+            <section data-compodoc="block-properties">
+                <h3 id="inputs">Properties</h3>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="onRegisterSuccess"></a>
+                                        <span class="name "><b>onRegisterSuccess</b>
+                                            <a href="#onRegisterSuccess">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>onRegisterSuccess:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/function" target="_blank" >function</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/function" target="_blank" >function</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="onSwitchToLogin"></a>
+                                        <span class="name "><b>onSwitchToLogin</b>
+                                            <a href="#onSwitchToLogin">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>onSwitchToLogin:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/function" target="_blank" >function</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/function" target="_blank" >function</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+            </section>
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import type React from &#x27;react&#x27;;
+import { type FormEvent, useState } from &#x27;react&#x27;;
+import { useAuth } from &#x27;../../contexts/AuthContext&#x27;;
+import &#x27;./Auth.css&#x27;;
+
+interface RegisterProps {
+  onRegisterSuccess: () &#x3D;&gt; void;
+  onSwitchToLogin: () &#x3D;&gt; void;
+}
+
+const Register: React.FC&lt;RegisterProps&gt; &#x3D; ({
+  onRegisterSuccess,
+  onSwitchToLogin: _onSwitchToLogin,
+}) &#x3D;&gt; {
+  const { register, registerLoading } &#x3D; useAuth();
+  const [username, setUsername] &#x3D; useState(&#x27;&#x27;);
+  const [email, setEmail] &#x3D; useState(&#x27;&#x27;);
+  const [password, setPassword] &#x3D; useState(&#x27;&#x27;);
+  const [confirmPassword, setConfirmPassword] &#x3D; useState(&#x27;&#x27;);
+  const [error, setError] &#x3D; useState&lt;string | null&gt;(null);
+  const [showPassword, setShowPassword] &#x3D; useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] &#x3D; useState(false);
+  const [agreedToTerms, setAgreedToTerms] &#x3D; useState(false);
+  const [passwordStrength, setPasswordStrength] &#x3D; useState&lt;&#x27;Weak&#x27; | &#x27;Medium&#x27; | &#x27;Strong&#x27;&gt;(&#x27;Weak&#x27;);
+
+  const validateUsername &#x3D; (name: string): string | null &#x3D;&gt; {
+    if (name.length &lt; 3) return &#x27;Username must be at least 3 characters&#x27;;
+    if (name.length &gt; 50) return &#x27;Username must not exceed 50 characters&#x27;;
+    if (!/^[a-zA-Z0-9_-]+$/.test(name))
+      return &#x27;Username can only contain letters, numbers, underscores, and hyphens&#x27;;
+    return null;
+  };
+
+  const validatePassword &#x3D; (pwd: string): string | null &#x3D;&gt; {
+    if (pwd.length &lt; 8) return &#x27;Password must be at least 8 characters&#x27;;
+    if (pwd.length &gt; 128) return &#x27;Password must not exceed 128 characters&#x27;;
+    if (!/[A-Z]/.test(pwd)) return &#x27;Password must contain an uppercase letter&#x27;;
+    if (!/[a-z]/.test(pwd)) return &#x27;Password must contain a lowercase letter&#x27;;
+    if (!/[0-9]/.test(pwd)) return &#x27;Password must contain a number&#x27;;
+    if (!/[!@#$%^&amp;*()_+\-&#x3D;[\]{};&#x27;:&quot;\\|,.&lt;&gt;/?]/.test(pwd))
+      return &#x27;Password must contain a special character&#x27;;
+    return null;
+  };
+
+  const calculatePasswordStrength &#x3D; (pwd: string): &#x27;Weak&#x27; | &#x27;Medium&#x27; | &#x27;Strong&#x27; &#x3D;&gt; {
+    let score &#x3D; 0;
+    if (pwd.length &gt;&#x3D; 8) score++;
+    if (/[A-Z]/.test(pwd)) score++;
+    if (/[a-z]/.test(pwd)) score++;
+    if (/[0-9]/.test(pwd)) score++;
+    if (/[!@#$%^&amp;*()_+\-&#x3D;[\]{};&#x27;:&quot;\\|,.&lt;&gt;/?]/.test(pwd)) score++;
+    if (score &lt;&#x3D; 1) return &#x27;Weak&#x27;;
+    if (score &lt;&#x3D; 3) return &#x27;Medium&#x27;;
+    return &#x27;Strong&#x27;;
+  };
+
+  const handleSubmit &#x3D; async (e: FormEvent) &#x3D;&gt; {
+    e.preventDefault();
+    setError(null);
+
+    // Validation
+    if (!agreedToTerms) {
+      setError(&#x27;You must agree to the Terms of Service&#x27;);
+      return;
+    }
+
+    const usernameError &#x3D; validateUsername(username);
+    if (usernameError) {
+      setError(usernameError);
+      return;
+    }
+
+    if (password !&#x3D;&#x3D; confirmPassword) {
+      setError(&#x27;Passwords do not match&#x27;);
+      return;
+    }
+
+    const passwordError &#x3D; validatePassword(password);
+    if (passwordError) {
+      setError(passwordError);
+      return;
+    }
+
+    try {
+      const result &#x3D; await register(username, email, password);
+
+      if (result.success) {
+        onRegisterSuccess();
+      } else {
+        setError(result.error || &#x27;Registration failed&#x27;);
+      }
+    } catch {
+      setError(&#x27;An unexpected error occurred. Please try again.&#x27;);
+    }
+  };
+
+  return (
+    &lt;div className&#x3D;&quot;auth-container&quot;&gt;
+      &lt;div className&#x3D;&quot;auth-card&quot;&gt;
+        &lt;header className&#x3D;&quot;auth-header&quot;&gt;
+          &lt;h1&gt;Political Sphere&lt;/h1&gt;
+          &lt;p&gt;Ready to take your seat?&lt;/p&gt;
+        &lt;/header&gt;
+
+        &lt;form className&#x3D;&quot;auth-form&quot; onSubmit&#x3D;{handleSubmit} noValidate&gt;
+          &lt;h2&gt;Create Account&lt;/h2&gt;
+
+          {error &amp;&amp; (
+            &lt;div className&#x3D;&quot;auth-error&quot; role&#x3D;&quot;alert&quot; aria-live&#x3D;&quot;assertive&quot;&gt;
+              &lt;span className&#x3D;&quot;error-icon&quot; aria-hidden&#x3D;&quot;true&quot;&gt;
+                ⚠️
+              &lt;/span&gt;
+              {error}
+            &lt;/div&gt;
+          )}
+
+          &lt;div className&#x3D;&quot;form-group&quot;&gt;
+            &lt;label htmlFor&#x3D;&quot;username&quot;&gt;
+              Username
+              &lt;span className&#x3D;&quot;required&quot;&gt;*&lt;/span&gt;
+            &lt;/label&gt;
+            &lt;input
+              type&#x3D;&quot;text&quot;
+              id&#x3D;&quot;username&quot;
+              name&#x3D;&quot;username&quot;
+              value&#x3D;{username}
+              onChange&#x3D;{e &#x3D;&gt; setUsername(e.target.value)}
+              required
+              autoComplete&#x3D;&quot;username&quot;
+              aria-required&#x3D;&quot;true&quot;
+              aria-invalid&#x3D;{error ? &#x27;true&#x27; : &#x27;false&#x27;}
+              aria-describedby&#x3D;&quot;username-requirements&quot;
+              disabled&#x3D;{registerLoading}
+              placeholder&#x3D;&quot;Choose a unique username&quot;
+              minLength&#x3D;{3}
+              maxLength&#x3D;{50}
+            /&gt;
+            &lt;div id&#x3D;&quot;username-requirements&quot; className&#x3D;&quot;field-help&quot; role&#x3D;&quot;note&quot;&gt;
+              3-50 characters: letters, numbers, underscores, and hyphens only
+            &lt;/div&gt;
+          &lt;/div&gt;
+
+          &lt;div className&#x3D;&quot;form-group&quot;&gt;
+            &lt;label htmlFor&#x3D;&quot;email&quot;&gt;
+              Email Address
+              &lt;span className&#x3D;&quot;required&quot;&gt;*&lt;/span&gt;
+            &lt;/label&gt;
+            &lt;input
+              type&#x3D;&quot;email&quot;
+              id&#x3D;&quot;email&quot;
+              name&#x3D;&quot;email&quot;
+              value&#x3D;{email}
+              onChange&#x3D;{e &#x3D;&gt; setEmail(e.target.value)}
+              required
+              autoComplete&#x3D;&quot;email&quot;
+              aria-required&#x3D;&quot;true&quot;
+              aria-invalid&#x3D;{error ? &#x27;true&#x27; : &#x27;false&#x27;}
+              disabled&#x3D;{registerLoading}
+              placeholder&#x3D;&quot;your.email@example.com&quot;
+              maxLength&#x3D;{255}
+            /&gt;
+          &lt;/div&gt;
+
+          &lt;div className&#x3D;&quot;form-group&quot;&gt;
+            &lt;label htmlFor&#x3D;&quot;password&quot;&gt;
+              Password
+              &lt;span className&#x3D;&quot;required&quot;&gt;*&lt;/span&gt;
+            &lt;/label&gt;
+            &lt;div className&#x3D;&quot;password-input-wrapper&quot;&gt;
+              &lt;input
+                type&#x3D;{showPassword ? &#x27;text&#x27; : &#x27;password&#x27;}
+                id&#x3D;&quot;password&quot;
+                name&#x3D;&quot;password&quot;
+                value&#x3D;{password}
+                onChange&#x3D;{e &#x3D;&gt; {
+                  setPassword(e.target.value);
+                  setPasswordStrength(calculatePasswordStrength(e.target.value));
+                }}
+                required
+                autoComplete&#x3D;&quot;new-password&quot;
+                aria-required&#x3D;&quot;true&quot;
+                aria-invalid&#x3D;{error ? &#x27;true&#x27; : &#x27;false&#x27;}
+                aria-describedby&#x3D;&quot;password-requirements&quot;
+                disabled&#x3D;{registerLoading}
+                placeholder&#x3D;&quot;Create a strong password&quot;
+              /&gt;
+              &lt;button
+                type&#x3D;&quot;button&quot;
+                className&#x3D;&quot;password-toggle&quot;
+                onClick&#x3D;{() &#x3D;&gt; setShowPassword(!showPassword)}
+                aria-label&#x3D;{showPassword ? &#x27;Hide password&#x27; : &#x27;Show password&#x27;}
+                disabled&#x3D;{registerLoading}
+                style&#x3D;{{ outline: &#x27;none&#x27; }}
+              &gt;
+                &lt;svg
+                  width&#x3D;&quot;20&quot;
+                  height&#x3D;&quot;20&quot;
+                  viewBox&#x3D;&quot;0 0 24 24&quot;
+                  fill&#x3D;&quot;none&quot;
+                  stroke&#x3D;&quot;currentColor&quot;
+                  strokeWidth&#x3D;&quot;2&quot;
+                  strokeLinecap&#x3D;&quot;round&quot;
+                  strokeLinejoin&#x3D;&quot;round&quot;
+                  className&#x3D;{&#x60;eye-icon ${showPassword ? &#x27;eye-open&#x27; : &#x27;eye-closed&#x27;}&#x60;}
+                &gt;
+                  &lt;title&gt;Password visibility toggle&lt;/title&gt;
+                  {showPassword ? (
+                    &lt;&gt;
+                      &lt;path d&#x3D;&quot;M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z&quot; /&gt;
+                      &lt;circle cx&#x3D;&quot;12&quot; cy&#x3D;&quot;12&quot; r&#x3D;&quot;3&quot; /&gt;
+                    &lt;/&gt;
+                  ) : (
+                    &lt;&gt;
+                      &lt;path d&#x3D;&quot;M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24&quot; /&gt;
+                      &lt;line x1&#x3D;&quot;1&quot; y1&#x3D;&quot;1&quot; x2&#x3D;&quot;23&quot; y2&#x3D;&quot;23&quot; /&gt;
+                    &lt;/&gt;
+                  )}
+                &lt;/svg&gt;
+              &lt;/button&gt;
+            &lt;/div&gt;
+            &lt;div id&#x3D;&quot;password-requirements&quot; className&#x3D;&quot;field-help&quot;&gt;
+              8-128 characters with uppercase, lowercase, and number
+            &lt;/div&gt;
+            &lt;div className&#x3D;&quot;password-strength-indicator&quot;&gt;
+              &lt;span&gt;Password Strength: {passwordStrength}&lt;/span&gt;
+              &lt;div className&#x3D;&quot;strength-bar-container&quot;&gt;
+                &lt;div
+                  className&#x3D;&quot;strength-bar&quot;
+                  style&#x3D;{{
+                    width:
+                      passwordStrength &#x3D;&#x3D;&#x3D; &#x27;Weak&#x27;
+                        ? &#x27;33%&#x27;
+                        : passwordStrength &#x3D;&#x3D;&#x3D; &#x27;Medium&#x27;
+                          ? &#x27;66%&#x27;
+                          : &#x27;100%&#x27;,
+                    backgroundColor:
+                      passwordStrength &#x3D;&#x3D;&#x3D; &#x27;Weak&#x27;
+                        ? &#x27;#ff4444&#x27;
+                        : passwordStrength &#x3D;&#x3D;&#x3D; &#x27;Medium&#x27;
+                          ? &#x27;#ffaa00&#x27;
+                          : &#x27;#44aa44&#x27;,
+                  }}
+                &gt;&lt;/div&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+
+          &lt;div className&#x3D;&quot;form-group&quot;&gt;
+            &lt;label htmlFor&#x3D;&quot;confirmPassword&quot;&gt;
+              Confirm Password
+              &lt;span className&#x3D;&quot;required&quot;&gt;*&lt;/span&gt;
+            &lt;/label&gt;
+            &lt;div className&#x3D;&quot;password-input-wrapper&quot;&gt;
+              &lt;input
+                type&#x3D;{showConfirmPassword ? &#x27;text&#x27; : &#x27;password&#x27;}
+                id&#x3D;&quot;confirmPassword&quot;
+                name&#x3D;&quot;confirmPassword&quot;
+                value&#x3D;{confirmPassword}
+                onChange&#x3D;{e &#x3D;&gt; setConfirmPassword(e.target.value)}
+                required
+                autoComplete&#x3D;&quot;new-password&quot;
+                aria-required&#x3D;&quot;true&quot;
+                aria-invalid&#x3D;{error ? &#x27;true&#x27; : &#x27;false&#x27;}
+                disabled&#x3D;{registerLoading}
+                placeholder&#x3D;&quot;Re-enter your password&quot;
+              /&gt;
+              &lt;button
+                type&#x3D;&quot;button&quot;
+                className&#x3D;&quot;password-toggle&quot;
+                onClick&#x3D;{() &#x3D;&gt; setShowConfirmPassword(!showConfirmPassword)}
+                aria-label&#x3D;{showConfirmPassword ? &#x27;Hide password&#x27; : &#x27;Show password&#x27;}
+                disabled&#x3D;{registerLoading}
+                style&#x3D;{{ outline: &#x27;none&#x27; }}
+              &gt;
+                &lt;svg
+                  width&#x3D;&quot;20&quot;
+                  height&#x3D;&quot;20&quot;
+                  viewBox&#x3D;&quot;0 0 24 24&quot;
+                  fill&#x3D;&quot;none&quot;
+                  stroke&#x3D;&quot;currentColor&quot;
+                  strokeWidth&#x3D;&quot;2&quot;
+                  strokeLinecap&#x3D;&quot;round&quot;
+                  strokeLinejoin&#x3D;&quot;round&quot;
+                  className&#x3D;{&#x60;eye-icon ${showConfirmPassword ? &#x27;eye-open&#x27; : &#x27;eye-closed&#x27;}&#x60;}
+                &gt;
+                  &lt;title&gt;Password visibility toggle&lt;/title&gt;
+                  {showConfirmPassword ? (
+                    &lt;&gt;
+                      &lt;path d&#x3D;&quot;M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z&quot; /&gt;
+                      &lt;circle cx&#x3D;&quot;12&quot; cy&#x3D;&quot;12&quot; r&#x3D;&quot;3&quot; /&gt;
+                    &lt;/&gt;
+                  ) : (
+                    &lt;&gt;
+                      &lt;path d&#x3D;&quot;M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24&quot; /&gt;
+                      &lt;line x1&#x3D;&quot;1&quot; y1&#x3D;&quot;1&quot; x2&#x3D;&quot;23&quot; y2&#x3D;&quot;23&quot; /&gt;
+                    &lt;/&gt;
+                  )}
+                &lt;/svg&gt;
+              &lt;/button&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+
+          &lt;div className&#x3D;&quot;form-group checkbox-group&quot;&gt;
+            &lt;label htmlFor&#x3D;&quot;terms&quot; className&#x3D;&quot;checkbox-label&quot;&gt;
+              &lt;input
+                type&#x3D;&quot;checkbox&quot;
+                id&#x3D;&quot;terms&quot;
+                name&#x3D;&quot;terms&quot;
+                checked&#x3D;{agreedToTerms}
+                onChange&#x3D;{e &#x3D;&gt; setAgreedToTerms(e.target.checked)}
+                required
+                aria-required&#x3D;&quot;true&quot;
+                disabled&#x3D;{registerLoading}
+              /&gt;
+              &lt;span className&#x3D;&quot;policy-chip&quot;&gt;
+                I agree to the{&#x27; &#x27;}
+                &lt;a href&#x3D;&quot;/terms&quot; target&#x3D;&quot;_blank&quot; rel&#x3D;&quot;noopener noreferrer&quot;&gt;
+                  Terms of Service
+                &lt;/a&gt;{&#x27; &#x27;}
+                and{&#x27; &#x27;}
+                &lt;a href&#x3D;&quot;/privacy&quot; target&#x3D;&quot;_blank&quot; rel&#x3D;&quot;noopener noreferrer&quot;&gt;
+                  Privacy Policy
+                &lt;/a&gt;
+              &lt;/span&gt;
+            &lt;/label&gt;
+          &lt;/div&gt;
+
+          &lt;button
+            type&#x3D;&quot;submit&quot;
+            className&#x3D;&quot;btn-primary btn-full-width&quot;
+            disabled&#x3D;{
+              registerLoading ||
+              !username ||
+              !email ||
+              !password ||
+              !confirmPassword ||
+              !agreedToTerms
+            }
+          &gt;
+            {registerLoading ? &#x27;Creating account...&#x27; : &#x27;Create Account&#x27;}
+          &lt;/button&gt;
+
+          &lt;div className&#x3D;&quot;auth-links&quot;&gt;&lt;/div&gt;
+        &lt;/form&gt;
+
+        &lt;footer className&#x3D;&quot;auth-footer&quot;&gt;
+          &lt;p&gt;
+            Political Sphere is a neutral political simulation game. We do not collect or share your
+            political views.
+          &lt;/p&gt;
+        &lt;/footer&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  );
+};
+
+export default Register;
+</code></pre>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'interface';
+            var COMPODOC_CURRENT_PAGE_URL = 'RegisterProps.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

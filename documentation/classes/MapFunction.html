@@ -1,0 +1,1249 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>political-sphere documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">political-sphere documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content class">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Classes</li>
+  <li class="breadcrumb-item" >MapFunction</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>libs/ai-system/src/governance/map.ts</code>
+        </p>
+
+
+            <p class="comment">
+                <h3>Description</h3>
+            </p>
+            <p class="comment">
+                <p>Enhanced MAP Function with Complete Risk Classification</p>
+
+            </p>
+
+
+
+
+            <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#inventory" >inventory</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#assessImpact" >assessImpact</a>
+                            </li>
+                            <li>
+                                <a href="#generateMapReport" >generateMapReport</a>
+                            </li>
+                            <li>
+                                <a href="#generateModelCard" >generateModelCard</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#generateRiskAssessment" >generateRiskAssessment</a>
+                            </li>
+                            <li>
+                                <a href="#getInventory" >getInventory</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+            <section data-compodoc="block-constructor">
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor()</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="281" class="link-to-prism">libs/ai-system/src/governance/map.ts:281</a></div>
+                            </td>
+                        </tr>
+
+            </tbody>
+        </table>
+</section>
+
+            <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="inventory"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>inventory</b></span>
+                        <a href="#inventory"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../classes/AISystemInventory.html" target="_self" >AISystemInventory</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="281" class="link-to-prism">libs/ai-system/src/governance/map.ts:281</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+            <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="assessImpact"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>assessImpact</b></span>
+                        <a href="#assessImpact"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>assessImpact(systemId: <a href="../unknowns/g.html" target="_self">string</a>, context: literal type)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="290"
+                                    class="link-to-prism">libs/ai-system/src/governance/map.ts:290</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Comprehensive impact assessment with detailed risk classification</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>systemId</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>context</td>
+                                            <td>
+                                                        <code>literal type</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Promise&lt;literal type&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="generateMapReport"></a>
+                    <span class="name">
+                        <span ><b>generateMapReport</b></span>
+                        <a href="#generateMapReport"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>generateMapReport()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="551"
+                                    class="link-to-prism">libs/ai-system/src/governance/map.ts:551</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Generate comprehensive MAP report</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>literal type</code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="generateModelCard"></a>
+                    <span class="name">
+                        <span ><b>generateModelCard</b></span>
+                        <a href="#generateModelCard"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>generateModelCard(systemId: <a href="../unknowns/g.html" target="_self">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="446"
+                                    class="link-to-prism">libs/ai-system/src/governance/map.ts:446</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Generate comprehensive model card with risk assessment</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>systemId</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="generateRiskAssessment"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>generateRiskAssessment</b></span>
+                        <a href="#generateRiskAssessment"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>generateRiskAssessment(systemId: <a href="../unknowns/g.html" target="_self">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="494"
+                                    class="link-to-prism">libs/ai-system/src/governance/map.ts:494</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Generate risk assessment report</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>systemId</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getInventory"></a>
+                    <span class="name">
+                        <span ><b>getInventory</b></span>
+                        <a href="#getInventory"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getInventory()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="544"
+                                    class="link-to-prism">libs/ai-system/src/governance/map.ts:544</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Get complete system inventory</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../classes/AISystemInventory.html" target="_self" >AISystemInventory</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+
+
+
+
+
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import type { AISystemRegistration } from &#x27;./nist-ai-rmf&#x27;;
+
+/**
+ * Comprehensive AI System Inventory
+ *
+ * Complete catalog of all AI systems used in Political Sphere.
+ */
+export class AISystemInventory {
+  private systems: Map&lt;string, AISystemRegistration&gt; &#x3D; new Map();
+
+  constructor() {
+    this.initializeInventory();
+  }
+
+  /**
+   * Initialize complete AI system inventory
+   */
+  private initializeInventory(): void {
+    // Core AI Governance System
+    this.registerSystem({
+      id: &#x27;ai-governance-orchestrator&#x27;,
+      name: &#x27;AI Governance Orchestrator&#x27;,
+      description: &#x27;Multi-agent workflow orchestration with constitutional governance&#x27;,
+      owner: &#x27;Technical Governance Committee&#x27;,
+      riskLevel: &#x27;high&#x27;,
+      model: {
+        provider: &#x27;OpenAI&#x27;,
+        version: &#x27;GPT-4&#x27;,
+        type: &#x27;generative&#x27;,
+      },
+      dataSources: [&#x27;User messages&#x27;, &#x27;System prompts&#x27;, &#x27;Validation rules&#x27;],
+      limitations: [
+        &#x27;Cannot bypass constitutional gates&#x27;,
+        &#x27;Requires human approval for high-risk operations&#x27;,
+        &#x27;Limited to approved use cases&#x27;,
+      ],
+      biasMitigations: [
+        &#x27;Political neutrality validation&#x27;,
+        &#x27;Bias monitoring with &lt;0.1 threshold&#x27;,
+        &#x27;Human oversight for critical decisions&#x27;,
+      ],
+      registeredAt: new Date(&#x27;2025-11-01&#x27;),
+      lastAuditedAt: new Date(&#x27;2025-11-12&#x27;),
+    });
+
+    // AI Assistants
+    this.registerSystem({
+      id: &#x27;github-copilot&#x27;,
+      name: &#x27;GitHub Copilot&#x27;,
+      description: &#x27;AI-powered code completion and generation&#x27;,
+      owner: &#x27;Development Team&#x27;,
+      riskLevel: &#x27;medium&#x27;,
+      model: {
+        provider: &#x27;GitHub/OpenAI&#x27;,
+        version: &#x27;GPT-4&#x27;,
+        type: &#x27;generative&#x27;,
+      },
+      dataSources: [&#x27;Code repositories&#x27;, &#x27;Development context&#x27;, &#x27;User prompts&#x27;],
+      limitations: [
+        &#x27;Cannot generate production secrets&#x27;,
+        &#x27;Limited to code-related tasks&#x27;,
+        &#x27;Requires human review for complex changes&#x27;,
+      ],
+      biasMitigations: [
+        &#x27;Neutral code generation patterns&#x27;,
+        &#x27;No political content generation&#x27;,
+        &#x27;Human code review required&#x27;,
+      ],
+      registeredAt: new Date(&#x27;2025-10-01&#x27;),
+      lastAuditedAt: new Date(&#x27;2025-11-01&#x27;),
+    });
+
+    this.registerSystem({
+      id: &#x27;blackbox-ai&#x27;,
+      name: &#x27;Blackbox AI Assistant&#x27;,
+      description: &#x27;Enterprise AI assistant for development and governance&#x27;,
+      owner: &#x27;Technical Governance Committee&#x27;,
+      riskLevel: &#x27;high&#x27;,
+      model: {
+        provider: &#x27;Blackbox&#x27;,
+        version: &#x27;Latest&#x27;,
+        type: &#x27;generative&#x27;,
+      },
+      dataSources: [&#x27;Project documentation&#x27;, &#x27;Code context&#x27;, &#x27;Governance rules&#x27;],
+      limitations: [
+        &#x27;Bound by constitutional rules&#x27;,
+        &#x27;Cannot modify governance documents&#x27;,
+        &#x27;Requires human approval for policy changes&#x27;,
+      ],
+      biasMitigations: [
+        &#x27;Constitutional neutrality enforcement&#x27;,
+        &#x27;Bias monitoring integration&#x27;,
+        &#x27;Human oversight for all outputs&#x27;,
+      ],
+      registeredAt: new Date(&#x27;2025-10-15&#x27;),
+      lastAuditedAt: new Date(&#x27;2025-11-12&#x27;),
+    });
+
+    // Content Analysis Systems
+    this.registerSystem({
+      id: &#x27;moderation-analyzer&#x27;,
+      name: &#x27;Content Moderation Analyzer&#x27;,
+      description: &#x27;AI-powered content safety and moderation analysis&#x27;,
+      owner: &#x27;Community Safety Team&#x27;,
+      riskLevel: &#x27;high&#x27;,
+      model: {
+        provider: &#x27;OpenAI&#x27;,
+        version: &#x27;GPT-4&#x27;,
+        type: &#x27;generative&#x27;,
+      },
+      dataSources: [&#x27;User-generated content&#x27;, &#x27;Moderation guidelines&#x27;, &#x27;Historical cases&#x27;],
+      limitations: [
+        &#x27;Cannot autonomously remove content&#x27;,
+        &#x27;Requires human review for decisions&#x27;,
+        &#x27;Limited to analysis and recommendations&#x27;,
+      ],
+      biasMitigations: [
+        &#x27;Neutral content analysis&#x27;,
+        &#x27;Balanced training data&#x27;,
+        &#x27;Human moderation oversight&#x27;,
+      ],
+      registeredAt: new Date(&#x27;2025-10-01&#x27;),
+      lastAuditedAt: new Date(&#x27;2025-11-01&#x27;),
+    });
+
+    // Bias Detection System
+    this.registerSystem({
+      id: &#x27;bias-detection-engine&#x27;,
+      name: &#x27;Bias Detection Engine&#x27;,
+      description: &#x27;Continuous monitoring for political and content bias&#x27;,
+      owner: &#x27;AI Ethics Committee&#x27;,
+      riskLevel: &#x27;medium&#x27;,
+      model: {
+        provider: &#x27;Custom/HuggingFace&#x27;,
+        version: &#x27;1.0&#x27;,
+        type: &#x27;discriminative&#x27;,
+      },
+      dataSources: [&#x27;Content outputs&#x27;, &#x27;User interactions&#x27;, &#x27;System logs&#x27;],
+      limitations: [
+        &#x27;Statistical detection only&#x27;,
+        &#x27;Requires human interpretation&#x27;,
+        &#x27;False positive/negative possibilities&#x27;,
+      ],
+      biasMitigations: [
+        &#x27;Regular model retraining&#x27;,
+        &#x27;Multi-source validation&#x27;,
+        &#x27;Human expert review&#x27;,
+      ],
+      registeredAt: new Date(&#x27;2025-10-15&#x27;),
+      lastAuditedAt: new Date(&#x27;2025-11-01&#x27;),
+    });
+
+    // Voting Analysis System (Future)
+    this.registerSystem({
+      id: &#x27;voting-pattern-analyzer&#x27;,
+      name: &#x27;Voting Pattern Analyzer&#x27;,
+      description: &#x27;Anonymous voting trend analysis (no individual prediction)&#x27;,
+      owner: &#x27;Research Committee&#x27;,
+      riskLevel: &#x27;low&#x27;,
+      model: {
+        provider: &#x27;Statistical Models&#x27;,
+        version: &#x27;1.0&#x27;,
+        type: &#x27;discriminative&#x27;,
+      },
+      dataSources: [&#x27;Aggregated voting data&#x27;, &#x27;Demographic trends&#x27;, &#x27;Historical patterns&#x27;],
+      limitations: [
+        &#x27;Aggregate analysis only&#x27;,
+        &#x27;No individual predictions&#x27;,
+        &#x27;Cannot influence voting&#x27;,
+      ],
+      biasMitigations: [
+        &#x27;Demographic balancing&#x27;,
+        &#x27;Regular methodology review&#x27;,
+        &#x27;Transparent reporting&#x27;,
+      ],
+      registeredAt: new Date(&#x27;2025-11-01&#x27;),
+      lastAuditedAt: new Date(&#x27;2025-11-01&#x27;),
+    });
+  }
+
+  /**
+   * Register a new AI system
+   */
+  registerSystem(system: AISystemRegistration): void {
+    this.systems.set(system.id, system);
+  }
+
+  /**
+   * Get system by ID
+   */
+  getSystem(id: string): AISystemRegistration | undefined {
+    return this.systems.get(id);
+  }
+
+  /**
+   * Get all registered systems
+   */
+  getAllSystems(): AISystemRegistration[] {
+    return Array.from(this.systems.values());
+  }
+
+  /**
+   * Get systems by risk level
+   */
+  getSystemsByRisk(riskLevel: AISystemRegistration[&#x27;riskLevel&#x27;]): AISystemRegistration[] {
+    return this.getAllSystems().filter(s &#x3D;&gt; s.riskLevel &#x3D;&#x3D;&#x3D; riskLevel);
+  }
+
+  /**
+   * Get systems requiring audit (&gt;90 days since last audit)
+   */
+  getSystemsRequiringAudit(): AISystemRegistration[] {
+    const ninetyDaysAgo &#x3D; new Date();
+    ninetyDaysAgo.setDate(ninetyDaysAgo.getDate() - 90);
+
+    return this.getAllSystems().filter(s &#x3D;&gt; {
+      if (!s.lastAuditedAt) return true;
+      return s.lastAuditedAt &lt; ninetyDaysAgo;
+    });
+  }
+
+  /**
+   * Generate comprehensive inventory report
+   */
+  generateInventoryReport(): {
+    totalSystems: number;
+    riskDistribution: Record&lt;string, number&gt;;
+    auditStatus: {
+      upToDate: number;
+      requiresAudit: number;
+      neverAudited: number;
+    };
+    criticalSystems: AISystemRegistration[];
+    dataSources: string[];
+    limitations: string[];
+  } {
+    const all &#x3D; this.getAllSystems();
+    const riskDistribution &#x3D; {
+      low: this.getSystemsByRisk(&#x27;low&#x27;).length,
+      medium: this.getSystemsByRisk(&#x27;medium&#x27;).length,
+      high: this.getSystemsByRisk(&#x27;high&#x27;).length,
+      critical: this.getSystemsByRisk(&#x27;critical&#x27;).length,
+    };
+
+    const requiresAudit &#x3D; this.getSystemsRequiringAudit();
+    const neverAudited &#x3D; all.filter(s &#x3D;&gt; !s.lastAuditedAt).length;
+    const upToDate &#x3D; all.length - requiresAudit.length;
+
+    const criticalSystems &#x3D; this.getSystemsByRisk(&#x27;critical&#x27;);
+
+    const dataSources &#x3D; Array.from(new Set(all.flatMap(s &#x3D;&gt; s.dataSources)));
+    const limitations &#x3D; Array.from(new Set(all.flatMap(s &#x3D;&gt; s.limitations)));
+
+    return {
+      totalSystems: all.length,
+      riskDistribution,
+      auditStatus: {
+        upToDate,
+        requiresAudit: requiresAudit.length,
+        neverAudited,
+      },
+      criticalSystems,
+      dataSources,
+      limitations,
+    };
+  }
+}
+
+/**
+ * Enhanced MAP Function with Complete Risk Classification
+ */
+export class MapFunction {
+  private inventory: AISystemInventory;
+
+  constructor() {
+    this.inventory &#x3D; new AISystemInventory();
+  }
+
+  /**
+   * Comprehensive impact assessment with detailed risk classification
+   */
+  async assessImpact(
+    systemId: string,
+    context: {
+      stakeholders: string[];
+      affectedRights: string[];
+      dataProcessing: string[];
+      scale: &#x27;individual&#x27; | &#x27;group&#x27; | &#x27;population&#x27; | &#x27;society&#x27;;
+      duration: &#x27;temporary&#x27; | &#x27;long-term&#x27; | &#x27;permanent&#x27;;
+      reversibility: &#x27;fully-reversible&#x27; | &#x27;partially-reversible&#x27; | &#x27;irreversible&#x27;;
+    }
+  ): Promise&lt;{
+    impactLevel: &#x27;low&#x27; | &#x27;medium&#x27; | &#x27;high&#x27; | &#x27;critical&#x27;;
+    riskScore: number;
+    findings: string[];
+    recommendations: string[];
+    mitigationStrategies: string[];
+    monitoringRequirements: string[];
+  }&gt; {
+    const system &#x3D; this.inventory.getSystem(systemId);
+    if (!system) {
+      throw new Error(&#x60;System ${systemId} not found in inventory&#x60;);
+    }
+
+    const findings: string[] &#x3D; [];
+    const recommendations: string[] &#x3D; [];
+    const mitigationStrategies: string[] &#x3D; [];
+    const monitoringRequirements: string[] &#x3D; [];
+
+    let riskScore &#x3D; 0;
+
+    // Base risk from system classification
+    const baseRiskScores &#x3D; { low: 1, medium: 3, high: 7, critical: 10 };
+    riskScore +&#x3D; baseRiskScores[system.riskLevel];
+
+    // Stakeholder impact assessment
+    if (
+      context.stakeholders.includes(&#x27;general-public&#x27;) ||
+      context.stakeholders.includes(&#x27;citizens&#x27;)
+    ) {
+      riskScore +&#x3D; 5;
+      findings.push(&#x27;Affects general public or citizens&#x27;);
+      recommendations.push(&#x27;Conduct public consultation before deployment&#x27;);
+      mitigationStrategies.push(&#x27;Implement gradual rollout with monitoring&#x27;);
+      monitoringRequirements.push(&#x27;Track public sentiment and feedback&#x27;);
+    }
+
+    if (context.stakeholders.includes(&#x27;vulnerable-groups&#x27;)) {
+      riskScore +&#x3D; 4;
+      findings.push(&#x27;Affects vulnerable groups&#x27;);
+      recommendations.push(&#x27;Conduct equality impact assessment&#x27;);
+      mitigationStrategies.push(&#x27;Enhanced bias monitoring for protected characteristics&#x27;);
+    }
+
+    // Rights impact assessment
+    const fundamentalRights &#x3D; [
+      &#x27;voting-rights&#x27;,
+      &#x27;freedom-of-speech&#x27;,
+      &#x27;privacy&#x27;,
+      &#x27;equality&#x27;,
+      &#x27;due-process&#x27;,
+    ];
+    const affectedFundamentalRights &#x3D; context.affectedRights.filter(r &#x3D;&gt;
+      fundamentalRights.includes(r)
+    );
+
+    if (affectedFundamentalRights.length &gt; 0) {
+      riskScore +&#x3D; affectedFundamentalRights.length * 3;
+      findings.push(&#x60;Affects fundamental rights: ${affectedFundamentalRights.join(&#x27;, &#x27;)}&#x60;);
+      recommendations.push(&#x27;Require constitutional review&#x27;);
+      recommendations.push(&#x27;Implement human oversight for all decisions&#x27;);
+      mitigationStrategies.push(&#x27;Constitutional compliance monitoring&#x27;);
+      monitoringRequirements.push(&#x27;Regular constitutional impact reviews&#x27;);
+    }
+
+    // Scale assessment
+    const scaleMultipliers &#x3D; {
+      individual: 1,
+      group: 2,
+      population: 4,
+      society: 6,
+    };
+    riskScore *&#x3D; scaleMultipliers[context.scale];
+    findings.push(&#x60;Scale: ${context.scale} (${scaleMultipliers[context.scale]}x multiplier)&#x60;);
+
+    // Duration assessment
+    const durationMultipliers &#x3D; {
+      temporary: 1,
+      &#x27;long-term&#x27;: 2,
+      permanent: 3,
+    };
+    riskScore *&#x3D; durationMultipliers[context.duration];
+    findings.push(
+      &#x60;Duration: ${context.duration} (${durationMultipliers[context.duration]}x multiplier)&#x60;
+    );
+
+    // Reversibility assessment
+    const reversibilityMultipliers &#x3D; {
+      &#x27;fully-reversible&#x27;: 0.5,
+      &#x27;partially-reversible&#x27;: 1,
+      irreversible: 2,
+    };
+    riskScore *&#x3D; reversibilityMultipliers[context.reversibility];
+    findings.push(
+      &#x60;Reversibility: ${context.reversibility} (${reversibilityMultipliers[context.reversibility]}x multiplier)&#x60;
+    );
+
+    // Data processing assessment
+    const sensitiveDataTypes &#x3D; [
+      &#x27;personal-data&#x27;,
+      &#x27;political-opinions&#x27;,
+      &#x27;voting-records&#x27;,
+      &#x27;biometric-data&#x27;,
+    ];
+    const processesSensitiveData &#x3D; context.dataProcessing.some(d &#x3D;&gt; sensitiveDataTypes.includes(d));
+
+    if (processesSensitiveData) {
+      riskScore +&#x3D; 4;
+      findings.push(&#x27;Processes sensitive personal data&#x27;);
+      recommendations.push(&#x27;Conduct DPIA (Data Protection Impact Assessment)&#x27;);
+      recommendations.push(&#x27;Implement data minimization principles&#x27;);
+      mitigationStrategies.push(&#x27;GDPR compliance measures&#x27;);
+      mitigationStrategies.push(&#x27;Data anonymization where possible&#x27;);
+      monitoringRequirements.push(&#x27;Data processing audit logs&#x27;);
+    }
+
+    // Determine impact level
+    let impactLevel: &#x27;low&#x27; | &#x27;medium&#x27; | &#x27;high&#x27; | &#x27;critical&#x27;;
+    if (riskScore &gt;&#x3D; 50) impactLevel &#x3D; &#x27;critical&#x27;;
+    else if (riskScore &gt;&#x3D; 25) impactLevel &#x3D; &#x27;high&#x27;;
+    else if (riskScore &gt;&#x3D; 10) impactLevel &#x3D; &#x27;medium&#x27;;
+    else impactLevel &#x3D; &#x27;low&#x27;;
+
+    // Additional recommendations based on impact level
+    if (impactLevel &#x3D;&#x3D;&#x3D; &#x27;critical&#x27;) {
+      recommendations.push(&#x27;Require Technical Governance Committee approval&#x27;);
+      recommendations.push(&#x27;Implement emergency shutdown capability&#x27;);
+      monitoringRequirements.push(&#x27;Real-time performance monitoring&#x27;);
+      monitoringRequirements.push(&#x27;Incident response plan activation&#x27;);
+    } else if (impactLevel &#x3D;&#x3D;&#x3D; &#x27;high&#x27;) {
+      recommendations.push(&#x27;Require senior management approval&#x27;);
+      monitoringRequirements.push(&#x27;Weekly performance reviews&#x27;);
+    }
+
+    return {
+      impactLevel,
+      riskScore,
+      findings,
+      recommendations,
+      mitigationStrategies,
+      monitoringRequirements,
+    };
+  }
+
+  /**
+   * Generate comprehensive model card with risk assessment
+   */
+  generateModelCard(systemId: string): string {
+    const system &#x3D; this.inventory.getSystem(systemId);
+    if (!system) {
+      throw new Error(&#x60;System ${systemId} not found in inventory&#x60;);
+    }
+
+    const riskAssessment &#x3D; this.generateRiskAssessment(systemId);
+
+    return &#x60;
+# Model Card: ${system.name}
+
+## System Information
+- **ID**: ${system.id}
+- **Owner**: ${system.owner}
+- **Risk Level**: ${system.riskLevel.toUpperCase()}
+- **Registered**: ${system.registeredAt.toISOString()}
+- **Last Audit**: ${system.lastAuditedAt?.toISOString() || &#x27;Never&#x27;}
+
+## Model Details
+- **Provider**: ${system.model.provider}
+- **Version**: ${system.model.version}
+- **Type**: ${system.model.type}
+
+## Intended Use
+${system.description}
+
+## Data Sources
+${system.dataSources.map(d &#x3D;&gt; &#x60;- ${d}&#x60;).join(&#x27;\n&#x27;)}
+
+## Limitations
+${system.limitations.map(l &#x3D;&gt; &#x60;- ${l}&#x60;).join(&#x27;\n&#x27;)}
+
+## Bias Mitigations
+${system.biasMitigations.map(m &#x3D;&gt; &#x60;- ${m}&#x60;).join(&#x27;\n&#x27;)}
+
+## Risk Assessment
+${riskAssessment}
+
+## Governance Requirements
+- **Approval Required**: ${system.riskLevel &#x3D;&#x3D;&#x3D; &#x27;high&#x27; || system.riskLevel &#x3D;&#x3D;&#x3D; &#x27;critical&#x27; ? &#x27;Yes&#x27; : &#x27;No&#x27;}
+- **Audit Frequency**: ${system.riskLevel &#x3D;&#x3D;&#x3D; &#x27;critical&#x27; ? &#x27;Monthly&#x27; : system.riskLevel &#x3D;&#x3D;&#x3D; &#x27;high&#x27; ? &#x27;Quarterly&#x27; : &#x27;Annually&#x27;}
+- **Monitoring**: Continuous bias and performance monitoring required
+&#x60;.trim();
+  }
+
+  /**
+   * Generate risk assessment report
+   */
+  private generateRiskAssessment(systemId: string): string {
+    const system &#x3D; this.inventory.getSystem(systemId);
+    if (!system) return &#x27;System not found&#x27;;
+
+    const riskFactors &#x3D; [];
+
+    // Risk level assessment
+    const riskDescriptions &#x3D; {
+      low: &#x27;Minimal risk - routine monitoring sufficient&#x27;,
+      medium: &#x27;Moderate risk - regular reviews required&#x27;,
+      high: &#x27;High risk - enhanced controls and oversight needed&#x27;,
+      critical: &#x27;Critical risk - maximum controls and governance required&#x27;,
+    };
+
+    riskFactors.push(&#x60;**Overall Risk Level**: ${system.riskLevel.toUpperCase()}&#x60;);
+    riskFactors.push(&#x60;**Description**: ${riskDescriptions[system.riskLevel]}&#x60;);
+
+    // Data sensitivity assessment
+    const sensitiveData &#x3D; [&#x27;personal&#x27;, &#x27;political&#x27;, &#x27;voting&#x27;, &#x27;biometric&#x27;];
+    const hasSensitiveData &#x3D; system.dataSources.some(ds &#x3D;&gt;
+      sensitiveData.some(s &#x3D;&gt; ds.toLowerCase().includes(s))
+    );
+
+    if (hasSensitiveData) {
+      riskFactors.push(&#x60;**Data Sensitivity**: High - Processes sensitive data&#x60;);
+      riskFactors.push(&#x60;**GDPR Compliance**: Required - Data Protection Impact Assessment needed&#x60;);
+    }
+
+    // Bias risk assessment
+    if (system.biasMitigations.length &#x3D;&#x3D;&#x3D; 0) {
+      riskFactors.push(&#x60;**Bias Risk**: High - No bias mitigations documented&#x60;);
+    } else {
+      riskFactors.push(
+        &#x60;**Bias Mitigations**: ${system.biasMitigations.length} strategies implemented&#x60;
+      );
+    }
+
+    // Operational risk
+    if (system.limitations.length &gt; 0) {
+      riskFactors.push(
+        &#x60;**Operational Limitations**: ${system.limitations.length} documented limitations&#x60;
+      );
+    }
+
+    return riskFactors.join(&#x27;\n&#x27;);
+  }
+
+  /**
+   * Get complete system inventory
+   */
+  getInventory(): AISystemInventory {
+    return this.inventory;
+  }
+
+  /**
+   * Generate comprehensive MAP report
+   */
+  generateMapReport(): {
+    inventory: ReturnType&lt;AISystemInventory[&#x27;generateInventoryReport&#x27;]&gt;;
+    riskSummary: {
+      totalRiskScore: number;
+      systemsByRisk: Record&lt;string, number&gt;;
+      criticalFindings: string[];
+    };
+    recommendations: string[];
+  } {
+    const inventory &#x3D; this.inventory.generateInventoryReport();
+
+    // Calculate aggregate risk metrics
+    let totalRiskScore &#x3D; 0;
+    const systemsByRisk &#x3D; { low: 0, medium: 0, high: 0, critical: 0 };
+    const criticalFindings: string[] &#x3D; [];
+
+    for (const system of inventory.criticalSystems) {
+      systemsByRisk[system.riskLevel]++;
+      totalRiskScore +&#x3D; { low: 1, medium: 3, high: 7, critical: 10 }[system.riskLevel];
+
+      if (!system.lastAuditedAt) {
+        criticalFindings.push(&#x60;${system.name} has never been audited&#x60;);
+      }
+    }
+
+    const recommendations &#x3D; [
+      &#x27;Conduct immediate audit of all critical systems&#x27;,
+      &#x27;Implement automated risk scoring for new systems&#x27;,
+      &#x27;Establish regular model card updates&#x27;,
+      &#x27;Create data protection impact assessments for high-risk systems&#x27;,
+      &#x27;Implement continuous bias monitoring for all systems&#x27;,
+    ];
+
+    return {
+      inventory,
+      riskSummary: {
+        totalRiskScore,
+        systemsByRisk,
+        criticalFindings,
+      },
+      recommendations,
+    };
+  }
+}
+</code></pre>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'class';
+            var COMPODOC_CURRENT_PAGE_URL = 'MapFunction.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

@@ -4,8 +4,9 @@
  * Configures Mock Service Worker for API mocking in tests.
  */
 
+import type { RequestHandler } from 'msw';
 import { setupServer } from 'msw/node';
-import { handlers } from './handlers';
+import { handlers } from './handlers.js';
 
 // Create MSW server instance
 export const server = setupServer(...handlers);
@@ -36,14 +37,14 @@ export const resetMSW = () => {
 /**
  * Add custom handlers for specific test scenarios
  */
-export const addMSWHandlers = (...customHandlers: any[]) => {
+export const addMSWHandlers = (...customHandlers: RequestHandler[]) => {
   server.use(...customHandlers);
 };
 
 /**
  * Remove custom handlers
  */
-export const removeMSWHandlers = (...customHandlers: any[]) => {
+export const removeMSWHandlers = () => {
   server.resetHandlers();
   // Re-add original handlers
   server.use(...handlers);

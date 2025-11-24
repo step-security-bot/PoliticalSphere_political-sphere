@@ -109,7 +109,9 @@ describe('DSARHandler', () => {
 
   it('should process rectification request', async () => {
     const request = handler.createRequest('rectification', 'user-123', 'user@example.com');
-    const result = await handler.processRectificationRequest(request.requestId, { email: 'new@example.com' });
+    const result = await handler.processRectificationRequest(request.requestId, {
+      email: 'new@example.com',
+    });
 
     expect(result.success).toBe(true);
     expect(result.updatedFields).toContain('email');

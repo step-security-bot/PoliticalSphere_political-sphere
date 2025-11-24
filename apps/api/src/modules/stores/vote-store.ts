@@ -16,6 +16,14 @@ interface VotesApi {
   getAll(filter?: Partial<Pick<Vote, 'billId' | 'userId'>>): Promise<Vote[]>;
 }
 
+/**
+ * VoteStore is a thin wrapper around a `VotesApi` implementation that provides
+ * validation and convenience helpers for vote-related operations used by the
+ * application domain. It delegates persistence to the underlying `VotesApi`.
+ *
+ * Public methods include creating votes, retrieving by id/bill/user, updating
+ * and computing aggregated vote counts for a bill.
+ */
 export default class VoteStore {
   private api: VotesApi;
 

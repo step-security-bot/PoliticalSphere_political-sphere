@@ -1,0 +1,924 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>political-sphere documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">political-sphere documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content interface">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Interfaces</li>
+  <li class="breadcrumb-item"
+  >
+  Database</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>apps/api/src/utils/database-connection-pool.ts</code>
+        </p>
+
+
+            <p class="comment">
+                <h3>Description</h3>
+            </p>
+            <p class="comment">
+                <p>Interface representing a SQLite database connection with essential operations.
+Provides access to database pragmas, prepared statements, and connection management.</p>
+
+            </p>
+
+
+        <section data-compodoc="block-index">
+            <h3 id="index">Index</h3>
+            <table class="table table-sm table-bordered index-table">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <h6><b>Methods</b></h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <ul class="index-list">
+                                <li>
+                                    <a href="#close" 
+>
+                                        close
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#pragma" 
+>
+                                        pragma
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#prepare" 
+>
+                                        prepare
+                                    </a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+            <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="close"></a>
+                    <span class="name">
+                        <span ><b>close</b></span>
+                        <a href="#close"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>close()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="14"
+                                    class="link-to-prism">apps/api/src/utils/database-connection-pool.ts:14</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="pragma"></a>
+                    <span class="name">
+                        <span ><b>pragma</b></span>
+                        <a href="#pragma"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>pragma(sql: <a href="../unknowns/g.html" target="_self">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="12"
+                                    class="link-to-prism">apps/api/src/utils/database-connection-pool.ts:12</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>sql</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>unknown</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="prepare"></a>
+                    <span class="name">
+                        <span ><b>prepare</b></span>
+                        <a href="#prepare"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>prepare(sql: <a href="../unknowns/g.html" target="_self">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="13"
+                                    class="link-to-prism">apps/api/src/utils/database-connection-pool.ts:13</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>sql</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../interfaces/Statement.html" target="_self" >Statement</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">const pathUtil &#x3D; require(&#x27;node:path&#x27;);
+
+const DatabaseLib &#x3D; require(&#x27;better-sqlite3&#x27;);
+
+const logger &#x3D; require(&#x27;./logger&#x27;);
+
+/**
+ * Interface representing a SQLite database connection with essential operations.
+ * Provides access to database pragmas, prepared statements, and connection management.
+ */
+interface Database {
+  pragma(sql: string): unknown;
+  prepare(sql: string): Statement;
+  close(): void;
+}
+
+/**
+ * Interface representing a prepared SQL statement with execution methods.
+ * Supports running statements, retrieving single rows, and fetching all results.
+ */
+interface Statement {
+  run(...params: unknown[]): unknown;
+  get(...params: unknown[]): unknown;
+  all(...params: unknown[]): unknown;
+  finalize(): void;
+}
+
+/**
+ * Interface representing a pooled database connection with metadata.
+ * Tracks connection lifecycle, usage statistics, and prepared statement cache.
+ */
+interface PoolConnection {
+  db: Database | null;
+  id: number;
+  createdAt: number;
+  lastUsed: number;
+  preparedStatements: Map&lt;string, Statement&gt;;
+}
+
+/**
+ * Path to the SQLite database file used by the connection pool.
+ * Located in the runtime data directory for proper isolation.
+ */
+const POOL_DB_PATH &#x3D; pathUtil.join(__dirname, &#x27;../../../data/runtime/political_sphere.db&#x27;);
+
+/**
+ * Configuration object for the database connection pool.
+ * Defines pool sizing, timeouts, and maintenance intervals.
+ * All values can be overridden via environment variables.
+ */
+const POOL_CONFIG &#x3D; {
+  maxConnections: parseInt(process.env.DB_MAX_CONNECTIONS || &#x27;10&#x27;, 10),
+  minConnections: parseInt(process.env.DB_MIN_CONNECTIONS || &#x27;2&#x27;, 10),
+  acquireTimeoutMillis: parseInt(process.env.DB_ACQUIRE_TIMEOUT || &#x27;60000&#x27;, 10),
+  createTimeoutMillis: parseInt(process.env.DB_CREATE_TIMEOUT || &#x27;30000&#x27;, 10),
+  destroyTimeoutMillis: parseInt(process.env.DB_DESTROY_TIMEOUT || &#x27;5000&#x27;, 10),
+  reapIntervalMillis: parseInt(process.env.DB_REAP_INTERVAL || &#x27;1000&#x27;, 10),
+  createRetryIntervalMillis: parseInt(process.env.DB_CREATE_RETRY_INTERVAL || &#x27;200&#x27;, 10),
+};
+
+/**
+ * Connection pool for managing SQLite database connections efficiently.
+ * Implements connection pooling to reduce overhead of creating/destroying connections.
+ * Supports prepared statement caching and automatic connection lifecycle management.
+ */
+class DatabaseConnectionPool {
+  pool: PoolConnection[];
+  available: PoolConnection[];
+  waitingQueue: Array&lt;{
+    resolve: (conn: PoolConnection) &#x3D;&gt; void;
+    reject: (err: Error) &#x3D;&gt; void;
+    timeout: NodeJS.Timeout;
+  }&gt;;
+  isShuttingDown: boolean;
+  stats: {
+    created: number;
+    destroyed: number;
+    acquired: number;
+    released: number;
+    borrowed: number;
+    pending: number;
+  };
+
+  /**
+   * Creates a new DatabaseConnectionPool instance.
+   * Initializes the connection pool with minimum connections and starts maintenance processes.
+   * Configures SQLite pragmas for optimal performance and reliability.
+   */
+  constructor() {
+    this.pool &#x3D; [];
+    this.available &#x3D; [];
+    this.waitingQueue &#x3D; [];
+    this.isShuttingDown &#x3D; false;
+    this.stats &#x3D; {
+      created: 0,
+      destroyed: 0,
+      acquired: 0,
+      released: 0,
+      pending: 0,
+      borrowed: 0,
+    };
+
+    // Initialize minimum connections
+    this.initializePool();
+
+    // Start pool maintenance
+    this.startMaintenance();
+    // Start pool maintenance
+    this.startMaintenance();
+  }
+
+  /**
+   * Initializes the connection pool with the minimum number of connections.
+   * Creates and warms up connections to ensure they&#x27;re ready for use.
+   * Logs initialization status and throws on failure.
+   */
+  async initializePool() {
+    try {
+      for (let i &#x3D; 0; i &lt; POOL_CONFIG.minConnections; i++) {
+        const connection &#x3D; await this.createConnection();
+        this.pool.push(connection);
+        this.available.push(connection);
+      }
+      logger.info(&#x27;Database connection pool initialized&#x27;, {
+        minConnections: POOL_CONFIG.minConnections,
+        maxConnections: POOL_CONFIG.maxConnections,
+      });
+    } catch (error) {
+      logger.error(&#x27;Failed to initialize database connection pool&#x27;, {
+        error: (error as Error).message,
+      });
+      throw error;
+    }
+  }
+
+  /**
+   * Creates a new database connection with optimized SQLite configuration.
+   * Sets up WAL mode, foreign keys, busy timeout, and performance pragmas.
+   * Returns a PoolConnection object ready for use.
+   *
+   * @returns A new PoolConnection with initialized database instance
+   */
+  async createConnection(): Promise&lt;PoolConnection&gt; {
+    const connection: PoolConnection &#x3D; {
+      db: null,
+      id: ++this.stats.created,
+      createdAt: Date.now(),
+      lastUsed: Date.now(),
+      preparedStatements: new Map&lt;string, Statement&gt;(),
+    };
+
+    try {
+      connection.db &#x3D; new DatabaseLib(POOL_DB_PATH) as Database;
+      if (connection.db) {
+        connection.db.pragma(&#x27;journal_mode &#x3D; WAL&#x27;);
+        connection.db.pragma(&#x27;foreign_keys &#x3D; ON&#x27;);
+        connection.db.pragma(&#x27;busy_timeout &#x3D; 30000&#x27;);
+        connection.db.pragma(&#x27;synchronous &#x3D; NORMAL&#x27;);
+        connection.db.pragma(&#x27;cache_size &#x3D; 1000000&#x27;); // 1GB cache
+        connection.db.pragma(&#x27;temp_store &#x3D; memory&#x27;);
+      }
+
+      logger.debug(&#x27;Database connection created&#x27;, {
+        connectionId: connection.id,
+      });
+      return connection;
+    } catch (error) {
+      logger.error(&#x27;Failed to create database connection&#x27;, {
+        error: (error as Error).message,
+      });
+      throw error;
+    }
+  }
+
+  /**
+   * Acquires a database connection from the pool.
+   * Returns an available connection immediately if one exists, creates a new connection
+   * if under the maximum limit, or queues the request if all connections are busy.
+   * Times out after the configured acquire timeout.
+   *
+   * @returns A PoolConnection ready for database operations
+   * @throws Error if pool is shutting down or acquire timeout is exceeded
+   */
+  async acquire() {
+    if (this.isShuttingDown) {
+      throw new Error(&#x27;Connection pool is shutting down&#x27;);
+    }
+
+    // Try to get available connection
+    if (this.available.length &gt; 0) {
+      const connection &#x3D; this.available.pop() as PoolConnection | undefined;
+      if (!connection) {
+        throw new Error(
+          &#x60;Pooled connection unexpectedly undefined. Pool size: ${this.pool.length}, Available: ${this.available.length}, Pool IDs: [${this.pool.map(c &#x3D;&gt; c.id).join(&#x27;,&#x27;)}], Available IDs: [${this.available.map(c &#x3D;&gt; c.id).join(&#x27;,&#x27;)}]&#x60;
+        );
+      }
+      connection.lastUsed &#x3D; Date.now();
+      this.stats.acquired++;
+      this.stats.borrowed++;
+      logger.debug(&#x27;Database connection acquired from pool&#x27;, {
+        connectionId: connection.id,
+        available: this.available.length,
+        borrowed: this.stats.borrowed,
+      });
+      return connection;
+    }
+
+    // Create new connection if under max limit
+    if (this.pool.length &lt; POOL_CONFIG.maxConnections) {
+      try {
+        const connection &#x3D; await this.createConnection();
+        this.pool.push(connection);
+        connection.lastUsed &#x3D; Date.now();
+        this.stats.acquired++;
+        this.stats.borrowed++;
+        return connection;
+      } catch (error) {
+        logger.warn(&#x27;Failed to create new connection, will retry&#x27;, {
+          error: (error as Error).message,
+        });
+      }
+    }
+
+    // Wait for available connection
+    return new Promise((resolve, reject) &#x3D;&gt; {
+      const timeout &#x3D; setTimeout(() &#x3D;&gt; {
+        this.stats.pending--;
+        const index &#x3D; this.waitingQueue.findIndex(item &#x3D;&gt; item.resolve &#x3D;&#x3D;&#x3D; resolve);
+        if (index &gt; -1) {
+          this.waitingQueue.splice(index, 1);
+        }
+        reject(new Error(&#x27;Connection acquire timeout&#x27;));
+      }, POOL_CONFIG.acquireTimeoutMillis);
+
+      this.waitingQueue.push({ resolve, reject, timeout });
+      this.stats.pending++;
+    });
+  }
+
+  /**
+   * Releases a database connection back to the pool.
+   * If there are waiting requests, the connection is immediately assigned to the next waiter.
+   * Otherwise, it&#x27;s returned to the available pool for future use.
+   * Connections are validated before reuse to ensure they&#x27;re still functional.
+   *
+   * @param connection The PoolConnection to release back to the pool
+   */
+  async release(connection: PoolConnection) {
+    if (this.isShuttingDown) {
+      await this.destroyConnection(connection);
+      return;
+    }
+
+    // Check if anyone is waiting
+    if (this.waitingQueue.length &gt; 0) {
+      const waiter &#x3D; this.waitingQueue.shift();
+      if (waiter) {
+        this.stats.pending--;
+        connection.lastUsed &#x3D; Date.now();
+        waiter.resolve(connection);
+        return;
+      }
+    }
+
+    // Return to available pool
+    this.available.push(connection);
+    this.stats.released++;
+    this.stats.borrowed--;
+
+    logger.debug(&#x27;Database connection released to pool&#x27;, {
+      connectionId: connection.id,
+      available: this.available.length,
+      borrowed: this.stats.borrowed,
+    });
+  }
+
+  /**
+   * Permanently destroys a database connection and removes it from the pool.
+   * Finalizes all prepared statements, closes the database connection, and cleans up
+   * references. Used during pool shutdown or when a connection becomes unusable.
+   *
+   * @param connection The PoolConnection to destroy
+   */
+  async destroyConnection(connection: PoolConnection) {
+    try {
+      if (connection.db) {
+        // Finalize prepared statements
+        for (const stmt of connection.preparedStatements.values()) {
+          stmt.finalize();
+        }
+        connection.preparedStatements.clear();
+
+        connection.db.close();
+        connection.db &#x3D; null;
+      }
+      this.stats.destroyed++;
+
+      // Remove from pool arrays
+      const poolIndex &#x3D; this.pool.indexOf(connection);
+      if (poolIndex &gt; -1) {
+        this.pool.splice(poolIndex, 1);
+      }
+
+      const availableIndex &#x3D; this.available.indexOf(connection);
+      if (availableIndex &gt; -1) {
+        this.available.splice(availableIndex, 1);
+      }
+
+      logger.debug(&#x27;Database connection destroyed&#x27;, {
+        connectionId: connection.id,
+      });
+    } catch (error) {
+      logger.error(&#x27;Error destroying database connection&#x27;, {
+        connectionId: connection.id,
+        error: (error as Error).message,
+      });
+    }
+  }
+
+  startMaintenance() {
+    setInterval(() &#x3D;&gt; {
+      this.reapStaleConnections();
+    }, POOL_CONFIG.reapIntervalMillis);
+  }
+
+  reapStaleConnections() {
+    const now &#x3D; Date.now();
+    const staleConnections &#x3D; this.available.filter(
+      conn &#x3D;&gt; now - conn.lastUsed &gt; 300000 // 5 minutes
+    );
+
+    for (const connection of staleConnections) {
+      if (this.pool.length &gt; POOL_CONFIG.minConnections) {
+        this.destroyConnection(connection);
+      }
+    }
+  }
+
+  /**
+   * Gracefully shuts down the connection pool.
+   * Rejects all pending connection requests, destroys all existing connections,
+   * and prevents new connections from being acquired. This method should be called
+   * during application shutdown to ensure clean resource cleanup.
+   */
+  async close() {
+    this.isShuttingDown &#x3D; true;
+
+    // Reject all pending acquires
+    for (const waiter of this.waitingQueue) {
+      clearTimeout(waiter.timeout);
+      waiter.reject(new Error(&#x27;Connection pool is shutting down&#x27;));
+    }
+    this.waitingQueue &#x3D; [];
+    this.stats.pending &#x3D; 0;
+
+    // Close all connections
+    const closePromises &#x3D; [];
+    for (const connection of [...this.pool, ...this.available]) {
+      closePromises.push(this.destroyConnection(connection));
+    }
+
+    await Promise.all(closePromises);
+
+    logger.info(&#x27;Database connection pool closed&#x27;, {
+      totalConnections: this.stats.created,
+      destroyedConnections: this.stats.destroyed,
+    });
+  }
+
+  /**
+   * Returns current pool statistics and health metrics.
+   * Useful for monitoring pool performance and debugging connection issues.
+   *
+   * @returns Object containing pool statistics including connection counts, usage metrics, and queue status
+   */
+  getStats() {
+    return {
+      ...this.stats,
+      poolSize: this.pool.length,
+      available: this.available.length,
+      waiting: this.waitingQueue.length,
+    };
+  }
+}
+
+// Create singleton pool instance
+const connectionPool &#x3D; new DatabaseConnectionPool();
+
+// Legacy compatibility - provide getConnection method
+let legacyConnection: {
+  prepare: (sql: string) &#x3D;&gt; {
+    run: (...params: unknown[]) &#x3D;&gt; Promise&lt;unknown&gt;;
+    get: (...params: unknown[]) &#x3D;&gt; Promise&lt;unknown&gt;;
+    all: (...params: unknown[]) &#x3D;&gt; Promise&lt;unknown&gt;;
+  };
+} | null &#x3D; null;
+function getConnection() {
+  if (!legacyConnection) {
+    legacyConnection &#x3D; {
+      prepare: (sql: string) &#x3D;&gt; {
+        return {
+          run: async (...params: unknown[]) &#x3D;&gt; {
+            const conn &#x3D; (await connectionPool.acquire()) as PoolConnection;
+            try {
+              const stmt &#x3D; conn.preparedStatements.get(sql);
+              if (!stmt) {
+                if (!conn.db) throw new Error(&#x27;Database not initialized&#x27;);
+                const prepared &#x3D; conn.db.prepare(sql);
+                conn.preparedStatements.set(sql, prepared);
+                return prepared.run(...params);
+              }
+              return stmt.run(...params);
+            } finally {
+              connectionPool.release(conn);
+            }
+          },
+          get: async (...params: unknown[]) &#x3D;&gt; {
+            const conn &#x3D; (await connectionPool.acquire()) as PoolConnection;
+            try {
+              const stmt &#x3D; conn.preparedStatements.get(sql);
+              if (!stmt) {
+                if (!conn.db) throw new Error(&#x27;Database not initialized&#x27;);
+                const prepared &#x3D; conn.db.prepare(sql);
+                conn.preparedStatements.set(sql, prepared);
+                return prepared.get(...params);
+              }
+              return stmt.get(...params);
+            } finally {
+              connectionPool.release(conn);
+            }
+          },
+          all: async (...params: unknown[]) &#x3D;&gt; {
+            const conn &#x3D; (await connectionPool.acquire()) as PoolConnection;
+            try {
+              const stmt &#x3D; conn.preparedStatements.get(sql);
+              if (!stmt) {
+                if (!conn.db) throw new Error(&#x27;Database not initialized&#x27;);
+                const prepared &#x3D; conn.db.prepare(sql);
+                conn.preparedStatements.set(sql, prepared);
+                return prepared.all(...params);
+              }
+              return stmt.all(...params);
+            } finally {
+              connectionPool.release(conn);
+            }
+          },
+        };
+      },
+    };
+  }
+  return legacyConnection;
+}
+
+function close() {
+  return connectionPool.close();
+}
+
+function getPoolStats() {
+  return connectionPool.getStats();
+}
+
+module.exports &#x3D; {
+  getConnection,
+  close,
+  getPoolStats,
+  connectionPool,
+};
+</code></pre>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'interface';
+            var COMPODOC_CURRENT_PAGE_URL = 'Database.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

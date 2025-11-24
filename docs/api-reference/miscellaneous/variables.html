@@ -1,0 +1,3016 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>political-sphere documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">political-sphere documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content miscellaneous-variables">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Miscellaneous</li>
+  <li class="breadcrumb-item">Variables</li>
+</ol>
+
+<section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <ul class="index-list">
+                        <li>
+                            <a href="#_results" title="apps/api/src/routes/elections.ts" ><b>_results</b>&nbsp;&nbsp;&nbsp;(apps/.../elections.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#ageVerificationLimiter" title="apps/api/src/routes/ageVerification.ts" ><b>ageVerificationLimiter</b>&nbsp;&nbsp;&nbsp;(apps/.../ageVerification.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#ageVerificationService" title="apps/api/src/routes/ageVerification.ts" ><b>ageVerificationService</b>&nbsp;&nbsp;&nbsp;(apps/.../ageVerification.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#AppointJudgeSchema" title="apps/api/src/routes/judiciary.ts" ><b>AppointJudgeSchema</b>&nbsp;&nbsp;&nbsp;(apps/.../judiciary.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#AppointMinisterSchema" title="apps/api/src/routes/government.ts" ><b>AppointMinisterSchema</b>&nbsp;&nbsp;&nbsp;(apps/.../government.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#approvalRatings" title="apps/api/src/routes/media.ts" ><b>approvalRatings</b>&nbsp;&nbsp;&nbsp;(apps/.../media.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#cabinetMeetings" title="apps/api/src/routes/government.ts" ><b>cabinetMeetings</b>&nbsp;&nbsp;&nbsp;(apps/.../government.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#CabinetMeetingSchema" title="apps/api/src/routes/government.ts" ><b>CabinetMeetingSchema</b>&nbsp;&nbsp;&nbsp;(apps/.../government.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#campaigns" title="apps/api/src/routes/elections.ts" ><b>campaigns</b>&nbsp;&nbsp;&nbsp;(apps/.../elections.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#candidates" title="apps/api/src/routes/elections.ts" ><b>candidates</b>&nbsp;&nbsp;&nbsp;(apps/.../elections.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#cases" title="apps/api/src/routes/judiciary.ts" ><b>cases</b>&nbsp;&nbsp;&nbsp;(apps/.../judiciary.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#CastPollVoteSchema" title="apps/api/src/routes/media.ts" ><b>CastPollVoteSchema</b>&nbsp;&nbsp;&nbsp;(apps/.../media.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#CastVoteSchema" title="apps/api/src/routes/elections.ts" ><b>CastVoteSchema</b>&nbsp;&nbsp;&nbsp;(apps/.../elections.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#CastVoteSchema" title="apps/api/src/routes/parliament.ts" ><b>CastVoteSchema</b>&nbsp;&nbsp;&nbsp;(apps/.../parliament.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#compliance" title="apps/api/src/routes/compliance.ts" ><b>compliance</b>&nbsp;&nbsp;&nbsp;(apps/.../compliance.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#complianceLimiter" title="apps/api/src/routes/compliance.ts" ><b>complianceLimiter</b>&nbsp;&nbsp;&nbsp;(apps/.../compliance.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#constituencies" title="apps/api/src/routes/elections.ts" ><b>constituencies</b>&nbsp;&nbsp;&nbsp;(apps/.../elections.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#coverage" title="apps/api/src/routes/media.ts" ><b>coverage</b>&nbsp;&nbsp;&nbsp;(apps/.../media.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#CreateChamberSchema" title="apps/api/src/routes/parliament.ts" ><b>CreateChamberSchema</b>&nbsp;&nbsp;&nbsp;(apps/.../parliament.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#CreateConstituencySchema" title="apps/api/src/routes/elections.ts" ><b>CreateConstituencySchema</b>&nbsp;&nbsp;&nbsp;(apps/.../elections.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#CreateElectionSchema" title="apps/api/src/routes/elections.ts" ><b>CreateElectionSchema</b>&nbsp;&nbsp;&nbsp;(apps/.../elections.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#CreateGovernmentSchema" title="apps/api/src/routes/government.ts" ><b>CreateGovernmentSchema</b>&nbsp;&nbsp;&nbsp;(apps/.../government.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#CreateMotionSchema" title="apps/api/src/routes/parliament.ts" ><b>CreateMotionSchema</b>&nbsp;&nbsp;&nbsp;(apps/.../parliament.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#CreatePollSchema" title="apps/api/src/routes/media.ts" ><b>CreatePollSchema</b>&nbsp;&nbsp;&nbsp;(apps/.../media.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#elections" title="apps/api/src/routes/elections.ts" ><b>elections</b>&nbsp;&nbsp;&nbsp;(apps/.../elections.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#executiveActions" title="apps/api/src/routes/government.ts" ><b>executiveActions</b>&nbsp;&nbsp;&nbsp;(apps/.../government.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#ExecutiveActionSchema" title="apps/api/src/routes/government.ts" ><b>ExecutiveActionSchema</b>&nbsp;&nbsp;&nbsp;(apps/.../government.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#FileCaseSchema" title="apps/api/src/routes/judiciary.ts" ><b>FileCaseSchema</b>&nbsp;&nbsp;&nbsp;(apps/.../judiciary.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#GenerateContentSchema" title="apps/api/src/routes/media.ts" ><b>GenerateContentSchema</b>&nbsp;&nbsp;&nbsp;(apps/.../media.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#getSimulationState" title="apps/api/src/routes/simulation.ts" ><b>getSimulationState</b>&nbsp;&nbsp;&nbsp;(apps/.../simulation.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#governments" title="apps/api/src/routes/government.ts" ><b>governments</b>&nbsp;&nbsp;&nbsp;(apps/.../government.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#governmentService" title="apps/api/src/domain/government-service.ts" ><b>governmentService</b>&nbsp;&nbsp;&nbsp;(apps/.../government-service.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#IssueRulingSchema" title="apps/api/src/routes/judiciary.ts" ><b>IssueRulingSchema</b>&nbsp;&nbsp;&nbsp;(apps/.../judiciary.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#judges" title="apps/api/src/routes/judiciary.ts" ><b>judges</b>&nbsp;&nbsp;&nbsp;(apps/.../judiciary.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#judiciaryService" title="apps/api/src/domain/judiciary-service.ts" ><b>judiciaryService</b>&nbsp;&nbsp;&nbsp;(apps/.../judiciary-service.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#logger" title="apps/api/src/domain/government-service.ts" ><b>logger</b>&nbsp;&nbsp;&nbsp;(apps/.../government-service.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#logger" title="apps/api/src/domain/judiciary-service.ts" ><b>logger</b>&nbsp;&nbsp;&nbsp;(apps/.../judiciary-service.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#LoginSchema" title="apps/api/src/routes/auth.ts" ><b>LoginSchema</b>&nbsp;&nbsp;&nbsp;(apps/.../auth.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#ministers" title="apps/api/src/routes/government.ts" ><b>ministers</b>&nbsp;&nbsp;&nbsp;(apps/.../government.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#mockSimulationState" title="apps/api/src/routes/simulation.ts" ><b>mockSimulationState</b>&nbsp;&nbsp;&nbsp;(apps/.../simulation.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#moderationLimiter" title="apps/api/src/routes/moderation.ts" ><b>moderationLimiter</b>&nbsp;&nbsp;&nbsp;(apps/.../moderation.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#narratives" title="apps/api/src/routes/media.ts" ><b>narratives</b>&nbsp;&nbsp;&nbsp;(apps/.../media.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#newsService" title="apps/api/src/routes/news.ts" ><b>newsService</b>&nbsp;&nbsp;&nbsp;(apps/.../news.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#parliamentService" title="apps/api/src/routes/parliament.ts" ><b>parliamentService</b>&nbsp;&nbsp;&nbsp;(apps/.../parliament.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#polls" title="apps/api/src/routes/media.ts" ><b>polls</b>&nbsp;&nbsp;&nbsp;(apps/.../media.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#pollVotes" title="apps/api/src/routes/media.ts" ><b>pollVotes</b>&nbsp;&nbsp;&nbsp;(apps/.../media.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#precedents" title="apps/api/src/routes/judiciary.ts" ><b>precedents</b>&nbsp;&nbsp;&nbsp;(apps/.../judiciary.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#pressReleases" title="apps/api/src/routes/media.ts" ><b>pressReleases</b>&nbsp;&nbsp;&nbsp;(apps/.../media.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#PublishPressReleaseSchema" title="apps/api/src/routes/media.ts" ><b>PublishPressReleaseSchema</b>&nbsp;&nbsp;&nbsp;(apps/.../media.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#RegisterCampaignSchema" title="apps/api/src/routes/elections.ts" ><b>RegisterCampaignSchema</b>&nbsp;&nbsp;&nbsp;(apps/.../elections.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#RegisterCandidateSchema" title="apps/api/src/routes/elections.ts" ><b>RegisterCandidateSchema</b>&nbsp;&nbsp;&nbsp;(apps/.../elections.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#RegisterSchema" title="apps/api/src/routes/auth.ts" ><b>RegisterSchema</b>&nbsp;&nbsp;&nbsp;(apps/.../auth.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#RequestReviewSchema" title="apps/api/src/routes/judiciary.ts" ><b>RequestReviewSchema</b>&nbsp;&nbsp;&nbsp;(apps/.../judiciary.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#requireAuth" title="apps/api/src/routes/bills.ts" ><b>requireAuth</b>&nbsp;&nbsp;&nbsp;(apps/.../bills.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#requireAuth" title="apps/api/src/routes/parties.ts" ><b>requireAuth</b>&nbsp;&nbsp;&nbsp;(apps/.../parties.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#requireAuth" title="apps/api/src/routes/users.ts" ><b>requireAuth</b>&nbsp;&nbsp;&nbsp;(apps/.../users.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#requireAuth" title="apps/api/src/routes/votes.ts" ><b>requireAuth</b>&nbsp;&nbsp;&nbsp;(apps/.../votes.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#reviews" title="apps/api/src/routes/judiciary.ts" ><b>reviews</b>&nbsp;&nbsp;&nbsp;(apps/.../judiciary.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#router" title="apps/api/src/routes/ageVerification.ts" ><b>router</b>&nbsp;&nbsp;&nbsp;(apps/.../ageVerification.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#router" title="apps/api/src/routes/auth.ts" ><b>router</b>&nbsp;&nbsp;&nbsp;(apps/.../auth.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#router" title="apps/api/src/routes/bills.ts" ><b>router</b>&nbsp;&nbsp;&nbsp;(apps/.../bills.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#router" title="apps/api/src/routes/compliance.ts" ><b>router</b>&nbsp;&nbsp;&nbsp;(apps/.../compliance.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#router" title="apps/api/src/routes/elections.ts" ><b>router</b>&nbsp;&nbsp;&nbsp;(apps/.../elections.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#router" title="apps/api/src/routes/government.ts" ><b>router</b>&nbsp;&nbsp;&nbsp;(apps/.../government.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#router" title="apps/api/src/routes/judiciary.ts" ><b>router</b>&nbsp;&nbsp;&nbsp;(apps/.../judiciary.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#router" title="apps/api/src/routes/media.ts" ><b>router</b>&nbsp;&nbsp;&nbsp;(apps/.../media.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#router" title="apps/api/src/routes/moderation.ts" ><b>router</b>&nbsp;&nbsp;&nbsp;(apps/.../moderation.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#router" title="apps/api/src/routes/news.ts" ><b>router</b>&nbsp;&nbsp;&nbsp;(apps/.../news.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#router" title="apps/api/src/routes/parliament.ts" ><b>router</b>&nbsp;&nbsp;&nbsp;(apps/.../parliament.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#router" title="apps/api/src/routes/parties.ts" ><b>router</b>&nbsp;&nbsp;&nbsp;(apps/.../parties.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#router" title="apps/api/src/routes/users.ts" ><b>router</b>&nbsp;&nbsp;&nbsp;(apps/.../users.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#router" title="apps/api/src/routes/votes.ts" ><b>router</b>&nbsp;&nbsp;&nbsp;(apps/.../votes.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#rulings" title="apps/api/src/routes/judiciary.ts" ><b>rulings</b>&nbsp;&nbsp;&nbsp;(apps/.../judiciary.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#ScheduleDebateSchema" title="apps/api/src/routes/parliament.ts" ><b>ScheduleDebateSchema</b>&nbsp;&nbsp;&nbsp;(apps/.../parliament.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#TrackCoverageSchema" title="apps/api/src/routes/media.ts" ><b>TrackCoverageSchema</b>&nbsp;&nbsp;&nbsp;(apps/.../media.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#TrackNarrativeSchema" title="apps/api/src/routes/media.ts" ><b>TrackNarrativeSchema</b>&nbsp;&nbsp;&nbsp;(apps/.../media.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#updateSimulationState" title="apps/api/src/routes/simulation.ts" ><b>updateSimulationState</b>&nbsp;&nbsp;&nbsp;(apps/.../simulation.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#validationMetrics" title="apps/api/src/routes/validation-metrics.ts" ><b>validationMetrics</b>&nbsp;&nbsp;&nbsp;(apps/.../validation-metrics.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#votes" title="apps/api/src/routes/elections.ts" ><b>votes</b>&nbsp;&nbsp;&nbsp;(apps/.../elections.ts)</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+
+    <h3>apps/api/src/routes/elections.ts</h3>
+    <section data-compodoc="block-properties">
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="_results"></a>
+                    <span class="name">
+                        <span ><b>_results</b></span>
+                        <a href="#_results"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new Map&lt;string, unknown&gt;()</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="campaigns"></a>
+                    <span class="name">
+                        <span ><b>campaigns</b></span>
+                        <a href="#campaigns"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new Map&lt;string, Campaign&gt;()</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="candidates"></a>
+                    <span class="name">
+                        <span ><b>candidates</b></span>
+                        <a href="#candidates"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new Map&lt;string, Candidate&gt;()</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="CastVoteSchema"></a>
+                    <span class="name">
+                        <span ><b>CastVoteSchema</b></span>
+                        <a href="#CastVoteSchema"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>z.object({
+  electionId: z.string().uuid(),
+  constituencyId: z.string().uuid(),
+  candidateId: z.string().uuid(),
+})</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="constituencies"></a>
+                    <span class="name">
+                        <span ><b>constituencies</b></span>
+                        <a href="#constituencies"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new Map&lt;string, Constituency&gt;()</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="CreateConstituencySchema"></a>
+                    <span class="name">
+                        <span ><b>CreateConstituencySchema</b></span>
+                        <a href="#CreateConstituencySchema"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>z.object({
+  electionId: z.string().uuid(),
+  name: z.string().min(1).max(200),
+  population: z.number().int().min(1),
+  registeredVoters: z.number().int().min(0),
+  region: z.string().min(1).max(100),
+})</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="CreateElectionSchema"></a>
+                    <span class="name">
+                        <span ><b>CreateElectionSchema</b></span>
+                        <a href="#CreateElectionSchema"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>z.object({
+  gameId: z.string().uuid(),
+  name: z.string().min(1).max(200),
+  electionType: z.enum([&#x27;general&#x27;, &#x27;by_election&#x27;, &#x27;local&#x27;, &#x27;referendum&#x27;]),
+  startDate: z.string().datetime(),
+  endDate: z.string().datetime(),
+  description: z.string().min(1).max(2000).optional(),
+})</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="elections"></a>
+                    <span class="name">
+                        <span ><b>elections</b></span>
+                        <a href="#elections"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new Map&lt;string, Election&gt;()</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="RegisterCampaignSchema"></a>
+                    <span class="name">
+                        <span ><b>RegisterCampaignSchema</b></span>
+                        <a href="#RegisterCampaignSchema"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>z.object({
+  electionId: z.string().uuid(),
+  partyId: z.string().uuid().optional(),
+  candidateId: z.string().uuid(),
+  name: z.string().min(1).max(200),
+  slogan: z.string().min(1).max(200).optional(),
+  platform: z.string().min(1).max(5000),
+  budget: z.number().min(0).default(0),
+})</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="RegisterCandidateSchema"></a>
+                    <span class="name">
+                        <span ><b>RegisterCandidateSchema</b></span>
+                        <a href="#RegisterCandidateSchema"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>z.object({
+  electionId: z.string().uuid(),
+  constituencyId: z.string().uuid(),
+  userId: z.string().uuid(),
+  partyId: z.string().uuid().optional(),
+  independent: z.boolean().default(false),
+  deposit: z.number().min(0).default(500),
+})</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="router"></a>
+                    <span class="name">
+                        <span ><b>router</b></span>
+                        <a href="#router"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>express.Router()</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="votes"></a>
+                    <span class="name">
+                        <span ><b>votes</b></span>
+                        <a href="#votes"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new Map&lt;string, VoteRecord&gt;()</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+</section>
+    <h3>apps/api/src/routes/ageVerification.ts</h3>
+    <section data-compodoc="block-properties">
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ageVerificationLimiter"></a>
+                    <span class="name">
+                        <span ><b>ageVerificationLimiter</b></span>
+                        <a href="#ageVerificationLimiter"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>rateLimit({
+  windowMs: 60 * 60 * 1000, // 1 hour
+  max: 5, // limit each IP to 5 verification attempts per hour
+  message: &#x27;Too many verification attempts, please try again later.&#x27;,
+  standardHeaders: true,
+  legacyHeaders: false,
+})</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ageVerificationService"></a>
+                    <span class="name">
+                        <span ><b>ageVerificationService</b></span>
+                        <a href="#ageVerificationService"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new AgeVerificationService()</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="router"></a>
+                    <span class="name">
+                        <span ><b>router</b></span>
+                        <a href="#router"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>express.Router()</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+</section>
+    <h3>apps/api/src/routes/judiciary.ts</h3>
+    <section data-compodoc="block-properties">
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="AppointJudgeSchema"></a>
+                    <span class="name">
+                        <span ><b>AppointJudgeSchema</b></span>
+                        <a href="#AppointJudgeSchema"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>z.object({
+  gameId: z.string().uuid(),
+  userId: z.string().uuid(),
+  court: z.enum([&#x27;supreme_court&#x27;, &#x27;high_court&#x27;, &#x27;appeals_court&#x27;]),
+  position: z.string().min(1).max(100),
+  tenure: z.enum([&#x27;life&#x27;, &#x27;fixed_term&#x27;, &#x27;renewable&#x27;]),
+  termYears: z.number().int().min(1).max(30).optional(),
+})</code>
+                    </td>
+                </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Zod schema for validating judge appointment input.
+Defines the structure for appointing judges to various courts.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="cases"></a>
+                    <span class="name">
+                        <span ><b>cases</b></span>
+                        <a href="#cases"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new Map&lt;string, LegalCase&gt;()</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="FileCaseSchema"></a>
+                    <span class="name">
+                        <span ><b>FileCaseSchema</b></span>
+                        <a href="#FileCaseSchema"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>z.object({
+  gameId: z.string().uuid(),
+  plaintiffId: z.string().uuid(),
+  defendantId: z.string().uuid().optional(),
+  caseType: z.enum([&#x27;constitutional_review&#x27;, &#x27;legal_challenge&#x27;, &#x27;appeal&#x27;, &#x27;judicial_review&#x27;]),
+  title: z.string().min(1).max(200),
+  description: z.string().min(1).max(5000),
+  legalBasis: z.string().min(1).max(2000),
+  targetLawId: z.string().uuid().optional(),
+  targetActionId: z.string().uuid().optional(),
+})</code>
+                    </td>
+                </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Zod schema for validating legal case filing input.
+Defines the structure for filing constitutional reviews and legal challenges.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="IssueRulingSchema"></a>
+                    <span class="name">
+                        <span ><b>IssueRulingSchema</b></span>
+                        <a href="#IssueRulingSchema"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>z.object({
+  caseId: z.string().uuid(),
+  judgeId: z.string().uuid(),
+  decision: z.enum([&#x27;upheld&#x27;, &#x27;overturned&#x27;, &#x27;remanded&#x27;, &#x27;dismissed&#x27;]),
+  reasoning: z.string().min(1).max(5000),
+  precedentSetting: z.boolean().default(false),
+  constitutionalImpact: z.enum([&#x27;none&#x27;, &#x27;minor&#x27;, &#x27;major&#x27;, &#x27;landmark&#x27;]).default(&#x27;none&#x27;),
+})</code>
+                    </td>
+                </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Zod schema for validating judicial ruling input.
+Defines the structure for issuing court rulings and decisions.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="judges"></a>
+                    <span class="name">
+                        <span ><b>judges</b></span>
+                        <a href="#judges"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new Map&lt;string, Judge&gt;()</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="precedents"></a>
+                    <span class="name">
+                        <span ><b>precedents</b></span>
+                        <a href="#precedents"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new Map&lt;string, Precedent&gt;()</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="RequestReviewSchema"></a>
+                    <span class="name">
+                        <span ><b>RequestReviewSchema</b></span>
+                        <a href="#RequestReviewSchema"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>z.object({
+  gameId: z.string().uuid(),
+  requesterId: z.string().uuid(),
+  targetType: z.enum([&#x27;law&#x27;, &#x27;executive_action&#x27;, &#x27;parliamentary_procedure&#x27;]),
+  targetId: z.string().uuid(),
+  grounds: z.string().min(1).max(2000),
+  urgency: z.enum([&#x27;routine&#x27;, &#x27;expedited&#x27;, &#x27;emergency&#x27;]).default(&#x27;routine&#x27;),
+})</code>
+                    </td>
+                </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Zod schema for validating constitutional review requests.
+Defines the structure for requesting judicial review of laws and actions.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="reviews"></a>
+                    <span class="name">
+                        <span ><b>reviews</b></span>
+                        <a href="#reviews"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new Map&lt;string, Review&gt;()</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="router"></a>
+                    <span class="name">
+                        <span ><b>router</b></span>
+                        <a href="#router"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>express.Router()</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="rulings"></a>
+                    <span class="name">
+                        <span ><b>rulings</b></span>
+                        <a href="#rulings"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new Map&lt;string, Ruling&gt;()</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+</section>
+    <h3>apps/api/src/routes/government.ts</h3>
+    <section data-compodoc="block-properties">
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="AppointMinisterSchema"></a>
+                    <span class="name">
+                        <span ><b>AppointMinisterSchema</b></span>
+                        <a href="#AppointMinisterSchema"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>z.object({
+  governmentId: z.string().uuid(),
+  userId: z.string().uuid(),
+  position: z.enum([
+    &#x27;prime_minister&#x27;,
+    &#x27;chancellor&#x27;,
+    &#x27;foreign_secretary&#x27;,
+    &#x27;home_secretary&#x27;,
+    &#x27;defence_secretary&#x27;,
+    &#x27;health_secretary&#x27;,
+    &#x27;education_secretary&#x27;,
+    &#x27;justice_secretary&#x27;,
+    &#x27;environment_secretary&#x27;,
+    &#x27;transport_secretary&#x27;,
+    &#x27;business_secretary&#x27;,
+    &#x27;work_pensions_secretary&#x27;,
+  ]),
+  department: z.string().min(1).max(200),
+})</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="cabinetMeetings"></a>
+                    <span class="name">
+                        <span ><b>cabinetMeetings</b></span>
+                        <a href="#cabinetMeetings"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new Map&lt;string, CabinetMeeting&gt;()</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="CabinetMeetingSchema"></a>
+                    <span class="name">
+                        <span ><b>CabinetMeetingSchema</b></span>
+                        <a href="#CabinetMeetingSchema"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>z.object({
+  governmentId: z.string().uuid(),
+  agenda: z.string().min(1).max(2000),
+  scheduledDate: z.string().datetime(),
+  attendees: z.array(z.string().uuid()),
+})</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="CreateGovernmentSchema"></a>
+                    <span class="name">
+                        <span ><b>CreateGovernmentSchema</b></span>
+                        <a href="#CreateGovernmentSchema"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>z.object({
+  gameId: z.string().uuid(),
+  primeMinisterId: z.string().uuid(),
+  name: z.string().min(1).max(200),
+  type: z.enum([&#x27;coalition&#x27;, &#x27;majority&#x27;, &#x27;minority&#x27;]),
+  formationDate: z.string().datetime(),
+})</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="executiveActions"></a>
+                    <span class="name">
+                        <span ><b>executiveActions</b></span>
+                        <a href="#executiveActions"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new Map&lt;string, ExecutiveAction&gt;()</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ExecutiveActionSchema"></a>
+                    <span class="name">
+                        <span ><b>ExecutiveActionSchema</b></span>
+                        <a href="#ExecutiveActionSchema"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>z.object({
+  governmentId: z.string().uuid(),
+  ministerId: z.string().uuid(),
+  type: z.enum([&#x27;order&#x27;, &#x27;regulation&#x27;, &#x27;appointment&#x27;, &#x27;treaty&#x27;, &#x27;emergency&#x27;]),
+  title: z.string().min(1).max(200),
+  description: z.string().min(1).max(5000),
+  requiresParliamentApproval: z.boolean().default(false),
+})</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="governments"></a>
+                    <span class="name">
+                        <span ><b>governments</b></span>
+                        <a href="#governments"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new Map&lt;string, Government&gt;()</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ministers"></a>
+                    <span class="name">
+                        <span ><b>ministers</b></span>
+                        <a href="#ministers"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new Map&lt;string, Minister&gt;()</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="router"></a>
+                    <span class="name">
+                        <span ><b>router</b></span>
+                        <a href="#router"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>express.Router()</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+</section>
+    <h3>apps/api/src/routes/media.ts</h3>
+    <section data-compodoc="block-properties">
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="approvalRatings"></a>
+                    <span class="name">
+                        <span ><b>approvalRatings</b></span>
+                        <a href="#approvalRatings"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new Map()</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="CastPollVoteSchema"></a>
+                    <span class="name">
+                        <span ><b>CastPollVoteSchema</b></span>
+                        <a href="#CastPollVoteSchema"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>z.object({
+  pollId: z.string().uuid(),
+  optionIndex: z.number().int().min(0),
+})</code>
+                    </td>
+                </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Zod schema for validating poll vote casting input.
+Defines the structure for submitting votes in public opinion polls.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="coverage"></a>
+                    <span class="name">
+                        <span ><b>coverage</b></span>
+                        <a href="#coverage"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new Map()</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="CreatePollSchema"></a>
+                    <span class="name">
+                        <span ><b>CreatePollSchema</b></span>
+                        <a href="#CreatePollSchema"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>z.object({
+  gameId: z.string().uuid(),
+  creatorId: z.string().uuid(),
+  question: z.string().min(1).max(500),
+  options: z.array(z.string().min(1).max(200)).min(2).max(10),
+  pollType: z.enum([&#x27;approval&#x27;, &#x27;preference&#x27;, &#x27;issue&#x27;, &#x27;election&#x27;]),
+  duration: z.number().int().min(3600).max(604800), // 1 hour to 1 week in seconds
+  targetAudience: z.enum([&#x27;all&#x27;, &#x27;voters&#x27;, &#x27;members&#x27;, &#x27;specific&#x27;]).default(&#x27;all&#x27;),
+})</code>
+                    </td>
+                </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Zod schema for validating poll creation input.
+Defines the structure for creating public opinion polls and surveys.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="GenerateContentSchema"></a>
+                    <span class="name">
+                        <span ><b>GenerateContentSchema</b></span>
+                        <a href="#GenerateContentSchema"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>z.object({
+  gameId: z.string().uuid(),
+  contentType: z.enum([&#x27;press-release&#x27;, &#x27;headline&#x27;, &#x27;summary&#x27;, &#x27;opinion&#x27;]),
+  topic: z.string().min(1).max(500),
+  tone: z.enum([&#x27;neutral&#x27;, &#x27;positive&#x27;, &#x27;negative&#x27;, &#x27;formal&#x27;, &#x27;casual&#x27;]).default(&#x27;neutral&#x27;),
+  length: z.enum([&#x27;short&#x27;, &#x27;medium&#x27;, &#x27;long&#x27;]).default(&#x27;medium&#x27;),
+  context: z.record(z.any()).optional(),
+})</code>
+                    </td>
+                </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Zod schema for validating content generation input.
+Defines the structure for AI-generated media content requests.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="narratives"></a>
+                    <span class="name">
+                        <span ><b>narratives</b></span>
+                        <a href="#narratives"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new Map()</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="polls"></a>
+                    <span class="name">
+                        <span ><b>polls</b></span>
+                        <a href="#polls"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new Map()</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="pollVotes"></a>
+                    <span class="name">
+                        <span ><b>pollVotes</b></span>
+                        <a href="#pollVotes"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new Map()</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="pressReleases"></a>
+                    <span class="name">
+                        <span ><b>pressReleases</b></span>
+                        <a href="#pressReleases"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new Map()</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="PublishPressReleaseSchema"></a>
+                    <span class="name">
+                        <span ><b>PublishPressReleaseSchema</b></span>
+                        <a href="#PublishPressReleaseSchema"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>z.object({
+  gameId: z.string().uuid(),
+  authorId: z.string().uuid(),
+  authorType: z.enum([&#x27;government&#x27;, &#x27;party&#x27;, &#x27;individual&#x27;, &#x27;organization&#x27;]),
+  title: z.string().min(1).max(200),
+  content: z.string().min(1).max(5000),
+  category: z.enum([&#x27;policy&#x27;, &#x27;announcement&#x27;, &#x27;response&#x27;, &#x27;statement&#x27;, &#x27;emergency&#x27;]),
+  visibility: z.enum([&#x27;public&#x27;, &#x27;restricted&#x27;, &#x27;embargoed&#x27;]).default(&#x27;public&#x27;),
+  embargoUntil: z.string().datetime().optional(),
+})</code>
+                    </td>
+                </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Zod schema for validating press release publication input.
+Defines the structure for publishing official communications and announcements.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="router"></a>
+                    <span class="name">
+                        <span ><b>router</b></span>
+                        <a href="#router"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>express.Router()</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="TrackCoverageSchema"></a>
+                    <span class="name">
+                        <span ><b>TrackCoverageSchema</b></span>
+                        <a href="#TrackCoverageSchema"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>z.object({
+  gameId: z.string().uuid(),
+  targetType: z.enum([&#x27;person&#x27;, &#x27;party&#x27;, &#x27;policy&#x27;, &#x27;event&#x27;]),
+  targetId: z.string().uuid(),
+  sentiment: z.enum([&#x27;very_negative&#x27;, &#x27;negative&#x27;, &#x27;neutral&#x27;, &#x27;positive&#x27;, &#x27;very_positive&#x27;]),
+  prominence: z.enum([&#x27;minor&#x27;, &#x27;moderate&#x27;, &#x27;major&#x27;, &#x27;headline&#x27;]),
+  source: z.string().min(1).max(100),
+  headline: z.string().min(1).max(200),
+  summary: z.string().min(1).max(1000).optional(),
+})</code>
+                    </td>
+                </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Zod schema for validating media coverage tracking input.
+Defines the structure for recording media coverage and sentiment analysis.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="TrackNarrativeSchema"></a>
+                    <span class="name">
+                        <span ><b>TrackNarrativeSchema</b></span>
+                        <a href="#TrackNarrativeSchema"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>z.object({
+  gameId: z.string().uuid(),
+  title: z.string().min(1).max(200),
+  description: z.string().min(1).max(1000),
+  narrativeType: z.enum([&#x27;scandal&#x27;, &#x27;achievement&#x27;, &#x27;controversy&#x27;, &#x27;trend&#x27;, &#x27;crisis&#x27;]),
+  participants: z.array(z.string().uuid()),
+  sentiment: z.enum([&#x27;negative&#x27;, &#x27;neutral&#x27;, &#x27;positive&#x27;]),
+  virality: z.number().min(0).max(100).default(0),
+})</code>
+                    </td>
+                </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Zod schema for validating narrative tracking input.
+Defines the structure for tracking media narratives and public discourse.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+</section>
+    <h3>apps/api/src/routes/parliament.ts</h3>
+    <section data-compodoc="block-properties">
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="CastVoteSchema"></a>
+                    <span class="name">
+                        <span ><b>CastVoteSchema</b></span>
+                        <a href="#CastVoteSchema"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>z.object({
+  motionId: z.string().uuid(),
+  vote: z.enum([&#x27;aye&#x27;, &#x27;no&#x27;, &#x27;abstain&#x27;]),
+})</code>
+                    </td>
+                </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Zod schema for validating vote casting input.
+Defines the structure for casting votes on parliamentary motions.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="CreateChamberSchema"></a>
+                    <span class="name">
+                        <span ><b>CreateChamberSchema</b></span>
+                        <a href="#CreateChamberSchema"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>z.object({
+  gameId: z.string().uuid(),
+  type: z.enum([&#x27;commons&#x27;, &#x27;lords&#x27;]),
+  name: z.string().min(1).max(200),
+  maxSeats: z.number().int().min(1).max(1000),
+  quorumPercentage: z.number().min(0).max(100).default(50),
+})</code>
+                    </td>
+                </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Zod schema for validating chamber creation input.
+Defines the structure for creating new parliamentary chambers.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="CreateMotionSchema"></a>
+                    <span class="name">
+                        <span ><b>CreateMotionSchema</b></span>
+                        <a href="#CreateMotionSchema"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>z.object({
+  gameId: z.string().uuid().optional(),
+  chamberId: z.string().uuid(),
+  proposerId: z.string().uuid(),
+  type: z.enum([&#x27;debate&#x27;, &#x27;vote&#x27;, &#x27;amendment&#x27;, &#x27;procedural&#x27;]),
+  title: z.string().min(1).max(200),
+  description: z.string().min(1).max(5000),
+})</code>
+                    </td>
+                </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Zod schema for validating motion creation input.
+Defines the structure for creating parliamentary motions and proposals.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="parliamentService"></a>
+                    <span class="name">
+                        <span ><b>parliamentService</b></span>
+                        <a href="#parliamentService"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new ParliamentService()</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="router"></a>
+                    <span class="name">
+                        <span ><b>router</b></span>
+                        <a href="#router"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>express.Router()</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ScheduleDebateSchema"></a>
+                    <span class="name">
+                        <span ><b>ScheduleDebateSchema</b></span>
+                        <a href="#ScheduleDebateSchema"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>z.object({
+  motionId: z.string().uuid(),
+  startTime: z.string().datetime(),
+  duration: z.number().int().min(60).max(7200), // 1 min to 2 hours
+  speakingOrder: z.array(z.string().uuid()).optional(),
+  timePerSpeaker: z.number().int().min(30).max(600).default(180), // 30s to 10 min
+})</code>
+                    </td>
+                </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Zod schema for validating debate scheduling input.
+Defines the structure for scheduling parliamentary debates.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+</section>
+    <h3>apps/api/src/routes/compliance.ts</h3>
+    <section data-compodoc="block-properties">
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="compliance"></a>
+                    <span class="name">
+                        <span ><b>compliance</b></span>
+                        <a href="#compliance"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>InstanceType&lt;unknown&gt;</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new ComplianceService()</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="complianceLimiter"></a>
+                    <span class="name">
+                        <span ><b>complianceLimiter</b></span>
+                        <a href="#complianceLimiter"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // limit each IP to 100 requests per windowMs
+  message: &#x27;Too many compliance requests, please try again later.&#x27;,
+  standardHeaders: true,
+  legacyHeaders: false,
+})</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="router"></a>
+                    <span class="name">
+                        <span ><b>router</b></span>
+                        <a href="#router"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>express.Router()</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+</section>
+    <h3>apps/api/src/routes/simulation.ts</h3>
+    <section data-compodoc="block-properties">
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getSimulationState"></a>
+                    <span class="name">
+                        <span ><b>getSimulationState</b></span>
+                        <a href="#getSimulationState"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>async (_req: Request, res: Response): Promise&lt;void&gt; &#x3D;&gt; {
+  try {
+    // Update lastUpdated
+    mockSimulationState.lastUpdated &#x3D; new Date().toISOString();
+
+    res.json({
+      success: true,
+      data: mockSimulationState,
+    });
+  } catch (error) {
+    // Log the error for diagnostics and keep a generic client-facing message
+    // eslint-disable-next-line no-console
+    console.error(&#x27;getSimulationState error&#x27;, error);
+    res.status(500).json({
+      success: false,
+      error: &#x27;Failed to fetch simulation state&#x27;,
+    });
+  }
+}</code>
+                    </td>
+                </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Get simulation state
+GET /api/simulation/state</p>
+<p>Returns the current persisted simulation state for UI clients and debug tooling.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="mockSimulationState"></a>
+                    <span class="name">
+                        <span ><b>mockSimulationState</b></span>
+                        <a href="#mockSimulationState"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>SimulationState</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>{
+  id: &#x27;political-sphere-sim&#x27;,
+  currentTurn: 1,
+  status: &#x27;active&#x27;,
+  players: [
+    {
+      id: &#x27;player-1&#x27;,
+      name: &#x27;Player 1&#x27;,
+      role: &#x27;Prime Minister&#x27;,
+      influence: 50,
+    },
+  ],
+  policies: [
+    {
+      id: &#x27;policy-1&#x27;,
+      title: &#x27;Healthcare Reform&#x27;,
+      description: &#x27;Improve healthcare access&#x27;,
+      status: &#x27;proposed&#x27;,
+      votes: { yes: 0, no: 0, abstain: 0 },
+    },
+  ],
+  economy: {
+    gdp: 1000000,
+    unemployment: 0.05,
+    inflation: 0.02,
+  },
+  society: {
+    happiness: 0.7,
+    education: 0.8,
+    health: 0.75,
+  },
+  environment: {
+    pollution: 0.3,
+    renewableEnergy: 0.4,
+    biodiversity: 0.6,
+  },
+  lastUpdated: new Date().toISOString(),
+}</code>
+                    </td>
+                </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Mock simulation state used for local development and demos.
+This is a simplified representation of the game state for UI development.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="updateSimulationState"></a>
+                    <span class="name">
+                        <span ><b>updateSimulationState</b></span>
+                        <a href="#updateSimulationState"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>async (req: Request, res: Response): Promise&lt;void&gt; &#x3D;&gt; {
+  try {
+    const updates &#x3D; req.body as Partial&lt;SimulationState&gt;;
+
+    // Apply updates - mutate existing object to keep references stable for in-memory state
+    Object.assign(mockSimulationState, updates, { lastUpdated: new Date().toISOString() });
+
+    res.json({
+      success: true,
+      data: mockSimulationState,
+    });
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.error(&#x27;updateSimulationState error&#x27;, error);
+    res.status(500).json({
+      success: false,
+      error: &#x27;Failed to update simulation state&#x27;,
+    });
+  }
+}</code>
+                    </td>
+                </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Update simulation state
+POST /api/simulation/state</p>
+<p>Accepts partial simulation state updates. Intended for development/harness use only.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+</section>
+    <h3>apps/api/src/domain/government-service.ts</h3>
+    <section data-compodoc="block-properties">
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="governmentService"></a>
+                    <span class="name">
+                        <span ><b>governmentService</b></span>
+                        <a href="#governmentService"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new GovernmentService()</code>
+                    </td>
+                </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Shared <code>governmentService</code> instance used by route handlers. Tests should
+instantiate <code>GovernmentService</code> directly when isolation is required.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="logger"></a>
+                    <span class="name">
+                        <span ><b>logger</b></span>
+                        <a href="#logger"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>getLogger({ service: &#x27;government&#x27; })</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+</section>
+    <h3>apps/api/src/domain/judiciary-service.ts</h3>
+    <section data-compodoc="block-properties">
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="judiciaryService"></a>
+                    <span class="name">
+                        <span ><b>judiciaryService</b></span>
+                        <a href="#judiciaryService"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new JudiciaryService()</code>
+                    </td>
+                </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Shared <code>judiciaryService</code> instance used by HTTP routes. Instantiate the
+class directly in tests to supply a mock <code>JudiciaryDB</code>.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="logger"></a>
+                    <span class="name">
+                        <span ><b>logger</b></span>
+                        <a href="#logger"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>getLogger({ service: &#x27;judiciary&#x27; })</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+</section>
+    <h3>apps/api/src/routes/auth.ts</h3>
+    <section data-compodoc="block-properties">
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="LoginSchema"></a>
+                    <span class="name">
+                        <span ><b>LoginSchema</b></span>
+                        <a href="#LoginSchema"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>z
+  .object({
+    email: z.string().email(&#x27;Invalid email address&#x27;).optional(),
+    username: z.string().min(1, &#x27;Username is required&#x27;).optional(),
+    password: z.string().min(1, &#x27;Password is required&#x27;),
+  })
+  .refine(data &#x3D;&gt; data.email || data.username, {
+    message: &#x27;Either email or username is required&#x27;,
+    path: [&#x27;email&#x27;], // Point to email field for error
+  })</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="RegisterSchema"></a>
+                    <span class="name">
+                        <span ><b>RegisterSchema</b></span>
+                        <a href="#RegisterSchema"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>z.object({
+  username: z
+    .string()
+    .min(3, &#x27;Username must be at least 3 characters&#x27;)
+    .max(50, &#x27;Username must not exceed 50 characters&#x27;)
+    .regex(
+      /^[a-zA-Z0-9_-]+$/,
+      &#x27;Username can only contain letters, numbers, underscores, and hyphens&#x27;
+    ),
+  email: z
+    .string()
+    .email(&#x27;Invalid email address&#x27;)
+    .max(255, &#x27;Email must not exceed 255 characters&#x27;)
+    .refine(
+      email &#x3D;&gt; {
+        // Reject SQL injection patterns in email (single quote, double quote, semicolon, backslash, double dash)
+        const sqlPatterns &#x3D; /[&#x27;&quot;;\\]|--/;
+        return !sqlPatterns.test(email);
+      },
+      { message: &#x27;Invalid email address&#x27; }
+    ),
+  password: z
+    .string()
+    .min(8, &#x27;Password must be at least 8 characters&#x27;)
+    .max(128, &#x27;Password must not exceed 128 characters&#x27;)
+    .regex(/[A-Z]/, &#x27;Password must contain at least one uppercase letter&#x27;)
+    .regex(/[a-z]/, &#x27;Password must contain at least one lowercase letter&#x27;)
+    .regex(/[0-9]/, &#x27;Password must contain at least one number&#x27;),
+})</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="router"></a>
+                    <span class="name">
+                        <span ><b>router</b></span>
+                        <a href="#router"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>express.Router()</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+</section>
+    <h3>apps/api/src/routes/moderation.ts</h3>
+    <section data-compodoc="block-properties">
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="moderationLimiter"></a>
+                    <span class="name">
+                        <span ><b>moderationLimiter</b></span>
+                        <a href="#moderationLimiter"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // limit each IP to 100 requests per windowMs
+  message: &#x27;Too many moderation requests, please try again later.&#x27;,
+  standardHeaders: true,
+  legacyHeaders: false,
+})</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="router"></a>
+                    <span class="name">
+                        <span ><b>router</b></span>
+                        <a href="#router"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>express.Router()</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+</section>
+    <h3>apps/api/src/routes/news.ts</h3>
+    <section data-compodoc="block-properties">
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="newsService"></a>
+                    <span class="name">
+                        <span ><b>newsService</b></span>
+                        <a href="#newsService"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new NewsService()</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="router"></a>
+                    <span class="name">
+                        <span ><b>router</b></span>
+                        <a href="#router"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>express.Router()</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+</section>
+    <h3>apps/api/src/routes/bills.ts</h3>
+    <section data-compodoc="block-properties">
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="requireAuth"></a>
+                    <span class="name">
+                        <span ><b>requireAuth</b></span>
+                        <a href="#requireAuth"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>(req: Request, res: Response, next: NextFunction): void &#x3D;&gt; {
+  if (process.env.NODE_ENV &#x3D;&#x3D;&#x3D; &#x27;test&#x27; &amp;&amp; process.env.FORCE_AUTH !&#x3D;&#x3D; &#x27;1&#x27;) {
+    next();
+    return;
+  }
+  authenticate(req, res, next);
+}</code>
+                    </td>
+                </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Authentication middleware that conditionally bypasses auth in test environment.
+In production and non-test environments, requires authentication.
+Can be forced on in tests by setting FORCE_AUTH=1.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="router"></a>
+                    <span class="name">
+                        <span ><b>router</b></span>
+                        <a href="#router"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>express.Router()</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+</section>
+    <h3>apps/api/src/routes/parties.ts</h3>
+    <section data-compodoc="block-properties">
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="requireAuth"></a>
+                    <span class="name">
+                        <span ><b>requireAuth</b></span>
+                        <a href="#requireAuth"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>(req: Request, res: Response, next: NextFunction) &#x3D;&gt; {
+  if (process.env.NODE_ENV &#x3D;&#x3D;&#x3D; &#x27;test&#x27; &amp;&amp; process.env.FORCE_AUTH !&#x3D;&#x3D; &#x27;1&#x27;) {
+    return next();
+  }
+  return authenticate(req, res, next);
+}</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="router"></a>
+                    <span class="name">
+                        <span ><b>router</b></span>
+                        <a href="#router"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>express.Router()</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+</section>
+    <h3>apps/api/src/routes/users.ts</h3>
+    <section data-compodoc="block-properties">
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="requireAuth"></a>
+                    <span class="name">
+                        <span ><b>requireAuth</b></span>
+                        <a href="#requireAuth"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>authenticate</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="router"></a>
+                    <span class="name">
+                        <span ><b>router</b></span>
+                        <a href="#router"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>express.Router()</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+</section>
+    <h3>apps/api/src/routes/votes.ts</h3>
+    <section data-compodoc="block-properties">
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="requireAuth"></a>
+                    <span class="name">
+                        <span ><b>requireAuth</b></span>
+                        <a href="#requireAuth"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>(req: Request, res: Response, next: NextFunction) &#x3D;&gt; {
+  if (process.env.NODE_ENV &#x3D;&#x3D;&#x3D; &#x27;test&#x27; &amp;&amp; process.env.FORCE_AUTH !&#x3D;&#x3D; &#x27;1&#x27;) {
+    return next();
+  }
+  return authenticate(req, res, next);
+}</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="router"></a>
+                    <span class="name">
+                        <span ><b>router</b></span>
+                        <a href="#router"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>express.Router()</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+</section>
+    <h3>apps/api/src/routes/validation-metrics.ts</h3>
+    <section data-compodoc="block-properties">
+    <h3></h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="validationMetrics"></a>
+                    <span class="name">
+                        <span ><b>validationMetrics</b></span>
+                        <a href="#validationMetrics"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>literal type</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>{
+  success: 0,
+  failure: 0,
+  totalParseTime: 0, // in milliseconds
+  parseCount: 0,
+  routeMetrics: new Map(),
+}</code>
+                    </td>
+                </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'miscellaneous-variables';
+            var COMPODOC_CURRENT_PAGE_URL = 'variables.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

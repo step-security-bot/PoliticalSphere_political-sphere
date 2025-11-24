@@ -464,22 +464,24 @@ cat tools/scripts/ai/neutrality-patterns.json
 ### Key Performance Indicators (KPIs)
 
 **AI System Health:**
-| Metric | Target | Warning | Critical |
-|--------|--------|---------|----------|
-| Competence Score | >0.7 | 0.5-0.7 | <0.5 |
-| Index Update Success Rate | >98% | 95-98% | <95% |
-| AI Tool Availability | >99% | 97-99% | <97% |
-| Smoke Test Pass Rate | 100% | 95-99% | <95% |
-| p95 Latency (search) | <200ms | 200-500ms | >500ms |
-| Cache Hit Rate | >80% | 60-80% | <60% |
+
+| Metric                    | Target | Warning   | Critical |
+| ------------------------- | ------ | --------- | -------- |
+| Competence Score          | >0.7   | 0.5-0.7   | <0.5     |
+| Index Update Success Rate | >98%   | 95-98%    | <95%     |
+| AI Tool Availability      | >99%   | 97-99%    | <97%     |
+| Smoke Test Pass Rate      | 100%   | 95-99%    | <95%     |
+| p95 Latency (search)      | <200ms | 200-500ms | >500ms   |
+| Cache Hit Rate            | >80%   | 60-80%    | <60%     |
 
 **AI Effectiveness:**
-| Metric | Target | Measurement |
-|--------|--------|-------------|
-| Time Saved per Week | >10 hours | Developer surveys + time tracking |
-| Errors Prevented | >50/week | Validation failures caught |
-| Code Quality Improvement | +15% | Sonar quality gate scores |
-| Development Velocity | +20% | Story points per sprint |
+
+| Metric                   | Target    | Measurement                       |
+| ------------------------ | --------- | --------------------------------- |
+| Time Saved per Week      | >10 hours | Developer surveys + time tracking |
+| Errors Prevented         | >50/week  | Validation failures caught        |
+| Code Quality Improvement | +15%      | Sonar quality gate scores         |
+| Development Velocity     | +20%      | Story points per sprint           |
 
 ### Monitoring Dashboards
 

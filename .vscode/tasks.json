@@ -42,6 +42,34 @@
       "runOptions": { "runOn": "default" }
     },
 
+    // Workspace quality tasks - populate Problems view on demand
+    {
+      "label": "lint:workspace",
+      "type": "npm",
+      "script": "lint",
+      "problemMatcher": ["$eslint-stylish"],
+      "group": { "kind": "build", "isDefault": false },
+      "presentation": { "reveal": "silent", "panel": "dedicated" },
+      "runOptions": { "runOn": "default" }
+    },
+    {
+      "label": "type-check:workspace",
+      "type": "npm",
+      "script": "type-check",
+      "problemMatcher": ["$tsc"],
+      "group": { "kind": "build", "isDefault": false },
+      "presentation": { "reveal": "silent", "panel": "dedicated" },
+      "runOptions": { "runOn": "default" }
+    },
+    {
+      "label": "quality:lint+types",
+      "dependsOn": ["lint:workspace", "type-check:workspace"],
+      "dependsOrder": "sequence",
+      "problemMatcher": [],
+      "presentation": { "reveal": "always", "panel": "shared" },
+      "runOptions": { "runOn": "default" }
+    },
+
     // Test tasks preferring Vitest with --changed for minimal runs
     {
       "label": "test:vitest-changed",

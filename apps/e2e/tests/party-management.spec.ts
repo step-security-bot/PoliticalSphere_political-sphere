@@ -82,8 +82,8 @@ test.describe('Party Management', () => {
       expect(errorMessages.length).toBeGreaterThan(0);
       expect(
         errorMessages.some(
-          msg => msg.toLowerCase().includes('name') || msg.toLowerCase().includes('required'),
-        ),
+          msg => msg.toLowerCase().includes('name') || msg.toLowerCase().includes('required')
+        )
       ).toBe(true);
     });
 
@@ -234,7 +234,7 @@ test.describe('Party Management', () => {
         // Verify party details are displayed
         const partyName = page.locator('[data-testid="party-name"], .party-name');
         const partyDescription = page.locator(
-          '[data-testid="party-description"], .party-description',
+          '[data-testid="party-description"], .party-description'
         );
         const partyPlatform = page.locator('[data-testid="party-platform"], .party-platform');
 
@@ -272,7 +272,7 @@ test.describe('Party Management', () => {
         if (await activitySection.isVisible()) {
           // Should show some activity or "no recent activity"
           const activityItems = activitySection.locator(
-            '[data-testid="activity-item"], .activity-item',
+            '[data-testid="activity-item"], .activity-item'
           );
           const noActivity = activitySection.getByText(/no activity|no recent/i);
 
@@ -342,7 +342,7 @@ test.describe('Party Management', () => {
 
         // Check for member management options
         const memberManagement = managementSection.locator(
-          '[data-testid="member-management"], .member-management',
+          '[data-testid="member-management"], .member-management'
         );
         if (await memberManagement.isVisible()) {
           // Should have options to manage members
@@ -369,14 +369,14 @@ test.describe('Party Management', () => {
 
           // Check for communication features
           const chatSection = page.locator(
-            '[data-testid="party-chat"], .party-chat, .communication',
+            '[data-testid="party-chat"], .party-chat, .communication'
           );
           const forumSection = page.locator('[data-testid="party-forum"], .party-forum');
 
           if (await chatSection.isVisible()) {
             // Test chat functionality
             const messageInput = chatSection.locator(
-              'input[name="message"], textarea[name="message"]',
+              'input[name="message"], textarea[name="message"]'
             );
             if (await messageInput.isVisible()) {
               const testMessage = 'Test party communication message';
@@ -411,7 +411,7 @@ test.describe('Party Management', () => {
 
           // Check for party decisions/voting
           const decisionsSection = page.locator(
-            '[data-testid="party-decisions"], .party-decisions, .party-votes',
+            '[data-testid="party-decisions"], .party-decisions, .party-votes'
           );
           if (await decisionsSection.isVisible()) {
             // Should show party decisions or indicate none

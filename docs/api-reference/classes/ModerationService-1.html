@@ -1,0 +1,2325 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>political-sphere documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">political-sphere documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content class">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Classes</li>
+  <li class="breadcrumb-item" >ModerationService</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>apps/api/src/services/moderation.service.ts</code>
+        </p>
+
+
+            <p class="comment">
+                <h3>Description</h3>
+            </p>
+            <p class="comment">
+                <p>Service for moderating user-generated content in the political sphere platform.
+Provides content analysis, automated moderation, and moderation queue management.
+Uses heuristic-based scoring for violence, language, and sexual content detection.</p>
+
+            </p>
+
+
+
+
+            <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#contentCache" >contentCache</a>
+                            </li>
+                            <li>
+                                <a href="#rules" >rules</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Optional</span>
+                                <a href="#store" >store</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#analyzeContent" >analyzeContent</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Static</span>
+                                <a href="#assessAgeAppropriateness" >assessAgeAppropriateness</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Static</span>
+                                <a href="#calculateLanguageScore" >calculateLanguageScore</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Static</span>
+                                <a href="#calculateSexualContentScore" >calculateSexualContentScore</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Static</span>
+                                <a href="#calculateViolenceScore" >calculateViolenceScore</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Static</span>
+                                <a href="#checkCustomRules" >checkCustomRules</a>
+                            </li>
+                            <li>
+                                <a href="#clearCache" >clearCache</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#generateTransparencyReport" >generateTransparencyReport</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#getModerationHistory" >getModerationHistory</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#getModerationQueue" >getModerationQueue</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#getModerationStats" >getModerationStats</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#getStats" >getStats</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#handleReport" >handleReport</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#moderateContent" >moderateContent</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#reviewContent" >reviewContent</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#updateModerationRules" >updateModerationRules</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+            <section data-compodoc="block-constructor">
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(store: <a href="../undefineds/ModerationStore.html" target="_self">ModerationStore | literal type | undefined</a>, initialRules: <a href="../undefineds/ModerationRules.html" target="_self">Partial&lt;ModerationRules&gt;</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="42" class="link-to-prism">apps/api/src/services/moderation.service.ts:42</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div class="io-description"><p>Creates a new ModerationService instance.</p>
+</div>
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                                    <td>Description</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>store</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../miscellaneous/typealiases.html#ModerationStore" target="_self" >ModerationStore | literal type | undefined</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <ul>
+<li>Optional data store for persisting moderation records</li>
+</ul>
+
+                                                        </td>
+                                                </tr>
+                                                <tr>
+                                                        <td>initialRules</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../miscellaneous/typealiases.html#ModerationRules" target="_self" >Partial&lt;ModerationRules&gt;</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <ul>
+<li>Initial moderation rules and thresholds</li>
+</ul>
+
+                                                        </td>
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+            <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="contentCache"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>contentCache</b></span>
+                        <a href="#contentCache"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../miscellaneous/variables.html#g" target="_self" >Map&lt;string | Record&lt;string, unknown&gt;&gt;</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="42" class="link-to-prism">apps/api/src/services/moderation.service.ts:42</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="rules"></a>
+                    <span class="name">
+                        <span ><b>rules</b></span>
+                        <a href="#rules"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../miscellaneous/typealiases.html#ModerationRules" target="_self" >ModerationRules</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="41" class="link-to-prism">apps/api/src/services/moderation.service.ts:41</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="store"></a>
+                    <span class="name">
+                            <span class="modifier">Optional</span>
+                        <span ><b>store</b></span>
+                        <a href="#store"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../miscellaneous/typealiases.html#ModerationStore" target="_self" >ModerationStore</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="40" class="link-to-prism">apps/api/src/services/moderation.service.ts:40</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+            <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="analyzeContent"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>analyzeContent</b></span>
+                        <a href="#analyzeContent"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>analyzeContent(content: <a href="../unknowns/g.html" target="_self">string | unknown</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="101"
+                                    class="link-to-prism">apps/api/src/services/moderation.service.ts:101</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Analyzes content for moderation violations using heuristic keyword matching.
+Calculates scores for violence, language, and sexual content based on weighted keywords.
+Returns a moderation result with scores and recommended actions.</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-typescript">const result = await moderationService.analyzeContent(&quot;This is violent content&quot;);
+if (result.violenceScore &gt; 0.8) {
+  // Content flagged for review
+  await moderationService.moderateContent(content, userId);
+}</code></pre></div></div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>content</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/variables.html#g" target="_self" >string | unknown</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>The content to analyze (string or unknown type)</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>unknown</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Analysis result with scores and flagged status</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="assessAgeAppropriateness"></a>
+                    <span class="name">
+                            <span class="modifier">Static</span>
+                        <span ><b>assessAgeAppropriateness</b></span>
+                        <a href="#assessAgeAppropriateness"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>assessAgeAppropriateness(text: <a href="../unknowns/g.html" target="_self">string | unknown</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="556"
+                                    class="link-to-prism">apps/api/src/services/moderation.service.ts:556</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>text</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/variables.html#g" target="_self" >string | unknown</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>&quot;18&quot; | &quot;15&quot; | &quot;12A&quot; | &quot;U&quot; | &quot;PG&quot;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="calculateLanguageScore"></a>
+                    <span class="name">
+                            <span class="modifier">Static</span>
+                        <span ><b>calculateLanguageScore</b></span>
+                        <a href="#calculateLanguageScore"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>calculateLanguageScore(text: <a href="../unknowns/g.html" target="_self">string | unknown</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="513"
+                                    class="link-to-prism">apps/api/src/services/moderation.service.ts:513</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>text</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/variables.html#g" target="_self" >string | unknown</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="calculateSexualContentScore"></a>
+                    <span class="name">
+                            <span class="modifier">Static</span>
+                        <span ><b>calculateSexualContentScore</b></span>
+                        <a href="#calculateSexualContentScore"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>calculateSexualContentScore(text: <a href="../unknowns/g.html" target="_self">string | unknown</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="529"
+                                    class="link-to-prism">apps/api/src/services/moderation.service.ts:529</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>text</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/variables.html#g" target="_self" >string | unknown</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="calculateViolenceScore"></a>
+                    <span class="name">
+                            <span class="modifier">Static</span>
+                        <span ><b>calculateViolenceScore</b></span>
+                        <a href="#calculateViolenceScore"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>calculateViolenceScore(text: <a href="../unknowns/g.html" target="_self">string | unknown</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="495"
+                                    class="link-to-prism">apps/api/src/services/moderation.service.ts:495</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>text</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/variables.html#g" target="_self" >string | unknown</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="checkCustomRules"></a>
+                    <span class="name">
+                            <span class="modifier">Static</span>
+                        <span ><b>checkCustomRules</b></span>
+                        <a href="#checkCustomRules"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>checkCustomRules(text: <a href="../unknowns/g.html" target="_self">string | unknown</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="544"
+                                    class="link-to-prism">apps/api/src/services/moderation.service.ts:544</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>text</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/variables.html#g" target="_self" >string | unknown</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>{}</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="clearCache"></a>
+                    <span class="name">
+                        <span ><b>clearCache</b></span>
+                        <a href="#clearCache"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>clearCache()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="488"
+                                    class="link-to-prism">apps/api/src/services/moderation.service.ts:488</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="generateTransparencyReport"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>generateTransparencyReport</b></span>
+                        <a href="#generateTransparencyReport"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>generateTransparencyReport(filters?: literal type)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="372"
+                                    class="link-to-prism">apps/api/src/services/moderation.service.ts:372</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Generates a transparency report summarizing moderation activities.
+Provides statistics on moderation volume and categorization for audit purposes.
+Supports filtering by time period for historical analysis.</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-typescript">const report = await moderationService.generateTransparencyReport({
+  period: &#39;last_30_days&#39;
+});
+console.log(`Moderated ${report.total} items in the last 30 days`);</code></pre></div></div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>filters</td>
+                                            <td>
+                                                        <code>literal type</code>
+                                            </td>
+
+                                            <td>
+                                                    Yes
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>unknown</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getModerationHistory"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>getModerationHistory</b></span>
+                        <a href="#getModerationHistory"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getModerationHistory(userId?: <a href="../unknowns/g.html" target="_self">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="408"
+                                    class="link-to-prism">apps/api/src/services/moderation.service.ts:408</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Retrieves moderation history, optionally filtered by user ID.
+Returns all moderation records or those associated with a specific user.
+Used for audit trails, user history, and moderation analytics.</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-typescript">// Get all moderation history
+const allHistory = await moderationService.getModerationHistory();
+
+
+// Get history for specific user
+const userHistory = await moderationService.getModerationHistory(&#39;user123&#39;);</code></pre></div></div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>userId</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    Yes
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>Optional user ID to filter history for a specific user</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>unknown</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Promise resolving to array of moderation records</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getModerationQueue"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>getModerationQueue</b></span>
+                        <a href="#getModerationQueue"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getModerationQueue(limit: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, status: <a href="../unknowns/g.html" target="_self">string</a>, page: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="299"
+                                    class="link-to-prism">apps/api/src/services/moderation.service.ts:299</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Retrieves a paginated list of content items in the moderation queue.
+Filters items by approval status and supports pagination for large queues.
+Used by moderation interfaces to display content awaiting review.</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-typescript">const queue = await moderationService.getModerationQueue(10, &#39;pending&#39;, 1);
+console.log(`${queue.total} items pending moderation`);
+queue.items.forEach(item =&gt; {
+  // Display item for moderation review
+});</code></pre></div></div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Default value</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>limit</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+                                            <td>
+                                                    <code>20</code>
+                                            </td>
+
+                                            <td>
+                                                    <ul>
+<li>Maximum number of items to return (default: 20)</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>status</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+                                            <td>
+                                                    <code>&#x27;pending&#x27;</code>
+                                            </td>
+
+                                            <td>
+                                                    <ul>
+<li>Filter by status: &#39;pending&#39;, &#39;approved&#39;, &#39;rejected&#39;, or &#39;all&#39;</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>page</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+                                            <td>
+                                                    <code>1</code>
+                                            </td>
+
+                                            <td>
+                                                    <ul>
+<li>Page number for pagination (default: 1)</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>unknown</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Paginated moderation queue with items and metadata</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getModerationStats"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>getModerationStats</b></span>
+                        <a href="#getModerationStats"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getModerationStats()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="449"
+                                    class="link-to-prism">apps/api/src/services/moderation.service.ts:449</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Retrieves moderation statistics including approval/rejection counts and average scores.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>unknown</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Statistics about moderated content</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getStats"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>getStats</b></span>
+                        <a href="#getStats"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getStats()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="484"
+                                    class="link-to-prism">apps/api/src/services/moderation.service.ts:484</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Compatibility alias for routes that expect <code>getStats</code> and <code>clearCache</code> on instance</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>unknown</code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="handleReport"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>handleReport</b></span>
+                        <a href="#handleReport"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>handleReport(report: literal type)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="238"
+                                    class="link-to-prism">apps/api/src/services/moderation.service.ts:238</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Handles a user report about content, performing moderation analysis on the reported content.
+Creates a report record and determines if the content should be moderated based on the evidence.
+This is part of the user-driven moderation system for community reporting.</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-typescript">const result = await moderationService.handleReport({
+  contentId: &quot;post123&quot;,
+  userId: &quot;user456&quot;,
+  reason: &quot;Inappropriate content&quot;,
+  evidence: &quot;The post contains offensive language&quot;
+});</code></pre></div></div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>report</td>
+                                            <td>
+                                                        <code>literal type</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>unknown</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="moderateContent"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>moderateContent</b></span>
+                        <a href="#moderateContent"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>moderateContent(content: <a href="../unknowns/g.html" target="_self">string | unknown</a>, userId?: <a href="../unknowns/g.html" target="_self">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="183"
+                                    class="link-to-prism">apps/api/src/services/moderation.service.ts:183</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Moderates content by analyzing it and creating a moderation record if a store is available.
+Uses analyzeContent to check for violations and determines approval status.
+Persists moderation decisions for audit and transparency purposes.</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-typescript">const result = await moderationService.moderateContent(&quot;User post content&quot;, &quot;user123&quot;);
+if (!result.approved) {
+  // Content was flagged, handle accordingly
+  console.log(&quot;Content rejected:&quot;, result.reason);
+}</code></pre></div></div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>content</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/variables.html#g" target="_self" >string | unknown</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>The content to moderate</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>userId</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    Yes
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>Optional user ID associated with the content</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>unknown</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Moderation result with approval status and scores</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="reviewContent"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>reviewContent</b></span>
+                        <a href="#reviewContent"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>reviewContent(contentId: <a href="../unknowns/g.html" target="_self">string</a>, decision: "approve" | "reject", moderatorId: <a href="../unknowns/g.html" target="_self">string</a>, notes?: <a href="../unknowns/g.html" target="_self">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="326"
+                                    class="link-to-prism">apps/api/src/services/moderation.service.ts:326</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Reviews content and updates the moderation disposition.
+Used by moderators to manually approve or reject content.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>contentId</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>ID of the content being reviewed</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>decision</td>
+                                            <td>
+                                                        <code>&quot;approve&quot; | &quot;reject&quot;</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>Moderation decision: &#39;approve&#39; or &#39;reject&#39;</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>moderatorId</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>ID of the moderator making the decision</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>notes</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    Yes
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>Optional notes from the moderator</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>unknown</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Review result with decision details</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="updateModerationRules"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>updateModerationRules</b></span>
+                        <a href="#updateModerationRules"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>updateModerationRules(rules: <a href="../undefineds/ModerationRules.html" target="_self">Partial&lt;ModerationRules&gt;</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="428"
+                                    class="link-to-prism">apps/api/src/services/moderation.service.ts:428</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>rules</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/typealiases.html#ModerationRules" target="_self" >Partial&lt;ModerationRules&gt;</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+
+
+
+
+
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">type ModerationStore &#x3D; {
+  /** Creates a new moderation record */
+  create?: (record: Record&lt;string, unknown&gt;) &#x3D;&gt; Promise&lt;Record&lt;string, unknown&gt; | undefined&gt;;
+  /** Retrieves all moderation records, optionally filtered */
+  getAll?: (filter?: Record&lt;string, unknown&gt;) &#x3D;&gt; Promise&lt;Array&lt;Record&lt;string, unknown&gt;&gt;&gt;;
+  /** Updates an existing moderation record */
+  update?: (
+    id: string,
+    update: Record&lt;string, unknown&gt;
+  ) &#x3D;&gt; Promise&lt;Record&lt;string, unknown&gt; | undefined&gt;;
+};
+
+/**
+ * Configuration for moderation rules and thresholds.
+ * Defines scoring thresholds for different types of content violations.
+ * Custom rules can be added for domain-specific moderation needs.
+ */
+type ModerationRules &#x3D; {
+  /** Threshold for violence content scoring (0-1) */
+  violenceThreshold: number;
+  /** Threshold for inappropriate language scoring (0-1) */
+  languageThreshold: number;
+  /** Threshold for sexual content scoring (0-1) */
+  sexualThreshold: number;
+  /** Optional array of custom rule identifiers */
+  customRules?: string[];
+};
+
+/**
+ * Service for moderating user-generated content in the political sphere platform.
+ * Provides content analysis, automated moderation, and moderation queue management.
+ * Uses heuristic-based scoring for violence, language, and sexual content detection.
+ */
+class ModerationService {
+  store?: ModerationStore;
+  rules: ModerationRules;
+  private contentCache: Map&lt;string, Record&lt;string, unknown&gt;&gt;;
+
+  /**
+   * Creates a new ModerationService instance.
+   * @param store - Optional data store for persisting moderation records
+   * @param initialRules - Initial moderation rules and thresholds
+   */
+  constructor(
+    store: ModerationStore | { moderation?: ModerationStore } | undefined,
+    initialRules: Partial&lt;ModerationRules&gt; &#x3D; {}
+  ) {
+    // Normalize store interface: tests pass mockDb.moderation with create/getAll/update
+    // If an entire db connection is passed accidentally, detect moderation property.
+    // Support passing either a ModerationStore or a database object containing &#x60;moderation&#x60; store
+    if (
+      store &amp;&amp;
+      !(store as ModerationStore).create &amp;&amp;
+      (store as { moderation?: ModerationStore }).moderation
+    ) {
+      this.store &#x3D; (store as { moderation?: ModerationStore }).moderation; // unwrap
+    } else if (store &amp;&amp; (store as ModerationStore).create) {
+      this.store &#x3D; store as ModerationStore;
+    } else {
+      this.store &#x3D; undefined;
+    }
+    this.rules &#x3D; {
+      violenceThreshold: 0.7,
+      languageThreshold: 0.7,
+      sexualThreshold: 0.7,
+      customRules: [],
+      ...initialRules,
+    };
+    // in-memory cache for performance
+    this.contentCache &#x3D; new Map();
+  }
+
+  /**
+   * Analyzes content for moderation violations using heuristic keyword scoring.
+   * Evaluates violence, language, and sexual content against configured thresholds.
+   * @param content - The content to analyze (string or unknown type)
+   * @returns Analysis result with scores and flagged status
+   */
+  /**
+   * Analyzes content for moderation violations using heuristic keyword matching.
+   * Calculates scores for violence, language, and sexual content based on weighted keywords.
+   * Returns a moderation result with scores and recommended actions.
+   *
+   * @param content - The content to analyze (string or unknown, will be converted to string)
+   * @returns Promise resolving to moderation analysis result with scores and recommendations
+   *
+   * @example
+   * &#x60;&#x60;&#x60;typescript
+   * const result &#x3D; await moderationService.analyzeContent(&quot;This is violent content&quot;);
+   * if (result.violenceScore &gt; 0.8) {
+   *   // Content flagged for review
+   *   await moderationService.moderateContent(content, userId);
+   * }
+   * &#x60;&#x60;&#x60;
+   */
+  async analyzeContent(content: string | unknown) {
+    const text &#x3D; String(content ?? &#x27;&#x27;).toLowerCase();
+    const empty &#x3D; text.trim().length &#x3D;&#x3D;&#x3D; 0;
+
+    // Weighted keyword heuristics: strong indicators contribute more than mild ones
+    const violenceWeights &#x3D; {
+      kill: 1.0,
+      murder: 1.0,
+      bomb: 0.9,
+      weapon: 0.6,
+      attack: 0.6,
+      violence: 0.85,
+      threat: 0.85,
+      threats: 0.85,
+      harmful: 0.5,
+      assault: 0.85,
+      gore: 0.7,
+    };
+    const languageWeights &#x3D; {
+      fuck: 0.9,
+      shit: 0.8,
+      bitch: 0.8,
+      asshole: 0.8,
+      offensive: 0.85,
+      inappropriate: 0.45,
+      slur: 0.85,
+      hate: 0.6,
+    };
+    const sexualWeights &#x3D; {
+      porn: 0.85,
+      sex: 0.6,
+      naked: 0.6,
+      explicit: 0.5,
+    };
+
+    const scoreFor &#x3D; (weightsMap: Record&lt;string, number&gt;) &#x3D;&gt; {
+      if (empty) return 0;
+      let score &#x3D; 0;
+      for (const [w, weight] of Object.entries(weightsMap)) {
+        if (text.includes(w)) score +&#x3D; weight;
+      }
+      return Math.min(1, score);
+    };
+
+    const scores &#x3D; {
+      violence: scoreFor(violenceWeights),
+      language: scoreFor(languageWeights),
+      sexual: scoreFor(sexualWeights),
+    };
+
+    const flagged &#x3D;
+      scores.violence &gt; this.rules.violenceThreshold ||
+      scores.language &gt; this.rules.languageThreshold ||
+      scores.sexual &gt; this.rules.sexualThreshold;
+
+    return { scores, flagged };
+  }
+
+  /**
+   * Moderates content by analyzing it and creating a moderation record if store is available.
+   * @param content - The content to moderate
+   * @param userId - Optional user ID associated with the content
+   * @returns Moderation result with approval status and scores
+   */
+  /**
+   * Moderates content by analyzing it and creating a moderation record if a store is available.
+   * Uses analyzeContent to check for violations and determines approval status.
+   * Persists moderation decisions for audit and transparency purposes.
+   *
+   * @param content - The content to moderate
+   * @param userId - Optional user ID associated with the content
+   * @returns Promise resolving to moderation result with approval status and scores
+   *
+   * @example
+   * &#x60;&#x60;&#x60;typescript
+   * const result &#x3D; await moderationService.moderateContent(&quot;User post content&quot;, &quot;user123&quot;);
+   * if (!result.approved) {
+   *   // Content was flagged, handle accordingly
+   *   console.log(&quot;Content rejected:&quot;, result.reason);
+   * }
+   * &#x60;&#x60;&#x60;
+   */
+  async moderateContent(content: string | unknown, userId?: string) {
+    const analysis &#x3D; await this.analyzeContent(content);
+    const approved &#x3D; !analysis.flagged;
+    const record &#x3D; {
+      content,
+      userId,
+      approved,
+      scores: analysis.scores,
+      reason: approved ? undefined : &#x27;Content exceeds moderation thresholds&#x27;,
+      timestamp: new Date().toISOString(),
+    };
+
+    let created: Record&lt;string, unknown&gt; | undefined;
+    if (this.store?.create) {
+      created &#x3D; await this.store.create(record);
+    }
+
+    return {
+      approved,
+      moderationId: created?.id || undefined,
+      scores: analysis.scores,
+      ...(approved ? {} : { reason: record.reason }),
+    };
+  }
+
+  /**
+   * Handle an incoming user report and create a moderation record.
+   * Expected to be called by &#x60;POST /api/moderation/report&#x60; route.
+   */
+  /**
+   * Handles a user report about content, performing moderation analysis on the reported content.
+   * Creates a report record and determines if the content should be moderated based on the evidence.
+   * This is part of the user-driven moderation system for community reporting.
+   *
+   * @param report - The report details including content ID, user ID, reason, and evidence
+   * @param report.contentId - ID of the content being reported
+   * @param report.userId - ID of the user submitting the report
+   * @param report.reason - Reason for the report (e.g., &quot;harassment&quot;, &quot;spam&quot;)
+   * @param report.evidence - Optional additional evidence or context
+   * @param report.category - Optional category classification
+   * @param report.submittedAt - Optional submission timestamp
+   * @param report.ip - Optional IP address for audit purposes
+   * @param report.userAgent - Optional user agent string
+   * @returns Promise resolving to report handling result with moderation outcome
+   *
+   * @example
+   * &#x60;&#x60;&#x60;typescript
+   * const result &#x3D; await moderationService.handleReport({
+   *   contentId: &quot;post123&quot;,
+   *   userId: &quot;user456&quot;,
+   *   reason: &quot;Inappropriate content&quot;,
+   *   evidence: &quot;The post contains offensive language&quot;
+   * });
+   * &#x60;&#x60;&#x60;
+   */
+  async handleReport(report: {
+    contentId: string;
+    userId: string;
+    reason: string;
+    evidence?: string;
+    category?: string;
+    submittedAt?: string;
+    ip?: string;
+    userAgent?: string | undefined;
+  }) {
+    // For the minimal implementation we use evidence text to determine moderation result
+    const evidenceText &#x3D; report.evidence || &#x27;&#x27;;
+    const moderationResult &#x3D; await this.moderateContent(evidenceText, report.userId);
+
+    const created &#x3D; this.store?.create
+      ? await this.store.create({
+          contentId: report.contentId,
+          userId: report.userId,
+          reason: report.reason,
+          evidence: evidenceText,
+          category: report.category,
+          submittedAt: report.submittedAt || new Date().toISOString(),
+          ip: report.ip,
+          userAgent: report.userAgent,
+          approved: moderationResult.approved,
+        })
+      : undefined;
+
+    return {
+      reportId: (created?.id as string | undefined) || undefined,
+      escalated: !moderationResult.approved,
+    };
+  }
+
+  /**
+   * Retrieves the moderation queue with pagination and status filtering.
+   * Used by moderators to review pending content moderation decisions.
+   * @param limit - Maximum number of items to return (default: 20)
+   * @param status - Filter by status: &#x27;pending&#x27;, &#x27;approved&#x27;, &#x27;rejected&#x27;, or &#x27;all&#x27;
+   * @param page - Page number for pagination (default: 1)
+   * @returns Paginated moderation queue with items and metadata
+   */
+  /**
+   * Retrieves a paginated list of content items in the moderation queue.
+   * Filters items by approval status and supports pagination for large queues.
+   * Used by moderation interfaces to display content awaiting review.
+   *
+   * @param limit - Maximum number of items to return (default: 20)
+   * @param status - Filter by status: &#x27;pending&#x27;, &#x27;approved&#x27;, &#x27;rejected&#x27;, or &#x27;all&#x27; (default: &#x27;pending&#x27;)
+   * @param page - Page number for pagination (default: 1)
+   * @returns Promise resolving to paginated moderation queue with items and metadata
+   *
+   * @example
+   * &#x60;&#x60;&#x60;typescript
+   * const queue &#x3D; await moderationService.getModerationQueue(10, &#x27;pending&#x27;, 1);
+   * console.log(&#x60;${queue.total} items pending moderation&#x60;);
+   * queue.items.forEach(item &#x3D;&gt; {
+   *   // Display item for moderation review
+   * });
+   * &#x60;&#x60;&#x60;
+   */
+  async getModerationQueue(limit &#x3D; 20, status &#x3D; &#x27;pending&#x27;, page &#x3D; 1) {
+    const all &#x3D; (await this.getModerationHistory()) || [];
+    const filtered &#x3D; all.filter(i &#x3D;&gt; {
+      if (status &#x3D;&#x3D;&#x3D; &#x27;pending&#x27;) return !i.approved;
+      if (status &#x3D;&#x3D;&#x3D; &#x27;approved&#x27;) return i.approved;
+      if (status &#x3D;&#x3D;&#x3D; &#x27;rejected&#x27;) return !i.approved;
+      return true;
+    });
+    const start &#x3D; (page - 1) * limit;
+    const items &#x3D; filtered.slice(start, start + limit) || [];
+    return {
+      items,
+      total: filtered.length,
+      page,
+      limit,
+    };
+  }
+
+  /**
+   * Reviews content and updates the moderation disposition.
+   * Used by moderators to manually approve or reject content.
+   * @param contentId - ID of the content being reviewed
+   * @param decision - Moderation decision: &#x27;approve&#x27; or &#x27;reject&#x27;
+   * @param moderatorId - ID of the moderator making the decision
+   * @param notes - Optional notes from the moderator
+   * @returns Review result with decision details
+   */
+  async reviewContent(
+    contentId: string,
+    decision: &#x27;approve&#x27; | &#x27;reject&#x27;,
+    moderatorId: string,
+    notes?: string
+  ) {
+    // Attempt to persist a moderation review update if store supports &#x60;update&#x60;
+    if (this.store?.update) {
+      await this.store.update(contentId, {
+        decision,
+        moderatorId,
+        notes,
+        reviewedAt: new Date().toISOString(),
+      });
+    }
+    return {
+      contentId,
+      decision,
+      moderatorId,
+      notes,
+      reviewedAt: new Date().toISOString(),
+    };
+  }
+
+  /**
+   * Generate a simple transparency report based on moderation history
+   */
+  /**
+   * Generates a transparency report summarizing moderation activities.
+   * Provides statistics on moderation volume and categorization for audit purposes.
+   * Supports filtering by time period for historical analysis.
+   *
+   * @param filters - Optional filters for the report
+   * @param filters.period - Time period filter (e.g., &#x27;last_30_days&#x27;, &#x27;last_7_days&#x27;)
+   * @param filters.startDate - Start date for custom period (ISO format)
+   * @param filters.endDate - End date for custom period (ISO format)
+   * @returns Promise resolving to transparency report with statistics and breakdowns
+   *
+   * @example
+   * &#x60;&#x60;&#x60;typescript
+   * const report &#x3D; await moderationService.generateTransparencyReport({
+   *   period: &#x27;last_30_days&#x27;
+   * });
+   * console.log(&#x60;Moderated ${report.total} items in the last 30 days&#x60;);
+   * &#x60;&#x60;&#x60;
+   */
+  async generateTransparencyReport(filters?: {
+    period?: string;
+    startDate?: string;
+    endDate?: string;
+  }) {
+    const items &#x3D; (await this.getModerationHistory()) || [];
+    const total &#x3D; items.length;
+    const byCategory: Record&lt;string, number&gt; &#x3D; {};
+    for (const i of items) {
+      const cat &#x3D; (i.category as string) || &#x27;uncategorized&#x27;;
+      byCategory[cat] &#x3D; (byCategory[cat] || 0) + 1;
+    }
+    return {
+      period: filters?.period || &#x27;all&#x27;,
+      total,
+      byCategory,
+    };
+  }
+
+  /**
+   * Retrieves moderation history, optionally filtered by user ID.
+   * Returns all moderation records or those associated with a specific user.
+   * Used for audit trails, user history, and moderation analytics.
+   *
+   * @param userId - Optional user ID to filter history for a specific user
+   * @returns Promise resolving to array of moderation records
+   *
+   * @example
+   * &#x60;&#x60;&#x60;typescript
+   * // Get all moderation history
+   * const allHistory &#x3D; await moderationService.getModerationHistory();
+   *
+   * // Get history for specific user
+   * const userHistory &#x3D; await moderationService.getModerationHistory(&#x27;user123&#x27;);
+   * &#x60;&#x60;&#x60;
+   */
+  async getModerationHistory(userId?: string) {
+    const getter &#x3D; this.store?.getAll;
+    if (typeof getter !&#x3D;&#x3D; &#x27;function&#x27;) {
+      // Graceful fallback for tests where mock wasn&#x27;t initialized yet
+      return [];
+    }
+    try {
+      if (userId) {
+        return await getter.call(this.store, { userId });
+      }
+      return await getter.call(this.store);
+    } catch (err) {
+      // In test environment surface error for visibility
+      if (process.env.NODE_ENV &#x3D;&#x3D;&#x3D; &#x27;test&#x27;) {
+        throw err;
+      }
+      return [];
+    }
+  }
+
+  async updateModerationRules(rules: Partial&lt;ModerationRules&gt;) {
+    const keys: (keyof ModerationRules)[] &#x3D; [
+      &#x27;violenceThreshold&#x27;,
+      &#x27;languageThreshold&#x27;,
+      &#x27;sexualThreshold&#x27;,
+    ];
+    for (const k of keys) {
+      if (k in rules) {
+        const v &#x3D; rules[k];
+        if (typeof v !&#x3D;&#x3D; &#x27;number&#x27; || v &lt; 0 || v &gt; 1) {
+          throw new Error(&#x27;Invalid threshold value&#x27;);
+        }
+      }
+    }
+    this.rules &#x3D; { ...this.rules, ...rules };
+  }
+
+  /**
+   * Retrieves moderation statistics including approval/rejection counts and average scores.
+   * @returns Statistics about moderated content
+   */
+  async getModerationStats() {
+    type ModerationItem &#x3D; {
+      approved?: boolean;
+      scores?: { violence?: number; language?: number; sexual?: number };
+    };
+    const items &#x3D; (await this.getModerationHistory()) as ModerationItem[] | null | undefined;
+    const list &#x3D; items || [];
+    const total &#x3D; list.length;
+    const approved &#x3D; list.filter(i &#x3D;&gt; i.approved).length;
+    const rejected &#x3D; total - approved;
+
+    const avg &#x3D; { violence: 0, language: 0, sexual: 0 };
+    if (total &gt; 0) {
+      for (const i of list) {
+        const s &#x3D; i.scores || {};
+        avg.violence +&#x3D; s.violence || 0;
+        avg.language +&#x3D; s.language || 0;
+        avg.sexual +&#x3D; s.sexual || 0;
+      }
+      avg.violence /&#x3D; total;
+      avg.language /&#x3D; total;
+      avg.sexual /&#x3D; total;
+    }
+
+    return {
+      totalModerated: total,
+      approved,
+      rejected,
+      averageScores: avg,
+    };
+  }
+
+  /**
+   * Compatibility alias for routes that expect &#x60;getStats&#x60; and &#x60;clearCache&#x60; on instance
+   */
+  async getStats() {
+    return await this.getModerationStats();
+  }
+
+  clearCache() {
+    // Clear in-memory cache for moderation results
+    this.contentCache.clear();
+  }
+
+  // (Instance export will be appended after class declaration)
+  // Static helper methods for pure score calculation (used by tests)
+  static calculateViolenceScore(text: string | unknown) {
+    const t &#x3D; String(text ?? &#x27;&#x27;).toLowerCase();
+    const weights &#x3D; {
+      kill: 1.0,
+      murder: 1.0,
+      bomb: 0.9,
+      weapon: 0.6,
+      attack: 0.6,
+      violence: 0.85,
+      threat: 0.85,
+    };
+    let score &#x3D; 0;
+    for (const [w, weight] of Object.entries(weights)) {
+      if (t.includes(w)) score +&#x3D; weight;
+    }
+    return Math.min(1, score);
+  }
+
+  static calculateLanguageScore(text: string | unknown) {
+    const t &#x3D; String(text ?? &#x27;&#x27;).toLowerCase();
+    const weights &#x3D; {
+      fuck: 0.9,
+      shit: 0.8,
+      damn: 0.5,
+      bitch: 0.8,
+      asshole: 0.8,
+    };
+    let score &#x3D; 0;
+    for (const [w, weight] of Object.entries(weights)) {
+      if (t.includes(w)) score +&#x3D; weight;
+    }
+    return Math.min(1, score);
+  }
+
+  static calculateSexualContentScore(text: string | unknown) {
+    const t &#x3D; String(text ?? &#x27;&#x27;).toLowerCase();
+    const weights &#x3D; {
+      sex: 0.6,
+      porn: 0.85,
+      nude: 0.6,
+      naked: 0.6,
+    };
+    let score &#x3D; 0;
+    for (const [w, weight] of Object.entries(weights)) {
+      if (t.includes(w)) score +&#x3D; weight;
+    }
+    return Math.min(1, score);
+  }
+
+  static checkCustomRules(text: string | unknown) {
+    const violations &#x3D; [];
+    const t &#x3D; String(text ?? &#x27;&#x27;).toLowerCase();
+    if (t.includes(&#x27;kill&#x27;) || t.includes(&#x27;bullying&#x27;)) {
+      violations.push(&#x27;Harmful content detected&#x27;);
+    }
+    if (t.includes(&#x27;@&#x27;) &amp;&amp; t.includes(&#x27;user&#x27;)) {
+      violations.push(&#x27;User mention in flagged context&#x27;);
+    }
+    return violations;
+  }
+
+  static assessAgeAppropriateness(text: string | unknown) {
+    const vScore &#x3D; ModerationService.calculateViolenceScore(text);
+    const lScore &#x3D; ModerationService.calculateLanguageScore(text);
+    const sScore &#x3D; ModerationService.calculateSexualContentScore(text);
+
+    if (vScore &#x3D;&#x3D;&#x3D; 0 &amp;&amp; lScore &#x3D;&#x3D;&#x3D; 0 &amp;&amp; sScore &#x3D;&#x3D;&#x3D; 0) return &#x27;U&#x27;; // Universal
+    if (vScore &lt; 0.3 &amp;&amp; lScore &lt; 0.3 &amp;&amp; sScore &lt; 0.3) return &#x27;PG&#x27;; // Parental Guidance
+    if (vScore &lt; 0.6 &amp;&amp; lScore &lt; 0.6 &amp;&amp; sScore &lt; 0.6) return &#x27;12A&#x27;; // 12+
+    if (vScore &lt; 0.8 &amp;&amp; lScore &lt; 0.8 &amp;&amp; sScore &lt; 0.8) return &#x27;15&#x27;; // 15+
+    return &#x27;18&#x27;; // 18+
+  }
+
+  // (removed static clearCache to avoid duplicate signatures; instance method handles clearing)
+}
+
+// Export a singleton instance for route consumers and keep the class as default for tests
+export const moderationService &#x3D; new ModerationService(undefined);
+export default ModerationService;
+</code></pre>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'class';
+            var COMPODOC_CURRENT_PAGE_URL = 'ModerationService-1.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

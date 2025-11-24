@@ -1,9 +1,8 @@
 import express from 'express';
 import assert from 'node:assert';
-import { afterEach, beforeEach, describe, it } from 'vitest';
+import { afterEach, beforeEach, describe, it, vi } from 'vitest';
 
 /* eslint-disable no-restricted-imports */
-import { getTestToken } from '../../tests/helpers/auth-token.mjs';
 import { dispatchRequest } from '../../tests/utils/express-request.js';
 /* eslint-enable no-restricted-imports */
 import authRoutes from '../auth/auth.routes.ts';
@@ -12,13 +11,30 @@ import { CreateReportSchema, ReviewContentSchema } from '../utils/shared-shim.js
 import moderationRouter from './moderation.js';
 import usersRouter from './users.js';
 
+// Mock moderation service to avoid async operations
+vi.mock('../services/moderation.service.js', () => ({
+  moderationService: {
+    analyzeContent: _content => ({
+      scores: { violence: 0.1, language: 0.1, sexual: 0.1 },
+      flagged: false,
+    }),
+    createReport: _reportData => ({
+      success: true,
+      reportId: 'test-report-id',
+    }),
+    reviewContent: _reviewData => ({
+      success: true,
+      reviewId: 'test-review-id',
+    }),
+  },
+}));
+
 // NOTE: Tests focus on validation error responses and happy path basic behavior.
 
 describe('Moderation Routes Validation', () => {
   let app;
-  let _authToken;
 
-  beforeEach(async () => {
+  beforeEach(() => {
     getDatabase();
     app = express();
     app.enable('trust proxy');
@@ -26,8 +42,7 @@ describe('Moderation Routes Validation', () => {
     app.use('/api', usersRouter);
     app.use('/api/moderation', moderationRouter);
     app.use('/auth', authRoutes);
-    const { token } = await getTestToken(app);
-    _authToken = token;
+    // Note: No token needed for public moderation endpoints
   });
 
   afterEach(() => {

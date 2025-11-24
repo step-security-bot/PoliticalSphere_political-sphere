@@ -1,0 +1,1766 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>political-sphere documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">political-sphere documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content class">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Classes</li>
+  <li class="breadcrumb-item" >OrchestrationEngine</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>libs/ai-system/src/orchestration/engine.ts</code>
+        </p>
+
+
+            <p class="comment">
+                <h3>Description</h3>
+            </p>
+            <p class="comment">
+                <p>Orchestration Engine</p>
+<p>Manages multi-agent workflows using configurable patterns.</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-typescript">const engine = new OrchestrationEngine({
+  framework: &#39;semantic-kernel&#39;,
+  pattern: &#39;sequential&#39;
+});
+
+
+const result = await engine.execute({
+  agents: [researchAgent, analysisAgent],
+  prompt: &#39;Analyze political neutrality&#39;,
+  context: { topic: &#39;governance&#39; }
+});</code></pre></div>
+            </p>
+
+
+
+
+            <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#config" >config</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#pattern" >pattern</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#execute" >execute</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#executeConcurrent" >executeConcurrent</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#executeGroupChat" >executeGroupChat</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#executeHandoff" >executeHandoff</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#executeMagentic" >executeMagentic</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#executeSequential" >executeSequential</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#generateTraceId" >generateTraceId</a>
+                            </li>
+                            <li>
+                                <a href="#getConfig" >getConfig</a>
+                            </li>
+                            <li>
+                                <a href="#setPattern" >setPattern</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#validateOutputs" >validateOutputs</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+            <section data-compodoc="block-constructor">
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(customConfig?: <a href="../interfaces/OrchestrationConfig.html" target="_self">Partial&lt;OrchestrationConfig&gt;</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="86" class="link-to-prism">libs/ai-system/src/orchestration/engine.ts:86</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>customConfig</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../interfaces/OrchestrationConfig.html" target="_self" >Partial&lt;OrchestrationConfig&gt;</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            Yes
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+            <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="config"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>config</b></span>
+                        <a href="#config"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/OrchestrationConfig.html" target="_self" >OrchestrationConfig</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="85" class="link-to-prism">libs/ai-system/src/orchestration/engine.ts:85</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="pattern"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>pattern</b></span>
+                        <a href="#pattern"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../miscellaneous/typealiases.html#OrchestrationPattern" target="_self" >OrchestrationPattern</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="86" class="link-to-prism">libs/ai-system/src/orchestration/engine.ts:86</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+            <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="execute"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>execute</b></span>
+                        <a href="#execute"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>execute(options: <a href="../interfaces/ExecutionOptions.html" target="_self">ExecutionOptions</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="99"
+                                    class="link-to-prism">libs/ai-system/src/orchestration/engine.ts:99</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Execute multi-agent workflow</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>options</td>
+                                            <td>
+                                                            <code><a href="../interfaces/ExecutionOptions.html" target="_self" >ExecutionOptions</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../interfaces/ExecutionResult.html" target="_self" >Promise&lt;ExecutionResult&gt;</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="executeConcurrent"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Async</span>
+                        <span ><b>executeConcurrent</b></span>
+                        <a href="#executeConcurrent"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>executeConcurrent(agents: <a href="../unknowns/g.html" target="_self">Agent[]</a>, input: <a href="../interfaces/AgentInput.html" target="_self">AgentInput</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="265"
+                                    class="link-to-prism">libs/ai-system/src/orchestration/engine.ts:265</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Execute agents concurrently</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>agents</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/variables.html#g" target="_self" >Agent[]</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>input</td>
+                                            <td>
+                                                            <code><a href="../interfaces/AgentInput.html" target="_self" >AgentInput</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../miscellaneous/variables.html#g" target="_self" >Promise&lt;AgentOutput[]&gt;</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="executeGroupChat"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Async</span>
+                        <span ><b>executeGroupChat</b></span>
+                        <a href="#executeGroupChat"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>executeGroupChat(agents: <a href="../unknowns/g.html" target="_self">Agent[]</a>, input: <a href="../interfaces/AgentInput.html" target="_self">AgentInput</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="366"
+                                    class="link-to-prism">libs/ai-system/src/orchestration/engine.ts:366</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Execute agents in group chat pattern (all agents can respond to each other)</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>agents</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/variables.html#g" target="_self" >Agent[]</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>input</td>
+                                            <td>
+                                                            <code><a href="../interfaces/AgentInput.html" target="_self" >AgentInput</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../miscellaneous/variables.html#g" target="_self" >Promise&lt;AgentOutput[]&gt;</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="executeHandoff"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Async</span>
+                        <span ><b>executeHandoff</b></span>
+                        <a href="#executeHandoff"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>executeHandoff(agents: <a href="../unknowns/g.html" target="_self">Agent[]</a>, input: <a href="../interfaces/AgentInput.html" target="_self">AgentInput</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="303"
+                                    class="link-to-prism">libs/ai-system/src/orchestration/engine.ts:303</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Execute agents in handoff pattern (one agent passes to another based on conditions)</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>agents</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/variables.html#g" target="_self" >Agent[]</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>input</td>
+                                            <td>
+                                                            <code><a href="../interfaces/AgentInput.html" target="_self" >AgentInput</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../miscellaneous/variables.html#g" target="_self" >Promise&lt;AgentOutput[]&gt;</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="executeMagentic"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Async</span>
+                        <span ><b>executeMagentic</b></span>
+                        <a href="#executeMagentic"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>executeMagentic(agents: <a href="../unknowns/g.html" target="_self">Agent[]</a>, input: <a href="../interfaces/AgentInput.html" target="_self">AgentInput</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="440"
+                                    class="link-to-prism">libs/ai-system/src/orchestration/engine.ts:440</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Execute agents in magentic pattern (magnetic orchestration with specialized roles)</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>agents</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/variables.html#g" target="_self" >Agent[]</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>input</td>
+                                            <td>
+                                                            <code><a href="../interfaces/AgentInput.html" target="_self" >AgentInput</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../miscellaneous/variables.html#g" target="_self" >Promise&lt;AgentOutput[]&gt;</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="executeSequential"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Async</span>
+                        <span ><b>executeSequential</b></span>
+                        <a href="#executeSequential"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>executeSequential(agents: <a href="../unknowns/g.html" target="_self">Agent[]</a>, input: <a href="../interfaces/AgentInput.html" target="_self">AgentInput</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="210"
+                                    class="link-to-prism">libs/ai-system/src/orchestration/engine.ts:210</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Execute agents sequentially</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>agents</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/variables.html#g" target="_self" >Agent[]</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>input</td>
+                                            <td>
+                                                            <code><a href="../interfaces/AgentInput.html" target="_self" >AgentInput</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../miscellaneous/variables.html#g" target="_self" >Promise&lt;AgentOutput[]&gt;</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="generateTraceId"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>generateTraceId</b></span>
+                        <a href="#generateTraceId"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>generateTraceId()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="571"
+                                    class="link-to-prism">libs/ai-system/src/orchestration/engine.ts:571</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Generate unique trace ID</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getConfig"></a>
+                    <span class="name">
+                        <span ><b>getConfig</b></span>
+                        <a href="#getConfig"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getConfig()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="586"
+                                    class="link-to-prism">libs/ai-system/src/orchestration/engine.ts:586</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Get current configuration</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../interfaces/OrchestrationConfig.html" target="_self" >OrchestrationConfig</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="setPattern"></a>
+                    <span class="name">
+                        <span ><b>setPattern</b></span>
+                        <a href="#setPattern"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>setPattern(pattern: <a href="../undefineds/OrchestrationPattern.html" target="_self">OrchestrationPattern</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="578"
+                                    class="link-to-prism">libs/ai-system/src/orchestration/engine.ts:578</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Change orchestration pattern</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>pattern</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/typealiases.html#OrchestrationPattern" target="_self" >OrchestrationPattern</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="validateOutputs"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Async</span>
+                        <span ><b>validateOutputs</b></span>
+                        <a href="#validateOutputs"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>validateOutputs(outputs: <a href="../unknowns/g.html" target="_self">AgentOutput[]</a>, validators: Array<literal type>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="545"
+                                    class="link-to-prism">libs/ai-system/src/orchestration/engine.ts:545</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Validate agent outputs</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>outputs</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/variables.html#g" target="_self" >AgentOutput[]</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>validators</td>
+                                            <td>
+                                                        <code>Array&lt;literal type&gt;</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Promise&lt;Array&lt;literal type&gt;&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+
+
+
+
+
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { config } from &#x27;../config&#x27;;
+import { metrics } from &#x27;../observability/metrics&#x27;;
+import type { ResponseCache } from &#x27;./cache&#x27;;
+import { createCacheKey } from &#x27;./cache&#x27;;
+import type {
+  Agent,
+  AgentInput,
+  AgentOutput,
+  OrchestrationConfig,
+  OrchestrationPattern,
+} from &#x27;../types/index&#x27;;
+
+/**
+ * Orchestration engine execution options
+ */
+export interface ExecutionOptions {
+  /** Agents to execute */
+  agents: Agent[];
+  /** Input prompt */
+  prompt: string;
+  /** Execution context */
+  context?: Record&lt;string, unknown&gt;;
+  /** Validators to apply */
+  validators?: Array&lt;{ validate: (output: AgentOutput) &#x3D;&gt; Promise&lt;boolean&gt; }&gt;;
+  /** Trace ID for observability */
+  traceId?: string;
+  /** Optional response cache */
+  cache?: ResponseCache&lt;ExecutionResult&gt;;
+  /** Override cache key; defaults to deterministic key from prompt/context/agents/pattern */
+  cacheKey?: string;
+  /** TTL for cached result (ms) */
+  cacheTtlMs?: number;
+}
+
+/**
+ * Orchestration engine execution result
+ */
+export interface ExecutionResult {
+  /** Agent outputs */
+  outputs: AgentOutput[];
+  /** Execution success */
+  success: boolean;
+  /** Total execution time */
+  executionTime: number;
+  /** Indicates the result was returned from cache */
+  cacheHit?: boolean;
+  /** Validation results */
+  validationResults?: Array&lt;{ passed: boolean; message?: string }&gt;;
+  /** Error (if failed) */
+  error?: {
+    message: string;
+    code: string;
+    agentId?: string;
+  };
+}
+
+/**
+ * Orchestration Engine
+ *
+ * Manages multi-agent workflows using configurable patterns.
+ *
+ * @example
+ * &#x60;&#x60;&#x60;typescript
+ * const engine &#x3D; new OrchestrationEngine({
+ *   framework: &#x27;semantic-kernel&#x27;,
+ *   pattern: &#x27;sequential&#x27;
+ * });
+ *
+ * const result &#x3D; await engine.execute({
+ *   agents: [researchAgent, analysisAgent],
+ *   prompt: &#x27;Analyze political neutrality&#x27;,
+ *   context: { topic: &#x27;governance&#x27; }
+ * });
+ * &#x60;&#x60;&#x60;
+ */
+export class OrchestrationEngine {
+  private config: OrchestrationConfig;
+  private pattern: OrchestrationPattern;
+
+  constructor(customConfig?: Partial&lt;OrchestrationConfig&gt;) {
+    this.config &#x3D; {
+      ...config.orchestration,
+      ...customConfig,
+    };
+    this.pattern &#x3D; this.config.pattern;
+  }
+
+  /**
+   * Execute multi-agent workflow
+   */
+  async execute(options: ExecutionOptions): Promise&lt;ExecutionResult&gt; {
+    const startTime &#x3D; Date.now();
+    const {
+      agents,
+      prompt,
+      context &#x3D; {},
+      validators &#x3D; [],
+      traceId,
+      cache,
+      cacheKey,
+      cacheTtlMs,
+    } &#x3D; options;
+
+    try {
+      // Validate inputs
+      if (!agents || agents.length &#x3D;&#x3D;&#x3D; 0) {
+        throw new Error(&#x27;At least one agent is required&#x27;);
+      }
+
+      const computedCacheKey &#x3D;
+        cache &amp;&amp; (cacheKey || createCacheKey({ pattern: this.pattern, prompt, context, agents }));
+
+      if (cache &amp;&amp; computedCacheKey) {
+        const cached &#x3D; cache.get(computedCacheKey);
+        if (cached) {
+          metrics.incrementCounter(&#x27;ai_orchestration_cache_hit&#x27;, { pattern: this.pattern });
+          metrics.recordLatency(&#x27;orchestration&#x27;, Date.now() - startTime);
+          if (cached.success) {
+            metrics.incrementCounter(&#x27;ai_orchestration_success&#x27;, { pattern: this.pattern });
+          }
+          return {
+            ...cached,
+            executionTime: Date.now() - startTime,
+            cacheHit: true,
+          };
+        }
+        metrics.incrementCounter(&#x27;ai_orchestration_cache_miss&#x27;, { pattern: this.pattern });
+      }
+
+      // Create agent input
+      const input: AgentInput &#x3D; {
+        prompt,
+        context,
+        traceId: traceId || this.generateTraceId(),
+      };
+
+      // Execute pattern
+      let outputs: AgentOutput[];
+      switch (this.pattern) {
+        case &#x27;sequential&#x27;:
+          outputs &#x3D; await this.executeSequential(agents, input);
+          break;
+        case &#x27;concurrent&#x27;:
+          outputs &#x3D; await this.executeConcurrent(agents, input);
+          break;
+        case &#x27;handoff&#x27;:
+          outputs &#x3D; await this.executeHandoff(agents, input);
+          break;
+        case &#x27;group-chat&#x27;:
+          outputs &#x3D; await this.executeGroupChat(agents, input);
+          break;
+        case &#x27;magentic&#x27;:
+          outputs &#x3D; await this.executeMagentic(agents, input);
+          break;
+        default:
+          throw new Error(&#x60;Pattern &#x27;${this.pattern}&#x27; not implemented&#x60;);
+      }
+
+      // Run validators
+      const validationResults &#x3D; await this.validateOutputs(outputs, validators);
+      const allValidationsPassed &#x3D; validationResults.every(r &#x3D;&gt; r.passed);
+      const hasErrors &#x3D; outputs.some(o &#x3D;&gt; o.error);
+      const success &#x3D; allValidationsPassed &amp;&amp; !hasErrors;
+
+      const result: ExecutionResult &#x3D; {
+        outputs,
+        success,
+        executionTime: Date.now() - startTime,
+        validationResults,
+      };
+
+      metrics.recordLatency(&#x27;orchestration&#x27;, result.executionTime);
+      metrics.incrementCounter(success ? &#x27;ai_orchestration_success&#x27; : &#x27;ai_orchestration_failure&#x27;, {
+        pattern: this.pattern,
+      });
+
+      if (cache &amp;&amp; computedCacheKey &amp;&amp; success) {
+        cache.set(computedCacheKey, result, cacheTtlMs);
+      }
+
+      return result;
+    } catch (error) {
+      const executionTime &#x3D; Date.now() - startTime;
+      metrics.recordLatency(&#x27;orchestration&#x27;, executionTime);
+      metrics.incrementCounter(&#x27;ai_orchestration_failure&#x27;, { pattern: this.pattern });
+
+      return {
+        outputs: [],
+        success: false,
+        executionTime,
+        error: {
+          message: error instanceof Error ? error.message : &#x27;Unknown error&#x27;,
+          code: &#x27;EXECUTION_ERROR&#x27;,
+        },
+      };
+    }
+  }
+
+  /**
+   * Execute agents sequentially
+   */
+  private async executeSequential(agents: Agent[], input: AgentInput): Promise&lt;AgentOutput[]&gt; {
+    const outputs: AgentOutput[] &#x3D; [];
+    let currentInput &#x3D; input;
+
+    for (const agent of agents) {
+      try {
+        const startTime &#x3D; Date.now();
+        const output &#x3D; await agent.execute(currentInput);
+        const executionTime &#x3D; Date.now() - startTime;
+
+        const standardizedOutput: AgentOutput &#x3D; {
+          agentId: agent.id,
+          content: output.content || &#x27;&#x27;,
+          metadata: {
+            executionTime,
+            timestamp: new Date(),
+            ...(output.metadata &amp;&amp; typeof output.metadata &#x3D;&#x3D;&#x3D; &#x27;object&#x27; ? output.metadata : {}),
+          },
+        };
+
+        outputs.push(standardizedOutput);
+
+        // Prepare input for next agent
+        currentInput &#x3D; {
+          ...currentInput,
+          previousOutputs: outputs,
+          context: {
+            ...currentInput.context,
+            lastOutput: standardizedOutput.content,
+          },
+        };
+      } catch (error) {
+        const errorOutput: AgentOutput &#x3D; {
+          agentId: agent.id,
+          content: &#x27;&#x27;,
+          metadata: {
+            executionTime: 0,
+            timestamp: new Date(),
+          },
+          error: {
+            message: error instanceof Error ? error.message : &#x27;Unknown error&#x27;,
+            code: &#x27;EXECUTION_ERROR&#x27;,
+          },
+        };
+
+        outputs.push(errorOutput);
+        break; // Stop on first error for sequential execution
+      }
+    }
+    return outputs;
+  }
+
+  /**
+   * Execute agents concurrently
+   */
+  private async executeConcurrent(agents: Agent[], input: AgentInput): Promise&lt;AgentOutput[]&gt; {
+    const promises &#x3D; agents.map(async agent &#x3D;&gt; {
+      try {
+        const startTime &#x3D; Date.now();
+        const output &#x3D; await agent.execute(input);
+        const executionTime &#x3D; Date.now() - startTime;
+
+        return {
+          agentId: agent.id,
+          content: output.content || &#x27;&#x27;,
+          metadata: {
+            executionTime,
+            timestamp: new Date(),
+            ...(output.metadata &amp;&amp; typeof output.metadata &#x3D;&#x3D;&#x3D; &#x27;object&#x27; ? output.metadata : {}),
+          },
+        };
+      } catch (error) {
+        return {
+          agentId: agent.id,
+          content: &#x27;&#x27;,
+          metadata: {
+            executionTime: 0,
+            timestamp: new Date(),
+          },
+          error: {
+            message: error instanceof Error ? error.message : &#x27;Unknown error&#x27;,
+            code: &#x27;EXECUTION_ERROR&#x27;,
+          },
+        };
+      }
+    });
+
+    return await Promise.all(promises);
+  }
+
+  /**
+   * Execute agents in handoff pattern (one agent passes to another based on conditions)
+   */
+  private async executeHandoff(agents: Agent[], input: AgentInput): Promise&lt;AgentOutput[]&gt; {
+    const outputs: AgentOutput[] &#x3D; [];
+    let currentInput &#x3D; input;
+    let currentAgentIndex &#x3D; 0;
+
+    while (currentAgentIndex &lt; agents.length) {
+      const agent &#x3D; agents[currentAgentIndex];
+      if (!agent) {
+        throw new Error(&#x60;Agent at index ${currentAgentIndex} is undefined&#x60;);
+      }
+      try {
+        const startTime &#x3D; Date.now();
+        const output &#x3D; await agent.execute(currentInput);
+        const executionTime &#x3D; Date.now() - startTime;
+
+        const standardizedOutput: AgentOutput &#x3D; {
+          agentId: agent.id,
+          content: output.content || &#x27;&#x27;,
+          metadata: {
+            executionTime,
+            timestamp: new Date(),
+            ...(output.metadata &amp;&amp; typeof output.metadata &#x3D;&#x3D;&#x3D; &#x27;object&#x27; ? output.metadata : {}),
+          },
+        };
+
+        outputs.push(standardizedOutput);
+
+        // Check if handoff is needed (simple implementation: continue to next agent)
+        // In a real implementation, this would check conditions in the output
+        currentAgentIndex++;
+        currentInput &#x3D; {
+          ...currentInput,
+          previousOutputs: outputs,
+          context: {
+            ...currentInput.context,
+            lastOutput: standardizedOutput.content,
+          },
+        };
+      } catch (error) {
+        const errorOutput: AgentOutput &#x3D; {
+          agentId: agent.id,
+          content: &#x27;&#x27;,
+          metadata: {
+            executionTime: 0,
+            timestamp: new Date(),
+          },
+          error: {
+            message: error instanceof Error ? error.message : &#x27;Unknown error&#x27;,
+            code: &#x27;EXECUTION_ERROR&#x27;,
+          },
+        };
+
+        outputs.push(errorOutput);
+        break; // Stop on first error
+      }
+    }
+
+    return outputs;
+  }
+
+  /**
+   * Execute agents in group chat pattern (all agents can respond to each other)
+   */
+  private async executeGroupChat(agents: Agent[], input: AgentInput): Promise&lt;AgentOutput[]&gt; {
+    const outputs: AgentOutput[] &#x3D; [];
+    const conversation: Array&lt;{ role: string; content: string; name?: string }&gt; &#x3D; [
+      { role: &#x27;user&#x27;, content: input.prompt },
+    ];
+    const rounds &#x3D; 3; // Maximum rounds to prevent infinite loops
+
+    for (let round &#x3D; 0; round &lt; rounds; round++) {
+      const roundOutputs: AgentOutput[] &#x3D; [];
+
+      for (const agent of agents) {
+        try {
+          const agentInput: AgentInput &#x3D; {
+            ...input,
+            prompt: conversation.map(msg &#x3D;&gt; &#x60;${msg.role}: ${msg.content}&#x60;).join(&#x27;\n&#x27;),
+            context: {
+              ...input.context,
+              conversation,
+              round,
+            },
+          };
+
+          const startTime &#x3D; Date.now();
+          const output &#x3D; await agent.execute(agentInput);
+          const executionTime &#x3D; Date.now() - startTime;
+
+          const standardizedOutput: AgentOutput &#x3D; {
+            agentId: agent.id,
+            content: output.content || &#x27;&#x27;,
+            metadata: {
+              executionTime,
+              timestamp: new Date(),
+              ...(output.metadata &amp;&amp; typeof output.metadata &#x3D;&#x3D;&#x3D; &#x27;object&#x27; ? output.metadata : {}),
+            },
+          };
+
+          roundOutputs.push(standardizedOutput);
+          conversation.push({
+            role: &#x27;assistant&#x27;,
+            content: standardizedOutput.content,
+            name: agent.id,
+          });
+        } catch (error) {
+          const errorOutput: AgentOutput &#x3D; {
+            agentId: agent.id,
+            content: &#x27;&#x27;,
+            metadata: {
+              executionTime: 0,
+              timestamp: new Date(),
+            },
+            error: {
+              message: error instanceof Error ? error.message : &#x27;Unknown error&#x27;,
+              code: &#x27;EXECUTION_ERROR&#x27;,
+            },
+          };
+
+          roundOutputs.push(errorOutput);
+        }
+      }
+
+      outputs.push(...roundOutputs);
+
+      // Check if conversation should continue (simple implementation: always continue for max rounds)
+      if (roundOutputs.every(output &#x3D;&gt; !output.content || output.error)) {
+        break; // Stop if no meaningful output
+      }
+    }
+
+    return outputs;
+  }
+
+  /**
+   * Execute agents in magentic pattern (magnetic orchestration with specialized roles)
+   */
+  private async executeMagentic(agents: Agent[], input: AgentInput): Promise&lt;AgentOutput[]&gt; {
+    // Simplified magentic pattern: coordinator + workers
+    if (agents.length &lt; 2) {
+      throw new Error(&#x27;Magentic pattern requires at least 2 agents (coordinator + worker)&#x27;);
+    }
+
+    const coordinator &#x3D; agents[0];
+    if (!coordinator) {
+      throw new Error(&#x27;Coordinator agent (first agent) is undefined&#x27;);
+    }
+    const workers &#x3D; agents.slice(1);
+    const outputs: AgentOutput[] &#x3D; [];
+
+    // Coordinator plans the work
+    try {
+      const startTime &#x3D; Date.now();
+      const planOutput &#x3D; await coordinator.execute(input);
+      const executionTime &#x3D; Date.now() - startTime;
+
+      const plan: AgentOutput &#x3D; {
+        agentId: coordinator.id,
+        content: planOutput.content || &#x27;&#x27;,
+        metadata: {
+          executionTime,
+          timestamp: new Date(),
+          ...(planOutput.metadata &amp;&amp; typeof planOutput.metadata &#x3D;&#x3D;&#x3D; &#x27;object&#x27;
+            ? planOutput.metadata
+            : {}),
+        },
+      };
+
+      outputs.push(plan);
+
+      // Workers execute in parallel based on plan
+      const workerPromises &#x3D; workers.map(async worker &#x3D;&gt; {
+        const workerInput: AgentInput &#x3D; {
+          ...input,
+          prompt: &#x60;Plan: ${plan.content}\n\nExecute your part of the plan.&#x60;,
+          context: {
+            ...input.context,
+            plan: plan.content,
+            role: &#x27;worker&#x27;,
+          },
+        };
+
+        try {
+          const startTime &#x3D; Date.now();
+          const output &#x3D; await worker.execute(workerInput);
+          const executionTime &#x3D; Date.now() - startTime;
+
+          return {
+            agentId: worker.id,
+            content: output.content || &#x27;&#x27;,
+            metadata: {
+              executionTime,
+              timestamp: new Date(),
+              role: &#x27;worker&#x27;,
+              ...(output.metadata &amp;&amp; typeof output.metadata &#x3D;&#x3D;&#x3D; &#x27;object&#x27; ? output.metadata : {}),
+            },
+          };
+        } catch (error) {
+          return {
+            agentId: worker.id,
+            content: &#x27;&#x27;,
+            metadata: {
+              executionTime: 0,
+              timestamp: new Date(),
+              role: &#x27;worker&#x27;,
+            },
+            error: {
+              message: error instanceof Error ? error.message : &#x27;Unknown error&#x27;,
+              code: &#x27;EXECUTION_ERROR&#x27;,
+            },
+          };
+        }
+      });
+
+      const workerOutputs &#x3D; await Promise.all(workerPromises);
+      outputs.push(...workerOutputs);
+    } catch (error) {
+      if (!coordinator) {
+        throw new Error(&#x27;Coordinator agent is undefined&#x27;);
+      }
+      const errorOutput: AgentOutput &#x3D; {
+        agentId: coordinator.id,
+        content: &#x27;&#x27;,
+        metadata: {
+          executionTime: 0,
+          timestamp: new Date(),
+        },
+        error: {
+          message: error instanceof Error ? error.message : &#x27;Coordinator failed&#x27;,
+          code: &#x27;EXECUTION_ERROR&#x27;,
+        },
+      };
+
+      outputs.push(errorOutput);
+    }
+
+    return outputs;
+  }
+
+  /**
+   * Validate agent outputs
+   */
+  private async validateOutputs(
+    outputs: AgentOutput[],
+    validators: Array&lt;{ validate: (output: AgentOutput) &#x3D;&gt; Promise&lt;boolean&gt; }&gt;
+  ): Promise&lt;Array&lt;{ passed: boolean; message?: string }&gt;&gt; {
+    const results: Array&lt;{ passed: boolean; message?: string }&gt; &#x3D; [];
+
+    for (const output of outputs) {
+      for (const validator of validators) {
+        try {
+          const passed &#x3D; await validator.validate(output);
+          results.push({ passed });
+        } catch (error) {
+          results.push({
+            passed: false,
+            message: error instanceof Error ? error.message : &#x27;Validation failed&#x27;,
+          });
+        }
+      }
+    }
+
+    return results;
+  }
+
+  /**
+   * Generate unique trace ID
+   */
+  private generateTraceId(): string {
+    return &#x60;trace-${Date.now()}-${Math.random().toString(36).slice(2, 11)}&#x60;;
+  }
+
+  /**
+   * Change orchestration pattern
+   */
+  setPattern(pattern: OrchestrationPattern): void {
+    this.pattern &#x3D; pattern;
+    this.config.pattern &#x3D; pattern;
+  }
+
+  /**
+   * Get current configuration
+   */
+  getConfig(): OrchestrationConfig {
+    return { ...this.config };
+  }
+}
+</code></pre>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'class';
+            var COMPODOC_CURRENT_PAGE_URL = 'OrchestrationEngine.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

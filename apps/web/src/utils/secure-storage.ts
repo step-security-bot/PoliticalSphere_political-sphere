@@ -3,6 +3,7 @@
  * Implements encrypted token storage using Web Crypto API
  * Protects against XSS attacks and unauthorized access
  */
+/* eslint-disable no-console */
 
 const TOKEN_KEY = 'auth_tokens';
 const _SALT_KEY = 'auth_salt';

@@ -6,12 +6,30 @@
 import { getLogger } from '@political-sphere/shared';
 import path from 'node:path';
 import { PrismaClient } from '@prisma/client';
+import { PrismaPg } from '@prisma/adapter-pg';
+import { PrismaLibSQL } from '@prisma/adapter-libsql';
+import { Pool } from 'pg';
 
 const logger = getLogger({ service: 'database' });
 
 // Type definitions for database operations
+/**
+ * DatabaseRecord represents a generic database row with arbitrary fields.
+ * It is intentionally permissive to support dynamic model shapes used across
+ * the application. Prefer narrowing to concrete interfaces in higher-level
+ * services when working with well-known models.
+ */
 export type DatabaseRecord = Record<string, unknown>;
+
+/**
+ * WhereClause is a generic filter used for querying models. For complex
+ * queries prefer using Prisma's type-safe filters at the callsite.
+ */
 export type WhereClause = Record<string, unknown>;
+
+/**
+ * QueryOptions controls pagination and sorting for list queries.
+ */
 export type QueryOptions = {
   skip?: number;
   take?: number;
@@ -35,21 +53,57 @@ if (!process.env.DATABASE_URL && process.env.NODE_ENV === 'test') {
   process.env.DATABASE_URL = `file:${dbPath}`;
 }
 
-// Initialize Prisma client with connection pooling and logging
+// Initialize Prisma client with adapter for Prisma 7
+const connectionString = process.env.DATABASE_URL;
+if (!connectionString) {
+  throw new Error('DATABASE_URL environment variable is required');
+}
+
+let adapter: PrismaPg | PrismaLibSQL;
+try {
+  if (connectionString.startsWith('file:')) {
+    // Use LibSQL adapter for SQLite files (used in tests)
+    adapter = new PrismaLibSQL({ url: connectionString });
+  } else {
+    // Use PostgreSQL adapter for production
+    const pool = new Pool({ connectionString });
+    adapter = new PrismaPg(pool);
+  }
+} catch (err) {
+  // Redact password from connection string for logging
+  const safeConnStr = connectionString.replace(
+    /(postgresql:\/\/)([^:]+):([^@]+)@/,
+    '$1$2:<redacted>@'
+  );
+  logger.error(
+    'Failed to initialize database adapter. Check your DATABASE_URL and database configuration.',
+    {
+      error: err,
+      connectionString: safeConnStr,
+    }
+  );
+  throw new Error('Database adapter initialization failed. See logs for details.');
+}
+
 const prisma = new PrismaClient({
+  adapter,
   log: [
     { level: 'query', emit: 'event' },
     { level: 'info', emit: 'event' },
     { level: 'warn', emit: 'event' },
     { level: 'error', emit: 'event' },
   ],
-  // Connection pooling configuration for PostgreSQL
-  datasources: {
-    db: {
-      url: process.env.DATABASE_URL,
-    },
-  },
 });
+
+// Configure connection pool settings via environment variables
+if (process.env.DATABASE_URL?.startsWith('postgresql://')) {
+  // PostgreSQL connection pool settings
+  process.env.PRISMA_CONNECTION_POOL_SIZE = process.env.PRISMA_CONNECTION_POOL_SIZE || '10';
+  process.env.PRISMA_CONNECTION_IDLE_TIMEOUT =
+    process.env.PRISMA_CONNECTION_IDLE_TIMEOUT || '300000'; // 5 minutes
+  process.env.PRISMA_CONNECTION_MAX_LIFETIME =
+    process.env.PRISMA_CONNECTION_MAX_LIFETIME || '600000'; // 10 minutes
+}
 
 // Log database queries in development
 if (process.env.NODE_ENV === 'development') {
@@ -66,15 +120,45 @@ prisma.$on('info', e => logger.info('Database info', { message: e.message }));
 prisma.$on('warn', e => logger.warn('Database warning', { message: e.message }));
 prisma.$on('error', e => logger.error('Database error', { message: e.message }));
 
-// Export the raw Prisma client for direct use
+/**
+ * The raw `PrismaClient` instance used by the repository layer.
+ *
+ * This export is provided for advanced callers that need direct access to
+ * Prisma's API (for example, running ad-hoc queries or working with a
+ * migration script). Prefer using the higher-level `PrismaDatabaseService`
+ * and the model-specific helpers (`ParliamentDB`, `GovernmentDB`, etc.)
+ * for application code to preserve encapsulation and easier testing.
+ */
 export { prisma };
 
 /**
  * Generic CRUD operations using Prisma
  */
-class PrismaDatabaseService {
+/**
+ * High-level database service wrapping the `PrismaClient` with a small set
+ * of generic, model-agnostic CRUD operations and transaction helpers.
+ *
+ * - Methods accept model names as strings to keep this service generic and
+ *   easily mockable in tests.
+ * - For domain logic prefer using model-specific helper objects exported at
+ *   the bottom of this file (e.g., `ParliamentDB`, `ElectionsDB`).
+ */
+/**
+ * PrismaDatabaseService wraps the `PrismaClient` to provide a small set of
+ * generic, model-agnostic CRUD and transaction helpers that can be used by
+ * higher-level domain services. Use model-specific helpers (exported at the
+ * bottom of this file) for more convenient and type-aware operations.
+ */
+export class PrismaDatabaseService {
   /**
    * Create a new record
+   */
+  /**
+   * Creates a new record in the specified model.
+   * @param model - The Prisma model name (e.g., 'user', 'bill', 'vote')
+   * @param data - The data to create the record with
+   * @returns Promise resolving to the created record
+   * @throws Error if the model doesn't exist or creation fails
    */
   async create(model: string, data: DatabaseRecord): Promise<DatabaseRecord> {
     try {
@@ -98,7 +182,11 @@ class PrismaDatabaseService {
   }
 
   /**
-   * Find a record by ID
+   * Finds a single record by its ID in the specified model.
+   * @param model - The Prisma model name (e.g., 'user', 'bill', 'vote')
+   * @param id - The unique identifier of the record to find
+   * @returns Promise resolving to the found record or null if not found
+   * @throws Error if the model doesn't exist or query fails
    */
   async findById(model: string, id: string): Promise<DatabaseRecord | null> {
     try {
@@ -123,12 +211,20 @@ class PrismaDatabaseService {
   }
 
   /**
-   * Find records matching criteria
+   * Finds multiple records matching the specified criteria with optional pagination and sorting.
+   * @param model - The Prisma model name (e.g., 'user', 'bill', 'vote')
+   * @param where - Filter criteria to match records against
+   * @param options - Query options for pagination and sorting
+   * @param options.skip - Number of records to skip (for pagination)
+   * @param options.take - Maximum number of records to return
+   * @param options.orderBy - Sort order specification
+   * @returns Promise resolving to array of matching records
+   * @throws Error if the model doesn't exist or query fails
    */
   async findMany(
     model: string,
     where: WhereClause = {},
-    options: QueryOptions = {},
+    options: QueryOptions = {}
   ): Promise<DatabaseRecord[]> {
     try {
       const modelClient = (
@@ -162,7 +258,11 @@ class PrismaDatabaseService {
   }
 
   /**
-   * Count records matching criteria
+   * Counts the number of records matching the specified criteria.
+   * @param model - The Prisma model name (e.g., 'user', 'bill', 'vote')
+   * @param where - Filter criteria to count records against
+   * @returns Promise resolving to the count of matching records
+   * @throws Error if the model doesn't exist or query fails
    */
   async count(model: string, where: WhereClause = {}): Promise<number> {
     try {
@@ -184,7 +284,12 @@ class PrismaDatabaseService {
   }
 
   /**
-   * Update a record
+   * Updates a single record by ID with the provided data.
+   * @param model - The Prisma model name (e.g., 'user', 'bill', 'vote')
+   * @param id - The unique identifier of the record to update
+   * @param data - The data to update the record with
+   * @returns Promise resolving to the updated record
+   * @throws Error if the model doesn't exist, record not found, or update fails
    */
   async update(model: string, id: string, data: DatabaseRecord): Promise<DatabaseRecord> {
     try {
@@ -219,7 +324,11 @@ class PrismaDatabaseService {
   }
 
   /**
-   * Delete a record
+   * Deletes a single record by ID.
+   * @param model - The Prisma model name (e.g., 'user', 'bill', 'vote')
+   * @param id - The unique identifier of the record to delete
+   * @returns Promise resolving to true if deletion was successful
+   * @throws Error if the model doesn't exist, record not found, or deletion fails
    */
   async delete(model: string, id: string) {
     try {
@@ -245,12 +354,16 @@ class PrismaDatabaseService {
   }
 
   /**
-   * Execute a transaction
+   * Execute a transaction with automatic rollback on failure.
+   * All database operations within the callback function are executed atomically.
+   * @param callback - Function containing database operations to execute within the transaction
+   * @returns Promise resolving to the result of the callback function
+   * @throws Error if the transaction fails or any operation within it fails
    */
   async transaction<T>(
     callback: (
-      tx: Omit<PrismaClient, '$connect' | '$disconnect' | '$on' | '$transaction' | '$extends'>,
-    ) => Promise<T>,
+      tx: Omit<PrismaClient, '$connect' | '$disconnect' | '$on' | '$transaction' | '$extends'>
+    ) => Promise<T>
   ): Promise<T> {
     try {
       return await prisma.$transaction(async tx => {
@@ -264,7 +377,11 @@ class PrismaDatabaseService {
   }
 
   /**
-   * Check if a record exists
+   * Checks if any records exist matching the specified criteria.
+   * @param model - The Prisma model name (e.g., 'user', 'bill', 'vote')
+   * @param where - Filter criteria to check for record existence
+   * @returns Promise resolving to true if at least one matching record exists, false otherwise
+   * @throws Error if the model doesn't exist or query fails
    */
   async exists(model: string, where: WhereClause): Promise<boolean> {
     try {
@@ -278,14 +395,19 @@ class PrismaDatabaseService {
   }
 
   /**
-   * Get Prisma client for advanced operations
+   * Gets the Prisma client instance for advanced database operations.
+   * Use this method when you need direct access to Prisma's full API.
+   * @returns The PrismaClient instance configured for the current environment
    */
   getClient() {
     return prisma;
   }
 
   /**
-   * Disconnect from database
+   * Disconnects from the database and closes all connections.
+   * This should be called when shutting down the application to ensure
+   * proper cleanup of database connections.
+   * @returns Promise that resolves when disconnection is complete
    */
   async disconnect() {
     await prisma.$disconnect();
@@ -294,9 +416,22 @@ class PrismaDatabaseService {
 }
 
 // Export singleton instance
+/**
+ * Singleton instance of `PrismaDatabaseService` used by route handlers and
+ * domain services. Import this when you need the shared, configured
+ * database service for CRUD and transaction operations.
+ */
+/**
+ * Shared `prismaDb` singleton instance of `PrismaDatabaseService` used by
+ * domain services and route handlers. Prefer the named export for typing.
+ */
 export const prismaDb = new PrismaDatabaseService();
 
 // Parliament-specific operations
+/**
+ * Parliament database operations service.
+ * Provides CRUD operations for parliamentary entities like chambers, motions, debates, and votes.
+ */
 export const ParliamentDB = {
   createChamber: (data: DatabaseRecord) => prismaDb.create('chamber', data),
   getChamber: (id: string) => prismaDb.findById('chamber', id),
@@ -320,6 +455,10 @@ export const ParliamentDB = {
 };
 
 // Government-specific operations
+/**
+ * Government database operations service.
+ * Provides CRUD operations for government entities like governments, ministers, executive actions, and cabinet meetings.
+ */
 export const GovernmentDB = {
   createGovernment: (data: DatabaseRecord) => prismaDb.create('government', data),
   getGovernment: (id: string) => prismaDb.findById('government', id),
@@ -346,6 +485,10 @@ export const GovernmentDB = {
 };
 
 // Judiciary-specific operations
+/**
+ * Judiciary database operations service.
+ * Provides CRUD operations for judicial entities like cases, judges, rulings, reviews, and legal precedents.
+ */
 export const JudiciaryDB = {
   createCase: (data: DatabaseRecord) => prismaDb.create('case', data),
   getCase: (id: string) => prismaDb.findById('case', id),
@@ -373,6 +516,10 @@ export const JudiciaryDB = {
 };
 
 // Media-specific operations
+/**
+ * Media database operations service.
+ * Provides CRUD operations for media entities like press releases, polls, coverage, narratives, and approval ratings.
+ */
 export const MediaDB = {
   createPressRelease: (data: DatabaseRecord) => prismaDb.create('pressRelease', data),
   getPressRelease: (id: string) => prismaDb.findById('pressRelease', id),
@@ -409,7 +556,7 @@ export const MediaDB = {
           entityId,
           entityType,
         },
-        { orderBy: { measuredAt: 'desc' }, take: 1 },
+        { orderBy: { measuredAt: 'desc' }, take: 1 }
       )
       .then(r => r[0]);
   },
@@ -427,6 +574,10 @@ export const MediaDB = {
 };
 
 // Elections-specific operations
+/**
+ * Elections database operations service.
+ * Provides CRUD operations for election entities like elections, campaigns, constituencies, and candidates.
+ */
 export const ElectionsDB = {
   createElection: (data: DatabaseRecord) => prismaDb.create('election', data),
   getElection: (id: string) => prismaDb.findById('election', id),

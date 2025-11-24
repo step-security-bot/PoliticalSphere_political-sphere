@@ -4,7 +4,7 @@
  * Integrates accessibility and reporting features
  */
 
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useAccessibility } from '../hooks/useAccessibility.js';
 import ReportContent from './ReportContent.jsx';
 
@@ -51,15 +51,24 @@ const GameBoard = ({ gameId, proposals, onProposalSubmit, onVote }) => {
     announce('Report dialog closed', 'polite');
   };
 
-  const handleKeyDown = e => {
-    if (e.key === 'ArrowDown') {
-      e.preventDefault();
-      focusNextElement();
-    } else if (e.key === 'ArrowUp') {
-      e.preventDefault();
-      focusPreviousElement();
-    }
-  };
+  const handleKeyDown = useCallback(
+    e => {
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        focusNextElement();
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        focusPreviousElement();
+      }
+    },
+    [focusNextElement, focusPreviousElement]
+  );
+
+  useEffect(() => {
+    const keyListener = event => handleKeyDown(event);
+    document.addEventListener('keydown', keyListener);
+    return () => document.removeEventListener('keydown', keyListener);
+  }, [handleKeyDown]);
 
   useEffect(() => {
     if (isModalOpen) {
@@ -89,12 +98,12 @@ const GameBoard = ({ gameId, proposals, onProposalSubmit, onVote }) => {
       </nav>
       <main
         id="main-content"
+        role="application"
         tabIndex={-1}
         className={`game-board ${highContrast ? 'high-contrast' : ''} ${
           largeText ? 'large-text' : ''
         } ${reducedMotion ? 'reduced-motion' : ''}`}
         aria-label="Game board"
-        onKeyDown={handleKeyDown}
       >
         <header>
           <h1>Political Sphere Game</h1>

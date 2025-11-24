@@ -1,0 +1,1039 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>political-sphere documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">political-sphere documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content interface">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Interfaces</li>
+  <li class="breadcrumb-item"
+  >
+  Candidate</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>apps/web/src/components/Elections/ElectionsManager.tsx</code>
+        </p>
+
+
+
+
+        <section data-compodoc="block-index">
+            <h3 id="index">Index</h3>
+            <table class="table table-sm table-bordered index-table">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <h6><b>Properties</b></h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <ul class="index-list">
+                                <li>
+                                        <a href="#constituencyId" 
+>
+                                            constituencyId
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#id" 
+>
+                                            id
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#independent" 
+>
+                                            independent
+                                        </a>
+                                </li>
+                                <li>
+                                            <span class="modifier">Optional</span>
+                                        <a href="#partyId" 
+>
+                                            partyId
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#status" 
+>
+                                            status
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#userId" 
+>
+                                            userId
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#votePercentage" 
+>
+                                            votePercentage
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#votesReceived" 
+>
+                                            votesReceived
+                                        </a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+
+
+            <section data-compodoc="block-properties">
+                <h3 id="inputs">Properties</h3>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="constituencyId"></a>
+                                        <span class="name "><b>constituencyId</b>
+                                            <a href="#constituencyId">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>constituencyId:         <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="id"></a>
+                                        <span class="name "><b>id</b>
+                                            <a href="#id">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>id:         <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="independent"></a>
+                                        <span class="name "><b>independent</b>
+                                            <a href="#independent">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>independent:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="partyId"></a>
+                                        <span class="name "><b>partyId</b>
+                                            <a href="#partyId">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>partyId:         <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Optional</i>
+                                        </td>
+                                    </tr>
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="status"></a>
+                                        <span class="name "><b>status</b>
+                                            <a href="#status">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>status:         <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="userId"></a>
+                                        <span class="name "><b>userId</b>
+                                            <a href="#userId">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>userId:         <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="votePercentage"></a>
+                                        <span class="name "><b>votePercentage</b>
+                                            <a href="#votePercentage">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>votePercentage:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="votesReceived"></a>
+                                        <span class="name "><b>votesReceived</b>
+                                            <a href="#votesReceived">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>votesReceived:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+            </section>
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import React, { useState, useEffect, useCallback } from &#x27;react&#x27;;
+import &#x27;./ElectionsManager.css&#x27;;
+
+interface Election {
+  id: string;
+  gameId: string;
+  name: string;
+  electionType: &#x27;general&#x27; | &#x27;by_election&#x27; | &#x27;local&#x27; | &#x27;referendum&#x27;;
+  startDate: string;
+  endDate: string;
+  status: string;
+  totalVotes: number;
+  turnout: number;
+}
+
+interface Constituency {
+  id: string;
+  name: string;
+  population: number;
+  registeredVoters: number;
+  region: string;
+  votesCast: number;
+  turnoutPercentage: number;
+}
+
+interface Candidate {
+  id: string;
+  userId: string;
+  constituencyId: string;
+  partyId?: string;
+  independent: boolean;
+  votesReceived: number;
+  votePercentage: number;
+  status: string;
+}
+
+interface ElectionsManagerProps {
+  gameId: string;
+  onCreateElection?: (data: {
+    name: string;
+    electionType: string;
+    startDate: string;
+    endDate: string;
+  }) &#x3D;&gt; void;
+  onCastVote?: (data: { electionId: string; constituencyId: string; candidateId: string }) &#x3D;&gt; void;
+}
+
+const ElectionsManager: React.FC&lt;ElectionsManagerProps&gt; &#x3D; ({
+  gameId,
+  onCreateElection,
+  onCastVote,
+}) &#x3D;&gt; {
+  const [elections, setElections] &#x3D; useState&lt;Election[]&gt;([]);
+  const [selectedElection, setSelectedElection] &#x3D; useState&lt;Election | null&gt;(null);
+  const [constituencies, setConstituencies] &#x3D; useState&lt;Constituency[]&gt;([]);
+  const [candidates, setCandidates] &#x3D; useState&lt;Candidate[]&gt;([]);
+  const [selectedConstituency, setSelectedConstituency] &#x3D; useState&lt;string | null&gt;(null);
+  const [loading, setLoading] &#x3D; useState(true);
+  const [error, setError] &#x3D; useState&lt;string | null&gt;(null);
+  const [activeView, setActiveView] &#x3D; useState&lt;&#x27;elections&#x27; | &#x27;constituencies&#x27; | &#x27;results&#x27;&gt;(
+    &#x27;elections&#x27;
+  );
+
+  const fetchElections &#x3D; useCallback(async () &#x3D;&gt; {
+    try {
+      const response &#x3D; await fetch(&#x60;/api/elections?gameId&#x3D;${gameId}&#x60;);
+      if (!response.ok) throw new Error(&#x27;Failed to fetch elections&#x27;);
+      const data &#x3D; await response.json();
+      if (data.success) {
+        setElections(data.data);
+        if (data.data.length &gt; 0 &amp;&amp; !selectedElection) {
+          setSelectedElection(data.data[0]);
+        }
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : &#x27;Unknown error&#x27;);
+    }
+  }, [gameId, selectedElection]);
+
+  const fetchConstituencies &#x3D; useCallback(async () &#x3D;&gt; {
+    if (!selectedElection) return;
+    try {
+      const response &#x3D; await fetch(&#x60;/api/elections/${selectedElection.id}/constituencies&#x60;);
+      if (!response.ok) throw new Error(&#x27;Failed to fetch constituencies&#x27;);
+      const data &#x3D; await response.json();
+      if (data.success) {
+        setConstituencies(data.data);
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : &#x27;Unknown error&#x27;);
+    }
+  }, [selectedElection]);
+
+  const fetchCandidates &#x3D; useCallback(async () &#x3D;&gt; {
+    if (!selectedElection || !selectedConstituency) return;
+    try {
+      const response &#x3D; await fetch(
+        &#x60;/api/elections/${selectedElection.id}/candidates?constituencyId&#x3D;${selectedConstituency}&#x60;
+      );
+      if (!response.ok) throw new Error(&#x27;Failed to fetch candidates&#x27;);
+      const data &#x3D; await response.json();
+      if (data.success) {
+        setCandidates(data.data);
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : &#x27;Unknown error&#x27;);
+    }
+  }, [selectedElection, selectedConstituency]);
+
+  useEffect(() &#x3D;&gt; {
+    const loadData &#x3D; async () &#x3D;&gt; {
+      setLoading(true);
+      await fetchElections();
+      setLoading(false);
+    };
+    loadData();
+  }, [fetchElections]);
+
+  useEffect(() &#x3D;&gt; {
+    if (selectedElection) {
+      fetchConstituencies();
+    }
+  }, [selectedElection, fetchConstituencies]);
+
+  useEffect(() &#x3D;&gt; {
+    if (selectedConstituency) {
+      fetchCandidates();
+    }
+  }, [selectedConstituency, fetchCandidates]);
+
+  const handleCreateElection &#x3D; (event: React.FormEvent&lt;HTMLFormElement&gt;) &#x3D;&gt; {
+    event.preventDefault();
+    const formData &#x3D; new FormData(event.currentTarget);
+    const name &#x3D; formData.get(&#x27;electionName&#x27;) as string;
+    const electionType &#x3D; formData.get(&#x27;electionType&#x27;) as string;
+    const startDate &#x3D; formData.get(&#x27;startDate&#x27;) as string;
+    const endDate &#x3D; formData.get(&#x27;endDate&#x27;) as string;
+
+    if (name &amp;&amp; electionType &amp;&amp; startDate &amp;&amp; endDate &amp;&amp; onCreateElection) {
+      onCreateElection({ name, electionType, startDate, endDate });
+      event.currentTarget.reset();
+    }
+  };
+
+  const handleVote &#x3D; (candidateId: string) &#x3D;&gt; {
+    if (selectedElection &amp;&amp; selectedConstituency &amp;&amp; onCastVote) {
+      onCastVote({
+        electionId: selectedElection.id,
+        constituencyId: selectedConstituency,
+        candidateId,
+      });
+    }
+  };
+
+  const getElectionStatus &#x3D; (election: Election): string &#x3D;&gt; {
+    const now &#x3D; new Date();
+    const start &#x3D; new Date(election.startDate);
+    const end &#x3D; new Date(election.endDate);
+
+    if (now &lt; start) return &#x27;Upcoming&#x27;;
+    if (now &gt;&#x3D; start &amp;&amp; now &lt;&#x3D; end) return &#x27;Active&#x27;;
+    if (now &gt; end &amp;&amp; election.status !&#x3D;&#x3D; &#x27;certified&#x27;) return &#x27;Closed&#x27;;
+    return &#x27;Certified&#x27;;
+  };
+
+  if (loading) {
+    return (
+      &lt;div className&#x3D;&quot;elections-manager&quot; role&#x3D;&quot;status&quot; aria-live&#x3D;&quot;polite&quot;&gt;
+        &lt;p&gt;Loading elections...&lt;/p&gt;
+      &lt;/div&gt;
+    );
+  }
+
+  if (error) {
+    return (
+      &lt;div className&#x3D;&quot;elections-manager&quot; role&#x3D;&quot;alert&quot;&gt;
+        &lt;p className&#x3D;&quot;error&quot;&gt;Error: {error}&lt;/p&gt;
+      &lt;/div&gt;
+    );
+  }
+
+  return (
+    &lt;div className&#x3D;&quot;elections-manager&quot;&gt;
+      &lt;header className&#x3D;&quot;elections-header&quot;&gt;
+        &lt;h1&gt;Elections Manager&lt;/h1&gt;
+        &lt;p className&#x3D;&quot;elections-subtitle&quot;&gt;Manage elections, constituencies, and voting&lt;/p&gt;
+      &lt;/header&gt;
+
+      &lt;div className&#x3D;&quot;elections-nav&quot; role&#x3D;&quot;tablist&quot; aria-label&#x3D;&quot;Election views&quot;&gt;
+        &lt;button
+          type&#x3D;&quot;button&quot;
+          role&#x3D;&quot;tab&quot;
+          aria-selected&#x3D;{activeView &#x3D;&#x3D;&#x3D; &#x27;elections&#x27;}
+          aria-controls&#x3D;&quot;elections-panel&quot;
+          id&#x3D;&quot;elections-tab&quot;
+          onClick&#x3D;{() &#x3D;&gt; setActiveView(&#x27;elections&#x27;)}
+          className&#x3D;{activeView &#x3D;&#x3D;&#x3D; &#x27;elections&#x27; ? &#x27;active&#x27; : &#x27;&#x27;}
+        &gt;
+          Elections
+        &lt;/button&gt;
+        &lt;button
+          type&#x3D;&quot;button&quot;
+          role&#x3D;&quot;tab&quot;
+          aria-selected&#x3D;{activeView &#x3D;&#x3D;&#x3D; &#x27;constituencies&#x27;}
+          aria-controls&#x3D;&quot;constituencies-panel&quot;
+          id&#x3D;&quot;constituencies-tab&quot;
+          onClick&#x3D;{() &#x3D;&gt; setActiveView(&#x27;constituencies&#x27;)}
+          className&#x3D;{activeView &#x3D;&#x3D;&#x3D; &#x27;constituencies&#x27; ? &#x27;active&#x27; : &#x27;&#x27;}
+          disabled&#x3D;{!selectedElection}
+        &gt;
+          Constituencies
+        &lt;/button&gt;
+        &lt;button
+          type&#x3D;&quot;button&quot;
+          role&#x3D;&quot;tab&quot;
+          aria-selected&#x3D;{activeView &#x3D;&#x3D;&#x3D; &#x27;results&#x27;}
+          aria-controls&#x3D;&quot;results-panel&quot;
+          id&#x3D;&quot;results-tab&quot;
+          onClick&#x3D;{() &#x3D;&gt; setActiveView(&#x27;results&#x27;)}
+          className&#x3D;{activeView &#x3D;&#x3D;&#x3D; &#x27;results&#x27; ? &#x27;active&#x27; : &#x27;&#x27;}
+          disabled&#x3D;{!selectedElection}
+        &gt;
+          Results
+        &lt;/button&gt;
+      &lt;/div&gt;
+
+      {activeView &#x3D;&#x3D;&#x3D; &#x27;elections&#x27; &amp;&amp; (
+        &lt;section
+          id&#x3D;&quot;elections-panel&quot;
+          role&#x3D;&quot;tabpanel&quot;
+          aria-labelledby&#x3D;&quot;elections-tab&quot;
+          className&#x3D;&quot;elections-section&quot;
+        &gt;
+          &lt;h2&gt;Elections&lt;/h2&gt;
+
+          {elections.length &#x3D;&#x3D;&#x3D; 0 ? (
+            &lt;p&gt;No elections scheduled yet.&lt;/p&gt;
+          ) : (
+            &lt;ul className&#x3D;&quot;elections-list&quot; aria-label&#x3D;&quot;List of elections&quot;&gt;
+              {elections.map(election &#x3D;&gt; (
+                &lt;li key&#x3D;{election.id}&gt;
+                  &lt;button
+                    type&#x3D;&quot;button&quot;
+                    className&#x3D;{&#x60;election-card ${selectedElection?.id &#x3D;&#x3D;&#x3D; election.id ? &#x27;selected&#x27; : &#x27;&#x27;}&#x60;}
+                    onClick&#x3D;{() &#x3D;&gt; setSelectedElection(election)}
+                    aria-pressed&#x3D;{selectedElection?.id &#x3D;&#x3D;&#x3D; election.id}
+                  &gt;
+                    &lt;div className&#x3D;&quot;election-header&quot;&gt;
+                      &lt;h3&gt;{election.name}&lt;/h3&gt;
+                      &lt;span
+                        className&#x3D;{&#x60;election-status status-${getElectionStatus(election).toLowerCase()}&#x60;}
+                      &gt;
+                        {getElectionStatus(election)}
+                      &lt;/span&gt;
+                    &lt;/div&gt;
+                    &lt;div className&#x3D;&quot;election-meta&quot;&gt;
+                      &lt;span className&#x3D;&quot;election-type&quot;&gt;
+                        {election.electionType.replace(&#x27;_&#x27;, &#x27; &#x27;)}
+                      &lt;/span&gt;
+                      &lt;span&gt;Votes: {election.totalVotes.toLocaleString()}&lt;/span&gt;
+                      &lt;span&gt;Turnout: {election.turnout.toFixed(1)}%&lt;/span&gt;
+                    &lt;/div&gt;
+                    &lt;div className&#x3D;&quot;election-dates&quot;&gt;
+                      &lt;span&gt;Start: {new Date(election.startDate).toLocaleDateString()}&lt;/span&gt;
+                      &lt;span&gt;End: {new Date(election.endDate).toLocaleDateString()}&lt;/span&gt;
+                    &lt;/div&gt;
+                  &lt;/button&gt;
+                &lt;/li&gt;
+              ))}
+            &lt;/ul&gt;
+          )}
+
+          {onCreateElection &amp;&amp; (
+            &lt;form
+              className&#x3D;&quot;create-election-form&quot;
+              onSubmit&#x3D;{handleCreateElection}
+              aria-labelledby&#x3D;&quot;create-election-heading&quot;
+            &gt;
+              &lt;h3 id&#x3D;&quot;create-election-heading&quot;&gt;Create New Election&lt;/h3&gt;
+
+              &lt;div className&#x3D;&quot;form-group&quot;&gt;
+                &lt;label htmlFor&#x3D;&quot;election-name&quot;&gt;
+                  Election Name &lt;span aria-label&#x3D;&quot;required&quot;&gt;*&lt;/span&gt;
+                &lt;/label&gt;
+                &lt;input
+                  type&#x3D;&quot;text&quot;
+                  id&#x3D;&quot;election-name&quot;
+                  name&#x3D;&quot;electionName&quot;
+                  required
+                  aria-required&#x3D;&quot;true&quot;
+                  maxLength&#x3D;{200}
+                  placeholder&#x3D;&quot;e.g., 2025 General Election&quot;
+                /&gt;
+              &lt;/div&gt;
+
+              &lt;div className&#x3D;&quot;form-group&quot;&gt;
+                &lt;label htmlFor&#x3D;&quot;election-type&quot;&gt;
+                  Election Type &lt;span aria-label&#x3D;&quot;required&quot;&gt;*&lt;/span&gt;
+                &lt;/label&gt;
+                &lt;select id&#x3D;&quot;election-type&quot; name&#x3D;&quot;electionType&quot; required aria-required&#x3D;&quot;true&quot;&gt;
+                  &lt;option value&#x3D;&quot;&quot;&gt;Select type...&lt;/option&gt;
+                  &lt;option value&#x3D;&quot;general&quot;&gt;General Election&lt;/option&gt;
+                  &lt;option value&#x3D;&quot;by_election&quot;&gt;By-Election&lt;/option&gt;
+                  &lt;option value&#x3D;&quot;local&quot;&gt;Local Election&lt;/option&gt;
+                  &lt;option value&#x3D;&quot;referendum&quot;&gt;Referendum&lt;/option&gt;
+                &lt;/select&gt;
+              &lt;/div&gt;
+
+              &lt;div className&#x3D;&quot;form-row&quot;&gt;
+                &lt;div className&#x3D;&quot;form-group&quot;&gt;
+                  &lt;label htmlFor&#x3D;&quot;start-date&quot;&gt;
+                    Start Date &lt;span aria-label&#x3D;&quot;required&quot;&gt;*&lt;/span&gt;
+                  &lt;/label&gt;
+                  &lt;input
+                    type&#x3D;&quot;datetime-local&quot;
+                    id&#x3D;&quot;start-date&quot;
+                    name&#x3D;&quot;startDate&quot;
+                    required
+                    aria-required&#x3D;&quot;true&quot;
+                  /&gt;
+                &lt;/div&gt;
+
+                &lt;div className&#x3D;&quot;form-group&quot;&gt;
+                  &lt;label htmlFor&#x3D;&quot;end-date&quot;&gt;
+                    End Date &lt;span aria-label&#x3D;&quot;required&quot;&gt;*&lt;/span&gt;
+                  &lt;/label&gt;
+                  &lt;input
+                    type&#x3D;&quot;datetime-local&quot;
+                    id&#x3D;&quot;end-date&quot;
+                    name&#x3D;&quot;endDate&quot;
+                    required
+                    aria-required&#x3D;&quot;true&quot;
+                  /&gt;
+                &lt;/div&gt;
+              &lt;/div&gt;
+
+              &lt;button type&#x3D;&quot;submit&quot; className&#x3D;&quot;btn-primary&quot;&gt;
+                Create Election
+              &lt;/button&gt;
+            &lt;/form&gt;
+          )}
+        &lt;/section&gt;
+      )}
+
+      {activeView &#x3D;&#x3D;&#x3D; &#x27;constituencies&#x27; &amp;&amp; selectedElection &amp;&amp; (
+        &lt;section
+          id&#x3D;&quot;constituencies-panel&quot;
+          role&#x3D;&quot;tabpanel&quot;
+          aria-labelledby&#x3D;&quot;constituencies-tab&quot;
+          className&#x3D;&quot;constituencies-section&quot;
+        &gt;
+          &lt;h2&gt;Constituencies - {selectedElection.name}&lt;/h2&gt;
+
+          {constituencies.length &#x3D;&#x3D;&#x3D; 0 ? (
+            &lt;p&gt;No constituencies configured for this election.&lt;/p&gt;
+          ) : (
+            &lt;ul className&#x3D;&quot;constituencies-list&quot; aria-label&#x3D;&quot;List of constituencies&quot;&gt;
+              {constituencies.map(constituency &#x3D;&gt; (
+                &lt;li key&#x3D;{constituency.id}&gt;
+                  &lt;button
+                    type&#x3D;&quot;button&quot;
+                    className&#x3D;{&#x60;constituency-card ${selectedConstituency &#x3D;&#x3D;&#x3D; constituency.id ? &#x27;selected&#x27; : &#x27;&#x27;}&#x60;}
+                    onClick&#x3D;{() &#x3D;&gt; setSelectedConstituency(constituency.id)}
+                    aria-pressed&#x3D;{selectedConstituency &#x3D;&#x3D;&#x3D; constituency.id}
+                  &gt;
+                    &lt;h3&gt;{constituency.name}&lt;/h3&gt;
+                    &lt;div className&#x3D;&quot;constituency-stats&quot;&gt;
+                      &lt;span&gt;Region: {constituency.region}&lt;/span&gt;
+                      &lt;span&gt;Population: {constituency.population.toLocaleString()}&lt;/span&gt;
+                      &lt;span&gt;Registered: {constituency.registeredVoters.toLocaleString()}&lt;/span&gt;
+                      &lt;span&gt;Votes Cast: {constituency.votesCast.toLocaleString()}&lt;/span&gt;
+                      &lt;span className&#x3D;&quot;turnout&quot;&gt;
+                        Turnout: {constituency.turnoutPercentage.toFixed(1)}%
+                      &lt;/span&gt;
+                    &lt;/div&gt;
+                  &lt;/button&gt;
+                &lt;/li&gt;
+              ))}
+            &lt;/ul&gt;
+          )}
+
+          {selectedConstituency &amp;&amp; candidates.length &gt; 0 &amp;&amp; (
+            &lt;div className&#x3D;&quot;candidates-section&quot;&gt;
+              &lt;h3&gt;Candidates&lt;/h3&gt;
+              &lt;ul className&#x3D;&quot;candidates-list&quot; aria-label&#x3D;&quot;List of candidates&quot;&gt;
+                {candidates.map(candidate &#x3D;&gt; (
+                  &lt;li key&#x3D;{candidate.id} className&#x3D;&quot;candidate-card&quot;&gt;
+                    &lt;div className&#x3D;&quot;candidate-info&quot;&gt;
+                      &lt;h4&gt;
+                        {candidate.independent ? &#x27;Independent&#x27; : &#x60;Party: ${candidate.partyId}&#x60;}
+                      &lt;/h4&gt;
+                      &lt;span className&#x3D;{&#x60;candidate-status status-${candidate.status}&#x60;}&gt;
+                        {candidate.status}
+                      &lt;/span&gt;
+                    &lt;/div&gt;
+                    &lt;div className&#x3D;&quot;candidate-results&quot;&gt;
+                      &lt;span className&#x3D;&quot;votes&quot;&gt;
+                        Votes: {candidate.votesReceived.toLocaleString()}
+                      &lt;/span&gt;
+                      &lt;span className&#x3D;&quot;percentage&quot;&gt;{candidate.votePercentage.toFixed(1)}%&lt;/span&gt;
+                    &lt;/div&gt;
+                    {onCastVote &amp;&amp; getElectionStatus(selectedElection) &#x3D;&#x3D;&#x3D; &#x27;Active&#x27; &amp;&amp; (
+                      &lt;button
+                        type&#x3D;&quot;button&quot;
+                        onClick&#x3D;{() &#x3D;&gt; handleVote(candidate.id)}
+                        className&#x3D;&quot;btn-vote&quot;
+                      &gt;
+                        Vote for this candidate
+                      &lt;/button&gt;
+                    )}
+                  &lt;/li&gt;
+                ))}
+              &lt;/ul&gt;
+            &lt;/div&gt;
+          )}
+        &lt;/section&gt;
+      )}
+
+      {activeView &#x3D;&#x3D;&#x3D; &#x27;results&#x27; &amp;&amp; selectedElection &amp;&amp; (
+        &lt;section
+          id&#x3D;&quot;results-panel&quot;
+          role&#x3D;&quot;tabpanel&quot;
+          aria-labelledby&#x3D;&quot;results-tab&quot;
+          className&#x3D;&quot;results-section&quot;
+        &gt;
+          &lt;h2&gt;Election Results - {selectedElection.name}&lt;/h2&gt;
+
+          &lt;div className&#x3D;&quot;results-summary&quot;&gt;
+            &lt;div className&#x3D;&quot;result-stat&quot;&gt;
+              &lt;span className&#x3D;&quot;stat-label&quot;&gt;Total Votes&lt;/span&gt;
+              &lt;span className&#x3D;&quot;stat-value&quot;&gt;{selectedElection.totalVotes.toLocaleString()}&lt;/span&gt;
+            &lt;/div&gt;
+            &lt;div className&#x3D;&quot;result-stat&quot;&gt;
+              &lt;span className&#x3D;&quot;stat-label&quot;&gt;Turnout&lt;/span&gt;
+              &lt;span className&#x3D;&quot;stat-value&quot;&gt;{selectedElection.turnout.toFixed(1)}%&lt;/span&gt;
+            &lt;/div&gt;
+            &lt;div className&#x3D;&quot;result-stat&quot;&gt;
+              &lt;span className&#x3D;&quot;stat-label&quot;&gt;Status&lt;/span&gt;
+              &lt;span className&#x3D;&quot;stat-value&quot;&gt;{getElectionStatus(selectedElection)}&lt;/span&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+
+          {constituencies.length &gt; 0 &amp;&amp; (
+            &lt;div className&#x3D;&quot;results-by-constituency&quot;&gt;
+              &lt;h3&gt;Results by Constituency&lt;/h3&gt;
+              {constituencies.map(constituency &#x3D;&gt; (
+                &lt;div key&#x3D;{constituency.id} className&#x3D;&quot;constituency-result&quot;&gt;
+                  &lt;h4&gt;{constituency.name}&lt;/h4&gt;
+                  &lt;div className&#x3D;&quot;constituency-result-stats&quot;&gt;
+                    &lt;span&gt;Votes Cast: {constituency.votesCast.toLocaleString()}&lt;/span&gt;
+                    &lt;span&gt;Turnout: {constituency.turnoutPercentage.toFixed(1)}%&lt;/span&gt;
+                  &lt;/div&gt;
+                &lt;/div&gt;
+              ))}
+            &lt;/div&gt;
+          )}
+        &lt;/section&gt;
+      )}
+    &lt;/div&gt;
+  );
+};
+
+export default ElectionsManager;
+</code></pre>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'interface';
+            var COMPODOC_CURRENT_PAGE_URL = 'Candidate-1.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

@@ -1,0 +1,888 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>political-sphere documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">political-sphere documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content interface">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Interfaces</li>
+  <li class="breadcrumb-item"
+  >
+  SeedingResults</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>apps/api/src/utils/database-seeder.ts</code>
+        </p>
+
+
+
+
+        <section data-compodoc="block-index">
+            <h3 id="index">Index</h3>
+            <table class="table table-sm table-bordered index-table">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <h6><b>Properties</b></h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <ul class="index-list">
+                                <li>
+                                        <a href="#duration" 
+>
+                                            duration
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#errors" 
+>
+                                            errors
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#seeders" 
+>
+                                            seeders
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#success" 
+>
+                                            success
+                                        </a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+
+
+            <section data-compodoc="block-properties">
+                <h3 id="inputs">Properties</h3>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="duration"></a>
+                                        <span class="name "><b>duration</b>
+                                            <a href="#duration">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>duration:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="errors"></a>
+                                        <span class="name "><b>errors</b>
+                                            <a href="#errors">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>errors:     <code>Array&lt;literal type&gt;</code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>    <code>Array&lt;literal type&gt;</code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="seeders"></a>
+                                        <span class="name "><b>seeders</b>
+                                            <a href="#seeders">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>seeders:     <code>Array&lt;literal type&gt;</code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>    <code>Array&lt;literal type&gt;</code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="success"></a>
+                                        <span class="name "><b>success</b>
+                                            <a href="#success">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>success:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+            </section>
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import * as fs from &#x27;node:fs&#x27;;
+import * as path from &#x27;node:path&#x27;;
+
+import type BetterSqlite3 from &#x27;better-sqlite3&#x27;;
+
+import { validateFilename, safeJoin } from &#x27;../../../../libs/shared/src/path-security.mjs&#x27;;
+
+import { withTransaction } from &#x27;./database-transactions.mjs&#x27;;
+import * as loggerModule from &#x27;./logger.js&#x27;;
+
+const logger &#x3D; loggerModule.default || loggerModule;
+
+/**
+ * Database Seeder
+ * Provides seeding functionality for development and testing environments
+ * @see docs/architecture/decisions/adr-0003-database-seeding.md
+ */
+
+interface SeederOptions {
+  environment?: string;
+  force?: boolean;
+  dryRun?: boolean;
+}
+
+interface SeederResult {
+  name: string;
+  success: boolean;
+  duration: number;
+  dryRun: boolean;
+  error?: string;
+}
+
+interface SeedingResults {
+  success: boolean;
+  seeders: Array&lt;{ name: string; status: string; dryRun?: boolean; reason?: string }&gt;;
+  errors: Array&lt;{ name: string; error: string; stack?: string }&gt;;
+  duration: number;
+}
+
+// Transaction object from database-transactions.mjs has these properties
+interface Transaction {
+  isActive: boolean;
+  connection: DatabaseConnectionWrapper;
+  savepoint: (name: string) &#x3D;&gt; Promise&lt;void&gt;;
+  rollbackToSavepoint: (name: string) &#x3D;&gt; Promise&lt;void&gt;;
+  releaseSavepoint: (name: string) &#x3D;&gt; Promise&lt;void&gt;;
+}
+
+// DatabaseConnection wrapper from database-connection.mjs
+interface DatabaseConnectionWrapper {
+  db: BetterSqlite3.Database;
+  getConnection: () &#x3D;&gt; BetterSqlite3.Database;
+  prepare: (sql: string) &#x3D;&gt; BetterSqlite3.Statement;
+  close: () &#x3D;&gt; void;
+}
+
+type SeederFunction &#x3D; (
+  transaction: Transaction,
+  connection: DatabaseConnectionWrapper
+) &#x3D;&gt; Promise&lt;void&gt;;
+
+/**
+ * Database Seeder
+ *
+ * Manages database seeding operations for development and testing environments.
+ * Provides transactional seeding with rollback capabilities and supports
+ * multiple seeders for different data types and scenarios.
+ */
+class DatabaseSeeder {
+  private seeders: Map&lt;string, SeederFunction&gt;;
+  private isSeeded: boolean;
+
+  constructor() {
+    this.seeders &#x3D; new Map();
+    this.isSeeded &#x3D; false;
+  }
+
+  /**
+   * Register a seeder function
+   * @param {string} name - Seeder name
+   * @param {Function} seederFn - Seeder function that receives transaction and connection
+   */
+  register(name: string, seederFn: SeederFunction): void {
+    if (typeof seederFn !&#x3D;&#x3D; &#x27;function&#x27;) {
+      throw new Error(&#x60;Seeder ${name} must be a function&#x60;);
+    }
+    this.seeders.set(name, seederFn);
+    logger.debug(&#x27;Seeder registered&#x27;, { name });
+  }
+
+  /**
+   * Load seeders from files
+   * @param {string} seedersDir - Directory containing seeder files
+   */
+  loadFromDirectory(seedersDir: string): void {
+    if (!fs.existsSync(seedersDir)) {
+      logger.warn(&#x27;Seeders directory does not exist&#x27;, { seedersDir });
+      return;
+    }
+
+    const files &#x3D; fs
+      .readdirSync(seedersDir)
+      .filter(file &#x3D;&gt; file.endsWith(&#x27;.js&#x27;) &amp;&amp; file !&#x3D;&#x3D; &#x27;index.js&#x27;)
+      .sort();
+
+    for (const file of files) {
+      let filePath: string &#x3D; &#x27;&#x27;; // Declare with explicit type
+      try {
+        // Validate filename before joining to prevent path traversal
+        const sanitizedFile &#x3D; validateFilename(file);
+        filePath &#x3D; safeJoin(seedersDir, sanitizedFile);
+        const seederModule &#x3D; require(filePath);
+
+        if (typeof seederModule &#x3D;&#x3D;&#x3D; &#x27;function&#x27;) {
+          const name &#x3D; path.basename(sanitizedFile, &#x27;.js&#x27;);
+          this.register(name, seederModule);
+        } else if (seederModule.default &amp;&amp; typeof seederModule.default &#x3D;&#x3D;&#x3D; &#x27;function&#x27;) {
+          const name &#x3D; path.basename(sanitizedFile, &#x27;.js&#x27;);
+          this.register(name, seederModule.default);
+        } else {
+          logger.warn(&#x27;Seeder file does not export a function&#x27;, {
+            file: filePath,
+          });
+        }
+      } catch (error) {
+        logger.error(&#x27;Failed to load seeder&#x27;, {
+          file: filePath,
+          error: (error as Error).message,
+        });
+      }
+    }
+
+    logger.info(&#x27;Seeders loaded from directory&#x27;, {
+      seedersDir,
+      count: this.seeders.size,
+    });
+  }
+
+  /**
+   * Run all registered seeders
+   * @param {Object} options - Seeding options
+   * @returns {Promise&lt;Object&gt;} Seeding results
+   */
+  async runAll(
+    options: SeederOptions &#x3D; {}
+  ): Promise&lt;SeedingResults | { skipped: boolean; reason: string }&gt; {
+    const {
+      environment &#x3D; process.env.NODE_ENV || &#x27;development&#x27;,
+      force &#x3D; false,
+      dryRun &#x3D; false,
+    } &#x3D; options;
+
+    if (environment &#x3D;&#x3D;&#x3D; &#x27;production&#x27; &amp;&amp; !force) {
+      throw new Error(&#x27;Seeding is disabled in production. Use force&#x3D;true to override.&#x27;);
+    }
+
+    if (this.isSeeded &amp;&amp; !force) {
+      logger.info(&#x27;Database already seeded, skipping&#x27;);
+      return { skipped: true, reason: &#x27;already_seeded&#x27; };
+    }
+
+    const results: SeedingResults &#x3D; {
+      success: true,
+      seeders: [],
+      errors: [],
+      duration: 0,
+    };
+
+    const startTime &#x3D; Date.now();
+
+    try {
+      await withTransaction(async (transaction: Transaction, connection: unknown) &#x3D;&gt; {
+        for (const [name, seederFn] of this.seeders) {
+          try {
+            logger.info(&#x27;Running seeder&#x27;, { name, dryRun });
+
+            if (!dryRun) {
+              await seederFn(transaction, connection as DatabaseConnectionWrapper);
+            }
+
+            results.seeders.push({
+              name,
+              status: &#x27;completed&#x27;,
+              dryRun,
+            });
+
+            logger.info(&#x27;Seeder completed&#x27;, { name });
+          } catch (error) {
+            logger.error(&#x27;Seeder failed&#x27;, { name, error: (error as Error).message });
+
+            const err &#x3D; error as Error;
+            results.errors.push({
+              name,
+              error: err.message,
+              stack: err.stack,
+            });
+
+            results.success &#x3D; false;
+
+            // Continue with other seeders unless it&#x27;s a critical error
+            if ((error as Error).message.includes(&#x27;UNIQUE constraint failed&#x27;)) {
+              logger.warn(&#x27;Skipping seeder due to constraint violation&#x27;, {
+                name,
+              });
+              results.seeders.push({
+                name,
+                status: &#x27;skipped&#x27;,
+                reason: &#x27;constraint_violation&#x27;,
+              });
+            } else {
+              throw error; // Re-throw to rollback transaction
+            }
+          }
+        }
+      });
+
+      this.isSeeded &#x3D; !dryRun;
+    } catch (error) {
+      const err &#x3D; error as Error;
+      results.success &#x3D; false;
+      results.errors.push({
+        name: &#x27;transaction&#x27;,
+        error: err.message,
+        stack: err.stack,
+      });
+      logger.error(&#x27;Seeding failed&#x27;, { error: err.message });
+    }
+
+    results.duration &#x3D; Date.now() - startTime;
+
+    logger.info(&#x27;Seeding completed&#x27;, {
+      success: results.success,
+      seedersRun: results.seeders.length,
+      errors: results.errors.length,
+      duration: results.duration,
+      dryRun,
+    });
+
+    return results;
+  }
+
+  /**
+   * Run a specific seeder
+   * @param {string} name - Seeder name
+   * @param {Object} options - Seeding options
+   * @returns {Promise&lt;Object&gt;} Seeding result
+   */
+  async runSeeder(name: string, options: SeederOptions &#x3D; {}): Promise&lt;SeederResult&gt; {
+    const seederFn &#x3D; this.seeders.get(name);
+    if (!seederFn) {
+      throw new Error(&#x60;Seeder ${name} not found&#x60;);
+    }
+
+    const {
+      environment &#x3D; process.env.NODE_ENV || &#x27;development&#x27;,
+      force &#x3D; false,
+      dryRun &#x3D; false,
+    } &#x3D; options;
+
+    if (environment &#x3D;&#x3D;&#x3D; &#x27;production&#x27; &amp;&amp; !force) {
+      throw new Error(&#x27;Seeding is disabled in production. Use force&#x3D;true to override.&#x27;);
+    }
+
+    const result: SeederResult &#x3D; {
+      name,
+      success: true,
+      duration: 0,
+      dryRun,
+    };
+
+    const startTime &#x3D; Date.now();
+
+    try {
+      await withTransaction(async (transaction: Transaction, connection: unknown) &#x3D;&gt; {
+        logger.info(&#x27;Running seeder&#x27;, { name, dryRun });
+
+        if (!dryRun) {
+          await seederFn(transaction, connection as DatabaseConnectionWrapper);
+        }
+
+        logger.info(&#x27;Seeder completed&#x27;, { name });
+      });
+    } catch (error) {
+      result.success &#x3D; false;
+      result.error &#x3D; (error as Error).message;
+      logger.error(&#x27;Seeder failed&#x27;, { name, error: (error as Error).message });
+    }
+
+    result.duration &#x3D; Date.now() - startTime;
+    return result;
+  }
+
+  /**
+   * Clear seeded data
+   * @param {Array&lt;string&gt;} tables - Tables to clear
+   * @returns {Promise&lt;void&gt;}
+   */
+  async clear(tables: string[] &#x3D; []): Promise&lt;void&gt; {
+    const defaultTables &#x3D; [&#x27;votes&#x27;, &#x27;bills&#x27;, &#x27;parties&#x27;, &#x27;users&#x27;];
+
+    await withTransaction(async (_transaction: Transaction, connection: unknown) &#x3D;&gt; {
+      const conn &#x3D; connection as DatabaseConnectionWrapper;
+      // Build allowlist of existing tables to avoid SQL injection via table names
+      const isValidIdentifier &#x3D; (name: string): boolean &#x3D;&gt;
+        /^[A-Za-z_][A-Za-z0-9_]*$/.test(String(name));
+      let existingTables &#x3D; new Set();
+      try {
+        const rows &#x3D; conn.db
+          .prepare(&quot;SELECT name FROM sqlite_master WHERE type&#x3D;&#x27;table&#x27; AND name NOT LIKE &#x27;sqlite_%&#x27;&quot;)
+          .all() as Array&lt;{ name: string }&gt;;
+        existingTables &#x3D; new Set(rows.map(r &#x3D;&gt; r.name));
+      } catch {
+        // Database query failed, existingTables remains empty Set
+      }
+      const tablesToClear &#x3D; tables.length &gt; 0 ? tables : defaultTables;
+
+      for (const table of tablesToClear) {
+        if (!isValidIdentifier(table) || !existingTables.has(table)) {
+          logger.warn(&#x27;Skipping clear for invalid or unknown table&#x27;, { table });
+          continue;
+        }
+        try {
+          conn.db.exec(&#x60;DELETE FROM ${table}&#x60;);
+          logger.debug(&#x27;Table cleared&#x27;, { table });
+        } catch (error) {
+          logger.warn(&#x27;Failed to clear table&#x27;, { table, error: (error as Error).message });
+        }
+      }
+
+      // Reset auto-increment counters
+      try {
+        conn.db.exec(&#x27;DELETE FROM sqlite_sequence&#x27;);
+        logger.debug(&#x27;Auto-increment counters reset&#x27;);
+      } catch {
+        // Ignore if table doesn&#x27;t exist
+      }
+    });
+
+    this.isSeeded &#x3D; false;
+    logger.info(&#x27;Seeded data cleared&#x27;, {
+      tables: tables.length &gt; 0 ? tables : defaultTables,
+    });
+  }
+
+  /**
+   * Get list of registered seeders
+   * @returns {Array&lt;string&gt;} Seeder names
+   */
+  listSeeders(): string[] {
+    return Array.from(this.seeders.keys());
+  }
+
+  /**
+   * Check if database has been seeded
+   * @returns {boolean} Seeding status
+   */
+  isDatabaseSeeded(): boolean {
+    return this.isSeeded;
+  }
+}
+
+// Create singleton instance
+const seeder &#x3D; new DatabaseSeeder();
+
+// Register default seeders
+seeder.register(&#x27;users&#x27;, async (_transaction, connection) &#x3D;&gt; {
+  const users &#x3D; [
+    { id: &#x27;user-1&#x27;, username: &#x27;alice&#x27;, email: &#x27;alice@example.com&#x27; },
+    { id: &#x27;user-2&#x27;, username: &#x27;bob&#x27;, email: &#x27;bob@example.com&#x27; },
+    { id: &#x27;user-3&#x27;, username: &#x27;charlie&#x27;, email: &#x27;charlie@example.com&#x27; },
+  ];
+
+  const stmt &#x3D; connection.db.prepare(&#x60;
+		INSERT OR REPLACE INTO users (id, username, email, created_at, updated_at)
+		VALUES (?, ?, ?, ?, ?)
+	&#x60;);
+
+  for (const user of users) {
+    const now &#x3D; new Date().toISOString();
+    stmt.run(user.id, user.username, user.email, now, now);
+  }
+});
+
+seeder.register(&#x27;parties&#x27;, async (_transaction, connection) &#x3D;&gt; {
+  const parties &#x3D; [
+    {
+      id: &#x27;party-1&#x27;,
+      name: &#x27;Democratic Party&#x27;,
+      description: &#x27;Progressive policies&#x27;,
+      color: &#x27;#0015BC&#x27;,
+    },
+    {
+      id: &#x27;party-2&#x27;,
+      name: &#x27;Republican Party&#x27;,
+      description: &#x27;Conservative policies&#x27;,
+      color: &#x27;#E9141D&#x27;,
+    },
+    {
+      id: &#x27;party-3&#x27;,
+      name: &#x27;Green Party&#x27;,
+      description: &#x27;Environmental focus&#x27;,
+      color: &#x27;#0B9A4A&#x27;,
+    },
+  ];
+
+  const stmt &#x3D; connection.db.prepare(&#x60;
+		INSERT OR REPLACE INTO parties (id, name, description, color, created_at)
+		VALUES (?, ?, ?, ?, ?)
+	&#x60;);
+
+  for (const party of parties) {
+    const now &#x3D; new Date().toISOString();
+    stmt.run(party.id, party.name, party.description, party.color, now);
+  }
+});
+
+seeder.register(&#x27;bills&#x27;, async (_transaction, connection) &#x3D;&gt; {
+  const bills &#x3D; [
+    {
+      id: &#x27;bill-1&#x27;,
+      title: &#x27;Environmental Protection Act&#x27;,
+      description: &#x27;Strengthen environmental regulations&#x27;,
+      proposerId: &#x27;user-1&#x27;,
+      status: &#x27;proposed&#x27;,
+    },
+    {
+      id: &#x27;bill-2&#x27;,
+      title: &#x27;Healthcare Reform&#x27;,
+      description: &#x27;Universal healthcare coverage&#x27;,
+      proposerId: &#x27;user-2&#x27;,
+      status: &#x27;debating&#x27;,
+    },
+    {
+      id: &#x27;bill-3&#x27;,
+      title: &#x27;Education Funding&#x27;,
+      description: &#x27;Increase education budget&#x27;,
+      proposerId: &#x27;user-3&#x27;,
+      status: &#x27;passed&#x27;,
+    },
+  ];
+
+  const stmt &#x3D; connection.db.prepare(&#x60;
+		INSERT OR REPLACE INTO bills (id, title, description, proposer_id, status, created_at, updated_at)
+		VALUES (?, ?, ?, ?, ?, ?, ?)
+	&#x60;);
+
+  for (const bill of bills) {
+    const now &#x3D; new Date().toISOString();
+    stmt.run(bill.id, bill.title, bill.description, bill.proposerId, bill.status, now, now);
+  }
+});
+
+seeder.register(&#x27;votes&#x27;, async (_transaction, connection) &#x3D;&gt; {
+  const votes &#x3D; [
+    { billId: &#x27;bill-1&#x27;, userId: &#x27;user-2&#x27;, vote: &#x27;aye&#x27; },
+    { billId: &#x27;bill-1&#x27;, userId: &#x27;user-3&#x27;, vote: &#x27;nay&#x27; },
+    { billId: &#x27;bill-2&#x27;, userId: &#x27;user-1&#x27;, vote: &#x27;aye&#x27; },
+    { billId: &#x27;bill-2&#x27;, userId: &#x27;user-3&#x27;, vote: &#x27;aye&#x27; },
+    { billId: &#x27;bill-3&#x27;, userId: &#x27;user-1&#x27;, vote: &#x27;aye&#x27; },
+    { billId: &#x27;bill-3&#x27;, userId: &#x27;user-2&#x27;, vote: &#x27;aye&#x27; },
+  ];
+
+  const stmt &#x3D; connection.db.prepare(&#x60;
+		INSERT OR REPLACE INTO votes (bill_id, user_id, vote, created_at)
+		VALUES (?, ?, ?, ?)
+	&#x60;);
+
+  for (const vote of votes) {
+    const now &#x3D; new Date().toISOString();
+    stmt.run(vote.billId, vote.userId, vote.vote, now);
+  }
+});
+
+export { DatabaseSeeder, seeder };
+</code></pre>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'interface';
+            var COMPODOC_CURRENT_PAGE_URL = 'SeedingResults.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

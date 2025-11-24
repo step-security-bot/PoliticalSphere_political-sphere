@@ -1,0 +1,905 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>political-sphere documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">political-sphere documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content interface">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Interfaces</li>
+  <li class="breadcrumb-item"
+  >
+  VoteResults</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>apps/web/src/components/Parliament/ParliamentChamber.tsx</code>
+        </p>
+
+
+
+
+        <section data-compodoc="block-index">
+            <h3 id="index">Index</h3>
+            <table class="table table-sm table-bordered index-table">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <h6><b>Properties</b></h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <ul class="index-list">
+                                <li>
+                                        <a href="#abstain" 
+>
+                                            abstain
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#aye" 
+>
+                                            aye
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#no" 
+>
+                                            no
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#total" 
+>
+                                            total
+                                        </a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+
+
+            <section data-compodoc="block-properties">
+                <h3 id="inputs">Properties</h3>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="abstain"></a>
+                                        <span class="name "><b>abstain</b>
+                                            <a href="#abstain">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>abstain:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="aye"></a>
+                                        <span class="name "><b>aye</b>
+                                            <a href="#aye">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>aye:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="no"></a>
+                                        <span class="name "><b>no</b>
+                                            <a href="#no">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>no:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="total"></a>
+                                        <span class="name "><b>total</b>
+                                            <a href="#total">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>total:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+            </section>
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import type React from &#x27;react&#x27;;
+import { useCallback, useEffect, useState } from &#x27;react&#x27;;
+import { api } from &#x27;../../services/api&#x27;;
+import &#x27;./ParliamentChamber.css&#x27;;
+
+interface Chamber {
+  id: string;
+  gameId?: string;
+  type: string;
+  name: string;
+  maxSeats?: number;
+  quorumPercentage?: number;
+  seats?: string[];
+  status?: string;
+  createdAt?: string;
+}
+
+interface Motion {
+  id: string;
+  gameId?: string;
+  chamberId: string;
+  proposerId?: string;
+  type: string;
+  title: string;
+  description: string;
+  status: string;
+  createdAt?: string;
+  result?: &#x27;passed&#x27; | &#x27;failed&#x27;;
+}
+
+interface VoteResults {
+  total: number;
+  aye: number;
+  no: number;
+  abstain: number;
+}
+
+interface ParliamentChamberProps {
+  userId: string;
+  onError?: (error: string) &#x3D;&gt; void;
+}
+
+interface LoadingStates {
+  chambers: boolean;
+  motions: boolean;
+  creatingMotion: boolean;
+  voting: boolean;
+  voteResults: boolean;
+}
+
+export const ParliamentChamber: React.FC&lt;ParliamentChamberProps&gt; &#x3D; ({ userId, onError }) &#x3D;&gt; {
+  const [chambers, setChambers] &#x3D; useState&lt;Chamber[]&gt;([]);
+  const [selectedChamber, setSelectedChamber] &#x3D; useState&lt;Chamber | null&gt;(null);
+  const [motions, setMotions] &#x3D; useState&lt;Motion[]&gt;([]);
+  const [selectedMotion, setSelectedMotion] &#x3D; useState&lt;Motion | null&gt;(null);
+  const [voteResults, setVoteResults] &#x3D; useState&lt;VoteResults | null&gt;(null);
+  const [loading, setLoading] &#x3D; useState&lt;LoadingStates&gt;({
+    chambers: true,
+    motions: false,
+    creatingMotion: false,
+    voting: false,
+    voteResults: false,
+  });
+  const [showCreateMotion, setShowCreateMotion] &#x3D; useState(false);
+  const [error, setError] &#x3D; useState&lt;string | null&gt;(null);
+
+  // Form state for creating motions
+  const [motionForm, setMotionForm] &#x3D; useState({
+    type: &#x27;debate&#x27; as string,
+    title: &#x27;&#x27;,
+    description: &#x27;&#x27;,
+  });
+
+  const fetchChambers &#x3D; useCallback(async () &#x3D;&gt; {
+    try {
+      setLoading(prev &#x3D;&gt; ({ ...prev, chambers: true }));
+      setError(null);
+      // Single world - no gameId needed
+      const response &#x3D; await api.getChambers();
+
+      if (!response.success) {
+        throw new Error(response.error || &#x27;Failed to fetch chambers&#x27;);
+      }
+
+      setChambers((response.data || []) as Chamber[]);
+
+      // Auto-select first chamber
+      if (response.data &amp;&amp; response.data.length &gt; 0) {
+        setSelectedChamber(response.data[0] as Chamber);
+      }
+    } catch (error) {
+      const message &#x3D; error instanceof Error ? error.message : &#x27;Failed to fetch chambers&#x27;;
+      setError(message);
+      onError?.(message);
+    } finally {
+      setLoading(prev &#x3D;&gt; ({ ...prev, chambers: false }));
+    }
+  }, [onError]);
+
+  const fetchMotions &#x3D; useCallback(async () &#x3D;&gt; {
+    if (!selectedChamber) return;
+
+    try {
+      setLoading(prev &#x3D;&gt; ({ ...prev, motions: true }));
+      const response &#x3D; await api.getMotions();
+
+      if (!response.success) {
+        throw new Error(response.error || &#x27;Failed to fetch motions&#x27;);
+      }
+
+      setMotions((response.data || []) as Motion[]);
+    } catch (error) {
+      const message &#x3D; error instanceof Error ? error.message : &#x27;Failed to fetch motions&#x27;;
+      setError(message);
+      onError?.(message);
+    } finally {
+      setLoading(prev &#x3D;&gt; ({ ...prev, motions: false }));
+    }
+  }, [onError]);
+
+  const fetchVoteResults &#x3D; useCallback(
+    async (motionId: string) &#x3D;&gt; {
+      try {
+        setLoading(prev &#x3D;&gt; ({ ...prev, voteResults: true }));
+        const response &#x3D; await api.getVoteResults(motionId);
+
+        if (!response.success) {
+          throw new Error(response.error || &#x27;Failed to fetch vote results&#x27;);
+        }
+
+        setVoteResults((response.data as unknown as VoteResults) || null);
+      } catch (error) {
+        const message &#x3D; error instanceof Error ? error.message : &#x27;Failed to fetch vote results&#x27;;
+        setError(message);
+        onError?.(message);
+      } finally {
+        setLoading(prev &#x3D;&gt; ({ ...prev, voteResults: false }));
+      }
+    },
+    [onError]
+  );
+
+  // Fetch chambers on mount
+  useEffect(() &#x3D;&gt; {
+    fetchChambers();
+  }, [fetchChambers]);
+
+  // Fetch motions when chamber is selected
+  useEffect(() &#x3D;&gt; {
+    if (selectedChamber) {
+      fetchMotions();
+    }
+  }, [selectedChamber, fetchMotions]);
+
+  // Fetch vote results when motion is selected
+  useEffect(() &#x3D;&gt; {
+    if (selectedMotion &amp;&amp; selectedMotion.status &#x3D;&#x3D;&#x3D; &#x27;voting&#x27;) {
+      fetchVoteResults(selectedMotion.id);
+      // Poll for updates every 5 seconds
+      const interval &#x3D; setInterval(() &#x3D;&gt; {
+        fetchVoteResults(selectedMotion.id);
+      }, 5000);
+      return () &#x3D;&gt; clearInterval(interval);
+    }
+    return undefined;
+  }, [selectedMotion, fetchVoteResults]);
+
+  const handleCreateMotion &#x3D; async (e: React.FormEvent) &#x3D;&gt; {
+    e.preventDefault();
+
+    if (!selectedChamber) {
+      const message &#x3D; &#x27;Please select a chamber first&#x27;;
+      setError(message);
+      onError?.(message);
+      return;
+    }
+
+    try {
+      setLoading(prev &#x3D;&gt; ({ ...prev, creatingMotion: true }));
+      setError(null);
+      const response &#x3D; await api.createMotion({
+        chamberId: selectedChamber.id,
+        proposerId: userId,
+        ...motionForm,
+      });
+
+      if (!response.success) {
+        throw new Error(response.error || &#x27;Failed to create motion&#x27;);
+      }
+
+      // Reset form and refresh motions
+      setMotionForm({ type: &#x27;debate&#x27;, title: &#x27;&#x27;, description: &#x27;&#x27; });
+      setShowCreateMotion(false);
+      fetchMotions();
+    } catch (error) {
+      const message &#x3D; error instanceof Error ? error.message : &#x27;Failed to create motion&#x27;;
+      setError(message);
+      onError?.(message);
+    } finally {
+      setLoading(prev &#x3D;&gt; ({ ...prev, creatingMotion: false }));
+    }
+  };
+
+  const handleCastVote &#x3D; async (motionId: string, vote: &#x27;aye&#x27; | &#x27;no&#x27; | &#x27;abstain&#x27;) &#x3D;&gt; {
+    try {
+      setLoading(prev &#x3D;&gt; ({ ...prev, voting: true }));
+      setError(null);
+      const response &#x3D; await api.castVote({
+        proposalId: motionId,
+        vote: vote &#x3D;&#x3D;&#x3D; &#x27;aye&#x27; ? &#x27;yes&#x27; : vote &#x3D;&#x3D;&#x3D; &#x27;no&#x27; ? &#x27;no&#x27; : &#x27;abstain&#x27;,
+      });
+
+      if (!response.success) {
+        throw new Error(response.error || &#x27;Failed to cast vote&#x27;);
+      }
+
+      // Refresh vote results
+      fetchVoteResults(motionId);
+    } catch (error) {
+      const message &#x3D; error instanceof Error ? error.message : &#x27;Failed to cast vote&#x27;;
+      setError(message);
+      onError?.(message);
+    } finally {
+      setLoading(prev &#x3D;&gt; ({ ...prev, voting: false }));
+    }
+  };
+
+  if (loading.chambers) {
+    return (
+      &lt;div className&#x3D;&quot;parliament-chamber loading&quot; aria-live&#x3D;&quot;polite&quot;&gt;
+        &lt;p&gt;Loading Parliament...&lt;/p&gt;
+      &lt;/div&gt;
+    );
+  }
+
+  if (error &amp;&amp; chambers.length &#x3D;&#x3D;&#x3D; 0) {
+    return (
+      &lt;div className&#x3D;&quot;parliament-chamber error&quot; role&#x3D;&quot;alert&quot;&gt;
+        &lt;h2&gt;Error Loading Parliament&lt;/h2&gt;
+        &lt;p&gt;{error}&lt;/p&gt;
+        &lt;button
+          type&#x3D;&quot;button&quot;
+          onClick&#x3D;{fetchChambers}
+          className&#x3D;&quot;btn-primary&quot;
+          disabled&#x3D;{loading.chambers}
+        &gt;
+          {loading.chambers ? &#x27;Retrying...&#x27; : &#x27;Retry&#x27;}
+        &lt;/button&gt;
+      &lt;/div&gt;
+    );
+  }
+
+  if (chambers.length &#x3D;&#x3D;&#x3D; 0) {
+    return (
+      &lt;div className&#x3D;&quot;parliament-chamber empty&quot;&gt;
+        &lt;h2&gt;No Parliamentary Chambers&lt;/h2&gt;
+        &lt;p&gt;No chambers have been created for this game yet.&lt;/p&gt;
+      &lt;/div&gt;
+    );
+  }
+
+  return (
+    &lt;div className&#x3D;&quot;parliament-chamber&quot;&gt;
+      &lt;header className&#x3D;&quot;parliament-header&quot;&gt;
+        &lt;h1&gt;Parliament&lt;/h1&gt;
+        &lt;nav aria-label&#x3D;&quot;Chamber selection&quot;&gt;
+          {chambers.map(chamber &#x3D;&gt; (
+            &lt;button
+              type&#x3D;&quot;button&quot;
+              key&#x3D;{chamber.id}
+              onClick&#x3D;{() &#x3D;&gt; setSelectedChamber(chamber)}
+              className&#x3D;{selectedChamber?.id &#x3D;&#x3D;&#x3D; chamber.id ? &#x27;active&#x27; : &#x27;&#x27;}
+              aria-pressed&#x3D;{selectedChamber?.id &#x3D;&#x3D;&#x3D; chamber.id}
+            &gt;
+              {chamber.name}
+            &lt;/button&gt;
+          ))}
+        &lt;/nav&gt;
+      &lt;/header&gt;
+
+      {selectedChamber &amp;&amp; (
+        &lt;main className&#x3D;&quot;chamber-content&quot;&gt;
+          &lt;section className&#x3D;&quot;chamber-info&quot;&gt;
+            &lt;h2&gt;{selectedChamber.name}&lt;/h2&gt;
+            &lt;dl&gt;
+              &lt;dt&gt;Type:&lt;/dt&gt;
+              &lt;dd&gt;{selectedChamber.type &#x3D;&#x3D;&#x3D; &#x27;commons&#x27; ? &#x27;House of Commons&#x27; : &#x27;House of Lords&#x27;}&lt;/dd&gt;
+              &lt;dt&gt;Seats:&lt;/dt&gt;
+              &lt;dd&gt;
+                {selectedChamber.seats?.length || 0} / {selectedChamber.maxSeats || 0}
+              &lt;/dd&gt;
+              &lt;dt&gt;Quorum:&lt;/dt&gt;
+              &lt;dd&gt;{selectedChamber.quorumPercentage}%&lt;/dd&gt;
+            &lt;/dl&gt;
+          &lt;/section&gt;
+
+          &lt;section className&#x3D;&quot;motions-section&quot;&gt;
+            &lt;header className&#x3D;&quot;motions-header&quot;&gt;
+              &lt;h2&gt;Motions&lt;/h2&gt;
+              &lt;button
+                type&#x3D;&quot;button&quot;
+                onClick&#x3D;{() &#x3D;&gt; setShowCreateMotion(!showCreateMotion)}
+                className&#x3D;&quot;btn-primary&quot;
+                aria-expanded&#x3D;{showCreateMotion}
+              &gt;
+                {showCreateMotion ? &#x27;Cancel&#x27; : &#x27;Propose Motion&#x27;}
+              &lt;/button&gt;
+            &lt;/header&gt;
+
+            {showCreateMotion &amp;&amp; (
+              &lt;form onSubmit&#x3D;{handleCreateMotion} className&#x3D;&quot;motion-form&quot;&gt;
+                &lt;div className&#x3D;&quot;form-group&quot;&gt;
+                  &lt;label htmlFor&#x3D;&quot;motion-type&quot;&gt;Type:&lt;/label&gt;
+                  &lt;select
+                    id&#x3D;&quot;motion-type&quot;
+                    value&#x3D;{motionForm.type}
+                    onChange&#x3D;{e &#x3D;&gt; setMotionForm({ ...motionForm, type: e.target.value })}
+                    required
+                  &gt;
+                    &lt;option value&#x3D;&quot;debate&quot;&gt;Debate&lt;/option&gt;
+                    &lt;option value&#x3D;&quot;vote&quot;&gt;Vote&lt;/option&gt;
+                    &lt;option value&#x3D;&quot;amendment&quot;&gt;Amendment&lt;/option&gt;
+                    &lt;option value&#x3D;&quot;procedural&quot;&gt;Procedural&lt;/option&gt;
+                  &lt;/select&gt;
+                &lt;/div&gt;
+
+                &lt;div className&#x3D;&quot;form-group&quot;&gt;
+                  &lt;label htmlFor&#x3D;&quot;motion-title&quot;&gt;Title:&lt;/label&gt;
+                  &lt;input
+                    id&#x3D;&quot;motion-title&quot;
+                    type&#x3D;&quot;text&quot;
+                    value&#x3D;{motionForm.title}
+                    onChange&#x3D;{e &#x3D;&gt; setMotionForm({ ...motionForm, title: e.target.value })}
+                    required
+                    maxLength&#x3D;{200}
+                    aria-describedby&#x3D;&quot;title-help&quot;
+                  /&gt;
+                  &lt;span id&#x3D;&quot;title-help&quot; className&#x3D;&quot;help-text&quot;&gt;
+                    Brief summary of the motion (max 200 characters)
+                  &lt;/span&gt;
+                &lt;/div&gt;
+
+                &lt;div className&#x3D;&quot;form-group&quot;&gt;
+                  &lt;label htmlFor&#x3D;&quot;motion-description&quot;&gt;Description:&lt;/label&gt;
+                  &lt;textarea
+                    id&#x3D;&quot;motion-description&quot;
+                    value&#x3D;{motionForm.description}
+                    onChange&#x3D;{e &#x3D;&gt; setMotionForm({ ...motionForm, description: e.target.value })}
+                    required
+                    maxLength&#x3D;{5000}
+                    rows&#x3D;{6}
+                    aria-describedby&#x3D;&quot;description-help&quot;
+                  /&gt;
+                  &lt;span id&#x3D;&quot;description-help&quot; className&#x3D;&quot;help-text&quot;&gt;
+                    Detailed explanation of the motion (max 5000 characters)
+                  &lt;/span&gt;
+                &lt;/div&gt;
+
+                &lt;button type&#x3D;&quot;submit&quot; className&#x3D;&quot;btn-primary&quot; disabled&#x3D;{loading.creatingMotion}&gt;
+                  {loading.creatingMotion ? &#x27;Submitting...&#x27; : &#x27;Submit Motion&#x27;}
+                &lt;/button&gt;
+              &lt;/form&gt;
+            )}
+
+            &lt;ul className&#x3D;&quot;motions-list&quot;&gt;
+              {loading.motions ? (
+                &lt;li className&#x3D;&quot;loading-state&quot; aria-live&#x3D;&quot;polite&quot;&gt;
+                  &lt;p&gt;Loading motions...&lt;/p&gt;
+                &lt;/li&gt;
+              ) : motions.length &#x3D;&#x3D;&#x3D; 0 ? (
+                &lt;p className&#x3D;&quot;empty-state&quot;&gt;No motions have been proposed yet.&lt;/p&gt;
+              ) : (
+                motions.map(motion &#x3D;&gt; (
+                  &lt;li key&#x3D;{motion.id}&gt;
+                    &lt;button
+                      type&#x3D;&quot;button&quot;
+                      className&#x3D;{&#x60;motion-card ${selectedMotion?.id &#x3D;&#x3D;&#x3D; motion.id ? &#x27;selected&#x27; : &#x27;&#x27;}&#x60;}
+                      onClick&#x3D;{() &#x3D;&gt; setSelectedMotion(motion)}
+                      aria-pressed&#x3D;{selectedMotion?.id &#x3D;&#x3D;&#x3D; motion.id}
+                    &gt;
+                      &lt;header&gt;
+                        &lt;h3&gt;{motion.title}&lt;/h3&gt;
+                        &lt;span className&#x3D;{&#x60;status-badge status-${motion.status}&#x60;}&gt;
+                          {motion.status}
+                        &lt;/span&gt;
+                      &lt;/header&gt;
+                      &lt;p&gt;{motion.description}&lt;/p&gt;
+                      &lt;footer&gt;
+                        &lt;span className&#x3D;&quot;motion-type&quot;&gt;{motion.type}&lt;/span&gt;
+                        &lt;time dateTime&#x3D;{motion.createdAt || &#x27;&#x27;}&gt;
+                          {motion.createdAt
+                            ? new Date(motion.createdAt).toLocaleDateString()
+                            : &#x27;Unknown date&#x27;}
+                        &lt;/time&gt;
+                      &lt;/footer&gt;
+                    &lt;/button&gt;
+                  &lt;/li&gt;
+                ))
+              )}
+            &lt;/ul&gt;
+          &lt;/section&gt;
+
+          {selectedMotion &amp;&amp; (
+            &lt;aside className&#x3D;&quot;motion-details&quot;&gt;
+              &lt;h2&gt;Motion Details&lt;/h2&gt;
+              &lt;article&gt;
+                &lt;header&gt;
+                  &lt;h3&gt;{selectedMotion.title}&lt;/h3&gt;
+                  &lt;span className&#x3D;{&#x60;status-badge status-${selectedMotion.status}&#x60;}&gt;
+                    {selectedMotion.status}
+                  &lt;/span&gt;
+                &lt;/header&gt;
+
+                &lt;div className&#x3D;&quot;motion-content&quot;&gt;
+                  &lt;p&gt;{selectedMotion.description}&lt;/p&gt;
+                &lt;/div&gt;
+
+                {selectedMotion.status &#x3D;&#x3D;&#x3D; &#x27;voting&#x27; &amp;&amp; (
+                  &lt;section className&#x3D;&quot;voting-section&quot;&gt;
+                    &lt;h4&gt;Cast Your Vote&lt;/h4&gt;
+                    &lt;fieldset
+                      className&#x3D;&quot;vote-buttons&quot;
+                      aria-label&#x3D;&quot;Voting options&quot;
+                      disabled&#x3D;{loading.voting}
+                    &gt;
+                      &lt;button
+                        type&#x3D;&quot;button&quot;
+                        onClick&#x3D;{() &#x3D;&gt; handleCastVote(selectedMotion.id, &#x27;aye&#x27;)}
+                        className&#x3D;&quot;btn-vote btn-aye&quot;
+                        aria-label&#x3D;&quot;Vote Aye&quot;
+                        disabled&#x3D;{loading.voting}
+                      &gt;
+                        Aye
+                      &lt;/button&gt;
+                      &lt;button
+                        type&#x3D;&quot;button&quot;
+                        onClick&#x3D;{() &#x3D;&gt; handleCastVote(selectedMotion.id, &#x27;no&#x27;)}
+                        className&#x3D;&quot;btn-vote btn-no&quot;
+                        aria-label&#x3D;&quot;Vote No&quot;
+                        disabled&#x3D;{loading.voting}
+                      &gt;
+                        No
+                      &lt;/button&gt;
+                      &lt;button
+                        type&#x3D;&quot;button&quot;
+                        onClick&#x3D;{() &#x3D;&gt; handleCastVote(selectedMotion.id, &#x27;abstain&#x27;)}
+                        className&#x3D;&quot;btn-vote btn-abstain&quot;
+                        aria-label&#x3D;&quot;Abstain from voting&quot;
+                        disabled&#x3D;{loading.voting}
+                      &gt;
+                        Abstain
+                      &lt;/button&gt;
+                    &lt;/fieldset&gt;
+
+                    {loading.voteResults ? (
+                      &lt;div className&#x3D;&quot;vote-results loading&quot; aria-live&#x3D;&quot;polite&quot;&gt;
+                        &lt;p&gt;Loading vote results...&lt;/p&gt;
+                      &lt;/div&gt;
+                    ) : voteResults ? (
+                      &lt;div className&#x3D;&quot;vote-results&quot; aria-live&#x3D;&quot;polite&quot;&gt;
+                        &lt;h5&gt;Current Results&lt;/h5&gt;
+                        &lt;dl&gt;
+                          &lt;dt&gt;Ayes:&lt;/dt&gt;
+                          &lt;dd&gt;{voteResults.aye}&lt;/dd&gt;
+                          &lt;dt&gt;Noes:&lt;/dt&gt;
+                          &lt;dd&gt;{voteResults.no}&lt;/dd&gt;
+                          &lt;dt&gt;Abstentions:&lt;/dt&gt;
+                          &lt;dd&gt;{voteResults.abstain}&lt;/dd&gt;
+                          &lt;dt&gt;Total:&lt;/dt&gt;
+                          &lt;dd&gt;{voteResults.total}&lt;/dd&gt;
+                        &lt;/dl&gt;
+                      &lt;/div&gt;
+                    ) : null}
+                  &lt;/section&gt;
+                )}
+
+                {selectedMotion.status &#x3D;&#x3D;&#x3D; &#x27;completed&#x27; &amp;&amp; selectedMotion.result &amp;&amp; (
+                  &lt;div className&#x3D;{&#x60;motion-result result-${selectedMotion.result}&#x60;}&gt;
+                    &lt;strong&gt;Result:&lt;/strong&gt; {selectedMotion.result.toUpperCase()}
+                  &lt;/div&gt;
+                )}
+              &lt;/article&gt;
+            &lt;/aside&gt;
+          )}
+        &lt;/main&gt;
+      )}
+    &lt;/div&gt;
+  );
+};
+
+export default ParliamentChamber;
+</code></pre>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'interface';
+            var COMPODOC_CURRENT_PAGE_URL = 'VoteResults-2.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

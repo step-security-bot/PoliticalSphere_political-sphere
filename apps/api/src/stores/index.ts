@@ -7,6 +7,10 @@ import { PartyStore } from './party-store.js';
 import { UserStore } from './user-store.js';
 import { VoteStore } from './vote-store.js';
 
+/**
+ * Determine if cache should be enabled for the current environment.
+ * Returns true only when cache is explicitly enabled and not in test or in-memory DB contexts.
+ */
 function shouldEnableCache() {
   if (process.env.NODE_ENV === 'test') {
     return false;
@@ -22,6 +26,9 @@ function shouldEnableCache() {
   return process.env.API_ENABLE_CACHE === 'true' && Boolean(process.env.REDIS_URL);
 }
 
+/**
+ * Database Connection wrapper that provides typed store instances and manages cache lifecycle.
+ */
 export class DatabaseConnection {
   db: Database.Database;
   cache?: CacheService;
@@ -64,6 +71,10 @@ export class DatabaseConnection {
 // Singleton pattern for database connection (disabled in tests)
 let dbConnection: DatabaseConnection | null = null;
 
+/**
+ * Get a singleton DatabaseConnection instance. Creates the connection and runs migrations if needed.
+ * @param options - Optional cache or enableCache overrides
+ */
 export function getDatabase(
   options: { cache?: CacheService; enableCache?: boolean } = {}
 ): DatabaseConnection {
@@ -74,6 +85,9 @@ export function getDatabase(
   return dbConnection;
 }
 
+/**
+ * Close the current database connection and free resources. Meant for cleanup in tests or shutdown.
+ */
 export function closeDatabase() {
   if (dbConnection) {
     dbConnection.close();

@@ -1,1 +1,1864 @@
+<testsuites id="" name="" tests="16" failures="9" skipped="0" errors="0" time="40.93057799999975">
+<testsuite name="tests/error-handling.spec.ts" timestamp="2025-11-23T22:39:20.526Z" hostname="chromium" tests="16" failures="9" skipped="0" time="163.803" errors="0">
+<testcase name="Error Handling - Network Failures › should handle API server unavailable" classname="tests/error-handling.spec.ts" time="6.903">
+<failure message="error-handling.spec.ts:17:3 should handle API server unavailable" type="FAILURE">
+<![CDATA[  [chromium] › tests/error-handling.spec.ts:17:3 › Error Handling - Network Failures › should handle API server unavailable 
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+      38 |     // Should show network error message
+      39 |     const errorVisible = await page.locator('[role="alert"]').isVisible({ timeout: 5000 });
+    > 40 |     expect(errorVisible).toBe(true);
+         |                          ^
+      41 |
+      42 |     const errorText = await page.textContent('[role="alert"]');
+      43 |     expect(errorText).toMatch(/network|connection|server|unavailable/i);
+        at /Users/morganlowman/GitHub/political-sphere/apps/e2e/src/tests/error-handling.spec.ts:40:26
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../../test-results/tests-error-handling-Error-5aadb-ndle-API-server-unavailable-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../../../test-results/tests-error-handling-Error-5aadb-ndle-API-server-unavailable-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../../test-results/tests-error-handling-Error-5aadb-ndle-API-server-unavailable-chromium/error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[Setting up mock API...
+Setting up mock API...
+[auth-helper] Falling back to mock auth tokens because login API is unavailable: Login failed: 404 Not Found
+[auth-helper] Failed to set cookies: browserContext.addCookies: Cookie should have either url or path
+Mock API intercepted: [36m[Function: method][39m /
+Mock API intercepted: [36m[Function: method][39m /@vite/client
+Mock API intercepted: [36m[Function: method][39m /src/main.jsx
+Mock API intercepted: [36m[Function: method][39m /@react-refresh
+Mock API intercepted: [36m[Function: method][39m /@fs/Users/morganlowman/GitHub/political-sphere/node_modules/vite/dist/client/env.mjs
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/react_jsx-dev-runtime.js
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/react.js
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/react-dom_client.js
+Mock API intercepted: [36m[Function: method][39m /src/App.tsx
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/chunk-JKAOYQD2.js
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/chunk-G3PMV62Z.js
+Mock API intercepted: [36m[Function: method][39m /src/App.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Auth/AuthForm.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/MainGame.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/common/ErrorBoundary.tsx
+Mock API intercepted: [36m[Function: method][39m /src/contexts/AuthContext.tsx
+Mock API intercepted: [36m[Function: method][39m /src/contexts/LoadingContext.tsx
+Mock API intercepted: [36m[Function: method][39m /src/contexts/SimulationContext.tsx
+Mock API intercepted: [36m[Function: method][39m /src/contexts/ToastContext.tsx
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/chunk-CQ63GW5J.js
+Mock API intercepted: [36m[Function: method][39m /src/utils/validation.ts
+Mock API intercepted: [36m[Function: method][39m /src/components/Auth/Auth.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Auth/Captcha.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/Auth/ForgotPasswordModal.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/common/ErrorBoundary.css
+Mock API intercepted: [36m[Function: method][39m /src/services/api.ts
+Mock API intercepted: [36m[Function: method][39m /src/components/Elections/ElectionsCenter.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/Government/GovernmentDashboard.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/Judiciary/JudiciarySystem.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/MainGame.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Media/MediaCenter.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/Parliament/ParliamentChamber.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/Profile/UserProfile.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/common/Skeleton.tsx
+Mock API intercepted: [36m[Function: method][39m /src/services/simulationMock.ts
+Mock API intercepted: [36m[Function: method][39m /src/components/common/Toast.tsx
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/react-google-recaptcha.js
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/axios.js
+Mock API intercepted: [36m[Function: method][39m /src/components/Elections/ElectionsCenter.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Government/GovernmentDashboard.css
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/zod.js
+Mock API intercepted: [36m[Function: method][39m /src/components/Judiciary/JudiciarySystem.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Media/MediaCenter.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Parliament/ParliamentChamber.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Profile/UserProfile.css
+Mock API intercepted: [36m[Function: method][39m /src/components/common/Skeleton.css
+Mock API intercepted: [36m[Function: method][39m /src/components/common/Toast.css
+Mock API intercepted: [36m[Function: method][39m /login-background.png
+
+[[ATTACHMENT|../../test-results/tests-error-handling-Error-5aadb-ndle-API-server-unavailable-chromium/test-failed-1.png]]
+
+[[ATTACHMENT|../../test-results/tests-error-handling-Error-5aadb-ndle-API-server-unavailable-chromium/video.webm]]
+
+[[ATTACHMENT|../../test-results/tests-error-handling-Error-5aadb-ndle-API-server-unavailable-chromium/error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Error Handling - Network Failures › should handle slow network with loading indicators" classname="tests/error-handling.spec.ts" time="4.659">
+<system-out>
+<![CDATA[Setting up mock API...
+Setting up mock API...
+Mock API intercepted: [36m[Function: method][39m /
+Mock API intercepted: [36m[Function: method][39m /@vite/client
+Mock API intercepted: [36m[Function: method][39m /src/main.jsx
+Mock API intercepted: [36m[Function: method][39m /@react-refresh
+Mock API intercepted: [36m[Function: method][39m /@fs/Users/morganlowman/GitHub/political-sphere/node_modules/vite/dist/client/env.mjs
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/react_jsx-dev-runtime.js
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/react.js
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/react-dom_client.js
+Mock API intercepted: [36m[Function: method][39m /src/App.tsx
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/chunk-JKAOYQD2.js
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/chunk-G3PMV62Z.js
+Mock API intercepted: [36m[Function: method][39m /src/App.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Auth/AuthForm.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/MainGame.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/common/ErrorBoundary.tsx
+Mock API intercepted: [36m[Function: method][39m /src/contexts/AuthContext.tsx
+Mock API intercepted: [36m[Function: method][39m /src/contexts/LoadingContext.tsx
+Mock API intercepted: [36m[Function: method][39m /src/contexts/SimulationContext.tsx
+Mock API intercepted: [36m[Function: method][39m /src/contexts/ToastContext.tsx
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/chunk-CQ63GW5J.js
+Mock API intercepted: [36m[Function: method][39m /src/utils/validation.ts
+Mock API intercepted: [36m[Function: method][39m /src/components/Auth/Auth.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Auth/Captcha.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/Auth/ForgotPasswordModal.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/Elections/ElectionsCenter.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/Government/GovernmentDashboard.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/Judiciary/JudiciarySystem.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/MainGame.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Media/MediaCenter.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/Parliament/ParliamentChamber.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/Profile/UserProfile.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/common/Skeleton.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/common/ErrorBoundary.css
+Mock API intercepted: [36m[Function: method][39m /src/services/api.ts
+Mock API intercepted: [36m[Function: method][39m /src/services/simulationMock.ts
+Mock API intercepted: [36m[Function: method][39m /src/components/common/Toast.tsx
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/react-google-recaptcha.js
+Mock API intercepted: [36m[Function: method][39m /src/components/Elections/ElectionsCenter.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Government/GovernmentDashboard.css
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/zod.js
+Mock API intercepted: [36m[Function: method][39m /src/components/Judiciary/JudiciarySystem.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Media/MediaCenter.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Parliament/ParliamentChamber.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Profile/UserProfile.css
+Mock API intercepted: [36m[Function: method][39m /src/components/common/Skeleton.css
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/axios.js
+Mock API intercepted: [36m[Function: method][39m /src/components/common/Toast.css
+Mock API intercepted: [36m[Function: method][39m /login-background.png
+Mock API intercepted: [36m[Function: method][39m /api/auth/login
+Intercepting API request: [36m[Function: method][39m /api/auth/login
+Mock API intercepted: [36m[Function: method][39m /api/simulation/state
+Intercepting API request: [36m[Function: method][39m /api/simulation/state
+Mock API intercepted: [36m[Function: method][39m /api/simulation/state
+Intercepting API request: [36m[Function: method][39m /api/simulation/state
+]]>
+</system-out>
+</testcase>
+<testcase name="Error Handling - Network Failures › should handle failed login attempts gracefully" classname="tests/error-handling.spec.ts" time="6.001">
+<system-out>
+<![CDATA[Setting up mock API...
+Setting up mock API...
+Mock API intercepted: [36m[Function: method][39m /
+Mock API intercepted: [36m[Function: method][39m /@vite/client
+Mock API intercepted: [36m[Function: method][39m /src/main.jsx
+Mock API intercepted: [36m[Function: method][39m /@react-refresh
+Mock API intercepted: [36m[Function: method][39m /@fs/Users/morganlowman/GitHub/political-sphere/node_modules/vite/dist/client/env.mjs
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/react_jsx-dev-runtime.js
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/react.js
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/react-dom_client.js
+Mock API intercepted: [36m[Function: method][39m /src/App.tsx
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/chunk-JKAOYQD2.js
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/chunk-G3PMV62Z.js
+Mock API intercepted: [36m[Function: method][39m /src/App.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Auth/AuthForm.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/MainGame.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/common/ErrorBoundary.tsx
+Mock API intercepted: [36m[Function: method][39m /src/contexts/AuthContext.tsx
+Mock API intercepted: [36m[Function: method][39m /src/contexts/LoadingContext.tsx
+Mock API intercepted: [36m[Function: method][39m /src/contexts/SimulationContext.tsx
+Mock API intercepted: [36m[Function: method][39m /src/contexts/ToastContext.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/Elections/ElectionsCenter.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/Government/GovernmentDashboard.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/Judiciary/JudiciarySystem.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/MainGame.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Media/MediaCenter.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/Parliament/ParliamentChamber.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/Profile/UserProfile.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/common/Skeleton.tsx
+Mock API intercepted: [36m[Function: method][39m /src/utils/validation.ts
+Mock API intercepted: [36m[Function: method][39m /src/components/Auth/Auth.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Auth/Captcha.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/Auth/ForgotPasswordModal.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/common/ErrorBoundary.css
+Mock API intercepted: [36m[Function: method][39m /src/services/api.ts
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/chunk-CQ63GW5J.js
+Mock API intercepted: [36m[Function: method][39m /src/components/common/Toast.tsx
+Mock API intercepted: [36m[Function: method][39m /src/services/simulationMock.ts
+Mock API intercepted: [36m[Function: method][39m /src/components/Elections/ElectionsCenter.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Government/GovernmentDashboard.css
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/zod.js
+Mock API intercepted: [36m[Function: method][39m /src/components/Judiciary/JudiciarySystem.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Media/MediaCenter.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Parliament/ParliamentChamber.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Profile/UserProfile.css
+Mock API intercepted: [36m[Function: method][39m /src/components/common/Skeleton.css
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/react-google-recaptcha.js
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/axios.js
+Mock API intercepted: [36m[Function: method][39m /src/components/common/Toast.css
+Mock API intercepted: [36m[Function: method][39m /login-background.png
+]]>
+</system-out>
+</testcase>
+<testcase name="Error Handling - Network Failures › should handle intermittent WebSocket failures" classname="tests/error-handling.spec.ts" time="5.648">
+<system-out>
+<![CDATA[Setting up mock API...
+Setting up mock API...
+Mock API intercepted: [36m[Function: method][39m /
+Mock API intercepted: [36m[Function: method][39m /@vite/client
+Mock API intercepted: [36m[Function: method][39m /src/main.jsx
+Mock API intercepted: [36m[Function: method][39m /@react-refresh
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/react_jsx-dev-runtime.js
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/react.js
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/react-dom_client.js
+Mock API intercepted: [36m[Function: method][39m /src/App.tsx
+Mock API intercepted: [36m[Function: method][39m /@fs/Users/morganlowman/GitHub/political-sphere/node_modules/vite/dist/client/env.mjs
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/chunk-JKAOYQD2.js
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/chunk-G3PMV62Z.js
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/chunk-CQ63GW5J.js
+Mock API intercepted: [36m[Function: method][39m /src/App.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Auth/AuthForm.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/MainGame.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/common/ErrorBoundary.tsx
+Mock API intercepted: [36m[Function: method][39m /src/contexts/AuthContext.tsx
+Mock API intercepted: [36m[Function: method][39m /src/contexts/LoadingContext.tsx
+Mock API intercepted: [36m[Function: method][39m /src/contexts/SimulationContext.tsx
+Mock API intercepted: [36m[Function: method][39m /src/contexts/ToastContext.tsx
+Mock API intercepted: [36m[Function: method][39m /src/utils/validation.ts
+Mock API intercepted: [36m[Function: method][39m /src/components/Auth/Auth.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Auth/Captcha.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/Auth/ForgotPasswordModal.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/Elections/ElectionsCenter.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/Government/GovernmentDashboard.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/Judiciary/JudiciarySystem.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/MainGame.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Media/MediaCenter.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/Parliament/ParliamentChamber.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/Profile/UserProfile.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/common/Skeleton.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/common/ErrorBoundary.css
+Mock API intercepted: [36m[Function: method][39m /src/services/api.ts
+Mock API intercepted: [36m[Function: method][39m /src/components/common/Toast.tsx
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/react-google-recaptcha.js
+Mock API intercepted: [36m[Function: method][39m /src/components/Elections/ElectionsCenter.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Media/MediaCenter.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Government/GovernmentDashboard.css
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/zod.js
+Mock API intercepted: [36m[Function: method][39m /src/components/Judiciary/JudiciarySystem.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Parliament/ParliamentChamber.css
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/axios.js
+Mock API intercepted: [36m[Function: method][39m /src/services/simulationMock.ts
+Mock API intercepted: [36m[Function: method][39m /src/components/Profile/UserProfile.css
+Mock API intercepted: [36m[Function: method][39m /src/components/common/Skeleton.css
+Mock API intercepted: [36m[Function: method][39m /src/components/common/Toast.css
+Mock API intercepted: [36m[Function: method][39m /login-background.png
+Mock API intercepted: [36m[Function: method][39m /api/auth/login
+Intercepting API request: [36m[Function: method][39m /api/auth/login
+Mock API intercepted: [36m[Function: method][39m /api/simulation/state
+Intercepting API request: [36m[Function: method][39m /api/simulation/state
+Mock API intercepted: [36m[Function: method][39m /api/simulation/state
+Intercepting API request: [36m[Function: method][39m /api/simulation/state
+]]>
+</system-out>
+</testcase>
+<testcase name="Error Handling - Invalid Data › should validate email format" classname="tests/error-handling.spec.ts" time="6.017">
+<system-out>
+<![CDATA[Setting up mock API...
+Mock API intercepted: [36m[Function: method][39m /
+Mock API intercepted: [36m[Function: method][39m /@vite/client
+Mock API intercepted: [36m[Function: method][39m /src/main.jsx
+Mock API intercepted: [36m[Function: method][39m /@react-refresh
+Mock API intercepted: [36m[Function: method][39m /@fs/Users/morganlowman/GitHub/political-sphere/node_modules/vite/dist/client/env.mjs
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/react_jsx-dev-runtime.js
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/react.js
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/react-dom_client.js
+Mock API intercepted: [36m[Function: method][39m /src/App.tsx
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/chunk-JKAOYQD2.js
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/chunk-G3PMV62Z.js
+Mock API intercepted: [36m[Function: method][39m /src/App.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Auth/AuthForm.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/MainGame.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/common/ErrorBoundary.tsx
+Mock API intercepted: [36m[Function: method][39m /src/contexts/AuthContext.tsx
+Mock API intercepted: [36m[Function: method][39m /src/contexts/LoadingContext.tsx
+Mock API intercepted: [36m[Function: method][39m /src/contexts/SimulationContext.tsx
+Mock API intercepted: [36m[Function: method][39m /src/contexts/ToastContext.tsx
+Mock API intercepted: [36m[Function: method][39m /src/utils/validation.ts
+Mock API intercepted: [36m[Function: method][39m /src/components/Auth/Auth.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Auth/Captcha.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/Auth/ForgotPasswordModal.tsx
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/chunk-CQ63GW5J.js
+Mock API intercepted: [36m[Function: method][39m /src/components/Elections/ElectionsCenter.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/Government/GovernmentDashboard.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/Judiciary/JudiciarySystem.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/MainGame.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Media/MediaCenter.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/Parliament/ParliamentChamber.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/Profile/UserProfile.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/common/Skeleton.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/common/ErrorBoundary.css
+Mock API intercepted: [36m[Function: method][39m /src/components/common/Toast.tsx
+Mock API intercepted: [36m[Function: method][39m /src/services/api.ts
+Mock API intercepted: [36m[Function: method][39m /src/services/simulationMock.ts
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/react-google-recaptcha.js
+Mock API intercepted: [36m[Function: method][39m /src/components/Elections/ElectionsCenter.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Government/GovernmentDashboard.css
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/zod.js
+Mock API intercepted: [36m[Function: method][39m /src/components/Judiciary/JudiciarySystem.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Media/MediaCenter.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Parliament/ParliamentChamber.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Profile/UserProfile.css
+Mock API intercepted: [36m[Function: method][39m /src/components/common/Toast.css
+Mock API intercepted: [36m[Function: method][39m /src/components/common/Skeleton.css
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/axios.js
+Mock API intercepted: [36m[Function: method][39m /login-background.png
+]]>
+</system-out>
+</testcase>
+<testcase name="Error Handling - Invalid Data › should enforce minimum password length" classname="tests/error-handling.spec.ts" time="6.335">
+<system-out>
+<![CDATA[Setting up mock API...
+Mock API intercepted: [36m[Function: method][39m /
+Mock API intercepted: [36m[Function: method][39m /@vite/client
+Mock API intercepted: [36m[Function: method][39m /src/main.jsx
+Mock API intercepted: [36m[Function: method][39m /@react-refresh
+Mock API intercepted: [36m[Function: method][39m /@fs/Users/morganlowman/GitHub/political-sphere/node_modules/vite/dist/client/env.mjs
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/react_jsx-dev-runtime.js
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/react.js
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/react-dom_client.js
+Mock API intercepted: [36m[Function: method][39m /src/App.tsx
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/chunk-JKAOYQD2.js
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/chunk-G3PMV62Z.js
+Mock API intercepted: [36m[Function: method][39m /src/App.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Auth/AuthForm.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/MainGame.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/common/ErrorBoundary.tsx
+Mock API intercepted: [36m[Function: method][39m /src/contexts/AuthContext.tsx
+Mock API intercepted: [36m[Function: method][39m /src/contexts/LoadingContext.tsx
+Mock API intercepted: [36m[Function: method][39m /src/contexts/SimulationContext.tsx
+Mock API intercepted: [36m[Function: method][39m /src/contexts/ToastContext.tsx
+Mock API intercepted: [36m[Function: method][39m /src/utils/validation.ts
+Mock API intercepted: [36m[Function: method][39m /src/components/Auth/Auth.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Auth/Captcha.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/Auth/ForgotPasswordModal.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/Elections/ElectionsCenter.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/Government/GovernmentDashboard.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/Judiciary/JudiciarySystem.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/MainGame.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Media/MediaCenter.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/Parliament/ParliamentChamber.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/Profile/UserProfile.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/common/Skeleton.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/common/ErrorBoundary.css
+Mock API intercepted: [36m[Function: method][39m /src/services/api.ts
+Mock API intercepted: [36m[Function: method][39m /src/services/simulationMock.ts
+Mock API intercepted: [36m[Function: method][39m /src/components/common/Toast.tsx
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/chunk-CQ63GW5J.js
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/react-google-recaptcha.js
+Mock API intercepted: [36m[Function: method][39m /src/components/Elections/ElectionsCenter.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Government/GovernmentDashboard.css
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/zod.js
+Mock API intercepted: [36m[Function: method][39m /src/components/Judiciary/JudiciarySystem.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Media/MediaCenter.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Parliament/ParliamentChamber.css
+Mock API intercepted: [36m[Function: method][39m /src/components/common/Skeleton.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Profile/UserProfile.css
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/axios.js
+Mock API intercepted: [36m[Function: method][39m /src/components/common/Toast.css
+Mock API intercepted: [36m[Function: method][39m /login-background.png
+]]>
+</system-out>
+</testcase>
+<testcase name="Error Handling - Invalid Data › should reject XSS attempts in proposal titles" classname="tests/error-handling.spec.ts" time="13.682">
+<failure message="error-handling.spec.ts:146:3 should reject XSS attempts in proposal titles" type="FAILURE">
+<![CDATA[  [chromium] › tests/error-handling.spec.ts:146:3 › Error Handling - Invalid Data › should reject XSS attempts in proposal titles 
+
+    TimeoutError: locator.waitFor: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for locator('[data-testid="e2e-proposals-list"], .motions-list, [role="list"]')
+
+
+       at pages/GameBoardPage.ts:414
+
+      412 |    */
+      413 |   async waitForMotionsLoad() {
+    > 414 |     await this.motionsList.waitFor({ state: 'attached', timeout: 10000 });
+          |                            ^
+      415 |   }
+      416 | }
+      417 |
+        at GameBoardPage.waitForMotionsLoad (/Users/morganlowman/GitHub/political-sphere/apps/e2e/src/pages/GameBoardPage.ts:414:28)
+        at GameBoardPage.gotoParliament (/Users/morganlowman/GitHub/political-sphere/apps/e2e/src/pages/GameBoardPage.ts:331:16)
+        at /Users/morganlowman/GitHub/political-sphere/apps/e2e/src/tests/error-handling.spec.ts:155:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../../test-results/tests-error-handling-Error-37f55-attempts-in-proposal-titles-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../../../test-results/tests-error-handling-Error-37f55-attempts-in-proposal-titles-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[Setting up mock API...
+Setting up mock API...
+Mock API intercepted: [36m[Function: method][39m /
+Mock API intercepted: [36m[Function: method][39m /@vite/client
+Mock API intercepted: [36m[Function: method][39m /src/main.jsx
+Mock API intercepted: [36m[Function: method][39m /@react-refresh
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/react_jsx-dev-runtime.js
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/react.js
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/react-dom_client.js
+Mock API intercepted: [36m[Function: method][39m /src/App.tsx
+Mock API intercepted: [36m[Function: method][39m /@fs/Users/morganlowman/GitHub/political-sphere/node_modules/vite/dist/client/env.mjs
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/chunk-JKAOYQD2.js
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/chunk-G3PMV62Z.js
+Mock API intercepted: [36m[Function: method][39m /src/App.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Auth/AuthForm.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/MainGame.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/common/ErrorBoundary.tsx
+Mock API intercepted: [36m[Function: method][39m /src/contexts/AuthContext.tsx
+Mock API intercepted: [36m[Function: method][39m /src/contexts/LoadingContext.tsx
+Mock API intercepted: [36m[Function: method][39m /src/contexts/SimulationContext.tsx
+Mock API intercepted: [36m[Function: method][39m /src/contexts/ToastContext.tsx
+Mock API intercepted: [36m[Function: method][39m /src/utils/validation.ts
+Mock API intercepted: [36m[Function: method][39m /src/components/Auth/Auth.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Auth/Captcha.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/Auth/ForgotPasswordModal.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/Elections/ElectionsCenter.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/Government/GovernmentDashboard.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/Judiciary/JudiciarySystem.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/MainGame.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Media/MediaCenter.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/Parliament/ParliamentChamber.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/Profile/UserProfile.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/common/Skeleton.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/common/ErrorBoundary.css
+Mock API intercepted: [36m[Function: method][39m /src/services/api.ts
+Mock API intercepted: [36m[Function: method][39m /src/services/simulationMock.ts
+Mock API intercepted: [36m[Function: method][39m /src/components/common/Toast.tsx
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/react-google-recaptcha.js
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/chunk-CQ63GW5J.js
+Mock API intercepted: [36m[Function: method][39m /src/components/Elections/ElectionsCenter.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Government/GovernmentDashboard.css
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/zod.js
+Mock API intercepted: [36m[Function: method][39m /src/components/Judiciary/JudiciarySystem.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Media/MediaCenter.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Parliament/ParliamentChamber.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Profile/UserProfile.css
+Mock API intercepted: [36m[Function: method][39m /src/components/common/Skeleton.css
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/axios.js
+Mock API intercepted: [36m[Function: method][39m /src/components/common/Toast.css
+Mock API intercepted: [36m[Function: method][39m /login-background.png
+Mock API intercepted: [36m[Function: method][39m /api/auth/login
+Intercepting API request: [36m[Function: method][39m /api/auth/login
+Mock API intercepted: [36m[Function: method][39m /api/simulation/state
+Intercepting API request: [36m[Function: method][39m /api/simulation/state
+Mock API intercepted: [36m[Function: method][39m /api/simulation/state
+Intercepting API request: [36m[Function: method][39m /api/simulation/state
+Initializing harness...
+About to evaluate harness setup...
+Harness setup result: harness-setup-complete
+Harness initialized
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+
+[[ATTACHMENT|../../test-results/tests-error-handling-Error-37f55-attempts-in-proposal-titles-chromium/test-failed-1.png]]
+
+[[ATTACHMENT|../../test-results/tests-error-handling-Error-37f55-attempts-in-proposal-titles-chromium/video.webm]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Error Handling - Invalid Data › should handle extremely long proposal titles" classname="tests/error-handling.spec.ts" time="14.119">
+<failure message="error-handling.spec.ts:182:3 should handle extremely long proposal titles" type="FAILURE">
+<![CDATA[  [chromium] › tests/error-handling.spec.ts:182:3 › Error Handling - Invalid Data › should handle extremely long proposal titles 
+
+    TimeoutError: locator.waitFor: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for locator('[data-testid="e2e-proposals-list"], .motions-list, [role="list"]')
+
+
+       at pages/GameBoardPage.ts:414
+
+      412 |    */
+      413 |   async waitForMotionsLoad() {
+    > 414 |     await this.motionsList.waitFor({ state: 'attached', timeout: 10000 });
+          |                            ^
+      415 |   }
+      416 | }
+      417 |
+        at GameBoardPage.waitForMotionsLoad (/Users/morganlowman/GitHub/political-sphere/apps/e2e/src/pages/GameBoardPage.ts:414:28)
+        at GameBoardPage.gotoParliament (/Users/morganlowman/GitHub/political-sphere/apps/e2e/src/pages/GameBoardPage.ts:331:16)
+        at /Users/morganlowman/GitHub/political-sphere/apps/e2e/src/tests/error-handling.spec.ts:191:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../../test-results/tests-error-handling-Error-cee6f-remely-long-proposal-titles-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../../../test-results/tests-error-handling-Error-cee6f-remely-long-proposal-titles-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[Setting up mock API...
+Setting up mock API...
+Mock API intercepted: [36m[Function: method][39m /
+Mock API intercepted: [36m[Function: method][39m /@vite/client
+Mock API intercepted: [36m[Function: method][39m /src/main.jsx
+Mock API intercepted: [36m[Function: method][39m /@react-refresh
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/react_jsx-dev-runtime.js
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/react.js
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/react-dom_client.js
+Mock API intercepted: [36m[Function: method][39m /src/App.tsx
+Mock API intercepted: [36m[Function: method][39m /@fs/Users/morganlowman/GitHub/political-sphere/node_modules/vite/dist/client/env.mjs
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/chunk-JKAOYQD2.js
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/chunk-G3PMV62Z.js
+Mock API intercepted: [36m[Function: method][39m /src/App.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Auth/AuthForm.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/MainGame.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/common/ErrorBoundary.tsx
+Mock API intercepted: [36m[Function: method][39m /src/contexts/AuthContext.tsx
+Mock API intercepted: [36m[Function: method][39m /src/contexts/LoadingContext.tsx
+Mock API intercepted: [36m[Function: method][39m /src/contexts/SimulationContext.tsx
+Mock API intercepted: [36m[Function: method][39m /src/contexts/ToastContext.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/common/ErrorBoundary.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Elections/ElectionsCenter.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/Government/GovernmentDashboard.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/Judiciary/JudiciarySystem.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/MainGame.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Media/MediaCenter.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/Parliament/ParliamentChamber.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/Profile/UserProfile.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/common/Skeleton.tsx
+Mock API intercepted: [36m[Function: method][39m /src/services/api.ts
+Mock API intercepted: [36m[Function: method][39m /src/utils/validation.ts
+Mock API intercepted: [36m[Function: method][39m /src/components/Auth/Auth.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Auth/Captcha.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/Auth/ForgotPasswordModal.tsx
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/chunk-CQ63GW5J.js
+Mock API intercepted: [36m[Function: method][39m /src/services/simulationMock.ts
+Mock API intercepted: [36m[Function: method][39m /src/components/common/Toast.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/Elections/ElectionsCenter.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Government/GovernmentDashboard.css
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/zod.js
+Mock API intercepted: [36m[Function: method][39m /src/components/Judiciary/JudiciarySystem.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Media/MediaCenter.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Parliament/ParliamentChamber.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Profile/UserProfile.css
+Mock API intercepted: [36m[Function: method][39m /src/components/common/Skeleton.css
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/axios.js
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/react-google-recaptcha.js
+Mock API intercepted: [36m[Function: method][39m /src/components/common/Toast.css
+Mock API intercepted: [36m[Function: method][39m /login-background.png
+Mock API intercepted: [36m[Function: method][39m /api/auth/login
+Intercepting API request: [36m[Function: method][39m /api/auth/login
+Mock API intercepted: [36m[Function: method][39m /api/simulation/state
+Intercepting API request: [36m[Function: method][39m /api/simulation/state
+Mock API intercepted: [36m[Function: method][39m /api/simulation/state
+Intercepting API request: [36m[Function: method][39m /api/simulation/state
+Initializing harness...
+About to evaluate harness setup...
+Harness setup result: harness-setup-complete
+Harness initialized
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+
+[[ATTACHMENT|../../test-results/tests-error-handling-Error-cee6f-remely-long-proposal-titles-chromium/test-failed-1.png]]
+
+[[ATTACHMENT|../../test-results/tests-error-handling-Error-cee6f-remely-long-proposal-titles-chromium/video.webm]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Error Handling - Concurrent Operations › should handle race condition on simultaneous proposal creation" classname="tests/error-handling.spec.ts" time="14.774">
+<failure message="error-handling.spec.ts:220:3 should handle race condition on simultaneous proposal creation" type="FAILURE">
+<![CDATA[  [chromium] › tests/error-handling.spec.ts:220:3 › Error Handling - Concurrent Operations › should handle race condition on simultaneous proposal creation 
+
+    TimeoutError: locator.waitFor: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for locator('[data-testid="e2e-proposals-list"], .motions-list, [role="list"]')
+
+
+       at pages/GameBoardPage.ts:414
+
+      412 |    */
+      413 |   async waitForMotionsLoad() {
+    > 414 |     await this.motionsList.waitFor({ state: 'attached', timeout: 10000 });
+          |                            ^
+      415 |   }
+      416 | }
+      417 |
+        at GameBoardPage.waitForMotionsLoad (/Users/morganlowman/GitHub/political-sphere/apps/e2e/src/pages/GameBoardPage.ts:414:28)
+        at GameBoardPage.gotoParliament (/Users/morganlowman/GitHub/political-sphere/apps/e2e/src/pages/GameBoardPage.ts:331:16)
+        at /Users/morganlowman/GitHub/political-sphere/apps/e2e/src/tests/error-handling.spec.ts:232:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../../test-results/tests-error-handling-Error-64a2f-ultaneous-proposal-creation-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../../../test-results/tests-error-handling-Error-64a2f-ultaneous-proposal-creation-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[Setting up mock API...
+Setting up mock API...
+Mock API intercepted: [36m[Function: method][39m /
+Mock API intercepted: [36m[Function: method][39m /@vite/client
+Mock API intercepted: [36m[Function: method][39m /src/main.jsx
+Mock API intercepted: [36m[Function: method][39m /@react-refresh
+Mock API intercepted: [36m[Function: method][39m /@fs/Users/morganlowman/GitHub/political-sphere/node_modules/vite/dist/client/env.mjs
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/react_jsx-dev-runtime.js
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/react.js
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/react-dom_client.js
+Mock API intercepted: [36m[Function: method][39m /src/App.tsx
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/chunk-JKAOYQD2.js
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/chunk-G3PMV62Z.js
+Mock API intercepted: [36m[Function: method][39m /src/App.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Auth/AuthForm.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/MainGame.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/common/ErrorBoundary.tsx
+Mock API intercepted: [36m[Function: method][39m /src/contexts/AuthContext.tsx
+Mock API intercepted: [36m[Function: method][39m /src/contexts/LoadingContext.tsx
+Mock API intercepted: [36m[Function: method][39m /src/contexts/SimulationContext.tsx
+Mock API intercepted: [36m[Function: method][39m /src/contexts/ToastContext.tsx
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/chunk-CQ63GW5J.js
+Mock API intercepted: [36m[Function: method][39m /src/utils/validation.ts
+Mock API intercepted: [36m[Function: method][39m /src/components/Auth/Auth.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Auth/Captcha.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/Auth/ForgotPasswordModal.tsx
+Mock API intercepted: [36m[Function: method][39m /src/services/api.ts
+Mock API intercepted: [36m[Function: method][39m /src/services/simulationMock.ts
+Mock API intercepted: [36m[Function: method][39m /src/components/common/Toast.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/common/ErrorBoundary.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Elections/ElectionsCenter.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/Government/GovernmentDashboard.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/Judiciary/JudiciarySystem.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/MainGame.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Media/MediaCenter.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/Parliament/ParliamentChamber.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/Profile/UserProfile.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/common/Skeleton.tsx
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/react-google-recaptcha.js
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/axios.js
+Mock API intercepted: [36m[Function: method][39m /src/components/common/Toast.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Elections/ElectionsCenter.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Government/GovernmentDashboard.css
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/zod.js
+Mock API intercepted: [36m[Function: method][39m /src/components/Judiciary/JudiciarySystem.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Media/MediaCenter.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Parliament/ParliamentChamber.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Profile/UserProfile.css
+Mock API intercepted: [36m[Function: method][39m /src/components/common/Skeleton.css
+Mock API intercepted: [36m[Function: method][39m /login-background.png
+Mock API intercepted: [36m[Function: method][39m /api/auth/login
+Intercepting API request: [36m[Function: method][39m /api/auth/login
+Mock API intercepted: [36m[Function: method][39m /api/simulation/state
+Intercepting API request: [36m[Function: method][39m /api/simulation/state
+Mock API intercepted: [36m[Function: method][39m /api/simulation/state
+Intercepting API request: [36m[Function: method][39m /api/simulation/state
+Initializing harness...
+About to evaluate harness setup...
+Harness setup result: harness-setup-complete
+Harness initialized
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+
+[[ATTACHMENT|../../test-results/tests-error-handling-Error-64a2f-ultaneous-proposal-creation-chromium/test-failed-1.png]]
+
+[[ATTACHMENT|../../test-results/tests-error-handling-Error-64a2f-ultaneous-proposal-creation-chromium/video.webm]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Error Handling - Concurrent Operations › should handle concurrent votes on same proposal" classname="tests/error-handling.spec.ts" time="14.754">
+<failure message="error-handling.spec.ts:268:3 should handle concurrent votes on same proposal" type="FAILURE">
+<![CDATA[  [chromium] › tests/error-handling.spec.ts:268:3 › Error Handling - Concurrent Operations › should handle concurrent votes on same proposal 
+
+    TimeoutError: locator.waitFor: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for locator('[data-testid="e2e-proposals-list"], .motions-list, [role="list"]')
+
+
+       at pages/GameBoardPage.ts:414
+
+      412 |    */
+      413 |   async waitForMotionsLoad() {
+    > 414 |     await this.motionsList.waitFor({ state: 'attached', timeout: 10000 });
+          |                            ^
+      415 |   }
+      416 | }
+      417 |
+        at GameBoardPage.waitForMotionsLoad (/Users/morganlowman/GitHub/political-sphere/apps/e2e/src/pages/GameBoardPage.ts:414:28)
+        at GameBoardPage.gotoParliament (/Users/morganlowman/GitHub/political-sphere/apps/e2e/src/pages/GameBoardPage.ts:331:16)
+        at /Users/morganlowman/GitHub/political-sphere/apps/e2e/src/tests/error-handling.spec.ts:277:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../../test-results/tests-error-handling-Error-5ddb2-rent-votes-on-same-proposal-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../../../test-results/tests-error-handling-Error-5ddb2-rent-votes-on-same-proposal-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[Setting up mock API...
+Setting up mock API...
+Mock API intercepted: [36m[Function: method][39m /
+Mock API intercepted: [36m[Function: method][39m /@vite/client
+Mock API intercepted: [36m[Function: method][39m /src/main.jsx
+Mock API intercepted: [36m[Function: method][39m /@react-refresh
+Mock API intercepted: [36m[Function: method][39m /@fs/Users/morganlowman/GitHub/political-sphere/node_modules/vite/dist/client/env.mjs
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/react_jsx-dev-runtime.js
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/react.js
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/react-dom_client.js
+Mock API intercepted: [36m[Function: method][39m /src/App.tsx
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/chunk-JKAOYQD2.js
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/chunk-G3PMV62Z.js
+Mock API intercepted: [36m[Function: method][39m /src/App.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Auth/AuthForm.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/MainGame.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/common/ErrorBoundary.tsx
+Mock API intercepted: [36m[Function: method][39m /src/contexts/AuthContext.tsx
+Mock API intercepted: [36m[Function: method][39m /src/contexts/LoadingContext.tsx
+Mock API intercepted: [36m[Function: method][39m /src/contexts/SimulationContext.tsx
+Mock API intercepted: [36m[Function: method][39m /src/contexts/ToastContext.tsx
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/chunk-CQ63GW5J.js
+Mock API intercepted: [36m[Function: method][39m /src/utils/validation.ts
+Mock API intercepted: [36m[Function: method][39m /src/components/Auth/Auth.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Auth/Captcha.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/Auth/ForgotPasswordModal.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/common/Toast.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/Elections/ElectionsCenter.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/Government/GovernmentDashboard.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/Judiciary/JudiciarySystem.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/MainGame.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Media/MediaCenter.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/Parliament/ParliamentChamber.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/Profile/UserProfile.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/common/Skeleton.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/common/ErrorBoundary.css
+Mock API intercepted: [36m[Function: method][39m /src/services/api.ts
+Mock API intercepted: [36m[Function: method][39m /src/services/simulationMock.ts
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/react-google-recaptcha.js
+Mock API intercepted: [36m[Function: method][39m /src/components/common/Toast.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Elections/ElectionsCenter.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Government/GovernmentDashboard.css
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/zod.js
+Mock API intercepted: [36m[Function: method][39m /src/components/Judiciary/JudiciarySystem.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Media/MediaCenter.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Parliament/ParliamentChamber.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Profile/UserProfile.css
+Mock API intercepted: [36m[Function: method][39m /src/components/common/Skeleton.css
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/axios.js
+Mock API intercepted: [36m[Function: method][39m /login-background.png
+Mock API intercepted: [36m[Function: method][39m /api/auth/login
+Intercepting API request: [36m[Function: method][39m /api/auth/login
+Mock API intercepted: [36m[Function: method][39m /api/simulation/state
+Intercepting API request: [36m[Function: method][39m /api/simulation/state
+Mock API intercepted: [36m[Function: method][39m /api/simulation/state
+Intercepting API request: [36m[Function: method][39m /api/simulation/state
+Initializing harness...
+About to evaluate harness setup...
+Harness setup result: harness-setup-complete
+Harness initialized
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+
+[[ATTACHMENT|../../test-results/tests-error-handling-Error-5ddb2-rent-votes-on-same-proposal-chromium/test-failed-1.png]]
+
+[[ATTACHMENT|../../test-results/tests-error-handling-Error-5ddb2-rent-votes-on-same-proposal-chromium/video.webm]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Error Handling - Session Management › should handle expired session gracefully" classname="tests/error-handling.spec.ts" time="14.883">
+<system-out>
+<![CDATA[Setting up mock API...
+Setting up mock API...
+Mock API intercepted: [36m[Function: method][39m /
+Mock API intercepted: [36m[Function: method][39m /@vite/client
+Mock API intercepted: [36m[Function: method][39m /src/main.jsx
+Mock API intercepted: [36m[Function: method][39m /@react-refresh
+Mock API intercepted: [36m[Function: method][39m /@fs/Users/morganlowman/GitHub/political-sphere/node_modules/vite/dist/client/env.mjs
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/react_jsx-dev-runtime.js
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/react.js
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/react-dom_client.js
+Mock API intercepted: [36m[Function: method][39m /src/App.tsx
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/chunk-JKAOYQD2.js
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/chunk-G3PMV62Z.js
+Mock API intercepted: [36m[Function: method][39m /src/App.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Auth/AuthForm.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/MainGame.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/common/ErrorBoundary.tsx
+Mock API intercepted: [36m[Function: method][39m /src/contexts/AuthContext.tsx
+Mock API intercepted: [36m[Function: method][39m /src/contexts/LoadingContext.tsx
+Mock API intercepted: [36m[Function: method][39m /src/contexts/SimulationContext.tsx
+Mock API intercepted: [36m[Function: method][39m /src/contexts/ToastContext.tsx
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/chunk-CQ63GW5J.js
+Mock API intercepted: [36m[Function: method][39m /src/components/Elections/ElectionsCenter.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/Government/GovernmentDashboard.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/Judiciary/JudiciarySystem.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/MainGame.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Media/MediaCenter.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/Parliament/ParliamentChamber.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/Profile/UserProfile.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/common/Skeleton.tsx
+Mock API intercepted: [36m[Function: method][39m /src/utils/validation.ts
+Mock API intercepted: [36m[Function: method][39m /src/components/Auth/Auth.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Auth/Captcha.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/Auth/ForgotPasswordModal.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/common/ErrorBoundary.css
+Mock API intercepted: [36m[Function: method][39m /src/services/api.ts
+Mock API intercepted: [36m[Function: method][39m /src/services/simulationMock.ts
+Mock API intercepted: [36m[Function: method][39m /src/components/common/Toast.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/Elections/ElectionsCenter.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Government/GovernmentDashboard.css
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/zod.js
+Mock API intercepted: [36m[Function: method][39m /src/components/Judiciary/JudiciarySystem.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Media/MediaCenter.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Parliament/ParliamentChamber.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Profile/UserProfile.css
+Mock API intercepted: [36m[Function: method][39m /src/components/common/Skeleton.css
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/react-google-recaptcha.js
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/axios.js
+Mock API intercepted: [36m[Function: method][39m /src/components/common/Toast.css
+Mock API intercepted: [36m[Function: method][39m /login-background.png
+Mock API intercepted: [36m[Function: method][39m /api/auth/login
+Intercepting API request: [36m[Function: method][39m /api/auth/login
+Mock API intercepted: [36m[Function: method][39m /api/simulation/state
+Intercepting API request: [36m[Function: method][39m /api/simulation/state
+Mock API intercepted: [36m[Function: method][39m /api/simulation/state
+Intercepting API request: [36m[Function: method][39m /api/simulation/state
+Initializing harness...
+About to evaluate harness setup...
+Harness setup result: harness-setup-complete
+Harness initialized
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+]]>
+</system-out>
+</testcase>
+<testcase name="Error Handling - Session Management › should prevent multiple simultaneous login attempts" classname="tests/error-handling.spec.ts" time="1.597">
+<system-out>
+<![CDATA[Setting up mock API...
+Setting up mock API...
+Mock API intercepted: [36m[Function: method][39m /
+Mock API intercepted: [36m[Function: method][39m /@vite/client
+Mock API intercepted: [36m[Function: method][39m /src/main.jsx
+Mock API intercepted: [36m[Function: method][39m /@react-refresh
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/react_jsx-dev-runtime.js
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/react.js
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/react-dom_client.js
+Mock API intercepted: [36m[Function: method][39m /src/App.tsx
+Mock API intercepted: [36m[Function: method][39m /@fs/Users/morganlowman/GitHub/political-sphere/node_modules/vite/dist/client/env.mjs
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/chunk-JKAOYQD2.js
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/chunk-G3PMV62Z.js
+Mock API intercepted: [36m[Function: method][39m /src/App.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Auth/AuthForm.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/MainGame.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/common/ErrorBoundary.tsx
+Mock API intercepted: [36m[Function: method][39m /src/contexts/AuthContext.tsx
+Mock API intercepted: [36m[Function: method][39m /src/contexts/LoadingContext.tsx
+Mock API intercepted: [36m[Function: method][39m /src/contexts/SimulationContext.tsx
+Mock API intercepted: [36m[Function: method][39m /src/contexts/ToastContext.tsx
+Mock API intercepted: [36m[Function: method][39m /src/utils/validation.ts
+Mock API intercepted: [36m[Function: method][39m /src/components/Auth/Auth.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Auth/Captcha.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/Auth/ForgotPasswordModal.tsx
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/chunk-CQ63GW5J.js
+Mock API intercepted: [36m[Function: method][39m /src/components/Elections/ElectionsCenter.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/Government/GovernmentDashboard.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/Judiciary/JudiciarySystem.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/MainGame.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Media/MediaCenter.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/Parliament/ParliamentChamber.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/Profile/UserProfile.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/common/Skeleton.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/common/ErrorBoundary.css
+Mock API intercepted: [36m[Function: method][39m /src/services/api.ts
+Mock API intercepted: [36m[Function: method][39m /src/services/simulationMock.ts
+Mock API intercepted: [36m[Function: method][39m /src/components/common/Toast.tsx
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/react-google-recaptcha.js
+Mock API intercepted: [36m[Function: method][39m /src/components/Elections/ElectionsCenter.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Media/MediaCenter.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Government/GovernmentDashboard.css
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/zod.js
+Mock API intercepted: [36m[Function: method][39m /src/components/Judiciary/JudiciarySystem.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Parliament/ParliamentChamber.css
+Mock API intercepted: [36m[Function: method][39m /src/components/common/Skeleton.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Profile/UserProfile.css
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/axios.js
+Mock API intercepted: [36m[Function: method][39m /src/components/common/Toast.css
+Mock API intercepted: [36m[Function: method][39m /login-background.png
+Mock API intercepted: [36m[Function: method][39m /api/auth/login
+Intercepting API request: [36m[Function: method][39m /api/auth/login
+Mock API intercepted: [36m[Function: method][39m /api/simulation/state
+Intercepting API request: [36m[Function: method][39m /api/simulation/state
+Mock API intercepted: [36m[Function: method][39m /api/simulation/state
+Intercepting API request: [36m[Function: method][39m /api/simulation/state
+]]>
+</system-out>
+</testcase>
+<testcase name="Error Handling - Edge Cases › should handle zero proposals state" classname="tests/error-handling.spec.ts" time="13.632">
+<failure message="error-handling.spec.ts:365:3 should handle zero proposals state" type="FAILURE">
+<![CDATA[  [chromium] › tests/error-handling.spec.ts:365:3 › Error Handling - Edge Cases › should handle zero proposals state 
+
+    TimeoutError: locator.waitFor: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for locator('[data-testid="e2e-proposals-list"], .motions-list, [role="list"]')
+
+
+       at pages/GameBoardPage.ts:414
+
+      412 |    */
+      413 |   async waitForMotionsLoad() {
+    > 414 |     await this.motionsList.waitFor({ state: 'attached', timeout: 10000 });
+          |                            ^
+      415 |   }
+      416 | }
+      417 |
+        at GameBoardPage.waitForMotionsLoad (/Users/morganlowman/GitHub/political-sphere/apps/e2e/src/pages/GameBoardPage.ts:414:28)
+        at GameBoardPage.gotoParliament (/Users/morganlowman/GitHub/political-sphere/apps/e2e/src/pages/GameBoardPage.ts:331:16)
+        at /Users/morganlowman/GitHub/political-sphere/apps/e2e/src/tests/error-handling.spec.ts:375:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../../test-results/tests-error-handling-Error-2a44e-handle-zero-proposals-state-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../../../test-results/tests-error-handling-Error-2a44e-handle-zero-proposals-state-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[Setting up mock API...
+Setting up mock API...
+Mock API intercepted: [36m[Function: method][39m /
+Mock API intercepted: [36m[Function: method][39m /@vite/client
+Mock API intercepted: [36m[Function: method][39m /src/main.jsx
+Mock API intercepted: [36m[Function: method][39m /@react-refresh
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/react_jsx-dev-runtime.js
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/react.js
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/react-dom_client.js
+Mock API intercepted: [36m[Function: method][39m /src/App.tsx
+Mock API intercepted: [36m[Function: method][39m /@fs/Users/morganlowman/GitHub/political-sphere/node_modules/vite/dist/client/env.mjs
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/chunk-JKAOYQD2.js
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/chunk-G3PMV62Z.js
+Mock API intercepted: [36m[Function: method][39m /src/App.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Auth/AuthForm.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/MainGame.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/common/ErrorBoundary.tsx
+Mock API intercepted: [36m[Function: method][39m /src/contexts/AuthContext.tsx
+Mock API intercepted: [36m[Function: method][39m /src/contexts/LoadingContext.tsx
+Mock API intercepted: [36m[Function: method][39m /src/contexts/SimulationContext.tsx
+Mock API intercepted: [36m[Function: method][39m /src/contexts/ToastContext.tsx
+Mock API intercepted: [36m[Function: method][39m /src/utils/validation.ts
+Mock API intercepted: [36m[Function: method][39m /src/components/Auth/Auth.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Auth/Captcha.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/Auth/ForgotPasswordModal.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/common/ErrorBoundary.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Elections/ElectionsCenter.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/Government/GovernmentDashboard.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/Judiciary/JudiciarySystem.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/MainGame.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Media/MediaCenter.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/Parliament/ParliamentChamber.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/Profile/UserProfile.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/common/Skeleton.tsx
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/chunk-CQ63GW5J.js
+Mock API intercepted: [36m[Function: method][39m /src/services/api.ts
+Mock API intercepted: [36m[Function: method][39m /src/services/simulationMock.ts
+Mock API intercepted: [36m[Function: method][39m /src/components/common/Toast.tsx
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/react-google-recaptcha.js
+Mock API intercepted: [36m[Function: method][39m /src/components/Elections/ElectionsCenter.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Government/GovernmentDashboard.css
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/zod.js
+Mock API intercepted: [36m[Function: method][39m /src/components/Judiciary/JudiciarySystem.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Media/MediaCenter.css
+Mock API intercepted: [36m[Function: method][39m /src/components/common/Skeleton.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Parliament/ParliamentChamber.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Profile/UserProfile.css
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/axios.js
+Mock API intercepted: [36m[Function: method][39m /src/components/common/Toast.css
+Mock API intercepted: [36m[Function: method][39m /login-background.png
+Mock API intercepted: [36m[Function: method][39m /api/auth/login
+Intercepting API request: [36m[Function: method][39m /api/auth/login
+Mock API intercepted: [36m[Function: method][39m /api/simulation/state
+Intercepting API request: [36m[Function: method][39m /api/simulation/state
+Mock API intercepted: [36m[Function: method][39m /api/simulation/state
+Intercepting API request: [36m[Function: method][39m /api/simulation/state
+Initializing harness...
+About to evaluate harness setup...
+Harness setup result: harness-setup-complete
+Harness initialized
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+
+[[ATTACHMENT|../../test-results/tests-error-handling-Error-2a44e-handle-zero-proposals-state-chromium/test-failed-1.png]]
+
+[[ATTACHMENT|../../test-results/tests-error-handling-Error-2a44e-handle-zero-proposals-state-chromium/video.webm]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Error Handling - Edge Cases › should handle browser back/forward navigation" classname="tests/error-handling.spec.ts" time="13.305">
+<failure message="error-handling.spec.ts:392:3 should handle browser back/forward navigation" type="FAILURE">
+<![CDATA[  [chromium] › tests/error-handling.spec.ts:392:3 › Error Handling - Edge Cases › should handle browser back/forward navigation 
+
+    TimeoutError: locator.waitFor: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for locator('[data-testid="e2e-proposals-list"], .motions-list, [role="list"]')
+
+
+       at pages/GameBoardPage.ts:414
+
+      412 |    */
+      413 |   async waitForMotionsLoad() {
+    > 414 |     await this.motionsList.waitFor({ state: 'attached', timeout: 10000 });
+          |                            ^
+      415 |   }
+      416 | }
+      417 |
+        at GameBoardPage.waitForMotionsLoad (/Users/morganlowman/GitHub/political-sphere/apps/e2e/src/pages/GameBoardPage.ts:414:28)
+        at GameBoardPage.gotoParliament (/Users/morganlowman/GitHub/political-sphere/apps/e2e/src/pages/GameBoardPage.ts:331:16)
+        at /Users/morganlowman/GitHub/political-sphere/apps/e2e/src/tests/error-handling.spec.ts:401:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../../test-results/tests-error-handling-Error-23073-ser-back-forward-navigation-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../../../test-results/tests-error-handling-Error-23073-ser-back-forward-navigation-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[Setting up mock API...
+Setting up mock API...
+Mock API intercepted: [36m[Function: method][39m /
+Mock API intercepted: [36m[Function: method][39m /@vite/client
+Mock API intercepted: [36m[Function: method][39m /src/main.jsx
+Mock API intercepted: [36m[Function: method][39m /@react-refresh
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/react_jsx-dev-runtime.js
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/react.js
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/react-dom_client.js
+Mock API intercepted: [36m[Function: method][39m /src/App.tsx
+Mock API intercepted: [36m[Function: method][39m /@fs/Users/morganlowman/GitHub/political-sphere/node_modules/vite/dist/client/env.mjs
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/chunk-JKAOYQD2.js
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/chunk-G3PMV62Z.js
+Mock API intercepted: [36m[Function: method][39m /src/App.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Auth/AuthForm.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/MainGame.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/common/ErrorBoundary.tsx
+Mock API intercepted: [36m[Function: method][39m /src/contexts/AuthContext.tsx
+Mock API intercepted: [36m[Function: method][39m /src/contexts/LoadingContext.tsx
+Mock API intercepted: [36m[Function: method][39m /src/contexts/SimulationContext.tsx
+Mock API intercepted: [36m[Function: method][39m /src/contexts/ToastContext.tsx
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/chunk-CQ63GW5J.js
+Mock API intercepted: [36m[Function: method][39m /src/utils/validation.ts
+Mock API intercepted: [36m[Function: method][39m /src/components/Auth/Auth.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Auth/Captcha.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/Auth/ForgotPasswordModal.tsx
+Mock API intercepted: [36m[Function: method][39m /src/services/api.ts
+Mock API intercepted: [36m[Function: method][39m /src/components/common/ErrorBoundary.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Elections/ElectionsCenter.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/Government/GovernmentDashboard.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/Judiciary/JudiciarySystem.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/MainGame.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Media/MediaCenter.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/Parliament/ParliamentChamber.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/Profile/UserProfile.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/common/Skeleton.tsx
+Mock API intercepted: [36m[Function: method][39m /src/services/simulationMock.ts
+Mock API intercepted: [36m[Function: method][39m /src/components/common/Toast.tsx
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/react-google-recaptcha.js
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/axios.js
+Mock API intercepted: [36m[Function: method][39m /src/components/Elections/ElectionsCenter.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Media/MediaCenter.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Government/GovernmentDashboard.css
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/zod.js
+Mock API intercepted: [36m[Function: method][39m /src/components/Judiciary/JudiciarySystem.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Parliament/ParliamentChamber.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Profile/UserProfile.css
+Mock API intercepted: [36m[Function: method][39m /src/components/common/Skeleton.css
+Mock API intercepted: [36m[Function: method][39m /src/components/common/Toast.css
+Mock API intercepted: [36m[Function: method][39m /login-background.png
+Mock API intercepted: [36m[Function: method][39m /api/auth/login
+Intercepting API request: [36m[Function: method][39m /api/auth/login
+Mock API intercepted: [36m[Function: method][39m /api/simulation/state
+Intercepting API request: [36m[Function: method][39m /api/simulation/state
+Mock API intercepted: [36m[Function: method][39m /api/simulation/state
+Intercepting API request: [36m[Function: method][39m /api/simulation/state
+Initializing harness...
+About to evaluate harness setup...
+Harness setup result: harness-setup-complete
+Harness initialized
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+
+[[ATTACHMENT|../../test-results/tests-error-handling-Error-23073-ser-back-forward-navigation-chromium/test-failed-1.png]]
+
+[[ATTACHMENT|../../test-results/tests-error-handling-Error-23073-ser-back-forward-navigation-chromium/video.webm]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Error Handling - Edge Cases › should handle page refresh mid-operation" classname="tests/error-handling.spec.ts" time="13.926">
+<failure message="error-handling.spec.ts:421:3 should handle page refresh mid-operation" type="FAILURE">
+<![CDATA[  [chromium] › tests/error-handling.spec.ts:421:3 › Error Handling - Edge Cases › should handle page refresh mid-operation 
+
+    TimeoutError: locator.waitFor: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for locator('[data-testid="e2e-proposals-list"], .motions-list, [role="list"]')
+
+
+       at pages/GameBoardPage.ts:414
+
+      412 |    */
+      413 |   async waitForMotionsLoad() {
+    > 414 |     await this.motionsList.waitFor({ state: 'attached', timeout: 10000 });
+          |                            ^
+      415 |   }
+      416 | }
+      417 |
+        at GameBoardPage.waitForMotionsLoad (/Users/morganlowman/GitHub/political-sphere/apps/e2e/src/pages/GameBoardPage.ts:414:28)
+        at GameBoardPage.gotoParliament (/Users/morganlowman/GitHub/political-sphere/apps/e2e/src/pages/GameBoardPage.ts:331:16)
+        at /Users/morganlowman/GitHub/political-sphere/apps/e2e/src/tests/error-handling.spec.ts:430:5
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../../test-results/tests-error-handling-Error-2b24e--page-refresh-mid-operation-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../../../test-results/tests-error-handling-Error-2b24e--page-refresh-mid-operation-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[Setting up mock API...
+Setting up mock API...
+Mock API intercepted: [36m[Function: method][39m /
+Mock API intercepted: [36m[Function: method][39m /@vite/client
+Mock API intercepted: [36m[Function: method][39m /src/main.jsx
+Mock API intercepted: [36m[Function: method][39m /@react-refresh
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/react_jsx-dev-runtime.js
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/react.js
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/react-dom_client.js
+Mock API intercepted: [36m[Function: method][39m /src/App.tsx
+Mock API intercepted: [36m[Function: method][39m /@fs/Users/morganlowman/GitHub/political-sphere/node_modules/vite/dist/client/env.mjs
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/chunk-JKAOYQD2.js
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/chunk-G3PMV62Z.js
+Mock API intercepted: [36m[Function: method][39m /src/App.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Auth/AuthForm.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/MainGame.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/common/ErrorBoundary.tsx
+Mock API intercepted: [36m[Function: method][39m /src/contexts/AuthContext.tsx
+Mock API intercepted: [36m[Function: method][39m /src/contexts/LoadingContext.tsx
+Mock API intercepted: [36m[Function: method][39m /src/contexts/SimulationContext.tsx
+Mock API intercepted: [36m[Function: method][39m /src/contexts/ToastContext.tsx
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/chunk-CQ63GW5J.js
+Mock API intercepted: [36m[Function: method][39m /src/services/api.ts
+Mock API intercepted: [36m[Function: method][39m /src/services/simulationMock.ts
+Mock API intercepted: [36m[Function: method][39m /src/utils/validation.ts
+Mock API intercepted: [36m[Function: method][39m /src/components/Auth/Auth.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Auth/Captcha.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/Auth/ForgotPasswordModal.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/Elections/ElectionsCenter.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/Government/GovernmentDashboard.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/Judiciary/JudiciarySystem.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/MainGame.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Media/MediaCenter.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/Parliament/ParliamentChamber.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/Profile/UserProfile.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/common/Skeleton.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/common/ErrorBoundary.css
+Mock API intercepted: [36m[Function: method][39m /src/components/common/Toast.tsx
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/axios.js
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/react-google-recaptcha.js
+Mock API intercepted: [36m[Function: method][39m /src/components/Elections/ElectionsCenter.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Government/GovernmentDashboard.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Media/MediaCenter.css
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/zod.js
+Mock API intercepted: [36m[Function: method][39m /src/components/Judiciary/JudiciarySystem.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Profile/UserProfile.css
+Mock API intercepted: [36m[Function: method][39m /src/components/common/Skeleton.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Parliament/ParliamentChamber.css
+Mock API intercepted: [36m[Function: method][39m /src/components/common/Toast.css
+Mock API intercepted: [36m[Function: method][39m /login-background.png
+Mock API intercepted: [36m[Function: method][39m /api/auth/login
+Intercepting API request: [36m[Function: method][39m /api/auth/login
+Mock API intercepted: [36m[Function: method][39m /api/simulation/state
+Intercepting API request: [36m[Function: method][39m /api/simulation/state
+Mock API intercepted: [36m[Function: method][39m /api/simulation/state
+Intercepting API request: [36m[Function: method][39m /api/simulation/state
+Initializing harness...
+About to evaluate harness setup...
+Harness setup result: harness-setup-complete
+Harness initialized
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+
+[[ATTACHMENT|../../test-results/tests-error-handling-Error-2b24e--page-refresh-mid-operation-chromium/test-failed-1.png]]
+
+[[ATTACHMENT|../../test-results/tests-error-handling-Error-2b24e--page-refresh-mid-operation-chromium/video.webm]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Error Handling - Edge Cases › should handle special characters in user input" classname="tests/error-handling.spec.ts" time="13.568">
+<failure message="error-handling.spec.ts:446:3 should handle special characters in user input" type="FAILURE">
+<![CDATA[  [chromium] › tests/error-handling.spec.ts:446:3 › Error Handling - Edge Cases › should handle special characters in user input 
+
+    TimeoutError: locator.waitFor: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for locator('[data-testid="e2e-proposals-list"]')
+
+
+       at pages/GameBoardPage.ts:407
+
+      405 |    */
+      406 |   async waitForProposalsLoad() {
+    > 407 |     await this.proposalsList.waitFor({ state: 'attached', timeout: 10000 });
+          |                              ^
+      408 |   }
+      409 |
+      410 |   /**
+        at GameBoardPage.waitForProposalsLoad (/Users/morganlowman/GitHub/political-sphere/apps/e2e/src/pages/GameBoardPage.ts:407:30)
+        at /Users/morganlowman/GitHub/political-sphere/apps/e2e/src/tests/error-handling.spec.ts:455:20
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../../test-results/tests-error-handling-Error-bf1ba-al-characters-in-user-input-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../../../test-results/tests-error-handling-Error-bf1ba-al-characters-in-user-input-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</failure>
+<system-out>
+<![CDATA[Setting up mock API...
+Setting up mock API...
+Mock API intercepted: [36m[Function: method][39m /
+Mock API intercepted: [36m[Function: method][39m /@vite/client
+Mock API intercepted: [36m[Function: method][39m /src/main.jsx
+Mock API intercepted: [36m[Function: method][39m /@react-refresh
+Mock API intercepted: [36m[Function: method][39m /@fs/Users/morganlowman/GitHub/political-sphere/node_modules/vite/dist/client/env.mjs
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/react_jsx-dev-runtime.js
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/react.js
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/react-dom_client.js
+Mock API intercepted: [36m[Function: method][39m /src/App.tsx
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/chunk-JKAOYQD2.js
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/chunk-G3PMV62Z.js
+Mock API intercepted: [36m[Function: method][39m /src/App.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Auth/AuthForm.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/MainGame.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/common/ErrorBoundary.tsx
+Mock API intercepted: [36m[Function: method][39m /src/contexts/AuthContext.tsx
+Mock API intercepted: [36m[Function: method][39m /src/contexts/LoadingContext.tsx
+Mock API intercepted: [36m[Function: method][39m /src/contexts/SimulationContext.tsx
+Mock API intercepted: [36m[Function: method][39m /src/contexts/ToastContext.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/Elections/ElectionsCenter.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/Government/GovernmentDashboard.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/Judiciary/JudiciarySystem.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/MainGame.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Media/MediaCenter.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/Parliament/ParliamentChamber.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/Profile/UserProfile.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/common/Skeleton.tsx
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/chunk-CQ63GW5J.js
+Mock API intercepted: [36m[Function: method][39m /src/utils/validation.ts
+Mock API intercepted: [36m[Function: method][39m /src/components/Auth/Auth.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Auth/Captcha.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/Auth/ForgotPasswordModal.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/common/ErrorBoundary.css
+Mock API intercepted: [36m[Function: method][39m /src/services/api.ts
+Mock API intercepted: [36m[Function: method][39m /src/services/simulationMock.ts
+Mock API intercepted: [36m[Function: method][39m /src/components/common/Toast.tsx
+Mock API intercepted: [36m[Function: method][39m /src/components/Elections/ElectionsCenter.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Government/GovernmentDashboard.css
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/zod.js
+Mock API intercepted: [36m[Function: method][39m /src/components/Judiciary/JudiciarySystem.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Media/MediaCenter.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Parliament/ParliamentChamber.css
+Mock API intercepted: [36m[Function: method][39m /src/components/common/Skeleton.css
+Mock API intercepted: [36m[Function: method][39m /src/components/Profile/UserProfile.css
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/react-google-recaptcha.js
+Mock API intercepted: [36m[Function: method][39m /.vite/deps/axios.js
+Mock API intercepted: [36m[Function: method][39m /src/components/common/Toast.css
+Mock API intercepted: [36m[Function: method][39m /login-background.png
+Mock API intercepted: [36m[Function: method][39m /api/auth/login
+Intercepting API request: [36m[Function: method][39m /api/auth/login
+Mock API intercepted: [36m[Function: method][39m /api/simulation/state
+Intercepting API request: [36m[Function: method][39m /api/simulation/state
+Mock API intercepted: [36m[Function: method][39m /api/simulation/state
+Intercepting API request: [36m[Function: method][39m /api/simulation/state
+Initializing harness...
+About to evaluate harness setup...
+Harness setup result: harness-setup-complete
+Harness initialized
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+Mock API intercepted: [36m[Function: method][39m /api/proposals
+Intercepting API request: [36m[Function: method][39m /api/proposals
+Handling proposals request: [36m[Function: method][39m
+
+[[ATTACHMENT|../../test-results/tests-error-handling-Error-bf1ba-al-characters-in-user-input-chromium/test-failed-1.png]]
+
+[[ATTACHMENT|../../test-results/tests-error-handling-Error-bf1ba-al-characters-in-user-input-chromium/video.webm]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
 </testsuites>

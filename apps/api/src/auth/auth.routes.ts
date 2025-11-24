@@ -8,24 +8,52 @@ import { z } from 'zod';
 
 import { authenticate } from './auth.middleware.ts';
 import { authService } from './auth.service.ts';
+import logger from '../utils/logger.js';
 import { auditAuth } from '../middleware/audit.middleware.ts';
 
 // Validation schemas
-const registerSchema = z.object({
-  username: z.string().min(3).max(50).regex(/^[a-zA-Z0-9_]+$/),
+/**
+ * registerSchema - Zod schema for the /auth/register endpoint
+ */
+/**
+ * @public
+ * Zod schema for the /auth/register endpoint
+ */
+export const registerSchema = z.object({
+  username: z
+    .string()
+    .min(3)
+    .max(50)
+    .regex(/^[a-zA-Z0-9_]+$/),
   password: z.string().min(8).max(128),
   email: z.string().email().optional(),
 });
 
-const loginSchema = z.object({
-  username: z.string().min(1).max(50).optional(),
-  email: z.string().email().optional(),
-  password: z.string().min(1),
-}).refine(data => data.username || data.email, {
-  message: 'Either username or email must be provided',
-});
+/**
+ * loginSchema - Zod schema for the /auth/login endpoint; accepts username or email
+ */
+/**
+ * @public
+ * Zod schema for the /auth/login endpoint; accepts username or email
+ */
+export const loginSchema = z
+  .object({
+    username: z.string().min(1).max(50).optional(),
+    email: z.string().email().optional(),
+    password: z.string().min(1),
+  })
+  .refine(data => data.username || data.email, {
+    message: 'Either username or email must be provided',
+  });
 
-const router = Router();
+/**
+ * router - Express router for authentication endpoints
+ */
+/**
+ * @public
+ * Express router for authentication endpoints
+ */
+export const router = Router();
 
 // Apply audit logging to all auth routes
 router.use(auditAuth);
@@ -38,7 +66,9 @@ router.post('/register', async (req, res) => {
   try {
     const validation = registerSchema.safeParse(req.body);
     if (!validation.success) {
-      res.status(400).json({ success: false, error: 'Invalid input', details: validation.error.issues });
+      res
+        .status(400)
+        .json({ success: false, error: 'Invalid input', details: validation.error.issues });
       return;
     }
 
@@ -68,6 +98,7 @@ router.post('/register', async (req, res) => {
     });
   } catch (error) {
     const message = error instanceof Error ? error.message : 'Registration failed';
+    logger.error('Registration error:', error);
     res.status(400).json({ success: false, error: message });
   }
 });
@@ -80,7 +111,9 @@ router.post('/login', async (req, res) => {
   try {
     const validation = loginSchema.safeParse(req.body);
     if (!validation.success) {
-      res.status(400).json({ success: false, error: 'Invalid input', details: validation.error.issues });
+      res
+        .status(400)
+        .json({ success: false, error: 'Invalid input', details: validation.error.issues });
       return;
     }
 
@@ -195,4 +228,10 @@ router.get('/health', (_req, res) => {
   res.json({ status: 'ok', service: 'auth' });
 });
 
+/**
+ * Default `express.Router` for authentication endpoints (`/auth`).
+ *
+ * Exposes health, login, register and token endpoints used by the web UI
+ * and API clients.
+ */
 export default router;

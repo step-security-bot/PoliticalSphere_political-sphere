@@ -276,6 +276,14 @@ module.exports = {
   validateTag,
   isValidUrl,
 
+  // Telemetry helpers for testing
+  initTelemetry: _config => ({ start: () => {}, shutdown: () => {} }),
+  startTelemetry: async _config => {
+    if (!_config.serviceName || _config.serviceName.trim() === '') {
+      throw new Error('Invalid service name');
+    }
+  },
+
   // --- Security helpers (test-safe implementations) ---
   // Minimal CORS and security header helpers to support server.js in tests
   SECURITY_HEADERS: {

@@ -1,6 +1,5 @@
 // Manual test script for accessibility library
 import {
-  hexToRgb,
   validateContrast,
   isFocusable,
   validateAriaAttributes,

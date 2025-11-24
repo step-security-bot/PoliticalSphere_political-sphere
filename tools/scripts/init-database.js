@@ -5,8 +5,8 @@
  * Initializes SQLite database with proper schema and security settings
  */
 
-import fs from 'fs';
-import path from 'path';
+import fs from 'node:fs';
+import path from 'node:path';
 
 import Database from 'better-sqlite3';
 
@@ -198,7 +198,7 @@ try {
   // Insert default admin user if no users exist
   const userCount = db.prepare('SELECT COUNT(*) as count FROM users').get();
   if (userCount.count === 0) {
-    const adminId = 'admin-' + Date.now();
+    const adminId = `admin-${Date.now()}`;
     const adminEmail = process.env.ADMIN_EMAIL || 'admin@political-sphere.local';
     const adminPasswordHashEnv = process.env.ADMIN_PASSWORD_HASH;
     const adminPasswordPlainEnv = process.env.ADMIN_PASSWORD;
@@ -221,7 +221,7 @@ try {
         const bcrypt = await import('bcryptjs');
         const rounds = Number(process.env.BCRYPT_ROUNDS || 12);
         resolvedPasswordHash = bcrypt.hashSync(adminPasswordPlainEnv, rounds);
-      } catch (_e) {
+      } catch {
         logger.warn(
           'ADMIN_PASSWORD provided but bcryptjs is not installed. Please set ADMIN_PASSWORD_HASH with a precomputed bcrypt hash or add bcryptjs as a dependency for runtime hashing.'
         );

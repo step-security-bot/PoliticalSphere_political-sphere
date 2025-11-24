@@ -8,7 +8,6 @@ import * as crypto from 'node:crypto';
 
 import jwt from 'jsonwebtoken';
 
-import { audit } from '../utils/logger.js';
 import logger from '../utils/logger.js';
 
 interface VerificationResult {
@@ -92,7 +91,7 @@ class AgeVerificationService {
       // Clean up expired tokens periodically
       this.cleanupExpiredTokens();
 
-      audit('Age verification initiated', {
+      logger.info('Age verification initiated', {
         verificationId,
         userId,
         method,
@@ -144,7 +143,7 @@ class AgeVerificationService {
         // Store verified age in user profile (pseudo-code)
         // await db.users.update({ id: verification.userId }, { verifiedAge: result.age });
 
-        audit('Age verification completed', {
+        logger.info('Age verification completed', {
           verificationId,
           userId: verification.userId,
           age: result.age,
@@ -267,7 +266,7 @@ class AgeVerificationService {
         (data.selfie ?? {}) as Record<string, unknown>
       );
 
-      if (verificationResult.isValid) {
+      if (verificationResult.isValid && verificationResult.age !== undefined) {
         return {
           success: true,
           age: verificationResult.age,
@@ -319,7 +318,7 @@ class AgeVerificationService {
     // Send email to parent (pseudo-code)
     // await emailService.sendParentalConsentEmail(parentEmail, consentToken);
 
-    audit('Parental consent requested', { parentEmail, childAge });
+    logger.info('Parental consent requested', { parentEmail, childAge });
 
     return {
       success: true,
@@ -346,7 +345,7 @@ class AgeVerificationService {
       // Create verified user account for child
       const childUserId = await this.createChildAccount(consent);
 
-      audit('Parental consent approved', {
+      logger.info('Parental consent approved', {
         parentEmail: consent.parentEmail,
         childAge: consent.childAge,
         childUserId,
@@ -358,7 +357,7 @@ class AgeVerificationService {
         restrictions: this.getAgeRestrictions(consent.childAge as number),
       };
     } else {
-      audit('Parental consent denied', {
+      logger.info('Parental consent denied', {
         parentEmail: consent.parentEmail,
       });
       return { success: false, error: 'Parental consent denied' };
@@ -368,10 +367,14 @@ class AgeVerificationService {
   /**
    * Get age-appropriate restrictions
    */
-  getAgeRestrictions(age: number): Record<string, unknown> {
+  getAgeRestrictions(age: number): {
+    contentRating: string;
+    features: string[];
+    monitoring: boolean;
+  } {
     const restrictions = {
       contentRating: 'U', // Default safe
-      features: [],
+      features: [] as string[],
       monitoring: false,
     };
 
@@ -608,7 +611,7 @@ class AgeVerificationService {
 
     return {
       eligible: true,
-      age: verification.age,
+      age: verification.age ?? undefined,
     };
   }
 
@@ -616,26 +619,25 @@ class AgeVerificationService {
    * Get verification statistics (test-compatible method)
    */
   async getVerificationStats(): Promise<Record<string, unknown>> {
-    let verifications = [];
+    let verifications: Record<string, unknown>[] = [];
 
     // Use injected db if available
     if (this.db?.getAll) {
-      verifications = await this.db.getAll();
+      verifications = (await this.db.getAll()) as Record<string, unknown>[];
     }
 
     const totalVerifications = verifications.length;
-    const verifiedCount = verifications.filter((v: Record<string, unknown>) => v.verified).length;
-    const rejectedCount = verifications.filter((v: Record<string, unknown>) => !v.verified).length;
+    const verifiedCount = verifications.filter(v => v.verified === true).length;
+    const rejectedCount = verifications.filter(v => v.verified === false).length;
 
-    const totalAge = verifications.reduce(
-      (sum: number, v: Record<string, unknown>) => sum + ((v.age as number) || 0),
-      0
-    );
+    const totalAge = verifications.reduce((sum: number, v) => sum + ((v.age as number) || 0), 0);
     const averageAge =
-      totalVerifications > 0 ? Math.round((totalAge / totalVerifications) * 100) / 100 : 0;
+      totalVerifications > 0
+        ? Math.round(((totalAge as number) / totalVerifications) * 100) / 100
+        : 0;
 
     const methodStats: Map<string, number> = new Map();
-    verifications.forEach((v: Record<string, unknown>) => {
+    verifications.forEach(v => {
       const method = String(v.method || v.verificationMethod || 'unknown');
       methodStats.set(method, (methodStats.get(method) || 0) + 1);
     });
@@ -676,4 +678,10 @@ Object.getOwnPropertyNames(AgeVerificationService.prototype).forEach(name => {
 // biome-ignore lint/suspicious/noExplicitAny: Dynamic property assignment on class requires any
 (AgeVerificationService as any).defaultInstance = _defaultAgeVerificationInstance;
 
+/**
+ * Default export `AgeVerificationService` class.
+ *
+ * Provides verification flows (initiate, complete, parental consent)
+ * used by the age verification routes.
+ */
 export default AgeVerificationService;

@@ -3,6 +3,10 @@
 import cjsShared from '../../../../libs/shared/cjs-shared.cjs'; // eslint-disable-line @nx/enforce-module-boundaries, no-restricted-imports
 
 // Re-export all named exports
+/**
+ * Re-exports selected helpers and schemas from the shared package for use
+ * within the API build. These are selected to avoid bundler aliasing issues.
+ */
 export const {
   createLogger,
   getLogger,

@@ -5,6 +5,7 @@
  *
  * @module privacy/retention-policy
  */
+/* eslint-disable no-console */
 
 /**
  * Retention policy rule
@@ -64,6 +65,10 @@ export const DEFAULT_RETENTION_POLICIES: RetentionRule[] = [
 
 /**
  * Retention Policy Manager
+ *
+ * Manages data retention policies for different data types in compliance with
+ * privacy regulations. Provides configurable retention periods and automatic
+ * cleanup scheduling for GDPR and CCPA compliance.
  */
 export class RetentionPolicyManager {
   private policies: Map<string, RetentionRule>;

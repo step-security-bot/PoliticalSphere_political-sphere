@@ -102,27 +102,26 @@ export const ParliamentChamber: React.FC<ParliamentChamberProps> = ({ userId, on
     }
   }, [onError]);
 
-  const fetchMotions = useCallback(
-    async (chamberId: string) => {
-      try {
-        setLoading(prev => ({ ...prev, motions: true }));
-        const response = await api.getMotions(chamberId);
+  const fetchMotions = useCallback(async () => {
+    if (!selectedChamber) return;
 
-        if (!response.success) {
-          throw new Error(response.error || 'Failed to fetch motions');
-        }
+    try {
+      setLoading(prev => ({ ...prev, motions: true }));
+      const response = await api.getMotions();
 
-        setMotions((response.data || []) as Motion[]);
-      } catch (error) {
-        const message = error instanceof Error ? error.message : 'Failed to fetch motions';
-        setError(message);
-        onError?.(message);
-      } finally {
-        setLoading(prev => ({ ...prev, motions: false }));
+      if (!response.success) {
+        throw new Error(response.error || 'Failed to fetch motions');
       }
-    },
-    [onError],
-  );
+
+      setMotions((response.data || []) as Motion[]);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Failed to fetch motions';
+      setError(message);
+      onError?.(message);
+    } finally {
+      setLoading(prev => ({ ...prev, motions: false }));
+    }
+  }, [onError]);
 
   const fetchVoteResults = useCallback(
     async (motionId: string) => {
@@ -134,7 +133,7 @@ export const ParliamentChamber: React.FC<ParliamentChamberProps> = ({ userId, on
           throw new Error(response.error || 'Failed to fetch vote results');
         }
 
-        setVoteResults(response.data || null);
+        setVoteResults((response.data as unknown as VoteResults) || null);
       } catch (error) {
         const message = error instanceof Error ? error.message : 'Failed to fetch vote results';
         setError(message);
@@ -143,7 +142,7 @@ export const ParliamentChamber: React.FC<ParliamentChamberProps> = ({ userId, on
         setLoading(prev => ({ ...prev, voteResults: false }));
       }
     },
-    [onError],
+    [onError]
   );
 
   // Fetch chambers on mount
@@ -154,7 +153,7 @@ export const ParliamentChamber: React.FC<ParliamentChamberProps> = ({ userId, on
   // Fetch motions when chamber is selected
   useEffect(() => {
     if (selectedChamber) {
-      fetchMotions(selectedChamber.id);
+      fetchMotions();
     }
   }, [selectedChamber, fetchMotions]);
 
@@ -197,7 +196,7 @@ export const ParliamentChamber: React.FC<ParliamentChamberProps> = ({ userId, on
       // Reset form and refresh motions
       setMotionForm({ type: 'debate', title: '', description: '' });
       setShowCreateMotion(false);
-      fetchMotions(selectedChamber.id);
+      fetchMotions();
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Failed to create motion';
       setError(message);
@@ -211,7 +210,10 @@ export const ParliamentChamber: React.FC<ParliamentChamberProps> = ({ userId, on
     try {
       setLoading(prev => ({ ...prev, voting: true }));
       setError(null);
-      const response = await api.castVote(motionId, vote);
+      const response = await api.castVote({
+        proposalId: motionId,
+        vote: vote === 'aye' ? 'yes' : vote === 'no' ? 'no' : 'abstain',
+      });
 
       if (!response.success) {
         throw new Error(response.error || 'Failed to cast vote');
@@ -374,32 +376,29 @@ export const ParliamentChamber: React.FC<ParliamentChamberProps> = ({ userId, on
                 <p className="empty-state">No motions have been proposed yet.</p>
               ) : (
                 motions.map(motion => (
-                  <li
-                    key={motion.id}
-                    className={`motion-card ${selectedMotion?.id === motion.id ? 'selected' : ''}`}
-                    onClick={() => setSelectedMotion(motion)}
-                    onKeyDown={e => {
-                      if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault();
-                        setSelectedMotion(motion);
-                      }
-                    }}
-                  >
-                    <header>
-                      <h3>{motion.title}</h3>
-                      <span className={`status-badge status-${motion.status}`}>
-                        {motion.status}
-                      </span>
-                    </header>
-                    <p>{motion.description}</p>
-                    <footer>
-                      <span className="motion-type">{motion.type}</span>
-                      <time dateTime={motion.createdAt || ''}>
-                        {motion.createdAt
-                          ? new Date(motion.createdAt).toLocaleDateString()
-                          : 'Unknown date'}
-                      </time>
-                    </footer>
+                  <li key={motion.id}>
+                    <button
+                      type="button"
+                      className={`motion-card ${selectedMotion?.id === motion.id ? 'selected' : ''}`}
+                      onClick={() => setSelectedMotion(motion)}
+                      aria-pressed={selectedMotion?.id === motion.id}
+                    >
+                      <header>
+                        <h3>{motion.title}</h3>
+                        <span className={`status-badge status-${motion.status}`}>
+                          {motion.status}
+                        </span>
+                      </header>
+                      <p>{motion.description}</p>
+                      <footer>
+                        <span className="motion-type">{motion.type}</span>
+                        <time dateTime={motion.createdAt || ''}>
+                          {motion.createdAt
+                            ? new Date(motion.createdAt).toLocaleDateString()
+                            : 'Unknown date'}
+                        </time>
+                      </footer>
+                    </button>
                   </li>
                 ))
               )}

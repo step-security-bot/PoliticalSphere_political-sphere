@@ -15,6 +15,11 @@ export interface ModelProvider {
   ): Promise<ProviderResponse>;
 }
 
+/**
+ * Mock implementation of ModelProvider for testing and development.
+ * Provides deterministic responses based on input patterns and supports
+ * basic tool-call simulation for testing AI agent workflows.
+ */
 export class MockProvider implements ModelProvider {
   constructor(private opts: { name?: string } = {}) {}
 

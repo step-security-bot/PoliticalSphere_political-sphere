@@ -1,7 +1,7 @@
 # GitHub Copilot Custom Instructions: Political Sphere
 
-**Version:** 2.6.0
-**Last Reviewed:** 2025-11-16
+**Version:** 2.7.1
+**Last Reviewed:** 2025-11-18
 **Next Review:** 2026-05-16
 
 ## Executive Summary
@@ -174,22 +174,27 @@ The following list is non-hiracrachial
 
 All technology-specific guidance is now integrated into the main `docs/` structure:
 
-| File                                                                            | Focus Area                       | Version | Use When                             |
-| ------------------------------------------------------------------------------- | -------------------------------- | ------- | ------------------------------------ |
-| `docs/05-engineering-and-devops/development/testing.md`                     | Testing patterns, AAA, mocking   | 2.0.0   | Writing tests (unit/integration/E2E) |
-| `docs/05-engineering-and-devops/languages/typescript.md`                    | Type safety, strict mode, ESM    | 2.0.0   | Writing TypeScript code              |
-| `docs/05-engineering-and-devops/languages/react.md`                          | Components, hooks, accessibility | 2.0.0   | Building React UI components         |
-| `docs/05-engineering-and-devops/development/backend.md`                      | APIs, validation, databases      | 2.0.0   | Developing backend services          |
-| `docs/quick-ref.md`                                                          | Cheat sheet, commands, patterns  | 2.0.0   | Quick lookups during coding          |
-| `docs/07-ai-and-simulation/ai-governance.md`                                  | AI ethics, bias monitoring       | 2.0.0   | Working with AI/ML systems           |
-| `docs/03-legal-and-compliance/compliance.md`                                  | GDPR, CCPA, audit trails         | 2.0.0   | Handling personal data               |
-| `docs/09-observability-and-ops/operations.md`                                 | Deployment, monitoring, SRE      | 2.0.0   | Production operations                |
-| `docs/00-foundation/organization.md`                                          | File placement, structure        | 1.7.0   | Project organization                 |
-| `docs/05-engineering-and-devops/development/quality.md`                        | Code review, best practices      | 2.0.0   | Code quality enforcement             |
-| `docs/06-security-and-risk/security.md`                                        | Zero-trust, secrets, encryption  | 1.7.0   | Security implementation              |
-| `docs/01-strategy/strategy.md`                                                 | Architecture, roadmap            | 2.0.0   | Strategic decisions                  |
-| `docs/05-engineering-and-devops/ui/ux-accessibility.md`                        | WCAG, screen readers, a11y       | 2.0.0   | Accessible UX design                 |
-| `docs/05-engineering-and-devops/sops/`                                          | Standard Operating Procedures    | 1.0.0   | Routine task checklists and guides   |
+| File                                                             | Focus Area                       | Version | Use When                             |
+| ---------------------------------------------------------------- | -------------------------------- | ------- | ------------------------------------ |
+| `docs/05-engineering-and-devops/development/testing.md`          | Testing patterns, AAA, mocking   | 2.0.0   | Writing tests (unit/integration/E2E) |
+| `docs/05-engineering-and-devops/languages/typescript.md`         | Type safety, strict mode, ESM    | 2.0.0   | Writing TypeScript code              |
+| `docs/05-engineering-and-devops/languages/react.md`              | Components, hooks, accessibility | 2.0.0   | Building React UI components         |
+| `docs/05-engineering-and-devops/development/backend.md`          | APIs, validation, databases      | 2.0.0   | Developing backend services          |
+| `docs/quick-ref.md`                                              | Cheat sheet, commands, patterns  | 2.0.0   | Quick lookups during coding          |
+| `docs/07-ai-and-simulation/ai-governance.md`                     | AI ethics, bias monitoring       | 2.0.0   | Working with AI/ML systems           |
+| `docs/03-legal-and-compliance/compliance.md`                     | GDPR, CCPA, audit trails         | 2.0.0   | Handling personal data               |
+| `docs/09-observability-and-ops/operations.md`                    | Deployment, monitoring, SRE      | 2.0.0   | Production operations                |
+| `docs/00-foundation/organization.md`                             | File placement, structure        | 1.7.0   | Project organization                 |
+| `docs/05-engineering-and-devops/development/quality.md`          | Code review, best practices      | 2.0.0   | Code quality enforcement             |
+| `docs/06-security-and-risk/security.md`                          | Zero-trust, secrets, encryption  | 1.7.0   | Security implementation              |
+| `docs/01-strategy/strategy.md`                                   | Architecture, roadmap            | 2.0.0   | Strategic decisions                  |
+| `docs/05-engineering-and-devops/ui/ux-accessibility.md`          | WCAG, screen readers, a11y       | 2.0.0   | Accessible UX design                 |
+| `docs/05-engineering-and-devops/sops/`                           | Standard Operating Procedures    | 1.0.0   | Routine task checklists and guides   |
+| `docs/05-engineering-and-devops/sops/testing-sop.md`             | Testing Procedures               | 1.0.0   | Comprehensive testing standards      |
+| `docs/05-engineering-and-devops/sops/security-review-sop.md`     | Security Review Procedures       | 1.0.0   | Zero-trust security validation       |
+| `docs/05-engineering-and-devops/sops/ai-governance-sop.md`       | AI Governance Procedures         | 1.0.0   | Responsible AI usage guidelines      |
+| `docs/05-engineering-and-devops/sops/accessibility-audit-sop.md` | Accessibility Audit Procedures   | 1.0.0   | WCAG 2.2 AA compliance validation    |
+| `docs/05-engineering-and-devops/sops/data-protection-sop.md`     | Data Protection Procedures       | 1.0.0   | GDPR/CCPA compliance procedures      |
 
 ### Project Documentation
 
@@ -652,6 +657,44 @@ Code is complete only when:
 
 > **Note**: Detailed testing requirements are in the Testing Infrastructure section and `.github/copilot-instructions/additional-guidance/testing.instructions.md`
 
+### TypeScript Strict Mode Requirements
+
+**MANDATORY: All TypeScript code MUST use strict mode configuration**:
+
+- `strict: true` in `tsconfig.json` (enables all strict type checking options)
+- `noImplicitAny: true` - No implicit `any` types allowed
+- `strictNullChecks: true` - Strict null and undefined checking
+- `strictFunctionTypes: true` - Strict function type checking
+- `strictBindCallApply: true` - Strict checking of `bind`, `call`, and `apply`
+- `strictPropertyInitialization: true` - Ensure class properties are initialized
+- `noImplicitThis: true` - No implicit `this` in functions
+- `noImplicitReturns: true` - All code paths must return a value
+- `noUnusedLocals: true` - No unused local variables
+- `noUnusedParameters: true` - No unused function parameters
+- `exactOptionalPropertyTypes: true` - Exact optional property types
+- `noImplicitOverride: true` - Explicit override keywords required
+- `noPropertyAccessFromIndexSignature: true` - No property access from index signatures
+- `noUncheckedIndexedAccess: true` - Unchecked indexed access is an error
+
+**Prohibited TypeScript Patterns**:
+
+- ❌ `any` type usage (use `unknown` or specific types)
+- ❌ `// @ts-ignore` comments (fix type issues instead)
+- ❌ `// @ts-expect-error` without justification
+- ❌ Optional properties without explicit `| undefined`
+- ❌ Function overloads without proper type guards
+
+**TypeScript Best Practices**:
+
+- Use union types over optional properties when appropriate
+- Leverage discriminated unions for type safety
+- Implement proper error types extending `Error`
+- Use `const` assertions for literal types
+- Prefer `interface` over `type` for object shapes
+- Use `satisfies` operator for type validation
+- Implement proper generic constraints
+- Use `keyof` and mapped types appropriately
+
 ### Code Style
 
 - Write clear, self-documenting code with intention-revealing names
@@ -1010,6 +1053,8 @@ describe('User input validation', () => {
   });
 });
 ```
+
+**Test Failure Handling SOP**: `docs/05-engineering-and-devops/testing/test-failure-handling-sop.md` - Defines strict rules for analyzing and resolving test failures, ensuring behavioral correctness and preventing defect masking.
 
 ---
 

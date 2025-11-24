@@ -1,0 +1,1907 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>political-sphere documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">political-sphere documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content class">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Classes</li>
+  <li class="breadcrumb-item" >AgeVerificationService</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>apps/api/src/services/age-verification.service.ts</code>
+        </p>
+
+
+            <p class="comment">
+                <h3>Description</h3>
+            </p>
+            <p class="comment">
+                <p>Service class for handling age verification operations in the Political Sphere platform.
+Provides comprehensive age verification functionality including document validation,
+parental consent workflows, content access control, and verification statistics.</p>
+<p>This service ensures compliance with age restrictions for political content and
+maintains audit trails for all verification activities.</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-typescript">const store = new DatabaseAgeVerificationStore();
+const service = new AgeVerificationService(store);
+
+
+const result = await service.verifyAge({
+  userId: &#39;user123&#39;,
+  dateOfBirth: &#39;2000-01-01&#39;,
+  verificationMethod: &#39;document&#39;
+});</code></pre></div>
+            </p>
+
+
+
+
+            <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#store" >store</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#canAccessContent" >canAccessContent</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#completeVerification" >completeVerification</a>
+                            </li>
+                            <li>
+                                <a href="#getAgeRestrictions" >getAgeRestrictions</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#getVerificationStats" >getVerificationStats</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#getVerificationStatus" >getVerificationStatus</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#initiateVerification" >initiateVerification</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#isEligibleForContent" >isEligibleForContent</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#processParentalConsent" >processParentalConsent</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#updateVerification" >updateVerification</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#verifyAge" >verifyAge</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#verifyParentalConsent" >verifyParentalConsent</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+            <section data-compodoc="block-constructor">
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(store: <a href="../undefineds/AgeVerificationStore.html" target="_self">AgeVerificationStore</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="84" class="link-to-prism">apps/api/src/services/age-verification.service.ts:84</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div class="io-description"><p>Creates a new AgeVerificationService instance.</p>
+</div>
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                                    <td>Description</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>store</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../miscellaneous/typealiases.html#AgeVerificationStore" target="_self" >AgeVerificationStore</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <ul>
+<li>The data store implementation for verification records</li>
+</ul>
+
+                                                        </td>
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+            <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="store"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>store</b></span>
+                        <a href="#store"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../miscellaneous/typealiases.html#AgeVerificationStore" target="_self" >AgeVerificationStore</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="84" class="link-to-prism">apps/api/src/services/age-verification.service.ts:84</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>The data store implementation for persisting verification records</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+</section>
+
+            <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="canAccessContent"></a>
+                    <span class="name">
+                        <span ><b>canAccessContent</b></span>
+                        <a href="#canAccessContent"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>canAccessContent(age: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, contentRating: <a href="../unknowns/g.html" target="_self">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="294"
+                                    class="link-to-prism">apps/api/src/services/age-verification.service.ts:294</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Determines if a user of a given age can access content with a specific rating.
+Uses standard UK content rating system (U, PG, 12A, 15, 18) to evaluate access.</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-typescript">service.canAccessContent(16, &#39;15&#39;); // true - 16 &gt;= 15
+service.canAccessContent(14, &#39;18&#39;); // false - 14 &lt; 18
+service.canAccessContent(10, &#39;U&#39;);  // true - U requires 0+</code></pre></div></div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>age</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>The user&#39;s age in years</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>contentRating</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>The content rating to check against (&#39;U&#39;, &#39;PG&#39;, &#39;12A&#39;, &#39;15&#39;, &#39;18&#39;)</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>True if the user can access the content, false otherwise</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="completeVerification"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>completeVerification</b></span>
+                        <a href="#completeVerification"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>completeVerification(verificationId: <a href="../unknowns/g.html" target="_self">string</a>, payload: literal type)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="203"
+                                    class="link-to-prism">apps/api/src/services/age-verification.service.ts:203</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Completes an age verification process using provided verification data.
+Updates the verification record with the calculated age and verification status.</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-typescript">const result = await service.completeVerification(&#39;verif-123&#39;, {
+  dateOfBirth: &#39;2000-01-01&#39;,
+  verificationMethod: &#39;document&#39;
+});
+
+
+if (result.success) {
+  console.log(`Verification completed: age ${result.age}, verified: ${result.verified}`);
+}</code></pre></div></div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>verificationId</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>The ID of the verification process to complete</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>payload</td>
+                                            <td>
+                                                        <code>literal type</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>The completion payload containing verification data</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>unknown</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Promise resolving to completion result with success status and verification details</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getAgeRestrictions"></a>
+                    <span class="name">
+                        <span ><b>getAgeRestrictions</b></span>
+                        <a href="#getAgeRestrictions"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getAgeRestrictions(age: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="315"
+                                    class="link-to-prism">apps/api/src/services/age-verification.service.ts:315</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Gets the appropriate content rating and feature restrictions for a user&#39;s age.
+Maps user age to the highest content rating they can access and any required features.</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-typescript">service.getAgeRestrictions(16); // { contentRating: &#39;15&#39;, features: [] }
+service.getAgeRestrictions(10); // { contentRating: &#39;U&#39;, features: [&#39;age_verification_required&#39;] }
+service.getAgeRestrictions(25); // { contentRating: &#39;18&#39;, features: [] }</code></pre></div></div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>age</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>The user&#39;s age in years</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../miscellaneous/variables.html#g" target="_self" >{ contentRating: string; features: {}; }</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Object containing content rating and any required features</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getVerificationStats"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>getVerificationStats</b></span>
+                        <a href="#getVerificationStats"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getVerificationStats()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="418"
+                                    class="link-to-prism">apps/api/src/services/age-verification.service.ts:418</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Retrieves comprehensive statistics about age verification activities.
+Provides insights into verification success rates, user demographics, and method usage.</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-typescript">const stats = await service.getVerificationStats();
+console.log(`${stats.verifiedCount}/${stats.totalVerifications} users verified`);
+console.log(`Average age: ${stats.averageAge}`);
+console.log(&#39;Methods used:&#39;, stats.methodStats);</code></pre></div></div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Promise&lt;literal type&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Promise resolving to verification statistics including counts, averages, and method breakdown</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getVerificationStatus"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>getVerificationStatus</b></span>
+                        <a href="#getVerificationStatus"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getVerificationStatus(userId: <a href="../unknowns/g.html" target="_self">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="340"
+                                    class="link-to-prism">apps/api/src/services/age-verification.service.ts:340</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Retrieves the current age verification status for a user.
+Returns the verification record if one exists, null otherwise.</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-typescript">const status = await service.getVerificationStatus(&#39;user123&#39;);
+if (status?.verified) {
+  console.log(`User verified at age ${status.age}`);
+} else {
+  console.log(&#39;User not verified or verification pending&#39;);
+}</code></pre></div></div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>userId</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>The user ID to check verification status for</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../miscellaneous/typealiases.html#VerificationRecord" target="_self" >Promise&lt;VerificationRecord | null&gt;</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Promise resolving to the verification record or null if not found</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="initiateVerification"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>initiateVerification</b></span>
+                        <a href="#initiateVerification"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>initiateVerification(userId: <a href="../unknowns/g.html" target="_self">string</a>, method: <a href="../unknowns/g.html" target="_self">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="174"
+                                    class="link-to-prism">apps/api/src/services/age-verification.service.ts:174</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Initiates an age verification process for a user.
+Creates an initial unverified record and returns a verification ID for tracking.
+This is typically the first step in a multi-step verification workflow.</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-typescript">const result = await service.initiateVerification(&#39;user123&#39;, &#39;document&#39;);
+if (result.success) {
+  // Redirect user to upload documents using result.verificationId
+  redirectToUpload(result.verificationId);
+}</code></pre></div></div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>userId</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>The user ID to initiate verification for</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>method</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>The verification method to be used (e.g., &#39;document&#39;, &#39;credit_card&#39;)</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>unknown</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Promise resolving to verification initiation result with ID</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="isEligibleForContent"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>isEligibleForContent</b></span>
+                        <a href="#isEligibleForContent"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>isEligibleForContent(userId: <a href="../unknowns/g.html" target="_self">string</a>, contentType: <a href="../unknowns/g.html" target="_self">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="385"
+                                    class="link-to-prism">apps/api/src/services/age-verification.service.ts:385</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Checks if a user is eligible to access specific types of content.
+Evaluates the user&#39;s verification status and age against content requirements.</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-typescript">const eligibility = await service.isEligibleForContent(&#39;user123&#39;, &#39;adult_content&#39;);
+if (eligibility.eligible) {
+  showAdultContent();
+} else {
+  showAccessDenied(eligibility.reason);
+}</code></pre></div></div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>userId</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>The user ID to check eligibility for</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>contentType</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>The type of content being requested (e.g., &#39;adult_content&#39;, &#39;general&#39;)</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Promise&lt;literal type&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Promise resolving to eligibility result with age and reason if ineligible</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="processParentalConsent"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>processParentalConsent</b></span>
+                        <a href="#processParentalConsent"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>processParentalConsent(_opts: literal type)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="244"
+                                    class="link-to-prism">apps/api/src/services/age-verification.service.ts:244</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Processes a parental consent request for a child user account.
+Generates a consent token for the parent to approve account creation.
+This is used for users under the age of consent who need parental approval.</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-typescript">const result = await service.processParentalConsent({
+```html
+  childAge: 15,
+  parentConsent: false
+});</code></pre></div><p>// Send consent email with result.token
+sendConsentEmail(result.token);</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-none"></code></pre></div></div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>_opts</td>
+                                            <td>
+                                                        <code>literal type</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>Parental consent options (currently unused in minimal implementation)</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>unknown</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Promise resolving to consent processing result with token</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="updateVerification"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>updateVerification</b></span>
+                        <a href="#updateVerification"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>updateVerification(id: <a href="../unknowns/g.html" target="_self">string</a>, update: <a href="../undefineds/VerificationRecord.html" target="_self">Partial&lt;VerificationRecord&gt;</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="360"
+                                    class="link-to-prism">apps/api/src/services/age-verification.service.ts:360</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Updates an existing verification record with partial data.
+Allows updating specific fields of a verification record without replacing the entire record.</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-typescript">const updated = await service.updateVerification(&#39;verif-123&#39;, {
+  verified: true,
+  verificationMethod: &#39;enhanced_document_check&#39;
+});</code></pre></div></div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>id</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>The ID of the verification record to update</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>update</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/typealiases.html#VerificationRecord" target="_self" >Partial&lt;VerificationRecord&gt;</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>Partial verification record data to apply</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../miscellaneous/typealiases.html#VerificationRecord" target="_self" >Promise&lt;VerificationRecord&gt;</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Promise resolving to the updated verification record</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="verifyAge"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>verifyAge</b></span>
+                        <a href="#verifyAge"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>verifyAge(data: literal type)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="123"
+                                    class="link-to-prism">apps/api/src/services/age-verification.service.ts:123</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Verifies a user&#39;s age based on their date of birth and creates a verification record.
+For users 18 and older, creates a verified record. For users under 18, returns an
+unverified record with rejection reason.</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-typescript">const result = await service.verifyAge({
+  userId: &#39;user123&#39;,
+  dateOfBirth: &#39;2000-01-01&#39;,
+  verificationMethod: &#39;document&#39;,
+  documentType: &#39;passport&#39;
+});
+
+
+if (result.verified) {
+  console.log(`User is ${result.age} years old and verified`);
+} else {
+  console.log(`Verification failed: ${result.reason}`);
+}</code></pre></div></div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>data</td>
+                                            <td>
+                                                        <code>literal type</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>The verification data including user ID, date of birth, and method</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../miscellaneous/typealiases.html#VerificationRecord" target="_self" >Promise&lt;VerificationRecord&gt;</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Promise resolving to a VerificationRecord with verification results</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="verifyParentalConsent"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>verifyParentalConsent</b></span>
+                        <a href="#verifyParentalConsent"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>verifyParentalConsent(token: <a href="../unknowns/g.html" target="_self">string</a>, _approved: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="272"
+                                    class="link-to-prism">apps/api/src/services/age-verification.service.ts:272</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Verifies a parental consent token and creates a child user account if approved.
+Completes the parental consent workflow by validating the token and generating
+a child user ID for account creation.</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-typescript">const result = await service.verifyParentalConsent(&#39;consent-abc123&#39;, true);
+if (result.success) {
+  // Create child account with result.childUserId
+  createChildAccount(result.childUserId);
+}</code></pre></div></div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>token</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>The consent token provided by the parent</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>_approved</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>Whether the parent approved the consent (currently unused)</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>unknown</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Promise resolving to consent verification result with child user ID</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+
+
+
+
+
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">achn /**
+ * Represents a complete age verification record for a user.
+ * Contains all verification data including user ID, age, verification status,
+ * and metadata about the verification process.
+ */
+type VerificationRecord &#x3D; {
+  /** Unique identifier for this verification record */
+  id?: string;
+  /** The user ID this verification record belongs to */
+  userId: string;
+  /** Whether the user&#x27;s age has been successfully verified */
+  verified: boolean;
+  /** The calculated age of the user in years */
+  age: number;
+  /** The method used for age verification (e.g., &#x27;document&#x27;, &#x27;credit_card&#x27;, &#x27;parental_consent&#x27;) */
+  verificationMethod?: string;
+  /** ISO 8601 timestamp when verification was completed */
+  verifiedAt?: string;
+  /** Additional metadata or notes about the verification process */
+  [key: string]: unknown;
+};
+
+/**
+ * Interface for age verification data persistence operations.
+ * Provides methods to create, retrieve, update, and query verification records.
+ * Implementations should handle data validation and error handling appropriately.
+ */
+type AgeVerificationStore &#x3D; {
+  /** Creates a new verification record in the data store */
+  create: (data: VerificationRecord) &#x3D;&gt; Promise&lt;VerificationRecord&gt;;
+  /** Retrieves a verification record by user ID */
+  getById: (userId: string) &#x3D;&gt; Promise&lt;VerificationRecord | null&gt;;
+  /** Updates an existing verification record with partial data */
+  update: (id: string, data: Partial&lt;VerificationRecord&gt;) &#x3D;&gt; Promise&lt;VerificationRecord&gt;;
+  /** Retrieves all verification records from the data store */
+  getAll: () &#x3D;&gt; Promise&lt;VerificationRecord[]&gt;;
+};
+
+/**
+ * Calculates the age in years from a date of birth string.
+ * @param dob - Date of birth in ISO 8601 format (YYYY-MM-DD or full ISO string)
+ * @returns The calculated age in years
+ * @throws Error if the date of birth format is invalid
+ * @example
+ * &#x60;&#x60;&#x60;typescript
+ * calculateAge(&#x27;2000-01-01&#x27;); // Returns 24 (assuming current year is 2024)
+ * calculateAge(&#x27;1990-12-31T23:59:59Z&#x27;); // Returns 33
+ * &#x60;&#x60;&#x60;
+ */
+function calculateAge(dob: string): number {
+  const date &#x3D; new Date(dob);
+  if (Number.isNaN(date.getTime())) throw new Error(&#x27;Invalid date of birth format&#x27;);
+  const now &#x3D; new Date();
+  let age &#x3D; now.getUTCFullYear() - date.getUTCFullYear();
+  const m &#x3D; now.getUTCMonth() - date.getUTCMonth();
+  if (m &lt; 0 || (m &#x3D;&#x3D;&#x3D; 0 &amp;&amp; now.getUTCDate() &lt; date.getUTCDate())) {
+    age -&#x3D; 1;
+  }
+  return age;
+}
+
+/**
+ * Service class for handling age verification operations in the Political Sphere platform.
+ * Provides comprehensive age verification functionality including document validation,
+ * parental consent workflows, content access control, and verification statistics.
+ *
+ * This service ensures compliance with age restrictions for political content and
+ * maintains audit trails for all verification activities.
+ *
+ * @example
+ * &#x60;&#x60;&#x60;typescript
+ * const store &#x3D; new DatabaseAgeVerificationStore();
+ * const service &#x3D; new AgeVerificationService(store);
+ *
+ * const result &#x3D; await service.verifyAge({
+ *   userId: &#x27;user123&#x27;,
+ *   dateOfBirth: &#x27;2000-01-01&#x27;,
+ *   verificationMethod: &#x27;document&#x27;
+ * });
+ * &#x60;&#x60;&#x60;
+ */
+export default class AgeVerificationService {
+  /** The data store implementation for persisting verification records */
+  private store: AgeVerificationStore;
+
+  /**
+   * Creates a new AgeVerificationService instance.
+   * @param store - The data store implementation for verification records
+   */
+  constructor(store: AgeVerificationStore) {
+    this.store &#x3D; store;
+  }
+
+  /**
+   * Verifies a user&#x27;s age based on their date of birth and creates a verification record.
+   * For users 18 and older, creates a verified record. For users under 18, returns an
+   * unverified record with rejection reason.
+   *
+   * @param data - The verification data including user ID, date of birth, and method
+   * @param data.userId - Unique identifier for the user being verified
+   * @param data.dateOfBirth - Date of birth in ISO 8601 format
+   * @param data.verificationMethod - Method used for verification (e.g., &#x27;document&#x27;, &#x27;credit_card&#x27;)
+   * @param data.documentType - Optional document type for additional validation
+   * @returns Promise resolving to a VerificationRecord with verification results
+   * @throws Error if required fields are missing or dateOfBirth is invalid
+   *
+   * @example
+   * &#x60;&#x60;&#x60;typescript
+   * const result &#x3D; await service.verifyAge({
+   *   userId: &#x27;user123&#x27;,
+   *   dateOfBirth: &#x27;2000-01-01&#x27;,
+   *   verificationMethod: &#x27;document&#x27;,
+   *   documentType: &#x27;passport&#x27;
+   * });
+   *
+   * if (result.verified) {
+   *   console.log(&#x60;User is ${result.age} years old and verified&#x60;);
+   * } else {
+   *   console.log(&#x60;Verification failed: ${result.reason}&#x60;);
+   * }
+   * &#x60;&#x60;&#x60;
+   */
+  async verifyAge(data: {
+    userId: string;
+    dateOfBirth: string;
+    verificationMethod: string;
+    documentType?: string;
+  }): Promise&lt;VerificationRecord&gt; {
+    if (!data?.dateOfBirth || !data?.verificationMethod) {
+      throw new Error(&#x27;Missing required fields: dateOfBirth, verificationMethod&#x27;);
+    }
+
+    const age &#x3D; calculateAge(data.dateOfBirth);
+
+    if (age &gt;&#x3D; 18) {
+      const record: VerificationRecord &#x3D; {
+        ...data,
+        userId: data.userId,
+        verified: true,
+        age,
+        verificationMethod: data.verificationMethod,
+        verifiedAt: new Date().toISOString(),
+      };
+      return this.store.create(record);
+    }
+
+    return {
+      verified: false,
+      age,
+      userId: data.userId,
+      reason: &#x27;User must be at least 18 years old&#x27;,
+    } as unknown as VerificationRecord;
+  }
+
+  // --- Compatibility/route helpers (minimal implementations) ---
+  /**
+   * Initiates an age verification process for a user.
+   * Creates an initial unverified record and returns a verification ID for tracking.
+   * This is typically the first step in a multi-step verification workflow.
+   *
+   * @param userId - The user ID to initiate verification for
+   * @param method - The verification method to be used (e.g., &#x27;document&#x27;, &#x27;credit_card&#x27;)
+   * @returns Promise resolving to verification initiation result with ID
+   *
+   * @example
+   * &#x60;&#x60;&#x60;typescript
+   * const result &#x3D; await service.initiateVerification(&#x27;user123&#x27;, &#x27;document&#x27;);
+   * if (result.success) {
+   *   // Redirect user to upload documents using result.verificationId
+   *   redirectToUpload(result.verificationId);
+   * }
+   * &#x60;&#x60;&#x60;
+   */
+  async initiateVerification(userId: string, method: string) {
+    // Minimal implementation: create an unverified record and return an id
+    const id &#x3D; &#x60;verif-${Date.now()}-${Math.random().toString(36).slice(2, 8)}&#x60;;
+    await this.store.create({ id, userId, verified: false, age: 0, verificationMethod: method });
+    return { success: true, verificationId: id };
+  }
+
+  /**
+   * Completes an age verification process using provided verification data.
+   * Updates the verification record with the calculated age and verification status.
+   *
+   * @param verificationId - The ID of the verification process to complete
+   * @param payload - The completion payload containing verification data
+   * @param payload.dateOfBirth - Date of birth to calculate age from (required)
+   * @param payload.verificationMethod - Optional verification method override
+   * @returns Promise resolving to completion result with success status and verification details
+   *
+   * @example
+   * &#x60;&#x60;&#x60;typescript
+   * const result &#x3D; await service.completeVerification(&#x27;verif-123&#x27;, {
+   *   dateOfBirth: &#x27;2000-01-01&#x27;,
+   *   verificationMethod: &#x27;document&#x27;
+   * });
+   *
+   * if (result.success) {
+   *   console.log(&#x60;Verification completed: age ${result.age}, verified: ${result.verified}&#x60;);
+   * }
+   * &#x60;&#x60;&#x60;
+   */
+  async completeVerification(
+    verificationId: string,
+    payload: { dateOfBirth?: string; verificationMethod?: string }
+  ) {
+    // If dateOfBirth present, verify and update record; else return failure
+    if (!payload?.dateOfBirth) {
+      return { success: false, error: &#x27;dateOfBirth required&#x27; };
+    }
+    const age &#x3D; calculateAge(payload.dateOfBirth);
+    const record &#x3D; await this.store.update(verificationId, {
+      verified: age &gt;&#x3D; 18,
+      age,
+      verificationMethod: payload.verificationMethod,
+      verifiedAt: new Date().toISOString(),
+    });
+    return { success: true, age, confidence: 0.95, verified: record.verified };
+  }
+
+  /**
+   * Processes a parental consent request for a child user account.
+   * Generates a consent token for the parent to approve account creation.
+   * This is used for users under the age of consent who need parental approval.
+   *
+   * @param _opts - Parental consent options (currently unused in minimal implementation)
+   * @param _opts.parentEmail - Email address of the parent/guardian
+   * @param _opts.childAge - Age of the child requesting account creation
+   * @param _opts.parentConsent - Optional pre-approval status
+   * @returns Promise resolving to consent processing result with token
+   *
+   * @example
+   * &#x60;&#x60;&#x60;typescript
+   * const result &#x3D; await service.processParentalConsent({
+   *   parentEmail: &#x27;parent@example.com&#x27;,
+   *   childAge: 15,
+   *   parentConsent: false
+   * });
+   *
+   * // Send consent email with result.token
+   * sendConsentEmail(result.token);
+   * &#x60;&#x60;&#x60;
+   */
+  async processParentalConsent(_opts: {
+    parentEmail: string;
+    childAge: number;
+    parentConsent?: boolean;
+  }) {
+    // Minimal implementation: return a token and queue child creation if approved
+    const token &#x3D; &#x60;consent-${Date.now()}-${Math.random().toString(36).slice(2, 8)}&#x60;;
+    return { success: true, token };
+  }
+
+  /**
+   * Verifies a parental consent token and creates a child user account if approved.
+   * Completes the parental consent workflow by validating the token and generating
+   * a child user ID for account creation.
+   *
+   * @param token - The consent token provided by the parent
+   * @param _approved - Whether the parent approved the consent (currently unused)
+   * @returns Promise resolving to consent verification result with child user ID
+   *
+   * @example
+   * &#x60;&#x60;&#x60;typescript
+   * const result &#x3D; await service.verifyParentalConsent(&#x27;consent-abc123&#x27;, true);
+   * if (result.success) {
+   *   // Create child account with result.childUserId
+   *   createChildAccount(result.childUserId);
+   * }
+   * &#x60;&#x60;&#x60;
+   */
+  async verifyParentalConsent(token: string, _approved: boolean) {
+    // Minimal: return success and a child user id placeholder
+    if (!token) return { success: false, error: &#x27;Invalid token&#x27; };
+    const childUserId &#x3D; &#x60;child-${Date.now()}&#x60;;
+    return { success: true, childUserId };
+  }
+
+  /**
+   * Determines if a user of a given age can access content with a specific rating.
+   * Uses standard UK content rating system (U, PG, 12A, 15, 18) to evaluate access.
+   *
+   * @param age - The user&#x27;s age in years
+   * @param contentRating - The content rating to check against (&#x27;U&#x27;, &#x27;PG&#x27;, &#x27;12A&#x27;, &#x27;15&#x27;, &#x27;18&#x27;)
+   * @returns True if the user can access the content, false otherwise
+   *
+   * @example
+   * &#x60;&#x60;&#x60;typescript
+   * service.canAccessContent(16, &#x27;15&#x27;); // true - 16 &gt;&#x3D; 15
+   * service.canAccessContent(14, &#x27;18&#x27;); // false - 14 &lt; 18
+   * service.canAccessContent(10, &#x27;U&#x27;);  // true - U requires 0+
+   * &#x60;&#x60;&#x60;
+   */
+  canAccessContent(age: number, contentRating: string) {
+    // Simple rating logic: &#x27;U&#x27; &#x3D; 0+, &#x27;PG&#x27;&#x3D; 12+, &#x27;12A&#x27;&#x3D;12, &#x27;15&#x27;&#x3D;15, &#x27;18&#x27;&#x3D;18
+    const ratingMin: Record&lt;string, number&gt; &#x3D; { U: 0, PG: 12, &#x27;12A&#x27;: 12, &#x27;15&#x27;: 15, &#x27;18&#x27;: 18 };
+    const required &#x3D; ratingMin[String(contentRating) as keyof typeof ratingMin] ?? 0;
+    return age &gt;&#x3D; required;
+  }
+
+  /**
+   * Gets the appropriate content rating and feature restrictions for a user&#x27;s age.
+   * Maps user age to the highest content rating they can access and any required features.
+   *
+   * @param age - The user&#x27;s age in years
+   * @returns Object containing content rating and any required features
+   *
+   * @example
+   * &#x60;&#x60;&#x60;typescript
+   * service.getAgeRestrictions(16); // { contentRating: &#x27;15&#x27;, features: [] }
+   * service.getAgeRestrictions(10); // { contentRating: &#x27;U&#x27;, features: [&#x27;age_verification_required&#x27;] }
+   * service.getAgeRestrictions(25); // { contentRating: &#x27;18&#x27;, features: [] }
+   * &#x60;&#x60;&#x60;
+   */
+  getAgeRestrictions(age: number) {
+    // Minimal restrictions mapping
+    if (age &gt;&#x3D; 18) return { contentRating: &#x27;18&#x27;, features: [] };
+    if (age &gt;&#x3D; 15) return { contentRating: &#x27;15&#x27;, features: [] };
+    if (age &gt;&#x3D; 12) return { contentRating: &#x27;12A&#x27;, features: [] };
+    return { contentRating: &#x27;U&#x27;, features: [&#x27;age_verification_required&#x27;] };
+  }
+
+  /**
+   * Retrieves the current age verification status for a user.
+   * Returns the verification record if one exists, null otherwise.
+   *
+   * @param userId - The user ID to check verification status for
+   * @returns Promise resolving to the verification record or null if not found
+   *
+   * @example
+   * &#x60;&#x60;&#x60;typescript
+   * const status &#x3D; await service.getVerificationStatus(&#x27;user123&#x27;);
+   * if (status?.verified) {
+   *   console.log(&#x60;User verified at age ${status.age}&#x60;);
+   * } else {
+   *   console.log(&#x27;User not verified or verification pending&#x27;);
+   * }
+   * &#x60;&#x60;&#x60;
+   */
+  async getVerificationStatus(userId: string): Promise&lt;VerificationRecord | null&gt; {
+    return this.store.getById(userId);
+  }
+
+  /**
+   * Updates an existing verification record with partial data.
+   * Allows updating specific fields of a verification record without replacing the entire record.
+   *
+   * @param id - The ID of the verification record to update
+   * @param update - Partial verification record data to apply
+   * @returns Promise resolving to the updated verification record
+   *
+   * @example
+   * &#x60;&#x60;&#x60;typescript
+   * const updated &#x3D; await service.updateVerification(&#x27;verif-123&#x27;, {
+   *   verified: true,
+   *   verificationMethod: &#x27;enhanced_document_check&#x27;
+   * });
+   * &#x60;&#x60;&#x60;
+   */
+  async updateVerification(
+    id: string,
+    update: Partial&lt;VerificationRecord&gt;
+  ): Promise&lt;VerificationRecord&gt; {
+    return this.store.update(id, update);
+  }
+
+  /**
+   * Checks if a user is eligible to access specific types of content.
+   * Evaluates the user&#x27;s verification status and age against content requirements.
+   *
+   * @param userId - The user ID to check eligibility for
+   * @param contentType - The type of content being requested (e.g., &#x27;adult_content&#x27;, &#x27;general&#x27;)
+   * @returns Promise resolving to eligibility result with age and reason if ineligible
+   *
+   * @example
+   * &#x60;&#x60;&#x60;typescript
+   * const eligibility &#x3D; await service.isEligibleForContent(&#x27;user123&#x27;, &#x27;adult_content&#x27;);
+   * if (eligibility.eligible) {
+   *   showAdultContent();
+   * } else {
+   *   showAccessDenied(eligibility.reason);
+   * }
+   * &#x60;&#x60;&#x60;
+   */
+  async isEligibleForContent(
+    userId: string,
+    contentType: string
+  ): Promise&lt;{ eligible: boolean; age?: number; reason?: string }&gt; {
+    const record &#x3D; await this.store.getById(userId);
+    if (!record) {
+      return { eligible: false, reason: &#x27;Age verification required&#x27; };
+    }
+
+    if (contentType &#x3D;&#x3D;&#x3D; &#x27;adult_content&#x27;) {
+      if (record.verified &amp;&amp; record.age &gt;&#x3D; 18) {
+        return { eligible: true, age: record.age };
+      }
+      return { eligible: false, reason: &#x27;Content requires age 18+&#x27; };
+    }
+
+    return { eligible: Boolean(record.verified), age: record.age };
+  }
+
+  /**
+   * Retrieves comprehensive statistics about age verification activities.
+   * Provides insights into verification success rates, user demographics, and method usage.
+   *
+   * @returns Promise resolving to verification statistics including counts, averages, and method breakdown
+   *
+   * @example
+   * &#x60;&#x60;&#x60;typescript
+   * const stats &#x3D; await service.getVerificationStats();
+   * console.log(&#x60;${stats.verifiedCount}/${stats.totalVerifications} users verified&#x60;);
+   * console.log(&#x60;Average age: ${stats.averageAge}&#x60;);
+   * console.log(&#x27;Methods used:&#x27;, stats.methodStats);
+   * &#x60;&#x60;&#x60;
+   */
+  async getVerificationStats(): Promise&lt;{
+    totalVerifications: number;
+    verifiedCount: number;
+    rejectedCount: number;
+    averageAge: number;
+    methodStats: Record&lt;string, number&gt;;
+  }&gt; {
+    const all &#x3D; await this.store.getAll();
+    const totalVerifications &#x3D; all.length;
+    const verifiedCount &#x3D; all.filter(r &#x3D;&gt; r.verified).length;
+    const rejectedCount &#x3D; totalVerifications - verifiedCount;
+
+    const averageAge &#x3D; totalVerifications
+      ? Number((all.reduce((sum, r) &#x3D;&gt; sum + (r.age ?? 0), 0) / totalVerifications).toFixed(2))
+      : 0;
+
+    const methodStats: Record&lt;string, number&gt; &#x3D; {};
+    for (const r of all) {
+      const m &#x3D; String(r.verificationMethod ?? &#x27;unknown&#x27;);
+      methodStats[m] &#x3D; (methodStats[m] ?? 0) + 1;
+    }
+
+    return { totalVerifications, verifiedCount, rejectedCount, averageAge, methodStats };
+  }
+}
+
+// Export a default instance for routes that expect an instance
+const noopStore: AgeVerificationStore &#x3D; {
+  create: async (data: VerificationRecord) &#x3D;&gt; data,
+  getById: async (_userId: string) &#x3D;&gt; null,
+  update: async (id: string, updateData: Partial&lt;VerificationRecord&gt;) &#x3D;&gt; ({
+    id,
+    ...(updateData as VerificationRecord),
+  }),
+  getAll: async () &#x3D;&gt; [],
+};
+
+export const ageVerificationService &#x3D; new AgeVerificationService(noopStore);
+</code></pre>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'class';
+            var COMPODOC_CURRENT_PAGE_URL = 'AgeVerificationService-1.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

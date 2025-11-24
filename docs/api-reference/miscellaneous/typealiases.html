@@ -1,0 +1,915 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>political-sphere documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">political-sphere documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content miscellaneous-typealiases">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Miscellaneous</li>
+  <li class="breadcrumb-item">Type aliases</li>
+</ol>
+
+<section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <ul class="index-list">
+                        <li>
+                            <a href="#AuthedRequest" title="apps/api/src/routes/users.ts" ><b>AuthedRequest</b>&nbsp;&nbsp;&nbsp;(apps/.../users.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#AuthRequestDoc" title="apps/api/src/docs/public-api.ts" ><b>AuthRequestDoc</b>&nbsp;&nbsp;&nbsp;(apps/.../public-api.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#AuthUserDoc" title="apps/api/src/docs/public-api.ts" ><b>AuthUserDoc</b>&nbsp;&nbsp;&nbsp;(apps/.../public-api.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#CabinetMeetingDoc" title="apps/api/src/docs/public-api.ts" ><b>CabinetMeetingDoc</b>&nbsp;&nbsp;&nbsp;(apps/.../public-api.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#CampaignDoc" title="apps/api/src/docs/public-api.ts" ><b>CampaignDoc</b>&nbsp;&nbsp;&nbsp;(apps/.../public-api.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#CandidateDoc" title="apps/api/src/docs/public-api.ts" ><b>CandidateDoc</b>&nbsp;&nbsp;&nbsp;(apps/.../public-api.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#ChamberDoc" title="apps/api/src/docs/public-api.ts" ><b>ChamberDoc</b>&nbsp;&nbsp;&nbsp;(apps/.../public-api.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#ConstituencyDoc" title="apps/api/src/docs/public-api.ts" ><b>ConstituencyDoc</b>&nbsp;&nbsp;&nbsp;(apps/.../public-api.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#ElectionDoc" title="apps/api/src/docs/public-api.ts" ><b>ElectionDoc</b>&nbsp;&nbsp;&nbsp;(apps/.../public-api.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#ExecutiveActionDoc" title="apps/api/src/docs/public-api.ts" ><b>ExecutiveActionDoc</b>&nbsp;&nbsp;&nbsp;(apps/.../public-api.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#GameStateDoc" title="apps/api/src/docs/public-api.ts" ><b>GameStateDoc</b>&nbsp;&nbsp;&nbsp;(apps/.../public-api.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#GovernmentDoc" title="apps/api/src/docs/public-api.ts" ><b>GovernmentDoc</b>&nbsp;&nbsp;&nbsp;(apps/.../public-api.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#LoggerDoc" title="apps/api/src/docs/public-api.ts" ><b>LoggerDoc</b>&nbsp;&nbsp;&nbsp;(apps/.../public-api.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#LoginInputDoc" title="apps/api/src/docs/public-api.ts" ><b>LoginInputDoc</b>&nbsp;&nbsp;&nbsp;(apps/.../public-api.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#MinisterDoc" title="apps/api/src/docs/public-api.ts" ><b>MinisterDoc</b>&nbsp;&nbsp;&nbsp;(apps/.../public-api.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#MotionDoc" title="apps/api/src/docs/public-api.ts" ><b>MotionDoc</b>&nbsp;&nbsp;&nbsp;(apps/.../public-api.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#NewsItemDoc" title="apps/api/src/docs/public-api.ts" ><b>NewsItemDoc</b>&nbsp;&nbsp;&nbsp;(apps/.../public-api.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#PartyStoreExtras" title="apps/api/src/routes/parties.ts" ><b>PartyStoreExtras</b>&nbsp;&nbsp;&nbsp;(apps/.../parties.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#RegisterInputDoc" title="apps/api/src/docs/public-api.ts" ><b>RegisterInputDoc</b>&nbsp;&nbsp;&nbsp;(apps/.../public-api.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#RequestDoc" title="apps/api/src/docs/public-api.ts" ><b>RequestDoc</b>&nbsp;&nbsp;&nbsp;(apps/.../public-api.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#ResponseDoc" title="apps/api/src/docs/public-api.ts" ><b>ResponseDoc</b>&nbsp;&nbsp;&nbsp;(apps/.../public-api.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#TokenPayloadDoc" title="apps/api/src/docs/public-api.ts" ><b>TokenPayloadDoc</b>&nbsp;&nbsp;&nbsp;(apps/.../public-api.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#VoteDoc" title="apps/api/src/docs/public-api.ts" ><b>VoteDoc</b>&nbsp;&nbsp;&nbsp;(apps/.../public-api.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#VoteRecordDoc" title="apps/api/src/docs/public-api.ts" ><b>VoteRecordDoc</b>&nbsp;&nbsp;&nbsp;(apps/.../public-api.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#VoteResultsDoc" title="apps/api/src/docs/public-api.ts" ><b>VoteResultsDoc</b>&nbsp;&nbsp;&nbsp;(apps/.../public-api.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#ZodLikeError" title="apps/api/src/routes/ageVerification.ts" ><b>ZodLikeError</b>&nbsp;&nbsp;&nbsp;(apps/.../ageVerification.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#ZodLikeError" title="apps/api/src/routes/moderation.ts" ><b>ZodLikeError</b>&nbsp;&nbsp;&nbsp;(apps/.../moderation.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#ZodLikeErrorItem" title="apps/api/src/routes/ageVerification.ts" ><b>ZodLikeErrorItem</b>&nbsp;&nbsp;&nbsp;(apps/.../ageVerification.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#ZodLikeErrorItem" title="apps/api/src/routes/moderation.ts" ><b>ZodLikeErrorItem</b>&nbsp;&nbsp;&nbsp;(apps/.../moderation.ts)</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+
+    <h3>apps/api/src/routes/users.ts</h3>
+    <section data-compodoc="block-typealias">
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="AuthedRequest"></a>
+                    <span class="name "><b>AuthedRequest</b><a href="#AuthedRequest"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>unknown</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>    <h3>apps/api/src/docs/public-api.ts</h3>
+    <section data-compodoc="block-typealias">
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="AuthRequestDoc"></a>
+                    <span class="name "><b>AuthRequestDoc</b><a href="#AuthRequestDoc"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Request object extended with authentication information.
+Mirrors <code>AuthRequest</code> used by middleware to attach <code>AuthUser</code> to a request.</p>
+</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>unknown</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="AuthUserDoc"></a>
+                    <span class="name "><b>AuthUserDoc</b><a href="#AuthUserDoc"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Authentication-related types (documentation aliases).</p>
+</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>unknown</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="CabinetMeetingDoc"></a>
+                    <span class="name "><b>CabinetMeetingDoc</b><a href="#CabinetMeetingDoc"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Cabinet meeting domain type (documentation alias).</p>
+</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>unknown</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="CampaignDoc"></a>
+                    <span class="name "><b>CampaignDoc</b><a href="#CampaignDoc"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Campaign domain type (documentation alias).</p>
+</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>unknown</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="CandidateDoc"></a>
+                    <span class="name "><b>CandidateDoc</b><a href="#CandidateDoc"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Candidate domain type (documentation alias).</p>
+</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>unknown</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ChamberDoc"></a>
+                    <span class="name "><b>ChamberDoc</b><a href="#ChamberDoc"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Parliamentary chamber type (documentation alias).</p>
+</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>unknown</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ConstituencyDoc"></a>
+                    <span class="name "><b>ConstituencyDoc</b><a href="#ConstituencyDoc"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Constituency domain type (documentation alias).</p>
+</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>unknown</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ElectionDoc"></a>
+                    <span class="name "><b>ElectionDoc</b><a href="#ElectionDoc"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Election domain type (documentation alias).</p>
+</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>unknown</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ExecutiveActionDoc"></a>
+                    <span class="name "><b>ExecutiveActionDoc</b><a href="#ExecutiveActionDoc"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Executive action domain type (documentation alias).</p>
+</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>unknown</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="GameStateDoc"></a>
+                    <span class="name "><b>GameStateDoc</b><a href="#GameStateDoc"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Game state snapshot used by the game service (documentation alias).</p>
+</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>unknown</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="GovernmentDoc"></a>
+                    <span class="name "><b>GovernmentDoc</b><a href="#GovernmentDoc"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Government domain type (documentation alias).</p>
+</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>unknown</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="LoggerDoc"></a>
+                    <span class="name "><b>LoggerDoc</b><a href="#LoggerDoc"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Public API documentation shim</p>
+<p>This file creates documented aliases for important exported types and
+interfaces so Compodoc can surface them and improve documentation coverage.
+Keep entries minimal and neutral; these are documentation-only helpers.</p>
+</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>unknown</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="LoginInputDoc"></a>
+                    <span class="name "><b>LoginInputDoc</b><a href="#LoginInputDoc"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Payload used for login requests (documentation alias).</p>
+</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>unknown</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="MinisterDoc"></a>
+                    <span class="name "><b>MinisterDoc</b><a href="#MinisterDoc"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Minister appointment domain type (documentation alias).</p>
+</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>unknown</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="MotionDoc"></a>
+                    <span class="name "><b>MotionDoc</b><a href="#MotionDoc"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Motion type used in parliamentary proceedings (documentation alias).</p>
+</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>unknown</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="NewsItemDoc"></a>
+                    <span class="name "><b>NewsItemDoc</b><a href="#NewsItemDoc"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>News item type used by the news service (documentation alias).</p>
+</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>unknown</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="RegisterInputDoc"></a>
+                    <span class="name "><b>RegisterInputDoc</b><a href="#RegisterInputDoc"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Payload sent when registering a new account (documentation alias).</p>
+</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>unknown</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="RequestDoc"></a>
+                    <span class="name "><b>RequestDoc</b><a href="#RequestDoc"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Request/Response helpers used across routes.</p>
+</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>unknown</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ResponseDoc"></a>
+                    <span class="name "><b>ResponseDoc</b><a href="#ResponseDoc"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Standard API response shape used across the server routes.</p>
+</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>unknown | unknown</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="TokenPayloadDoc"></a>
+                    <span class="name "><b>TokenPayloadDoc</b><a href="#TokenPayloadDoc"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>JWT token payload shape (documentation alias).</p>
+</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>unknown</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="VoteDoc"></a>
+                    <span class="name "><b>VoteDoc</b><a href="#VoteDoc"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Vote type used in parliamentary proceedings (documentation alias).</p>
+</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>unknown</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="VoteRecordDoc"></a>
+                    <span class="name "><b>VoteRecordDoc</b><a href="#VoteRecordDoc"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Vote record domain type (documentation alias).</p>
+</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>unknown</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="VoteResultsDoc"></a>
+                    <span class="name "><b>VoteResultsDoc</b><a href="#VoteResultsDoc"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Vote results summary type (documentation alias).</p>
+</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>unknown</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>    <h3>apps/api/src/routes/parties.ts</h3>
+    <section data-compodoc="block-typealias">
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="PartyStoreExtras"></a>
+                    <span class="name "><b>PartyStoreExtras</b><a href="#PartyStoreExtras"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>literal type</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>    <h3>apps/api/src/routes/ageVerification.ts</h3>
+    <section data-compodoc="block-typealias">
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ZodLikeError"></a>
+                    <span class="name "><b>ZodLikeError</b><a href="#ZodLikeError"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>literal type</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ZodLikeErrorItem"></a>
+                    <span class="name "><b>ZodLikeErrorItem</b><a href="#ZodLikeErrorItem"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>literal type</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>    <h3>apps/api/src/routes/moderation.ts</h3>
+    <section data-compodoc="block-typealias">
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ZodLikeError"></a>
+                    <span class="name "><b>ZodLikeError</b><a href="#ZodLikeError"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>literal type</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ZodLikeErrorItem"></a>
+                    <span class="name "><b>ZodLikeErrorItem</b><a href="#ZodLikeErrorItem"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>literal type</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'miscellaneous-typealiases';
+            var COMPODOC_CURRENT_PAGE_URL = 'typealiases.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

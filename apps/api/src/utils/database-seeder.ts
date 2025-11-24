@@ -59,6 +59,13 @@ type SeederFunction = (
   connection: DatabaseConnectionWrapper
 ) => Promise<void>;
 
+/**
+ * Database Seeder
+ *
+ * Manages database seeding operations for development and testing environments.
+ * Provides transactional seeding with rollback capabilities and supports
+ * multiple seeders for different data types and scenarios.
+ */
 class DatabaseSeeder {
   private seeders: Map<string, SeederFunction>;
   private isSeeded: boolean;
@@ -162,13 +169,13 @@ class DatabaseSeeder {
     const startTime = Date.now();
 
     try {
-      await withTransaction(async (transaction, connection) => {
+      await withTransaction(async (transaction: Transaction, connection: unknown) => {
         for (const [name, seederFn] of this.seeders) {
           try {
             logger.info('Running seeder', { name, dryRun });
 
             if (!dryRun) {
-              await seederFn(transaction, connection);
+              await seederFn(transaction, connection as DatabaseConnectionWrapper);
             }
 
             results.seeders.push({
@@ -181,10 +188,11 @@ class DatabaseSeeder {
           } catch (error) {
             logger.error('Seeder failed', { name, error: (error as Error).message });
 
+            const err = error as Error;
             results.errors.push({
               name,
-              error: (error as Error).message,
-              stack: error.stack,
+              error: err.message,
+              stack: err.stack,
             });
 
             results.success = false;
@@ -208,13 +216,14 @@ class DatabaseSeeder {
 
       this.isSeeded = !dryRun;
     } catch (error) {
+      const err = error as Error;
       results.success = false;
       results.errors.push({
         name: 'transaction',
-        error: (error as Error).message,
-        stack: error.stack,
+        error: err.message,
+        stack: err.stack,
       });
-      logger.error('Seeding failed', { error: (error as Error).message });
+      logger.error('Seeding failed', { error: err.message });
     }
 
     results.duration = Date.now() - startTime;
@@ -262,11 +271,11 @@ class DatabaseSeeder {
     const startTime = Date.now();
 
     try {
-      await withTransaction(async (transaction, connection) => {
+      await withTransaction(async (transaction: Transaction, connection: unknown) => {
         logger.info('Running seeder', { name, dryRun });
 
         if (!dryRun) {
-          await seederFn(transaction, connection);
+          await seederFn(transaction, connection as DatabaseConnectionWrapper);
         }
 
         logger.info('Seeder completed', { name });
@@ -289,15 +298,16 @@ class DatabaseSeeder {
   async clear(tables: string[] = []): Promise<void> {
     const defaultTables = ['votes', 'bills', 'parties', 'users'];
 
-    await withTransaction(async (_transaction, connection) => {
+    await withTransaction(async (_transaction: Transaction, connection: unknown) => {
+      const conn = connection as DatabaseConnectionWrapper;
       // Build allowlist of existing tables to avoid SQL injection via table names
       const isValidIdentifier = (name: string): boolean =>
         /^[A-Za-z_][A-Za-z0-9_]*$/.test(String(name));
       let existingTables = new Set();
       try {
-        const rows = connection.db
+        const rows = conn.db
           .prepare("SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'")
-          .all();
+          .all() as Array<{ name: string }>;
         existingTables = new Set(rows.map(r => r.name));
       } catch {
         // Database query failed, existingTables remains empty Set
@@ -310,7 +320,7 @@ class DatabaseSeeder {
           continue;
         }
         try {
-          connection.db.exec(`DELETE FROM ${table}`);
+          conn.db.exec(`DELETE FROM ${table}`);
           logger.debug('Table cleared', { table });
         } catch (error) {
           logger.warn('Failed to clear table', { table, error: (error as Error).message });
@@ -319,7 +329,7 @@ class DatabaseSeeder {
 
       // Reset auto-increment counters
       try {
-        connection.db.exec('DELETE FROM sqlite_sequence');
+        conn.db.exec('DELETE FROM sqlite_sequence');
         logger.debug('Auto-increment counters reset');
       } catch {
         // Ignore if table doesn't exist

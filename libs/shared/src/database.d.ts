@@ -18,32 +18,29 @@ export function closeDatabase(): void;
 /**
  * Execute a query returning multiple rows
  */
-export function executeQuery<T = any>(query: string, params?: any[]): T[];
+export function executeQuery<T = unknown>(query: string, params?: unknown[]): T[];
 
 /**
  * Execute a single-row query
  */
-export function executeQuerySingle<T = any>(query: string, params?: any[]): T | undefined;
+export function executeQuerySingle<T = unknown>(query: string, params?: unknown[]): T | undefined;
 
 /**
  * Execute an insert/update/delete query
  */
-export function executeMutation(
-  query: string,
-  params?: any[]
-): Database.RunResult;
+export function executeMutation(query: string, params?: unknown[]): Database.RunResult;
 
 /**
  * Execute multiple queries in a transaction
  */
 export function executeTransaction(
-  queries: Array<{ query: string; params?: any[] }>
+  queries: Array<{ query: string; params?: ReadonlyArray<unknown> }>
 ): Database.RunResult[];
 
 /**
  * User database operations
  */
-export const userQueries: {
+export declare const userQueries: {
   create: string;
   findByEmail: string;
   findById: string;
@@ -60,7 +57,7 @@ export const userQueries: {
 /**
  * Session database operations
  */
-export const sessionQueries: {
+export declare const sessionQueries: {
   create: string;
   findById: string;
   updateActivity: string;
@@ -72,7 +69,7 @@ export const sessionQueries: {
 /**
  * Rate limiting operations
  */
-export const rateLimitQueries: {
+export declare const rateLimitQueries: {
   check: string;
   increment: string;
   cleanup: string;
@@ -81,7 +78,7 @@ export const rateLimitQueries: {
 /**
  * Audit logging operations
  */
-export const auditQueries: {
+export declare const auditQueries: {
   log: string;
   getUserActivity: string;
   getRecentActivity: string;

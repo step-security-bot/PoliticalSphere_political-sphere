@@ -3,7 +3,14 @@ import { v4 as uuidv4 } from 'uuid';
 // eslint-disable-next-line no-restricted-imports
 import { CACHE_TTL, cacheKeys } from '../utils/cache.ts';
 // eslint-disable-next-line no-restricted-imports
-import { DatabaseError, retryWithBackoff } from '../utils/error-handler.js';
+import { DatabaseError, retryWithBackoff } from '../utils/error-handler.ts';
+
+// Use centralized Prisma client to avoid multiple connections and to respect
+// test-time environment variables (DATABASE_URL) set in the test setup.
+// eslint-disable-next-line no-restricted-imports
+import { prisma } from '../services/prisma-database.service.ts';
+
+const usePrisma = process.env.NODE_ENV !== 'test' || process.env.USE_PRISMA_FOR_TESTS === '1';
 
 /**
  * @typedef {import('../utils/cache.ts').CacheService} CacheService
@@ -56,36 +63,39 @@ class BillStore {
 
   async getById(id) {
     return retryWithBackoff(async () => {
+      const mapBill = bill => ({
+        id: bill.id,
+        title: bill.title,
+        description: bill.description ?? undefined,
+        proposerId: bill.proposerId ?? bill.proposer_id,
+        status: bill.status,
+        createdAt: new Date(bill.createdAt ?? bill.created_at).toISOString(),
+        updatedAt: new Date(bill.updatedAt ?? bill.updated_at).toISOString(),
+      });
+
       if (this.cache) {
         const cached = await this.cache.get(cacheKeys.bill(id));
         if (cached) {
-          return {
-            id: cached.id,
-            title: cached.title,
-            description: cached.description,
-            proposerId: cached.proposerId ?? cached.proposer_id,
-            status: cached.status,
-            createdAt: new Date(cached.createdAt ?? cached.created_at),
-            updatedAt: new Date(cached.updatedAt ?? cached.updated_at),
-          };
+          return mapBill(cached);
         }
       }
 
-      const bill = await prisma.bill.findUnique({
-        where: { id },
-      });
+      let bill;
+      if (usePrisma) {
+        // eslint-disable-next-line no-undef
+        bill = await prisma.bill.findUnique({
+          where: { id },
+        });
+      } else {
+        const stmt = this.db.prepare(
+          'SELECT id, title, description, proposer_id as proposerId, status, created_at as createdAt, updated_at as updatedAt FROM bills WHERE id = ?'
+        );
+        bill = stmt.get(id);
+      }
 
       if (!bill) return null;
 
-      const result = {
-        id: bill.id,
-        title: bill.title,
-        description: bill.description,
-        proposerId: bill.proposerId,
-        status: bill.status,
-        createdAt: bill.createdAt,
-        updatedAt: bill.updatedAt,
-      };
+      const result = mapBill(bill);
 
       if (this.cache) {
         // Fire and forget cache set to avoid blocking reads
@@ -98,34 +108,37 @@ class BillStore {
 
   async getAll() {
     return retryWithBackoff(async () => {
+      const mapBill = bill => ({
+        id: bill.id,
+        title: bill.title,
+        description: bill.description ?? undefined,
+        proposerId: bill.proposerId ?? bill.proposer_id,
+        status: bill.status,
+        createdAt: new Date(bill.createdAt ?? bill.created_at).toISOString(),
+        updatedAt: new Date(bill.updatedAt ?? bill.updated_at).toISOString(),
+      });
+
       if (this.cache) {
         const cached = await this.cache.get(cacheKeys.bills());
         if (cached) {
-          return cached.map(c => ({
-            id: c.id,
-            title: c.title,
-            description: c.description,
-            proposerId: c.proposerId ?? c.proposer_id,
-            status: c.status,
-            createdAt: new Date(c.createdAt ?? c.created_at),
-            updatedAt: new Date(c.updatedAt ?? c.updated_at),
-          }));
+          return cached.map(mapBill);
         }
       }
 
-      const bills = await prisma.bill.findMany({
-        orderBy: { createdAt: 'desc' },
-      });
+      let bills;
+      if (usePrisma) {
+        // eslint-disable-next-line no-undef
+        bills = await prisma.bill.findMany({
+          orderBy: { createdAt: 'desc' },
+        });
+      } else {
+        const stmt = this.db.prepare(
+          'SELECT id, title, description, proposer_id as proposerId, status, created_at as createdAt, updated_at as updatedAt FROM bills ORDER BY created_at DESC'
+        );
+        bills = stmt.all();
+      }
 
-      const result = bills.map(bill => ({
-        id: bill.id,
-        title: bill.title,
-        description: bill.description,
-        proposerId: bill.proposerId,
-        status: bill.status,
-        createdAt: bill.createdAt,
-        updatedAt: bill.updatedAt,
-      }));
+      const result = bills.map(mapBill);
 
       if (this.cache) {
         // Fire and forget cache set to avoid blocking reads
@@ -138,27 +151,41 @@ class BillStore {
 
   async getCount() {
     return retryWithBackoff(async () => {
-      const count = await prisma.bill.count();
-      return count;
+      if (usePrisma) {
+        // eslint-disable-next-line no-undef
+        return prisma.bill.count();
+      }
+      const stmt = this.db.prepare('SELECT COUNT(*) as total FROM bills');
+      const result = stmt.get();
+      return result.total ?? 0;
     });
   }
 
   async getPaginated(limit, offset = 0) {
     return retryWithBackoff(async () => {
-      const bills = await prisma.bill.findMany({
-        orderBy: { createdAt: 'desc' },
-        take: limit,
-        skip: offset,
-      });
+      let bills;
+      if (usePrisma) {
+        // eslint-disable-next-line no-undef
+        bills = await prisma.bill.findMany({
+          orderBy: { createdAt: 'desc' },
+          take: limit,
+          skip: offset,
+        });
+      } else {
+        const stmt = this.db.prepare(
+          'SELECT id, title, description, proposer_id as proposerId, status, created_at as createdAt, updated_at as updatedAt FROM bills ORDER BY created_at DESC LIMIT ? OFFSET ?'
+        );
+        bills = stmt.all(limit, offset);
+      }
 
       return bills.map(bill => ({
         id: bill.id,
         title: bill.title,
-        description: bill.description,
-        proposerId: bill.proposerId,
+        description: bill.description ?? undefined,
+        proposerId: bill.proposerId ?? bill.proposer_id,
         status: bill.status,
-        createdAt: bill.createdAt,
-        updatedAt: bill.updatedAt,
+        createdAt: new Date(bill.createdAt ?? bill.created_at).toISOString(),
+        updatedAt: new Date(bill.updatedAt ?? bill.updated_at).toISOString(),
       }));
     });
   }
@@ -166,10 +193,45 @@ class BillStore {
   async update(id, updates) {
     return retryWithBackoff(async () => {
       try {
-        const bill = await prisma.bill.update({
-          where: { id },
-          data: updates,
-        });
+        let bill;
+
+        if (usePrisma) {
+          // eslint-disable-next-line no-undef
+          bill = await prisma.bill.update({
+            where: { id },
+            data: updates,
+          });
+        } else {
+          const fields = [];
+          const values = [];
+
+          if (updates.title !== undefined) {
+            fields.push('title = ?');
+            values.push(updates.title);
+          }
+          if (updates.description !== undefined) {
+            fields.push('description = ?');
+            values.push(updates.description ?? null);
+          }
+          if (updates.status !== undefined) {
+            fields.push('status = ?');
+            values.push(updates.status);
+          }
+
+          if (fields.length === 0) return null;
+
+          values.push(id);
+          const updateStmt = this.db.prepare(
+            `UPDATE bills SET ${fields.join(', ')}, updated_at = datetime('now') WHERE id = ?`
+          );
+          const result = updateStmt.run(...values);
+          if (result.changes === 0) return null;
+
+          const selectStmt = this.db.prepare(
+            'SELECT id, title, description, proposer_id as proposerId, status, created_at as createdAt, updated_at as updatedAt FROM bills WHERE id = ?'
+          );
+          bill = selectStmt.get(id);
+        }
 
         // Invalidate cache
         if (this.cache) {
@@ -181,11 +243,11 @@ class BillStore {
         return {
           id: bill.id,
           title: bill.title,
-          description: bill.description,
-          proposerId: bill.proposerId,
+          description: bill.description ?? undefined,
+          proposerId: bill.proposerId ?? bill.proposer_id,
           status: bill.status,
-          createdAt: bill.createdAt,
-          updatedAt: bill.updatedAt,
+          createdAt: new Date(bill.createdAt ?? bill.created_at).toISOString(),
+          updatedAt: new Date(bill.updatedAt ?? bill.updated_at).toISOString(),
         };
       } catch (error) {
         if (error.code === 'P2025') {
@@ -199,9 +261,16 @@ class BillStore {
   async delete(id) {
     return retryWithBackoff(async () => {
       try {
-        await prisma.bill.delete({
-          where: { id },
-        });
+        if (usePrisma) {
+          // eslint-disable-next-line no-undef
+          await prisma.bill.delete({
+            where: { id },
+          });
+        } else {
+          const stmt = this.db.prepare('DELETE FROM bills WHERE id = ?');
+          const result = stmt.run(id);
+          if (result.changes === 0) return false;
+        }
 
         // Invalidate cache
         if (this.cache) {

@@ -22,8 +22,9 @@ vi.mock('../../stores/index.ts', () => ({
 }));
 
 describe('ModerationService', () => {
-  let service;
-  let mockDb;
+  let service: ModerationService;
+  // biome-ignore lint/suspicious/noExplicitAny: Test mock database
+  let mockDb: any;
 
   beforeEach(async () => {
     vi.clearAllMocks();

@@ -1,14 +1,35 @@
-// Prisma seed script for Political Sphere
-// Populates the database with initial development data
-// NOTE: Temporarily disabled due to missing Prisma schema models
-// TODO: Re-enable after Prisma schema migration is complete
+/**
+ * @ignore
+ * Prisma seed script for Political Sphere
+ * Populates the database with initial development data
+ * NOTE: Temporarily disabled due to missing Prisma schema models
+ * TODO: Re-enable after Prisma schema migration is complete
+ */
 
 import { PrismaClient } from '@prisma/client';
 
-const prisma = new PrismaClient();
+/**
+ * prisma - Prisma client used by the seed script
+ *
+ * Exported primarily so other tooling and compodoc can reference the client
+ * while the seed scripts are still in development.
+ */
+export const prisma = new PrismaClient();
 
-async function main() {
-  console.log('🌱 Seed script temporarily disabled - schema migration in progress');
+/**
+ * main - Entry point for the seed script. Seeds initial development data.
+ *
+ * In long-running environments this uses Prisma to populate dev data and
+ * should be guarded by environment checks.
+ */
+/**
+ * main - Entry point for the seed script. Seeds initial development data.
+ *
+ * In long-running environments this uses Prisma to populate dev data and
+ * should be guarded by environment checks.
+ */
+export async function main() {
+  // Seed script temporarily disabled - schema migration in progress
   // Clear existing data (development only)
   // if (process.env.NODE_ENV === 'development') {
   //   await prisma.vote.deleteMany();
@@ -18,7 +39,6 @@ async function main() {
   //   await prisma.newsArticle.deleteMany();
   //   console.log('✓ Cleared existing data');
   // }
-
   // Seed political parties
   // const parties = await Promise.all([
   //   prisma.party.create({
@@ -46,7 +66,6 @@ async function main() {
   //   }),
   // ]);
   // console.log(`✓ Created ${parties.length} political parties`);
-
   // Seed users - DISABLED
   // const users = await Promise.all([
   //   prisma.user.create({
@@ -76,7 +95,6 @@ async function main() {
   //   }),
   // ]);
   // console.log(`✓ Created ${users.length} users`);
-
   // Seed proposals - DISABLED
   // const proposals = await Promise.all([
   //   prisma.proposal.create({
@@ -98,7 +116,6 @@ async function main() {
   //   }),
   // ]);
   // console.log(`✓ Created ${proposals.length} proposals`);
-
   // Seed news articles - DISABLED
   // const articles = await Promise.all([
   //   prisma.newsArticle.create({
@@ -113,12 +130,12 @@ async function main() {
   //   }),
   // ]);
   // console.log(`✓ Created ${articles.length} news articles`);
-
-  console.log('✅ Seed script disabled - awaiting schema migration');
+  // Seed script disabled - awaiting schema migration
 }
 
 main()
   .catch(e => {
+    // eslint-disable-next-line no-console
     console.error('❌ Seed failed:', e);
     process.exit(1);
   })

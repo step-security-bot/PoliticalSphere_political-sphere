@@ -3,6 +3,7 @@
   "compilerOptions": {
     "rootDir": "../../",
     "baseUrl": "../../",
+    "ignoreDeprecations": "6.0",
     "target": "es2020"
   },
   "include": ["src/**/*"],

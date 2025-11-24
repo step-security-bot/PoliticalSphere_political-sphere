@@ -1,0 +1,1454 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>political-sphere documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">political-sphere documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content interface">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Interfaces</li>
+  <li class="breadcrumb-item"
+  >
+  PlayerAction</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>apps/api/src/game/game.service.ts</code>
+        </p>
+
+
+
+
+        <section data-compodoc="block-index">
+            <h3 id="index">Index</h3>
+            <table class="table table-sm table-bordered index-table">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <h6><b>Properties</b></h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <ul class="index-list">
+                                <li>
+                                            <span class="modifier">Optional</span>
+                                        <a href="#payload" 
+>
+                                            payload
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#playerId" 
+>
+                                            playerId
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#type" 
+>
+                                            type
+                                        </a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+
+
+            <section data-compodoc="block-properties">
+                <h3 id="inputs">Properties</h3>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="payload"></a>
+                                        <span class="name "><b>payload</b>
+                                            <a href="#payload">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>payload:         <code><a href="../miscellaneous/variables.html#g" target="_self" >Record&lt;string | unknown&gt;</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="../miscellaneous/variables.html#g" target="_self" >Record&lt;string | unknown&gt;</a></code>
+
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Optional</i>
+                                        </td>
+                                    </tr>
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="playerId"></a>
+                                        <span class="name "><b>playerId</b>
+                                            <a href="#playerId">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>playerId:         <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="type"></a>
+                                        <span class="name "><b>type</b>
+                                            <a href="#type">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>type:         <code><a href="../miscellaneous/functions.html#start" target="_self" >&quot;propose&quot; | &quot;vote&quot; | &quot;speak&quot; | &quot;start_debate&quot; | &quot;advance_turn&quot; | &quot;advance_phase&quot;</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="../miscellaneous/functions.html#start" target="_self" >&quot;propose&quot; | &quot;vote&quot; | &quot;speak&quot; | &quot;start_debate&quot; | &quot;advance_turn&quot; | &quot;advance_phase&quot;</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+            </section>
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { v4 as uuidv4 } from &#x27;uuid&#x27;;
+
+import type { Prisma } from &#x27;@prisma/client&#x27;;
+import type {
+  GameState as EngineGameState,
+  PlayerAction as EnginePlayerAction,
+} from &#x27;@political-sphere/game-engine&#x27;;
+import { advanceGameState } from &#x27;@political-sphere/game-engine&#x27;;
+import { gameEventEmitter } from &#x27;../events&#x27;;
+import { prisma } from &#x27;../services/prisma-database.service.js&#x27;;
+import { error as loggerError } from &#x27;../utils/logger&#x27;;
+import ComplianceService from &#x27;../modules/complianceService&#x27;;
+
+type ComplianceModule &#x3D; typeof ComplianceService &amp; {
+  logComplianceEvent: (event: Record&lt;string, unknown&gt;) &#x3D;&gt; string;
+};
+
+const compliance &#x3D; ComplianceService as ComplianceModule;
+
+// Extend engine&#x27;s GameState with service-specific properties
+export interface GameState extends Omit&lt;EngineGameState, &#x27;players&#x27;&gt; {
+  currentTurn: number; // Service uses currentTurn instead of turn object
+  phase: &#x27;setup&#x27; | &#x27;legislative&#x27; | &#x27;executive&#x27; | &#x27;judicial&#x27; | &#x27;media&#x27; | &#x27;election&#x27; | &#x27;finished&#x27;;
+  players: Array&lt;{
+    id: string;
+    username: string;
+    reputation: number;
+    joinedAt: string;
+    party?: string;
+    role?: &#x27;mp&#x27; | &#x27;minister&#x27; | &#x27;judge&#x27; | &#x27;journalist&#x27;;
+    verifiedAge?: number | null;
+    contentRating?: string;
+  }&gt;;
+  settings: {
+    maxPlayers: number;
+    turnDuration: number; // seconds
+    debateDuration: number; // seconds
+    maxTurns: number;
+  };
+  status: &#x27;waiting&#x27; | &#x27;active&#x27; | &#x27;paused&#x27; | &#x27;finished&#x27;;
+  contentRating: string;
+  moderationEnabled: boolean;
+  ageVerificationRequired: boolean;
+  // System integration state
+  parliamentState: {
+    chambersCreated: boolean;
+    activeMotions: string[];
+    passedLaws: string[];
+  };
+  governmentState: {
+    governmentId?: string;
+    ministers: Array&lt;{ userId: string; portfolio: string }&gt;;
+    executiveActions: string[];
+  };
+  judiciaryState: {
+    judges: string[];
+    activeCases: string[];
+    rulings: string[];
+  };
+  mediaState: {
+    pressReleases: string[];
+    polls: string[];
+    publicOpinion: { approval: number; trust: number };
+  };
+  electionState: {
+    nextElectionDate?: string;
+    currentGovernmentApproval: number;
+    electionTriggered: boolean;
+  };
+  winConditions: {
+    stability: number; // 0-100, based on government approval and economic factors
+    legislation: number; // number of laws passed
+    publicTrust: number; // 0-100, based on media and judicial decisions
+  };
+  // Additional game server state
+  debates?: Debate[];
+  speeches?: Speech[];
+}
+
+// Additional interfaces from game-server
+interface Debate {
+  id: string;
+  proposalId: string;
+  speakingOrder: string[];
+  currentSpeakerIndex: number;
+  timeLimit: number;
+  startedAt: string;
+  createdAt: string;
+  status: &#x27;active&#x27; | &#x27;completed&#x27;;
+}
+
+interface Speech {
+  id: string;
+  debateId: string;
+  speakerId: string;
+  content: string;
+  timestamp: string;
+}
+
+export interface PlayerAction {
+  type: &#x27;propose&#x27; | &#x27;vote&#x27; | &#x27;speak&#x27; | &#x27;start_debate&#x27; | &#x27;advance_turn&#x27; | &#x27;advance_phase&#x27;;
+  playerId: string;
+  payload?: Record&lt;string, unknown&gt;;
+}
+
+// Game storage using Prisma database
+
+export class GameService {
+  /**
+   * Create a new game
+   */
+  /**
+   * Update game state in database
+   */
+  private async updateGameState(gameId: string, gameState: GameState): Promise&lt;void&gt; {
+    await prisma.game.update({
+      where: { id: gameId },
+      data: {
+        state: gameState as unknown as Prisma.InputJsonValue,
+        updatedAt: new Date(),
+      },
+    });
+  }
+
+  private async recordAuditLog(entry: {
+    category: string;
+    action: string;
+    userId: string;
+    resource?: string;
+    details?: Record&lt;string, unknown&gt;;
+  }): Promise&lt;void&gt; {
+    try {
+      await prisma.auditLog.create({
+        data: {
+          category: entry.category,
+          action: entry.action,
+          userId: entry.userId,
+          resource: entry.resource ?? &#x27;game&#x27;,
+          details: (entry.details ?? {}) as Prisma.InputJsonValue,
+          complianceFrameworks: [&#x27;DSA&#x27;],
+          timestamp: new Date(),
+        },
+      });
+    } catch (error) {
+      loggerError(&#x27;Failed to record audit log&#x27;, { error: (error as Error).message });
+    }
+  }
+
+  async createGame(creatorId: string, _creatorUsername: string, _name: string): Promise&lt;GameState&gt; {
+    const gameId &#x3D; uuidv4();
+    const now &#x3D; new Date().toISOString();
+
+    const game: GameState &#x3D; {
+      id: gameId,
+      name: _name || &#x27;New Game&#x27;,
+      createdAt: now,
+      updatedAt: now,
+      currentTurn: 0, // Start at 0, will be incremented when game starts
+      phase: &#x27;setup&#x27;,
+      players: [],
+      proposals: [],
+      votes: [],
+      economy: { treasury: 100000, inflationRate: 0.02, unemploymentRate: 0.05 },
+      turn: { turnNumber: 0, phase: &#x27;lobby&#x27; },
+      contentRating: &#x27;PG&#x27;,
+      moderationEnabled: true,
+      ageVerificationRequired: true,
+      // Initialize system states
+      parliamentState: {
+        chambersCreated: false,
+        activeMotions: [],
+        passedLaws: [],
+      },
+      governmentState: {
+        ministers: [],
+        executiveActions: [],
+      },
+      judiciaryState: {
+        judges: [],
+        activeCases: [],
+        rulings: [],
+      },
+      mediaState: {
+        pressReleases: [],
+        polls: [],
+        publicOpinion: { approval: 50, trust: 50 },
+      },
+      electionState: {
+        currentGovernmentApproval: 50,
+        electionTriggered: false,
+      },
+      winConditions: {
+        stability: 50,
+        legislation: 0,
+        publicTrust: 50,
+      },
+      settings: {
+        maxPlayers: 20,
+        turnDuration: 300,
+        debateDuration: 180,
+        maxTurns: 10,
+      },
+      status: &#x27;waiting&#x27;,
+    };
+
+    // Persist game to database
+    await prisma.game.create({
+      data: {
+        id: gameId,
+        name: game.name,
+        state: game as unknown as Prisma.InputJsonValue,
+      },
+    });
+
+    await this.recordAuditLog({
+      category: &#x27;game_management&#x27;,
+      action: &#x27;game_created&#x27;,
+      userId: creatorId,
+      resource: &#x27;game&#x27;,
+      details: { gameId, gameName: game.name },
+    });
+
+    // Log game creation for compliance
+    compliance.logComplianceEvent({
+      category: &#x27;game_management&#x27;,
+      action: &#x27;game_created&#x27;,
+      userId: creatorId,
+      resource: &#x27;game&#x27;,
+      details: { gameId, gameName: name },
+      complianceFrameworks: [&#x27;DSA&#x27;],
+    });
+
+    return game;
+  }
+
+  /**
+   * Get game by ID
+   */
+  async getGame(gameId: string): Promise&lt;GameState | null&gt; {
+    const gameRecord &#x3D; await prisma.game.findUnique({
+      where: { id: gameId },
+    });
+
+    if (!gameRecord) {
+      return null;
+    }
+
+    const state &#x3D; gameRecord.state as unknown as GameState;
+    // Clone to avoid mutating cached state objects in memory
+    return JSON.parse(JSON.stringify(state)) as GameState;
+  }
+
+  /**
+   * Get all games (for lobby listing)
+   */
+  async listGames(): Promise&lt;GameState[]&gt; {
+    const gameRecords &#x3D; await prisma.game.findMany();
+    return gameRecords.map(record &#x3D;&gt; record.state as unknown as GameState);
+  }
+
+  /**
+   * Get games for a specific player
+   */
+  async getPlayerGames(playerId: string): Promise&lt;GameState[]&gt; {
+    const allGames &#x3D; await this.listGames();
+    return allGames.filter(game &#x3D;&gt; game.players.some(player &#x3D;&gt; player.id &#x3D;&#x3D;&#x3D; playerId));
+  }
+
+  /**
+   * Join an existing game
+   */
+  async joinGame(gameId: string, playerId: string, username: string): Promise&lt;GameState&gt; {
+    const game &#x3D; await this.getGame(gameId);
+    if (!game) {
+      throw new Error(&#x27;Game not found&#x27;);
+    }
+
+    if (game.status &#x3D;&#x3D;&#x3D; &#x27;finished&#x27;) {
+      throw new Error(&#x27;Game has finished&#x27;);
+    }
+
+    if (game.players.length &gt;&#x3D; game.settings.maxPlayers) {
+      throw new Error(&#x27;Game is full&#x27;);
+    }
+
+    if (game.players.some(p &#x3D;&gt; p.id &#x3D;&#x3D;&#x3D; playerId)) {
+      throw new Error(&#x27;Already in this game&#x27;);
+    }
+
+    // Age verification check if required
+    let verifiedAge: number | null &#x3D; null;
+    if (game.ageVerificationRequired) {
+      try {
+        const verification &#x3D; await this.checkAgeVerification(playerId);
+
+        if (verification.verified) {
+          verifiedAge &#x3D; verification.age ?? null;
+        } else if (!process.env.API_BASE_URL) {
+          // Import age verification service dynamically when local checks are required
+          const { default: AgeVerificationService } &#x3D; await import(
+            &#x27;../modules/ageVerificationService.js&#x27;
+          );
+          // biome-ignore lint/suspicious/noExplicitAny: Dynamic import requires any for unknown service interface
+          const fallbackVerification &#x3D; await (AgeVerificationService as any).getVerificationStatus(
+            playerId
+          );
+          if (!fallbackVerification?.verified) {
+            throw new Error(&#x27;Age verification required&#x27;);
+          }
+          verifiedAge &#x3D; fallbackVerification.age;
+        } else {
+          throw new Error(&#x27;Age verification required&#x27;);
+        }
+      } catch (error) {
+        loggerError(&#x27;Age verification check failed&#x27;, { error: (error as Error).message, playerId });
+        throw new Error(&#x27;Age verification required&#x27;);
+      }
+    }
+
+    const player &#x3D; {
+      id: playerId,
+      username,
+      reputation: 0,
+      joinedAt: new Date().toISOString(),
+      verifiedAge,
+      contentRating: game.contentRating || &#x27;PG&#x27;,
+    };
+
+    game.players.push(player);
+    game.updatedAt &#x3D; new Date().toISOString();
+
+    // Update game in database
+    await this.updateGameState(gameId, game);
+
+    await this.recordAuditLog({
+      category: &#x27;game_management&#x27;,
+      action: &#x27;player_joined&#x27;,
+      userId: playerId,
+      resource: &#x27;game&#x27;,
+      details: { gameId, playerName: username },
+    });
+
+    // Log player join for compliance
+    compliance.logComplianceEvent({
+      category: &#x27;game_management&#x27;,
+      action: &#x27;player_joined&#x27;,
+      userId: playerId,
+      resource: &#x27;game&#x27;,
+      details: { gameId, playerName: username },
+      complianceFrameworks: [&#x27;DSA&#x27;],
+    });
+
+    return game;
+  }
+
+  /**
+   * Process a player action
+   */
+  async processAction(gameId: string, action: PlayerAction): Promise&lt;GameState&gt; {
+    const game &#x3D; await this.getGame(gameId);
+    if (!game) {
+      throw new Error(&#x27;Game not found&#x27;);
+    }
+
+    if (game.status !&#x3D;&#x3D; &#x27;active&#x27; &amp;&amp; game.status !&#x3D;&#x3D; &#x27;waiting&#x27;) {
+      throw new Error(&#x27;Game is not active&#x27;);
+    }
+
+    // Verify player is in game
+    const player &#x3D; game.players.find(p &#x3D;&gt; p.id &#x3D;&#x3D;&#x3D; action.playerId);
+    if (!player) {
+      throw new Error(&#x27;Player not in this game&#x27;);
+    }
+
+    // Handle special actions that don&#x27;t go through the game engine
+    if (action.type &#x3D;&#x3D;&#x3D; &#x27;advance_phase&#x27;) {
+      return this.advancePhase(gameId, action.playerId);
+    }
+
+    // Enrich payload with implicit player identifiers so clients don&#x27;t need to duplicate
+    const enrichedAction: PlayerAction &#x3D; {
+      ...action,
+      payload: { ...(action.payload || {}) },
+    };
+    if (
+      enrichedAction.type &#x3D;&#x3D;&#x3D; &#x27;vote&#x27; &amp;&amp;
+      enrichedAction.payload &amp;&amp;
+      !enrichedAction.payload.playerId
+    ) {
+      enrichedAction.payload.playerId &#x3D; enrichedAction.playerId;
+    }
+    if (
+      enrichedAction.type &#x3D;&#x3D;&#x3D; &#x27;propose&#x27; &amp;&amp;
+      enrichedAction.payload &amp;&amp;
+      !enrichedAction.payload.proposerId
+    ) {
+      enrichedAction.payload.proposerId &#x3D; enrichedAction.playerId;
+    }
+
+    // Convert service GameState to engine GameState format
+    // Map our phases to engine phases for compatibility
+    const phaseMapping: Record&lt;string, &#x27;lobby&#x27; | &#x27;debate&#x27; | &#x27;voting&#x27; | &#x27;enacted&#x27;&gt; &#x3D; {
+      setup: &#x27;lobby&#x27;,
+      legislative: &#x27;debate&#x27;,
+      executive: &#x27;enacted&#x27;,
+      judicial: &#x27;voting&#x27;,
+      media: &#x27;lobby&#x27;,
+      election: &#x27;voting&#x27;,
+      finished: &#x27;enacted&#x27;,
+    };
+
+    const reversePhaseMapping: Record&lt;string, GameState[&#x27;phase&#x27;]&gt; &#x3D; {
+      lobby: &#x27;setup&#x27;,
+      debate: &#x27;legislative&#x27;,
+      voting: &#x27;judicial&#x27;,
+      enacted: &#x27;executive&#x27;,
+    };
+
+    const engineState: EngineGameState &#x3D; {
+      ...game,
+      players: game.players.map(p &#x3D;&gt; ({
+        id: p.id,
+        displayName: p.username,
+        createdAt: p.joinedAt,
+        verifiedAge: null,
+        contentRating: game.contentRating || &#x27;PG&#x27;,
+      })),
+      turn: {
+        turnNumber: game.currentTurn,
+        phase: phaseMapping[game.phase] || &#x27;lobby&#x27;,
+      },
+    };
+
+    // Use game engine to advance state
+    const seed &#x3D; Date.now();
+    const newState &#x3D; advanceGameState(engineState, [enrichedAction as EnginePlayerAction], seed);
+
+    // Check for new votes and emit events
+    const previousVotesCount &#x3D; game.votes.length;
+    const newVotes &#x3D; newState.votes || [];
+
+    // Merge engine state back into game
+    game.proposals &#x3D; newState.proposals || [];
+    game.votes &#x3D; newVotes;
+    game.debates &#x3D; newState.debates || [];
+    game.speeches &#x3D; newState.speeches || [];
+    game.updatedAt &#x3D; newState.updatedAt;
+
+    if (newState.economy) {
+      game.economy &#x3D; newState.economy;
+    }
+
+    if (newState.turn) {
+      game.currentTurn &#x3D; newState.turn.turnNumber;
+      // Map engine phase back to our phase system
+      game.phase &#x3D; reversePhaseMapping[newState.turn.phase] || game.phase;
+    }
+
+    // Emit events for new votes
+    if (newVotes.length &gt; previousVotesCount) {
+      const newVote &#x3D; newVotes[newVotes.length - 1];
+      if (newVote &amp;&amp; enrichedAction.type &#x3D;&#x3D;&#x3D; &#x27;vote&#x27;) {
+        gameEventEmitter.emitParliamentVote(
+          gameId,
+          newVote.proposalId,
+          newVote.playerId,
+          newVote.choice
+        );
+      }
+    }
+
+    // Check for newly enacted proposals and emit events
+    const previousProposals &#x3D; engineState.proposals || [];
+    const currentProposals &#x3D; newState.proposals || [];
+    const prevById &#x3D; new Map(previousProposals.map(p &#x3D;&gt; [p.id, p]));
+
+    currentProposals.forEach(currProposal &#x3D;&gt; {
+      if (!currProposal) return;
+      const prevProposal &#x3D; prevById.get(currProposal.id);
+      const isNewlyEnacted &#x3D;
+        currProposal.status &#x3D;&#x3D;&#x3D; &#x27;enacted&#x27; &amp;&amp; (!prevProposal || prevProposal.status !&#x3D;&#x3D; &#x27;enacted&#x27;);
+      if (isNewlyEnacted) {
+        gameEventEmitter.emitParliamentBillPassed(gameId, currProposal.id);
+      }
+    });
+
+    // Persist updated game state
+    await this.updateGameState(gameId, game);
+
+    return game;
+  }
+
+  /**
+   * Start a game (move from lobby to active)
+   */
+  async startGame(gameId: string, playerId: string): Promise&lt;GameState&gt; {
+    const game &#x3D; await this.getGame(gameId);
+    if (!game) {
+      throw new Error(&#x27;Game not found&#x27;);
+    }
+
+    // Verify player is creator (first player)
+    if (!game.players[0] || game.players[0].id !&#x3D;&#x3D; playerId) {
+      throw new Error(&#x27;Only game creator can start the game&#x27;);
+    }
+
+    if (game.status !&#x3D;&#x3D; &#x27;waiting&#x27;) {
+      throw new Error(&#x27;Game already started&#x27;);
+    }
+
+    if (game.players.length &lt; 2) {
+      throw new Error(&#x27;Need at least 2 players to start&#x27;);
+    }
+
+    game.status &#x3D; &#x27;active&#x27;;
+    game.phase &#x3D; &#x27;legislative&#x27;;
+
+    await this.updateGameState(gameId, game);
+
+    return game;
+  }
+
+  /**
+   * Advance game to next phase
+   */
+  async advancePhase(gameId: string, playerId: string): Promise&lt;GameState&gt; {
+    const game &#x3D; await this.getGame(gameId);
+    if (!game) {
+      throw new Error(&#x27;Game not found&#x27;);
+    }
+
+    if (game.status !&#x3D;&#x3D; &#x27;active&#x27; || game.phase &#x3D;&#x3D;&#x3D; &#x27;finished&#x27;) {
+      throw new Error(&#x27;Game is not active&#x27;);
+    }
+
+    // Check if player is in game
+    const player &#x3D; game.players.find(p &#x3D;&gt; p.id &#x3D;&#x3D;&#x3D; playerId);
+    if (!player) {
+      throw new Error(&#x27;Player not in this game&#x27;);
+    }
+
+    // Phase progression logic
+    const phaseOrder: GameState[&#x27;phase&#x27;][] &#x3D; [
+      &#x27;setup&#x27;,
+      &#x27;legislative&#x27;,
+      &#x27;executive&#x27;,
+      &#x27;judicial&#x27;,
+      &#x27;media&#x27;,
+      &#x27;election&#x27;,
+      &#x27;finished&#x27;,
+    ];
+    const currentIndex &#x3D; phaseOrder.indexOf(game.phase);
+
+    if (currentIndex &#x3D;&#x3D;&#x3D; -1) {
+      throw new Error(&#x27;Invalid game phase&#x27;);
+    }
+
+    // Check if current phase requirements are met before advancing
+    if (!this.canAdvancePhase(game)) {
+      throw new Error(&#x27;Cannot advance phase: requirements not met&#x27;);
+    }
+
+    const previousPhase &#x3D; game.phase;
+
+    // Advance to next phase
+    const nextIndex &#x3D; currentIndex + 1;
+    if (nextIndex &gt;&#x3D; phaseOrder.length) {
+      game.phase &#x3D; &#x27;finished&#x27;;
+      game.status &#x3D; &#x27;finished&#x27;;
+    } else {
+      game.phase &#x3D; phaseOrder[nextIndex] as GameState[&#x27;phase&#x27;];
+    }
+
+    // Execute phase transition logic
+    this.executePhaseTransition(game);
+
+    game.updatedAt &#x3D; new Date().toISOString();
+
+    // Emit phase change event
+    gameEventEmitter.emitGamePhaseChanged(gameId, game.phase, previousPhase);
+
+    // Persist updated game state
+    await this.updateGameState(gameId, game);
+
+    return game;
+  }
+
+  /**
+   * Check if game can advance to next phase
+   */
+  private canAdvancePhase(game: GameState): boolean {
+    switch (game.phase) {
+      case &#x27;setup&#x27;:
+        return game.parliamentState.chambersCreated;
+      case &#x27;legislative&#x27;:
+        return game.parliamentState.passedLaws.length &gt; 0;
+      case &#x27;executive&#x27;:
+        return game.governmentState.executiveActions.length &gt; 0;
+      case &#x27;judicial&#x27;:
+        return game.judiciaryState.rulings.length &gt;&#x3D; 0; // Always allow after executive
+      case &#x27;media&#x27;:
+        return game.mediaState.pressReleases.length &gt; 0;
+      case &#x27;election&#x27;:
+        return game.electionState.electionTriggered;
+      default:
+        return true;
+    }
+  }
+
+  /**
+   * Execute phase transition logic
+   */
+  private executePhaseTransition(game: GameState): void {
+    switch (game.phase) {
+      case &#x27;legislative&#x27;:
+        this.initializeParliament(game);
+        break;
+      case &#x27;executive&#x27;:
+        this.initializeGovernment(game);
+        break;
+      case &#x27;judicial&#x27;:
+        this.initializeJudiciary(game);
+        break;
+      case &#x27;media&#x27;:
+        this.initializeMedia(game);
+        break;
+      case &#x27;election&#x27;:
+        this.initializeElection(game);
+        break;
+      case &#x27;finished&#x27;:
+        this.calculateFinalScore(game);
+        break;
+    }
+  }
+
+  /**
+   * Initialize parliament for legislative phase
+   */
+  private initializeParliament(game: GameState): void {
+    // This would create chambers via parliament service
+    game.parliamentState.chambersCreated &#x3D; true;
+  }
+
+  /**
+   * Initialize government for executive phase
+   */
+  private initializeGovernment(game: GameState): void {
+    // Create government
+    game.governmentState.governmentId &#x3D; &#x60;gov-${game.id}&#x60;;
+
+    // Convert passed laws into executive actions
+    game.governmentState.executiveActions &#x3D; game.parliamentState.passedLaws.map(
+      lawId &#x3D;&gt; &#x60;exec-${lawId}&#x60;
+    );
+
+    // Assign ministers from players
+    game.governmentState.ministers &#x3D; game.players
+      .filter(p &#x3D;&gt; p.role &#x3D;&#x3D;&#x3D; &#x27;mp&#x27;) // MPs can become ministers
+      .slice(0, 3) // Limit to 3 ministers for simplicity
+      .map(p &#x3D;&gt; ({
+        userId: p.id,
+        portfolio:
+          [&#x27;Finance&#x27;, &#x27;Health&#x27;, &#x27;Education&#x27;][game.governmentState.ministers.length] || &#x27;General&#x27;,
+      }));
+
+    // Emit government formed event
+    gameEventEmitter.emitGameEvent({
+      type: &#x27;government-formed&#x27;,
+      gameId: game.id,
+      data: {
+        governmentId: game.governmentState.governmentId,
+        ministers: game.governmentState.ministers,
+      },
+      timestamp: Date.now(),
+    });
+
+    // Emit executive actions
+    game.governmentState.executiveActions.forEach(actionId &#x3D;&gt; {
+      gameEventEmitter.emitGovernmentAction(game.id, actionId, &#x27;system&#x27;, &#x27;policy&#x27;);
+    });
+  }
+
+  /**
+   * Initialize judiciary for judicial phase
+   */
+  private initializeJudiciary(game: GameState): void {
+    // Assign judges from players
+    game.judiciaryState.judges &#x3D; game.players
+      .filter(p &#x3D;&gt; p.role &#x3D;&#x3D;&#x3D; &#x27;mp&#x27;) // MPs can become judges
+      .slice(0, 2) // Limit to 2 judges
+      .map(p &#x3D;&gt; p.id);
+
+    // Create cases challenging executive actions (simulate judicial review)
+    const challengedActions &#x3D; game.governmentState.executiveActions.slice(0, 1); // Challenge first action
+    game.judiciaryState.activeCases &#x3D; challengedActions.map(actionId &#x3D;&gt; &#x60;case-${actionId}&#x60;);
+
+    // Simulate rulings (some pass, some fail)
+    game.judiciaryState.rulings &#x3D; game.judiciaryState.activeCases.map(caseId &#x3D;&gt; &#x60;ruling-${caseId}&#x60;);
+
+    // Emit judicial rulings
+    game.judiciaryState.rulings.forEach(rulingId &#x3D;&gt; {
+      gameEventEmitter.emitJudicialRuling(game.id, &#x60;case-${rulingId}&#x60;, rulingId, &#x27;upheld&#x27;);
+    });
+  }
+
+  /**
+   * Initialize media for media phase
+   */
+  private initializeMedia(game: GameState): void {
+    // Generate press releases based on judicial rulings
+    game.mediaState.pressReleases &#x3D; game.judiciaryState.rulings.map(
+      rulingId &#x3D;&gt; &#x60;press-${rulingId}&#x60;
+    );
+
+    // Create polls based on government performance
+    game.mediaState.polls &#x3D; [&#x60;poll-gov-approval&#x60;, &#x60;poll-trust-judiciary&#x60;];
+
+    // Update public opinion based on rulings and government actions
+    const rulingCount &#x3D; game.judiciaryState.rulings.length;
+    const executiveActions &#x3D; game.governmentState.executiveActions.length;
+
+    // Judicial rulings can affect trust
+    game.mediaState.publicOpinion.trust &#x3D; Math.min(100, 50 + rulingCount * 5);
+
+    // Government actions and rulings affect approval
+    game.mediaState.publicOpinion.approval &#x3D; Math.min(
+      100,
+      50 + executiveActions * 3 - rulingCount * 2
+    );
+
+    // Emit media press releases
+    game.mediaState.pressReleases.forEach(releaseId &#x3D;&gt; {
+      gameEventEmitter.emitMediaPressRelease(game.id, releaseId, &#x60;Press Release: ${releaseId}&#x60;);
+    });
+  }
+
+  /**
+   * Initialize election for election phase
+   */
+  private initializeElection(game: GameState): void {
+    game.electionState.electionTriggered &#x3D; true;
+    game.electionState.nextElectionDate &#x3D; new Date(
+      Date.now() + 7 * 24 * 60 * 60 * 1000
+    ).toISOString();
+
+    // Election outcome based on public opinion
+    const approval &#x3D; game.mediaState.publicOpinion.approval;
+    const _trust &#x3D; game.mediaState.publicOpinion.trust;
+
+    // Government approval affects re-election chances
+    game.electionState.currentGovernmentApproval &#x3D; approval;
+
+    // If approval is low, trigger early election or government change
+    if (approval &lt; 40) {
+      // Government loses confidence, new election called
+      game.electionState.electionTriggered &#x3D; true;
+    } else if (approval &gt; 70) {
+      // Government maintains strong position
+      game.electionState.electionTriggered &#x3D; false; // Could continue
+    }
+
+    // Emit election results
+    gameEventEmitter.emitElectionResults(game.id, {
+      approval,
+      triggered: game.electionState.electionTriggered,
+      nextElectionDate: game.electionState.nextElectionDate,
+    });
+  }
+
+  /**
+   * Calculate final game score
+   */
+  private calculateFinalScore(game: GameState): void {
+    // Calculate win conditions
+    game.winConditions.stability &#x3D; Math.min(100, game.mediaState.publicOpinion.approval);
+    game.winConditions.legislation &#x3D; game.parliamentState.passedLaws.length * 10;
+    game.winConditions.publicTrust &#x3D; game.mediaState.publicOpinion.trust;
+
+    // Determine winner based on scores
+    const totalScore &#x3D;
+      game.winConditions.stability +
+      game.winConditions.legislation +
+      game.winConditions.publicTrust;
+    if (totalScore &gt;&#x3D; 150) {
+      // Game succeeded
+    } else {
+      // Game could be improved
+    }
+  }
+
+  /**
+   * Delete a game
+   */
+  async deleteGame(gameId: string, playerId: string): Promise&lt;void&gt; {
+    const game &#x3D; await this.getGame(gameId);
+    if (!game) {
+      throw new Error(&#x27;Game not found&#x27;);
+    }
+
+    // Only creator can delete
+    if (!game.players[0] || game.players[0].id !&#x3D;&#x3D; playerId) {
+      throw new Error(&#x27;Only game creator can delete the game&#x27;);
+    }
+
+    // Delete from database
+    await prisma.game.delete({
+      where: { id: gameId },
+    });
+  }
+
+  public localModeration(content: string | null): { isSafe: boolean; reasons: string[] } {
+    if (!content) {
+      return { isSafe: true, reasons: [] };
+    }
+
+    const text &#x3D; content.toLowerCase();
+    const reasons: string[] &#x3D; [];
+
+    if (text.includes(&#x27;hate&#x27;) || text.includes(&#x27;kill&#x27;)) {
+      reasons.push(&#x27;Potential hate/violence&#x27;);
+    }
+    if (text.includes(&#x27;child&#x27;) &amp;&amp; (text.includes(&#x27;porn&#x27;) || text.includes(&#x27;abuse&#x27;))) {
+      reasons.push(&#x27;Child safety&#x27;);
+    }
+    if (/(fuck|shit|bullshit)/.test(text)) {
+      reasons.push(&#x27;Profanity&#x27;);
+    }
+
+    return { isSafe: reasons.length &#x3D;&#x3D;&#x3D; 0, reasons };
+  }
+
+  public async remoteModeration(
+    content: string,
+    userId: string &#x3D; &#x27;system&#x27;
+  ): Promise&lt;{ isSafe: boolean; reasons: string[] } | null&gt; {
+    if (!process.env.API_MODERATION_URL) {
+      return null;
+    }
+
+    const fetchPromise &#x3D; fetch(process.env.API_MODERATION_URL, {
+      method: &#x27;POST&#x27;,
+      headers: { &#x27;Content-Type&#x27;: &#x27;application/json&#x27; },
+      body: JSON.stringify({ content, userId }),
+    });
+
+    // Prevent unhandled rejection when racing promise
+    fetchPromise.catch(() &#x3D;&gt; null);
+
+    try {
+      const response &#x3D; await Promise.race([
+        fetchPromise,
+        new Promise((_, reject) &#x3D;&gt; setTimeout(() &#x3D;&gt; reject(new Error(&#x27;Moderation timeout&#x27;)), 3000)),
+      ]);
+
+      const res &#x3D; response as Response;
+
+      if (!res?.ok) {
+        await this.recordAuditLog({
+          category: &#x27;content_moderation&#x27;,
+          action: &#x27;moderation_api_failure&#x27;,
+          userId,
+          resource: &#x27;content&#x27;,
+          details: { reason: &#x27;non_ok_response&#x27; },
+        });
+        return null;
+      }
+
+      const payload &#x3D; await res.json().catch(() &#x3D;&gt; null);
+      const moderation &#x3D; payload?.data;
+
+      if (!payload?.success || typeof moderation?.isSafe !&#x3D;&#x3D; &#x27;boolean&#x27;) {
+        await this.recordAuditLog({
+          category: &#x27;content_moderation&#x27;,
+          action: &#x27;moderation_api_failure&#x27;,
+          userId,
+          resource: &#x27;content&#x27;,
+          details: { reason: &#x27;invalid_response&#x27; },
+        });
+        return null;
+      }
+
+      await this.recordAuditLog({
+        category: &#x27;content_moderation&#x27;,
+        action: &#x27;moderation_checked&#x27;,
+        userId,
+        resource: &#x27;content&#x27;,
+        details: { isSafe: moderation.isSafe, reasons: moderation.reasons || [] },
+      });
+
+      compliance.logComplianceEvent({
+        category: &#x27;content_moderation&#x27;,
+        action: &#x27;moderation_checked&#x27;,
+        userId,
+        resource: &#x27;content&#x27;,
+        details: { isSafe: moderation.isSafe, reasons: moderation.reasons || [] },
+        complianceFrameworks: [&#x27;DSA&#x27;],
+      });
+
+      return { isSafe: moderation.isSafe, reasons: moderation.reasons || [] };
+    } catch (error) {
+      loggerError(&#x27;Remote moderation failed&#x27;, { error: (error as Error).message, userId });
+      await this.recordAuditLog({
+        category: &#x27;content_moderation&#x27;,
+        action: &#x27;moderation_api_failure&#x27;,
+        userId,
+        resource: &#x27;content&#x27;,
+        details: { reason: &#x27;exception&#x27; },
+      });
+      compliance.logComplianceEvent({
+        category: &#x27;content_moderation&#x27;,
+        action: &#x27;moderation_api_failure&#x27;,
+        userId,
+        resource: &#x27;content&#x27;,
+        details: { error: (error as Error).message },
+        complianceFrameworks: [&#x27;DSA&#x27;],
+      });
+      return null;
+    }
+  }
+
+  public async checkAgeVerification(
+    userId: string
+  ): Promise&lt;{ verified: boolean; age: number | null }&gt; {
+    if (!process.env.API_BASE_URL) {
+      return { verified: false, age: null };
+    }
+
+    try {
+      const response &#x3D; await fetch(&#x60;${process.env.API_BASE_URL}/api/age/status&#x60;, {
+        method: &#x27;GET&#x27;,
+        headers: {
+          Authorization: &#x60;Bearer ${userId}&#x60;,
+        },
+      });
+
+      if (!response.ok) {
+        return { verified: false, age: null };
+      }
+
+      const payload &#x3D; await response.json().catch(() &#x3D;&gt; null);
+      if (!payload?.success || !payload.data?.verified) {
+        return { verified: false, age: null };
+      }
+
+      return {
+        verified: true,
+        age: typeof payload.data.age &#x3D;&#x3D;&#x3D; &#x27;number&#x27; ? payload.data.age : null,
+      };
+    } catch (error) {
+      loggerError(&#x27;Age verification API failed&#x27;, { error: (error as Error).message, userId });
+      return { verified: false, age: null };
+    }
+  }
+
+  public async checkContentAccess(userId: string, rating: string): Promise&lt;boolean&gt; {
+    if (!process.env.API_BASE_URL) {
+      return false;
+    }
+
+    try {
+      const response &#x3D; await fetch(&#x60;${process.env.API_BASE_URL}/api/age/check-access&#x60;, {
+        method: &#x27;POST&#x27;,
+        headers: {
+          &#x27;Content-Type&#x27;: &#x27;application/json&#x27;,
+          Authorization: &#x60;Bearer ${userId}&#x60;,
+        },
+        body: JSON.stringify({ contentRating: rating }),
+      });
+
+      if (!response.ok) {
+        return false;
+      }
+
+      const payload &#x3D; await response.json().catch(() &#x3D;&gt; null);
+      if (!payload?.success) {
+        return false;
+      }
+
+      return Boolean(payload.data?.canAccess);
+    } catch (error) {
+      loggerError(&#x27;Content access check failed&#x27;, { error: (error as Error).message, userId });
+      return false;
+    }
+  }
+
+  /**
+   * Get flagged proposals for a game (moderator view)
+   */
+  async getFlaggedProposals(gameId: string): Promise&lt;unknown[]&gt; {
+    const game &#x3D; await this.getGame(gameId);
+    if (!game) {
+      throw new Error(&#x27;Game not found&#x27;);
+    }
+
+    // Return proposals that are flagged
+    return (game.proposals || []).filter(
+      p &#x3D;&gt; p.status &#x3D;&#x3D;&#x3D; &#x27;flagged&#x27; || p.moderationStatus &#x3D;&#x3D;&#x3D; &#x27;flagged&#x27;
+    );
+  }
+
+  /**
+   * Review and moderate a flagged proposal
+   */
+  async reviewFlaggedProposal(
+    gameId: string,
+    proposalId: string,
+    moderatorId: string,
+    action: &#x27;approve&#x27; | &#x27;reject&#x27;,
+    note?: string
+  ): Promise&lt;unknown&gt; {
+    const game &#x3D; await this.getGame(gameId);
+    if (!game) {
+      throw new Error(&#x27;Game not found&#x27;);
+    }
+
+    const proposal &#x3D; (game.proposals || []).find(p &#x3D;&gt; p.id &#x3D;&#x3D;&#x3D; proposalId);
+    if (!proposal) {
+      throw new Error(&#x27;Proposal not found&#x27;);
+    }
+
+    if (proposal.status !&#x3D;&#x3D; &#x27;flagged&#x27; &amp;&amp; proposal.moderationStatus !&#x3D;&#x3D; &#x27;flagged&#x27;) {
+      throw new Error(&#x27;Proposal is not flagged for review&#x27;);
+    }
+
+    if (action &#x3D;&#x3D;&#x3D; &#x27;approve&#x27;) {
+      proposal.status &#x3D; &#x27;voting&#x27;;
+      proposal.moderationStatus &#x3D; &#x27;approved&#x27;;
+      proposal.reviewedAt &#x3D; new Date().toISOString();
+      proposal.reviewedBy &#x3D; moderatorId;
+      proposal.reviewNote &#x3D; note || null;
+    } else if (action &#x3D;&#x3D;&#x3D; &#x27;reject&#x27;) {
+      proposal.status &#x3D; &#x27;rejected&#x27;;
+      proposal.moderationStatus &#x3D; &#x27;rejected&#x27;;
+      proposal.reviewedAt &#x3D; new Date().toISOString();
+      proposal.reviewedBy &#x3D; moderatorId;
+      proposal.reviewNote &#x3D; note || null;
+    } else {
+      throw new Error(&#x27;Invalid action - must be &quot;approve&quot; or &quot;reject&quot;&#x27;);
+    }
+
+    game.updatedAt &#x3D; new Date().toISOString();
+
+    // Update game in database
+    await this.updateGameState(gameId, game);
+
+    // Log moderation action
+    compliance.logComplianceEvent({
+      category: &#x27;content_moderation&#x27;,
+      action: action &#x3D;&#x3D;&#x3D; &#x27;approve&#x27; ? &#x27;proposal_approved&#x27; : &#x27;proposal_rejected&#x27;,
+      userId: moderatorId,
+      resource: &#x27;game_proposal&#x27;,
+      details: {
+        gameId,
+        proposalId,
+        flaggedReasons: proposal.flaggedReasons || [],
+        note: note || null,
+      },
+      complianceFrameworks: [&#x27;DSA&#x27;],
+    });
+
+    await this.recordAuditLog({
+      category: &#x27;content_moderation&#x27;,
+      action: action &#x3D;&#x3D;&#x3D; &#x27;approve&#x27; ? &#x27;proposal_approved&#x27; : &#x27;proposal_rejected&#x27;,
+      userId: moderatorId,
+      resource: &#x27;game_proposal&#x27;,
+      details: { gameId, proposalId, note: note || null },
+    });
+
+    return proposal;
+  }
+}
+
+export const gameService &#x3D; new GameService();
+</code></pre>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'interface';
+            var COMPODOC_CURRENT_PAGE_URL = 'PlayerAction.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

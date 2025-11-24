@@ -7,6 +7,9 @@
  */
 
 import { config } from '../config';
+import { metrics } from '../observability/metrics';
+import type { ResponseCache } from './cache';
+import { createCacheKey } from './cache';
 import type {
   Agent,
   AgentInput,
@@ -29,6 +32,12 @@ export interface ExecutionOptions {
   validators?: Array<{ validate: (output: AgentOutput) => Promise<boolean> }>;
   /** Trace ID for observability */
   traceId?: string;
+  /** Optional response cache */
+  cache?: ResponseCache<ExecutionResult>;
+  /** Override cache key; defaults to deterministic key from prompt/context/agents/pattern */
+  cacheKey?: string;
+  /** TTL for cached result (ms) */
+  cacheTtlMs?: number;
 }
 
 /**
@@ -41,6 +50,8 @@ export interface ExecutionResult {
   success: boolean;
   /** Total execution time */
   executionTime: number;
+  /** Indicates the result was returned from cache */
+  cacheHit?: boolean;
   /** Validation results */
   validationResults?: Array<{ passed: boolean; message?: string }>;
   /** Error (if failed) */
@@ -87,12 +98,41 @@ export class OrchestrationEngine {
    */
   async execute(options: ExecutionOptions): Promise<ExecutionResult> {
     const startTime = Date.now();
-    const { agents, prompt, context = {}, validators = [], traceId } = options;
+    const {
+      agents,
+      prompt,
+      context = {},
+      validators = [],
+      traceId,
+      cache,
+      cacheKey,
+      cacheTtlMs,
+    } = options;
 
     try {
       // Validate inputs
       if (!agents || agents.length === 0) {
         throw new Error('At least one agent is required');
+      }
+
+      const computedCacheKey =
+        cache && (cacheKey || createCacheKey({ pattern: this.pattern, prompt, context, agents }));
+
+      if (cache && computedCacheKey) {
+        const cached = cache.get(computedCacheKey);
+        if (cached) {
+          metrics.incrementCounter('ai_orchestration_cache_hit', { pattern: this.pattern });
+          metrics.recordLatency('orchestration', Date.now() - startTime);
+          if (cached.success) {
+            metrics.incrementCounter('ai_orchestration_success', { pattern: this.pattern });
+          }
+          return {
+            ...cached,
+            executionTime: Date.now() - startTime,
+            cacheHit: true,
+          };
+        }
+        metrics.incrementCounter('ai_orchestration_cache_miss', { pattern: this.pattern });
       }
 
       // Create agent input
@@ -128,18 +168,34 @@ export class OrchestrationEngine {
       const validationResults = await this.validateOutputs(outputs, validators);
       const allValidationsPassed = validationResults.every(r => r.passed);
       const hasErrors = outputs.some(o => o.error);
+      const success = allValidationsPassed && !hasErrors;
 
-      return {
+      const result: ExecutionResult = {
         outputs,
-        success: allValidationsPassed && !hasErrors,
+        success,
         executionTime: Date.now() - startTime,
         validationResults,
       };
+
+      metrics.recordLatency('orchestration', result.executionTime);
+      metrics.incrementCounter(success ? 'ai_orchestration_success' : 'ai_orchestration_failure', {
+        pattern: this.pattern,
+      });
+
+      if (cache && computedCacheKey && success) {
+        cache.set(computedCacheKey, result, cacheTtlMs);
+      }
+
+      return result;
     } catch (error) {
+      const executionTime = Date.now() - startTime;
+      metrics.recordLatency('orchestration', executionTime);
+      metrics.incrementCounter('ai_orchestration_failure', { pattern: this.pattern });
+
       return {
         outputs: [],
         success: false,
-        executionTime: Date.now() - startTime,
+        executionTime,
         error: {
           message: error instanceof Error ? error.message : 'Unknown error',
           code: 'EXECUTION_ERROR',

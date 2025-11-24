@@ -17,6 +17,10 @@ const requireAuth = (req: Request, res: Response, next: NextFunction) => {
   return authenticate(req, res, next);
 };
 
+/**
+ * POST /votes - Cast a vote
+ * Requires authentication by default (skipped for test environments)
+ */
 router.post('/votes', requireAuth, async (req: Request, res: Response) => {
   try {
     const input = CreateVoteSchema.parse(req.body);
@@ -25,7 +29,7 @@ router.post('/votes', requireAuth, async (req: Request, res: Response) => {
     // Check if user has already voted on this bill
     const existingVotes = (await db.votes.getByBillId(input.billId)) as Array<{ userId: string }>;
     const alreadyVoted = existingVotes.some(
-      (vote: { userId: string }) => vote.userId === input.userId,
+      (vote: { userId: string }) => vote.userId === input.userId
     );
 
     if (alreadyVoted) {
@@ -55,6 +59,10 @@ router.post('/votes', requireAuth, async (req: Request, res: Response) => {
   }
 });
 
+/**
+ * GET /bills/:id/votes - Retrieve votes for a bill
+ * Returns all votes cast for the specified bill ID
+ */
 router.get('/bills/:id/votes', requireAuth, async (req: Request, res: Response) => {
   try {
     const db = getDatabase();
@@ -67,6 +75,10 @@ router.get('/bills/:id/votes', requireAuth, async (req: Request, res: Response) 
   }
 });
 
+/**
+ * GET /bills/:id/vote-counts - Retrieve aggregated vote counts for a bill
+ * Returns a summary with counts of 'for', 'against', and 'abstain'
+ */
 router.get('/bills/:id/vote-counts', requireAuth, async (req: Request, res: Response) => {
   try {
     const db = getDatabase();
@@ -79,4 +91,17 @@ router.get('/bills/:id/vote-counts', requireAuth, async (req: Request, res: Resp
   }
 });
 
+/**
+ * Router exporting vote-related endpoints used to cast and query votes.
+ * - `POST /votes` to cast a vote
+ * - `GET /bills/:id/votes` to list votes for a bill
+ * - `GET /bills/:id/vote-counts` to retrieve aggregated vote counts
+ */
+/**
+ * Votes router
+ *
+ * Provides endpoints to cast votes and to query votes for bills. Handlers
+ * validate payloads, ensure domain rules (e.g. no double-voting) and return
+ * aggregated results where requested.
+ */
 export default router;

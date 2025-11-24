@@ -11,7 +11,6 @@
 ---
 
 > NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
-
 > **Document control change history for templates and policies**
 
 ---

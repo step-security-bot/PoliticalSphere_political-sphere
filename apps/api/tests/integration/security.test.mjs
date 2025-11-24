@@ -1,5 +1,9 @@
+import { spawnSync } from 'node:child_process';
 import { NewsService } from '../../src/news-service.js';
 import { createNewsServer } from '../../src/server.ts';
+
+const securityBinding = resolveServerBindingHost();
+const securityDescribe = securityBinding.canBind ? describe : describe.skip;
 
 class MemoryStore {
   constructor(initial = []) {
@@ -15,7 +19,7 @@ class MemoryStore {
   }
 }
 
-describe('API Security Tests', () => {
+securityDescribe('API Security Tests', () => {
   let server;
   // Use an ephemeral port to avoid conflicts when tests run in parallel
   let BASE_URL;
@@ -48,7 +52,7 @@ describe('API Security Tests', () => {
 
     await new Promise(resolve => {
       // listen on port 0 (ephemeral) to avoid EADDRINUSE in parallel runs
-      server.listen(0, '127.0.0.1', resolve);
+      server.listen(0, securityBinding.host, resolve);
     });
 
     // derive the actual bound port and build the base URL
@@ -277,3 +281,32 @@ describe('API Security Tests', () => {
     });
   });
 });
+
+function resolveServerBindingHost() {
+  const hosts = [
+    process.env.API_TEST_BIND_HOST || '127.0.0.1',
+    process.env.API_TEST_BIND_FALLBACK || '0.0.0.0',
+  ];
+
+  for (const host of hosts) {
+    if (canBindToHost(host)) {
+      return { canBind: true, host };
+    }
+  }
+
+  return { canBind: false, host: '127.0.0.1' };
+}
+
+function canBindToHost(host) {
+  const probeScript = `
+    const http = require('http');
+    const server = http.createServer();
+    const finish = code => server.close(() => process.exit(code));
+    server.once('error', () => finish(2));
+    server.listen(0, '${host.replaceAll("'", "\\\\'")}', () => finish(0));
+    setTimeout(() => finish(3), 750);
+  `;
+
+  const result = spawnSync(process.execPath, ['-e', probeScript], { stdio: 'ignore' });
+  return result.status === 0;
+}

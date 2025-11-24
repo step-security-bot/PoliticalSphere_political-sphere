@@ -141,7 +141,7 @@ All PRs must pass automated quality gates before merging:
 
 ### File Organization
 
-Follow the structure in [.github/copilot-instructions/organization.md](.github/copilot-instructions/organization.md):
+Follow the structure in [docs/ai/ai-usage-playbook.md](docs/ai/ai-usage-playbook.md) and the directory layout below:
 
 ```
 /apps     - Applications

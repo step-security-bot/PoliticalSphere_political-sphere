@@ -9,7 +9,7 @@ const { info } = require('../logger');
 
 const name = '002_performance_indexes';
 
-function up(db) {
+function up(db: { exec: (sql: string) => void }) {
   info('Running performance optimization migration up function...');
 
   db.exec(`
@@ -42,7 +42,7 @@ function up(db) {
   info('Performance optimization migration up function completed');
 }
 
-function down(db) {
+function down(db: { exec: (sql: string) => void }) {
   db.exec(`
     DROP INDEX IF EXISTS idx_votes_recent;
     DROP INDEX IF EXISTS idx_bills_active;

@@ -1,5 +1,31 @@
 import { defineConfig, devices } from '@playwright/test';
 
+const isCI = !!process.env.CI;
+
+const browserDevices = {
+  chromium: devices['Desktop Chrome'],
+  firefox: devices['Desktop Firefox'],
+  webkit: devices['Desktop Safari'],
+};
+
+const browserKeys = Object.keys(browserDevices) as Array<keyof typeof browserDevices>;
+
+const parseBrowserEnv = (value?: string): Array<keyof typeof browserDevices> | null => {
+  const requested = value
+    ?.split(',')
+    .map(name => name.trim())
+    .filter(Boolean);
+
+  const valid = requested?.filter(
+    (name): name is keyof typeof browserDevices => name in browserDevices
+  );
+
+  return valid && valid.length > 0 ? valid : null;
+};
+
+const defaultBrowsers: Array<keyof typeof browserDevices> = isCI ? browserKeys : ['chromium'];
+const browsersToRun = parseBrowserEnv(process.env.E2E_BROWSERS) ?? defaultBrowsers;
+
 /**
  * Playwright Configuration for Political Sphere E2E Testing
  *
@@ -14,9 +40,9 @@ export default defineConfig({
 
   // Test execution settings
   fullyParallel: true,
-  forbidOnly: !!process.env.CI,
-  retries: process.env.CI ? 2 : 0,
-  ...(process.env.CI ? { workers: 1 } : {}),
+  forbidOnly: isCI,
+  retries: isCI ? 2 : 0,
+  ...(isCI ? { workers: 1 } : {}),
 
   // Reporter configuration
   reporter: [
@@ -62,38 +88,17 @@ export default defineConfig({
   },
 
   // Configure projects for major browsers
-  projects: [
-    {
-      name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
-    },
-
-    {
-      name: 'firefox',
-      use: { ...devices['Desktop Firefox'] },
-    },
-
-    {
-      name: 'webkit',
-      use: { ...devices['Desktop Safari'] },
-    },
-
-    // Mobile viewports (optional - uncomment to test)
-    // {
-    //   name: 'Mobile Chrome',
-    //   use: { ...devices['Pixel 5'] },
-    // },
-    // {
-    //   name: 'Mobile Safari',
-    //   use: { ...devices['iPhone 12'] },
-    // },
-  ],
+  // Set browsers via E2E_BROWSERS=chromium,firefox,... (defaults to chromium locally, all in CI)
+  projects: browsersToRun.map(name => ({
+    name,
+    use: { ...browserDevices[name] },
+  })),
 
   // Web server configuration for local testing (only in non-CI environments)
-  ...(!process.env.CI && {
+  ...(!isCI && {
     webServer: {
-      command: 'npm run serve:web',
-      port: 3001,
+      command: 'npm run serve:web -- --host 127.0.0.1',
+      url: 'http://127.0.0.1:3001',
       timeout: 120 * 1000,
       reuseExistingServer: true,
     },

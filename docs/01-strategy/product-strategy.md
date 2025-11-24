@@ -1,7 +1,6 @@
 # Product Strategy
 
 > NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
-
 > **Comprehensive vision and positioning for Political Sphere**
 
 <div align="center">

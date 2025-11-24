@@ -114,6 +114,7 @@ node tools/scripts/ai/code-indexer.js stats
 
 **Before vs After:**
 | Metric | Before | After | Improvement |
+
 |--------|--------|-------|-------------|
 | Search Accuracy | Basic token match | TF-IDF weighted | 3x better results |
 | Update Speed | Full rebuild (30s) | Incremental (3s) | 10x faster |
@@ -174,14 +175,16 @@ score =
 - Neutral exception handling (test files, fixtures, examples)
 - Detailed violation reports with context
 
-**Bias Patterns Detected:**
+**Bias Pattern Categories (Neutral Abstract Form):**
 
 ```javascript
-- Political parties: labour, conservative, tory, lib dem, SNP, etc.
-- Ideological labels: left-wing, right-wing, socialist, capitalist
-- Polarizing terms: woke, snowflake, fascist, liberal agenda
-- Opinion statements: "obviously wrong", "clearly better"
+// Political party references (generic placeholders): [party-name-1], [party-name-2]
+// Ideological labels (generic): [ideology-A], [ideology-B]
+// Polarizing / subjective terms (avoid): [polarizing-term]
+// Strongly evaluative opinion phrases (avoid): phrases implying inherent superiority/inferiority
 ```
+
+All concrete examples have been abstracted to maintain strict neutrality (see constitutional neutrality requirements).
 
 **Output Example:**
 

@@ -13,4 +13,4 @@ export {
   extractBearerToken,
   type TokenPayload,
   type VerificationResult,
-} from './jwt';
+} from './jwt.ts';

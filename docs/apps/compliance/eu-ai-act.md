@@ -139,9 +139,9 @@ For AI Act compliance questions:
 
 - `apps/docs/compliance/responsible-ai.md` — Responsible AI references and checklist
 
-# EU AI Act Compliance Assessment
+## EU AI Act Compliance Assessment
 
-## Overview
+### Overview
 
 This document outlines Political Sphere's compliance with the EU AI Act (Regulation (EU) 2024/1689), effective as of 1 August 2024. The AI Act classifies AI systems based on risk levels and imposes requirements accordingly.
 

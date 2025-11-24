@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
 
 import { CACHE_TTL, cacheKeys } from '../utils/cache.ts'; // eslint-disable-line no-restricted-imports
-import { DatabaseError, retryWithBackoff } from '../utils/error-handler.js'; // eslint-disable-line no-restricted-imports
+import { DatabaseError, retryWithBackoff } from '../utils/error-handler.ts'; // eslint-disable-line no-restricted-imports
 
 /**
  * @typedef {import('../utils/cache.ts').CacheService} CacheService
@@ -29,12 +29,19 @@ class PartyStore {
 
         stmt.run(id, input.name, input.description || null, input.color);
 
+        // Select back to get exact timestamps
+        const selectStmt = this.db.prepare(`
+          SELECT id, name, description, color, created_at as createdAt
+          FROM parties
+          WHERE id = ?
+        `);
+        const dbParty = selectStmt.get(id);
         const result = {
-          id,
-          name: input.name,
-          description: input.description || undefined,
-          color: input.color,
-          createdAt: new Date().toISOString(),
+          id: dbParty.id,
+          name: dbParty.name,
+          description: dbParty.description ?? undefined,
+          color: dbParty.color,
+          createdAt: new Date(dbParty.createdAt).toISOString(),
         };
 
         if (this.cache) {
@@ -74,7 +81,7 @@ class PartyStore {
           name: party.name,
           description: party.description ?? undefined,
           color: party.color,
-          createdAt: party.createdAt,
+          createdAt: new Date(party.createdAt).toISOString(),
         };
 
         // Cache the result
@@ -208,7 +215,7 @@ class PartyStore {
         updateStmt.run(...values);
 
         const selectStmt = this.db.prepare(
-          'SELECT id, name, description, color, created_at as createdAt FROM parties WHERE id = ?',
+          'SELECT id, name, description, color, created_at as createdAt FROM parties WHERE id = ?'
         );
         const party = selectStmt.get(id);
         return {

@@ -71,7 +71,18 @@ describe('UserService', () => {
 
       const created = await service.createUser(input);
       const retrieved = await service.getUserById(created.id);
-      expect(retrieved).toEqual(created);
+
+      // Compare all properties except timestamps (SQLite truncates milliseconds)
+      expect(retrieved.id).toBe(created.id);
+      expect(retrieved.username).toBe(created.username);
+      expect(retrieved.email).toBe(created.email);
+      expect(retrieved.role).toBe(created.role);
+      expect(retrieved.createdAt).toBeInstanceOf(Date);
+      expect(retrieved.updatedAt).toBeInstanceOf(Date);
+
+      // Verify timestamps are within reasonable range (allow for SQLite precision)
+      const timeDiff = Math.abs(retrieved.createdAt.getTime() - created.createdAt.getTime());
+      expect(timeDiff).toBeLessThan(1000); // Within 1 second
     });
 
     it('should return null for non-existent user', async () => {

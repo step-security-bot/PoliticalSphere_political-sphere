@@ -65,7 +65,6 @@ interface PerspectiveClient {
 
 let PerspectiveAPI: unknown = class PerspectiveAPIStub {
   // Minimal stub for Perspective API used in tests
-  constructor(_apiKey?: string) {}
   async analyze(_text: string, _opts?: unknown) {
     return { attributeScores: { TOXICITY: { summaryScore: { value: 0 } } } };
   }
@@ -849,4 +848,16 @@ Object.getOwnPropertyNames(ModerationService.prototype).forEach(name => {
 (ModerationService as unknown as { defaultInstance: ModerationService }).defaultInstance =
   _defaultModerationInstance;
 
+/**
+ * Default export for the ModerationService class. The module also
+ * exposes a bound default instance (`defaultInstance`) for convenience in
+ * routes and small scripts. Use the class directly for type-safety in
+ * larger application code.
+ */
+/**
+ * Default export for the ModerationService class. The module provides a bound
+ * default instance (`defaultInstance`) for convenience in routes and small
+ * scripts. Import the class when you need to construct isolated or mocked
+ * instances for testing.
+ */
 export default ModerationService;

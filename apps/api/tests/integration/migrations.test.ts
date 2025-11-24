@@ -11,17 +11,17 @@ import path from 'node:path';
 
 import { describe, it, beforeEach, afterEach } from 'vitest';
 
-import { DEFAULT_DB_PATH } from '../../src/utils/config.js';
+import { DEFAULT_DB_PATH } from '../../src/utils/config.cjs';
 import {
   initializeDatabase,
   runMigrations,
   rollbackAllMigrations,
-} from '../../src/utils/migrations/index.js';
+} from '../../src/utils/migrations/index.mjs';
 import {
   MigrationError,
   MigrationRollbackError,
   MigrationValidationError,
-} from '../../src/utils/migrations/migration-error.js';
+} from '../../src/utils/migrations/migration-error.cjs';
 
 // Test database path - make it unique per test run
 const getTestDbPath = () =>

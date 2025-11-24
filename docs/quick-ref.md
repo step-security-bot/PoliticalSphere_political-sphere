@@ -8,6 +8,14 @@
 
 > NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
 
+## Authoritative AI Contract
+
+- Primary: `.github/copilot-instructions.md` (role, compliance, testing, security)
+- Companion: `.kilocode/rules/kilocode-rules.md` (non-negotiables and delivery rules)
+- Standards: `docs/00-foundation/standards/standards-overview.md` and linked SOPs under `docs/05-engineering-and-devops/sops/`
+- Governance: `docs/07-ai-and-simulation/ai-governance.md` and `docs/06-security-and-risk/security.md`
+- ADRs: `docs/architecture/adr/` for material technical decisions
+
 ## Compliance Checklist for Suggestions
 
 Before suggesting code, infrastructure, or configuration changes, verify all requirements:
@@ -65,7 +73,7 @@ If a suggestion would:
 - Faster tests and local feedback: Prefer running unit tests only for changed files/packages (e.g., Vitest `--changed` or targeted `npm run test:changed`). Use `npx` to run local tools (`npx vitest`) so contributors needn't install global tooling. Use watch modes for iterative work (`vitest --watch`) and VS Code test tasks that prefer `--changed` to limit CPU usage.
 - Safe fast-mode for development: Use the `FAST_AI=1` local flag for quick, lower-rigor iterations. Always unset or override for `Safe`/`Audit` CI runs. Document FAST_AI usage in `/docs/` and ensure CI explicitly sets `FAST_AI=0` for gating workflows.
 - Caching and warmed artifacts: Use warmed AI index artifacts stored under `ai/index/` (e.g., the `ai-index-cache` branch) and persisted SBOMs in CI to reduce repeated heavy work. Cache package manager installs and build artifacts in CI where possible.
-- Targeted linting & preflight: Run linters and typechecks only on affected packages/files where feasible (use `nx affected:*` or similar tools) to shorten feedback loops. Always run `tools/scripts/ai/guard-change-budget.mjs` (or its shim) during preflight; fail early on budget or artifact violations.
+- Targeted linting & preflight: Run linters and typechecks only on affected packages/files where feasible (use `npm run lint:affected`, `npm run type-check:affected`, or `nx affected:*`) to shorten feedback loops. Always run `tools/scripts/ai/guard-change-budget.mjs` (or its shim) during preflight; fail early on budget or artifact violations. Nx Cloud is disabled—keep caching local and avoid remote/paid runners.
 - CI hygiene for speed: Parallelise jobs where safe (unit tests, linters, build matrix). Use `--changed`/affected strategies to avoid full-suite runs on small PRs. Rerun failing tests selectively rather than rerunning entire pipelines; quarantine flaky tests and add TODOs to fix them.
 - Dependency & ADR discipline (efficiency + safety): Adding runtime/build dependencies must include an ADR and justification; prefer reusing existing libs to avoid dependency churn.
 - Small automation helpers: Provide short, reusable scripts (e.g., `npm run test:changed`, `npm run lint:staged`) and VS Code tasks so contributors can do the right thing quickly.

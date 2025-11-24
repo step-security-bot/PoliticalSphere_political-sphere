@@ -1,0 +1,878 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>political-sphere documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">political-sphere documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content class">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Classes</li>
+  <li class="breadcrumb-item" >PoliticalNeutralityEnforcer</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>libs/ai-system/src/governance/political-neutrality.ts</code>
+        </p>
+
+
+            <p class="comment">
+                <h3>Description</h3>
+            </p>
+            <p class="comment">
+                <p>Political Neutrality Enforcer</p>
+<p>Tier 0 (Constitutional) requirement - cannot be bypassed.</p>
+
+            </p>
+
+
+
+
+            <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#neutralityThreshold" >neutralityThreshold</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#checkNeutrality" >checkNeutrality</a>
+                            </li>
+                            <li>
+                                <a href="#detectModerationBias" >detectModerationBias</a>
+                            </li>
+                            <li>
+                                <a href="#detectPowerManipulation" >detectPowerManipulation</a>
+                            </li>
+                            <li>
+                                <a href="#detectVotingManipulation" >detectVotingManipulation</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+
+            <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="neutralityThreshold"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>neutralityThreshold</b></span>
+                        <a href="#neutralityThreshold"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>0.9</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="34" class="link-to-prism">libs/ai-system/src/governance/political-neutrality.ts:34</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+            <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="checkNeutrality"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>checkNeutrality</b></span>
+                        <a href="#checkNeutrality"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>checkNeutrality(text: <a href="../unknowns/g.html" target="_self">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="39"
+                                    class="link-to-prism">libs/ai-system/src/governance/political-neutrality.ts:39</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Check text for political neutrality</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>text</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../interfaces/NeutralityCheckResult.html" target="_self" >Promise&lt;NeutralityCheckResult&gt;</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="detectModerationBias"></a>
+                    <span class="name">
+                        <span ><b>detectModerationBias</b></span>
+                        <a href="#detectModerationBias"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>detectModerationBias(action: literal type)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="176"
+                                    class="link-to-prism">libs/ai-system/src/governance/political-neutrality.ts:176</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Check for speech/content moderation bias</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>action</td>
+                                            <td>
+                                                        <code>literal type</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>literal type</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="detectPowerManipulation"></a>
+                    <span class="name">
+                        <span ><b>detectPowerManipulation</b></span>
+                        <a href="#detectPowerManipulation"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>detectPowerManipulation(change: literal type)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="227"
+                                    class="link-to-prism">libs/ai-system/src/governance/political-neutrality.ts:227</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Check for power distribution manipulation</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>change</td>
+                                            <td>
+                                                        <code>literal type</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>literal type</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="detectVotingManipulation"></a>
+                    <span class="name">
+                        <span ><b>detectVotingManipulation</b></span>
+                        <a href="#detectVotingManipulation"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>detectVotingManipulation(data: unknown)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="139"
+                                    class="link-to-prism">libs/ai-system/src/governance/political-neutrality.ts:139</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Check for voting manipulation attempts</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>data</td>
+                                            <td>
+                                                        <code>unknown</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>literal type</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+
+
+
+
+
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">export interface NeutralityCheckResult {
+  /** Overall neutrality score (0-1, higher is more neutral) */
+  neutralityScore: number;
+  /** Pass/fail based on threshold */
+  passed: boolean;
+  /** Detected biases */
+  biases: Array&lt;{
+    type: &#x27;partisan&#x27; | &#x27;ideological&#x27; | &#x27;framing&#x27; | &#x27;sentiment&#x27;;
+    severity: &#x27;low&#x27; | &#x27;medium&#x27; | &#x27;high&#x27; | &#x27;critical&#x27;;
+    description: string;
+    evidence: string;
+  }&gt;;
+  /** Recommendations for improvement */
+  recommendations: string[];
+}
+
+/**
+ * Political Neutrality Enforcer
+ *
+ * Tier 0 (Constitutional) requirement - cannot be bypassed.
+ */
+export class PoliticalNeutralityEnforcer {
+  private readonly neutralityThreshold &#x3D; 0.9; // Minimum score to pass
+
+  /**
+   * Check text for political neutrality
+   */
+  async checkNeutrality(text: string): Promise&lt;NeutralityCheckResult&gt; {
+    const biases: NeutralityCheckResult[&#x27;biases&#x27;] &#x3D; [];
+    const recommendations: string[] &#x3D; [];
+
+    // Check for partisan keywords
+    const partisanKeywords &#x3D; {
+      // Placeholder - in production, use comprehensive political lexicon
+      left: [&#x27;socialist&#x27;, &#x27;progressive&#x27;, &#x27;liberal&#x27;, &#x27;leftist&#x27;],
+      right: [&#x27;conservative&#x27;, &#x27;traditional&#x27;, &#x27;right-wing&#x27;, &#x27;libertarian&#x27;],
+      center: [&#x27;moderate&#x27;, &#x27;centrist&#x27;],
+    };
+
+    const lowerText &#x3D; text.toLowerCase();
+    let leftCount &#x3D; 0;
+    let rightCount &#x3D; 0;
+    let centerCount &#x3D; 0;
+
+    for (const keyword of partisanKeywords.left) {
+      if (lowerText.includes(keyword)) leftCount++;
+    }
+    for (const keyword of partisanKeywords.right) {
+      if (lowerText.includes(keyword)) rightCount++;
+    }
+    for (const keyword of partisanKeywords.center) {
+      if (lowerText.includes(keyword)) centerCount++;
+    }
+
+    const totalPartisan &#x3D; leftCount + rightCount;
+    if (totalPartisan &gt; 3) {
+      biases.push({
+        type: &#x27;partisan&#x27;,
+        severity: &#x27;high&#x27;,
+        description: &#x27;Excessive use of partisan language&#x27;,
+        evidence: &#x60;Left: ${leftCount}, Right: ${rightCount}, Center: ${centerCount}&#x60;,
+      });
+      recommendations.push(&#x27;Use neutral, descriptive language instead of political labels&#x27;);
+    }
+
+    // Check for ideological framing
+    const framingIndicators &#x3D; [
+      &#x27;obviously&#x27;,
+      &#x27;clearly&#x27;,
+      &#x27;undeniably&#x27;,
+      &#x27;everyone knows&#x27;,
+      &#x27;always&#x27;,
+      &#x27;never&#x27;,
+      &#x27;only solution&#x27;,
+      &#x27;only way&#x27;,
+    ];
+
+    for (const indicator of framingIndicators) {
+      if (lowerText.includes(indicator)) {
+        biases.push({
+          type: &#x27;framing&#x27;,
+          severity: &#x27;medium&#x27;,
+          description: &#x60;Absolutist framing detected: &quot;${indicator}&quot;&#x60;,
+          evidence: indicator,
+        });
+        recommendations.push(&#x27;Avoid absolute statements; present multiple perspectives&#x27;);
+      }
+    }
+
+    // Check for sentiment imbalance
+    const positiveWords &#x3D; [&#x27;excellent&#x27;, &#x27;great&#x27;, &#x27;wonderful&#x27;, &#x27;perfect&#x27;, &#x27;amazing&#x27;];
+    const negativeWords &#x3D; [&#x27;terrible&#x27;, &#x27;awful&#x27;, &#x27;horrible&#x27;, &#x27;disastrous&#x27;, &#x27;catastrophic&#x27;];
+
+    const positiveCount &#x3D; positiveWords.filter(w &#x3D;&gt; lowerText.includes(w)).length;
+    const negativeCount &#x3D; negativeWords.filter(w &#x3D;&gt; lowerText.includes(w)).length;
+
+    if (Math.abs(positiveCount - negativeCount) &gt; 2) {
+      biases.push({
+        type: &#x27;sentiment&#x27;,
+        severity: &#x27;medium&#x27;,
+        description: &#x27;Sentiment imbalance detected&#x27;,
+        evidence: &#x60;Positive: ${positiveCount}, Negative: ${negativeCount}&#x60;,
+      });
+      recommendations.push(&#x27;Balance emotional language or use neutral alternatives&#x27;);
+    }
+
+    // Calculate neutrality score
+    const biasDeductions &#x3D; biases.reduce((sum, bias) &#x3D;&gt; {
+      const severityWeights &#x3D; { low: 0.05, medium: 0.1, high: 0.2, critical: 0.4 };
+      return sum + severityWeights[bias.severity];
+    }, 0);
+
+    const neutralityScore &#x3D; Math.max(0, 1 - biasDeductions);
+    const passed &#x3D;
+      neutralityScore &gt;&#x3D; this.neutralityThreshold &amp;&amp; !biases.some(b &#x3D;&gt; b.severity &#x3D;&#x3D;&#x3D; &#x27;critical&#x27;);
+
+    return {
+      neutralityScore,
+      passed,
+      biases,
+      recommendations,
+    };
+  }
+
+  /**
+   * Check for voting manipulation attempts
+   */
+  detectVotingManipulation(data: unknown): {
+    detected: boolean;
+    findings: string[];
+  } {
+    const findings: string[] &#x3D; [];
+
+    if (typeof data &#x3D;&#x3D;&#x3D; &#x27;object&#x27; &amp;&amp; data !&#x3D;&#x3D; null) {
+      const obj &#x3D; data as Record&lt;string, unknown&gt;;
+
+      // Check for direct vote manipulation
+      const votingFields &#x3D; [&#x27;votes&#x27;, &#x27;voteCount&#x27;, &#x27;votingResults&#x27;, &#x27;voteScore&#x27;];
+      for (const field of votingFields) {
+        if (field in obj) {
+          findings.push(&#x60;Attempted to modify voting data: ${field}&#x60;);
+        }
+      }
+
+      // Check for vote weighting manipulation
+      if (&#x27;voteWeight&#x27; in obj || &#x27;votePriority&#x27; in obj) {
+        findings.push(&#x27;Attempted to manipulate vote weighting (violates One Person One Vote)&#x27;);
+      }
+
+      // Check for outcome prediction/influencing
+      if (&#x27;predictedOutcome&#x27; in obj || &#x27;recommendedVote&#x27; in obj) {
+        findings.push(&#x27;Attempted to influence voting outcome&#x27;);
+      }
+    }
+
+    return {
+      detected: findings.length &gt; 0,
+      findings,
+    };
+  }
+
+  /**
+   * Check for speech/content moderation bias
+   */
+  detectModerationBias(action: {
+    type: &#x27;remove&#x27; | &#x27;flag&#x27; | &#x27;warn&#x27; | &#x27;allow&#x27;;
+    content: string;
+    reason: string;
+  }): {
+    biased: boolean;
+    findings: string[];
+  } {
+    const findings: string[] &#x3D; [];
+
+    // Check if moderation reason contains political bias
+    const politicalReasons &#x3D; [
+      &#x27;wrong ideology&#x27;,
+      &#x27;incorrect opinion&#x27;,
+      &#x27;disagree&#x27;,
+      &#x27;against our values&#x27;,
+      &#x27;offensive viewpoint&#x27;,
+    ];
+
+    const lowerReason &#x3D; action.reason.toLowerCase();
+    for (const reason of politicalReasons) {
+      if (lowerReason.includes(reason)) {
+        findings.push(&#x60;Politically biased moderation reason: &quot;${reason}&quot;&#x60;);
+      }
+    }
+
+    // Moderation should only be for objective violations
+    const validReasons &#x3D; [
+      &#x27;spam&#x27;,
+      &#x27;harassment&#x27;,
+      &#x27;personal attack&#x27;,
+      &#x27;hate speech&#x27;,
+      &#x27;illegal content&#x27;,
+      &#x27;explicit content&#x27;,
+      &#x27;off-topic&#x27;,
+    ];
+
+    const hasValidReason &#x3D; validReasons.some(r &#x3D;&gt; lowerReason.includes(r));
+    if (!hasValidReason &amp;&amp; action.type !&#x3D;&#x3D; &#x27;allow&#x27;) {
+      findings.push(&#x27;Moderation action lacks objective justification&#x27;);
+    }
+
+    return {
+      biased: findings.length &gt; 0,
+      findings,
+    };
+  }
+
+  /**
+   * Check for power distribution manipulation
+   */
+  detectPowerManipulation(change: {
+    userId: string;
+    action: &#x27;grant&#x27; | &#x27;revoke&#x27; | &#x27;modify&#x27;;
+    permission: string;
+    reason: string;
+  }): {
+    suspicious: boolean;
+    findings: string[];
+  } {
+    const findings: string[] &#x3D; [];
+
+    // AI should never autonomously change power structures
+    findings.push(&#x27;AI systems cannot autonomously modify user roles or permissions&#x27;);
+    findings.push(&#x27;All power distribution changes require human approval&#x27;);
+
+    // Check for political motivation in reason
+    const politicalMotivations &#x3D; [
+      &#x27;political alignment&#x27;,
+      &#x27;ideology&#x27;,
+      &#x27;party affiliation&#x27;,
+      &#x27;voting history&#x27;,
+      &#x27;political views&#x27;,
+    ];
+
+    const lowerReason &#x3D; change.reason.toLowerCase();
+    for (const motivation of politicalMotivations) {
+      if (lowerReason.includes(motivation)) {
+        findings.push(&#x60;Politically motivated permission change: &quot;${motivation}&quot;&#x60;);
+      }
+    }
+
+    return {
+      suspicious: true, // Always suspicious - requires human review
+      findings,
+    };
+  }
+}
+</code></pre>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'class';
+            var COMPODOC_CURRENT_PAGE_URL = 'PoliticalNeutralityEnforcer.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

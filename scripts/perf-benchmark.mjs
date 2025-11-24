@@ -10,10 +10,10 @@
  * Usage: npm run perf:benchmark
  */
 
-import fs from 'fs/promises';
+import fs from 'node:fs/promises';
 import { performance } from 'node:perf_hooks';
-import path from 'path';
-import { fileURLToPath } from 'url';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -222,7 +222,7 @@ async function showBaselines() {
 
   console.log('API Endpoints (latency in ms):\n');
   console.log('  Endpoint                              p50    p95    p99');
-  console.log('  ' + '─'.repeat(65));
+  console.log(`  ${'─'.repeat(65)}`);
 
   for (const [endpoint, baseline] of Object.entries(PERFORMANCE_BASELINES.api.endpoints)) {
     console.log(
@@ -232,7 +232,7 @@ async function showBaselines() {
 
   console.log('\nFrontend Metrics:\n');
   console.log('  Metric                     Baseline');
-  console.log('  ' + '─'.repeat(40));
+  console.log(`  ${'─'.repeat(40)}`);
 
   for (const [metric, value] of Object.entries(PERFORMANCE_BASELINES.frontend.metrics)) {
     const unit = metric === 'CLS' ? '' : 'ms';
@@ -241,7 +241,7 @@ async function showBaselines() {
 
   console.log('\nFrontend Budgets:\n');
   console.log('  Resource                   Budget');
-  console.log('  ' + '─'.repeat(40));
+  console.log(`  ${'─'.repeat(40)}`);
 
   for (const [resource, value] of Object.entries(PERFORMANCE_BASELINES.frontend.budgets)) {
     console.log(`  ${resource.padEnd(25)} ${value} KB`);
@@ -249,7 +249,7 @@ async function showBaselines() {
 
   console.log('\nDatabase Queries (latency in ms):\n');
   console.log('  Query                         p50    p95    p99');
-  console.log('  ' + '─'.repeat(55));
+  console.log(`  ${'─'.repeat(55)}`);
 
   for (const [query, baseline] of Object.entries(PERFORMANCE_BASELINES.database.queries)) {
     console.log(

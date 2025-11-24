@@ -3,12 +3,14 @@ import { v4 as uuidv4 } from 'uuid';
 // eslint-disable-next-line no-restricted-imports
 import { CACHE_TTL, cacheKeys } from '../utils/cache.ts';
 // eslint-disable-next-line no-restricted-imports
-import { DatabaseError, retryWithBackoff } from '../utils/error-handler.js';
+import { DatabaseError, retryWithBackoff } from '../utils/error-handler.ts';
 
 // Use centralized Prisma client to avoid multiple connections and to respect
 // test-time environment variables (DATABASE_URL) set in the test setup.
 // eslint-disable-next-line no-restricted-imports
 import { prisma } from '../services/prisma-database.service.ts';
+
+const usePrisma = process.env.NODE_ENV !== 'test' || process.env.USE_PRISMA_FOR_TESTS === '1';
 
 /**
  * @typedef {import('../utils/cache.ts').CacheService} CacheService
@@ -20,13 +22,15 @@ class VoteStore {
    */
   constructor(cache = null) {
     this.cache = cache;
+    this.usePrisma = usePrisma;
+    this.inMemoryVotes = [];
   }
 
   async create(input) {
     const id = uuidv4();
 
     // In unit tests, avoid strict Prisma relations by short-circuiting persistence
-    if (process.env.NODE_ENV === 'test' && process.env.USE_PRISMA_FOR_TESTS !== '1') {
+    if (!this.usePrisma) {
       const result = {
         id,
         billId: input.billId,
@@ -35,12 +39,14 @@ class VoteStore {
         createdAt: new Date().toISOString(),
       };
 
+      this.inMemoryVotes.push(result);
+
       if (this.cache) {
-        await Promise.all([
-          this.cache.del(cacheKeys.billVotes(input.billId)),
-          this.cache.del(cacheKeys.userVotes(input.userId)),
-          this.cache.del(`bill:${input.billId}:voteCounts`),
-        ]);
+        await this.cache.invalidateVoteRelated?.(input.billId, input.userId);
+        if (this.cache.del) {
+          await this.cache.del(cacheKeys.billVotes(input.billId));
+          await this.cache.del(cacheKeys.userVotes(input.userId));
+        }
       }
 
       return result;
@@ -64,11 +70,11 @@ class VoteStore {
     };
 
     if (this.cache) {
-      await Promise.all([
-        this.cache.del(cacheKeys.billVotes(input.billId)),
-        this.cache.del(cacheKeys.userVotes(input.userId)),
-        this.cache.del(`bill:${input.billId}:voteCounts`),
-      ]);
+      await this.cache.invalidateVoteRelated?.(input.billId, input.userId);
+      if (this.cache.del) {
+        await this.cache.del(cacheKeys.billVotes(input.billId));
+        await this.cache.del(cacheKeys.userVotes(input.userId));
+      }
     }
 
     return result;
@@ -83,9 +89,14 @@ class VoteStore {
 
     try {
       return await retryWithBackoff(async () => {
-        const vote = await prisma.vote.findUnique({
-          where: { id },
-        });
+        let vote;
+        if (this.usePrisma) {
+          vote = await prisma.vote.findUnique({
+            where: { id },
+          });
+        } else {
+          vote = this.inMemoryVotes.find(v => v.id === id) || null;
+        }
         if (!vote) return null;
 
         const result = {
@@ -117,10 +128,17 @@ class VoteStore {
 
     try {
       return await retryWithBackoff(async () => {
-        const votes = await prisma.vote.findMany({
-          where: { billId },
-          orderBy: { createdAt: 'desc' },
-        });
+        let votes;
+        if (this.usePrisma) {
+          votes = await prisma.vote.findMany({
+            where: { billId },
+            orderBy: { createdAt: 'desc' },
+          });
+        } else {
+          votes = this.inMemoryVotes
+            .filter(v => v.billId === billId)
+            .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        }
 
         const result = votes.map(vote => ({
           id: vote.id,
@@ -151,10 +169,17 @@ class VoteStore {
 
     try {
       return await retryWithBackoff(async () => {
-        const votes = await prisma.vote.findMany({
-          where: { userId },
-          orderBy: { createdAt: 'desc' },
-        });
+        let votes;
+        if (this.usePrisma) {
+          votes = await prisma.vote.findMany({
+            where: { userId },
+            orderBy: { createdAt: 'desc' },
+          });
+        } else {
+          votes = this.inMemoryVotes
+            .filter(v => v.userId === userId)
+            .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        }
 
         const result = votes.map(vote => ({
           id: vote.id,
@@ -179,13 +204,16 @@ class VoteStore {
   async hasUserVotedOnBill(userId, billId) {
     try {
       return await retryWithBackoff(async () => {
-        const count = await prisma.vote.count({
-          where: {
-            userId,
-            billId,
-          },
-        });
-        return count > 0;
+        if (this.usePrisma) {
+          const count = await prisma.vote.count({
+            where: {
+              userId,
+              billId,
+            },
+          });
+          return count > 0;
+        }
+        return this.inMemoryVotes.some(vote => vote.userId === userId && vote.billId === billId);
       });
     } catch (error) {
       throw new DatabaseError(
@@ -203,14 +231,20 @@ class VoteStore {
 
     try {
       return await retryWithBackoff(async () => {
-        const votes = await prisma.vote.findMany({
-          where: { billId },
-          select: { vote: true },
-        });
+        let votes;
+        if (this.usePrisma) {
+          votes = await prisma.vote.findMany({
+            where: { billId },
+            select: { vote: true },
+          });
+        } else {
+          votes = this.inMemoryVotes.filter(v => v.billId === billId);
+        }
 
         const counts = votes.reduce(
           (acc, v) => {
-            acc[v.vote] = (acc[v.vote] || 0) + 1;
+            const voteValue = v.vote;
+            acc[voteValue] = (acc[voteValue] || 0) + 1;
             return acc;
           },
           { aye: 0, nay: 0, abstain: 0 }

@@ -63,7 +63,7 @@ class PatternMatcher {
           }
 
           out[category].push({ regex, severity, message });
-        } catch (_) {
+        } catch {
           // If a pattern fails to compile, skip it but log for debugging.
           console.warn(`Pattern compile failed for category=${category}: ${pattern}`);
         }

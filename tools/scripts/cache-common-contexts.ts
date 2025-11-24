@@ -4,8 +4,8 @@
   Usage: tsx scripts/cache-common-contexts.ts
 */
 
-import { readFileSync, writeFileSync, existsSync, statSync } from 'fs';
-import { join } from 'path';
+import { readFileSync, writeFileSync, existsSync, statSync } from 'node:fs';
+import { join } from 'node:path';
 
 const CACHE_FILE = 'ai/cache/common-contexts.json';
 
@@ -55,7 +55,7 @@ function cacheContext(contextDef: (typeof COMMON_CONTEXTS)[0]): CachedContext | 
         };
         hasContent = true;
       }
-    } catch (_e) {
+    } catch {
       // Skip files that can't be read
     }
   }

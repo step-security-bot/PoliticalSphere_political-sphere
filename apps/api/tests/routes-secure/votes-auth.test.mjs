@@ -6,6 +6,7 @@ import { getTestDatabase, resetTestDatabase } from '../../src/test-support/datab
 import authRouter from '../../src/routes/auth.js';
 import billsRouter from '../../src/routes/bills.js';
 import votesRouter from '../../src/routes/votes.js';
+import { describeHttp, shouldSkipHttpTests } from '../utils/http-test-guard.ts';
 
 async function registerAndLogin(app, email = `vote+${Date.now()}@example.com`) {
   const username = `voter_${Date.now()}`;
@@ -21,7 +22,9 @@ async function registerAndLogin(app, email = `vote+${Date.now()}@example.com`) {
   return { token: login.body.data.token, user: login.body.data.user };
 }
 
-describe('votes routes (auth enforced)', () => {
+const suite = shouldSkipHttpTests ? describe.skip : describeHttp;
+
+suite('votes routes (auth enforced)', () => {
   let app;
   let testDb;
   const prev = process.env.FORCE_AUTH;

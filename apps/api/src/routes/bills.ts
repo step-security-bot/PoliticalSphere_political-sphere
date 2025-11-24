@@ -5,13 +5,26 @@ import { ZodError } from 'zod';
 import { authenticate } from '../auth/auth.middleware.ts';
 import logger from '../logger.js';
 import { getDatabase } from '../stores/index.js';
-// Use local CJS shim for shared schemas in test/runtime
-import { CreateBillSchema, UpdateBillSchema } from '../utils/shared-shim.js';
-import { parsePaginationQuery, createPaginatedResponse, getOffset } from '@political-sphere/shared';
+import {
+  CreateBillSchema,
+  UpdateBillSchema,
+  parsePaginationQuery,
+  createPaginatedResponse,
+  getOffset,
+} from '@political-sphere/shared';
 
+/**
+ * Express router for bill-related endpoints.
+ * Handles CRUD operations for legislative bills including creation, retrieval, updating, and deletion.
+ * All endpoints require authentication except where conditionally bypassed in test environment.
+ */
 const router = express.Router();
 
-// Conditional auth bypass for test env unless FORCE_AUTH=1 is set
+/**
+ * Authentication middleware that conditionally bypasses auth in test environment.
+ * In production and non-test environments, requires authentication.
+ * Can be forced on in tests by setting FORCE_AUTH=1.
+ */
 const requireAuth = (req: Request, res: Response, next: NextFunction): void => {
   if (process.env.NODE_ENV === 'test' && process.env.FORCE_AUTH !== '1') {
     next();
@@ -20,6 +33,10 @@ const requireAuth = (req: Request, res: Response, next: NextFunction): void => {
   authenticate(req, res, next);
 };
 
+/**
+ * POST /bills - Create a new bill
+ * Requires authentication and validates that the proposer exists.
+ */
 router.post('/bills', requireAuth, async (req: Request, res: Response): Promise<void> => {
   try {
     const input = CreateBillSchema.parse(req.body);
@@ -41,6 +58,10 @@ router.post('/bills', requireAuth, async (req: Request, res: Response): Promise<
   }
 });
 
+/**
+ * GET /bills/:id - Retrieve a specific bill by ID
+ * Requires authentication and returns 404 if bill doesn't exist.
+ */
 router.get('/bills/:id', requireAuth, async (req: Request, res: Response): Promise<void> => {
   try {
     const db = getDatabase();
@@ -67,7 +88,8 @@ router.get('/bills', requireAuth, async (req: Request, res: Response): Promise<v
     const offset = getOffset(paginationOptions);
 
     // Get paginated results
-    const bills = await db.bills.getPaginated(paginationOptions.limit!, offset);
+    const { limit = 10 } = paginationOptions;
+    const bills = await db.bills.getPaginated(limit, offset);
 
     const result = createPaginatedResponse(bills, total, paginationOptions);
     res.set('Cache-Control', 'public, max-age=60');
@@ -109,4 +131,16 @@ router.put('/bills/:id', requireAuth, async (req: Request, res: Response): Promi
   }
 });
 
+/**
+ * Bills router: create, retrieve, list and update bills. Endpoints enforce
+ * authentication and provide pagination helper integration for list
+ * operations. Responses include appropriate cache headers for read paths.
+ */
+/**
+ * Bills router
+ *
+ * Exposes endpoints to create, retrieve, list and update bills. Endpoints
+ * enforce authentication and integrate pagination helpers. Read endpoints set
+ * cache headers to improve response performance for clients.
+ */
 export default router;

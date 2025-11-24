@@ -1,0 +1,1387 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>political-sphere documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">political-sphere documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content class">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Classes</li>
+  <li class="breadcrumb-item" >NLPService</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>libs/ai-system/src/nlp/index.ts</code>
+        </p>
+
+
+            <p class="comment">
+                <h3>Description</h3>
+            </p>
+            <p class="comment">
+                <p>NLP Service</p>
+<p>Provides comprehensive NLP capabilities for political content analysis</p>
+
+            </p>
+
+
+
+
+            <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Optional</span>
+                                <a href="#classifierPipeline" >classifierPipeline</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Optional</span>
+                                <a href="#generatorPipeline" >generatorPipeline</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Optional</span>
+                                <a href="#nerPipeline" >nerPipeline</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Optional</span>
+                                <a href="#sentimentPipeline" >sentimentPipeline</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#analyzeText" >analyzeText</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#calculateReadability" >calculateReadability</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#classifyPoliticalText" >classifyPoliticalText</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#countSyllables" >countSyllables</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#detectPoliticalBias" >detectPoliticalBias</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#extractKeywords" >extractKeywords</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#generateText" >generateText</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#initialize" >initialize</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+
+            <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="classifierPipeline"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Optional</span>
+                        <span ><b>classifierPipeline</b></span>
+                        <a href="#classifierPipeline"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>ZeroShotClassificationPipeline</code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="82" class="link-to-prism">libs/ai-system/src/nlp/index.ts:82</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="generatorPipeline"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Optional</span>
+                        <span ><b>generatorPipeline</b></span>
+                        <a href="#generatorPipeline"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>TextGenerationPipeline | TransformersPipeline</code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="83" class="link-to-prism">libs/ai-system/src/nlp/index.ts:83</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="nerPipeline"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Optional</span>
+                        <span ><b>nerPipeline</b></span>
+                        <a href="#nerPipeline"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>TokenClassificationPipeline</code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="81" class="link-to-prism">libs/ai-system/src/nlp/index.ts:81</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="sentimentPipeline"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Optional</span>
+                        <span ><b>sentimentPipeline</b></span>
+                        <a href="#sentimentPipeline"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>TextClassificationPipeline</code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="80" class="link-to-prism">libs/ai-system/src/nlp/index.ts:80</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+            <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="analyzeText"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>analyzeText</b></span>
+                        <a href="#analyzeText"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>analyzeText(text: <a href="../unknowns/g.html" target="_self">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="117"
+                                    class="link-to-prism">libs/ai-system/src/nlp/index.ts:117</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Analyze text for political content</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>text</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../interfaces/NLPAnalysisResult.html" target="_self" >Promise&lt;NLPAnalysisResult&gt;</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="calculateReadability"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>calculateReadability</b></span>
+                        <a href="#calculateReadability"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>calculateReadability(text: <a href="../unknowns/g.html" target="_self">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="317"
+                                    class="link-to-prism">libs/ai-system/src/nlp/index.ts:317</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Calculate readability metrics</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>text</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>literal type</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="classifyPoliticalText"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>classifyPoliticalText</b></span>
+                        <a href="#classifyPoliticalText"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>classifyPoliticalText(text: <a href="../unknowns/g.html" target="_self">string</a>, categories: <a href="../unknowns/g.html" target="_self">string[]</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="219"
+                                    class="link-to-prism">libs/ai-system/src/nlp/index.ts:219</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Classify text into political categories</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>text</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>categories</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/variables.html#g" target="_self" >string[]</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Promise&lt;Array&lt;literal type&gt;&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="countSyllables"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>countSyllables</b></span>
+                        <a href="#countSyllables"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>countSyllables(word: <a href="../unknowns/g.html" target="_self">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="340"
+                                    class="link-to-prism">libs/ai-system/src/nlp/index.ts:340</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Count syllables in a word (simple approximation)</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>word</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="detectPoliticalBias"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>detectPoliticalBias</b></span>
+                        <a href="#detectPoliticalBias"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>detectPoliticalBias(text: <a href="../unknowns/g.html" target="_self">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="253"
+                                    class="link-to-prism">libs/ai-system/src/nlp/index.ts:253</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Detect political bias in text</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>text</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>literal type</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="extractKeywords"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>extractKeywords</b></span>
+                        <a href="#extractKeywords"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>extractKeywords(text: <a href="../unknowns/g.html" target="_self">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="294"
+                                    class="link-to-prism">libs/ai-system/src/nlp/index.ts:294</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Extract keywords from text</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>text</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../miscellaneous/variables.html#g" target="_self" >string[]</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="generateText"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>generateText</b></span>
+                        <a href="#generateText"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>generateText(prompt: <a href="../unknowns/g.html" target="_self">string</a>, options: <a href="../interfaces/TextGenerationOptions.html" target="_self">TextGenerationOptions</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="182"
+                                    class="link-to-prism">libs/ai-system/src/nlp/index.ts:182</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Generate text using language model</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Default value</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>prompt</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+                                            <td>
+                                            </td>
+
+                                        </tr>
+                                        <tr>
+                                                <td>options</td>
+                                            <td>
+                                                            <code><a href="../interfaces/TextGenerationOptions.html" target="_self" >TextGenerationOptions</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+                                            <td>
+                                                    <code>{}</code>
+                                            </td>
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../miscellaneous/variables.html#g" target="_self" >Promise&lt;string[]&gt;</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="initialize"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>initialize</b></span>
+                        <a href="#initialize"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>initialize()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="88"
+                                    class="link-to-prism">libs/ai-system/src/nlp/index.ts:88</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Initialize NLP pipelines</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Promise&lt;void&gt;</code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+
+
+
+
+
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { pipeline } from &#x27;@huggingface/transformers&#x27;;
+import type {
+  TextGenerationPipeline,
+  ZeroShotClassificationPipeline,
+  TextClassificationPipeline,
+  TokenClassificationPipeline,
+  Pipeline as TransformersPipeline,
+} from &#x27;@huggingface/transformers&#x27;;
+
+/**
+ * NLP Analysis Result
+ */
+export interface NLPAnalysisResult {
+  /** Sentiment analysis result */
+  sentiment?: {
+    label: string;
+    score: number;
+  };
+  /** Named entities found */
+  entities?: Array&lt;{
+    entity: string;
+    label: string;
+    confidence: number;
+    start: number;
+    end: number;
+  }&gt;;
+  /** Key phrases/topics */
+  keywords?: string[];
+  /** Text classification results */
+  categories?: Array&lt;{
+    label: string;
+    score: number;
+  }&gt;;
+  /** Readability metrics */
+  readability?: {
+    fleschScore: number;
+    gradeLevel: number;
+  };
+  /** Political bias indicators */
+  bias?: {
+    score: number;
+    indicators: string[];
+  };
+}
+
+/**
+ * Text Generation Options
+ */
+export interface TextGenerationOptions {
+  /** Maximum length of generated text */
+  maxLength?: number;
+  /** Temperature for randomness (0-1) */
+  temperature?: number;
+  /** Top-k sampling */
+  topK?: number;
+  /** Top-p sampling */
+  topP?: number;
+  /** Number of sequences to generate */
+  numReturnSequences?: number;
+  /** Stop sequences */
+  stopSequences?: string[];
+}
+
+/**
+ * NLP Service
+ *
+ * Provides comprehensive NLP capabilities for political content analysis
+ */
+export class NLPService {
+  private sentimentPipeline?: TextClassificationPipeline;
+  private nerPipeline?: TokenClassificationPipeline;
+  private classifierPipeline?: ZeroShotClassificationPipeline;
+  private generatorPipeline?: TextGenerationPipeline | TransformersPipeline;
+
+  /**
+   * Initialize NLP pipelines
+   */
+  async initialize(): Promise&lt;void&gt; {
+    try {
+      // Initialize sentiment analysis
+      const sentimentTask &#x3D; pipeline(
+        &#x27;sentiment-analysis&#x27;,
+        &#x27;cardiffnlp/twitter-roberta-base-sentiment&#x27;
+      );
+      this.sentimentPipeline &#x3D; (await sentimentTask) as TextClassificationPipeline;
+
+      // Initialize named entity recognition
+      const nerTask &#x3D; pipeline(&#x27;ner&#x27;, &#x27;dbmdz/bert-large-cased-finetuned-conll03-english&#x27;);
+      this.nerPipeline &#x3D; (await nerTask) as TokenClassificationPipeline;
+
+      // Initialize text classification for political topics
+      const classifierTask &#x3D; pipeline(&#x27;zero-shot-classification&#x27;, &#x27;facebook/bart-large-mnli&#x27;);
+      this.classifierPipeline &#x3D; (await classifierTask) as ZeroShotClassificationPipeline;
+
+      // Initialize text generation
+      const generatorTask &#x3D; pipeline(&#x27;text-generation&#x27;, &#x27;gpt2&#x27;);
+      this.generatorPipeline &#x3D; (await generatorTask) as TextGenerationPipeline;
+    } catch (error) {
+      console.warn(&#x27;Failed to initialize some NLP pipelines:&#x27;, error);
+      // Continue with available pipelines
+    }
+  }
+
+  /**
+   * Analyze text for political content
+   */
+  async analyzeText(text: string): Promise&lt;NLPAnalysisResult&gt; {
+    const result: NLPAnalysisResult &#x3D; {};
+
+    try {
+      // Sentiment analysis
+      if (this.sentimentPipeline) {
+        const sentiment &#x3D; await this.sentimentPipeline(text);
+        if (Array.isArray(sentiment) &amp;&amp; sentiment.length &gt; 0) {
+          const firstResult &#x3D; sentiment[0];
+          if (
+            firstResult &amp;&amp;
+            typeof firstResult &#x3D;&#x3D;&#x3D; &#x27;object&#x27; &amp;&amp;
+            &#x27;label&#x27; in firstResult &amp;&amp;
+            &#x27;score&#x27; in firstResult
+          ) {
+            result.sentiment &#x3D; {
+              label: String(firstResult.label),
+              score: Number(firstResult.score),
+            };
+          }
+        }
+      }
+
+      // Named entity recognition
+      if (this.nerPipeline) {
+        const entities &#x3D; await this.nerPipeline(text);
+        if (Array.isArray(entities)) {
+          result.entities &#x3D; entities.map((entity: unknown) &#x3D;&gt; {
+            const e &#x3D; entity as {
+              word?: string;
+              entity_group?: string;
+              label?: string;
+              score?: number;
+              start?: number;
+              end?: number;
+            };
+            return {
+              entity: e.word || &#x27;&#x27;,
+              label: e.entity_group || e.label || &#x27;&#x27;,
+              confidence: e.score || 0,
+              start: e.start || 0,
+              end: e.end || 0,
+            };
+          });
+        }
+      }
+
+      // Political bias detection (simplified)
+      result.bias &#x3D; this.detectPoliticalBias(text);
+
+      // Keyword extraction (simple implementation)
+      result.keywords &#x3D; this.extractKeywords(text);
+
+      // Readability analysis
+      result.readability &#x3D; this.calculateReadability(text);
+    } catch (error) {
+      console.error(&#x27;NLP analysis failed:&#x27;, error);
+    }
+
+    return result;
+  }
+
+  /**
+   * Generate text using language model
+   */
+  async generateText(prompt: string, options: TextGenerationOptions &#x3D; {}): Promise&lt;string[]&gt; {
+    if (!this.generatorPipeline) {
+      throw new Error(&#x27;Text generation pipeline not initialized&#x27;);
+    }
+
+    try {
+      const result &#x3D; await this.generatorPipeline(prompt, {
+        max_length: options.maxLength || 100,
+        temperature: options.temperature || 0.7,
+        top_k: options.topK || 50,
+        top_p: options.topP || 0.9,
+        num_return_sequences: options.numReturnSequences || 1,
+        do_sample: true,
+      });
+
+      if (Array.isArray(result)) {
+        return result.map((item: unknown) &#x3D;&gt; {
+          const i &#x3D; item as { generated_text?: string };
+          let text &#x3D; i.generated_text || &#x27;&#x27;;
+          // Remove the original prompt from the generated text
+          if (text.startsWith(prompt)) {
+            text &#x3D; text.slice(prompt.length).trim();
+          }
+          return text;
+        });
+      }
+
+      return [];
+    } catch (error) {
+      console.error(&#x27;Text generation failed:&#x27;, error);
+      return [];
+    }
+  }
+
+  /**
+   * Classify text into political categories
+   */
+  async classifyPoliticalText(
+    text: string,
+    categories: string[]
+  ): Promise&lt;Array&lt;{ label: string; score: number }&gt;&gt; {
+    if (!this.classifierPipeline) {
+      throw new Error(&#x27;Classification pipeline not initialized&#x27;);
+    }
+
+    try {
+      // Use zero-shot classification with candidate labels
+      const result &#x3D; await this.classifierPipeline(text, categories);
+
+      if (result &amp;&amp; typeof result &#x3D;&#x3D;&#x3D; &#x27;object&#x27; &amp;&amp; &#x27;labels&#x27; in result &amp;&amp; &#x27;scores&#x27; in result) {
+        const labels &#x3D; result.labels as string[];
+        const scores &#x3D; result.scores as number[];
+
+        return labels
+          .map((label, index) &#x3D;&gt; ({
+            label,
+            score: scores[index] || 0,
+          }))
+          .sort((a, b) &#x3D;&gt; b.score - a.score);
+      }
+
+      return [];
+    } catch (error) {
+      console.error(&#x27;Text classification failed:&#x27;, error);
+      return [];
+    }
+  }
+
+  /**
+   * Detect political bias in text
+   */
+  private detectPoliticalBias(text: string): { score: number; indicators: string[] } {
+    const biasIndicators &#x3D; {
+      left: [&#x27;progressive&#x27;, &#x27;liberal&#x27;, &#x27;social justice&#x27;, &#x27;equity&#x27;, &#x27;systemic racism&#x27;, &#x27;oppressed&#x27;],
+      right: [&#x27;conservative&#x27;, &#x27;traditional&#x27;, &#x27;patriot&#x27;, &#x27;freedom&#x27;, &#x27;second amendment&#x27;, &#x27;pro-life&#x27;],
+      neutral: [&#x27;balanced&#x27;, &#x27;evidence-based&#x27;, &#x27;data shows&#x27;, &#x27;according to studies&#x27;, &#x27;both sides&#x27;],
+    };
+
+    const lowerText &#x3D; text.toLowerCase();
+    let leftScore &#x3D; 0;
+    let rightScore &#x3D; 0;
+    let neutralScore &#x3D; 0;
+    const foundIndicators: string[] &#x3D; [];
+
+    // Count bias indicators
+    for (const [bias, indicators] of Object.entries(biasIndicators)) {
+      for (const indicator of indicators) {
+        if (lowerText.includes(indicator)) {
+          foundIndicators.push(indicator);
+          if (bias &#x3D;&#x3D;&#x3D; &#x27;left&#x27;) leftScore +&#x3D; 1;
+          else if (bias &#x3D;&#x3D;&#x3D; &#x27;right&#x27;) rightScore +&#x3D; 1;
+          else neutralScore +&#x3D; 1;
+        }
+      }
+    }
+
+    // Calculate bias score (-1 to 1, where -1 is left-leaning, 1 is right-leaning)
+    const totalBias &#x3D; leftScore + rightScore;
+    const biasScore &#x3D; totalBias &gt; 0 ? (rightScore - leftScore) / totalBias : 0;
+
+    // Adjust for neutral indicators
+    const adjustedScore &#x3D; neutralScore &gt; 0 ? biasScore * 0.5 : biasScore;
+
+    return {
+      score: Math.max(-1, Math.min(1, adjustedScore)),
+      indicators: foundIndicators,
+    };
+  }
+
+  /**
+   * Extract keywords from text
+   */
+  private extractKeywords(text: string): string[] {
+    // Simple keyword extraction based on frequency and length
+    const words &#x3D; text
+      .toLowerCase()
+      .replace(/[^\w\s]/g, &#x27;&#x27;)
+      .split(/\s+/)
+      .filter(word &#x3D;&gt; word.length &gt; 3);
+
+    const wordFreq: Record&lt;string, number&gt; &#x3D; {};
+    for (const word of words) {
+      wordFreq[word] &#x3D; (wordFreq[word] || 0) + 1;
+    }
+
+    // Return top 10 keywords by frequency
+    return Object.entries(wordFreq)
+      .sort(([, a], [, b]) &#x3D;&gt; b - a)
+      .slice(0, 10)
+      .map(([word]) &#x3D;&gt; word);
+  }
+
+  /**
+   * Calculate readability metrics
+   */
+  private calculateReadability(text: string): { fleschScore: number; gradeLevel: number } {
+    const sentences &#x3D; text.split(/[.!?]+/).filter(s &#x3D;&gt; s.trim().length &gt; 0);
+    const words &#x3D; text.split(/\s+/).filter(w &#x3D;&gt; w.length &gt; 0);
+    const syllables &#x3D; words.reduce((count, word) &#x3D;&gt; count + this.countSyllables(word), 0);
+
+    const avgWordsPerSentence &#x3D; words.length / sentences.length;
+    const avgSyllablesPerWord &#x3D; syllables / words.length;
+
+    // Flesch Reading Ease Score
+    const fleschScore &#x3D; 206.835 - 1.015 * avgWordsPerSentence - 84.6 * avgSyllablesPerWord;
+
+    // Grade level (approximation)
+    const gradeLevel &#x3D; 0.39 * avgWordsPerSentence + 11.8 * avgSyllablesPerWord - 15.59;
+
+    return {
+      fleschScore: Math.max(0, Math.min(100, fleschScore)),
+      gradeLevel: Math.max(0, gradeLevel),
+    };
+  }
+
+  /**
+   * Count syllables in a word (simple approximation)
+   */
+  private countSyllables(word: string): number {
+    word &#x3D; word.toLowerCase();
+    if (word.length &lt;&#x3D; 3) return 1;
+
+    const vowels &#x3D; &#x27;aeiouy&#x27;;
+    let syllableCount &#x3D; 0;
+    let previousWasVowel &#x3D; false;
+
+    for (const char of word) {
+      const isVowel &#x3D; vowels.includes(char);
+      if (isVowel &amp;&amp; !previousWasVowel) {
+        syllableCount++;
+      }
+      previousWasVowel &#x3D; isVowel;
+    }
+
+    // Adjust for silent &#x27;e&#x27;
+    if (word.endsWith(&#x27;e&#x27;)) {
+      syllableCount--;
+    }
+
+    return Math.max(1, syllableCount);
+  }
+}
+
+/**
+ * Singleton NLP service instance
+ */
+export const nlpService &#x3D; new NLPService();
+</code></pre>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'class';
+            var COMPODOC_CURRENT_PAGE_URL = 'NLPService.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

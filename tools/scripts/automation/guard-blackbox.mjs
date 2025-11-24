@@ -6,7 +6,7 @@
  * so the guard remains resilient as the toolchain evolves.
  */
 
-import fs from 'fs';
+import fs from 'node:fs';
 import { spawn } from 'node:child_process';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
@@ -39,7 +39,7 @@ const runCommand = (command, args, options = {}) =>
     const timer = setTimeout(() => {
       try {
         child.kill('SIGTERM');
-      } catch (e) {
+      } catch {
         // ignore
       }
       reject(new Error(`${command} ${args.join(' ')} timed out after ${timeoutMs}ms`));
@@ -134,7 +134,7 @@ const main = async () => {
     } else {
       fastMode = process.env.FAST_AI === '1';
     }
-  } catch (err) {
+  } catch {
     // ignore and use defaults
   }
 

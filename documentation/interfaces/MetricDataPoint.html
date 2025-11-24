@@ -1,0 +1,782 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>political-sphere documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">political-sphere documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content interface">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Interfaces</li>
+  <li class="breadcrumb-item"
+  >
+  MetricDataPoint</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>libs/ai-system/src/observability/metrics.ts</code>
+        </p>
+
+
+            <p class="comment">
+                <h3>Description</h3>
+            </p>
+            <p class="comment">
+                <p>Metric data point</p>
+
+            </p>
+
+
+        <section data-compodoc="block-index">
+            <h3 id="index">Index</h3>
+            <table class="table table-sm table-bordered index-table">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <h6><b>Properties</b></h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <ul class="index-list">
+                                <li>
+                                            <span class="modifier">Optional</span>
+                                        <a href="#labels" 
+>
+                                            labels
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#timestamp" 
+>
+                                            timestamp
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#value" 
+>
+                                            value
+                                        </a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+
+
+            <section data-compodoc="block-properties">
+                <h3 id="inputs">Properties</h3>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="labels"></a>
+                                        <span class="name "><b>labels</b>
+                                            <a href="#labels">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>labels:         <code><a href="../miscellaneous/variables.html#g" target="_self" >Record&lt;string | string&gt;</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="../miscellaneous/variables.html#g" target="_self" >Record&lt;string | string&gt;</a></code>
+
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Optional</i>
+                                        </td>
+                                    </tr>
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="timestamp"></a>
+                                        <span class="name "><b>timestamp</b>
+                                            <a href="#timestamp">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>timestamp:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date" target="_blank" >Date</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date" target="_blank" >Date</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="value"></a>
+                                        <span class="name "><b>value</b>
+                                            <a href="#value">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>value:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+            </section>
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">interface MetricDataPoint {
+  timestamp: Date;
+  value: number;
+  labels?: Record&lt;string, string&gt;;
+}
+
+/**
+ * Histogram data
+ */
+interface HistogramData {
+  count: number;
+  sum: number;
+  min: number;
+  max: number;
+  avg: number;
+  p50?: number;
+  p95?: number;
+  p99?: number;
+  values: number[];
+}
+
+/**
+ * SLO definition
+ */
+interface SLODefinition {
+  target: number;
+  threshold: number;
+  window: string;
+}
+
+/**
+ * SLO status
+ */
+interface SLOStatus {
+  compliant: boolean;
+  successRate: number;
+  target: number;
+}
+
+/**
+ * Metrics report
+ */
+interface MetricsReport {
+  counters: Record&lt;string, Record&lt;string, number&gt;&gt;;
+  gauges: Record&lt;string, number&gt;;
+  histograms: Record&lt;string, HistogramData&gt;;
+}
+
+/**
+ * Metrics Collector
+ *
+ * Collects and aggregates metrics for monitoring and observability.
+ */
+export class MetricsCollector {
+  private metrics: Map&lt;string, MetricDataPoint[]&gt; &#x3D; new Map();
+  private counters: Map&lt;string, Map&lt;string, number&gt;&gt; &#x3D; new Map();
+  private gauges: Map&lt;string, number&gt; &#x3D; new Map();
+  private histograms: Map&lt;string, number[]&gt; &#x3D; new Map();
+  private slos: Map&lt;string, SLODefinition&gt; &#x3D; new Map();
+  private sliData: Map&lt;string, number[]&gt; &#x3D; new Map();
+
+  /**
+   * Record metric (legacy method for compatibility)
+   */
+  record(name: string, value: number, labels?: Record&lt;string, string&gt;): void {
+    const dataPoint: MetricDataPoint &#x3D; {
+      timestamp: new Date(),
+      value,
+      labels,
+    };
+
+    if (!this.metrics.has(name)) {
+      this.metrics.set(name, []);
+    }
+
+    // biome-ignore lint/style/noNonNullAssertion: Safe after has check
+    this.metrics.get(name)!.push(dataPoint);
+    this.exportMetric(name, dataPoint);
+  }
+
+  /**
+   * Record latency metric
+   */
+  recordLatency(service: string, durationMs: number): void {
+    this.record(&#x60;latency_${service}&#x60;, durationMs);
+  }
+
+  /**
+   * Record error
+   */
+  recordError(service: string): void {
+    this.record(&#x27;errors_total&#x27;, 1, { service });
+  }
+
+  /**
+   * Record success
+   */
+  recordSuccess(service: string): void {
+    this.record(&#x27;successes_total&#x27;, 1, { service });
+  }
+
+  /**
+   * Increment a counter metric
+   */
+  incrementCounter(name: string, labels: Record&lt;string, string&gt; &#x3D; {}): void {
+    if (!this.counters.has(name)) {
+      this.counters.set(name, new Map());
+    }
+
+    const labelKey &#x3D;
+      Object.entries(labels)
+        .map(([k, v]) &#x3D;&gt; &#x60;${k}:${v}&#x60;)
+        .join(&#x27;,&#x27;) || &#x27;default&#x27;;
+
+    // biome-ignore lint/style/noNonNullAssertion: Safe after has check
+    const counterMap &#x3D; this.counters.get(name)!;
+    counterMap.set(labelKey, (counterMap.get(labelKey) || 0) + 1);
+  }
+
+  /**
+   * Set a gauge metric
+   */
+  setGauge(name: string, value: number): void {
+    this.gauges.set(name, value);
+  }
+
+  /**
+   * Record a histogram value
+   */
+  recordHistogram(name: string, value: number): void {
+    if (!this.histograms.has(name)) {
+      this.histograms.set(name, []);
+    }
+    // biome-ignore lint/style/noNonNullAssertion: Safe after has check
+    this.histograms.get(name)!.push(value);
+  }
+
+  /**
+   * Define an SLO
+   */
+  defineSLO(name: string, definition: SLODefinition): void {
+    this.slos.set(name, definition);
+    this.sliData.set(name, []);
+  }
+
+  /**
+   * Record an SLI measurement
+   */
+  recordSLI(name: string, value: number): void {
+    if (!this.sliData.has(name)) {
+      this.sliData.set(name, []);
+    }
+    // biome-ignore lint/style/noNonNullAssertion: Safe after has check
+    this.sliData.get(name)!.push(value);
+  }
+
+  /**
+   * Check SLO compliance
+   */
+  checkSLO(name: string): SLOStatus {
+    const slo &#x3D; this.slos.get(name);
+    const data &#x3D; this.sliData.get(name) || [];
+
+    if (!slo) {
+      throw new Error(&#x60;SLO &quot;${name}&quot; not defined&#x60;);
+    }
+
+    const successCount &#x3D; data.filter(v &#x3D;&gt; v &lt;&#x3D; slo.target).length;
+    const successRate &#x3D; data.length &gt; 0 ? successCount / data.length : 1.0;
+
+    return {
+      compliant: successRate &gt;&#x3D; slo.threshold,
+      successRate,
+      target: slo.threshold,
+    };
+  }
+
+  /**
+   * Get all metrics as a report
+   */
+  getMetrics(): MetricsReport {
+    const report: MetricsReport &#x3D; {
+      counters: {},
+      gauges: {},
+      histograms: {},
+    };
+
+    // Counters
+    this.counters.forEach((labelMap, name) &#x3D;&gt; {
+      report.counters[name] &#x3D; {};
+      labelMap.forEach((count, labelKey) &#x3D;&gt; {
+        const bucket &#x3D; report.counters[name] || {};
+        report.counters[name] &#x3D; bucket;
+        bucket[labelKey] &#x3D; count;
+      });
+    });
+
+    // Gauges
+    this.gauges.forEach((value, name) &#x3D;&gt; {
+      report.gauges[name] &#x3D; value;
+    });
+
+    // Histograms
+    this.histograms.forEach((values, name) &#x3D;&gt; {
+      if (values.length &#x3D;&#x3D;&#x3D; 0) {
+        return;
+      }
+
+      const sorted &#x3D; [...values].sort((a, b) &#x3D;&gt; a - b);
+      const sum &#x3D; values.reduce((a, b) &#x3D;&gt; a + b, 0);
+
+      const percentile &#x3D; (p: number): number &#x3D;&gt; {
+        const index &#x3D; Math.ceil(sorted.length * p) - 1;
+        return sorted[Math.max(0, index)] || 0;
+      };
+
+      report.histograms[name] &#x3D; {
+        count: values.length,
+        sum,
+        min: Math.min(...values),
+        max: Math.max(...values),
+        avg: sum / values.length,
+        p50: percentile(0.5),
+        p95: percentile(0.95),
+        p99: percentile(0.99),
+        values: sorted,
+      };
+    });
+
+    return report;
+  }
+
+  /**
+   * Export metrics in Prometheus format
+   */
+  exportPrometheus(): string {
+    const lines: string[] &#x3D; [];
+
+    // Counters
+    this.counters.forEach((labelMap, name) &#x3D;&gt; {
+      lines.push(&#x60;# TYPE ${name} counter&#x60;);
+      labelMap.forEach((count, labelKey) &#x3D;&gt; {
+        if (labelKey &#x3D;&#x3D;&#x3D; &#x27;default&#x27;) {
+          lines.push(&#x60;${name} ${count}&#x60;);
+        } else {
+          const labels &#x3D; labelKey
+            .split(&#x27;,&#x27;)
+            .map(kv &#x3D;&gt; {
+              const [k, v] &#x3D; kv.split(&#x27;:&#x27;);
+              return &#x60;${k}&#x3D;&quot;${v}&quot;&#x60;;
+            })
+            .join(&#x27;,&#x27;);
+          lines.push(&#x60;${name}{${labels}} ${count}&#x60;);
+        }
+      });
+    });
+
+    // Gauges
+    this.gauges.forEach((value, name) &#x3D;&gt; {
+      lines.push(&#x60;# TYPE ${name} gauge&#x60;);
+      lines.push(&#x60;${name} ${value}&#x60;);
+    });
+
+    // Histograms
+    this.histograms.forEach((values, name) &#x3D;&gt; {
+      if (values.length &#x3D;&#x3D;&#x3D; 0) return;
+
+      lines.push(&#x60;# TYPE ${name} histogram&#x60;);
+      const sum &#x3D; values.reduce((a, b) &#x3D;&gt; a + b, 0);
+      lines.push(&#x60;${name}_sum ${sum}&#x60;);
+      lines.push(&#x60;${name}_count ${values.length}&#x60;);
+    });
+
+    return lines.join(&#x27;\n&#x27;);
+  }
+
+  /**
+   * Reset all metrics
+   */
+  reset(): void {
+    this.metrics.clear();
+    this.counters.clear();
+    this.gauges.clear();
+    this.histograms.clear();
+    this.sliData.clear();
+  }
+
+  /**
+   * Calculate SLO metrics (legacy method for compatibility)
+   */
+  calculateSLO(
+    service: string,
+    windowMs: number &#x3D; 3600000
+  ): {
+    service: string;
+    availability: number;
+    latency: { p50: number; p95: number; p99: number };
+    errorRate: number;
+    window: { start: Date; end: Date };
+  } {
+    const windowStart &#x3D; new Date(Date.now() - windowMs);
+
+    const getMetricsInWindow &#x3D; (name: string): MetricDataPoint[] &#x3D;&gt; {
+      const allMetrics &#x3D; this.metrics.get(name) || [];
+      return allMetrics.filter(m &#x3D;&gt; m.timestamp &gt;&#x3D; windowStart);
+    };
+
+    const successes &#x3D; getMetricsInWindow(&#x27;successes_total&#x27;);
+    const errors &#x3D; getMetricsInWindow(&#x27;errors_total&#x27;);
+    const total &#x3D; successes.length + errors.length;
+    const availability &#x3D; total &gt; 0 ? successes.length / total : 1.0;
+
+    // Calculate latency percentiles
+    const latencies &#x3D; getMetricsInWindow(&#x60;latency_${service}&#x60;)
+      .map(d &#x3D;&gt; d.value)
+      .sort((a, b) &#x3D;&gt; a - b);
+
+    const percentile &#x3D; (arr: number[], p: number) &#x3D;&gt; {
+      if (arr.length &#x3D;&#x3D;&#x3D; 0) return 0;
+      const index &#x3D; Math.ceil(arr.length * p) - 1;
+      return arr[index] || 0;
+    };
+
+    const latency &#x3D; {
+      p50: percentile(latencies, 0.5),
+      p95: percentile(latencies, 0.95),
+      p99: percentile(latencies, 0.99),
+    };
+
+    // Calculate error rate
+    const errorRate &#x3D; total &gt; 0 ? errors.length / total : 0;
+
+    return {
+      service,
+      availability,
+      latency,
+      errorRate,
+      window: {
+        start: windowStart,
+        end: new Date(),
+      },
+    };
+  }
+
+  /**
+   * Export metric (placeholder for Prometheus)
+   */
+  private exportMetric(name: string, dataPoint: MetricDataPoint): void {
+    // In production, this would push to Prometheus/Grafana
+    // For now, just log to console
+    if (process.env.NODE_ENV !&#x3D;&#x3D; &#x27;test&#x27;) {
+      console.log(&#x60;[METRIC] ${name}:&#x60;, {
+        value: dataPoint.value,
+        labels: dataPoint.labels,
+        timestamp: dataPoint.timestamp.toISOString(),
+      });
+    }
+  }
+
+  /**
+   * Get error budget status
+   */
+  getErrorBudget(
+    service: string,
+    targetAvailability: number &#x3D; 0.999
+  ): {
+    budget: number;
+    consumed: number;
+    remaining: number;
+    percentConsumed: number;
+  } {
+    const slo &#x3D; this.calculateSLO(service);
+    const actualAvailability &#x3D; slo.availability ?? 1.0;
+
+    // Error budget &#x3D; 1 - target availability
+    // e.g., 99.9% availability &#x3D; 0.1% error budget
+    const budget &#x3D; 1 - targetAvailability;
+    const consumed &#x3D; 1 - actualAvailability;
+    const remaining &#x3D; Math.max(0, budget - consumed);
+    const percentConsumed &#x3D; budget &gt; 0 ? (consumed / budget) * 100 : 0;
+
+    return {
+      budget,
+      consumed,
+      remaining,
+      percentConsumed,
+    };
+  }
+}
+
+/**
+ * Global metrics collector
+ */
+export const metrics &#x3D; new MetricsCollector();
+</code></pre>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'interface';
+            var COMPODOC_CURRENT_PAGE_URL = 'MetricDataPoint.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

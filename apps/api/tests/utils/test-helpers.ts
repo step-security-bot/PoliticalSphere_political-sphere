@@ -2,7 +2,9 @@
 // Provides reusable helpers for database setup, mocking, and assertions
 
 import express from 'express';
+import type { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
+import type { Secret } from 'jsonwebtoken';
 import request from 'supertest';
 
 import { getTestDatabase } from '../../src/test-support/index.ts';
@@ -65,9 +67,9 @@ export const httpHelpers = {
    * @param {Object} app - Express app instance
    * @returns {Object} Supertest agent
    */
-  createTestAgent(app) {
+  createTestAgent(app: express.Application): unknown {
     // Add common test middleware
-    app.use((req, _res, next) => {
+    app.use((req: Request, _res: Response, next: NextFunction) => {
       // Debug logging in test mode
       if (process.env.NODE_ENV === 'test') {
         console.debug('[test] incoming headers:', req.headers);
@@ -77,7 +79,7 @@ export const httpHelpers = {
 
     // Custom body parser for test environment
     app.use(express.text({ type: '*/*' }));
-    app.use((req, _res, next) => {
+    app.use((req: Request, _res: Response, next: NextFunction) => {
       try {
         if (typeof req.body === 'string' && req.body.length > 0) {
           req.body = JSON.parse(req.body);
@@ -96,7 +98,7 @@ export const httpHelpers = {
    * @param {Object} request - Supertest request object
    * @returns {Object} Request with headers set
    */
-  setApiHeaders(request) {
+  setApiHeaders(request: request.Test): unknown {
     return request.set('Content-Type', 'application/json; charset=utf-8');
   },
 
@@ -106,14 +108,16 @@ export const httpHelpers = {
    * @param {string} expiresIn - Token expiration (default: '1h')
    * @returns {string} JWT token
    */
-  generateTestToken(payload = {}, expiresIn = '1h') {
+  generateTestToken(payload: Record<string, unknown> = {}, expiresIn: string = '1h'): string {
     const defaultPayload = {
       userId: `test-user-${Date.now()}`,
       username: 'testuser',
       ...payload,
     };
 
-    const secret = process.env.JWT_SECRET || 'test-secret-key-at-least-32-characters-long';
+    const secret = (process.env.JWT_SECRET ||
+      'test-secret-key-at-least-32-characters-long') as Secret;
+    // @ts-expect-error - jwt.sign type definitions have incorrect overloads
     return jwt.sign(defaultPayload, secret, { expiresIn });
   },
 
@@ -123,7 +127,7 @@ export const httpHelpers = {
    * @param {string} token - JWT token (if not provided, generates a test token)
    * @returns {Object} Request with Authorization header
    */
-  withAuth(request, token = null) {
+  withAuth(request: request.Test, token: string | null = null): unknown {
     const authToken = token || this.generateTestToken();
     return request.set('Authorization', `Bearer ${authToken}`);
   },

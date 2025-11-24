@@ -115,7 +115,7 @@ class ContextOptimizer {
    * Optimize context for AI input
    */
   optimize(context) {
-    const { code = '', docs = '', history = [], query = '', metadata = {} } = context;
+    const { code = '', docs = '', history = [], query = '', _metadata = {} } = context;
 
     const sections = [];
     const queryTokens = this.estimateTokens(query);

@@ -279,7 +279,7 @@ test.describe('Voting System', () => {
 
       // Check for deadline indicators
       const deadlineIndicator = page.locator(
-        '[data-testid="deadline"], .deadline, .time-remaining',
+        '[data-testid="deadline"], .deadline, .time-remaining'
       );
       if (await deadlineIndicator.isVisible()) {
         const deadlineText = await deadlineIndicator.textContent();
@@ -413,7 +413,7 @@ test.describe('Voting System', () => {
       if (await resultsSection.isVisible()) {
         // Verify results structure
         const candidateResults = resultsSection.locator(
-          '[data-testid="candidate-result"], .candidate-result',
+          '[data-testid="candidate-result"], .candidate-result'
         );
         const resultCount = await candidateResults.count();
 

@@ -5,6 +5,7 @@
  *
  * @module accessibility/axe-integration
  */
+/* eslint-disable no-console */
 
 /**
  * axe-core test configuration

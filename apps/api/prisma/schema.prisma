@@ -6,11 +6,10 @@ generator client {
   provider = "prisma-client-js"
 }
 
-// NOTE: Using Prisma 6.19.0 - url property is correct for this version
-// Prisma 7 will require migration to prisma.config.ts (when upgrading)
+// NOTE: Using Prisma 6.19.0 - URL required in schema for this version
 datasource db {
   provider = "sqlite"
-  url      = env("DATABASE_URL")
+  url = "file:./test.db"
 }
 
 // ============================================================================
@@ -538,4 +537,73 @@ model Game {
   state     Json
 
   @@map("games")
+}
+
+// ============================================================================
+// USER AUTHENTICATION & AUDIT
+// ============================================================================
+
+enum UserRole {
+  ADMIN
+  MODERATOR
+  VIEWER
+}
+
+model User {
+  id            String   @id @default(uuid())
+  email         String   @unique
+  username      String?  @unique
+  passwordHash  String?
+  role          UserRole @default(VIEWER)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  // Relations
+  sessions      Session[]
+  auditLogs     AuditLog[]
+
+  @@index([username])
+  @@index([email])
+  @@map("users")
+}
+
+model Session {
+  id           String   @id @default(uuid())
+  userId       String
+  refreshToken String   @unique
+  expiresAt    DateTime
+  revokedAt    DateTime?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([refreshToken])
+  @@index([expiresAt])
+  @@map("sessions")
+}
+
+model AuditLog {
+  id             String   @id @default(uuid())
+  timestamp      DateTime @default(now())
+  category       String
+  action         String
+  userId         String?
+  resource       String?
+  details        Json?
+  ip             String?
+  userAgent      String?
+  complianceFrameworks Json? // Array of framework names stored as JSON
+  createdAt      DateTime @default(now())
+
+  // Relations
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([timestamp])
+  @@index([category])
+  @@index([userId])
+  @@index([action])
+  @@map("audit_logs")
 }

@@ -7,67 +7,69 @@
  */
 
 class UserStore {
-  constructor(db) {
+  private db: any;
+
+  constructor(db: any) {
     this.db = db;
   }
 
-  async create(data) {
+  async create(data: any): Promise<any> {
     if (typeof this.db.create === 'function') {
       return await this.db.create(data);
     }
     throw new Error('create() not implemented on mock database');
   }
 
-  async getById(id) {
+  async getById(id: string): Promise<any> {
     if (typeof this.db.getById === 'function') {
       return await this.db.getById(id);
     }
     throw new Error('getById() not implemented on mock database');
   }
 
-  async getByEmail(email) {
+  async getByEmail(email: string): Promise<any> {
     if (typeof this.db.getByEmail === 'function') {
       return await this.db.getByEmail(email);
     }
     throw new Error('getByEmail() not implemented on mock database');
   }
 
-  async getByUsername(username) {
+  async getByUsername(username: string): Promise<any> {
     if (typeof this.db.getByUsername === 'function') {
       return await this.db.getByUsername(username);
     }
     throw new Error('getByUsername() not implemented on mock database');
   }
 
-  async getAll(filter = {}) {
+  async getAll(filter: any = {}): Promise<any[]> {
     if (typeof this.db.getAll === 'function') {
       return await this.db.getAll(filter);
     }
     throw new Error('getAll() not implemented on mock database');
   }
 
-  async update(id, data) {
+  async update(id: string, data: any): Promise<any> {
     if (typeof this.db.update === 'function') {
       return await this.db.update(id, data);
     }
     throw new Error('update() not implemented on mock database');
   }
 
-  async delete(id) {
+  async delete(id: string): Promise<any> {
     if (typeof this.db.delete === 'function') {
       return await this.db.delete(id);
     }
     throw new Error('delete() not implemented on mock database');
   }
 
-  async getByRole(role) {
+  async getByRole(role: string): Promise<any[]> {
     if (typeof this.db.getByRole === 'function') {
       return await this.db.getByRole(role);
     }
     throw new Error('getByRole() not implemented on mock database');
   }
 
-  validateUserData(data) {
+  validateUserData(data: any): void {
     if (!data.email || !data.username) {
       throw new Error('Missing required fields');
     }
@@ -81,4 +83,13 @@ class UserStore {
   }
 }
 
+/**
+ * Default export: repository-style `UserStore` test shim.
+ *
+ * This class provides a small adapter layer for tests that expect a repository
+ * object exposing common user methods (`create`, `getById`, `getByEmail`,
+ * `getByUsername`, `getAll`, `update`, `delete`, `getByRole`). It validates
+ * input shape in a best-effort way and surfaces clear errors when the
+ * underlying mock database does not implement the expected interface.
+ */
 export default UserStore;

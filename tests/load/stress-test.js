@@ -1,14 +1,15 @@
+/* global __ENV */ // Provided by k6 runtime
 import http from 'k6/http';
 import { check, sleep } from 'k6';
 
 export let options = {
   stages: [
-    { duration: '1m', target: 10 },   // Warm up
-    { duration: '1m', target: 50 },   // Ramp up
-    { duration: '2m', target: 100 },  // Load
-    { duration: '2m', target: 200 },  // Stress
-    { duration: '2m', target: 300 },  // Breaking point
-    { duration: '1m', target: 0 },    // Cool down
+    { duration: '1m', target: 10 }, // Warm up
+    { duration: '1m', target: 50 }, // Ramp up
+    { duration: '2m', target: 100 }, // Load
+    { duration: '2m', target: 200 }, // Stress
+    { duration: '2m', target: 300 }, // Breaking point
+    { duration: '1m', target: 0 }, // Cool down
   ],
 
   thresholds: {
@@ -29,12 +30,13 @@ export default function () {
   ];
 
   requests.forEach(([method, url, body]) => {
-    const response = method === 'GET'
-      ? http.get(url)
-      : http.post(url, body, { headers: { 'Content-Type': 'application/json' } });
+    const response =
+      method === 'GET'
+        ? http.get(url)
+        : http.post(url, body, { headers: { 'Content-Type': 'application/json' } });
 
     check(response, {
-      [`${method} ${url} status is 200`: (r) => r.status === 200,
+      [`${method} ${url} status is 200`]: r => r.status === 200,
     });
   });
 

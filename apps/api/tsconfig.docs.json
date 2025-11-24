@@ -1,0 +1,27 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "composite": false
+  },
+  "include": [
+    "src/routes/**/*.ts",
+    "src/domain/**/*.ts",
+    "src/docs/**/*.ts"
+  ],
+  "exclude": [
+    "**/*.test.*",
+    "**/*.spec.*",
+    "tests",
+    "src/test-support/**",
+    "src/**/migrations/**",
+    "src/utils/migrations/**",
+    "scripts/**",
+    "prisma/**",
+    "src/coverage-smoke.ts",
+    "logger.ts",
+    "**/*.mjs",
+    "**/*.cjs",
+    "**/*.js",
+    "**/__tests__/**"
+  ]
+}

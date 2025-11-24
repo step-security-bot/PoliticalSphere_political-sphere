@@ -3,13 +3,22 @@
  * Handles press releases, public opinion polls, media coverage, and narratives
  */
 
-import express from 'express';
+import express, { type Response } from 'express';
 import { z } from 'zod';
 import { nlpService } from '@political-sphere/ai-system';
 
+/**
+ * Express router for media-related endpoints.
+ * Handles press releases, polls, media coverage tracking, narratives, and content generation.
+ */
 const router = express.Router();
 
 // Validation schemas
+
+/**
+ * Zod schema for validating press release publication input.
+ * Defines the structure for publishing official communications and announcements.
+ */
 const PublishPressReleaseSchema = z.object({
   gameId: z.string().uuid(),
   authorId: z.string().uuid(),
@@ -21,6 +30,10 @@ const PublishPressReleaseSchema = z.object({
   embargoUntil: z.string().datetime().optional(),
 });
 
+/**
+ * Zod schema for validating poll creation input.
+ * Defines the structure for creating public opinion polls and surveys.
+ */
 const CreatePollSchema = z.object({
   gameId: z.string().uuid(),
   creatorId: z.string().uuid(),
@@ -31,11 +44,19 @@ const CreatePollSchema = z.object({
   targetAudience: z.enum(['all', 'voters', 'members', 'specific']).default('all'),
 });
 
+/**
+ * Zod schema for validating poll vote casting input.
+ * Defines the structure for submitting votes in public opinion polls.
+ */
 const CastPollVoteSchema = z.object({
   pollId: z.string().uuid(),
   optionIndex: z.number().int().min(0),
 });
 
+/**
+ * Zod schema for validating media coverage tracking input.
+ * Defines the structure for recording media coverage and sentiment analysis.
+ */
 const TrackCoverageSchema = z.object({
   gameId: z.string().uuid(),
   targetType: z.enum(['person', 'party', 'policy', 'event']),
@@ -47,6 +68,10 @@ const TrackCoverageSchema = z.object({
   summary: z.string().min(1).max(1000).optional(),
 });
 
+/**
+ * Zod schema for validating narrative tracking input.
+ * Defines the structure for tracking media narratives and public discourse.
+ */
 const TrackNarrativeSchema = z.object({
   gameId: z.string().uuid(),
   title: z.string().min(1).max(200),
@@ -57,6 +82,10 @@ const TrackNarrativeSchema = z.object({
   virality: z.number().min(0).max(100).default(0),
 });
 
+/**
+ * Zod schema for validating content generation input.
+ * Defines the structure for AI-generated media content requests.
+ */
 const GenerateContentSchema = z.object({
   gameId: z.string().uuid(),
   contentType: z.enum(['press-release', 'headline', 'summary', 'opinion']),
@@ -67,18 +96,47 @@ const GenerateContentSchema = z.object({
 });
 
 // In-memory storage
+
+/**
+ * In-memory store for press release records.
+ * Maps release ID to press release object. Placeholder for database layer.
+ */
 const pressReleases = new Map();
+/**
+ * In-memory store for poll records.
+ * Maps poll ID to poll object. Placeholder for database layer.
+ */
 const polls = new Map();
+/**
+ * In-memory store for poll vote records.
+ * Maps vote key to poll vote object. Placeholder for database layer.
+ */
 const pollVotes = new Map();
+/**
+ * In-memory store for media coverage records.
+ * Maps coverage ID to coverage tracking object. Placeholder for database layer.
+ */
 const coverage = new Map();
+/**
+ * In-memory store for narrative records.
+ * Maps narrative ID to narrative tracking object. Placeholder for database layer.
+ */
 const narratives = new Map();
+/**
+ * In-memory store for approval rating records.
+ * Maps rating key (gameId-targetId) to approval rating object. Placeholder for database layer.
+ */
 const approvalRatings = new Map();
 
 /**
  * Publish a press release
  * POST /api/media/press-releases
+ *
+ * @route POST /api/media/press-releases
+ * @param {PublishPressReleaseSchema} req.body - Press release details
+ * @returns 201 with created press release
  */
-router.post('/press-releases', async (req, res) => {
+router.post('/press-releases', async (req, res: Response): Promise<Response> => {
   try {
     const validated = PublishPressReleaseSchema.parse(req.body);
 
@@ -98,7 +156,7 @@ router.post('/press-releases', async (req, res) => {
 
     pressReleases.set(releaseId, pressRelease);
 
-    res.status(201).json({
+    return res.status(201).json({
       success: true,
       data: pressRelease,
     });
@@ -111,7 +169,7 @@ router.post('/press-releases', async (req, res) => {
       });
     }
 
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       error: 'Failed to publish press release',
       message: (error as Error).message,
@@ -122,6 +180,10 @@ router.post('/press-releases', async (req, res) => {
 /**
  * Get press release by ID
  * GET /api/media/press-releases/:id
+ *
+ * @route GET /api/media/press-releases/:id
+ * @param {string} id.path - Release ID
+ * @returns 200 with press release or 404 if not found
  */
 router.get('/press-releases/:id', (req, res) => {
   const pressRelease = pressReleases.get(req.params.id);
@@ -136,7 +198,7 @@ router.get('/press-releases/:id', (req, res) => {
   // Increment views
   pressRelease.views += 1;
 
-  res.json({
+  return res.json({
     success: true,
     data: pressRelease,
   });
@@ -145,6 +207,12 @@ router.get('/press-releases/:id', (req, res) => {
 /**
  * List press releases
  * GET /api/media/press-releases?gameId=xxx&authorId=xxx&category=xxx
+ *
+ * @route GET /api/media/press-releases
+ * @param {string} gameId.query - Filter by game
+ * @param {string} [authorId.query] - Optional author filter
+ * @param {string} [category.query] - Optional category filter
+ * @returns 200 with array of press releases
  */
 router.get('/press-releases', (req, res) => {
   const { gameId, authorId, category } = req.query;
@@ -171,7 +239,7 @@ router.get('/press-releases', (req, res) => {
   // Sort by most recent
   filtered.sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime());
 
-  res.json({
+  return res.json({
     success: true,
     data: filtered,
   });
@@ -180,8 +248,12 @@ router.get('/press-releases', (req, res) => {
 /**
  * Create an opinion poll
  * POST /api/media/polls
+ *
+ * @route POST /api/media/polls
+ * @param {CreatePollSchema} req.body - Poll creation data
+ * @returns 201 with created poll
  */
-router.post('/polls', async (req, res) => {
+router.post('/polls', async (req, res: Response): Promise<Response> => {
   try {
     const validated = CreatePollSchema.parse(req.body);
 
@@ -202,7 +274,7 @@ router.post('/polls', async (req, res) => {
 
     polls.set(pollId, poll);
 
-    res.status(201).json({
+    return res.status(201).json({
       success: true,
       data: poll,
     });
@@ -215,7 +287,7 @@ router.post('/polls', async (req, res) => {
       });
     }
 
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       error: 'Failed to create poll',
       message: (error as Error).message,
@@ -226,6 +298,10 @@ router.post('/polls', async (req, res) => {
 /**
  * Get poll by ID with results
  * GET /api/media/polls/:id
+ *
+ * @route GET /api/media/polls/:id
+ * @param {string} id.path - Poll ID
+ * @returns 200 with poll and results or 404 if not found
  */
 router.get('/polls/:id', (req, res) => {
   const poll = polls.get(req.params.id);
@@ -242,7 +318,7 @@ router.get('/polls/:id', (req, res) => {
     poll.status = 'closed';
   }
 
-  res.json({
+  return res.json({
     success: true,
     data: poll,
   });
@@ -251,10 +327,22 @@ router.get('/polls/:id', (req, res) => {
 /**
  * Cast a vote in a poll
  * POST /api/media/polls/:id/vote
+ *
+ * @route POST /api/media/polls/:id/vote
+ * @param {string} id.path - Poll ID
+ * @param {CastPollVoteSchema} req.body - Option index to vote for
+ * @returns 201 with updated poll results
  */
-router.post('/polls/:id/vote', async (req, res) => {
+router.post('/polls/:id/vote', async (req, res: Response): Promise<Response> => {
   try {
-    const validated = CastPollVoteSchema.parse({ ...req.body, pollId: req.params.id });
+    const pollId = req.params.id;
+    if (!pollId) {
+      return res.status(400).json({
+        success: false,
+        error: 'Poll ID required',
+      });
+    }
+    const validated = CastPollVoteSchema.parse({ ...req.body, pollId });
     const userId = req.user?.id || req.body.userId;
 
     if (!userId) {
@@ -310,12 +398,12 @@ router.post('/polls/:id/vote', async (req, res) => {
     poll.results[validated.optionIndex].votes += 1;
 
     // Recalculate percentages
-    poll.results.forEach(result => {
+    poll.results.forEach((result: { option: string; votes: number; percentage: number }) => {
       result.percentage =
         poll.totalVotes > 0 ? Math.round((result.votes / poll.totalVotes) * 100) : 0;
     });
 
-    res.status(201).json({
+    return res.status(201).json({
       success: true,
       data: {
         pollId: req.params.id,
@@ -332,7 +420,7 @@ router.post('/polls/:id/vote', async (req, res) => {
       });
     }
 
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       error: 'Failed to cast vote',
       message: (error as Error).message,
@@ -343,6 +431,11 @@ router.post('/polls/:id/vote', async (req, res) => {
 /**
  * List polls for a game
  * GET /api/media/polls?gameId=xxx&status=xxx
+ *
+ * @route GET /api/media/polls
+ * @param {string} gameId.query - Filter by game
+ * @param {string} [status.query] - Optional poll status filter
+ * @returns 200 with array of Poll
  */
 router.get('/polls', (req, res) => {
   const { gameId, status } = req.query;
@@ -363,7 +456,7 @@ router.get('/polls', (req, res) => {
   // Sort by most recent
   filtered.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
 
-  res.json({
+  return res.json({
     success: true,
     data: filtered,
   });
@@ -372,8 +465,12 @@ router.get('/polls', (req, res) => {
 /**
  * Track media coverage
  * POST /api/media/coverage
+ *
+ * @route POST /api/media/coverage
+ * @param {TrackCoverageSchema} req.body - Coverage record data
+ * @returns 201 with recorded coverage entry
  */
-router.post('/coverage', async (req, res) => {
+router.post('/coverage', async (req, res: Response): Promise<Response> => {
   try {
     const validated = TrackCoverageSchema.parse(req.body);
 
@@ -392,7 +489,7 @@ router.post('/coverage', async (req, res) => {
       updateApprovalRating(validated.gameId, validated.targetId, validated.sentiment);
     }
 
-    res.status(201).json({
+    return res.status(201).json({
       success: true,
       data: mediaCoverage,
     });
@@ -405,9 +502,9 @@ router.post('/coverage', async (req, res) => {
       });
     }
 
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
-      error: 'Failed to track coverage',
+      error: 'Failed to track media coverage',
       message: (error as Error).message,
     });
   }
@@ -416,6 +513,12 @@ router.post('/coverage', async (req, res) => {
 /**
  * Get media coverage for a target
  * GET /api/media/coverage?gameId=xxx&targetId=xxx&targetType=xxx
+ *
+ * @route GET /api/media/coverage
+ * @param {string} gameId.query - Filter by game
+ * @param {string} [targetId.query] - Optional target id
+ * @param {string} [targetType.query] - Target type filter
+ * @returns 200 with array of coverage entries
  */
 router.get('/coverage', (req, res) => {
   const { gameId, targetId, targetType } = req.query;
@@ -440,7 +543,7 @@ router.get('/coverage', (req, res) => {
   // Sort by most recent
   filtered.sort((a, b) => new Date(b.recordedAt).getTime() - new Date(a.recordedAt).getTime());
 
-  res.json({
+  return res.json({
     success: true,
     data: filtered,
   });
@@ -449,8 +552,12 @@ router.get('/coverage', (req, res) => {
 /**
  * Track a narrative
  * POST /api/media/narratives
+ *
+ * @route POST /api/media/narratives
+ * @param {TrackNarrativeSchema} req.body - Narrative details
+ * @returns 201 with created narrative
  */
-router.post('/narratives', async (req, res) => {
+router.post('/narratives', async (req, res: Response): Promise<Response> => {
   try {
     const validated = TrackNarrativeSchema.parse(req.body);
 
@@ -466,7 +573,7 @@ router.post('/narratives', async (req, res) => {
 
     narratives.set(narrativeId, narrative);
 
-    res.status(201).json({
+    return res.status(201).json({
       success: true,
       data: narrative,
     });
@@ -479,9 +586,9 @@ router.post('/narratives', async (req, res) => {
       });
     }
 
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
-      error: 'Failed to track narrative',
+      error: 'Failed to create narrative',
       message: (error as Error).message,
     });
   }
@@ -490,6 +597,10 @@ router.post('/narratives', async (req, res) => {
 /**
  * Get narrative by ID
  * GET /api/media/narratives/:id
+ *
+ * @route GET /api/media/narratives/:id
+ * @param {string} id.path - Narrative ID
+ * @returns 200 with narrative or 404 if not found
  */
 router.get('/narratives/:id', (req, res) => {
   const narrative = narratives.get(req.params.id);
@@ -501,7 +612,7 @@ router.get('/narratives/:id', (req, res) => {
     });
   }
 
-  res.json({
+  return res.json({
     success: true,
     data: narrative,
   });
@@ -510,6 +621,11 @@ router.get('/narratives/:id', (req, res) => {
 /**
  * List narratives for a game
  * GET /api/media/narratives?gameId=xxx&status=xxx
+ *
+ * @route GET /api/media/narratives
+ * @param {string} gameId.query - Filter by game
+ * @param {string} [status.query] - Optional status filter
+ * @returns 200 with array of narratives
  */
 router.get('/narratives', (req, res) => {
   const { gameId, status } = req.query;
@@ -530,7 +646,7 @@ router.get('/narratives', (req, res) => {
   // Sort by virality
   filtered.sort((a, b) => b.virality - a.virality);
 
-  res.json({
+  return res.json({
     success: true,
     data: filtered,
   });
@@ -539,6 +655,11 @@ router.get('/narratives', (req, res) => {
 /**
  * Get approval ratings
  * GET /api/media/approval-ratings?gameId=xxx&targetId=xxx
+ *
+ * @route GET /api/media/approval-ratings
+ * @param {string} gameId.query - Filter by game
+ * @param {string} [targetId.query] - Filter by target
+ * @returns 200 with array of approval rating entries
  */
 router.get('/approval-ratings', (req, res) => {
   const { gameId, targetId } = req.query;
@@ -556,15 +677,22 @@ router.get('/approval-ratings', (req, res) => {
     filtered = filtered.filter(ar => ar.targetId === targetId);
   }
 
-  res.json({
+  return res.json({
     success: true,
     data: filtered,
   });
 });
 
 // Helper functions
-function calculateImpact(sentiment, prominence) {
-  const sentimentScores = {
+
+/**
+ * Calculate media impact score based on sentiment and prominence.
+ * * @param sentiment - Sentiment category (very_negative to very_positive)
+ * @param prominence - Coverage prominence level (minor to headline)
+ * @returns Impact score (negative for bad coverage, positive for good coverage)
+ */
+function calculateImpact(sentiment: string, prominence: string): number {
+  const sentimentScores: Record<string, number> = {
     very_negative: -2,
     negative: -1,
     neutral: 0,
@@ -572,17 +700,25 @@ function calculateImpact(sentiment, prominence) {
     very_positive: 2,
   };
 
-  const prominenceMultipliers = {
+  const prominenceMultipliers: Record<string, number> = {
     minor: 1,
     moderate: 2,
     major: 3,
     headline: 4,
   };
 
-  return sentimentScores[sentiment] * prominenceMultipliers[prominence];
+  return (sentimentScores[sentiment] ?? 0) * (prominenceMultipliers[prominence] ?? 1);
 }
 
-function updateApprovalRating(gameId, targetId, sentiment) {
+/**
+ * Update approval ratings for a target based on media sentiment.
+ * Adjusts approval/disapproval percentages and determines rating trend.
+ *
+* @param gameId - Game ID for rating tracking
+ * @param targetId - Target person/party/policy ID
+ * @param sentiment - Sentiment category affecting approval
+ */
+function updateApprovalRating(gameId: string, targetId: string, sentiment: string): void {
   const ratingKey = `${gameId}-${targetId}`;
   let rating = approvalRatings.get(ratingKey);
 
@@ -599,7 +735,7 @@ function updateApprovalRating(gameId, targetId, sentiment) {
   }
 
   // Adjust ratings based on sentiment
-  const adjustments = {
+  const adjustments: Record<string, { approval: number; disapproval: number }> = {
     very_negative: { approval: -3, disapproval: 3 },
     negative: { approval: -1.5, disapproval: 1.5 },
     neutral: { approval: 0, disapproval: 0 },
@@ -607,7 +743,7 @@ function updateApprovalRating(gameId, targetId, sentiment) {
     very_positive: { approval: 3, disapproval: -3 },
   };
 
-  const adjustment = adjustments[sentiment];
+  const adjustment = adjustments[sentiment] ?? { approval: 0, disapproval: 0 };
   rating.approval = Math.max(0, Math.min(100, rating.approval + adjustment.approval));
   rating.disapproval = Math.max(0, Math.min(100, rating.disapproval + adjustment.disapproval));
   rating.lastUpdated = new Date().toISOString();
@@ -627,8 +763,12 @@ function updateApprovalRating(gameId, targetId, sentiment) {
 /**
  * Generate automated content using NLP
  * POST /api/media/generate-content
+ *
+ * @route POST /api/media/generate-content
+ * @param {GenerateContentSchema} req.body - Generation request details
+ * @returns 201 with generated content and analysis
  */
-router.post('/generate-content', async (req, res) => {
+router.post('/generate-content', async (req, res: Response): Promise<Response> => {
   try {
     const validated = GenerateContentSchema.parse(req.body);
 
@@ -681,7 +821,7 @@ router.post('/generate-content', async (req, res) => {
       generatedAt: new Date().toISOString(),
     };
 
-    res.status(201).json({
+    return res.status(201).json({
       success: true,
       data: result,
     });
@@ -694,7 +834,7 @@ router.post('/generate-content', async (req, res) => {
       });
     }
 
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       error: 'Failed to generate content',
       message: (error as Error).message,
@@ -703,10 +843,15 @@ router.post('/generate-content', async (req, res) => {
 });
 
 /**
- * Analyze content sentiment and topics
+ * Analyze content for sentiment
  * POST /api/media/analyze-content
+ *
+ * @route POST /api/media/analyze-content
+ * @param {string} req.body.content - Text to analyze
+ * @param {string} req.body.gameId - Game ID context
+ * @returns 200 with sentiment analysis and categories
  */
-router.post('/analyze-content', async (req, res) => {
+router.post('/analyze-content', async (req, res: Response): Promise<Response> => {
   try {
     const { content, gameId } = req.body;
 
@@ -752,12 +897,12 @@ router.post('/analyze-content', async (req, res) => {
       analyzedAt: new Date().toISOString(),
     };
 
-    res.json({
+    return res.json({
       success: true,
       data: result,
     });
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       error: 'Failed to analyze content',
       message: (error as Error).message,
@@ -765,4 +910,8 @@ router.post('/analyze-content', async (req, res) => {
   }
 });
 
+/**
+ * Media routes router: endpoints for press releases, polls, coverage
+ * tracking, narrative management and content analysis tools.
+ */
 export default router;

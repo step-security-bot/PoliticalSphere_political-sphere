@@ -7,11 +7,11 @@ import { CreateNewsSchema, UpdateNewsSchema } from '../utils/shared-shim.js';
 
 // Mock the news service to avoid file system dependency
 const mockNewsService = {
-  list: async () => [],
-  create: async data => ({ id: 'test-id', ...data, createdAt: new Date().toISOString() }),
-  getById: async id => ({ id, title: 'Test', content: 'Content', category: 'politics' }),
-  update: async (id, data) => ({ id, ...data }),
-  analyticsSummary: async () => ({ totalNews: 0 }),
+  list: () => [],
+  create: data => ({ id: 'test-id', ...data, createdAt: new Date().toISOString() }),
+  getById: id => ({ id, title: 'Test', content: 'Content', category: 'politics' }),
+  update: (id, data) => ({ id, ...data }),
+  analyticsSummary: () => ({ totalNews: 0 }),
   validateCategory: cat => cat,
   validateSearchQuery: q => q,
   maxLimit: 100,
@@ -24,7 +24,7 @@ const createTestRouter = () => {
   router.post('/news', async (req, res) => {
     try {
       const input = CreateNewsSchema.parse(req.body);
-      const newsItem = await mockNewsService.create(input);
+      const newsItem = mockNewsService.create(input);
       res.status(201).json({ success: true, data: newsItem });
     } catch (error) {
       if (
@@ -49,7 +49,7 @@ const createTestRouter = () => {
     try {
       const { id } = req.params;
       const input = UpdateNewsSchema.parse(req.body);
-      const updatedItem = await mockNewsService.update(id, input);
+      const updatedItem = mockNewsService.update(id, input);
       res.json({ success: true, data: updatedItem });
     } catch (error) {
       if (

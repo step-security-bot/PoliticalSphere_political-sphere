@@ -65,7 +65,7 @@ describe('auth routes', () => {
           email: 'demo@example.com',
           passwordHash: 'hashed-password',
           role: 'VIEWER',
-        }),
+        })
       );
     });
 
@@ -82,7 +82,7 @@ describe('auth routes', () => {
     it('returns 409 on duplicate users', async () => {
       bcryptMock.hash.mockResolvedValue('hashed-password');
       mockUsersStore.create.mockRejectedValue(
-        new Error('UNIQUE constraint failed: users.username'),
+        new Error('UNIQUE constraint failed: users.username')
       );
 
       const response = await request(app)

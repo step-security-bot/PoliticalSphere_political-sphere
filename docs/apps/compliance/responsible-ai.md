@@ -32,11 +32,11 @@ This short reference collects Microsoft Learn resources and practical guidance f
 
 \*\*\* Last updated: 2025-11-04
 
-# Responsible AI — Microsoft Learn summary
+## Responsible AI — Microsoft Learn summary
 
 This short reference collects Microsoft Learn resources and practical guidance for implementing Responsible AI controls in Political Sphere. Use it as an authoritative starting point for internal checklists, reviews, and evidence required by the EU AI Act.
 
-## Core Microsoft resources
+### Core Microsoft resources
 
 - Responsible AI conceptual guide (principles + tooling): https://learn.microsoft.com/en-us/azure/machine-learning/concept-responsible-ai
 - Responsible AI learning path (business/principles): https://learn.microsoft.com/en-us/training/paths/responsible-ai-business-principles/

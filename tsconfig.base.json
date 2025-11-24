@@ -19,11 +19,13 @@
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
     "verbatimModuleSyntax": true,
-    "ignoreDeprecations": "5.0",
+
     "baseUrl": ".",
     "rootDir": ".",
     "paths": {
-      "@political-sphere/game-engine": ["libs/game-engine/src/index.ts"]
+      "@political-sphere/observability": ["libs/observability/src/index.ts"],
+      "@political-sphere/game-engine": ["libs/game-engine/src/index.ts"],
+      "@political-sphere/*": ["libs/*/src/index.ts"]
     },
     "allowJs": true,
     "checkJs": false

@@ -21,6 +21,11 @@ export interface ApiResponse<T = unknown> {
   headers: Record<string, string>;
 }
 
+/**
+ * HTTP client for data pipeline API communications.
+ * Handles authentication, request/response processing, retries, and error handling
+ * for both internal Political Sphere APIs and external data sources.
+ */
 export class ApiConnector {
   private config: ApiConfig;
 

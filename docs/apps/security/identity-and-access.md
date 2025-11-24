@@ -47,11 +47,11 @@ Create a resource-group level role assignment using Bicep (high-level): see the 
 - Draft an `identity-playbook.md` with tenant setup, RBAC policies, group mappings, and DSR (data subject request) flow for player accounts.
 - Add enrollment and sign-in monitoring dashboards to the observability playbook (`apps/docs/observability/opentelemetry.md`).
 
-# Identity & Access (Azure / Microsoft Entra)
+## Identity & Access (Azure / Microsoft Entra)
 
 This note summarises Microsoft Learn resources and practical guidance for Identity and Access relevant to Political Sphere. It focuses on Microsoft Entra ID (Azure AD), consumer identity (Azure AD B2C), and Azure RBAC for resource access governance.
 
-## Key concepts
+### Key concepts
 
 - Microsoft Entra ID (Azure AD): cloud identity service for employees, service principals, and managed identities (SSO, OAuth/OIDC, OpenID Connect).
 - Azure AD B2C: consumer identity and access management for player-facing sign-in (social federation, local accounts, custom policies).

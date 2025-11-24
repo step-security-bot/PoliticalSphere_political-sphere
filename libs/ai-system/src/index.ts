@@ -53,7 +53,7 @@ export function createOrchestrator(init: OrchestratorInit): Orchestrator {
 
   async function run(
     messages: Message[],
-    ctx?: Partial<OrchestrationContext>,
+    ctx?: Partial<OrchestrationContext>
   ): Promise<OrchestrationResult> {
     const runId = String(ctx?.runId ?? cryptoRandomId());
     const mergedCtx: OrchestrationContext = {
@@ -88,8 +88,8 @@ export function createOrchestrator(init: OrchestratorInit): Orchestrator {
           'input',
           mergedCtx.validators?.input ??
             // eslint-disable-next-line @typescript-eslint/no-require-imports
-            [require('./validation/validators').lengthValidator?.(4096)].filter(Boolean),
-        ),
+            [require('./validation/validators').lengthValidator?.(4096)].filter(Boolean)
+        )
       );
       if (!preInputValid.ok) {
         const result: OrchestrationResult = {
@@ -110,7 +110,7 @@ export function createOrchestrator(init: OrchestratorInit): Orchestrator {
           messages: startingTranscript,
           stage: 'pre-input',
           bag: mergedCtx.bag,
-        }),
+        })
       );
       if (!gov.ok) {
         const result: OrchestrationResult = {
@@ -139,7 +139,7 @@ export function createOrchestrator(init: OrchestratorInit): Orchestrator {
  */
 export function withObservability(
   orchestrator: Orchestrator,
-  observability: Observability,
+  observability: Observability
 ): Orchestrator {
   return {
     async run(messages: Message[], ctx?: Partial<OrchestrationContext>) {
@@ -161,7 +161,7 @@ export function composePolicies(...policies: Governance['policies']): Governance
  */
 export function composeValidators(
   input?: Validators['input'],
-  output?: Validators['output'],
+  output?: Validators['output']
 ): Validators {
   return { input, output };
 }
@@ -186,6 +186,8 @@ function cryptoRandomId(): string {
 export * as governance from './governance';
 export * as memory from './memory';
 export * as nlp from './nlp';
+// Re-export common top-level helpers for convenience
+export { nlpService } from './nlp';
 export * as observability from './observability';
 export * as orchestration from './orchestration';
 export * as providers from './providers/mock';
@@ -193,8 +195,9 @@ export * as tools from './tools';
 export * as builtinTools from './tools/builtins';
 export * as validation from './validation/validators';
 
+export type { Agent } from './types/index';
+
 export type {
-  Agent,
   Governance,
   Message,
   Observability,

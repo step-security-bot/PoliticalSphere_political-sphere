@@ -23,8 +23,9 @@ vi.mock('../../stores/index.ts', () => ({
 }));
 
 describe('AgeVerificationService', () => {
-  let service;
-  let mockDb;
+  let service: AgeVerificationService;
+  // biome-ignore lint/suspicious/noExplicitAny: Test mock database
+  let mockDb: any;
 
   beforeEach(async () => {
     vi.clearAllMocks();
@@ -96,7 +97,8 @@ describe('AgeVerificationService', () => {
         // missing dateOfBirth and verificationMethod
       };
 
-      await expect(service.verifyAge(incompleteData)).rejects.toThrow(
+      // biome-ignore lint/suspicious/noExplicitAny: Test intentionally passes incomplete data
+      await expect(service.verifyAge(incompleteData as any)).rejects.toThrow(
         'Missing required fields: dateOfBirth, verificationMethod'
       );
     });

@@ -1,7 +1,10 @@
 /**
  * Game Service
  * Manages game state and actions using the game engine
+ * Consolidated from game-server with full game phase management and WebSocket integration
  */
+
+import { v4 as uuidv4 } from 'uuid';
 
 import type { Prisma } from '@prisma/client';
 import type {
@@ -11,9 +14,25 @@ import type {
 import { advanceGameState } from '@political-sphere/game-engine';
 import { gameEventEmitter } from '../events';
 import { prisma } from '../services/prisma-database.service.js';
+import { error as loggerError } from '../utils/logger';
+import ComplianceService from '../modules/complianceService';
 
-// Extend engine's GameState with service-specific properties
-export interface GameState extends Omit<EngineGameState, 'players' | 'turn'> {
+type ComplianceModule = typeof ComplianceService & {
+  logComplianceEvent: (event: Record<string, unknown>) => string;
+};
+
+const compliance = ComplianceService as ComplianceModule;
+
+/**
+ * GameState extends the engine-provided state with service-level fields used by
+ * the API and game services. It includes strong typing for players, phase, and
+ * the per-subsystem state used throughout the simulation.
+ */
+/**
+ * GameState - API-facing extension of the engine GameState with service-level
+ * fields (players, phase, settings) used by the API and persistence layer.
+ */
+export interface GameState extends Omit<EngineGameState, 'players'> {
   currentTurn: number; // Service uses currentTurn instead of turn object
   phase: 'setup' | 'legislative' | 'executive' | 'judicial' | 'media' | 'election' | 'finished';
   players: Array<{
@@ -23,6 +42,8 @@ export interface GameState extends Omit<EngineGameState, 'players' | 'turn'> {
     joinedAt: string;
     party?: string;
     role?: 'mp' | 'minister' | 'judge' | 'journalist';
+    verifiedAge?: number | null;
+    contentRating?: string;
   }>;
   settings: {
     maxPlayers: number;
@@ -31,6 +52,9 @@ export interface GameState extends Omit<EngineGameState, 'players' | 'turn'> {
     maxTurns: number;
   };
   status: 'waiting' | 'active' | 'paused' | 'finished';
+  contentRating: string;
+  moderationEnabled: boolean;
+  ageVerificationRequired: boolean;
   // System integration state
   parliamentState: {
     chambersCreated: boolean;
@@ -62,8 +86,34 @@ export interface GameState extends Omit<EngineGameState, 'players' | 'turn'> {
     legislation: number; // number of laws passed
     publicTrust: number; // 0-100, based on media and judicial decisions
   };
+  // Additional game server state
+  debates?: Debate[];
+  speeches?: Speech[];
 }
 
+// Additional interfaces from game-server
+interface Debate {
+  id: string;
+  proposalId: string;
+  speakingOrder: string[];
+  currentSpeakerIndex: number;
+  timeLimit: number;
+  startedAt: string;
+  createdAt: string;
+  status: 'active' | 'completed';
+}
+
+interface Speech {
+  id: string;
+  debateId: string;
+  speakerId: string;
+  content: string;
+  timestamp: string;
+}
+
+/**
+ * PlayerAction records user-initiated actions relevant to the game engine and service.
+ */
 export interface PlayerAction {
   type: 'propose' | 'vote' | 'speak' | 'start_debate' | 'advance_turn' | 'advance_phase';
   playerId: string;
@@ -72,62 +122,85 @@ export interface PlayerAction {
 
 // Game storage using Prisma database
 
+/**
+ * GameService manages persistent game instances and translates player
+ * actions into engine events. It persists `GameState` to the database,
+ * emits audit logs, and coordinates cross-subsystem integration (parliament,
+ * government, judiciary, media, elections). Prefer using the exported
+ * `gameService` singleton in routes; instantiate `GameService` directly in
+ * tests for isolation.
+ */
+/**
+ * GameService - manages persistent game instances, maps player actions
+ * to engine events and coordinates cross-subsystem integration.
+ */
 export class GameService {
   /**
-   * Create a new game
+   * Create a new game instance persisted in the database and seeded with defaults.
+   * @param creatorId - User id creating the game
+   * @param _creatorUsername - Username for audit/logging
+   * @param _name - Optional game name
+   * @returns A fully initialized GameState object
    */
   /**
    * Update game state in database
+   * @private
+   * @param gameId - Game identifier
+   * @param gameState - Updated game state to persist
    */
   private async updateGameState(gameId: string, gameState: GameState): Promise<void> {
     await prisma.game.update({
       where: { id: gameId },
       data: {
-        state: gameState as unknown as Prisma.JsonValue,
+        state: gameState as unknown as Prisma.InputJsonValue,
         updatedAt: new Date(),
       },
     });
   }
 
-  async createGame(creatorId: string, creatorUsername: string, name: string): Promise<GameState> {
-    const gameId = `game-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+  private async recordAuditLog(entry: {
+    category: string;
+    action: string;
+    userId: string;
+    resource?: string;
+    details?: Record<string, unknown>;
+  }): Promise<void> {
+    try {
+      await prisma.auditLog.create({
+        data: {
+          category: entry.category,
+          action: entry.action,
+          userId: entry.userId,
+          resource: entry.resource ?? 'game',
+          details: (entry.details ?? {}) as Prisma.InputJsonValue,
+          complianceFrameworks: ['DSA'],
+          timestamp: new Date(),
+        },
+      });
+    } catch (error) {
+      loggerError('Failed to record audit log', { error: (error as Error).message });
+    }
+  }
+
+  async createGame(creatorId: string, _creatorUsername: string, _name: string): Promise<GameState> {
+    const gameId = uuidv4();
+    const now = new Date().toISOString();
 
     const game: GameState = {
       id: gameId,
-      name: name || 'New Game',
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-      currentTurn: 1,
+      name: _name || 'New Game',
+      createdAt: now,
+      updatedAt: now,
+      currentTurn: 0, // Start at 0, will be incremented when game starts
       phase: 'setup',
-      players: [
-        {
-          id: creatorId,
-          username: creatorUsername,
-          reputation: 0,
-          joinedAt: new Date().toISOString(),
-          party: 'Independent',
-          role: 'mp',
-        },
-      ],
+      players: [],
       proposals: [],
       votes: [],
-      debates: [],
-      speeches: [],
-      economy: {
-        treasury: 100000,
-        inflationRate: 0.02,
-        unemploymentRate: 0.05,
-      },
-      settings: {
-        maxPlayers: 20,
-        turnDuration: 300, // 5 minutes
-        debateDuration: 180, // 3 minutes
-        maxTurns: 10,
-      },
-      status: 'waiting',
+      economy: { treasury: 100000, inflationRate: 0.02, unemploymentRate: 0.05 },
+      turn: { turnNumber: 0, phase: 'lobby' },
       contentRating: 'PG',
       moderationEnabled: true,
-      ageVerificationRequired: false,
+      ageVerificationRequired: true,
       // Initialize system states
       parliamentState: {
         chambersCreated: false,
@@ -157,6 +230,13 @@ export class GameService {
         legislation: 0,
         publicTrust: 50,
       },
+      settings: {
+        maxPlayers: 20,
+        turnDuration: 300,
+        debateDuration: 180,
+        maxTurns: 10,
+      },
+      status: 'waiting',
     };
 
     // Persist game to database
@@ -164,86 +244,159 @@ export class GameService {
       data: {
         id: gameId,
         name: game.name,
-        state: game as unknown as Prisma.JsonValue, // Store the full game state as JSON
+        state: game as unknown as Prisma.InputJsonValue,
       },
+    });
+
+    await this.recordAuditLog({
+      category: 'game_management',
+      action: 'game_created',
+      userId: creatorId,
+      resource: 'game',
+      details: { gameId, gameName: game.name },
+    });
+
+    // Log game creation for compliance
+    compliance.logComplianceEvent({
+      category: 'game_management',
+      action: 'game_created',
+      userId: creatorId,
+      resource: 'game',
+      details: { gameId, gameName: name },
+      complianceFrameworks: ['DSA'],
     });
 
     return game;
   }
 
   /**
-    * Get game by ID
-    */
-   async getGame(gameId: string): Promise<GameState | null> {
-     const gameRecord = await prisma.game.findUnique({
-       where: { id: gameId },
-     });
+   * Get game by ID
+   */
+  async getGame(gameId: string): Promise<GameState | null> {
+    const gameRecord = await prisma.game.findUnique({
+      where: { id: gameId },
+    });
 
-     if (!gameRecord) {
-       return null;
-     }
+    if (!gameRecord) {
+      return null;
+    }
 
-     return gameRecord.state as unknown as GameState;
-   }
-
-  /**
-    * Get all games (for lobby listing)
-    */
-   async listGames(): Promise<GameState[]> {
-     const gameRecords = await prisma.game.findMany();
-     return gameRecords.map(record => record.state as unknown as GameState);
-   }
+    const state = gameRecord.state as unknown as GameState;
+    // Clone to avoid mutating cached state objects in memory
+    return JSON.parse(JSON.stringify(state)) as GameState;
+  }
 
   /**
-    * Get games for a specific player
-    */
-   async getPlayerGames(playerId: string): Promise<GameState[]> {
-     const allGames = await this.listGames();
-     return allGames.filter(game => game.players.some(player => player.id === playerId));
-   }
+   * Get all games (for lobby listing)
+   */
+  async listGames(): Promise<GameState[]> {
+    const gameRecords = await prisma.game.findMany();
+    return gameRecords.map(record => record.state as unknown as GameState);
+  }
 
   /**
-    * Join an existing game
-    */
-   async joinGame(gameId: string, playerId: string, username: string): Promise<GameState> {
-     const game = await this.getGame(gameId);
-     if (!game) {
-       throw new Error('Game not found');
-     }
-
-     if (game.status === 'finished') {
-       throw new Error('Game has finished');
-     }
-
-     if (game.players.length >= game.settings.maxPlayers) {
-       throw new Error('Game is full');
-     }
-
-     if (game.players.some(p => p.id === playerId)) {
-       throw new Error('Already in this game');
-     }
-
-     game.players.push({
-       id: playerId,
-       username,
-       reputation: 0,
-       joinedAt: new Date().toISOString(),
-     });
-
-     // Update game in database
-     await this.updateGameState(gameId, game);
-
-     return game;
-   }
+   * Get games for a specific player
+   */
+  async getPlayerGames(playerId: string): Promise<GameState[]> {
+    const allGames = await this.listGames();
+    return allGames.filter(game => game.players.some(player => player.id === playerId));
+  }
 
   /**
-    * Process a player action
-    */
-   async processAction(gameId: string, action: PlayerAction): Promise<GameState> {
-     const game = await this.getGame(gameId);
-     if (!game) {
-       throw new Error('Game not found');
-     }
+   * Join an existing game
+   */
+  async joinGame(gameId: string, playerId: string, username: string): Promise<GameState> {
+    const game = await this.getGame(gameId);
+    if (!game) {
+      throw new Error('Game not found');
+    }
+
+    if (game.status === 'finished') {
+      throw new Error('Game has finished');
+    }
+
+    if (game.players.length >= game.settings.maxPlayers) {
+      throw new Error('Game is full');
+    }
+
+    if (game.players.some(p => p.id === playerId)) {
+      throw new Error('Already in this game');
+    }
+
+    // Age verification check if required
+    let verifiedAge: number | null = null;
+    if (game.ageVerificationRequired) {
+      try {
+        const verification = await this.checkAgeVerification(playerId);
+
+        if (verification.verified) {
+          verifiedAge = verification.age ?? null;
+        } else if (!process.env.API_BASE_URL) {
+          // Import age verification service dynamically when local checks are required
+          const { default: AgeVerificationService } = await import(
+            '../modules/ageVerificationService.js'
+          );
+          // biome-ignore lint/suspicious/noExplicitAny: Dynamic import requires any for unknown service interface
+          const fallbackVerification = await (AgeVerificationService as any).getVerificationStatus(
+            playerId
+          );
+          if (!fallbackVerification?.verified) {
+            throw new Error('Age verification required');
+          }
+          verifiedAge = fallbackVerification.age;
+        } else {
+          throw new Error('Age verification required');
+        }
+      } catch (error) {
+        loggerError('Age verification check failed', { error: (error as Error).message, playerId });
+        throw new Error('Age verification required');
+      }
+    }
+
+    const player = {
+      id: playerId,
+      username,
+      reputation: 0,
+      joinedAt: new Date().toISOString(),
+      verifiedAge,
+      contentRating: game.contentRating || 'PG',
+    };
+
+    game.players.push(player);
+    game.updatedAt = new Date().toISOString();
+
+    // Update game in database
+    await this.updateGameState(gameId, game);
+
+    await this.recordAuditLog({
+      category: 'game_management',
+      action: 'player_joined',
+      userId: playerId,
+      resource: 'game',
+      details: { gameId, playerName: username },
+    });
+
+    // Log player join for compliance
+    compliance.logComplianceEvent({
+      category: 'game_management',
+      action: 'player_joined',
+      userId: playerId,
+      resource: 'game',
+      details: { gameId, playerName: username },
+      complianceFrameworks: ['DSA'],
+    });
+
+    return game;
+  }
+
+  /**
+   * Process a player action
+   */
+  async processAction(gameId: string, action: PlayerAction): Promise<GameState> {
+    const game = await this.getGame(gameId);
+    if (!game) {
+      throw new Error('Game not found');
+    }
 
     if (game.status !== 'active' && game.status !== 'waiting') {
       throw new Error('Game is not active');
@@ -355,18 +508,17 @@ export class GameService {
     // Check for newly enacted proposals and emit events
     const previousProposals = engineState.proposals || [];
     const currentProposals = newState.proposals || [];
-    for (let i = 0; i < currentProposals.length; i++) {
-      const prevProposal = previousProposals[i];
-      const currProposal = currentProposals[i];
-      if (
-        prevProposal &&
-        currProposal &&
-        prevProposal.status !== 'enacted' &&
-        currProposal.status === 'enacted'
-      ) {
+    const prevById = new Map(previousProposals.map(p => [p.id, p]));
+
+    currentProposals.forEach(currProposal => {
+      if (!currProposal) return;
+      const prevProposal = prevById.get(currProposal.id);
+      const isNewlyEnacted =
+        currProposal.status === 'enacted' && (!prevProposal || prevProposal.status !== 'enacted');
+      if (isNewlyEnacted) {
         gameEventEmitter.emitParliamentBillPassed(gameId, currProposal.id);
       }
-    }
+    });
 
     // Persist updated game state
     await this.updateGameState(gameId, game);
@@ -375,13 +527,13 @@ export class GameService {
   }
 
   /**
-    * Start a game (move from lobby to active)
-    */
-   async startGame(gameId: string, playerId: string): Promise<GameState> {
-     const game = await this.getGame(gameId);
-     if (!game) {
-       throw new Error('Game not found');
-     }
+   * Start a game (move from lobby to active)
+   */
+  async startGame(gameId: string, playerId: string): Promise<GameState> {
+    const game = await this.getGame(gameId);
+    if (!game) {
+      throw new Error('Game not found');
+    }
 
     // Verify player is creator (first player)
     if (!game.players[0] || game.players[0].id !== playerId) {
@@ -405,15 +557,15 @@ export class GameService {
   }
 
   /**
-    * Advance game to next phase
-    */
-   async advancePhase(gameId: string, playerId: string): Promise<GameState> {
-     const game = await this.getGame(gameId);
-     if (!game) {
-       throw new Error('Game not found');
-     }
+   * Advance game to next phase
+   */
+  async advancePhase(gameId: string, playerId: string): Promise<GameState> {
+    const game = await this.getGame(gameId);
+    if (!game) {
+      throw new Error('Game not found');
+    }
 
-    if (game.status !== 'active') {
+    if (game.status !== 'active' || game.phase === 'finished') {
       throw new Error('Game is not active');
     }
 
@@ -452,7 +604,7 @@ export class GameService {
       game.phase = 'finished';
       game.status = 'finished';
     } else {
-      game.phase = phaseOrder[nextIndex];
+      game.phase = phaseOrder[nextIndex] as GameState['phase'];
     }
 
     // Execute phase transition logic
@@ -673,13 +825,13 @@ export class GameService {
   }
 
   /**
-    * Delete a game
-    */
-   async deleteGame(gameId: string, playerId: string): Promise<void> {
-     const game = await this.getGame(gameId);
-     if (!game) {
-       throw new Error('Game not found');
-     }
+   * Delete a game
+   */
+  async deleteGame(gameId: string, playerId: string): Promise<void> {
+    const game = await this.getGame(gameId);
+    if (!game) {
+      throw new Error('Game not found');
+    }
 
     // Only creator can delete
     if (!game.players[0] || game.players[0].id !== playerId) {
@@ -691,6 +843,272 @@ export class GameService {
       where: { id: gameId },
     });
   }
+
+  public localModeration(content: string | null): { isSafe: boolean; reasons: string[] } {
+    if (!content) {
+      return { isSafe: true, reasons: [] };
+    }
+
+    const text = content.toLowerCase();
+    const reasons: string[] = [];
+
+    if (text.includes('hate') || text.includes('kill')) {
+      reasons.push('Potential hate/violence');
+    }
+    if (text.includes('child') && (text.includes('porn') || text.includes('abuse'))) {
+      reasons.push('Child safety');
+    }
+    if (/(fuck|shit|bullshit)/.test(text)) {
+      reasons.push('Profanity');
+    }
+
+    return { isSafe: reasons.length === 0, reasons };
+  }
+
+  public async remoteModeration(
+    content: string,
+    userId: string = 'system'
+  ): Promise<{ isSafe: boolean; reasons: string[] } | null> {
+    if (!process.env.API_MODERATION_URL) {
+      return null;
+    }
+
+    const fetchPromise = fetch(process.env.API_MODERATION_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ content, userId }),
+    });
+
+    // Prevent unhandled rejection when racing promise
+    fetchPromise.catch(() => null);
+
+    try {
+      const response = await Promise.race([
+        fetchPromise,
+        new Promise((_, reject) => setTimeout(() => reject(new Error('Moderation timeout')), 3000)),
+      ]);
+
+      const res = response as Response;
+
+      if (!res?.ok) {
+        await this.recordAuditLog({
+          category: 'content_moderation',
+          action: 'moderation_api_failure',
+          userId,
+          resource: 'content',
+          details: { reason: 'non_ok_response' },
+        });
+        return null;
+      }
+
+      const payload = await res.json().catch(() => null);
+      const moderation = payload?.data;
+
+      if (!payload?.success || typeof moderation?.isSafe !== 'boolean') {
+        await this.recordAuditLog({
+          category: 'content_moderation',
+          action: 'moderation_api_failure',
+          userId,
+          resource: 'content',
+          details: { reason: 'invalid_response' },
+        });
+        return null;
+      }
+
+      await this.recordAuditLog({
+        category: 'content_moderation',
+        action: 'moderation_checked',
+        userId,
+        resource: 'content',
+        details: { isSafe: moderation.isSafe, reasons: moderation.reasons || [] },
+      });
+
+      compliance.logComplianceEvent({
+        category: 'content_moderation',
+        action: 'moderation_checked',
+        userId,
+        resource: 'content',
+        details: { isSafe: moderation.isSafe, reasons: moderation.reasons || [] },
+        complianceFrameworks: ['DSA'],
+      });
+
+      return { isSafe: moderation.isSafe, reasons: moderation.reasons || [] };
+    } catch (error) {
+      loggerError('Remote moderation failed', { error: (error as Error).message, userId });
+      await this.recordAuditLog({
+        category: 'content_moderation',
+        action: 'moderation_api_failure',
+        userId,
+        resource: 'content',
+        details: { reason: 'exception' },
+      });
+      compliance.logComplianceEvent({
+        category: 'content_moderation',
+        action: 'moderation_api_failure',
+        userId,
+        resource: 'content',
+        details: { error: (error as Error).message },
+        complianceFrameworks: ['DSA'],
+      });
+      return null;
+    }
+  }
+
+  public async checkAgeVerification(
+    userId: string
+  ): Promise<{ verified: boolean; age: number | null }> {
+    if (!process.env.API_BASE_URL) {
+      return { verified: false, age: null };
+    }
+
+    try {
+      const response = await fetch(`${process.env.API_BASE_URL}/api/age/status`, {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${userId}`,
+        },
+      });
+
+      if (!response.ok) {
+        return { verified: false, age: null };
+      }
+
+      const payload = await response.json().catch(() => null);
+      if (!payload?.success || !payload.data?.verified) {
+        return { verified: false, age: null };
+      }
+
+      return {
+        verified: true,
+        age: typeof payload.data.age === 'number' ? payload.data.age : null,
+      };
+    } catch (error) {
+      loggerError('Age verification API failed', { error: (error as Error).message, userId });
+      return { verified: false, age: null };
+    }
+  }
+
+  public async checkContentAccess(userId: string, rating: string): Promise<boolean> {
+    if (!process.env.API_BASE_URL) {
+      return false;
+    }
+
+    try {
+      const response = await fetch(`${process.env.API_BASE_URL}/api/age/check-access`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${userId}`,
+        },
+        body: JSON.stringify({ contentRating: rating }),
+      });
+
+      if (!response.ok) {
+        return false;
+      }
+
+      const payload = await response.json().catch(() => null);
+      if (!payload?.success) {
+        return false;
+      }
+
+      return Boolean(payload.data?.canAccess);
+    } catch (error) {
+      loggerError('Content access check failed', { error: (error as Error).message, userId });
+      return false;
+    }
+  }
+
+  /**
+   * Get flagged proposals for a game (moderator view)
+   */
+  async getFlaggedProposals(gameId: string): Promise<unknown[]> {
+    const game = await this.getGame(gameId);
+    if (!game) {
+      throw new Error('Game not found');
+    }
+
+    // Return proposals that are flagged
+    return (game.proposals || []).filter(
+      p => p.status === 'flagged' || p.moderationStatus === 'flagged'
+    );
+  }
+
+  /**
+   * Review and moderate a flagged proposal
+   */
+  async reviewFlaggedProposal(
+    gameId: string,
+    proposalId: string,
+    moderatorId: string,
+    action: 'approve' | 'reject',
+    note?: string
+  ): Promise<unknown> {
+    const game = await this.getGame(gameId);
+    if (!game) {
+      throw new Error('Game not found');
+    }
+
+    const proposal = (game.proposals || []).find(p => p.id === proposalId);
+    if (!proposal) {
+      throw new Error('Proposal not found');
+    }
+
+    if (proposal.status !== 'flagged' && proposal.moderationStatus !== 'flagged') {
+      throw new Error('Proposal is not flagged for review');
+    }
+
+    if (action === 'approve') {
+      proposal.status = 'voting';
+      proposal.moderationStatus = 'approved';
+      proposal.reviewedAt = new Date().toISOString();
+      proposal.reviewedBy = moderatorId;
+      proposal.reviewNote = note || null;
+    } else if (action === 'reject') {
+      proposal.status = 'rejected';
+      proposal.moderationStatus = 'rejected';
+      proposal.reviewedAt = new Date().toISOString();
+      proposal.reviewedBy = moderatorId;
+      proposal.reviewNote = note || null;
+    } else {
+      throw new Error('Invalid action - must be "approve" or "reject"');
+    }
+
+    game.updatedAt = new Date().toISOString();
+
+    // Update game in database
+    await this.updateGameState(gameId, game);
+
+    // Log moderation action
+    compliance.logComplianceEvent({
+      category: 'content_moderation',
+      action: action === 'approve' ? 'proposal_approved' : 'proposal_rejected',
+      userId: moderatorId,
+      resource: 'game_proposal',
+      details: {
+        gameId,
+        proposalId,
+        flaggedReasons: proposal.flaggedReasons || [],
+        note: note || null,
+      },
+      complianceFrameworks: ['DSA'],
+    });
+
+    await this.recordAuditLog({
+      category: 'content_moderation',
+      action: action === 'approve' ? 'proposal_approved' : 'proposal_rejected',
+      userId: moderatorId,
+      resource: 'game_proposal',
+      details: { gameId, proposalId, note: note || null },
+    });
+
+    return proposal;
+  }
 }
 
+/**
+ * Shared `gameService` singleton used by the API to handle game lifecycle
+ * operations. Tests should instantiate `GameService` directly when they
+ * require isolated state.
+ */
 export const gameService = new GameService();

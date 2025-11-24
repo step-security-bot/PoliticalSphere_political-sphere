@@ -4,8 +4,11 @@ import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
 import usersRouter from '../../src/routes/users.ts';
 import { closeDatabase, getDatabase } from '../index.js';
+import { describeHttp, shouldSkipHttpTests } from '../utils/http-test-guard.ts';
 
-describe('users routes', () => {
+const suite = shouldSkipHttpTests ? describe.skip : describeHttp;
+
+suite('users routes', () => {
   let app;
 
   beforeEach(() => {
@@ -52,8 +55,9 @@ describe('users routes', () => {
     // Then retrieve it
     const res = await request(app).get(`/users/${userId}`);
     expect(res.status).toBe(200);
-    expect(res.body.id).toBe(userId);
-    expect(res.body.email).toBe(uniqueEmail);
+    expect(res.body.success).toBe(true);
+    expect(res.body.data.id).toBe(userId);
+    expect(res.body.data.email).toBe(uniqueEmail);
   });
 
   it('exports user data for GDPR compliance (GET /users/:id/export)', async () => {

@@ -4,6 +4,9 @@
 
 import { createLogger } from './logger.js';
 
+/**
+ * Structured audit event used for logging security and compliance related actions.
+ */
 export interface AuditEvent {
   eventType: string;
   userId?: string;
@@ -18,6 +21,9 @@ export interface AuditEvent {
   sessionId?: string;
 }
 
+/**
+ * Abstraction for audit logging used by services and middleware.
+ */
 export interface AuditLogger {
   log(event: AuditEvent): void;
   logAuth(event: Omit<AuditEvent, 'eventType'>): void;
@@ -25,6 +31,14 @@ export interface AuditLogger {
   logSecurity(event: Omit<AuditEvent, 'eventType'>): void;
 }
 
+/**
+ * Implementation of audit logging for security events and compliance tracking
+ *
+ * Provides structured logging for authentication, access control, and security events
+ * with consistent formatting and metadata enrichment.
+ *
+ * @implements {AuditLogger}
+ */
 class AuditLoggerImpl implements AuditLogger {
   private logger = createLogger({ service: 'audit' });
 
@@ -117,7 +131,7 @@ export const auditEvents = {
     resource: string,
     action: string,
     outcome: 'success' | 'denied',
-    ipAddress?: string,
+    ipAddress?: string
   ) => {
     auditLogger.logAccess({
       userId,
@@ -145,7 +159,7 @@ export const auditEvents = {
     ipAddress: string,
     activity: string,
     details?: Record<string, unknown>,
-    userAgent?: string,
+    userAgent?: string
   ) => {
     auditLogger.logSecurity({
       ipAddress,
@@ -186,7 +200,7 @@ export const auditEvents = {
     ipAddress: string,
     endpoint: string,
     validationErrors: unknown[],
-    userAgent?: string,
+    userAgent?: string
   ) => {
     auditLogger.logSecurity({
       ipAddress,
@@ -213,6 +227,10 @@ interface AuditResponseLike {
   send: (data: unknown) => unknown;
 }
 
+/**
+ * Creates express-style middleware that logs audit events for API access and security checks.
+ * @param auditLogger - AuditLogger implementation to use for recording events
+ */
 export function createAuditMiddleware(auditLogger: AuditLogger) {
   return (req: AuditRequestLike, res: AuditResponseLike, next: AuditNext) => {
     const startTime = Date.now();

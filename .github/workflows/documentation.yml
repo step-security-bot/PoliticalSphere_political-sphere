@@ -1,0 +1,187 @@
+name: Documentation Quality
+
+permissions: read-all
+
+on:
+  pull_request:
+    branches: [main, develop]
+    paths:
+      - 'docs/**'
+      - '**/*.md'
+      - '.markdownlint.json'
+      - 'cspell.json'
+  push:
+    branches: [main]
+    paths:
+      - 'docs/**'
+      - '**/*.md'
+  workflow_dispatch:
+
+jobs:
+  markdown-lint:
+    name: Markdown Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
+
+      - name: Lint markdown files
+        uses: DavidAnson/markdownlint-cli2-action@30a0e04f1870d58f8d717450cc6134995f993c63 # v21.0.0
+        with:
+          globs: '**/*.md'
+          config: '.markdownlint.json'
+
+  spell-check:
+    name: Spell Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@2028fbc5c25fe9cf00d9f06a71cc4710d4507903 # v6.0.0
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install cspell
+        run: npx cspell@9.3.2 "**/*" --no-progress --config cspell.json
+
+  link-check:
+    name: Link Validation
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
+
+      - name: Check markdown links
+        uses: gaurav-nelson/github-action-markdown-link-check@3c3b66f1f7d0900e37b71eca45b63ea9eedfce31 # 1.0.17
+        with:
+          use-quiet-mode: 'yes'
+          use-verbose-mode: 'no'
+          config-file: '.github/workflows/link-check-config.json'
+          folder-path: 'docs/'
+          file-extension: '.md'
+
+  api-docs-coverage:
+    name: API Documentation Coverage
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@2028fbc5c25fe9cf00d9f06a71cc4710d4507903 # v6.0.0
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci --prefer-offline
+
+      - name: Generate API docs
+        run: npm run docs:api
+
+      - name: Check API documentation coverage
+        run: |
+          if [ ! -d "docs/api-reference" ]; then
+            echo "❌ API documentation not generated"
+            exit 1
+          fi
+
+          FILE_COUNT=$(find docs/api-reference -type f -name "*.html" | wc -l)
+          if [ "$FILE_COUNT" -lt 10 ]; then
+            echo "⚠️  API documentation coverage is low ($FILE_COUNT files)"
+            exit 1
+          fi
+
+          echo "✅ API documentation coverage: $FILE_COUNT files"
+
+      - name: Upload API docs
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
+        with:
+          name: api-documentation-${{ github.run_number }}
+          path: docs/api-reference/
+          retention-days: 30
+
+  docs-structure:
+    name: Documentation Structure Validation
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
+
+      - name: Validate documentation structure
+        run: |
+          echo "📂 Validating documentation structure..."
+
+          REQUIRED_DIRS=(
+            "docs/00-foundation"
+            "docs/01-strategy"
+            "docs/02-governance"
+            "docs/03-legal-and-compliance"
+            "docs/04-architecture"
+            "docs/05-engineering-and-devops"
+            "docs/06-security-and-risk"
+            "docs/07-ai-and-simulation"
+            "docs/08-game-design-and-mechanics"
+            "docs/09-observability-and-ops"
+          )
+
+          MISSING=0
+          for DIR in "${REQUIRED_DIRS[@]}"; do
+            if [ ! -d "$DIR" ]; then
+              echo "❌ Missing directory: $DIR"
+              MISSING=$((MISSING + 1))
+            fi
+          done
+
+          if [ $MISSING -gt 0 ]; then
+            echo "❌ $MISSING required directories missing"
+            exit 1
+          fi
+
+          echo "✅ All required documentation directories present"
+
+      - name: Check for README files
+        run: |
+          echo "📝 Checking for README files..."
+
+          README_COUNT=$(find docs/ -type f -name "README.md" | wc -l)
+          if [ "$README_COUNT" -lt 5 ]; then
+            echo "⚠️  Few README files found ($README_COUNT)"
+          else
+            echo "✅ README files found: $README_COUNT"
+          fi
+
+  summary:
+    name: Documentation Quality Summary
+    needs: [markdown-lint, spell-check, link-check, api-docs-coverage, docs-structure]
+    runs-on: ubuntu-latest
+    if: always()
+    permissions:
+      issues: write
+      pull-requests: write
+    steps:
+      - name: Generate summary
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8.0.0
+        if: github.event_name == 'pull_request'
+        with:
+          script: |
+            const summary = "## 📚 Documentation Quality Report\n" +
+            "- **Markdown Lint**: " + ("${{ needs.markdown-lint.result }}" == "success" ? "✅" : "❌") + "\n" +
+            "- **Spell Check**: " + ("${{ needs.spell-check.result }}" == "success" ? "✅" : "❌") + "\n" +
+            "- **Link Validation**: " + ("${{ needs.link-check.result }}" == "success" ? "✅" : "❌") + "\n" +
+            "- **API Docs Coverage**: " + ("${{ needs.api-docs-coverage.result }}" == "success" ? "✅" : "❌") + "\n" +
+            "- **Structure Validation**: " + ("${{ needs.docs-structure.result }}" == "success" ? "✅" : "❌") + "\n" +
+            "\n" +
+            ("${{ needs.markdown-lint.result }}" != "success" || "${{ needs.spell-check.result }}" != "success" || "${{ needs.link-check.result }}" != "success" ? "⚠️ **Action Required**: Please review and fix documentation quality issues." : "✅ **All documentation quality checks passed!**") + "\n" +
+            "\n" +
+            "For detailed guidance, see [Documentation Standards](docs/05-engineering-and-devops/development/documentation-standards.md)";
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: summary
+            });

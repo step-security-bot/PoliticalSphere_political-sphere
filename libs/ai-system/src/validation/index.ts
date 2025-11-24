@@ -5,6 +5,11 @@ export type ValidationRule = {
   validate: (output: AgentOutput) => Promise<{ passed: boolean; message?: string }>;
 };
 
+/**
+ * Registry for managing validation rules used in AI agent output validation.
+ * Provides centralized storage and retrieval of validation rules that can be
+ * applied to agent responses to ensure quality, safety, and compliance.
+ */
 export class ValidationRegistry {
   private rules = new Map<string, ValidationRule>();
 

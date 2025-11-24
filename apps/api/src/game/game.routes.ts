@@ -1,12 +1,13 @@
 /**
  * Game Routes
- * Handles /game endpoints
+ * Handles /game endpoints - consolidated from game-server
  */
 
 import { Router } from 'express';
 
 import type { AuthRequest } from '../auth/auth.middleware.ts';
 import { authenticate } from '../auth/auth.middleware.ts';
+import { applyAgeRestrictions } from '../middleware/ageVerification.middleware.ts';
 
 import { gameService } from './game.service.ts';
 
@@ -14,6 +15,9 @@ const router = Router();
 
 // All game routes require authentication
 router.use(authenticate);
+
+// Apply age restrictions to all game routes
+router.use(applyAgeRestrictions);
 
 /**
  * POST /game/create
@@ -212,4 +216,76 @@ router.delete('/:gameId', async (req: AuthRequest, res) => {
   }
 });
 
+/**
+ * GET /game/:gameId/flags
+ * List flagged proposals for a game (moderator view)
+ */
+router.get('/:gameId/flags', async (req: AuthRequest, res) => {
+  try {
+    if (!req.user) {
+      res.status(401).json({ error: 'Not authenticated' });
+      return;
+    }
+
+    const { gameId } = req.params;
+    if (!gameId) {
+      res.status(400).json({ error: 'Game ID is required' });
+      return;
+    }
+
+    const flagged = gameService.getFlaggedProposals(gameId);
+    res.json({ flagged });
+  } catch (error) {
+    const message = error instanceof Error ? error.message : 'Failed to get flagged proposals';
+    res.status(500).json({ error: message });
+  }
+});
+
+/**
+ * POST /game/:gameId/flags/:proposalId/review
+ * Moderate a flagged proposal
+ */
+router.post('/:gameId/flags/:proposalId/review', async (req: AuthRequest, res) => {
+  try {
+    if (!req.user) {
+      res.status(401).json({ error: 'Not authenticated' });
+      return;
+    }
+
+    const { gameId, proposalId } = req.params;
+    if (!gameId) {
+      res.status(400).json({ error: 'Game ID is required' });
+      return;
+    }
+    if (!proposalId) {
+      res.status(400).json({ error: 'Proposal ID is required' });
+      return;
+    }
+
+    const { action, note } = req.body as { action?: string; note?: string };
+    if (!action || !['approve', 'reject'].includes(action)) {
+      res.status(400).json({ error: 'Action must be "approve" or "reject"' });
+      return;
+    }
+
+    const proposal = gameService.reviewFlaggedProposal(
+      gameId,
+      proposalId,
+      req.user.userId,
+      action as 'approve' | 'reject',
+      note
+    );
+
+    res.json({ proposal });
+  } catch (error) {
+    const message = error instanceof Error ? error.message : 'Failed to review proposal';
+    res.status(400).json({ error: message });
+  }
+});
+
+/**
+ * Default `express.Router` for game-related endpoints.
+ *
+ * Routes cover game lifecycle operations, proposals, debates and moderator actions.
+ */
 export default router;

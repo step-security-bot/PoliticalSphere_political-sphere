@@ -4,9 +4,19 @@ import { z } from 'zod';
 import { authService } from '../auth/auth.service.ts';
 import logger from '../logger.js';
 
+/**
+ * Router for authentication endpoints (`/register`, `/login`, `/logout`).
+ *
+ * Validates request payloads using Zod schemas and delegates auth operations
+ * to `authService`. Responses follow the standard `{ success, data?, error? }`
+ * envelope used across the API.
+ */
 const router = express.Router();
 
-// Validation schemas
+/**
+ * Zod schema for user registration requests.
+ * Validates username, email, and password fields with comprehensive validation rules.
+ */
 const RegisterSchema = z.object({
   username: z
     .string()
@@ -37,6 +47,10 @@ const RegisterSchema = z.object({
     .regex(/[0-9]/, 'Password must contain at least one number'),
 });
 
+/**
+ * Zod schema for user login requests.
+ * Validates that either email or username is provided along with password.
+ */
 const LoginSchema = z
   .object({
     email: z.string().email('Invalid email address').optional(),
@@ -48,7 +62,10 @@ const LoginSchema = z
     path: ['email'], // Point to email field for error
   });
 
-// POST /register - Register new user
+/**
+ * POST /register - Register a new user
+ * Validates registration payload and returns user + tokens on success
+ */
 router.post('/register', async (req, res) => {
   try {
     // Validate input with Zod schema
@@ -119,14 +136,24 @@ router.post('/register', async (req, res) => {
   }
 });
 
-// POST /login - Login user
+/**
+ * POST /login - Authenticate user using email or username and password
+ * Returns access and refresh tokens upon successful authentication
+ */
 router.post('/login', async (req, res) => {
   try {
     // Validate input with Zod schema
     const validated = LoginSchema.parse(req.body);
 
     // Use centralized authService for login - pass email or username
-    const loginIdentifier = validated.email || validated.username;
+    const loginIdentifier = validated.email || validated.username || '';
+    if (!loginIdentifier) {
+      return res.status(400).json({
+        success: false,
+        error: 'Email or username required',
+      });
+    }
+
     const result = await authService.login({
       username: loginIdentifier,
       password: validated.password,
@@ -181,7 +208,9 @@ router.post('/login', async (req, res) => {
   }
 });
 
-// POST /logout - Logout user
+/**
+ * POST /logout - Logout a user (stateless endpoint that acknowledges the action)
+ */
 router.post('/logout', (_req, res) => {
   res.json({
     success: true,
@@ -189,4 +218,16 @@ router.post('/logout', (_req, res) => {
   });
 });
 
+/**
+ * Authentication routes exposing `/register`, `/login`, and `/logout`.
+ * These endpoints validate input, perform credential checks via `authService`,
+ * and return structured responses including authentication tokens.
+ */
+/**
+ * Authentication router
+ *
+ * Exposes endpoints for user registration, login and logout. Incoming payloads
+ * are validated via shared schemas and authentication flows delegate to
+ * `authService` for token generation and session management.
+ */
 export default router;

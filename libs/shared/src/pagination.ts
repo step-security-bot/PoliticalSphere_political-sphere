@@ -37,7 +37,7 @@ export function parsePaginationQuery(query: PaginationQuery): PaginationOptions 
   const page = Math.max(1, parseInt(query.page || '1', 10) || DEFAULT_PAGE);
   const limit = Math.min(
     MAX_LIMIT,
-    Math.max(1, parseInt(query.limit || '10', 10) || DEFAULT_LIMIT),
+    Math.max(1, parseInt(query.limit || '10', 10) || DEFAULT_LIMIT)
   );
   const offset = query.offset ? parseInt(query.offset, 10) : undefined;
 
@@ -49,7 +49,7 @@ export function parsePaginationQuery(query: PaginationQuery): PaginationOptions 
  */
 export function createPaginationMeta(
   total: number,
-  options: PaginationOptions,
+  options: PaginationOptions
 ): PaginatedResponse<any>['pagination'] {
   const { page = DEFAULT_PAGE, limit = DEFAULT_LIMIT } = options;
   const totalPages = Math.ceil(total / limit);
@@ -72,7 +72,7 @@ export function createPaginationMeta(
 export function createPaginatedResponse<T>(
   data: T[],
   total: number,
-  options: PaginationOptions,
+  options: PaginationOptions
 ): PaginatedResponse<T> {
   return {
     data,

@@ -36,7 +36,7 @@ class Logger {
       await mkdir(dirname(this.file), { recursive: true });
       this.stream = createWriteStream(this.file, { flags: 'a' });
     } catch (error) {
-      console.error('Failed to initialize log file:', error);
+      process.stderr.write(`Failed to initialize log file: ${error?.message || error}\n`);
     }
   }
 
@@ -70,15 +70,17 @@ class Logger {
           4: '\x1b[35m', // FATAL - Magenta
         };
         const reset = '\x1b[0m';
+        // eslint-disable-next-line no-console
         console.log(`${colors[level]}${formatted}${reset}`);
       } else {
+        // eslint-disable-next-line no-console
         console.log(formatted);
       }
     }
 
     // File output
     if (this.stream) {
-      this.stream.write(formatted + '\n');
+      this.stream.write(`${formatted}\n`);
     }
   }
 

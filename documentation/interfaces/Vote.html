@@ -1,0 +1,833 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>political-sphere documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">political-sphere documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content interface">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Interfaces</li>
+  <li class="breadcrumb-item"
+  >
+  Vote</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>tools/testing/test-utils.ts</code>
+        </p>
+
+
+
+
+        <section data-compodoc="block-index">
+            <h3 id="index">Index</h3>
+            <table class="table table-sm table-bordered index-table">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <h6><b>Properties</b></h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <ul class="index-list">
+                                <li>
+                                        <a href="#billId" 
+>
+                                            billId
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#createdAt" 
+>
+                                            createdAt
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#id" 
+>
+                                            id
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#userId" 
+>
+                                            userId
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#vote" 
+>
+                                            vote
+                                        </a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+
+
+            <section data-compodoc="block-properties">
+                <h3 id="inputs">Properties</h3>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="billId"></a>
+                                        <span class="name "><b>billId</b>
+                                            <a href="#billId">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>billId:         <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="createdAt"></a>
+                                        <span class="name "><b>createdAt</b>
+                                            <a href="#createdAt">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>createdAt:         <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="id"></a>
+                                        <span class="name "><b>id</b>
+                                            <a href="#id">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>id:         <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="userId"></a>
+                                        <span class="name "><b>userId</b>
+                                            <a href="#userId">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>userId:         <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="vote"></a>
+                                        <span class="name "><b>vote</b>
+                                            <a href="#vote">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>vote:         <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+            </section>
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { faker } from &#x27;@faker-js/faker&#x27;;
+import { beforeAll, afterAll, beforeEach, afterEach, vi } from &#x27;vitest&#x27;;
+import type { TestDatabase } from &#x27;./testcontainers.js&#x27;;
+import { TestDatabaseFactory } from &#x27;./testcontainers.js&#x27;;
+import { mswTestUtils } from &#x27;./msw/index.ts&#x27;;
+
+// Re-export commonly used testing utilities
+export { faker } from &#x27;@faker-js/faker&#x27;;
+export { TestDatabaseFactory } from &#x27;./testcontainers.ts&#x27;;
+export { mswTestUtils } from &#x27;./msw/index.ts&#x27;;
+
+/**
+ * Type definitions for test data factories
+ */
+interface User {
+  id: string;
+  email: string;
+  username: string;
+  firstName: string;
+  lastName: string;
+  avatar: string;
+  role: string;
+  partyId: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+interface Bill {
+  id: string;
+  title: string;
+  description: string;
+  status: string;
+  category: string;
+  sponsorId: string;
+  coSponsors: string[];
+  content: string;
+  tags: string[];
+  createdAt: string;
+  updatedAt: string;
+}
+
+interface Vote {
+  id: string;
+  billId: string;
+  userId: string;
+  vote: string;
+  createdAt: string;
+}
+
+interface Party {
+  id: string;
+  name: string;
+  description: string;
+  color: string;
+  logo: string;
+  leaderId: string;
+  memberCount: number;
+  createdAt: string;
+}
+
+interface NewsArticle {
+  id: string;
+  title: string;
+  content: string;
+  summary: string;
+  category: string;
+  authorId: string;
+  tags: string[];
+  publishedAt: string;
+  updatedAt: string;
+}
+
+/**
+ * Test Data Factories
+ */
+export const factories &#x3D; {
+  /**
+   * User factory
+   */
+  user: (overrides: Partial&lt;User&gt; &#x3D; {}) &#x3D;&gt; ({
+    id: faker.string.uuid(),
+    email: faker.internet.email(),
+    username: faker.internet.username(),
+    firstName: faker.person.firstName(),
+    lastName: faker.person.lastName(),
+    avatar: faker.image.avatar(),
+    role: faker.helpers.arrayElement([&#x27;user&#x27;, &#x27;moderator&#x27;, &#x27;admin&#x27;]),
+    partyId: faker.string.uuid(),
+    createdAt: faker.date.past().toISOString(),
+    updatedAt: faker.date.recent().toISOString(),
+    ...overrides,
+  }),
+
+  /**
+   * Bill factory
+   */
+  bill: (overrides: Partial&lt;Bill&gt; &#x3D; {}) &#x3D;&gt; ({
+    id: faker.string.uuid(),
+    title: faker.lorem.sentence(),
+    description: faker.lorem.paragraph(),
+    status: faker.helpers.arrayElement([&#x27;draft&#x27;, &#x27;active&#x27;, &#x27;passed&#x27;, &#x27;failed&#x27;]),
+    category: faker.helpers.arrayElement([&#x27;environment&#x27;, &#x27;healthcare&#x27;, &#x27;economy&#x27;, &#x27;education&#x27;]),
+    sponsorId: faker.string.uuid(),
+    coSponsors: faker.helpers.arrayElements([faker.string.uuid()], { min: 0, max: 3 }),
+    content: faker.lorem.paragraphs(3),
+    tags: faker.helpers.arrayElements([&#x27;climate&#x27;, &#x27;healthcare&#x27;, &#x27;economy&#x27;, &#x27;education&#x27;, &#x27;reform&#x27;], {
+      min: 1,
+      max: 3,
+    }),
+    createdAt: faker.date.past().toISOString(),
+    updatedAt: faker.date.recent().toISOString(),
+    ...overrides,
+  }),
+
+  /**
+   * Vote factory
+   */
+  vote: (overrides: Partial&lt;Vote&gt; &#x3D; {}) &#x3D;&gt; ({
+    id: faker.string.uuid(),
+    billId: faker.string.uuid(),
+    userId: faker.string.uuid(),
+    vote: faker.helpers.arrayElement([&#x27;yes&#x27;, &#x27;no&#x27;, &#x27;abstain&#x27;]),
+    createdAt: faker.date.recent().toISOString(),
+    ...overrides,
+  }),
+
+  /**
+   * Party factory
+   */
+  party: (overrides: Partial&lt;Party&gt; &#x3D; {}) &#x3D;&gt; ({
+    id: faker.string.uuid(),
+    name: faker.company.name(),
+    description: faker.lorem.sentence(),
+    color: faker.color.rgb({ format: &#x27;hex&#x27; }),
+    logo: faker.image.url(),
+    leaderId: faker.string.uuid(),
+    memberCount: faker.number.int({ min: 10, max: 500 }),
+    createdAt: faker.date.past().toISOString(),
+    ...overrides,
+  }),
+
+  /**
+   * News article factory
+   */
+  newsArticle: (overrides: Partial&lt;NewsArticle&gt; &#x3D; {}) &#x3D;&gt; ({
+    id: faker.string.uuid(),
+    title: faker.lorem.sentence(),
+    content: faker.lorem.paragraphs(5),
+    summary: faker.lorem.sentence(),
+    category: faker.helpers.arrayElement([&#x27;politics&#x27;, &#x27;healthcare&#x27;, &#x27;economy&#x27;, &#x27;environment&#x27;]),
+    authorId: faker.string.uuid(),
+    tags: faker.helpers.arrayElements([&#x27;politics&#x27;, &#x27;healthcare&#x27;, &#x27;economy&#x27;, &#x27;environment&#x27;], {
+      min: 1,
+      max: 3,
+    }),
+    publishedAt: faker.date.recent().toISOString(),
+    updatedAt: faker.date.recent().toISOString(),
+    ...overrides,
+  }),
+};
+
+/**
+ * Test Helpers
+ */
+export const helpers &#x3D; {
+  /**
+   * Generate array of items using a factory
+   */
+  generate: &lt;T&gt;(
+    factory: (overrides?: Partial&lt;T&gt;) &#x3D;&gt; T,
+    count: number,
+    overrides?: Partial&lt;T&gt;
+  ): T[] &#x3D;&gt; {
+    return Array.from({ length: count }, () &#x3D;&gt; factory(overrides));
+  },
+
+  /**
+   * Generate array of items using a factory with specific type
+   */
+  generateUsers: (count: number, overrides?: Partial&lt;User&gt;): User[] &#x3D;&gt; {
+    return Array.from({ length: count }, () &#x3D;&gt; factories.user(overrides));
+  },
+
+  /**
+   * Generate array of bills
+   */
+  generateBills: (count: number, overrides?: Partial&lt;Bill&gt;): Bill[] &#x3D;&gt; {
+    return Array.from({ length: count }, () &#x3D;&gt; factories.bill(overrides));
+  },
+
+  /**
+   * Generate array of votes
+   */
+  generateVotes: (count: number, overrides?: Partial&lt;Vote&gt;): Vote[] &#x3D;&gt; {
+    return Array.from({ length: count }, () &#x3D;&gt; factories.vote(overrides));
+  },
+
+  /**
+   * Generate array of parties
+   */
+  generateParties: (count: number, overrides?: Partial&lt;Party&gt;): Party[] &#x3D;&gt; {
+    return Array.from({ length: count }, () &#x3D;&gt; factories.party(overrides));
+  },
+
+  /**
+   * Generate array of news articles
+   */
+  generateNewsArticles: (count: number, overrides?: Partial&lt;NewsArticle&gt;): NewsArticle[] &#x3D;&gt; {
+    return Array.from({ length: count }, () &#x3D;&gt; factories.newsArticle(overrides));
+  },
+
+  /**
+   * Create authenticated user context for tests
+   */
+  createAuthContext: (userOverrides?: Partial&lt;User&gt;) &#x3D;&gt; {
+    const user &#x3D; factories.user(userOverrides);
+    const token &#x3D; faker.string.alphanumeric(32);
+
+    // Mock localStorage/sessionStorage
+    Object.defineProperty(window, &#x27;localStorage&#x27;, {
+      value: {
+        getItem: vi.fn((key: string) &#x3D;&gt; {
+          if (key &#x3D;&#x3D;&#x3D; &#x27;auth_token&#x27;) return token;
+          if (key &#x3D;&#x3D;&#x3D; &#x27;user&#x27;) return JSON.stringify(user);
+          return null;
+        }),
+        setItem: vi.fn(),
+        removeItem: vi.fn(),
+        clear: vi.fn(),
+      },
+      writable: true,
+    });
+
+    return { user, token };
+  },
+
+  /**
+   * Mock fetch API for testing
+   */
+  mockFetch: (response: unknown, status &#x3D; 200) &#x3D;&gt; {
+    global.fetch &#x3D; vi.fn(() &#x3D;&gt;
+      Promise.resolve({
+        ok: status &gt;&#x3D; 200 &amp;&amp; status &lt; 300,
+        status,
+        json: () &#x3D;&gt; Promise.resolve(response),
+        text: () &#x3D;&gt; Promise.resolve(JSON.stringify(response)),
+      } as Response)
+    );
+  },
+
+  /**
+   * Mock timers for testing
+   */
+  mockTimers: () &#x3D;&gt; {
+    beforeEach(() &#x3D;&gt; {
+      vi.useFakeTimers();
+    });
+
+    afterEach(() &#x3D;&gt; {
+      vi.useRealTimers();
+    });
+  },
+
+  /**
+   * Wait for next tick in async tests
+   */
+  nextTick: () &#x3D;&gt; new Promise(resolve &#x3D;&gt; setTimeout(resolve, 0)),
+
+  /**
+   * Create test database with seeded data
+   */
+  createTestDb: async (options?: {
+    type?: &#x27;sqlite&#x27; | &#x27;postgresql&#x27;;
+    schemaPath?: string;
+    seedData?: string[];
+  }) &#x3D;&gt; {
+    const { type &#x3D; &#x27;sqlite&#x27; } &#x3D; options || {};
+
+    if (type &#x3D;&#x3D;&#x3D; &#x27;sqlite&#x27;) {
+      return TestDatabaseFactory.createSQLite(options);
+    } else {
+      return TestDatabaseFactory.createPostgreSQL(options);
+    }
+  },
+
+  /**
+   * Setup MSW for tests
+   */
+  setupMSW: mswTestUtils.setup,
+
+  /**
+   * Setup MSW for single test
+   */
+  setupMSWTest: mswTestUtils.setupTest,
+};
+
+/**
+ * Custom matchers for Vitest
+ */
+export const customMatchers &#x3D; {
+  /**
+   * Check if object has required properties
+   */
+  toHaveRequiredProperties: (received: unknown, requiredProps: string[]) &#x3D;&gt; {
+    const isObject &#x3D; received !&#x3D;&#x3D; null &amp;&amp; typeof received &#x3D;&#x3D;&#x3D; &#x27;object&#x27;;
+    const missing &#x3D; isObject ? requiredProps.filter(prop &#x3D;&gt; !(prop in received)) : requiredProps;
+
+    return {
+      pass: missing.length &#x3D;&#x3D;&#x3D; 0,
+      message: () &#x3D;&gt; &#x60;Expected object to have properties: ${missing.join(&#x27;, &#x27;)}&#x60;,
+    };
+  },
+
+  /**
+   * Check if date string is valid ISO format
+   */
+  toBeValidISODate: (received: string) &#x3D;&gt; {
+    const date &#x3D; new Date(received);
+    const isValid &#x3D; !Number.isNaN(date.getTime()) &amp;&amp; received &#x3D;&#x3D;&#x3D; date.toISOString();
+
+    return {
+      pass: isValid,
+      message: () &#x3D;&gt; &#x60;Expected &quot;${received}&quot; to be a valid ISO date string&#x60;,
+    };
+  },
+};
+
+/**
+ * Test lifecycle hooks
+ */
+export const lifecycle &#x3D; {
+  /**
+   * Setup common test environment
+   */
+  setupTestEnvironment: () &#x3D;&gt; {
+    beforeAll(async () &#x3D;&gt; {
+      // Global test setup
+    });
+
+    afterAll(async () &#x3D;&gt; {
+      // Global test cleanup
+    });
+
+    beforeEach(() &#x3D;&gt; {
+      // Reset mocks between tests
+      vi.clearAllMocks();
+    });
+
+    afterEach(() &#x3D;&gt; {
+      // Cleanup after each test
+    });
+  },
+
+  /**
+   * Setup database test environment
+   */
+  setupDatabaseTest: (dbType: &#x27;sqlite&#x27; | &#x27;postgresql&#x27; &#x3D; &#x27;sqlite&#x27;) &#x3D;&gt; {
+    let testDb: TestDatabase | undefined;
+
+    beforeAll(async () &#x3D;&gt; {
+      testDb &#x3D; await helpers.createTestDb({ type: dbType });
+    });
+
+    afterAll(async () &#x3D;&gt; {
+      await testDb?.close();
+    });
+
+    return {
+      getDb: () &#x3D;&gt; testDb,
+    };
+  },
+};
+
+// Export everything as a single object for convenience
+export const testUtils &#x3D; {
+  factories,
+  helpers,
+  customMatchers,
+  lifecycle,
+};
+</code></pre>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'interface';
+            var COMPODOC_CURRENT_PAGE_URL = 'Vote.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

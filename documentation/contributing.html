@@ -1,0 +1,412 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>political-sphere documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="./images/favicon.ico">
+	   <link rel="stylesheet" href="./styles/style.css">
+        <link rel="stylesheet" href="./styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="./" class="navbar-brand">political-sphere documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content contributing">
+                   <div class="content-data">
+
+
+
+
+<h1>Contributing to Political Sphere</h1>
+<p>Thank you for your interest in contributing to Political Sphere! This document provides guidelines and instructions for contributing to the project.</p>
+<h2>Table of Contents</h2>
+<ul>
+<li><a href="#code-of-conduct">Code of Conduct</a></li>
+<li><a href="#getting-started">Getting Started</a></li>
+<li><a href="#development-process">Development Process</a></li>
+<li><a href="#pull-request-process">Pull Request Process</a></li>
+<li><a href="#coding-standards">Coding Standards</a></li>
+<li><a href="#testing-requirements">Testing Requirements</a></li>
+<li><a href="#documentation">Documentation</a></li>
+</ul>
+<h2>Code of Conduct</h2>
+<p>By participating in this project, you agree to abide by our <a href="CODE_OF_CONDUCT.md">Code of Conduct</a>. Please read it before contributing.</p>
+<h2>Getting Started</h2>
+<h3>Prerequisites</h3>
+<ul>
+<li>Node.js 22 or higher</li>
+<li>npm 10 or higher</li>
+<li>Git</li>
+<li>Docker (for local development)</li>
+</ul>
+<h3>Setup</h3>
+<ol>
+<li><strong>Fork the repository</strong> on GitHub</li>
+<li><strong>Clone your fork</strong>:<b>Example :</b><div><pre class="line-numbers"><code class="language-bash">git clone https://github.com/YOUR_USERNAME/political-sphere.git
+cd political-sphere</code></pre></div></li>
+<li><strong>Install dependencies</strong>:<b>Example :</b><div><pre class="line-numbers"><code class="language-bash">npm install</code></pre></div></li>
+<li><strong>Set up environment</strong>:<b>Example :</b><div><pre class="line-numbers"><code class="language-bash">cp .env.example .env.local
+# Edit .env.local with your configuration</code></pre></div></li>
+<li><strong>Run tests</strong> to verify setup:<b>Example :</b><div><pre class="line-numbers"><code class="language-bash">npm test</code></pre></div></li>
+</ol>
+<p>For detailed onboarding instructions, see <a href="../docs/onboarding.md">docs/onboarding.md</a>.</p>
+<h2>Development Process</h2>
+<h3>Branching Strategy</h3>
+<ul>
+<li><code>main</code> - Production-ready code</li>
+<li><code>develop</code> - Integration branch for features</li>
+<li><code>feature/*</code> - New features</li>
+<li><code>fix/*</code> - Bug fixes</li>
+<li><code>docs/*</code> - Documentation updates</li>
+</ul>
+<h3>Workflow</h3>
+<ol>
+<li>Create a new branch from <code>main</code>:<b>Example :</b><div><pre class="line-numbers"><code class="language-bash">git checkout -b feature/your-feature-name</code></pre></div></li>
+<li>Make your changes</li>
+<li>Write/update tests</li>
+<li>Run quality checks:<b>Example :</b><div><pre class="line-numbers"><code class="language-bash">npm run lint:fix
+npm run type-check
+npm test</code></pre></div></li>
+<li>Commit with descriptive messages</li>
+<li>Push to your fork</li>
+<li>Open a Pull Request</li>
+</ol>
+<h2>Pull Request Process</h2>
+<h3>Before Submitting</h3>
+<ul>
+<li><input disabled="" type="checkbox"> Code follows project style guidelines</li>
+<li><input disabled="" type="checkbox"> All tests pass locally (<code>npm test</code>)</li>
+<li><input disabled="" type="checkbox"> New tests added for new functionality (maintain 100% pass rate)</li>
+<li><input disabled="" type="checkbox"> Security audit passed (<code>npm run audit:full</code> - no new critical/high issues)</li>
+<li><input disabled="" type="checkbox"> Documentation updated if needed</li>
+<li><input disabled="" type="checkbox"> CHANGELOG.md updated with your changes</li>
+<li><input disabled="" type="checkbox"> Commit messages are clear and descriptive</li>
+</ul>
+<h3>CI/CD Requirements</h3>
+<p>All PRs must pass automated quality gates before merging:</p>
+<h4><strong>Test Suite</strong> (<code>.github/workflows/test.yml</code>)</h4>
+<ul>
+<li>✅ Unit tests: 130/130 passing required</li>
+<li>✅ Coverage maintained or improved</li>
+<li>⏱️ Tests complete in &lt;15 minutes</li>
+</ul>
+<h4><strong>Security &amp; Quality Audit</strong> (<code>.github/workflows/audit.yml</code>)</h4>
+<ul>
+<li>✅ No new critical or high severity issues</li>
+<li>✅ OpenAPI specification valid</li>
+<li>✅ No hardcoded secrets detected</li>
+<li>✅ App-specific audits pass for affected apps</li>
+</ul>
+<h4><strong>Governance Controls</strong> (<code>.github/workflows/controls.yml</code>)</h4>
+<ul>
+<li>✅ ESLint zero-warning policy</li>
+<li>✅ TypeScript strict typecheck</li>
+<li>✅ Module boundary compliance</li>
+<li>✅ PR header validation</li>
+</ul>
+<h4><strong>Security Scanning</strong> (<code>.github/workflows/security-scan.yml</code>)</h4>
+<ul>
+<li>✅ Gitleaks: No secrets committed</li>
+<li>✅ Semgrep: No prohibited patterns</li>
+<li>✅ npm audit: No high/critical vulnerabilities</li>
+</ul>
+<h3>PR Guidelines</h3>
+<ol>
+<li><strong>Use the PR template</strong> - Select appropriate template when creating PR</li>
+<li><strong>Keep PRs focused</strong> - One feature/fix per PR</li>
+<li><strong>Respect change budgets</strong>:<ul>
+<li>Safe mode: ≤300 lines changed, ≤12 files</li>
+<li>Fast-secure: ≤200 lines changed, ≤8 files</li>
+</ul>
+</li>
+<li><strong>Link related issues</strong> - Reference issues in PR description</li>
+<li><strong>Request review</strong> - Tag appropriate reviewers</li>
+<li><strong>Address audit findings</strong> - Fix any issues found by automated audits</li>
+</ol>
+<h3>PR Review Process</h3>
+<ul>
+<li>PRs require at least one approval from the core team</li>
+<li>All CI checks must pass</li>
+<li>Address reviewer feedback promptly</li>
+<li>Keep the PR up to date with <code>main</code></li>
+</ul>
+<h2>Coding Standards</h2>
+<h3>File Organization</h3>
+<p>Follow the structure in <a href="docs/ai/ai-usage-playbook.md">docs/ai/ai-usage-playbook.md</a> and the directory layout below:</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-none">/apps     - Applications
+/libs     - Shared libraries
+/tools    - Build tools
+/docs     - Documentation
+/scripts  - Automation scripts</code></pre></div><h3>Naming Conventions</h3>
+<ul>
+<li><strong>Files/directories</strong>: <code>kebab-case</code></li>
+<li><strong>Classes/Components</strong>: <code>PascalCase</code></li>
+<li><strong>Functions/variables</strong>: <code>camelCase</code></li>
+<li><strong>Constants</strong>: <code>SCREAMING_SNAKE_CASE</code></li>
+</ul>
+<h3>Code Style</h3>
+<ul>
+<li>Use ESLint and Prettier (configured in project)</li>
+<li>Run <code>npm run lint:fix</code> before committing</li>
+<li>Follow existing patterns in the codebase</li>
+<li>Write self-documenting code with clear names</li>
+</ul>
+<h3>TypeScript</h3>
+<ul>
+<li>Enable strict mode</li>
+<li>Avoid <code>any</code> types</li>
+<li>Provide proper type annotations</li>
+<li>Document complex types</li>
+</ul>
+<h2>Testing Requirements</h2>
+<h3>Test Coverage</h3>
+<ul>
+<li>Minimum 80% coverage for new code</li>
+<li>All new features must have tests</li>
+<li>Bug fixes should include regression tests</li>
+</ul>
+<h3>Test Types</h3>
+<ul>
+<li><strong>Unit tests</strong>: Test individual functions/components</li>
+<li><strong>Integration tests</strong>: Test component interactions</li>
+<li><strong>E2E tests</strong>: Test critical user flows</li>
+</ul>
+<h3>Running Tests</h3>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-bash">npm test                    # Run all tests
+npm run test:watch         # Watch mode
+npm run test:coverage      # With coverage report
+npm run test:e2e           # E2E tests only</code></pre></div><h2>Documentation</h2>
+<h3>Code Documentation</h3>
+<ul>
+<li>Document all public APIs</li>
+<li>Use JSDoc/TSDoc comments</li>
+<li>Explain <em>why</em>, not just <em>what</em></li>
+<li>Include examples for complex features</li>
+</ul>
+<h3>Project Documentation</h3>
+<p>When adding features, update relevant docs in <code>/docs</code>:</p>
+<ul>
+<li>Architecture documentation</li>
+<li>API documentation</li>
+<li>User guides</li>
+<li>ADRs (Architecture Decision Records) for significant changes</li>
+</ul>
+<h3>Changelog</h3>
+<p>Add entry to <code>CHANGELOG.md</code> under <code>[Unreleased]</code> section:</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-markdown">### Added
+
+- Your feature description (YYYY-MM-DD)
+
+### Changed
+
+- Your change description (YYYY-MM-DD)
+
+### Fixed
+
+- Your fix description (YYYY-MM-DD)</code></pre></div><h2>Governance and Rules</h2>
+<p>This project follows strict governance rules defined in:</p>
+<ul>
+<li><code>.github/copilot-instructions/</code> - AI assistant governance</li>
+<li><code>.blackboxrules</code> - Development rules and standards</li>
+<li><code>docs/02-governance/</code> - Project governance documentation</li>
+</ul>
+<p>Key principles:</p>
+<ul>
+<li><strong>Constitutional Tier 0</strong>: Ethics, safety, privacy (never bypass)</li>
+<li><strong>Operational Tier 1</strong>: Security, compliance (mandatory)</li>
+<li><strong>Best-Practice Tier 2</strong>: Quality, testing (defaults)</li>
+<li><strong>Advisory Tier 3</strong>: Optimizations (recommended)</li>
+</ul>
+<h2>Getting Help</h2>
+<ul>
+<li><strong>Documentation</strong>: Check <code>/docs</code> folder</li>
+<li><strong>Discussions</strong>: Use GitHub Discussions for questions</li>
+<li><strong>Support</strong>: See <a href="SUPPORT.md">SUPPORT.md</a></li>
+<li><strong>Issues</strong>: Report bugs via issue templates</li>
+</ul>
+<h2>Recognition</h2>
+<p>Contributors will be acknowledged in:</p>
+<ul>
+<li>CHANGELOG.md</li>
+<li>Project README.md</li>
+<li>Release notes</li>
+</ul>
+<h2>License</h2>
+<p>By contributing, you agree that your contributions will be licensed under the same license as the project (see <a href="../LICENSE">LICENSE</a>).</p>
+<hr>
+<p>Thank you for contributing to Political Sphere! 🎉</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 0;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'contributing';
+            var COMPODOC_CURRENT_PAGE_URL = 'contributing.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="./js/libs/custom-elements.min.js"></script>
+       <script src="./js/libs/lit-html.js"></script>
+
+       <script src="./js/menu-wc.js" defer></script>
+       <script nomodule src="./js/menu-wc_es5.js" defer></script>
+
+       <script src="./js/libs/bootstrap-native.js"></script>
+
+       <script src="./js/libs/es6-shim.min.js"></script>
+       <script src="./js/libs/EventDispatcher.js"></script>
+       <script src="./js/libs/promise.min.js"></script>
+
+       <script src="./js/compodoc.js"></script>
+
+       <script src="./js/tabs.js"></script>
+       <script src="./js/menu.js"></script>
+       <script src="./js/libs/clipboard.min.js"></script>
+       <script src="./js/libs/prism.js"></script>
+       <script src="./js/sourceCode.js"></script>
+          <script src="./js/search/search.js"></script>
+          <script src="./js/search/lunr.min.js"></script>
+          <script src="./js/search/search-lunr.js"></script>
+          <script src="./js/search/search_index.js"></script>
+       <script src="./js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

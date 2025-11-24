@@ -7,7 +7,7 @@
 
 import fs from 'fs/promises';
 
-class IntegrationTesting {
+export default class IntegrationTesting {
   constructor() {
     this.testSuites = {};
     this.testResults = [];
@@ -22,7 +22,7 @@ class IntegrationTesting {
     try {
       const suitesData = await fs.readFile('ai-learning/integration-test-suites.json', 'utf8');
       this.testSuites = JSON.parse(suitesData);
-    } catch (error) {
+    } catch {
       console.log('📋 No existing test suites found, starting fresh...');
       this.testSuites = {};
     }
@@ -30,7 +30,7 @@ class IntegrationTesting {
     try {
       const contractsData = await fs.readFile('ai-learning/service-contracts.json', 'utf8');
       this.contracts = JSON.parse(contractsData);
-    } catch (error) {
+    } catch {
       console.log('📄 No service contracts found, starting fresh...');
       this.contracts = {};
     }

@@ -5,6 +5,7 @@
  *
  * @module observability/metrics
  */
+/* eslint-disable no-console */
 
 /**
  * Metric data point

@@ -1,0 +1,1670 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>political-sphere documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">political-sphere documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content class">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Classes</li>
+  <li class="breadcrumb-item" >ComplianceService</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>libs/observability/src/compliance.ts</code>
+        </p>
+
+
+
+
+
+
+            <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#auditBuffer" >auditBuffer</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#config" >config</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#maxBufferSize" >maxBufferSize</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#anonymizeData" >anonymizeData</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#determineComplianceFlags" >determineComplianceFlags</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#flushAuditBuffer" >flushAuditBuffer</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#generateAuditId" >generateAuditId</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#generateComplianceReport" >generateComplianceReport</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#getDefaultRetentionPolicies" >getDefaultRetentionPolicies</a>
+                            </li>
+                            <li>
+                                <a href="#getRetentionPolicy" >getRetentionPolicy</a>
+                            </li>
+                            <li>
+                                <a href="#hasDataProcessingConsent" >hasDataProcessingConsent</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#hashData" >hashData</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#isHipaaRelevant" >isHipaaRelevant</a>
+                            </li>
+                            <li>
+                                <a href="#logAuditEvent" >logAuditEvent</a>
+                            </li>
+                            <li>
+                                <a href="#requiresAudit" >requiresAudit</a>
+                            </li>
+                            <li>
+                                <a href="#shouldRetainData" >shouldRetainData</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+            <section data-compodoc="block-constructor">
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(config: <a href="../interfaces/ComplianceConfig.html" target="_self">Partial&lt;ComplianceConfig&gt;</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="49" class="link-to-prism">libs/observability/src/compliance.ts:49</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>config</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../interfaces/ComplianceConfig.html" target="_self" >Partial&lt;ComplianceConfig&gt;</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+            <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="auditBuffer"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>auditBuffer</b></span>
+                        <a href="#auditBuffer"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>AuditEvent[]</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[]</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="48" class="link-to-prism">libs/observability/src/compliance.ts:48</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="config"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>config</b></span>
+                        <a href="#config"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/ComplianceConfig.html" target="_self" >ComplianceConfig</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="47" class="link-to-prism">libs/observability/src/compliance.ts:47</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="maxBufferSize"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>maxBufferSize</b></span>
+                        <a href="#maxBufferSize"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>100</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="49" class="link-to-prism">libs/observability/src/compliance.ts:49</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+            <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="anonymizeData"></a>
+                    <span class="name">
+                        <span ><b>anonymizeData</b></span>
+                        <a href="#anonymizeData"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>anonymizeData(data: <a href="../unknowns/g.html" target="_self">Record&lt;string | unknown&gt;</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="164"
+                                    class="link-to-prism">libs/observability/src/compliance.ts:164</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Anonymize data for compliance (GDPR)</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>data</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/variables.html#g" target="_self" >Record&lt;string | unknown&gt;</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../miscellaneous/variables.html#g" target="_self" >Record&lt;string, unknown&gt;</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="determineComplianceFlags"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>determineComplianceFlags</b></span>
+                        <a href="#determineComplianceFlags"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>determineComplianceFlags(event: <a href="../interfaces/AuditEvent.html" target="_self">AuditEvent</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="288"
+                                    class="link-to-prism">libs/observability/src/compliance.ts:288</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Determine compliance flags for an audit event</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>event</td>
+                                            <td>
+                                                            <code><a href="../interfaces/AuditEvent.html" target="_self" >AuditEvent</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../miscellaneous/variables.html#g" target="_self" >string[]</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="flushAuditBuffer"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>flushAuditBuffer</b></span>
+                        <a href="#flushAuditBuffer"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>flushAuditBuffer()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="93"
+                                    class="link-to-prism">libs/observability/src/compliance.ts:93</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Flush buffered audit events to persistent storage</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Promise&lt;void&gt;</code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="generateAuditId"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>generateAuditId</b></span>
+                        <a href="#generateAuditId"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>generateAuditId()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="281"
+                                    class="link-to-prism">libs/observability/src/compliance.ts:281</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Generate unique audit event ID</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="generateComplianceReport"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>generateComplianceReport</b></span>
+                        <a href="#generateComplianceReport"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>generateComplianceReport()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="203"
+                                    class="link-to-prism">libs/observability/src/compliance.ts:203</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Generate compliance report</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../miscellaneous/variables.html#g" target="_self" >Promise&lt;Record&lt;string, unknown&gt;&gt;</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getDefaultRetentionPolicies"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>getDefaultRetentionPolicies</b></span>
+                        <a href="#getDefaultRetentionPolicies"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getDefaultRetentionPolicies()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="233"
+                                    class="link-to-prism">libs/observability/src/compliance.ts:233</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Get default data retention policies</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../miscellaneous/typealiases.html#Policy" target="_self" >DataRetentionPolicy[]</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getRetentionPolicy"></a>
+                    <span class="name">
+                        <span ><b>getRetentionPolicy</b></span>
+                        <a href="#getRetentionPolicy"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getRetentionPolicy(dataType: <a href="../unknowns/g.html" target="_self">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="144"
+                                    class="link-to-prism">libs/observability/src/compliance.ts:144</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Check data retention policy for a data type</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>dataType</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../miscellaneous/typealiases.html#Policy" target="_self" >DataRetentionPolicy | null</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="hasDataProcessingConsent"></a>
+                    <span class="name">
+                        <span ><b>hasDataProcessingConsent</b></span>
+                        <a href="#hasDataProcessingConsent"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>hasDataProcessingConsent(userId: <a href="../unknowns/g.html" target="_self">string</a>, purpose: <a href="../unknowns/g.html" target="_self">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="191"
+                                    class="link-to-prism">libs/observability/src/compliance.ts:191</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Check if user has consented to data processing</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>userId</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>purpose</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="hashData"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>hashData</b></span>
+                        <a href="#hashData"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>hashData(data: <a href="../unknowns/g.html" target="_self">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="328"
+                                    class="link-to-prism">libs/observability/src/compliance.ts:328</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Hash data for anonymization</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>data</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="isHipaaRelevant"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>isHipaaRelevant</b></span>
+                        <a href="#isHipaaRelevant"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>isHipaaRelevant(event: <a href="../interfaces/AuditEvent.html" target="_self">AuditEvent</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="318"
+                                    class="link-to-prism">libs/observability/src/compliance.ts:318</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Check if an event is HIPAA relevant</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>event</td>
+                                            <td>
+                                                            <code><a href="../interfaces/AuditEvent.html" target="_self" >AuditEvent</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="logAuditEvent"></a>
+                    <span class="name">
+                        <span ><b>logAuditEvent</b></span>
+                        <a href="#logAuditEvent"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>logAuditEvent(event: Omit<AuditEvent | "id" | "timestamp">)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="66"
+                                    class="link-to-prism">libs/observability/src/compliance.ts:66</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Log an audit event</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>event</td>
+                                            <td>
+                                                        <code>Omit&lt;AuditEvent | &quot;id&quot; | &quot;timestamp&quot;&gt;</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="requiresAudit"></a>
+                    <span class="name">
+                        <span ><b>requiresAudit</b></span>
+                        <a href="#requiresAudit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>requiresAudit(action: <a href="../unknowns/g.html" target="_self">string</a>, resource: <a href="../unknowns/g.html" target="_self">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="116"
+                                    class="link-to-prism">libs/observability/src/compliance.ts:116</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Check if an operation requires audit logging</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>action</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>resource</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="shouldRetainData"></a>
+                    <span class="name">
+                        <span ><b>shouldRetainData</b></span>
+                        <a href="#shouldRetainData"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>shouldRetainData(dataType: <a href="../unknowns/g.html" target="_self">string</a>, createdAt: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date" target="_blank">Date</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="151"
+                                    class="link-to-prism">libs/observability/src/compliance.ts:151</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Check if data should be retained based on retention policy</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>dataType</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>createdAt</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date" target="_blank" >Date</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+
+
+
+
+
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { getLogger } from &#x27;./logging.js&#x27;;
+
+const logger &#x3D; getLogger();
+
+export interface AuditEvent {
+  id: string;
+  timestamp: string;
+  userId?: string;
+  sessionId?: string;
+  action: string;
+  resource: string;
+  resourceId?: string;
+  method: string;
+  ipAddress?: string;
+  userAgent?: string;
+  success: boolean;
+  details?: Record&lt;string, unknown&gt;;
+  complianceFlags?: string[];
+}
+
+export interface DataRetentionPolicy {
+  name: string;
+  dataType: string;
+  retentionPeriod: number; // days
+  encryptionRequired: boolean;
+  backupRequired: boolean;
+  complianceFrameworks: string[];
+}
+
+export interface ComplianceConfig {
+  auditEnabled: boolean;
+  auditLogRetention: number; // days
+  dataRetentionPolicies: DataRetentionPolicy[];
+  encryptionEnabled: boolean;
+  gdprCompliance: boolean;
+  hipaaCompliance: boolean;
+  soc2Compliance: boolean;
+}
+
+class ComplianceService {
+  private config: ComplianceConfig;
+  private auditBuffer: AuditEvent[] &#x3D; [];
+  private readonly maxBufferSize &#x3D; 100;
+
+  constructor(config: Partial&lt;ComplianceConfig&gt; &#x3D; {}) {
+    this.config &#x3D; {
+      auditEnabled: config.auditEnabled ?? true,
+      auditLogRetention: config.auditLogRetention ?? 2555, // 7 years for GDPR/SOC2
+      dataRetentionPolicies: config.dataRetentionPolicies ?? this.getDefaultRetentionPolicies(),
+      encryptionEnabled: config.encryptionEnabled ?? true,
+      gdprCompliance: config.gdprCompliance ?? true,
+      hipaaCompliance: config.hipaaCompliance ?? false,
+      soc2Compliance: config.soc2Compliance ?? true,
+    };
+  }
+
+  /**
+   * Log an audit event
+   */
+  logAuditEvent(event: Omit&lt;AuditEvent, &#x27;id&#x27; | &#x27;timestamp&#x27;&gt;): void {
+    if (!this.config.auditEnabled) return;
+
+    const auditEvent: AuditEvent &#x3D; {
+      ...event,
+      id: this.generateAuditId(),
+      timestamp: new Date().toISOString(),
+    };
+
+    // Add compliance flags based on the event
+    auditEvent.complianceFlags &#x3D; this.determineComplianceFlags(auditEvent);
+
+    // Buffer the event
+    this.auditBuffer.push(auditEvent);
+
+    // Flush if buffer is full
+    if (this.auditBuffer.length &gt;&#x3D; this.maxBufferSize) {
+      this.flushAuditBuffer();
+    }
+
+    // Log to console for immediate visibility
+    logger.info(&#x27;AUDIT:&#x27;, { auditEvent });
+  }
+
+  /**
+   * Flush buffered audit events to persistent storage
+   */
+  async flushAuditBuffer(): Promise&lt;void&gt; {
+    if (this.auditBuffer.length &#x3D;&#x3D;&#x3D; 0) return;
+
+    try {
+      // In a real implementation, this would write to a secure audit log
+      // For now, we&#x27;ll just clear the buffer
+      const eventsToFlush &#x3D; [...this.auditBuffer];
+      this.auditBuffer &#x3D; [];
+
+      // TODO: Implement secure audit log storage
+      // This could involve writing to encrypted files, databases, or external systems
+
+      logger.info(&#x60;Flushed ${eventsToFlush.length} audit events&#x60;);
+    } catch (error) {
+      logger.error(&#x27;Failed to flush audit buffer:&#x27;, error as Error);
+      // In case of failure, keep the events in buffer for retry
+      // In production, implement proper error handling and retry logic
+    }
+  }
+
+  /**
+   * Check if an operation requires audit logging
+   */
+  requiresAudit(action: string, resource: string): boolean {
+    // Define which operations require audit logging
+    const auditRequiredActions &#x3D; [
+      &#x27;user_login&#x27;,
+      &#x27;user_logout&#x27;,
+      &#x27;password_change&#x27;,
+      &#x27;role_change&#x27;,
+      &#x27;data_access&#x27;,
+      &#x27;data_modification&#x27;,
+      &#x27;admin_action&#x27;,
+      &#x27;security_event&#x27;,
+    ];
+
+    const auditRequiredResources &#x3D; [
+      &#x27;user&#x27;,
+      &#x27;role&#x27;,
+      &#x27;permission&#x27;,
+      &#x27;sensitive_data&#x27;,
+      &#x27;audit_log&#x27;,
+      &#x27;security_config&#x27;,
+    ];
+
+    return auditRequiredActions.includes(action) || auditRequiredResources.includes(resource);
+  }
+
+  /**
+   * Check data retention policy for a data type
+   */
+  getRetentionPolicy(dataType: string): DataRetentionPolicy | null {
+    return this.config.dataRetentionPolicies.find(policy &#x3D;&gt; policy.dataType &#x3D;&#x3D;&#x3D; dataType) || null;
+  }
+
+  /**
+   * Check if data should be retained based on retention policy
+   */
+  shouldRetainData(dataType: string, createdAt: Date): boolean {
+    const policy &#x3D; this.getRetentionPolicy(dataType);
+    if (!policy) return true; // Default to retain if no policy
+
+    const retentionMs &#x3D; policy.retentionPeriod * 24 * 60 * 60 * 1000;
+    const cutoffDate &#x3D; new Date(Date.now() - retentionMs);
+
+    return createdAt &gt; cutoffDate;
+  }
+
+  /**
+   * Anonymize data for compliance (GDPR)
+   */
+  anonymizeData(data: Record&lt;string, unknown&gt;): Record&lt;string, unknown&gt; {
+    logger.debug(&#x27;Anonymizing data&#x27;, {
+      dataTypes: Object.fromEntries(Object.entries(data).map(([k, v]) &#x3D;&gt; [k, typeof v])),
+    });
+    const anonymized &#x3D; { ...data };
+
+    // Remove or hash PII
+    const piiFields &#x3D; [&#x27;email&#x27;, &#x27;phone&#x27;, &#x27;address&#x27;, &#x27;name&#x27;, &#x27;ssn&#x27;, &#x27;ipAddress&#x27;];
+
+    piiFields.forEach(field &#x3D;&gt; {
+      if (anonymized[field]) {
+        if (this.config.gdprCompliance) {
+          // For GDPR, remove PII entirely or use pseudonymization
+          delete anonymized[field];
+        } else {
+          // Hash sensitive data
+          anonymized[field] &#x3D; this.hashData(anonymized[field] as string);
+        }
+      }
+    });
+
+    return anonymized;
+  }
+
+  /**
+   * Check if user has consented to data processing
+   */
+  hasDataProcessingConsent(userId: string, purpose: string): boolean {
+    if (!this.config.gdprCompliance) return true;
+
+    // In a real implementation, this would check a consent database
+    // For now, return true as a placeholder
+    logger.debug(&#x60;Checking consent for user ${userId} and purpose ${purpose}&#x60;);
+    return true;
+  }
+
+  /**
+   * Generate compliance report
+   */
+  async generateComplianceReport(): Promise&lt;Record&lt;string, unknown&gt;&gt; {
+    const report &#x3D; {
+      timestamp: new Date().toISOString(),
+      complianceFrameworks: {
+        gdpr: this.config.gdprCompliance,
+        hipaa: this.config.hipaaCompliance,
+        soc2: this.config.soc2Compliance,
+      },
+      audit: {
+        enabled: this.config.auditEnabled,
+        retentionDays: this.config.auditLogRetention,
+        bufferedEvents: this.auditBuffer.length,
+      },
+      dataRetention: {
+        policies: this.config.dataRetentionPolicies.length,
+        encryptionEnabled: this.config.encryptionEnabled,
+      },
+      security: {
+        encryptionEnabled: this.config.encryptionEnabled,
+      },
+    };
+
+    logger.debug(&#x27;Generated compliance report structure&#x27;, { keys: Object.keys(report) });
+
+    return report;
+  }
+
+  /**
+   * Get default data retention policies
+   */
+  private getDefaultRetentionPolicies(): DataRetentionPolicy[] {
+    return [
+      {
+        name: &#x27;User Data Retention&#x27;,
+        dataType: &#x27;user_data&#x27;,
+        retentionPeriod: 2555, // 7 years for GDPR
+        encryptionRequired: true,
+        backupRequired: true,
+        complianceFrameworks: [&#x27;GDPR&#x27;, &#x27;SOC2&#x27;],
+      },
+      {
+        name: &#x27;Audit Log Retention&#x27;,
+        dataType: &#x27;audit_log&#x27;,
+        retentionPeriod: 2555, // 7 years
+        encryptionRequired: true,
+        backupRequired: true,
+        complianceFrameworks: [&#x27;GDPR&#x27;, &#x27;SOC2&#x27;, &#x27;HIPAA&#x27;],
+      },
+      {
+        name: &#x27;Session Data Retention&#x27;,
+        dataType: &#x27;session_data&#x27;,
+        retentionPeriod: 30, // 30 days
+        encryptionRequired: true,
+        backupRequired: false,
+        complianceFrameworks: [&#x27;GDPR&#x27;],
+      },
+      {
+        name: &#x27;Application Metrics&#x27;,
+        dataType: &#x27;metrics&#x27;,
+        retentionPeriod: 90, // 90 days
+        encryptionRequired: false,
+        backupRequired: true,
+        complianceFrameworks: [&#x27;SOC2&#x27;],
+      },
+      {
+        name: &#x27;Error Logs&#x27;,
+        dataType: &#x27;error_logs&#x27;,
+        retentionPeriod: 365, // 1 year
+        encryptionRequired: true,
+        backupRequired: true,
+        complianceFrameworks: [&#x27;GDPR&#x27;, &#x27;SOC2&#x27;],
+      },
+    ];
+  }
+
+  /**
+   * Generate unique audit event ID
+   */
+  private generateAuditId(): string {
+    return &#x60;audit_${Date.now()}_${Math.random().toString(36).substr(2, 9)}&#x60;;
+  }
+
+  /**
+   * Determine compliance flags for an audit event
+   */
+  private determineComplianceFlags(event: AuditEvent): string[] {
+    const flags: string[] &#x3D; [];
+
+    if (this.config.gdprCompliance) {
+      flags.push(&#x27;GDPR&#x27;);
+    }
+
+    if (this.config.hipaaCompliance &amp;&amp; this.isHipaaRelevant(event)) {
+      flags.push(&#x27;HIPAA&#x27;);
+    }
+
+    if (this.config.soc2Compliance) {
+      flags.push(&#x27;SOC2&#x27;);
+    }
+
+    // Add flags based on event characteristics
+    if (event.resource &#x3D;&#x3D;&#x3D; &#x27;sensitive_data&#x27;) {
+      flags.push(&#x27;PII&#x27;);
+    }
+
+    if (!event.success) {
+      flags.push(&#x27;FAILED_OPERATION&#x27;);
+    }
+
+    return flags;
+  }
+
+  /**
+   * Check if an event is HIPAA relevant
+   */
+  private isHipaaRelevant(event: AuditEvent): boolean {
+    const hipaaResources &#x3D; [&#x27;health_data&#x27;, &#x27;medical_record&#x27;, &#x27;patient_info&#x27;];
+    const hipaaActions &#x3D; [&#x27;data_access&#x27;, &#x27;data_modification&#x27;];
+
+    return hipaaResources.includes(event.resource) || hipaaActions.includes(event.action);
+  }
+
+  /**
+   * Hash data for anonymization
+   */
+  private hashData(data: string): string {
+    // Simple hash for demonstration - use crypto.createHash in production
+    let hash &#x3D; 0;
+    for (let i &#x3D; 0; i &lt; data.length; i++) {
+      const char &#x3D; data.charCodeAt(i);
+      hash &#x3D; (hash &lt;&lt; 5) - hash + char;
+      hash &#x3D; hash &amp; hash; // Convert to 32-bit integer
+    }
+    return hash.toString(36);
+  }
+}
+
+// Singleton instance
+let complianceServiceInstance: ComplianceService | null &#x3D; null;
+
+/**
+ * Get compliance service instance
+ */
+export function getComplianceService(config?: Partial&lt;ComplianceConfig&gt;): ComplianceService {
+  if (!complianceServiceInstance) {
+    complianceServiceInstance &#x3D; new ComplianceService(config);
+  }
+  return complianceServiceInstance;
+}
+
+/**
+ * Initialize compliance service
+ */
+export function initializeCompliance(config?: Partial&lt;ComplianceConfig&gt;): ComplianceService {
+  return getComplianceService(config);
+}
+
+export { ComplianceService };
+export default getComplianceService;
+</code></pre>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'class';
+            var COMPODOC_CURRENT_PAGE_URL = 'ComplianceService.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

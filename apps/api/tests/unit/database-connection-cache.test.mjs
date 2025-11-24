@@ -17,6 +17,9 @@ function createStubCache() {
     async invalidatePattern(pattern) {
       calls.push({ method: 'invalidate', pattern });
     },
+    async invalidateVoteRelated(billId, userId) {
+      calls.push({ method: 'invalidateVoteRelated', billId, userId });
+    },
     async close() {
       calls.push({ method: 'close' });
     },

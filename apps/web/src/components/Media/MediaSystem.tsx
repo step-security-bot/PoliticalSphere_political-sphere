@@ -179,7 +179,7 @@ const MediaSystem: React.FC<MediaSystemProps> = ({
         <p className="media-subtitle">Press, polls, and public sentiment</p>
       </header>
 
-      <nav className="media-tabs" role="tablist" aria-label="Media sections">
+      <div className="media-tabs" role="tablist" aria-label="Media sections">
         <button
           type="button"
           role="tab"
@@ -224,7 +224,7 @@ const MediaSystem: React.FC<MediaSystemProps> = ({
         >
           Public Opinion
         </button>
-      </nav>
+      </div>
 
       {activeTab === 'press' && (
         <section

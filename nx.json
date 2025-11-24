@@ -133,10 +133,9 @@
       }
     }
   },
-  "nxCloudAccessToken": "${NX_CLOUD_ACCESS_TOKEN}",
   "tasksRunnerOptions": {
     "default": {
-      "runner": "@nx/nx-cloud",
+      "runner": "nx/tasks-runners/default",
       "options": {
         "cacheableOperations": [
           "build",
@@ -152,11 +151,7 @@
         "parallel": 8,
         "maxParallel": 12,
         "runtimeCacheInputs": ["node -v"],
-        "analytics": true,
-        "distributedCache": true,
-        "distributedExecution": true,
-        "stopAgentsOnFailure": false,
-        "accessToken": "ZmQ1YmJjMDEtNmQ5OS00ZmY0LWJjNDUtZmIyNjQ1Yzg1ODQyfHJlYWQtd3JpdGU="
+        "analytics": false
       }
     }
   },
@@ -227,15 +222,5 @@
   },
   "installation": {
     "version": "22.0.1"
-  },
-  "nxCloudId": "690298b92b74acd1e02e8ff0",
-  "distributedTaskExecution": {
-    "enabled": true,
-    "maxAgents": 8,
-    "agentTimeout": 3600000,
-    "stopAgentsOnFailure": false,
-    "agentCheckInterval": 10000,
-    "queueTimeout": 300000,
-    "maxJobRetries": 2
   }
 }

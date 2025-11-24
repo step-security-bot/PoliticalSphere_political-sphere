@@ -1,0 +1,1174 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>political-sphere documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">political-sphere documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content class">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Classes</li>
+  <li class="breadcrumb-item" >BreachNotificationManager</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>libs/ai-system/src/privacy/breach-notification.ts</code>
+        </p>
+
+
+            <p class="comment">
+                <h3>Description</h3>
+            </p>
+            <p class="comment">
+                <p>Breach Notification Manager</p>
+<p>Manages data breach incidents and notifications.</p>
+
+            </p>
+
+
+
+
+            <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#incidents" >incidents</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#generateBreachReport" >generateBreachReport</a>
+                            </li>
+                            <li>
+                                <a href="#getAllIncidents" >getAllIncidents</a>
+                            </li>
+                            <li>
+                                <a href="#getIncidentsBySeverity" >getIncidentsBySeverity</a>
+                            </li>
+                            <li>
+                                <a href="#getOverdueAuthorityNotifications" >getOverdueAuthorityNotifications</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#notifyAuthority" >notifyAuthority</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#notifyUsers" >notifyUsers</a>
+                            </li>
+                            <li>
+                                <a href="#reportBreach" >reportBreach</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#scheduleAuthorityNotification" >scheduleAuthorityNotification</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#scheduleUserNotification" >scheduleUserNotification</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+
+            <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="incidents"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>incidents</b></span>
+                        <a href="#incidents"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/DataBreachIncident.html" target="_self" >Map&lt;string | DataBreachIncident&gt;</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new Map()</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="52" class="link-to-prism">libs/ai-system/src/privacy/breach-notification.ts:52</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+            <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="generateBreachReport"></a>
+                    <span class="name">
+                        <span ><b>generateBreachReport</b></span>
+                        <a href="#generateBreachReport"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>generateBreachReport(incidentId: <a href="../unknowns/g.html" target="_self">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="201"
+                                    class="link-to-prism">libs/ai-system/src/privacy/breach-notification.ts:201</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Generate breach report</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>incidentId</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getAllIncidents"></a>
+                    <span class="name">
+                        <span ><b>getAllIncidents</b></span>
+                        <a href="#getAllIncidents"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getAllIncidents()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="243"
+                                    class="link-to-prism">libs/ai-system/src/privacy/breach-notification.ts:243</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Get all incidents</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../interfaces/DataBreachIncident.html" target="_self" >DataBreachIncident[]</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getIncidentsBySeverity"></a>
+                    <span class="name">
+                        <span ><b>getIncidentsBySeverity</b></span>
+                        <a href="#getIncidentsBySeverity"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getIncidentsBySeverity(severity: <a href="../interfaces/DataBreachIncident.html" target="_self">DataBreachIncident</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="250"
+                                    class="link-to-prism">libs/ai-system/src/privacy/breach-notification.ts:250</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Get incidents by severity</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>severity</td>
+                                            <td>
+                                                            <code><a href="../interfaces/DataBreachIncident.html" target="_self" >DataBreachIncident</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../interfaces/DataBreachIncident.html" target="_self" >DataBreachIncident[]</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getOverdueAuthorityNotifications"></a>
+                    <span class="name">
+                        <span ><b>getOverdueAuthorityNotifications</b></span>
+                        <a href="#getOverdueAuthorityNotifications"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getOverdueAuthorityNotifications()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="186"
+                                    class="link-to-prism">libs/ai-system/src/privacy/breach-notification.ts:186</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Get overdue authority notifications (&gt;72 hours)</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../interfaces/DataBreachIncident.html" target="_self" >DataBreachIncident[]</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="notifyAuthority"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>notifyAuthority</b></span>
+                        <a href="#notifyAuthority"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>notifyAuthority(incidentId: <a href="../unknowns/g.html" target="_self">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="125"
+                                    class="link-to-prism">libs/ai-system/src/privacy/breach-notification.ts:125</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Notify supervisory authority</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>incidentId</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Promise&lt;literal type&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="notifyUsers"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>notifyUsers</b></span>
+                        <a href="#notifyUsers"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>notifyUsers(incidentId: <a href="../unknowns/g.html" target="_self">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="157"
+                                    class="link-to-prism">libs/ai-system/src/privacy/breach-notification.ts:157</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Notify affected users</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>incidentId</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Promise&lt;literal type&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="reportBreach"></a>
+                    <span class="name">
+                        <span ><b>reportBreach</b></span>
+                        <a href="#reportBreach"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>reportBreach(incident: <a href="../interfaces/DataBreachIncident.html" target="_self">Omit&lt;DataBreachIncident | &quot;id&quot; | &quot;timestamp&quot; | &quot;notificationStatus&quot;&gt;</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="57"
+                                    class="link-to-prism">libs/ai-system/src/privacy/breach-notification.ts:57</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Report data breach</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>incident</td>
+                                            <td>
+                                                            <code><a href="../interfaces/DataBreachIncident.html" target="_self" >Omit&lt;DataBreachIncident | &quot;id&quot; | &quot;timestamp&quot; | &quot;notificationStatus&quot;&gt;</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../interfaces/DataBreachIncident.html" target="_self" >DataBreachIncident</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="scheduleAuthorityNotification"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>scheduleAuthorityNotification</b></span>
+                        <a href="#scheduleAuthorityNotification"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>scheduleAuthorityNotification(incidentId: <a href="../unknowns/g.html" target="_self">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="96"
+                                    class="link-to-prism">libs/ai-system/src/privacy/breach-notification.ts:96</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Schedule authority notification (72-hour GDPR requirement)</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>incidentId</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="scheduleUserNotification"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>scheduleUserNotification</b></span>
+                        <a href="#scheduleUserNotification"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>scheduleUserNotification(incidentId: <a href="../unknowns/g.html" target="_self">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="112"
+                                    class="link-to-prism">libs/ai-system/src/privacy/breach-notification.ts:112</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Schedule user notification (without undue delay per GDPR Article 34)</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>incidentId</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+
+
+
+
+
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">export interface DataBreachIncident {
+  /** Incident ID */
+  id: string;
+  /** Incident timestamp */
+  timestamp: Date;
+  /** Breach type */
+  type: &#x27;unauthorized-access&#x27; | &#x27;data-loss&#x27; | &#x27;data-disclosure&#x27; | &#x27;ransomware&#x27; | &#x27;other&#x27;;
+  /** Severity assessment */
+  severity: &#x27;low&#x27; | &#x27;medium&#x27; | &#x27;high&#x27; | &#x27;critical&#x27;;
+  /** Affected data types */
+  affectedDataTypes: string[];
+  /** Number of affected users */
+  affectedUsers: number;
+  /** Incident description */
+  description: string;
+  /** Mitigation actions taken */
+  mitigationActions: string[];
+  /** Notification status */
+  notificationStatus: {
+    authorityNotified: boolean;
+    authorityNotifiedAt?: Date;
+    usersNotified: boolean;
+    usersNotifiedAt?: Date;
+  };
+  /** Risk assessment */
+  riskAssessment: {
+    riskToRights: &#x27;low&#x27; | &#x27;high&#x27;;
+    requiresUserNotification: boolean;
+    requiresAuthorityNotification: boolean;
+    assessment: string;
+  };
+}
+
+/**
+ * Breach Notification Manager
+ *
+ * Manages data breach incidents and notifications.
+ */
+export class BreachNotificationManager {
+  private incidents: Map&lt;string, DataBreachIncident&gt; &#x3D; new Map();
+
+  /**
+   * Report data breach
+   */
+  reportBreach(
+    incident: Omit&lt;DataBreachIncident, &#x27;id&#x27; | &#x27;timestamp&#x27; | &#x27;notificationStatus&#x27;&gt;
+  ): DataBreachIncident {
+    const id &#x3D; &#x60;breach-${Date.now()}-${Math.random().toString(36).substr(2, 9)}&#x60;;
+    const timestamp &#x3D; new Date();
+
+    const breach: DataBreachIncident &#x3D; {
+      id,
+      timestamp,
+      ...incident,
+      notificationStatus: {
+        authorityNotified: false,
+        usersNotified: false,
+      },
+    };
+
+    this.incidents.set(id, breach);
+
+    console.error(&#x60;[BREACH] Data breach reported: ${breach.type}&#x60;, {
+      id,
+      severity: breach.severity,
+      affectedUsers: breach.affectedUsers,
+    });
+
+    // Check if immediate notifications required
+    if (breach.riskAssessment.requiresAuthorityNotification) {
+      this.scheduleAuthorityNotification(id);
+    }
+
+    if (breach.riskAssessment.requiresUserNotification) {
+      this.scheduleUserNotification(id);
+    }
+
+    return breach;
+  }
+
+  /**
+   * Schedule authority notification (72-hour GDPR requirement)
+   */
+  private scheduleAuthorityNotification(incidentId: string): void {
+    const incident &#x3D; this.incidents.get(incidentId);
+    if (!incident) return;
+
+    const deadline &#x3D; new Date(incident.timestamp);
+    deadline.setHours(deadline.getHours() + 72);
+
+    console.warn(&#x60;[BREACH] Authority notification required by ${deadline.toISOString()}&#x60;);
+
+    // In production, create task/alert for DPO
+    // This would trigger automated notification workflow
+  }
+
+  /**
+   * Schedule user notification (without undue delay per GDPR Article 34)
+   */
+  private scheduleUserNotification(incidentId: string): void {
+    const incident &#x3D; this.incidents.get(incidentId);
+    if (!incident) return;
+
+    console.warn(&#x60;[BREACH] User notification required for ${incident.affectedUsers} users&#x60;);
+
+    // In production, queue email notifications
+    // This would use email service to notify affected users
+  }
+
+  /**
+   * Notify supervisory authority
+   */
+  async notifyAuthority(incidentId: string): Promise&lt;{
+    success: boolean;
+    notificationId?: string;
+    error?: string;
+  }&gt; {
+    const incident &#x3D; this.incidents.get(incidentId);
+    if (!incident) {
+      return { success: false, error: &#x27;Incident not found&#x27; };
+    }
+
+    // In production, submit notification to supervisory authority
+    // For UK: Information Commissioner&#x27;s Office (ICO)
+    // For EU: relevant data protection authority
+
+    const notificationId &#x3D; &#x60;auth-notif-${Date.now()}&#x60;;
+
+    incident.notificationStatus.authorityNotified &#x3D; true;
+    incident.notificationStatus.authorityNotifiedAt &#x3D; new Date();
+
+    console.log(&#x60;[BREACH] Authority notified for incident ${incidentId}&#x60;, {
+      notificationId,
+    });
+
+    return {
+      success: true,
+      notificationId,
+    };
+  }
+
+  /**
+   * Notify affected users
+   */
+  async notifyUsers(incidentId: string): Promise&lt;{
+    success: boolean;
+    notifiedCount: number;
+    error?: string;
+  }&gt; {
+    const incident &#x3D; this.incidents.get(incidentId);
+    if (!incident) {
+      return { success: false, notifiedCount: 0, error: &#x27;Incident not found&#x27; };
+    }
+
+    // In production, send emails to affected users
+    const notifiedCount &#x3D; incident.affectedUsers;
+
+    incident.notificationStatus.usersNotified &#x3D; true;
+    incident.notificationStatus.usersNotifiedAt &#x3D; new Date();
+
+    console.log(&#x60;[BREACH] Users notified for incident ${incidentId}&#x60;, {
+      count: notifiedCount,
+    });
+
+    return {
+      success: true,
+      notifiedCount,
+    };
+  }
+
+  /**
+   * Get overdue authority notifications (&gt;72 hours)
+   */
+  getOverdueAuthorityNotifications(): DataBreachIncident[] {
+    const deadline &#x3D; new Date();
+    deadline.setHours(deadline.getHours() - 72);
+
+    return Array.from(this.incidents.values()).filter(
+      i &#x3D;&gt;
+        i.riskAssessment.requiresAuthorityNotification &amp;&amp;
+        !i.notificationStatus.authorityNotified &amp;&amp;
+        i.timestamp &lt; deadline
+    );
+  }
+
+  /**
+   * Generate breach report
+   */
+  generateBreachReport(incidentId: string): string {
+    const incident &#x3D; this.incidents.get(incidentId);
+    if (!incident) return &#x27;Incident not found&#x27;;
+
+    return &#x60;
+# Data Breach Incident Report
+
+**Incident ID**: ${incident.id}
+**Date/Time**: ${incident.timestamp.toISOString()}
+**Type**: ${incident.type}
+**Severity**: ${incident.severity.toUpperCase()}
+
+## Impact Assessment
+
+- **Affected Users**: ${incident.affectedUsers}
+- **Affected Data Types**: ${incident.affectedDataTypes.join(&#x27;, &#x27;)}
+- **Risk to Rights**: ${incident.riskAssessment.riskToRights.toUpperCase()}
+
+## Description
+
+${incident.description}
+
+## Mitigation Actions
+
+${incident.mitigationActions.map(a &#x3D;&gt; &#x60;- ${a}&#x60;).join(&#x27;\n&#x27;)}
+
+## Notification Status
+
+- **Authority Notified**: ${incident.notificationStatus.authorityNotified ? &#x27;Yes&#x27; : &#x27;No&#x27;}
+  ${incident.notificationStatus.authorityNotifiedAt ? &#x60;(${incident.notificationStatus.authorityNotifiedAt.toISOString()})&#x60; : &#x27;&#x27;}
+- **Users Notified**: ${incident.notificationStatus.usersNotified ? &#x27;Yes&#x27; : &#x27;No&#x27;}
+  ${incident.notificationStatus.usersNotifiedAt ? &#x60;(${incident.notificationStatus.usersNotifiedAt.toISOString()})&#x60; : &#x27;&#x27;}
+
+## Risk Assessment
+
+${incident.riskAssessment.assessment}
+&#x60;.trim();
+  }
+
+  /**
+   * Get all incidents
+   */
+  getAllIncidents(): DataBreachIncident[] {
+    return Array.from(this.incidents.values());
+  }
+
+  /**
+   * Get incidents by severity
+   */
+  getIncidentsBySeverity(severity: DataBreachIncident[&#x27;severity&#x27;]): DataBreachIncident[] {
+    return this.getAllIncidents().filter(i &#x3D;&gt; i.severity &#x3D;&#x3D;&#x3D; severity);
+  }
+}
+</code></pre>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'class';
+            var COMPODOC_CURRENT_PAGE_URL = 'BreachNotificationManager.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

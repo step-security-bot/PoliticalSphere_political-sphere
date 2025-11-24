@@ -5,7 +5,12 @@
  * Automated performance testing with regression detection
  */
 
-import fs from 'fs/promises';
+import fs from 'node:fs/promises';
+
+// Speed up CI/automation by default; opt into real-time sleeps with PERF_BENCH_REALTIME=1
+const USE_REAL_TIME = process.env.PERF_BENCH_REALTIME === '1';
+const MIN_SAMPLES_PER_SCENARIO = 5;
+const MAX_SAMPLES_PER_SCENARIO = 30;
 
 class PerformanceBenchmarking {
   constructor() {
@@ -22,7 +27,7 @@ class PerformanceBenchmarking {
     try {
       const benchmarksData = await fs.readFile('ai-learning/performance-benchmarks.json', 'utf8');
       this.benchmarks = JSON.parse(benchmarksData);
-    } catch (error) {
+    } catch {
       console.log('📊 No existing benchmarks found, starting fresh...');
       this.benchmarks = {};
     }
@@ -30,7 +35,7 @@ class PerformanceBenchmarking {
     try {
       const baselinesData = await fs.readFile('ai-learning/performance-baselines.json', 'utf8');
       this.baselines = JSON.parse(baselinesData);
-    } catch (error) {
+    } catch {
       console.log('📈 No baselines found, starting fresh...');
       this.baselines = {};
     }
@@ -235,16 +240,19 @@ class PerformanceBenchmarking {
   async runScenario(benchmark, scenario) {
     const startTime = Date.now();
     const metrics = {};
+    const durationSeconds = scenario.duration || 60;
+    const iterations = USE_REAL_TIME
+      ? durationSeconds
+      : Math.min(
+          MAX_SAMPLES_PER_SCENARIO,
+          Math.max(MIN_SAMPLES_PER_SCENARIO, Math.floor(durationSeconds / 5))
+        );
+    const intervalMs = USE_REAL_TIME ? 1000 : 0;
 
     // Initialize metrics collection
     benchmark.metrics.forEach(metric => {
       metrics[metric] = [];
     });
-
-    // Simulate scenario execution
-    const duration = scenario.duration || 60;
-    const interval = 1000; // 1 second intervals
-    const iterations = duration;
 
     for (let i = 0; i < iterations; i++) {
       // Collect metrics for each benchmark type
@@ -259,14 +267,19 @@ class PerformanceBenchmarking {
       }
 
       // Wait for next iteration
-      await new Promise(resolve => setTimeout(resolve, interval));
+      if (intervalMs > 0) {
+        // Preserve existing pacing when explicitly requested
+        // eslint-disable-next-line no-await-in-loop
+        await new Promise(resolve => setTimeout(resolve, intervalMs));
+      }
     }
 
     const endTime = Date.now();
+    const durationMs = USE_REAL_TIME ? endTime - startTime : durationSeconds * 1000;
 
     return {
       name: scenario.name,
-      duration: endTime - startTime,
+      duration: durationMs,
       metrics: this.processMetrics(metrics),
       summary: this.summarizeScenario(metrics, benchmark.thresholds),
     };
@@ -295,7 +308,7 @@ class PerformanceBenchmarking {
     metrics.cacheHitRate.push(0.7 + Math.random() * 0.25);
   }
 
-  async collectFrontendMetrics(metrics, scenario) {
+  async collectFrontendMetrics(metrics, _scenario) {
     // Simulate frontend metrics collection
     metrics.firstContentfulPaint.push(800 + Math.random() * 400);
     metrics.largestContentfulPaint.push(1500 + Math.random() * 800);
@@ -306,7 +319,7 @@ class PerformanceBenchmarking {
     metrics.runtimeMemoryUsage.push(50 + Math.random() * 100);
   }
 
-  async collectMemoryMetrics(metrics, scenario) {
+  async collectMemoryMetrics(metrics, _scenario) {
     // Simulate memory metrics collection
     const timeProgress = Math.random(); // 0 to 1 over time
 
@@ -325,17 +338,18 @@ class PerformanceBenchmarking {
       const values = rawMetrics[metric];
       if (values.length > 0) {
         const sorted = [...values].sort((a, b) => a - b);
+        const mean = values.reduce((a, b) => a + b, 0) / values.length;
+        const variance =
+          values.reduce((sum, value) => sum + (value - mean) ** 2, 0) / values.length;
         processed[metric] = {
           count: values.length,
           min: Math.min(...values),
           max: Math.max(...values),
-          mean: values.reduce((a, b) => a + b, 0) / values.length,
+          mean,
           median: sorted[Math.floor(sorted.length / 2)],
           p95: sorted[Math.floor(sorted.length * 0.95)],
           p99: sorted[Math.floor(sorted.length * 0.99)],
-          std: Math.sqrt(
-            values.reduce((a, b) => a + (b - processed[metric]?.mean || 0) ** 2, 0) / values.length
-          ),
+          std: Math.sqrt(variance),
         };
       }
     });

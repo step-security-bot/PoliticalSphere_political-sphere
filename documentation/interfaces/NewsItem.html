@@ -1,0 +1,1098 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>political-sphere documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">political-sphere documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content interface">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Interfaces</li>
+  <li class="breadcrumb-item"
+  >
+  NewsItem</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>apps/api/src/news-service.ts</code>
+        </p>
+
+
+
+
+        <section data-compodoc="block-index">
+            <h3 id="index">Index</h3>
+            <table class="table table-sm table-bordered index-table">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <h6><b>Properties</b></h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <ul class="index-list">
+                                <li>
+                                        <a href="#category" 
+>
+                                            category
+                                        </a>
+                                </li>
+                                <li>
+                                            <span class="modifier">Optional</span>
+                                        <a href="#content" 
+>
+                                            content
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#createdAt" 
+>
+                                            createdAt
+                                        </a>
+                                </li>
+                                <li>
+                                            <span class="modifier">Optional</span>
+                                        <a href="#excerpt" 
+>
+                                            excerpt
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#id" 
+>
+                                            id
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#sources" 
+>
+                                            sources
+                                        </a>
+                                </li>
+                                <li>
+                                            <span class="modifier">Optional</span>
+                                        <a href="#status" 
+>
+                                            status
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#tags" 
+>
+                                            tags
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#title" 
+>
+                                            title
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#updatedAt" 
+>
+                                            updatedAt
+                                        </a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+
+
+            <section data-compodoc="block-properties">
+                <h3 id="inputs">Properties</h3>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="category"></a>
+                                        <span class="name "><b>category</b>
+                                            <a href="#category">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>category:         <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="content"></a>
+                                        <span class="name "><b>content</b>
+                                            <a href="#content">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>content:         <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Optional</i>
+                                        </td>
+                                    </tr>
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="createdAt"></a>
+                                        <span class="name "><b>createdAt</b>
+                                            <a href="#createdAt">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>createdAt:         <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="excerpt"></a>
+                                        <span class="name "><b>excerpt</b>
+                                            <a href="#excerpt">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>excerpt:         <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Optional</i>
+                                        </td>
+                                    </tr>
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="id"></a>
+                                        <span class="name "><b>id</b>
+                                            <a href="#id">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>id:         <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="sources"></a>
+                                        <span class="name "><b>sources</b>
+                                            <a href="#sources">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>sources:         <code><a href="../miscellaneous/variables.html#g" target="_self" >string[]</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="../miscellaneous/variables.html#g" target="_self" >string[]</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="status"></a>
+                                        <span class="name "><b>status</b>
+                                            <a href="#status">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>status:         <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Optional</i>
+                                        </td>
+                                    </tr>
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="tags"></a>
+                                        <span class="name "><b>tags</b>
+                                            <a href="#tags">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>tags:         <code><a href="../miscellaneous/variables.html#g" target="_self" >string[]</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="../miscellaneous/variables.html#g" target="_self" >string[]</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="title"></a>
+                                        <span class="name "><b>title</b>
+                                            <a href="#title">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>title:         <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="updatedAt"></a>
+                                        <span class="name "><b>updatedAt</b>
+                                            <a href="#updatedAt">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>updatedAt:         <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+            </section>
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { createLogger } from &#x27;@political-sphere/shared&#x27;;
+import fs from &#x27;node:fs/promises&#x27;;
+import path from &#x27;node:path&#x27;;
+import { fileURLToPath } from &#x27;node:url&#x27;;
+
+const moduleDir &#x3D; path.dirname(fileURLToPath(import.meta.url));
+const logger &#x3D; createLogger({ service: &#x27;news-service&#x27; });
+
+interface NewsItem {
+  id: string;
+  title: string;
+  excerpt?: string;
+  content?: string;
+  category: string;
+  tags: string[];
+  sources: string[];
+  createdAt: string;
+  updatedAt: string;
+  status?: string;
+}
+
+interface ListParams {
+  category?: string;
+  tag?: string;
+  search?: string;
+  limit?: number;
+}
+
+interface AnalyticsSummary {
+  total: number;
+  categories: Record&lt;string, number&gt;;
+  tags: Record&lt;string, number&gt;;
+  recent: NewsItem[];
+}
+
+interface NewsStore {
+  readAll(): Promise&lt;NewsItem[]&gt;;
+  writeAll(items: NewsItem[]): Promise&lt;void&gt;;
+}
+
+/**
+ * File-based storage adapter for NewsService
+ */
+class FileNewsStore implements NewsStore {
+  dataDir: string;
+  newsFile: string;
+
+  constructor(dataDir: string) {
+    this.dataDir &#x3D; dataDir;
+    this.newsFile &#x3D; path.join(dataDir, &#x27;news.json&#x27;);
+  }
+
+  async readAll(): Promise&lt;NewsItem[]&gt; {
+    try {
+      await fs.access(this.newsFile);
+      const content &#x3D; await fs.readFile(this.newsFile, &#x27;utf8&#x27;);
+      const data &#x3D; JSON.parse(content);
+      return data.news || [];
+    } catch {
+      // If file doesn&#x27;t exist, return empty array
+      return [];
+    }
+  }
+
+  async writeAll(items: NewsItem[]): Promise&lt;void&gt; {
+    await fs.mkdir(this.dataDir, { recursive: true });
+    const data &#x3D; { news: items };
+    await fs.writeFile(this.newsFile, JSON.stringify(data, null, 2));
+  }
+}
+
+class NewsService {
+  store: NewsStore;
+  timeProvider: () &#x3D;&gt; Date;
+  validCategories: string[];
+  maxLimit: number;
+
+  constructor(
+    storeOrDataDir: string | NewsStore &#x3D; path.join(moduleDir, &#x27;../../data&#x27;),
+    timeProvider: (() &#x3D;&gt; Date) | null &#x3D; null
+  ) {
+    // Support both store abstraction (for tests) and dataDir string (for production)
+    if (typeof storeOrDataDir &#x3D;&#x3D;&#x3D; &#x27;string&#x27;) {
+      this.store &#x3D; new FileNewsStore(storeOrDataDir);
+    } else {
+      this.store &#x3D; storeOrDataDir;
+    }
+    this.timeProvider &#x3D; timeProvider || (() &#x3D;&gt; new Date());
+    this.validCategories &#x3D; [&#x27;politics&#x27;, &#x27;governance&#x27;, &#x27;policy&#x27;, &#x27;finance&#x27;, &#x27;technology&#x27;, &#x27;economy&#x27;];
+    this.maxLimit &#x3D; 1000;
+  }
+
+  sanitizeTitle(title: string): string {
+    return title
+      .trim()
+      .replace(/&amp;/g, &#x27;&amp;amp;&#x27;)
+      .replace(/&quot;/g, &#x27;&amp;quot;&#x27;)
+      .replace(/&#x27;/g, &#x27;&amp;#x27;&#x27;)
+      .replace(/&lt;/g, &#x27;&amp;lt;&#x27;)
+      .replace(/&gt;/g, &#x27;&amp;gt;&#x27;);
+  }
+
+  generateSlug(title: string): string {
+    // First normalize the title
+    const normalized &#x3D; title
+      .trim()
+      .toLowerCase()
+      // Replace HTML entities with their text equivalents for slug
+      .replace(/&quot;/g, &#x27;-quot-&#x27;)
+      .replace(/&amp;/g, &#x27;-amp-&#x27;)
+      .replace(/&amp;#x27;/g, &#x27;-x27-&#x27;)
+      .replace(/&lt;/g, &#x27;-lt-&#x27;)
+      .replace(/&gt;/g, &#x27;-gt-&#x27;)
+      // Replace other special characters
+      .replace(/[&quot;&#x27;&amp;&lt;&gt;]/g, char &#x3D;&gt; {
+        const map: Record&lt;string, string&gt; &#x3D; {
+          &#x27;&amp;&#x27;: &#x27;-amp-&#x27;,
+          &#x27;&quot;&#x27;: &#x27;-quot-&#x27;,
+          &quot;&#x27;&quot;: &#x27;-x27-&#x27;,
+          &#x27;&lt;&#x27;: &#x27;-lt-&#x27;,
+          &#x27;&gt;&#x27;: &#x27;-gt-&#x27;,
+        };
+        return map[char] || &#x27;&#x27;;
+      })
+      // Convert spaces to hyphens
+      .replace(/\s+/g, &#x27;-&#x27;)
+      // Remove any remaining non-alphanumeric characters except hyphens
+      .replace(/[^a-z0-9-]/g, &#x27;&#x27;)
+      // Remove multiple consecutive hyphens
+      .replace(/-+/g, &#x27;-&#x27;)
+      // Remove leading/trailing hyphens
+      .replace(/^-+|-+$/g, &#x27;&#x27;)
+      .slice(0, 50);
+    const random &#x3D; Math.random().toString(36).substring(2, 8);
+    return &#x60;${normalized}-${random}&#x60;;
+  }
+
+  validateCategory(category: string): string {
+    if (!category || typeof category !&#x3D;&#x3D; &#x27;string&#x27;) {
+      const error &#x3D; new Error(&#x27;Category is required and must be a string&#x27;);
+      (error as unknown as { code?: string }).code &#x3D; &#x27;VALIDATION_ERROR&#x27;;
+      throw error;
+    }
+    const normalized &#x3D; category.toLowerCase();
+    if (!this.validCategories.includes(normalized)) {
+      const error &#x3D; new Error(
+        &#x60;Invalid category: ${category}. Must be one of: ${this.validCategories.join(&#x27;, &#x27;)}&#x60;
+      );
+      (error as unknown as { code?: string }).code &#x3D; &#x27;VALIDATION_ERROR&#x27;;
+      throw error;
+    }
+    return normalized;
+  }
+
+  validateTags(tags: unknown): string[] {
+    if (!tags) return [];
+    if (!Array.isArray(tags)) {
+      const error &#x3D; new Error(&#x27;Tags must be an array&#x27;);
+      (error as unknown as { code?: string }).code &#x3D; &#x27;VALIDATION_ERROR&#x27;;
+      throw error;
+    }
+    if (tags.length &gt; 10) {
+      const error &#x3D; new Error(&#x27;Too many tags: maximum 10 tags allowed&#x27;);
+      (error as unknown as { code?: string }).code &#x3D; &#x27;VALIDATION_ERROR&#x27;;
+      throw error;
+    }
+    for (const tag of tags) {
+      if (typeof tag !&#x3D;&#x3D; &#x27;string&#x27; || tag.includes(&#x27; &#x27;)) {
+        const error &#x3D; new Error(&#x60;Invalid tag format: &quot;${tag}&quot;. Tags must not contain spaces.&#x60;);
+        (error as unknown as { code?: string }).code &#x3D; &#x27;VALIDATION_ERROR&#x27;;
+        throw error;
+      }
+    }
+    return tags;
+  }
+
+  validateTitle(title: string): string {
+    if (!title || typeof title !&#x3D;&#x3D; &#x27;string&#x27;) {
+      const error &#x3D; new Error(&#x27;Title is required and must be a string&#x27;);
+      (error as unknown as { code?: string }).code &#x3D; &#x27;VALIDATION_ERROR&#x27;;
+      throw error;
+    }
+    const trimmed &#x3D; title.trim();
+    if (trimmed.length &#x3D;&#x3D;&#x3D; 0) {
+      const error &#x3D; new Error(&#x27;Title cannot be empty&#x27;);
+      (error as unknown as { code?: string }).code &#x3D; &#x27;VALIDATION_ERROR&#x27;;
+      throw error;
+    }
+    if (trimmed.length &gt; 200) {
+      const error &#x3D; new Error(&#x27;Title must be less than 200 characters&#x27;);
+      (error as unknown as { code?: string }).code &#x3D; &#x27;VALIDATION_ERROR&#x27;;
+      throw error;
+    }
+    return trimmed;
+  }
+
+  validateSources(sources: unknown): string[] {
+    if (!sources) return [];
+    if (!Array.isArray(sources)) {
+      throw new Error(&#x27;Sources must be an array&#x27;);
+    }
+    return sources.map((url: string) &#x3D;&gt; {
+      const trimmed &#x3D; url.trim();
+      // Allow localhost for development/testing, but require https for external URLs
+      if (trimmed.startsWith(&#x27;http://localhost&#x27;)) {
+        return trimmed;
+      }
+      if (!trimmed.startsWith(&#x27;https://&#x27;)) {
+        throw new Error(&#x60;Insecure source URL protocol: ${url}. External URLs must use HTTPS.&#x60;);
+      }
+      return trimmed;
+    });
+  }
+
+  validateSearchQuery(query: string): string {
+    if (!query) return query;
+    // Prevent XSS and SQL injection in search queries
+    const dangerousPatterns &#x3D; /&lt;script|&lt;iframe|javascript:|onerror&#x3D;|&#x27;.*OR.*&#x27;|--|;/i;
+    if (dangerousPatterns.test(query)) {
+      const error &#x3D; new Error(&#x27;Invalid search query: potentially malicious content detected&#x27;);
+      (error as unknown as { code?: string }).code &#x3D; &#x27;VALIDATION_ERROR&#x27;;
+      throw error;
+    }
+    return query;
+  }
+
+  async list(params: ListParams &#x3D; {}): Promise&lt;NewsItem[]&gt; {
+    // Validate all parameters first before filtering
+    if (params.category) {
+      this.validateCategory(params.category); // Throws if invalid
+    }
+    if (params.tag) {
+      // Validate tag format - must not contain HTML/scripts
+      if (typeof params.tag !&#x3D;&#x3D; &#x27;string&#x27;) {
+        const error &#x3D; new Error(&#x27;Tag must be a string&#x27;);
+        (error as unknown as { code?: string }).code &#x3D; &#x27;VALIDATION_ERROR&#x27;;
+        throw error;
+      }
+      if (/&lt;|&gt;|script|iframe/i.test(params.tag)) {
+        const error &#x3D; new Error(&#x27;Invalid tag format&#x27;);
+        (error as unknown as { code?: string }).code &#x3D; &#x27;VALIDATION_ERROR&#x27;;
+        throw error;
+      }
+    }
+    if (params.search) {
+      this.validateSearchQuery(params.search); // Throws if invalid
+    }
+    if (params.limit) {
+      const limit &#x3D; parseInt(params.limit.toString(), 10);
+      if (Number.isNaN(limit) || limit &lt;&#x3D; 0 || limit &gt; this.maxLimit) {
+        const error &#x3D; new Error(&#x60;Invalid limit: must be between 1 and ${this.maxLimit}&#x60;);
+        (error as unknown as { code?: string }).code &#x3D; &#x27;VALIDATION_ERROR&#x27;;
+        throw error;
+      }
+    }
+
+    try {
+      let news &#x3D; await this.store.readAll();
+
+      // Apply filters (validation already done above)
+      if (params.category) {
+        news &#x3D; news.filter(item &#x3D;&gt; item.category &#x3D;&#x3D;&#x3D; params.category);
+      }
+      if (typeof params.tag &#x3D;&#x3D;&#x3D; &#x27;string&#x27;) {
+        const tag &#x3D; params.tag;
+        news &#x3D; news.filter(item &#x3D;&gt; (item.tags || []).includes(tag));
+      }
+      if (params.search) {
+        const searchTerm &#x3D; params.search.toLowerCase();
+        news &#x3D; news.filter(
+          item &#x3D;&gt;
+            item.title.toLowerCase().includes(searchTerm) ||
+            item.content?.toLowerCase().includes(searchTerm)
+        );
+      }
+
+      // Apply limit
+      if (params.limit) {
+        const limit &#x3D; parseInt(params.limit.toString(), 10);
+        news &#x3D; news.slice(0, limit);
+      }
+
+      return news;
+    } catch (error) {
+      // Re-throw validation errors
+      const serr &#x3D; error as unknown as { message?: string; code?: string };
+      if (serr.code &#x3D;&#x3D;&#x3D; &#x27;VALIDATION_ERROR&#x27; || (serr.message ?? &#x27;&#x27;).includes(&#x27;Invalid&#x27;)) {
+        throw error;
+      }
+      logger.error({ msg: &#x27;Error listing news&#x27;, err: error });
+      return [];
+    }
+  }
+
+  async create(newsItem: Omit&lt;NewsItem, &#x27;id&#x27; | &#x27;createdAt&#x27; | &#x27;updatedAt&#x27;&gt;): Promise&lt;NewsItem&gt; {
+    try {
+      const news &#x3D; await this.store.readAll();
+      const now &#x3D; this.timeProvider();
+
+      // Validate and sanitize input (validate in order of specificity)
+      const validatedTitle &#x3D; this.validateTitle(newsItem.title);
+      const tags &#x3D; this.validateTags(newsItem.tags); // Check tags before category
+      const category &#x3D; this.validateCategory(newsItem.category);
+      const sources &#x3D; this.validateSources(newsItem.sources);
+      const title &#x3D; this.sanitizeTitle(validatedTitle);
+      const id &#x3D; this.generateSlug(validatedTitle);
+
+      const newItem: NewsItem &#x3D; {
+        id,
+        title,
+        excerpt: newsItem.excerpt?.trim() || &#x27;&#x27;,
+        content: newsItem.content?.trim() || &#x27;&#x27;,
+        category,
+        tags,
+        sources,
+        createdAt: now.toISOString(),
+        updatedAt: now.toISOString(),
+      };
+
+      news.push(newItem);
+      await this.store.writeAll(news);
+      return newItem;
+    } catch (error) {
+      // Re-throw validation errors with proper code
+      const serr &#x3D; error as unknown as { message?: string; code?: string };
+      if (
+        serr.code &#x3D;&#x3D;&#x3D; &#x27;VALIDATION_ERROR&#x27; ||
+        (serr.message ?? &#x27;&#x27;).includes(&#x27;Invalid&#x27;) ||
+        (serr.message ?? &#x27;&#x27;).includes(&#x27;Insecure&#x27;) ||
+        (serr.message ?? &#x27;&#x27;).includes(&#x27;must&#x27;) ||
+        (serr.message ?? &#x27;&#x27;).includes(&#x27;Too many&#x27;)
+      ) {
+        // Ensure error has VALIDATION_ERROR code for server.ts to catch
+        if (!serr.code) {
+          serr.code &#x3D; &#x27;VALIDATION_ERROR&#x27;;
+        }
+        throw error;
+      }
+      logger.error({ msg: &#x27;Error creating news item&#x27;, err: error });
+      throw new Error(&#x27;Failed to create news item&#x27;);
+    }
+  }
+
+  async update(id: string, updates: Partial&lt;NewsItem&gt;): Promise&lt;NewsItem | null&gt; {
+    try {
+      const news &#x3D; await this.store.readAll();
+      const index &#x3D; news.findIndex(item &#x3D;&gt; item.id &#x3D;&#x3D;&#x3D; id);
+
+      if (index &#x3D;&#x3D;&#x3D; -1) {
+        return null;
+      }
+
+      const now &#x3D; this.timeProvider();
+      news[index] &#x3D; {
+        ...news[index],
+        ...updates,
+        updatedAt: now.toISOString(),
+      } as NewsItem;
+
+      await this.store.writeAll(news);
+      return news[index] as NewsItem;
+    } catch (error) {
+      logger.error({ msg: &#x27;Error updating news item&#x27;, err: error, newsId: id });
+      throw new Error(&#x27;Failed to update news item&#x27;);
+    }
+  }
+
+  async getById(id: string): Promise&lt;NewsItem | null&gt; {
+    try {
+      const news &#x3D; await this.store.readAll();
+      return news.find(item &#x3D;&gt; item.id &#x3D;&#x3D;&#x3D; id) || null;
+    } catch (error) {
+      logger.error({ msg: &#x27;Error getting news item&#x27;, err: error, newsId: id });
+      return null;
+    }
+  }
+
+  async analyticsSummary(): Promise&lt;AnalyticsSummary&gt; {
+    try {
+      const allNews &#x3D; await this.store.readAll();
+
+      // Filter to published items only and valid categories
+      const news &#x3D; allNews.filter(
+        item &#x3D;&gt;
+          item.status &#x3D;&#x3D;&#x3D; &#x27;published&#x27; &amp;&amp; this.validCategories.includes(item.category?.toLowerCase())
+      );
+
+      // Sort by creation date descending (newest first)
+      const sorted &#x3D; news.sort((a, b) &#x3D;&gt; {
+        const dateA &#x3D; new Date(a.createdAt);
+        const dateB &#x3D; new Date(b.createdAt);
+        return dateB.getTime() - dateA.getTime();
+      });
+
+      return {
+        total: news.length,
+        categories: this.groupBy(news, &#x27;category&#x27;),
+        tags: this.groupByTags(news),
+        recent: sorted.slice(0, 5),
+      };
+    } catch (error) {
+      logger.error({ msg: &#x27;Error getting analytics&#x27;, err: error });
+      return { total: 0, categories: {}, tags: {}, recent: [] };
+    }
+  }
+
+  groupBy(items: NewsItem[], key: keyof NewsItem): Record&lt;string, number&gt; {
+    return items.reduce(
+      (acc, item) &#x3D;&gt; {
+        const value &#x3D; item[key] as string;
+        acc[value] &#x3D; (acc[value] || 0) + 1;
+        return acc;
+      },
+      {} as Record&lt;string, number&gt;
+    );
+  }
+
+  groupByTags(items: NewsItem[]): Record&lt;string, number&gt; {
+    const tagCounts: Record&lt;string, number&gt; &#x3D; {};
+    items.forEach(item &#x3D;&gt; {
+      if (item.tags?.length) {
+        item.tags.forEach(tag &#x3D;&gt; {
+          tagCounts[tag] &#x3D; (tagCounts[tag] || 0) + 1;
+        });
+      }
+    });
+    return tagCounts;
+  }
+}
+
+export { FileNewsStore, NewsService };
+export default { NewsService, FileNewsStore };
+</code></pre>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'interface';
+            var COMPODOC_CURRENT_PAGE_URL = 'NewsItem.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

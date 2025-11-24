@@ -11,6 +11,12 @@
 import { type DatabaseConnection, getDatabase, closeDatabase } from '../stores/index.js';
 
 // Test data type definitions
+/**
+ * TestUser - test-only user record shape used by integration tests.
+ *
+ * Fields mirror the production user model but are intended for test fixtures
+ * and synthetic data generation.
+ */
 export interface TestUser {
   id?: string;
   username: string;
@@ -21,6 +27,9 @@ export interface TestUser {
   updated_at?: string;
 }
 
+/**
+ * TestParty - test-only party record shape used in fixtures and tests.
+ */
 export interface TestParty {
   id?: string;
   name: string;
@@ -30,6 +39,9 @@ export interface TestParty {
   updated_at?: string;
 }
 
+/**
+ * TestBill - test-only bill record shape for use in integration and unit tests.
+ */
 export interface TestBill {
   id?: string;
   title: string;
@@ -53,7 +65,7 @@ export class TestDatabase {
    */
   async setup(): Promise<DatabaseConnection> {
     // Use a unique database file for each test to avoid conflicts
-    const fs = await import('node:fs');
+    const _fs = await import('node:fs');
     const path = await import('node:path');
     const dbPath = path.join(process.cwd(), `test-${Date.now()}-${Math.random()}.db`);
 

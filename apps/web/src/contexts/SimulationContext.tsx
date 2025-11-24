@@ -6,24 +6,8 @@
 
 import type React from 'react';
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
-import { api } from '../services/api';
-
-interface SimulationState {
-  id: string;
-  name: string;
-  status: 'active' | 'paused' | 'ended';
-  currentTurn: number;
-  players: Player[];
-  lastUpdated: string;
-}
-
-interface Player {
-  id: string;
-  username: string;
-  role?: string;
-  isOnline: boolean;
-  lastActive: string;
-}
+import { api, type SimulationState } from '../services/api';
+import { getMockSimulationState } from '../services/simulationMock';
 
 interface SimulationContextType {
   simulation: SimulationState | null;
@@ -58,6 +42,14 @@ export const SimulationProvider: React.FC<SimulationProviderProps> = ({ children
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Failed to fetch simulation state';
       setError(message);
+      // Populate a fallback state so the UI remains usable when the API is unavailable
+      if (!simulation) {
+        setSimulation({
+          ...getMockSimulationState(),
+          lastUpdated: new Date().toISOString(),
+        });
+      }
+      // eslint-disable-next-line no-console
       console.error('Simulation fetch error:', err);
     } finally {
       setIsLoading(false);

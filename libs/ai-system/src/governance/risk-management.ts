@@ -85,6 +85,10 @@ export interface RiskMitigation {
 
 /**
  * Risk Register
+ *
+ * Central repository for tracking AI system risks, assessments, and mitigations.
+ * Provides risk scoring, status tracking, and mitigation planning for comprehensive
+ * risk management across all AI systems in the platform.
  */
 export class RiskRegister {
   private risks: Map<string, RiskAssessment> = new Map();

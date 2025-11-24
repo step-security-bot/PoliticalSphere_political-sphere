@@ -5,13 +5,11 @@ import {
   getContrastRatio,
   validateContrast,
   isFocusable,
-  getFocusableElements,
-  validateFocusManagement,
   validateSkipLinks,
   validateAriaAttributes,
   validateHeadingHierarchy,
   validateWcagCompliance,
-} from '../../libs/ui/accessibility/src/index';
+} from './index';
 
 describe('Accessibility Library - WCAG 2.2 AA Validation', () => {
   describe('Color and Contrast', () => {

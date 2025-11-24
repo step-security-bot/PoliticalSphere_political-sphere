@@ -2,9 +2,7 @@
   "$schema": "https://json.schemastore.org/tsconfig",
   "extends": "./tools/config/tsconfig.base.json",
   "compilerOptions": {
-    "ignoreDeprecations": "5.0",
     "rootDir": ".",
-    "baseUrl": ".", // Required for non-relative paths in paths mapping
     "allowJs": true,
     "checkJs": false,
     "noEmit": true,
@@ -12,11 +10,12 @@
     "exactOptionalPropertyTypes": false, // Temporarily disable to fix TS2379/TS2375 errors; re-enable after codebase alignment
     "paths": {
       "@/*": ["./*"],
-      "@political-sphere/shared": ["libs/shared/src/index.ts"], // Ensure shared lib resolves correctly
-      "@political-sphere/ui": ["libs/ui/src/index.ts"],
-      "@political-sphere/platform": ["libs/platform/src/index.ts"],
-      "@political-sphere/infrastructure": ["libs/infrastructure/src/index.ts"],
-      "@political-sphere/game-engine": ["libs/game-engine/src/index.ts"]
+      "@political-sphere/shared": ["./libs/shared/src/index.ts"], // Ensure shared lib resolves correctly
+      "@political-sphere/ui": ["./libs/ui/src/index.ts"],
+      "@political-sphere/platform": ["./libs/platform/src/index.ts"],
+      "@political-sphere/infrastructure": ["./libs/infrastructure/src/index.ts"],
+      "@political-sphere/game-engine": ["./libs/game-engine/src/index.ts"],
+      "@political-sphere/observability": ["./libs/observability/src/index.ts"]
     }
   },
   "include": [
@@ -83,6 +82,7 @@
     "ai/context-bundles",
     "apps/dev/testing",
     "tools/scripts/ai",
+    "tools/tests",
     "logs",
     "docs",
     "reports",

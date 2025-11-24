@@ -3,39 +3,74 @@
  * Handles government-related operations using Prisma database
  */
 
+/**
+ * @ignore
+ */
+
 import { getLogger } from '@political-sphere/shared';
 import { GovernmentDB } from '../services/database.service.js';
+import type { WhereClause } from '../services/database.service.js';
 
 /** Helper to safely extract error message */
 function getErrorMessage(error: unknown): string {
   if (error instanceof Error) return getErrorMessage(error);
   return String(error);
 }
+
+/**
+ * Logger instance for government service operations.
+ * Tagged with service name for filtering and tracing.
+ */
 const logger = getLogger({ service: 'government' });
 
+/**
+ * Payload to create a new government entity
+ */
 export interface CreateGovernmentData {
   name: string;
   leaderId?: string;
 }
 
+/**
+ * Payload to create a minister appointment within a government
+ */
 export interface CreateMinisterData {
   userId: string;
   governmentId: string;
   portfolio: string;
 }
 
+/**
+ * Payload for an executive action (orders, decrees, policies)
+ */
 export interface CreateExecutiveActionData {
   title: string;
   description?: string;
   type: 'decree' | 'order' | 'policy';
 }
 
+/**
+ * Payload for scheduling a cabinet meeting
+ */
 export interface CreateCabinetMeetingData {
   title: string;
   agenda?: string;
   scheduledAt: Date;
 }
 
+/**
+ * GovernmentService exposes high-level operations for managing governments,
+ * ministers, executive actions and cabinet meetings.
+ *
+ * Responsibilities:
+ * - Create, list, update and dissolve governments
+ * - Manage minister appointments and their lifecycle
+ * - Record executive actions and schedule cabinet meetings
+ *
+ * This service provides application-level validation, structured logging and
+ * error handling. It delegates persistence to `GovernmentDB` to keep domain
+ * logic separate from storage concerns.
+ */
 export class GovernmentService {
   /**
    * Create a new government
@@ -78,7 +113,7 @@ export class GovernmentService {
    */
   async listGovernments(options: { status?: string; limit?: number } = {}) {
     try {
-      const where: any = {};
+      const where: WhereClause = {};
       if (options.status) {
         where.status = options.status;
       }
@@ -251,7 +286,7 @@ export class GovernmentService {
    */
   async listExecutiveActions(options: { type?: string; status?: string; limit?: number } = {}) {
     try {
-      const where: any = {};
+      const where: WhereClause = {};
       if (options.type) where.type = options.type;
       if (options.status) where.status = options.status;
 
@@ -341,4 +376,8 @@ export class GovernmentService {
 }
 
 // Export singleton instance
+/**
+ * Shared `governmentService` instance used by route handlers. Tests should
+ * instantiate `GovernmentService` directly when isolation is required.
+ */
 export const governmentService = new GovernmentService();

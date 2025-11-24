@@ -152,6 +152,14 @@ export default [
   // Ignore patterns
   {
     ignores: [
+      '**/.vite/**',
+      'apps/**/.vite/**',
+      '.turbo/**',
+      '.next/**',
+      '.cache/**',
+      '.idea/**',
+      '.DS_Store',
+      '*.log',
       'node_modules/**',
       'dist/**',
       'build/**',
@@ -166,23 +174,54 @@ export default [
       '**/*.min.js',
       'docs/apps/.vitepress/cache/**',
       'docs/examples/**',
+      'docs/api-reference/**',
       'tools/tmp/**',
       'vendor/**',
     ],
   },
 
-  // Disable no-console for scripts, tools, and docs
+  // Test files: Allow console for debugging
   {
-    files: ['scripts/**/*.{js,mjs,ts}', 'tools/**/*.{js,mjs,cjs,ts}', 'docs/**/*.{js,mjs,ts}'],
+    files: [
+      '**/*.test.{ts,tsx,js,jsx}',
+      '**/*.spec.{ts,tsx,js,jsx}',
+      '**/tests/**/*.{ts,tsx,js,jsx}',
+      'apps/e2e/**/*.{ts,tsx,js,jsx}',
+      'apps/game-server/**/*.{ts,tsx,js,jsx}',
+      'apps/shell/**/*.{js,jsx}',
+      'libs/game-engine/**/*.{js,jsx}',
+    ],
     rules: {
       'no-console': 'off',
     },
   },
 
-  // Enable no-console for production code (apps and libs, excluding tests)
+  // Disable no-console for scripts, tools, and docs
+  {
+    files: [
+      'scripts/**/*.{js,mjs,ts}',
+      'tools/**/*.{js,mjs,cjs,ts}',
+      'docs/**/*.{js,mjs,ts}',
+      'apps/**/scripts/**/*.{js,mjs,ts}',
+      'apps/data-pipeline/**/*.{js,mjs,ts}',
+      'apps/dev/**/*.{js,mjs,ts}',
+    ],
+    rules: {
+      'no-console': 'off',
+    },
+  },
+
+  // Enable no-console for production code (apps and libs, excluding tests and scripts)
   {
     files: ['apps/**/*.{ts,tsx,js,jsx}', 'libs/**/*.{ts,tsx,js,jsx}'],
-    ignores: ['**/*.test.{ts,tsx,js,jsx}', '**/*.spec.{ts,tsx,js,jsx}', '**/tests/**/*'],
+    ignores: [
+      '**/*.test.{ts,tsx,js,jsx}',
+      '**/*.spec.{ts,tsx,js,jsx}',
+      '**/tests/**/*',
+      '**/scripts/**/*',
+      'apps/data-pipeline/**/*',
+      'apps/dev/**/*',
+    ],
     rules: {
       'no-console': 'error',
     },
@@ -195,6 +234,8 @@ export default [
       'tools/**/*.{js,mjs,cjs,ts,tsx}',
       'apps/**/scripts/**/*.{js,mjs,ts,tsx}',
       'libs/**/scripts/**/*.{js,mjs,ts,tsx}',
+      'apps/api/src/utils/database-*.{js,ts}',
+      'apps/api/src/utils/migrations/**/*.{js,ts}',
     ],
     languageOptions: {
       globals: {

@@ -6,33 +6,11 @@
 
 import type React from 'react';
 import { useCallback, useEffect, useState } from 'react';
-import { api } from '../../services/api';
+import { api, type Judge, type JudicialCase } from '../../services/api';
 import { z } from 'zod';
 import './JudiciarySystem.css';
 
-interface Judge {
-  id: string;
-  userId: string;
-  username: string;
-  court: 'supreme' | 'appeal' | 'high';
-  appointedAt: string;
-  status: 'active' | 'retired';
-}
-
-interface LegalCase {
-  id: string;
-  caseNumber: string;
-  title: string;
-  description: string;
-  type: 'constitutional' | 'criminal' | 'civil' | 'administrative';
-  court: 'supreme' | 'appeal' | 'high';
-  plaintiff: string;
-  defendant: string;
-  filedBy: string;
-  filedAt: string;
-  status: 'filed' | 'hearing' | 'deliberation' | 'ruled';
-  priority: 'low' | 'medium' | 'high' | 'urgent';
-}
+type LegalCase = JudicialCase;
 
 interface Ruling {
   id: string;
@@ -134,7 +112,7 @@ export const JudiciarySystem: React.FC<JudiciarySystemProps> = ({ userId, onErro
           event.currentTarget.reset();
           fetchJudiciary(); // Refresh data
         })
-        .catch(_error => {
+        .catch((_error: unknown) => {
           const message = _error instanceof Error ? _error.message : 'Failed to file case';
           onError?.(message);
         });
@@ -159,13 +137,13 @@ export const JudiciarySystem: React.FC<JudiciarySystemProps> = ({ userId, onErro
 
     try {
       api
-        .issueRuling(selectedCase.id, data)
+        .issueRuling(data)
         .then(() => {
           event.currentTarget.reset();
           setSelectedCase(null);
           fetchJudiciary(); // Refresh data
         })
-        .catch(_error => {
+        .catch((_error: unknown) => {
           const message = _error instanceof Error ? _error.message : 'Failed to issue ruling';
           onError?.(message);
         });
@@ -259,7 +237,12 @@ export const JudiciarySystem: React.FC<JudiciarySystemProps> = ({ userId, onErro
                     <p className="case-description">{legalCase.description}</p>
                     <div className="case-meta">
                       <span className="case-type">{legalCase.type}</span>
-                      <span>Filed: {new Date(legalCase.filedAt).toLocaleDateString()}</span>
+                      <span>
+                        Filed:{' '}
+                        {legalCase.filedAt
+                          ? new Date(legalCase.filedAt).toLocaleDateString()
+                          : 'Unknown'}
+                      </span>
                     </div>
                     <div className="case-parties">
                       <span>Plaintiff: {legalCase.plaintiff}</span>
@@ -440,7 +423,12 @@ export const JudiciarySystem: React.FC<JudiciarySystemProps> = ({ userId, onErro
                 <li key={judge.id} className="judge-card">
                   <div className="judge-info">
                     <h3>{judge.court}</h3>
-                    <p>Appointed: {new Date(judge.appointedAt).toLocaleDateString()}</p>
+                    <p>
+                      Appointed:{' '}
+                      {judge.appointedAt
+                        ? new Date(judge.appointedAt).toLocaleDateString()
+                        : 'Unknown'}
+                    </p>
                     <span className={`judge-status status-${judge.status}`}>{judge.status}</span>
                   </div>
                 </li>
@@ -475,7 +463,10 @@ export const JudiciarySystem: React.FC<JudiciarySystemProps> = ({ userId, onErro
                     </div>
                     <p className="ruling-description">{legalCase.description}</p>
                     <p className="ruling-meta">
-                      Filed: {new Date(legalCase.filedAt).toLocaleDateString()}
+                      Filed:{' '}
+                      {legalCase.filedAt
+                        ? new Date(legalCase.filedAt).toLocaleDateString()
+                        : 'Unknown'}
                     </p>
                   </li>
                 ))}

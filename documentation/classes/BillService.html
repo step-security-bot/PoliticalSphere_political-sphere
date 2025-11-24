@@ -1,0 +1,1158 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>political-sphere documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">political-sphere documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content class">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Classes</li>
+  <li class="breadcrumb-item" >BillService</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>libs/domain-legislation/src/services.ts</code>
+        </p>
+
+
+            <p class="comment">
+                <h3>Description</h3>
+            </p>
+            <p class="comment">
+                <p>Bill Service
+Handles bill-related operations</p>
+
+            </p>
+
+
+
+
+            <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#db" >db</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#getAllBills" >getAllBills</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#getBillById" >getBillById</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#getBillsByProposer" >getBillsByProposer</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#proposeBill" >proposeBill</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#updateBillStatus" >updateBillStatus</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+            <section data-compodoc="block-constructor">
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(database?: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="24" class="link-to-prism">libs/domain-legislation/src/services.ts:24</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>database</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            Yes
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+            <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="db"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>db</b></span>
+                        <a href="#db"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="24" class="link-to-prism">libs/domain-legislation/src/services.ts:24</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+            <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getAllBills"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>getAllBills</b></span>
+                        <a href="#getAllBills"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getAllBills(page: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, limit: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="65"
+                                    class="link-to-prism">libs/domain-legislation/src/services.ts:65</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Get all bills with pagination</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Default value</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>page</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+                                            <td>
+                                                    <code>1</code>
+                                            </td>
+
+                                        </tr>
+                                        <tr>
+                                                <td>limit</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+                                            <td>
+                                                    <code>10</code>
+                                            </td>
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Promise&lt;literal type&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getBillById"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>getBillById</b></span>
+                        <a href="#getBillById"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getBillById(id: <a href="../unknowns/g.html" target="_self">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="56"
+                                    class="link-to-prism">libs/domain-legislation/src/services.ts:56</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Get bill by ID</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>id</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Promise&lt;Bill | null&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getBillsByProposer"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>getBillsByProposer</b></span>
+                        <a href="#getBillsByProposer"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getBillsByProposer(proposerId: <a href="../unknowns/g.html" target="_self">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="88"
+                                    class="link-to-prism">libs/domain-legislation/src/services.ts:88</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Get bills by proposer</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>proposerId</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Promise&lt;Bill[]&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="proposeBill"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>proposeBill</b></span>
+                        <a href="#proposeBill"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>proposeBill(input: <a href="../undefineds/CreateBillInput.html" target="_self">CreateBillInput</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="33"
+                                    class="link-to-prism">libs/domain-legislation/src/services.ts:33</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Propose a new bill</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>input</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/typealiases.html#CreateBillInput" target="_self" >CreateBillInput</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Promise&lt;Bill&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="updateBillStatus"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>updateBillStatus</b></span>
+                        <a href="#updateBillStatus"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>updateBillStatus(id: <a href="../unknowns/g.html" target="_self">string</a>, status: <a href="../unknowns/g.html" target="_self">&quot;proposed&quot; | &quot;debating&quot; | &quot;passed&quot; | &quot;rejected&quot;</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="97"
+                                    class="link-to-prism">libs/domain-legislation/src/services.ts:97</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Update bill status</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>id</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>status</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/variables.html#g" target="_self" >&quot;proposed&quot; | &quot;debating&quot; | &quot;passed&quot; | &quot;rejected&quot;</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Promise&lt;Bill | null&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+
+
+
+
+
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { getLogger } from &#x27;@political-sphere/shared&#x27;;
+import type {
+  Bill,
+  CreateBillInput,
+  Judge,
+  LegalCase,
+  FileCaseInput,
+  Ruling,
+  IssueRulingInput,
+  Review,
+  CreateReviewInput,
+  Precedent,
+  CreatePrecedentInput,
+} from &#x27;./types.js&#x27;;
+
+const logger &#x3D; getLogger({ service: &#x27;domain-legislation&#x27; });
+
+/**
+ * Bill Service
+ * Handles bill-related operations
+ */
+export class BillService {
+  // Placeholder for database operations - would be injected in real implementation
+  private db: any;
+
+  constructor(database?: any) {
+    this.db &#x3D; database;
+  }
+
+  /**
+   * Propose a new bill
+   */
+  async proposeBill(input: CreateBillInput): Promise&lt;Bill&gt; {
+    logger.info(&#x27;Proposing bill&#x27;, { title: input.title, proposerId: input.proposerId });
+
+    // Placeholder implementation
+    const bill: Bill &#x3D; {
+      id: &#x60;bill-${Date.now()}&#x60;,
+      title: input.title,
+      description: input.description,
+      proposerId: input.proposerId,
+      createdAt: new Date(),
+      status: &#x27;proposed&#x27;,
+      debateId: null,
+      contentRating: &#x27;PG&#x27;, // Default content rating
+      updatedAt: new Date(),
+    };
+
+    logger.info(&#x27;Bill proposed&#x27;, { id: bill.id });
+    return bill;
+  }
+
+  /**
+   * Get bill by ID
+   */
+  async getBillById(id: string): Promise&lt;Bill | null&gt; {
+    logger.info(&#x27;Getting bill&#x27;, { id });
+    // Placeholder implementation
+    return null;
+  }
+
+  /**
+   * Get all bills with pagination
+   */
+  async getAllBills(
+    page: number &#x3D; 1,
+    limit: number &#x3D; 10
+  ): Promise&lt;{
+    bills: Bill[];
+    total: number;
+    hasNext: boolean;
+    hasPrev: boolean;
+  }&gt; {
+    logger.info(&#x27;Getting all bills&#x27;, { page, limit });
+
+    // Placeholder implementation
+    return {
+      bills: [],
+      total: 0,
+      hasNext: false,
+      hasPrev: false,
+    };
+  }
+
+  /**
+   * Get bills by proposer
+   */
+  async getBillsByProposer(proposerId: string): Promise&lt;Bill[]&gt; {
+    logger.info(&#x27;Getting bills by proposer&#x27;, { proposerId });
+    // Placeholder implementation
+    return [];
+  }
+
+  /**
+   * Update bill status
+   */
+  async updateBillStatus(
+    id: string,
+    status: &#x27;proposed&#x27; | &#x27;debating&#x27; | &#x27;passed&#x27; | &#x27;rejected&#x27;
+  ): Promise&lt;Bill | null&gt; {
+    logger.info(&#x27;Updating bill status&#x27;, { id, status });
+    // Placeholder implementation
+    return null;
+  }
+}
+
+/**
+ * Judiciary Service
+ * Handles judiciary-related operations
+ */
+export class JudiciaryService {
+  // Placeholder for database operations - would be injected in real implementation
+  private db: any;
+
+  constructor(database?: any) {
+    this.db &#x3D; database;
+  }
+
+  /**
+   * File a new case
+   */
+  async fileCase(input: FileCaseInput): Promise&lt;LegalCase&gt; {
+    logger.info(&#x27;Filing case&#x27;, { title: input.title, type: input.type });
+
+    const caseData: LegalCase &#x3D; {
+      id: &#x60;case-${Date.now()}&#x60;,
+      caseNumber: &#x60;CASE-${Date.now()}&#x60;,
+      title: input.title,
+      description: input.description,
+      type: input.type,
+      court: input.court,
+      plaintiff: input.plaintiff,
+      defendant: input.defendant,
+      filedBy: &#x27;placeholder-user-id&#x27;, // Would be from auth context
+      filedAt: new Date(),
+      status: &#x27;filed&#x27;,
+      priority: input.priority,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+
+    logger.info(&#x27;Case filed&#x27;, { id: caseData.id });
+    return caseData;
+  }
+
+  /**
+   * Get case by ID
+   */
+  async getCase(id: string): Promise&lt;LegalCase | null&gt; {
+    logger.info(&#x27;Getting case&#x27;, { id });
+    // Placeholder implementation
+    return null;
+  }
+
+  /**
+   * List cases with filtering
+   */
+  async listCases(
+    options: { status?: string; type?: string; limit?: number } &#x3D; {}
+  ): Promise&lt;LegalCase[]&gt; {
+    logger.info(&#x27;Listing cases&#x27;, { options });
+    // Placeholder implementation
+    return [];
+  }
+
+  /**
+   * Update case status
+   */
+  async updateCaseStatus(
+    id: string,
+    status: &#x27;filed&#x27; | &#x27;hearing&#x27; | &#x27;deliberation&#x27; | &#x27;ruled&#x27;
+  ): Promise&lt;LegalCase | null&gt; {
+    logger.info(&#x27;Updating case status&#x27;, { id, status });
+    // Placeholder implementation
+    return null;
+  }
+
+  /**
+   * Decide case (mark as ruled)
+   */
+  async decideCase(id: string): Promise&lt;LegalCase | null&gt; {
+    logger.info(&#x27;Deciding case&#x27;, { id });
+    return this.updateCaseStatus(id, &#x27;ruled&#x27;);
+  }
+
+  /**
+   * Create judge
+   */
+  async createJudge(data: {
+    userId: string;
+    court: &#x27;supreme&#x27; | &#x27;appeal&#x27; | &#x27;high&#x27;;
+    position?: string;
+    termEndsAt?: Date;
+  }): Promise&lt;Judge&gt; {
+    logger.info(&#x27;Creating judge&#x27;, { userId: data.userId, court: data.court });
+
+    const judge: Judge &#x3D; {
+      id: &#x60;judge-${Date.now()}&#x60;,
+      userId: data.userId,
+      username: &#x27;placeholder-username&#x27;, // Would be retrieved from user service
+      court: data.court,
+      appointedAt: new Date(),
+      status: &#x27;active&#x27;,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+
+    logger.info(&#x27;Judge created&#x27;, { id: judge.id });
+    return judge;
+  }
+
+  /**
+   * Get judge by ID
+   */
+  async getJudge(id: string): Promise&lt;Judge | null&gt; {
+    logger.info(&#x27;Getting judge&#x27;, { id });
+    // Placeholder implementation
+    return null;
+  }
+
+  /**
+   * List judges
+   */
+  async listJudges(options: { court?: string; limit?: number } &#x3D; {}): Promise&lt;Judge[]&gt; {
+    logger.info(&#x27;Listing judges&#x27;, { options });
+    // Placeholder implementation
+    return [];
+  }
+
+  /**
+   * Issue ruling
+   */
+  async issueRuling(caseId: string, judgeId: string, input: IssueRulingInput): Promise&lt;Ruling&gt; {
+    logger.info(&#x27;Issuing ruling&#x27;, { caseId, judgeId, decision: input.decision });
+
+    const ruling: Ruling &#x3D; {
+      id: &#x60;ruling-${Date.now()}&#x60;,
+      caseId,
+      judgeId,
+      judgeName: &#x27;placeholder-judge-name&#x27;, // Would be retrieved from judge
+      decision: input.decision,
+      reasoning: input.reasoning,
+      issuedAt: new Date(),
+      precedent: false,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+
+    logger.info(&#x27;Ruling issued&#x27;, { id: ruling.id });
+    return ruling;
+  }
+
+  /**
+   * Get ruling by ID
+   */
+  async getRuling(id: string): Promise&lt;Ruling | null&gt; {
+    logger.info(&#x27;Getting ruling&#x27;, { id });
+    // Placeholder implementation
+    return null;
+  }
+
+  /**
+   * List rulings for a case
+   */
+  async listRulings(caseId: string): Promise&lt;Ruling[]&gt; {
+    logger.info(&#x27;Listing rulings&#x27;, { caseId });
+    // Placeholder implementation
+    return [];
+  }
+
+  /**
+   * Create review (appeal or judicial review)
+   */
+  async createReview(input: CreateReviewInput): Promise&lt;Review&gt; {
+    logger.info(&#x27;Creating review&#x27;, { caseId: input.caseId, type: input.type });
+
+    const review: Review &#x3D; {
+      id: &#x60;review-${Date.now()}&#x60;,
+      caseId: input.caseId,
+      type: input.type,
+      status: &#x27;pending&#x27;,
+      filedAt: new Date(),
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+
+    logger.info(&#x27;Review created&#x27;, { id: review.id });
+    return review;
+  }
+
+  /**
+   * Get review by ID
+   */
+  async getReview(id: string): Promise&lt;Review | null&gt; {
+    logger.info(&#x27;Getting review&#x27;, { id });
+    // Placeholder implementation
+    return null;
+  }
+
+  /**
+   * Update review status
+   */
+  async updateReviewStatus(
+    id: string,
+    status: &#x27;pending&#x27; | &#x27;granted&#x27; | &#x27;denied&#x27;
+  ): Promise&lt;Review | null&gt; {
+    logger.info(&#x27;Updating review status&#x27;, { id, status });
+    // Placeholder implementation
+    return null;
+  }
+
+  /**
+   * Grant review
+   */
+  async grantReview(id: string): Promise&lt;Review | null&gt; {
+    logger.info(&#x27;Granting review&#x27;, { id });
+    return this.updateReviewStatus(id, &#x27;granted&#x27;);
+  }
+
+  /**
+   * Deny review
+   */
+  async denyReview(id: string): Promise&lt;Review | null&gt; {
+    logger.info(&#x27;Denying review&#x27;, { id });
+    return this.updateReviewStatus(id, &#x27;denied&#x27;);
+  }
+
+  /**
+   * Create precedent
+   */
+  async createPrecedent(input: CreatePrecedentInput): Promise&lt;Precedent&gt; {
+    logger.info(&#x27;Creating precedent&#x27;, { citation: input.citation });
+
+    const precedent: Precedent &#x3D; {
+      id: &#x60;precedent-${Date.now()}&#x60;,
+      citation: input.citation,
+      summary: input.summary,
+      holding: input.holding,
+      caseId: input.caseId,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+
+    logger.info(&#x27;Precedent created&#x27;, { id: precedent.id });
+    return precedent;
+  }
+
+  /**
+   * List precedents
+   */
+  async listPrecedents(options: { caseId?: string; limit?: number } &#x3D; {}): Promise&lt;Precedent[]&gt; {
+    logger.info(&#x27;Listing precedents&#x27;, { options });
+    // Placeholder implementation
+    return [];
+  }
+
+  /**
+   * Get active cases (not ruled)
+   */
+  async getActiveCases(): Promise&lt;LegalCase[]&gt; {
+    logger.info(&#x27;Getting active cases&#x27;);
+    return this.listCases({ status: &#x27;filed&#x27; });
+  }
+
+  /**
+   * Get cases under review
+   */
+  async getCasesUnderReview(): Promise&lt;LegalCase[]&gt; {
+    logger.info(&#x27;Getting cases under review&#x27;);
+    return this.listCases({ status: &#x27;deliberation&#x27; });
+  }
+}
+
+// Export singleton instances
+export const billService &#x3D; new BillService();
+export const judiciaryService &#x3D; new JudiciaryService();
+</code></pre>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'class';
+            var COMPODOC_CURRENT_PAGE_URL = 'BillService.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

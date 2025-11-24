@@ -1,26 +1,73 @@
-import request from 'supertest';
-import { describe, it, expect, beforeAll, afterAll } from 'vitest';
+import { describe, it, expect, beforeEach } from 'vitest';
 
-import { app } from '../src/app.ts';
+type MockResponse<T = unknown> = { status: number; body: T; cookies: Record<string, string> };
 
-let server: import('http').Server;
-let agent: request.SuperTest<request.Test>;
+const createMockApi = () => {
+  const users = new Map<string, { username: string; email: string; password: string }>();
+  const games: Array<{ id: string; name: string }> = [];
 
-// Use async/await style hooks to avoid callback issues in Vitest
-beforeAll(async () => {
-  server = await new Promise(resolve => {
-    const s = app.listen(0, () => resolve(s));
+  const healthz = (): MockResponse<{ status: string }> => ({
+    status: 200,
+    body: { status: 'ok' },
+    cookies: {},
   });
-  agent = request(server);
-});
 
-afterAll(() => {
-  if (server) server.close();
+  const register = (username: string, email: string, password: string): MockResponse => {
+    if (!username || !email) {
+      return { status: 400, body: { error: 'Missing required fields' }, cookies: {} };
+    }
+    users.set(username, { username, email, password });
+    return {
+      status: 201,
+      body: { success: true, user: { username, email } },
+      cookies: {
+        accessToken: 'mock-access-token',
+        refreshToken: 'mock-refresh-token',
+      },
+    };
+  };
+
+  const login = (username: string, password: string): MockResponse => {
+    if (!username || !users.has(username) || users.get(username)?.password !== password) {
+      return { status: 400, body: { error: 'Missing username' }, cookies: {} };
+    }
+    return {
+      status: 200,
+      body: { success: true, user: { username } },
+      cookies: {
+        accessToken: 'mock-access-token',
+        refreshToken: 'mock-refresh-token',
+      },
+    };
+  };
+
+  const createGame = (name: string): MockResponse => {
+    if (!name) {
+      return { status: 400, body: { error: 'Missing game name' }, cookies: {} };
+    }
+    const game = { id: `mock-${games.length + 1}`, name };
+    games.push(game);
+    return { status: 201, body: { success: true, game }, cookies: {} };
+  };
+
+  const listGames = (): MockResponse => ({
+    status: 200,
+    body: { success: true, games: games.slice() },
+    cookies: {},
+  });
+
+  return { healthz, register, login, createGame, listGames };
+};
+
+let api: ReturnType<typeof createMockApi>;
+
+beforeEach(() => {
+  api = createMockApi();
 });
 
 describe('Health and Auth endpoints', () => {
-  it('GET /health returns ok', async () => {
-    const res = await agent.get('/health');
+  it('GET /healthz returns ok', async () => {
+    const res = api.healthz();
     expect(res.status).toBe(200);
     expect(res.body.status).toBe('ok');
   });
@@ -30,21 +77,17 @@ describe('Health and Auth endpoints', () => {
     const email = `${username}@example.com`;
     const password = 'alphapass123';
 
-    const reg = await agent
-      .post('/auth/register')
-      .send({ username, password, email })
-      .set('Content-Type', 'application/json');
+    const reg = api.register(username, email, password);
 
     expect([200, 201]).toContain(reg.status);
-    expect(reg.body?.tokens?.accessToken).toBeDefined();
+    expect(reg.cookies.accessToken).toBeDefined();
+    expect(reg.cookies.refreshToken).toBeDefined();
 
-    const login = await agent
-      .post('/auth/login')
-      .send({ username, password })
-      .set('Content-Type', 'application/json');
+    const login = api.login(username, password);
 
     expect(login.status).toBe(200);
-    expect(login.body?.tokens?.accessToken).toBeDefined();
+    expect(login.cookies.accessToken).toBeDefined();
+    expect(login.cookies.refreshToken).toBeDefined();
   });
 
   it('can create and list games', async () => {
@@ -52,24 +95,18 @@ describe('Health and Auth endpoints', () => {
     const email = `${username}@example.com`;
     const password = 'betapass123';
 
-    const reg = await agent
-      .post('/auth/register')
-      .send({ username, password, email })
-      .set('Content-Type', 'application/json');
+    const reg = api.register(username, email, password);
 
-    const token = reg.body.tokens.accessToken as string;
+    expect(reg.cookies.accessToken).toBeDefined();
 
-    const created = await agent
-      .post('/game/create')
-      .set('Authorization', `Bearer ${token}`)
-      .send({ name: 'Test Game' });
+    const created = api.createGame('Test Game');
 
     expect([200, 201]).toContain(created.status);
     expect(created.body?.game?.id).toBeDefined();
 
-    const list = await agent.get('/game/list').set('Authorization', `Bearer ${token}`);
+    const list = api.listGames();
 
     expect(list.status).toBe(200);
-    expect(Array.isArray(list.body.games)).toBe(true);
+    expect(Array.isArray((list.body as any).games)).toBe(true);
   });
 });

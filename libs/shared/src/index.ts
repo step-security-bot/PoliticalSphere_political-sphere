@@ -1,15 +1,16 @@
-export * from './audit';
-export * from './auth';
-export * from './domain';
-export * from './errors';
-export * from './graceful-shutdown';
-export * from './logger';
-export * from './pagination';
-export * from './performance';
-export * from './security';
-export * from './telemetry';
+export * from './audit.ts';
+export * from './auth/index.ts';
+export * from './domain/index.ts';
+export * from './errors/index.ts';
+export * from './graceful-shutdown.ts';
+export * from './logger.ts';
+export * from './pagination.ts';
+export * from './performance.ts';
+export * from './security.ts';
+export * from './telemetry.ts';
+export * from './websocket/index.ts';
 
-// Pino logger exports (from JavaScript module)
+// Pino logger exports
 export {
   LOG_LEVELS,
   Logger,

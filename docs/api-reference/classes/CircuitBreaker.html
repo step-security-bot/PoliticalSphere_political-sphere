@@ -1,0 +1,1425 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>political-sphere documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">political-sphere documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content class">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Classes</li>
+  <li class="breadcrumb-item" >CircuitBreaker</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>apps/api/src/modules/moderationService.ts</code>
+        </p>
+
+
+
+
+
+
+            <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#failures" >failures</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#lastFailureAt" >lastFailureAt</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#threshold" >threshold</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#timeoutMs" >timeoutMs</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#execute" >execute</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+            <section data-compodoc="block-constructor">
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(threshold: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, timeoutMs: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, _resetMs?: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="86" class="link-to-prism">apps/api/src/modules/moderationService.ts:86</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>threshold</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>timeoutMs</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>_resetMs</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            Yes
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+            <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="failures"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>failures</b></span>
+                        <a href="#failures"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>0</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="83" class="link-to-prism">apps/api/src/modules/moderationService.ts:83</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="lastFailureAt"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>lastFailureAt</b></span>
+                        <a href="#lastFailureAt"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>number | null</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>null</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="86" class="link-to-prism">apps/api/src/modules/moderationService.ts:86</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="threshold"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>threshold</b></span>
+                        <a href="#threshold"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="84" class="link-to-prism">apps/api/src/modules/moderationService.ts:84</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="timeoutMs"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>timeoutMs</b></span>
+                        <a href="#timeoutMs"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="85" class="link-to-prism">apps/api/src/modules/moderationService.ts:85</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+            <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="execute"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>execute</b></span>
+                        <a href="#execute"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>execute(fn: () => void)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="93"
+                                    class="link-to-prism">apps/api/src/modules/moderationService.ts:93</a></div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="col-md-4">
+                            <b>Type parameters :</b>
+                            <ul class="type-parameters">
+                                    <li>T</li>
+                            </ul>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>fn</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/function" target="_blank" >function</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Promise&lt;T&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+
+
+
+
+
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import logger from &#x27;../logger.js&#x27;;
+
+// Lightweight runtime-detected clients with safe defaults to avoid hard dependency
+// Define default stubs and attempt async import without top-level await
+// Types are intentionally broad (any) to prevent strict coupling to SDKs
+interface OpenAIClient {
+  moderations: {
+    create: (
+      args?: unknown
+    ) &#x3D;&gt; Promise&lt;{ results: Array&lt;{ flagged: boolean; categories: Record&lt;string, unknown&gt; }&gt; }&gt;;
+  };
+  chat: {
+    completions: {
+      create: (args?: unknown) &#x3D;&gt; Promise&lt;{ choices: Array&lt;{ message: { content: string } }&gt; }&gt;;
+    };
+  };
+}
+
+let OpenAI: new (...args: unknown[]) &#x3D;&gt; OpenAIClient &#x3D; class {
+  moderations: {
+    create: (
+      args?: unknown
+    ) &#x3D;&gt; Promise&lt;{ results: Array&lt;{ flagged: boolean; categories: Record&lt;string, unknown&gt; }&gt; }&gt;;
+  };
+  chat: {
+    completions: {
+      create: (args?: unknown) &#x3D;&gt; Promise&lt;{ choices: Array&lt;{ message: { content: string } }&gt; }&gt;;
+    };
+  };
+  constructor() {
+    this.moderations &#x3D; {
+      create: async () &#x3D;&gt; ({ results: [{ flagged: false, categories: {} }] }),
+    };
+    this.chat &#x3D; {
+      completions: {
+        create: async () &#x3D;&gt; ({ choices: [{ message: { content: &#x27;&#x27; } }] }),
+      },
+    };
+  }
+};
+
+// Best-effort async import (does not block module load)
+import(&#x27;openai&#x27;)
+  .then(m &#x3D;&gt; {
+    // prefer runtime SDK if available
+    OpenAI &#x3D; (m?.OpenAI ?? OpenAI) as unknown as new (...args: unknown[]) &#x3D;&gt; OpenAIClient;
+  })
+  .catch(() &#x3D;&gt; {
+    // keep stub
+  });
+
+interface PerspectiveClient {
+  analyze: (
+    text: string,
+    opts?: unknown
+  ) &#x3D;&gt; Promise&lt;{ attributeScores: Record&lt;string, { summaryScore: { value: number } }&gt; }&gt;;
+}
+
+let PerspectiveAPI: unknown &#x3D; class PerspectiveAPIStub {
+  // Minimal stub for Perspective API used in tests
+  async analyze(_text: string, _opts?: unknown) {
+    return { attributeScores: { TOXICITY: { summaryScore: { value: 0 } } } };
+  }
+};
+
+import(&#x27;perspective-api-client&#x27;)
+  .then(m &#x3D;&gt; {
+    PerspectiveAPI &#x3D; m?.PerspectiveAPI ?? PerspectiveAPI;
+  })
+  .catch(() &#x3D;&gt; {
+    // keep stub
+  });
+
+// Minimal circuit breaker to replace missing &#x27;./error-handler.js&#x27;
+class CircuitBreaker {
+  private failures &#x3D; 0;
+  private readonly threshold: number;
+  private readonly timeoutMs: number;
+  private lastFailureAt: number | null &#x3D; null;
+
+  constructor(threshold &#x3D; 5, timeoutMs &#x3D; 60_000, _resetMs?: number) {
+    this.threshold &#x3D; threshold;
+    this.timeoutMs &#x3D; timeoutMs;
+  }
+
+  async execute&lt;T&gt;(fn: () &#x3D;&gt; Promise&lt;T&gt;): Promise&lt;T&gt; {
+    const now &#x3D; Date.now();
+    if (
+      this.failures &gt;&#x3D; this.threshold &amp;&amp;
+      this.lastFailureAt &amp;&amp;
+      now - this.lastFailureAt &lt; this.timeoutMs
+    ) {
+      throw new Error(&#x27;Circuit breaker open&#x27;);
+    }
+    try {
+      const result &#x3D; await fn();
+      this.failures &#x3D; 0;
+      return result;
+    } catch (e) {
+      this.failures +&#x3D; 1;
+      this.lastFailureAt &#x3D; Date.now();
+      throw e;
+    }
+  }
+}
+
+type Scores &#x3D; Record&lt;string, unknown&gt;;
+type ModerationResult &#x3D; {
+  id?: string;
+  isSafe: boolean;
+  flagged?: boolean;
+  scores: Scores;
+  reasons: string[];
+  category: string;
+  ageRating?: string;
+};
+
+class ModerationService {
+  private openai: OpenAIClient;
+  private perspective: PerspectiveClient;
+  private moderationThreshold: number;
+  private contentCache: Map&lt;string, ModerationResult&gt;;
+  private moderationDb: {
+    create?: (rec: unknown) &#x3D;&gt; Promise&lt;unknown&gt;;
+    getAll?: (filter?: unknown) &#x3D;&gt; Promise&lt;unknown[]&gt;;
+  } | null;
+  private openaiCircuitBreaker: CircuitBreaker;
+  private perspectiveCircuitBreaker: CircuitBreaker;
+
+  // Accept an optional moderationDb (tests pass mockDb.moderation)
+  constructor(
+    moderationDb: {
+      create?: (rec: unknown) &#x3D;&gt; Promise&lt;unknown&gt;;
+      getAll?: (filter?: unknown) &#x3D;&gt; Promise&lt;unknown[]&gt;;
+    } | null &#x3D; null
+  ) {
+    this.openai &#x3D; new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+    this.perspective &#x3D; new (PerspectiveAPI as new (...args: unknown[]) &#x3D;&gt; PerspectiveClient)(
+      process.env.PERSPECTIVE_API_KEY
+    );
+    this.moderationThreshold &#x3D; 0.6; // Lowered toxicity score threshold for better detection
+    this.contentCache &#x3D; new Map(); // Simple in-memory cache for moderation results
+    this.moderationDb &#x3D; moderationDb; // optional injected DB used by tests
+
+    // Circuit breakers for external services
+    this.openaiCircuitBreaker &#x3D; new CircuitBreaker(5, 60_000, 60_000); // 5 failures, 1min timeout
+    this.perspectiveCircuitBreaker &#x3D; new CircuitBreaker(5, 60_000, 60_000);
+  }
+
+  // Declare stat helper methods to satisfy type-check (simple defaults)
+  async getPendingReviewsCount(): Promise&lt;number&gt; {
+    return 0;
+  }
+  async getReportsCount(_from?: Date): Promise&lt;number&gt; {
+    return 0;
+  }
+  async getAverageResponseTime(): Promise&lt;number&gt; {
+    return 0;
+  }
+  async getTopCategories(): Promise&lt;string[]&gt; {
+    return [];
+  }
+
+  /**
+   * Analyze content for harmful material
+   * @param {string} content - Text content to analyze
+   * @param {string} type - Content type (text, image, video)
+   * @returns {Promise&lt;ModerationResult&gt;}
+   */
+  async analyzeContent(
+    content: string,
+    type: &#x27;text&#x27; | &#x27;image&#x27; | &#x27;video&#x27; &#x3D; &#x27;text&#x27;,
+    userId: string | null &#x3D; null
+  ): Promise&lt;ModerationResult&gt; {
+    try {
+      logger.info(&#x27;Analyzing content&#x27;, {
+        contentLength: content.length,
+        type,
+        userId,
+      });
+
+      // Check cache first
+      const cacheKey &#x3D; &#x60;${type}:${content.slice(0, 50)}&#x60;; // Simple cache key
+      if (this.contentCache.has(cacheKey)) {
+        const cached &#x3D; this.contentCache.get(cacheKey);
+        if (cached) return cached;
+      }
+
+      let result: ModerationResult &#x3D; {
+        isSafe: true,
+        scores: {} as Scores,
+        reasons: [] as string[],
+        category: &#x27;safe&#x27;,
+      };
+
+      if (type &#x3D;&#x3D;&#x3D; &#x27;text&#x27;) {
+        result &#x3D; await this.analyzeText(content);
+      } else if (type &#x3D;&#x3D;&#x3D; &#x27;image&#x27;) {
+        result &#x3D; await this.analyzeImage(content);
+      } // Add video analysis if needed
+
+      // Cache the result for 1 hour
+      this.contentCache.set(cacheKey, result);
+      setTimeout(() &#x3D;&gt; this.contentCache.delete(cacheKey), 3600000);
+
+      // Log moderation decision
+      logger.info(&#x27;Content analysis complete&#x27;, {
+        contentId: result.id,
+        isSafe: result.isSafe,
+        category: result.category,
+        userId,
+      });
+
+      return result;
+    } catch (error) {
+      logger.error(&#x27;Content analysis failed&#x27;, {
+        error: (error as Error).message,
+        contentLength: content.length,
+      });
+      // Fail safe - assume unsafe on error
+      return {
+        isSafe: false,
+        scores: {} as Scores,
+        reasons: [&#x27;Analysis failed&#x27;],
+        category: &#x27;blocked&#x27;,
+      };
+    }
+  }
+
+  /**
+   * Analyze text content for toxicity and harmful content
+   * @param {string} text
+   * @returns {Promise&lt;ModerationResult&gt;}
+   */
+  async analyzeText(
+    text: string
+  ): Promise&lt;
+    ModerationResult &amp; { flagged: boolean; scores: Scores; id: string; ageRating?: string }
+  &gt; {
+    const result: ModerationResult &amp; {
+      flagged: boolean;
+      scores: Scores;
+      id: string;
+      ageRating?: string;
+    } &#x3D; {
+      id: Date.now().toString(),
+      isSafe: true,
+      flagged: false, // For test compatibility
+      scores: {
+        violence: 0,
+        language: 0,
+        sexual: 0,
+      },
+      reasons: [] as string[],
+      category: &#x27;safe&#x27;,
+    };
+
+    // Handle empty content
+    if (!text || text.trim().length &#x3D;&#x3D;&#x3D; 0) {
+      return result;
+    }
+
+    // Calculate individual scores
+    const violenceScore &#x3D; this.calculateViolenceScore(text);
+    const languageScore &#x3D; this.calculateLanguageScore(text);
+    const sexualScore &#x3D; this.calculateSexualContentScore(text);
+
+    result.scores.violence &#x3D; violenceScore;
+    result.scores.language &#x3D; languageScore;
+    result.scores.sexual &#x3D; sexualScore;
+
+    // Determine if content should be flagged
+    const maxScore &#x3D; Math.max(violenceScore, languageScore, sexualScore);
+    if (maxScore &gt; this.moderationThreshold) {
+      result.flagged &#x3D; true;
+      result.isSafe &#x3D; false;
+      result.category &#x3D; &#x27;violation&#x27;;
+      result.reasons.push(&#x60;High content score detected: ${maxScore}&#x60;);
+    }
+
+    // Try OpenAI Moderation API if available
+    try {
+      const openaiResponse &#x3D; await this.openaiCircuitBreaker.execute(() &#x3D;&gt;
+        this.openai.moderations.create({
+          input: text,
+          model: &#x27;text-moderation-latest&#x27;,
+        })
+      );
+
+      const openaiFlags &#x3D; openaiResponse?.results?.[0]?.flagged ?? false;
+      if (openaiFlags) {
+        result.isSafe &#x3D; false;
+        result.flagged &#x3D; true;
+        result.scores.openai &#x3D; openaiResponse?.results?.[0]?.categories ?? {};
+        result.reasons.push(&#x27;OpenAI flagged content&#x27;);
+        result.category &#x3D; &#x27;flagged&#x27;;
+      }
+    } catch {
+      // OpenAI API not available, continue with basic scoring
+    }
+
+    // Try Perspective API for toxicity if available
+    try {
+      const perspectiveResponse &#x3D; await this.perspectiveCircuitBreaker.execute(() &#x3D;&gt;
+        this.perspective.analyze(text, {
+          attributes: [
+            &#x27;TOXICITY&#x27;,
+            &#x27;SEVERE_TOXICITY&#x27;,
+            &#x27;IDENTITY_ATTACK&#x27;,
+            &#x27;INSULT&#x27;,
+            &#x27;PROFANITY&#x27;,
+            &#x27;THREAT&#x27;,
+          ],
+        })
+      );
+
+      const toxicityScore &#x3D;
+        perspectiveResponse?.attributeScores?.TOXICITY?.summaryScore?.value ?? 0;
+      result.scores.perspective &#x3D; perspectiveResponse?.attributeScores ?? {};
+
+      if (toxicityScore &gt; this.moderationThreshold) {
+        result.isSafe &#x3D; false;
+        result.flagged &#x3D; true;
+        result.reasons.push(&#x60;High toxicity score: ${toxicityScore}&#x60;);
+        result.category &#x3D; &#x27;toxic&#x27;;
+      }
+    } catch {
+      // Perspective API not available, continue with basic scoring
+    }
+
+    // Custom rule-based checks for Online Safety Act compliance
+    const customViolations &#x3D; this.checkCustomRules(text);
+    if (customViolations.length &gt; 0) {
+      result.isSafe &#x3D; false;
+      result.flagged &#x3D; true;
+      result.reasons.push(...customViolations);
+      result.category &#x3D; &#x27;violation&#x27;;
+    }
+
+    // Age-appropriate content check
+    const ageRating &#x3D; this.assessAgeAppropriateness(text);
+    result.ageRating &#x3D; ageRating;
+
+    return result;
+  }
+
+  /**
+   * Custom rule-based checks for specific violations
+   * @param {string} text
+   * @returns {string[]}
+   */
+  checkCustomRules(text: string): string[] {
+    const violations &#x3D; [];
+
+    // Hate speech keywords (expand with comprehensive list)
+    const hateSpeechPatterns &#x3D; [
+      /hate|racist|sexist|homophobic|transphobic/gi,
+      /kill|murder|violence|terror/gi,
+      /bomb|explosive|weapon/gi,
+    ];
+
+    hateSpeechPatterns.forEach(pattern &#x3D;&gt; {
+      if (pattern.test(text)) {
+        violations.push(&#x27;Potential hate speech detected&#x27;);
+      }
+    });
+
+    // Child exploitation or grooming indicators
+    const childSafetyPatterns &#x3D; [
+      /child|kid|minor.*sex|porn|naked/gi,
+      /meet.*alone|secret|private/gi,
+    ];
+
+    childSafetyPatterns.forEach(pattern &#x3D;&gt; {
+      if (pattern.test(text)) {
+        violations.push(&#x27;Child safety violation - immediate escalation&#x27;);
+      }
+    });
+
+    // Online Safety Act specific: Cyberbullying
+    if (/bullying|harass|stalk/gi.test(text) &amp;&amp; text.includes(&#x27;@&#x27;)) {
+      violations.push(&#x27;Potential cyberbullying&#x27;);
+    }
+
+    return violations;
+  }
+
+  /**
+   * Assess age appropriateness for content
+   * @param {string} text
+   * @returns {string} &#x27;U&#x27;, &#x27;PG&#x27;, &#x27;12&#x27;, &#x27;15&#x27;, &#x27;18&#x27;
+   */
+  assessAgeAppropriateness(text: string): string {
+    const violenceScore &#x3D; this.calculateViolenceScore(text);
+    const languageScore &#x3D; this.calculateLanguageScore(text);
+    const sexualContentScore &#x3D; this.calculateSexualContentScore(text);
+
+    const maxScore &#x3D; Math.max(violenceScore, languageScore, sexualContentScore);
+
+    if (maxScore &lt; 0.2) return &#x27;U&#x27;;
+    if (maxScore &lt; 0.4) return &#x27;PG&#x27;;
+    if (maxScore &lt; 0.6) return &#x27;12&#x27;;
+    if (maxScore &lt; 0.8) return &#x27;15&#x27;;
+    return &#x27;18&#x27;;
+  }
+
+  /**
+   * Simple scoring functions (expand with ML models)
+   */
+  calculateViolenceScore(text: string): number {
+    const violenceWords &#x3D; [
+      &#x27;kill&#x27;,
+      &#x27;murder&#x27;,
+      &#x27;fight&#x27;,
+      &#x27;war&#x27;,
+      &#x27;bomb&#x27;,
+      &#x27;violence&#x27;,
+      &#x27;violent&#x27;,
+      &#x27;extreme&#x27;,
+      &#x27;threat&#x27;,
+      &#x27;threats&#x27;,
+      &#x27;harmful&#x27;,
+    ];
+    const count &#x3D; violenceWords.filter(word &#x3D;&gt; text.toLowerCase().includes(word)).length;
+    return Math.min(count / 3, 1); // More sensitive threshold
+  }
+
+  calculateLanguageScore(text: string): number {
+    const profanityWords &#x3D; [
+      &#x27;fuck&#x27;,
+      &#x27;shit&#x27;,
+      &#x27;damn&#x27;,
+      &#x27;bitch&#x27;,
+      &#x27;asshole&#x27;,
+      &#x27;inappropriate&#x27;,
+      &#x27;offensive&#x27;,
+    ];
+    const count &#x3D; profanityWords.filter(word &#x3D;&gt; text.toLowerCase().includes(word)).length;
+    return Math.min(count / 3, 1); // More sensitive threshold
+  }
+
+  calculateSexualContentScore(text: string): number {
+    const sexualWords &#x3D; [&#x27;sex&#x27;, &#x27;porn&#x27;, &#x27;nude&#x27;, &#x27;fuck&#x27;, &#x27;orgasm&#x27;];
+    const count &#x3D; sexualWords.filter(word &#x3D;&gt; text.toLowerCase().includes(word)).length;
+    return Math.min(count / 5, 1);
+  }
+
+  /**
+   * Analyze image content (placeholder - integrate with vision API)
+   * @param {string} imageUrl or base64
+   * @returns {Promise&lt;ModerationResult&gt;}
+   */
+  async analyzeImage(image: string): Promise&lt;ModerationResult&gt; {
+    // Integrate with OpenAI Vision or Google Vision API
+    try {
+      const visionResponse &#x3D; await this.openaiCircuitBreaker.execute(() &#x3D;&gt;
+        this.openai.chat.completions.create({
+          model: &#x27;gpt-4-vision-preview&#x27;,
+          messages: [
+            {
+              role: &#x27;user&#x27;,
+              content: [
+                {
+                  type: &#x27;text&#x27;,
+                  text: &#x27;Is this image safe for all ages? Describe any harmful content.&#x27;,
+                },
+                { type: &#x27;image_url&#x27;, image_url: { url: image } },
+              ],
+            },
+          ],
+        })
+      );
+
+      const description &#x3D; (visionResponse?.choices?.[0]?.message?.content ?? &#x27;&#x27;) as string;
+      const isSafe &#x3D;
+        !description.toLowerCase().includes(&#x27;harmful&#x27;) &amp;&amp;
+        !description.toLowerCase().includes(&#x27;violence&#x27;) &amp;&amp;
+        !description.toLowerCase().includes(&#x27;nudity&#x27;);
+
+      return {
+        id: Date.now().toString(),
+        isSafe,
+        scores: { vision: description } as Scores,
+        reasons: isSafe
+          ? ([] as string[])
+          : ([&#x27;Image contains potentially harmful content&#x27;] as string[]),
+        category: isSafe ? &#x27;safe&#x27; : &#x27;flagged&#x27;,
+      };
+    } catch (error) {
+      logger.error(&#x27;Image analysis failed&#x27;, { error: (error as Error).message });
+      return {
+        isSafe: false,
+        scores: {} as Scores,
+        reasons: [&#x27;Image analysis failed&#x27;],
+        category: &#x27;blocked&#x27;,
+      };
+    }
+  }
+
+  /**
+   * Handle user report
+   * @param {Object} report - Report details
+   * @returns {Promise&lt;ReportResult&gt;}
+   */
+  async handleReport(report: {
+    contentId: string;
+    userId?: string | null;
+    reason: string;
+    _evidence?: unknown;
+  }): Promise&lt;{ reportId: string; status: string; escalated: boolean }&gt; {
+    const { contentId, userId, reason, _evidence } &#x3D; report;
+
+    logger.info(&#x27;Processing user report&#x27;, { contentId, userId, reason });
+
+    // Escalate high-priority reports (child safety, threats)
+    const priority &#x3D; this.assessReportPriority(reason);
+    const escalationRequired &#x3D; priority &#x3D;&#x3D;&#x3D; &#x27;high&#x27;;
+
+    // Store report in database (pseudo-code)
+    const reportId &#x3D; await this.storeReport({
+      ...report,
+      priority,
+      escalationRequired,
+    });
+
+    if (escalationRequired) {
+      await this.notifyModerators(reportId);
+      await this.notifyLegal(reportId);
+    }
+
+    return { reportId, status: &#x27;received&#x27;, escalated: escalationRequired };
+  }
+
+  /**
+   * Moderate content and persist moderation record
+   * @param {string} content
+   * @param {string} userId
+   */
+  async moderateContent(
+    content: string,
+    userId: string | null &#x3D; null
+  ): Promise&lt;{ approved: boolean; moderationId: string; scores: Scores; reason: string | null }&gt; {
+    const analysis &#x3D; await this.analyzeContent(content, &#x27;text&#x27;, userId);
+    const approved &#x3D; !analysis.flagged; // Inverted: flagged content is NOT approved
+    const moderationRecord &#x3D; {
+      id: &#x60;mod-${Date.now()}&#x60;,
+      content,
+      userId,
+      approved,
+      scores: analysis.scores || {},
+      reasons: analysis.reasons || [],
+      timestamp: new Date().toISOString(),
+    };
+
+    if (this.moderationDb?.create) {
+      await this.moderationDb.create(moderationRecord);
+    }
+
+    return {
+      approved,
+      moderationId: moderationRecord.id,
+      scores: moderationRecord.scores,
+      reason: moderationRecord.reasons?.[0] || null,
+    };
+  }
+
+  /**
+   * Retrieve moderation history. If userId is provided, call DB with a filter.
+   */
+  async getModerationHistory(userId: string | null &#x3D; null): Promise&lt;unknown[]&gt; {
+    if (this.moderationDb &amp;&amp; typeof this.moderationDb.getAll &#x3D;&#x3D;&#x3D; &#x27;function&#x27;) {
+      if (userId) return this.moderationDb.getAll({ userId });
+      return this.moderationDb.getAll();
+    }
+    return [];
+  }
+
+  /**
+   * Update moderation rules (thresholds)
+   */
+  async updateModerationRules(
+    rules: Partial&lt;{ moderationThreshold: number; violenceThreshold: number }&gt; &#x3D; {}
+  ) {
+    if (rules.violenceThreshold !&#x3D;&#x3D; undefined) {
+      if (rules.violenceThreshold &lt; 0 || rules.violenceThreshold &gt; 1)
+        throw new Error(&#x27;Invalid threshold value&#x27;);
+      this.moderationThreshold &#x3D; rules.violenceThreshold;
+    }
+    // other rule assignments can be added here
+    return true;
+  }
+
+  /**
+   * Get moderation stats by aggregating moderation DB
+   */
+  async getModerationStats(): Promise&lt;{
+    totalModerated: number;
+    approved: number;
+    rejected: number;
+    averageScores: Record&lt;string, number&gt;;
+  }&gt; {
+    const itemsUnknown &#x3D;
+      this.moderationDb &amp;&amp; typeof this.moderationDb.getAll &#x3D;&#x3D;&#x3D; &#x27;function&#x27;
+        ? await this.moderationDb.getAll()
+        : [];
+    const items &#x3D; (Array.isArray(itemsUnknown) ? itemsUnknown : []) as unknown[];
+
+    const total &#x3D; items.length;
+    const approved &#x3D; items.filter(raw &#x3D;&gt; (raw as { approved?: boolean }).approved).length;
+    const rejected &#x3D; items.filter(raw &#x3D;&gt; !(raw as { approved?: boolean }).approved).length;
+
+    // average scores aggregation
+    const scoreSums: Record&lt;string, number&gt; &#x3D; {};
+    let scoreCount &#x3D; 0;
+    items.forEach(raw &#x3D;&gt; {
+      const it &#x3D; raw as { approved?: boolean; scores?: Record&lt;string, unknown&gt; };
+      if (it.scores) {
+        Object.keys(it.scores).forEach(k &#x3D;&gt; {
+          scoreSums[k] &#x3D;
+            (scoreSums[k] || 0) + (Number((it.scores as Record&lt;string, unknown&gt;)[k]) || 0);
+        });
+        scoreCount++;
+      }
+    });
+
+    const averageScores: Record&lt;string, number&gt; &#x3D; {};
+    Object.keys(scoreSums).forEach(k &#x3D;&gt; {
+      const sum &#x3D; scoreSums[k] ?? 0;
+      averageScores[k] &#x3D; scoreCount ? sum / scoreCount : 0;
+    });
+
+    return {
+      totalModerated: total,
+      approved,
+      rejected,
+      averageScores,
+    };
+  }
+
+  assessReportPriority(reason: string): &#x27;high&#x27; | &#x27;medium&#x27; {
+    const highPriority &#x3D; [&#x27;child_safety&#x27;, &#x27;threat&#x27;, &#x27;hate_speech&#x27;, &#x27;harassment&#x27;];
+    return highPriority.includes(reason) ? &#x27;high&#x27; : &#x27;medium&#x27;;
+  }
+
+  async storeReport(_report: unknown): Promise&lt;string&gt; {
+    // Database insertion - pseudo-code
+    // await db.reports.insert(report);
+    return &#x60;report_${Date.now()}&#x60;;
+  }
+
+  async notifyModerators(reportId: string): Promise&lt;void&gt; {
+    // Send notification to moderation team
+    logger.info(&#x27;Escalated to moderators&#x27;, { reportId });
+    // Integrate with Slack/email/SMS
+  }
+
+  async notifyLegal(reportId: string): Promise&lt;void&gt; {
+    // Notify legal team for high-risk reports
+    logger.info(&#x27;Escalated to legal&#x27;, { reportId });
+    // Integrate with legal notification system
+  }
+
+  /**
+   * Get moderation queue for moderators
+   * @param {number} limit
+   * @param {string} status
+   * @returns {Promise&lt;ModerationQueue&gt;}
+   */
+  async getModerationQueue(
+    _limit &#x3D; 20,
+    _status &#x3D; &#x27;pending&#x27;
+  ): Promise&lt;{ items: unknown[]; total: number; page: number }&gt; {
+    // Database query - pseudo-code
+    // const queue &#x3D; await db.moderationQueue.find({ status }).limit(limit);
+    const queue: unknown[] &#x3D; []; // Placeholder
+    return { items: queue, total: queue.length, page: 1 };
+  }
+
+  /**
+   * Review and decide on flagged content
+   * @param {string} contentId
+   * @param {string} decision - &#x27;approve&#x27;, &#x27;reject&#x27;, &#x27;escalate&#x27;
+   * @param {string} moderatorId
+   * @returns {Promise&lt;ReviewResult&gt;}
+   */
+  async reviewContent(
+    contentId: string,
+    decision: &#x27;approve&#x27; | &#x27;reject&#x27; | &#x27;escalate&#x27;,
+    moderatorId: string,
+    notes &#x3D; &#x27;&#x27;
+  ): Promise&lt;{ success: boolean; contentId: string; decision: string }&gt; {
+    logger.info(&#x27;Content review&#x27;, { contentId, decision, moderatorId });
+
+    // Update content status in database
+    // await db.content.update({ id: contentId }, { status: decision, reviewedBy: moderatorId, notes });
+
+    // Log for audit trail
+    const auditLogger &#x3D; logger as unknown as { audit?: (msg: string, meta?: unknown) &#x3D;&gt; void };
+    if (auditLogger?.audit) {
+      auditLogger.audit(&#x27;Content reviewed&#x27;, {
+        contentId,
+        decision,
+        moderatorId,
+        notes,
+      });
+    } else {
+      logger.info(&#x27;Content reviewed&#x27;, { contentId, decision, moderatorId, notes });
+    }
+
+    // Notify user if rejected
+    if (decision &#x3D;&#x3D;&#x3D; &#x27;reject&#x27;) {
+      await this.notifyUser(contentId, &#x27;rejected&#x27;, notes);
+    }
+
+    return { success: true, contentId, decision };
+  }
+
+  async notifyUser(contentId: string, status: string, message: string): Promise&lt;void&gt; {
+    // Send notification to content owner
+    logger.info(&#x27;Notifying user&#x27;, { contentId, status, message });
+    // Integrate with notification service
+  }
+
+  /**
+   * Generate transparency report for DSA compliance
+   * @param {Object} filters - Date range, content type
+   * @returns {Promise&lt;TransparencyReport&gt;}
+   */
+  async generateTransparencyReport(filters: Partial&lt;{ period: string }&gt; &#x3D; {}) {
+    // Aggregate moderation statistics
+    const stats &#x3D; {
+      totalReports: 0,
+      resolvedReports: 0,
+      averageResponseTime: 0,
+      categories: {},
+      actionsTaken: {},
+    };
+
+    // Database aggregation - pseudo-code
+    // stats.totalReports &#x3D; await db.reports.count();
+    // stats.resolvedReports &#x3D; await db.reports.count({ status: &#x27;resolved&#x27; });
+
+    logger.info(&#x27;Generated transparency report&#x27;, { filters, stats });
+
+    return {
+      generatedAt: new Date().toISOString(),
+      period: filters.period || &#x27;monthly&#x27;,
+      ...stats,
+    };
+  }
+
+  /**
+   * Clear cache (admin function)
+   */
+  clearCache(): void {
+    this.contentCache.clear();
+    logger.info(&#x27;Moderation cache cleared&#x27;);
+  }
+
+  /**
+   * Get moderation statistics for dashboard
+   * @returns {Promise&lt;Object&gt;} Statistics object
+   */
+  async getStats(): Promise&lt;{
+    pendingReviews: number;
+    reportsToday: number;
+    averageResponseTime: number;
+    topCategories: string[];
+  }&gt; {
+    try {
+      // Aggregate statistics from database (pseudo-implementation)
+      // In a real implementation, these would be database queries
+
+      const now &#x3D; new Date();
+      const today &#x3D; new Date(now.getFullYear(), now.getMonth(), now.getDate());
+
+      // Mock data - replace with actual database queries
+      const stats &#x3D; {
+        pendingReviews: await this.getPendingReviewsCount(),
+        reportsToday: await this.getReportsCount(today),
+        averageResponseTime: await this.getAverageResponseTime(),
+        topCategories: await this.getTopCategories(),
+      };
+
+      logger.info(&#x27;Retrieved moderation stats&#x27;, stats);
+      return stats;
+    } catch (error) {
+      logger.error(&#x27;Failed to get moderation stats&#x27;, { error: (error as Error).message });
+      throw error;
+    }
+  }
+}
+
+// (Prototype augmentation removed; declared as class methods instead)
+
+/**
+ * Types
+ * @typedef {Object} ModerationResult
+ * @property {string} id - Unique ID
+ * @property {boolean} isSafe - Whether content is safe
+ * @property {Object} scores - Analysis scores
+ * @property {string[]} reasons - Reasons for flagging
+ * @property {string} category - Content category
+ * @property {string} ageRating - Age appropriateness rating
+ *
+ * @typedef {Object} ReportResult
+ * @property {string} reportId - Report ID
+ * @property {string} status - Processing status
+ * @property {boolean} escalated - Whether escalated
+ *
+ * @typedef {Object} ReviewResult
+ * @property {boolean} success - Review success
+ * @property {string} contentId - Content ID
+ * @property {string} decision - Review decision
+ *
+ * @typedef {Object} TransparencyReport
+ * @property {string} generatedAt - Report generation time
+ * @property {string} period - Reporting period
+ * @property {number} totalReports - Total reports
+ * @property {number} resolvedReports - Resolved reports
+ * @property {number} averageResponseTime - Avg response time
+ * @property {Object} categories - Content categories
+ * @property {Object} actionsTaken - Actions taken
+ */
+
+// Export class but attach default instance bound methods so module works as singleton
+const _defaultModerationInstance &#x3D; new ModerationService();
+Object.getOwnPropertyNames(ModerationService.prototype).forEach(name &#x3D;&gt; {
+  if (name &#x3D;&#x3D;&#x3D; &#x27;constructor&#x27;) return;
+  const desc &#x3D; Object.getOwnPropertyDescriptor(ModerationService.prototype, name);
+  if (desc &amp;&amp; typeof desc.value &#x3D;&#x3D;&#x3D; &#x27;function&#x27;) {
+    const instanceIndex &#x3D; _defaultModerationInstance as unknown as Record&lt;string, unknown&gt;;
+    const method &#x3D; instanceIndex[name];
+    if (typeof method &#x3D;&#x3D;&#x3D; &#x27;function&#x27;) {
+      (ModerationService as unknown as Record&lt;string, unknown&gt;)[name] &#x3D; (
+        method as (...args: unknown[]) &#x3D;&gt; unknown
+      ).bind(_defaultModerationInstance);
+    }
+  }
+});
+(ModerationService as unknown as { defaultInstance: ModerationService }).defaultInstance &#x3D;
+  _defaultModerationInstance;
+
+/** Auto-generated doc: exported — please replace with meaningful description. */
+export default ModerationService;
+</code></pre>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'class';
+            var COMPODOC_CURRENT_PAGE_URL = 'CircuitBreaker.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

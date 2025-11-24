@@ -48,3 +48,104 @@ groups:
         annotations:
           summary: 'High CI job failure rate'
           description: 'CI job failure rate exceeds 10% in 5 minute window'
+
+  - name: performance_slos
+    rules:
+      # Performance SLOs based on Lighthouse budgets
+      - record: lighthouse_performance_slo
+        expr: |
+          lighthouse_performance_score >= 90
+
+      - record: lighthouse_accessibility_slo
+        expr: |
+          lighthouse_accessibility_score >= 100
+
+      - record: lighthouse_core_web_vitals_slo
+        expr: |
+          lighthouse_lcp_seconds <= 2.5 and
+          lighthouse_cls_score <= 0.1 and
+          lighthouse_fid_seconds <= 0.1
+
+      # Performance budget monitoring
+      - record: performance_budget_compliance
+        expr: |
+          (1 - lighthouse_budget_violations_total / lighthouse_budget_checks_total) * 100
+
+      # Application performance SLOs
+      - record: api_response_time_slo
+        expr: |
+          histogram_quantile(0.95, rate(http_request_duration_seconds_bucket{job="political-sphere-api"}[5m])) <= 0.5
+
+      - record: web_response_time_slo
+        expr: |
+          histogram_quantile(0.95, rate(http_request_duration_seconds_bucket{job="political-sphere-web"}[5m])) <= 1.5
+
+      # Resource usage SLOs
+      - record: memory_usage_slo
+        expr: |
+          process_resident_memory_bytes / process_virtual_memory_max_bytes < 0.8
+
+      - record: cpu_usage_slo
+        expr: |
+          rate(process_cpu_user_seconds_total[5m]) / 1000 < 0.7
+
+      # Alert on performance SLO breaches
+      - alert: Lighthouse_Performance_SLO_Breach
+        expr: lighthouse_performance_slo == 0
+        for: 5m
+        labels:
+          severity: warning
+          service: frontend
+        annotations:
+          summary: 'Lighthouse performance score below 90'
+          description: 'Frontend performance score has dropped below acceptable threshold'
+
+      - alert: Lighthouse_Accessibility_SLO_Breach
+        expr: lighthouse_accessibility_slo == 0
+        for: 5m
+        labels:
+          severity: critical
+          service: frontend
+        annotations:
+          summary: 'Lighthouse accessibility score below 100'
+          description: 'WCAG 2.2 AA compliance violated - accessibility score below 100'
+
+      - alert: Core_Web_Vitals_SLO_Breach
+        expr: lighthouse_core_web_vitals_slo == 0
+        for: 5m
+        labels:
+          severity: warning
+          service: frontend
+        annotations:
+          summary: 'Core Web Vitals targets not met'
+          description: 'One or more Core Web Vitals metrics exceed acceptable thresholds'
+
+      - alert: API_Response_Time_SLO_Breach
+        expr: api_response_time_slo == 0
+        for: 5m
+        labels:
+          severity: warning
+          service: api
+        annotations:
+          summary: 'API response time SLO breach'
+          description: '95th percentile API response time exceeds 500ms'
+
+      - alert: High_Memory_Usage
+        expr: memory_usage_slo == 0
+        for: 10m
+        labels:
+          severity: warning
+          service: application
+        annotations:
+          summary: 'High memory usage detected'
+          description: 'Application memory usage exceeds 80% of available memory'
+
+      - alert: High_CPU_Usage
+        expr: cpu_usage_slo == 0
+        for: 10m
+        labels:
+          severity: warning
+          service: application
+        annotations:
+          summary: 'High CPU usage detected'
+          description: 'Application CPU usage exceeds 70%'

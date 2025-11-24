@@ -2683,7 +2683,6 @@ Political Sphere is **open-source, volunteer-driven** (solo dev, AI-augmented) �
 From `docs/00-foundation/vision-mission.md`:
 
 > **Mission**: "Equip players, educators, and institutions with a persistent UK parliamentary simulation... to build civic literacy, foster safe political discourse"
-
 > **Mission Pillar #4**: "Governance & Auditability — Operate with ISO-aligned governance, traceability, and risk management so educators and institutions can trust the platform for serious civic learning."
 
 From README.md (inferred from previous analysis):
@@ -7481,7 +7480,6 @@ Require AI to include confidence ratings with suggestions:
 **Escalation Requirements** (copilot-instructions.md):
 
 > "Defer legal, constitutional, or policy decisions to the human project owner; when compliance, privacy, or feasibility are uncertain, ask concise clarifying questions."
-
 > "Any change affecting voting, speech, moderation, or power distribution must escalate to governance owners and be recorded in ADRs."
 
 **💬 Reflection: Did AI Respect Boundaries?**
@@ -11059,10 +11057,11 @@ gitleaks:
 **Alternative**: **Hard requirements** — refuse commit if tools missing
 
 **Trade-off**:
-| Approach | Pros | Cons |
-|----------|------|------|
-| **Soft** (current) | Easier onboarding, works on all platforms | Inconsistent enforcement, false confidence |
-| **Hard** | Guaranteed enforcement, catches all issues | Difficult setup, platform-specific install instructions |
+
+| Approach           | Pros                                       | Cons                                                    |
+| ------------------ | ------------------------------------------ | ------------------------------------------------------- |
+| **Soft** (current) | Easier onboarding, works on all platforms  | Inconsistent enforcement, false confidence              |
+| **Hard**           | Guaranteed enforcement, catches all issues | Difficult setup, platform-specific install instructions |
 
 **Recommendation from Lefthook docs**: Use `skip_output` for optional tools
 
@@ -19562,7 +19561,7 @@ node -e "console.log(require('crypto').randomBytes(64).toString('hex'))"
 ```
 ````
 
-# Enforcement in code (inferred from JWT secret validation)
+## Enforcement in code (inferred from JWT secret validation)
 
 - Minimum 32 characters for JWT secrets (security requirement)
 - User passwords likely 12+ characters (bcrypt 12-round minimum seen in 6.2.7)
@@ -22938,7 +22937,7 @@ This section evaluated Political Sphere's security posture, risk management prac
 
 ---
 
-# Section 7: Performance, Scalability & Resource Optimization
+## Section 7: Performance, Scalability & Resource Optimization
 
 **Purpose**: Evaluate Political Sphere's performance engineering practices, resource efficiency, scalability strategies, and sustainability considerations within zero-budget constraints.
 
@@ -23120,14 +23119,15 @@ export class ContinuousResourceMonitor {
 ```
 
 **Zero-Budget Monitoring Options** (Not Used):
-| Tool | Cost | Political Sphere Status |
-|------|------|------------------------|
-| **Prometheus + Grafana** | Free (self-hosted) | ❌ Not deployed (no hosting budget) |
-| **OpenTelemetry Collector** | Free (open-source) | ⚠️ Documented, not implemented |
-| **GitHub Actions Insights** | Free (built-in) | ✅ Used for CI build metrics |
-| **Chrome DevTools** | Free (browser-based) | ⚠️ Ad-hoc frontend profiling |
-| **Node.js --inspect** | Free (built-in) | ⚠️ Ad-hoc backend profiling |
-| **Artillery Cloud Free Tier** | Free (1000 VUs) | ❌ Not used (load-test code exists, not run) |
+
+| Tool                          | Cost                 | Political Sphere Status                      |
+| ----------------------------- | -------------------- | -------------------------------------------- |
+| **Prometheus + Grafana**      | Free (self-hosted)   | ❌ Not deployed (no hosting budget)          |
+| **OpenTelemetry Collector**   | Free (open-source)   | ⚠️ Documented, not implemented               |
+| **GitHub Actions Insights**   | Free (built-in)      | ✅ Used for CI build metrics                 |
+| **Chrome DevTools**           | Free (browser-based) | ⚠️ Ad-hoc frontend profiling                 |
+| **Node.js --inspect**         | Free (built-in)      | ⚠️ Ad-hoc backend profiling                  |
+| **Artillery Cloud Free Tier** | Free (1000 VUs)      | ❌ Not used (load-test code exists, not run) |
 
 **External Validation**:
 
@@ -23301,15 +23301,16 @@ $ grep -r "slow.*query\|query.*time\|EXPLAIN" apps/api/ libs/infrastructure/data
 **Analysis**: ❌ **NOT IMPLEMENTED** — No database query profiling
 
 **Bottleneck Identification Maturity**:
-| Bottleneck Type | Proactive Detection | Reactive Identification | Automated Alerting |
-|-----------------|---------------------|------------------------|-------------------|
-| **Build Performance** | ✅ Nx dependency graph | ✅ Developer notices slow builds | ❌ No alerts |
-| **Test Performance** | ❌ No profiling | ⚠️ Timeouts catch hangs | ❌ No slow test alerts |
-| **Bundle Size** | ❌ No budget enforcement | ⚠️ Developer notices large bundles | ❌ No size alerts |
-| **API Latency** | ❌ No profiling | ⚠️ Manual timing logs | ❌ No latency alerts |
-| **Database Queries** | ❌ No profiling | ❌ No detection | ❌ No alerts |
-| **Memory Leaks** | ❌ No profiling | ⚠️ Crashes reveal leaks | ❌ No leak detection |
-| **Render Performance** | ❌ No profiling | ⚠️ React DevTools (manual) | ❌ No alerts |
+
+| Bottleneck Type        | Proactive Detection      | Reactive Identification            | Automated Alerting     |
+| ---------------------- | ------------------------ | ---------------------------------- | ---------------------- |
+| **Build Performance**  | ✅ Nx dependency graph   | ✅ Developer notices slow builds   | ❌ No alerts           |
+| **Test Performance**   | ❌ No profiling          | ⚠️ Timeouts catch hangs            | ❌ No slow test alerts |
+| **Bundle Size**        | ❌ No budget enforcement | ⚠️ Developer notices large bundles | ❌ No size alerts      |
+| **API Latency**        | ❌ No profiling          | ⚠️ Manual timing logs              | ❌ No latency alerts   |
+| **Database Queries**   | ❌ No profiling          | ❌ No detection                    | ❌ No alerts           |
+| **Memory Leaks**       | ❌ No profiling          | ⚠️ Crashes reveal leaks            | ❌ No leak detection   |
+| **Render Performance** | ❌ No profiling          | ⚠️ React DevTools (manual)         | ❌ No alerts           |
 
 **Proactive Profiling Score**: **1/7** (14%) — Only Nx build dependency graph is proactive
 
@@ -23464,13 +23465,14 @@ $ grep -r "build.*time.*trend\|performance.*dashboard" tools/ scripts/
 **Analysis**: ⚠️ **PARTIAL** — Build times acceptable, but no automated trend tracking
 
 **Comparison: Monorepo Build Time Benchmarks**:
-| Monorepo Size | Political Sphere | Industry Average | Status |
-|---------------|------------------|------------------|--------|
-| **Projects** | 29 (12 apps + 17 libs) | 20-50 (small-medium) | ✅ Typical |
-| **Cold Build** | 8-10 min | 10-20 min | ✅ Better than average |
-| **Warm Build** | 3-5 min | 5-10 min | ✅ Better than average |
-| **Affected Build** | 1-2 min | 2-5 min | ✅ Excellent |
-| **Cache Hit Rate** | 40-60% | 30-50% | ✅ Above average |
+
+| Monorepo Size      | Political Sphere       | Industry Average     | Status                 |
+| ------------------ | ---------------------- | -------------------- | ---------------------- |
+| **Projects**       | 29 (12 apps + 17 libs) | 20-50 (small-medium) | ✅ Typical             |
+| **Cold Build**     | 8-10 min               | 10-20 min            | ✅ Better than average |
+| **Warm Build**     | 3-5 min                | 5-10 min             | ✅ Better than average |
+| **Affected Build** | 1-2 min                | 2-5 min              | ✅ Excellent           |
+| **Cache Hit Rate** | 40-60%                 | 30-50%               | ✅ Above average       |
 
 **Build Bottlenecks Identified** (Reactive):
 
@@ -24140,12 +24142,13 @@ $ grep -r "COPY package.*\.json\|RUN npm ci" apps/*/Dockerfile
 ```
 
 **Image Size Comparison** (Estimated):
-| Image Type | Current (Estimated) | Optimized Target | Reduction |
-|------------|---------------------|------------------|-----------|
-| **API Service** | ~500MB | ~150MB | -70% |
-| **Frontend (Node serve)** | ~450MB | ~100MB (nginx) | -78% |
-| **Game Server** | ~600MB | ~200MB | -67% |
-| **Worker** | ~500MB | ~150MB | -70% |
+
+| Image Type                | Current (Estimated) | Optimized Target | Reduction |
+| ------------------------- | ------------------- | ---------------- | --------- |
+| **API Service**           | ~500MB              | ~150MB           | -70%      |
+| **Frontend (Node serve)** | ~450MB              | ~100MB (nginx)   | -78%      |
+| **Game Server**           | ~600MB              | ~200MB           | -67%      |
+| **Worker**                | ~500MB              | ~150MB           | -70%      |
 
 **Gaps**:
 
@@ -24574,13 +24577,14 @@ class GameClient {
 ```
 
 **Regional Latency Estimates** (UNVERIFIED):
-| User Location | Server (US-East) | Server (EU-West) | Server (Asia-Pacific) |
-|---------------|------------------|------------------|-----------------------|
-| **UK** | 60-80ms | 10-20ms | 200-250ms |
-| **Germany** | 70-90ms | 15-25ms | 210-260ms |
-| **California** | 40-60ms | 100-120ms | 50-70ms |
-| **Australia** | 200-300ms | 250-300ms | 20-40ms |
-| **India** | 180-220ms | 100-150ms | 60-100ms |
+
+| User Location  | Server (US-East) | Server (EU-West) | Server (Asia-Pacific) |
+| -------------- | ---------------- | ---------------- | --------------------- |
+| **UK**         | 60-80ms          | 10-20ms          | 200-250ms             |
+| **Germany**    | 70-90ms          | 15-25ms          | 210-260ms             |
+| **California** | 40-60ms          | 100-120ms        | 50-70ms               |
+| **Australia**  | 200-300ms        | 250-300ms        | 20-40ms               |
+| **India**      | 180-220ms        | 100-150ms        | 60-100ms              |
 
 **Analysis**: Multi-region deployment critical for global playability
 
@@ -24638,7 +24642,7 @@ class GameClient {
 
 ---
 
-# Section 8: Lessons Learned & Continuous Improvement
+## Section 8: Lessons Learned & Continuous Improvement
 
 ## Section 8.1: Lessons & Reflection - Descriptive Layer
 
@@ -25049,12 +25053,13 @@ $ grep -i "breaking\|breaking change" CHANGELOG.md
 ```
 
 **Process Design Lessons from Failures**:
-| Failure | Process Gap | Lesson | Improvement | Status |
-|---------|-------------|--------|-------------|--------|
-| **Breaking Changes** | No change control | Need deprecation, migration paths | API versioning docs, PR labels | ⚠️ Partial |
-| **Unmeasured Optimization** | No perf baseline | Can't improve what you don't measure | Performance regression tests | ❌ Not implemented |
-| **Recurring A11y Violations** | Infrequent retrospectives | Patterns invisible without regular reflection | Checklists, automated tests | ✅ Implemented |
-| **Unknown Prod Issues** | No staging environment | Local ≠ production | Staging deployment | ⏳ Planned Q1 2026 |
+
+| Failure                       | Process Gap               | Lesson                                        | Improvement                    | Status             |
+| ----------------------------- | ------------------------- | --------------------------------------------- | ------------------------------ | ------------------ |
+| **Breaking Changes**          | No change control         | Need deprecation, migration paths             | API versioning docs, PR labels | ⚠️ Partial         |
+| **Unmeasured Optimization**   | No perf baseline          | Can't improve what you don't measure          | Performance regression tests   | ❌ Not implemented |
+| **Recurring A11y Violations** | Infrequent retrospectives | Patterns invisible without regular reflection | Checklists, automated tests    | ✅ Implemented     |
+| **Unknown Prod Issues**       | No staging environment    | Local ≠ production                            | Staging deployment             | ⏳ Planned Q1 2026 |
 
 **Gaps**:
 
@@ -25321,12 +25326,13 @@ $ git log --since="2025-03-01" --grep="test" | wc -l
 ---
 
 **Summary: Assumptions Aging Analysis**:
-| Assumption | Initial Belief | Reality | Status | Lesson |
-|------------|----------------|---------|--------|--------|
-| **"Testing can wait"** | Tests after stabilization | Tests ARE stabilization | ❌ Aged poorly | Test-first for critical paths |
-| **"AI reads code"** | Code is sufficient context | Docs = AI force multiplier | ❌ Aged poorly | Invest in comprehensive docs |
-| **"Manual perf checks OK"** | Notice slowness manually | Need automated monitoring | ❌ Aged poorly | Baseline + regression tests |
-| **"Zero-budget limits"** | Budget required for quality | Constraints drive creativity | ✅ Held up well | Embrace constraints strategically |
+
+| Assumption                  | Initial Belief              | Reality                      | Status          | Lesson                            |
+| --------------------------- | --------------------------- | ---------------------------- | --------------- | --------------------------------- |
+| **"Testing can wait"**      | Tests after stabilization   | Tests ARE stabilization      | ❌ Aged poorly  | Test-first for critical paths     |
+| **"AI reads code"**         | Code is sufficient context  | Docs = AI force multiplier   | ❌ Aged poorly  | Invest in comprehensive docs      |
+| **"Manual perf checks OK"** | Notice slowness manually    | Need automated monitoring    | ❌ Aged poorly  | Baseline + regression tests       |
+| **"Zero-budget limits"**    | Budget required for quality | Constraints drive creativity | ✅ Held up well | Embrace constraints strategically |
 
 **Gaps**:
 

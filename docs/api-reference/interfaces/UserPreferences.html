@@ -1,0 +1,874 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>political-sphere documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">political-sphere documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content interface">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Interfaces</li>
+  <li class="breadcrumb-item"
+  >
+  UserPreferences</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>apps/web/src/components/Profile/UserProfile.tsx</code>
+        </p>
+
+
+
+
+        <section data-compodoc="block-index">
+            <h3 id="index">Index</h3>
+            <table class="table table-sm table-bordered index-table">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <h6><b>Properties</b></h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <ul class="index-list">
+                                <li>
+                                        <a href="#accessibility" 
+>
+                                            accessibility
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#emailNotifications" 
+>
+                                            emailNotifications
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#language" 
+>
+                                            language
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#pushNotifications" 
+>
+                                            pushNotifications
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#theme" 
+>
+                                            theme
+                                        </a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+
+
+            <section data-compodoc="block-properties">
+                <h3 id="inputs">Properties</h3>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="accessibility"></a>
+                                        <span class="name "><b>accessibility</b>
+                                            <a href="#accessibility">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>accessibility:     <code>literal type</code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>    <code>literal type</code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="emailNotifications"></a>
+                                        <span class="name "><b>emailNotifications</b>
+                                            <a href="#emailNotifications">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>emailNotifications:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="language"></a>
+                                        <span class="name "><b>language</b>
+                                            <a href="#language">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>language:         <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="pushNotifications"></a>
+                                        <span class="name "><b>pushNotifications</b>
+                                            <a href="#pushNotifications">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>pushNotifications:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="theme"></a>
+                                        <span class="name "><b>theme</b>
+                                            <a href="#theme">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>theme:         <code><a href="../miscellaneous/variables.html#g" target="_self" >&quot;light&quot; | &quot;dark&quot; | &quot;auto&quot;</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="../miscellaneous/variables.html#g" target="_self" >&quot;light&quot; | &quot;dark&quot; | &quot;auto&quot;</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+            </section>
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { useCallback, useEffect, useState } from &#x27;react&#x27;;
+import type { FC } from &#x27;react&#x27;;
+import &#x27;./UserProfile.css&#x27;;
+
+interface UserData {
+  id: string;
+  email: string;
+  displayName?: string;
+  role: string;
+  createdAt: string;
+  verifiedAge?: number;
+  contentRating?: string;
+}
+
+interface UserStats {
+  proposalsCreated: number;
+  votesCast: number;
+  debatesParticipated: number;
+  reputation: number;
+}
+
+interface UserPreferences {
+  emailNotifications: boolean;
+  pushNotifications: boolean;
+  theme: &#x27;light&#x27; | &#x27;dark&#x27; | &#x27;auto&#x27;;
+  language: string;
+  accessibility: {
+    reducedMotion: boolean;
+    highContrast: boolean;
+    largeText: boolean;
+  };
+}
+
+interface UserProfileProps {
+  userId: string;
+  onUpdateProfile?: (data: Partial&lt;UserData&gt;) &#x3D;&gt; void;
+  onUpdatePreferences?: (preferences: UserPreferences) &#x3D;&gt; void;
+}
+
+const UserProfile: FC&lt;UserProfileProps&gt; &#x3D; ({ userId, onUpdateProfile, onUpdatePreferences }) &#x3D;&gt; {
+  const [userData, setUserData] &#x3D; useState&lt;UserData | null&gt;(null);
+  const [userStats, setUserStats] &#x3D; useState&lt;UserStats | null&gt;(null);
+  const [preferences, setPreferences] &#x3D; useState&lt;UserPreferences&gt;({
+    emailNotifications: true,
+    pushNotifications: false,
+    theme: &#x27;auto&#x27;,
+    language: &#x27;en&#x27;,
+    accessibility: {
+      reducedMotion: false,
+      highContrast: false,
+      largeText: false,
+    },
+  });
+  const [loading, setLoading] &#x3D; useState(true);
+  const [error, setError] &#x3D; useState&lt;string | null&gt;(null);
+  const [activeTab, setActiveTab] &#x3D; useState&lt;&#x27;profile&#x27; | &#x27;stats&#x27; | &#x27;settings&#x27;&gt;(&#x27;profile&#x27;);
+  const [isEditing, setIsEditing] &#x3D; useState(false);
+
+  const fetchUserData &#x3D; useCallback(async () &#x3D;&gt; {
+    try {
+      const response &#x3D; await fetch(&#x60;/api/users/${userId}&#x60;);
+      if (!response.ok) throw new Error(&#x27;Failed to fetch user data&#x27;);
+      const data &#x3D; await response.json();
+      if (data.success) {
+        setUserData(data.data);
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : &#x27;Unknown error&#x27;);
+    }
+  }, [userId]);
+
+  const fetchUserStats &#x3D; useCallback(async () &#x3D;&gt; {
+    try {
+      const response &#x3D; await fetch(&#x60;/api/users/${userId}/stats&#x60;);
+      if (!response.ok) throw new Error(&#x27;Failed to fetch user stats&#x27;);
+      const data &#x3D; await response.json();
+      if (data.success) {
+        setUserStats(data.data);
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : &#x27;Unknown error&#x27;);
+    }
+  }, [userId]);
+
+  useEffect(() &#x3D;&gt; {
+    const loadData &#x3D; async () &#x3D;&gt; {
+      setLoading(true);
+      await Promise.all([fetchUserData(), fetchUserStats()]);
+      setLoading(false);
+    };
+    loadData();
+  }, [fetchUserData, fetchUserStats]);
+
+  const handleProfileUpdate &#x3D; (event: React.FormEvent&lt;HTMLFormElement&gt;) &#x3D;&gt; {
+    event.preventDefault();
+    const formData &#x3D; new FormData(event.currentTarget);
+    const displayName &#x3D; formData.get(&#x27;displayName&#x27;) as string;
+
+    if (displayName &amp;&amp; onUpdateProfile) {
+      onUpdateProfile({ displayName });
+      setIsEditing(false);
+    }
+  };
+
+  const handlePreferenceChange &#x3D; &lt;K extends keyof UserPreferences&gt;(
+    key: K,
+    value: UserPreferences[K]
+  ) &#x3D;&gt; {
+    const newPreferences &#x3D; { ...preferences, [key]: value };
+    setPreferences(newPreferences);
+    if (onUpdatePreferences) {
+      onUpdatePreferences(newPreferences);
+    }
+  };
+
+  const handleAccessibilityChange &#x3D; (
+    key: keyof UserPreferences[&#x27;accessibility&#x27;],
+    value: boolean
+  ) &#x3D;&gt; {
+    const newPreferences &#x3D; {
+      ...preferences,
+      accessibility: {
+        ...preferences.accessibility,
+        [key]: value,
+      },
+    };
+    setPreferences(newPreferences);
+    if (onUpdatePreferences) {
+      onUpdatePreferences(newPreferences);
+    }
+  };
+
+  if (loading) {
+    return (
+      &lt;div className&#x3D;&quot;user-profile&quot;&gt;
+        &lt;output aria-live&#x3D;&quot;polite&quot;&gt;Loading profile...&lt;/output&gt;
+      &lt;/div&gt;
+    );
+  }
+
+  if (error) {
+    return (
+      &lt;div className&#x3D;&quot;user-profile&quot; role&#x3D;&quot;alert&quot;&gt;
+        &lt;p className&#x3D;&quot;error&quot;&gt;Error: {error}&lt;/p&gt;
+      &lt;/div&gt;
+    );
+  }
+
+  if (!userData) {
+    return (
+      &lt;div className&#x3D;&quot;user-profile&quot;&gt;
+        &lt;p&gt;User not found&lt;/p&gt;
+      &lt;/div&gt;
+    );
+  }
+
+  return (
+    &lt;div className&#x3D;&quot;user-profile&quot;&gt;
+      &lt;header className&#x3D;&quot;profile-header&quot;&gt;
+        &lt;div className&#x3D;&quot;profile-avatar&quot; role&#x3D;&quot;img&quot; aria-label&#x3D;&quot;User avatar&quot;&gt;
+          {userData.displayName?.[0]?.toUpperCase() || userData.email?.[0]?.toUpperCase() || &#x27;?&#x27;}
+        &lt;/div&gt;
+        &lt;div className&#x3D;&quot;profile-info&quot;&gt;
+          &lt;h1&gt;{userData.displayName || userData.email}&lt;/h1&gt;
+          &lt;p className&#x3D;&quot;profile-role&quot;&gt;{userData.role}&lt;/p&gt;
+          &lt;p className&#x3D;&quot;profile-joined&quot;&gt;
+            Joined: {new Date(userData.createdAt).toLocaleDateString()}
+          &lt;/p&gt;
+        &lt;/div&gt;
+      &lt;/header&gt;
+
+      &lt;div className&#x3D;&quot;profile-tabs&quot; role&#x3D;&quot;tablist&quot; aria-label&#x3D;&quot;Profile sections&quot;&gt;
+        &lt;button
+          type&#x3D;&quot;button&quot;
+          role&#x3D;&quot;tab&quot;
+          aria-selected&#x3D;{activeTab &#x3D;&#x3D;&#x3D; &#x27;profile&#x27;}
+          aria-controls&#x3D;&quot;profile-panel&quot;
+          id&#x3D;&quot;profile-tab&quot;
+          onClick&#x3D;{() &#x3D;&gt; setActiveTab(&#x27;profile&#x27;)}
+          className&#x3D;{activeTab &#x3D;&#x3D;&#x3D; &#x27;profile&#x27; ? &#x27;active&#x27; : &#x27;&#x27;}
+        &gt;
+          Profile
+        &lt;/button&gt;
+        &lt;button
+          type&#x3D;&quot;button&quot;
+          role&#x3D;&quot;tab&quot;
+          aria-selected&#x3D;{activeTab &#x3D;&#x3D;&#x3D; &#x27;stats&#x27;}
+          aria-controls&#x3D;&quot;stats-panel&quot;
+          id&#x3D;&quot;stats-tab&quot;
+          onClick&#x3D;{() &#x3D;&gt; setActiveTab(&#x27;stats&#x27;)}
+          className&#x3D;{activeTab &#x3D;&#x3D;&#x3D; &#x27;stats&#x27; ? &#x27;active&#x27; : &#x27;&#x27;}
+        &gt;
+          Statistics
+        &lt;/button&gt;
+        &lt;button
+          type&#x3D;&quot;button&quot;
+          role&#x3D;&quot;tab&quot;
+          aria-selected&#x3D;{activeTab &#x3D;&#x3D;&#x3D; &#x27;settings&#x27;}
+          aria-controls&#x3D;&quot;settings-panel&quot;
+          id&#x3D;&quot;settings-tab&quot;
+          onClick&#x3D;{() &#x3D;&gt; setActiveTab(&#x27;settings&#x27;)}
+          className&#x3D;{activeTab &#x3D;&#x3D;&#x3D; &#x27;settings&#x27; ? &#x27;active&#x27; : &#x27;&#x27;}
+        &gt;
+          Settings
+        &lt;/button&gt;
+      &lt;/div&gt;
+
+      {activeTab &#x3D;&#x3D;&#x3D; &#x27;profile&#x27; &amp;&amp; (
+        &lt;section
+          id&#x3D;&quot;profile-panel&quot;
+          role&#x3D;&quot;tabpanel&quot;
+          aria-labelledby&#x3D;&quot;profile-tab&quot;
+          className&#x3D;&quot;profile-section&quot;
+        &gt;
+          &lt;h2&gt;Profile Information&lt;/h2&gt;
+
+          {!isEditing ? (
+            &lt;div className&#x3D;&quot;profile-display&quot;&gt;
+              &lt;div className&#x3D;&quot;profile-field&quot;&gt;
+                &lt;span className&#x3D;&quot;field-label&quot;&gt;Email:&lt;/span&gt;
+                &lt;span&gt;{userData.email}&lt;/span&gt;
+              &lt;/div&gt;
+              &lt;div className&#x3D;&quot;profile-field&quot;&gt;
+                &lt;span className&#x3D;&quot;field-label&quot;&gt;Display Name:&lt;/span&gt;
+                &lt;span&gt;{userData.displayName || &#x27;Not set&#x27;}&lt;/span&gt;
+              &lt;/div&gt;
+              &lt;div className&#x3D;&quot;profile-field&quot;&gt;
+                &lt;span className&#x3D;&quot;field-label&quot;&gt;Role:&lt;/span&gt;
+                &lt;span&gt;{userData.role}&lt;/span&gt;
+              &lt;/div&gt;
+              {userData.verifiedAge &amp;&amp; (
+                &lt;div className&#x3D;&quot;profile-field&quot;&gt;
+                  &lt;span className&#x3D;&quot;field-label&quot;&gt;Age Verified:&lt;/span&gt;
+                  &lt;span&gt;Yes&lt;/span&gt;
+                &lt;/div&gt;
+              )}
+              {userData.contentRating &amp;&amp; (
+                &lt;div className&#x3D;&quot;profile-field&quot;&gt;
+                  &lt;span className&#x3D;&quot;field-label&quot;&gt;Content Rating:&lt;/span&gt;
+                  &lt;span&gt;{userData.contentRating}&lt;/span&gt;
+                &lt;/div&gt;
+              )}
+              &lt;button type&#x3D;&quot;button&quot; onClick&#x3D;{() &#x3D;&gt; setIsEditing(true)} className&#x3D;&quot;btn-primary&quot;&gt;
+                Edit Profile
+              &lt;/button&gt;
+            &lt;/div&gt;
+          ) : (
+            &lt;form className&#x3D;&quot;profile-edit-form&quot; onSubmit&#x3D;{handleProfileUpdate}&gt;
+              &lt;div className&#x3D;&quot;form-group&quot;&gt;
+                &lt;label htmlFor&#x3D;&quot;display-name&quot;&gt;Display Name&lt;/label&gt;
+                &lt;input
+                  type&#x3D;&quot;text&quot;
+                  id&#x3D;&quot;display-name&quot;
+                  name&#x3D;&quot;displayName&quot;
+                  defaultValue&#x3D;{userData.displayName}
+                  maxLength&#x3D;{50}
+                  placeholder&#x3D;&quot;Enter display name&quot;
+                /&gt;
+              &lt;/div&gt;
+              &lt;div className&#x3D;&quot;form-actions&quot;&gt;
+                &lt;button type&#x3D;&quot;submit&quot; className&#x3D;&quot;btn-primary&quot;&gt;
+                  Save Changes
+                &lt;/button&gt;
+                &lt;button type&#x3D;&quot;button&quot; onClick&#x3D;{() &#x3D;&gt; setIsEditing(false)} className&#x3D;&quot;btn-secondary&quot;&gt;
+                  Cancel
+                &lt;/button&gt;
+              &lt;/div&gt;
+            &lt;/form&gt;
+          )}
+        &lt;/section&gt;
+      )}
+
+      {activeTab &#x3D;&#x3D;&#x3D; &#x27;stats&#x27; &amp;&amp; (
+        &lt;section
+          id&#x3D;&quot;stats-panel&quot;
+          role&#x3D;&quot;tabpanel&quot;
+          aria-labelledby&#x3D;&quot;stats-tab&quot;
+          className&#x3D;&quot;stats-section&quot;
+        &gt;
+          &lt;h2&gt;Your Statistics&lt;/h2&gt;
+
+          {userStats ? (
+            &lt;div className&#x3D;&quot;stats-grid&quot;&gt;
+              &lt;div className&#x3D;&quot;stat-card&quot;&gt;
+                &lt;div className&#x3D;&quot;stat-value&quot;&gt;{userStats.proposalsCreated}&lt;/div&gt;
+                &lt;div className&#x3D;&quot;stat-label&quot;&gt;Proposals Created&lt;/div&gt;
+              &lt;/div&gt;
+              &lt;div className&#x3D;&quot;stat-card&quot;&gt;
+                &lt;div className&#x3D;&quot;stat-value&quot;&gt;{userStats.votesCast}&lt;/div&gt;
+                &lt;div className&#x3D;&quot;stat-label&quot;&gt;Votes Cast&lt;/div&gt;
+              &lt;/div&gt;
+              &lt;div className&#x3D;&quot;stat-card&quot;&gt;
+                &lt;div className&#x3D;&quot;stat-value&quot;&gt;{userStats.debatesParticipated}&lt;/div&gt;
+                &lt;div className&#x3D;&quot;stat-label&quot;&gt;Debates Participated&lt;/div&gt;
+              &lt;/div&gt;
+              &lt;div className&#x3D;&quot;stat-card&quot;&gt;
+                &lt;div className&#x3D;&quot;stat-value&quot;&gt;{userStats.reputation}&lt;/div&gt;
+                &lt;div className&#x3D;&quot;stat-label&quot;&gt;Reputation Score&lt;/div&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+          ) : (
+            &lt;p&gt;No statistics available yet.&lt;/p&gt;
+          )}
+        &lt;/section&gt;
+      )}
+
+      {activeTab &#x3D;&#x3D;&#x3D; &#x27;settings&#x27; &amp;&amp; (
+        &lt;section
+          id&#x3D;&quot;settings-panel&quot;
+          role&#x3D;&quot;tabpanel&quot;
+          aria-labelledby&#x3D;&quot;settings-tab&quot;
+          className&#x3D;&quot;settings-section&quot;
+        &gt;
+          &lt;h2&gt;Settings &amp; Preferences&lt;/h2&gt;
+
+          &lt;div className&#x3D;&quot;settings-group&quot;&gt;
+            &lt;h3&gt;Notifications&lt;/h3&gt;
+            &lt;div className&#x3D;&quot;setting-item&quot;&gt;
+              &lt;label htmlFor&#x3D;&quot;email-notifications&quot;&gt;
+                &lt;input
+                  type&#x3D;&quot;checkbox&quot;
+                  id&#x3D;&quot;email-notifications&quot;
+                  checked&#x3D;{preferences.emailNotifications}
+                  onChange&#x3D;{e &#x3D;&gt; handlePreferenceChange(&#x27;emailNotifications&#x27;, e.target.checked)}
+                /&gt;
+                Email Notifications
+              &lt;/label&gt;
+            &lt;/div&gt;
+            &lt;div className&#x3D;&quot;setting-item&quot;&gt;
+              &lt;label htmlFor&#x3D;&quot;push-notifications&quot;&gt;
+                &lt;input
+                  type&#x3D;&quot;checkbox&quot;
+                  id&#x3D;&quot;push-notifications&quot;
+                  checked&#x3D;{preferences.pushNotifications}
+                  onChange&#x3D;{e &#x3D;&gt; handlePreferenceChange(&#x27;pushNotifications&#x27;, e.target.checked)}
+                /&gt;
+                Push Notifications
+              &lt;/label&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+
+          &lt;div className&#x3D;&quot;settings-group&quot;&gt;
+            &lt;h3&gt;Appearance&lt;/h3&gt;
+            &lt;div className&#x3D;&quot;setting-item&quot;&gt;
+              &lt;label htmlFor&#x3D;&quot;theme-select&quot;&gt;Theme&lt;/label&gt;
+              &lt;select
+                id&#x3D;&quot;theme-select&quot;
+                value&#x3D;{preferences.theme}
+                onChange&#x3D;{e &#x3D;&gt;
+                  handlePreferenceChange(&#x27;theme&#x27;, e.target.value as &#x27;light&#x27; | &#x27;dark&#x27; | &#x27;auto&#x27;)
+                }
+              &gt;
+                &lt;option value&#x3D;&quot;light&quot;&gt;Light&lt;/option&gt;
+                &lt;option value&#x3D;&quot;dark&quot;&gt;Dark&lt;/option&gt;
+                &lt;option value&#x3D;&quot;auto&quot;&gt;Auto (System)&lt;/option&gt;
+              &lt;/select&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+
+          &lt;div className&#x3D;&quot;settings-group&quot;&gt;
+            &lt;h3&gt;Accessibility&lt;/h3&gt;
+            &lt;div className&#x3D;&quot;setting-item&quot;&gt;
+              &lt;label htmlFor&#x3D;&quot;reduced-motion&quot;&gt;
+                &lt;input
+                  type&#x3D;&quot;checkbox&quot;
+                  id&#x3D;&quot;reduced-motion&quot;
+                  checked&#x3D;{preferences.accessibility.reducedMotion}
+                  onChange&#x3D;{e &#x3D;&gt; handleAccessibilityChange(&#x27;reducedMotion&#x27;, e.target.checked)}
+                /&gt;
+                Reduce Motion
+              &lt;/label&gt;
+              &lt;p className&#x3D;&quot;setting-description&quot;&gt;Minimize animations and transitions&lt;/p&gt;
+            &lt;/div&gt;
+            &lt;div className&#x3D;&quot;setting-item&quot;&gt;
+              &lt;label htmlFor&#x3D;&quot;high-contrast&quot;&gt;
+                &lt;input
+                  type&#x3D;&quot;checkbox&quot;
+                  id&#x3D;&quot;high-contrast&quot;
+                  checked&#x3D;{preferences.accessibility.highContrast}
+                  onChange&#x3D;{e &#x3D;&gt; handleAccessibilityChange(&#x27;highContrast&#x27;, e.target.checked)}
+                /&gt;
+                High Contrast
+              &lt;/label&gt;
+              &lt;p className&#x3D;&quot;setting-description&quot;&gt;Increase contrast for better visibility&lt;/p&gt;
+            &lt;/div&gt;
+            &lt;div className&#x3D;&quot;setting-item&quot;&gt;
+              &lt;label htmlFor&#x3D;&quot;large-text&quot;&gt;
+                &lt;input
+                  type&#x3D;&quot;checkbox&quot;
+                  id&#x3D;&quot;large-text&quot;
+                  checked&#x3D;{preferences.accessibility.largeText}
+                  onChange&#x3D;{e &#x3D;&gt; handleAccessibilityChange(&#x27;largeText&#x27;, e.target.checked)}
+                /&gt;
+                Large Text
+              &lt;/label&gt;
+              &lt;p className&#x3D;&quot;setting-description&quot;&gt;Increase text size throughout the app&lt;/p&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+
+          &lt;div className&#x3D;&quot;settings-group&quot;&gt;
+            &lt;h3&gt;Language&lt;/h3&gt;
+            &lt;div className&#x3D;&quot;setting-item&quot;&gt;
+              &lt;label htmlFor&#x3D;&quot;language-select&quot;&gt;Preferred Language&lt;/label&gt;
+              &lt;select
+                id&#x3D;&quot;language-select&quot;
+                value&#x3D;{preferences.language}
+                onChange&#x3D;{e &#x3D;&gt; handlePreferenceChange(&#x27;language&#x27;, e.target.value)}
+              &gt;
+                &lt;option value&#x3D;&quot;en&quot;&gt;English&lt;/option&gt;
+                &lt;option value&#x3D;&quot;cy&quot;&gt;Welsh (Cymraeg)&lt;/option&gt;
+                &lt;option value&#x3D;&quot;gd&quot;&gt;Scottish Gaelic (Gàidhlig)&lt;/option&gt;
+              &lt;/select&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/section&gt;
+      )}
+    &lt;/div&gt;
+  );
+};
+
+export default UserProfile;
+</code></pre>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'interface';
+            var COMPODOC_CURRENT_PAGE_URL = 'UserPreferences.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

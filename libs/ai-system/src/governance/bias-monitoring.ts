@@ -5,6 +5,7 @@
  *
  * @module governance/bias-monitoring
  */
+/* eslint-disable no-console */
 
 /**
  * Bias metric

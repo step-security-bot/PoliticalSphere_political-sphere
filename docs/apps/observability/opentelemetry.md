@@ -49,7 +49,7 @@ app.Run();
 
 \*\*\* Last updated: 2025-11-04
 
-# Observability: Azure Monitor & OpenTelemetry
+## Observability: Azure Monitor & OpenTelemetry
 
 This note summarises how to get started with OpenTelemetry on Azure (Application Insights / Azure Monitor) for the project's services. It emphasises a low-risk rollout (staging → canary → prod) and cost-aware sampling.
 

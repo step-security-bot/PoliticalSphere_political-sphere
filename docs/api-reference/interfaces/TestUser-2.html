@@ -1,0 +1,956 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>political-sphere documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">political-sphere documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content interface">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Interfaces</li>
+  <li class="breadcrumb-item"
+  >
+  TestUser</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>apps/e2e/src/test-utils.ts</code>
+        </p>
+
+
+
+
+        <section data-compodoc="block-index">
+            <h3 id="index">Index</h3>
+            <table class="table table-sm table-bordered index-table">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <h6><b>Properties</b></h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <ul class="index-list">
+                                <li>
+                                        <a href="#email" 
+>
+                                            email
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#id" 
+>
+                                            id
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#password" 
+>
+                                            password
+                                        </a>
+                                </li>
+                                <li>
+                                            <span class="modifier">Optional</span>
+                                        <a href="#tokens" 
+>
+                                            tokens
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#username" 
+>
+                                            username
+                                        </a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+
+
+            <section data-compodoc="block-properties">
+                <h3 id="inputs">Properties</h3>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="email"></a>
+                                        <span class="name "><b>email</b>
+                                            <a href="#email">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>email:         <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="id"></a>
+                                        <span class="name "><b>id</b>
+                                            <a href="#id">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>id:         <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="password"></a>
+                                        <span class="name "><b>password</b>
+                                            <a href="#password">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>password:         <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="tokens"></a>
+                                        <span class="name "><b>tokens</b>
+                                            <a href="#tokens">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>tokens:         <code><a href="../interfaces/AuthTokens.html" target="_self" >AuthTokens</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="../interfaces/AuthTokens.html" target="_self" >AuthTokens</a></code>
+
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Optional</i>
+                                        </td>
+                                    </tr>
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="username"></a>
+                                        <span class="name "><b>username</b>
+                                            <a href="#username">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>username:         <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+            </section>
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { request } from &#x27;@playwright/test&#x27;;
+import type { Page, APIRequestContext } from &#x27;@playwright/test&#x27;;
+import { TestDatabase, TestDataSeeder, TestScenarios } from &#x27;../fixtures/test-data.js&#x27;;
+
+export interface AuthTokens {
+  accessToken: string;
+  refreshToken: string;
+}
+
+export interface TestUser {
+  id: string;
+  username: string;
+  email: string;
+  password: string;
+  tokens?: AuthTokens;
+}
+
+const emitLog &#x3D; (message: string) &#x3D;&gt; process.stdout.write(&#x60;${message}\n&#x60;);
+
+/**
+ * Authentication Helper
+ * Handles user registration, login, and token management
+ */
+export class AuthHelper {
+  private page: Page;
+  private apiContext!: APIRequestContext;
+  private baseURL: string;
+
+  constructor(page: Page, baseURL: string &#x3D; &#x27;http://localhost:4000&#x27;) {
+    this.page &#x3D; page;
+    this.baseURL &#x3D; baseURL;
+  }
+
+  /**
+   * Initialize API context for backend calls
+   */
+  async initAPIContext(): Promise&lt;void&gt; {
+    this.apiContext &#x3D; await request.newContext({
+      baseURL: this.baseURL,
+    });
+  }
+
+  /**
+   * Register a new user via API
+   */
+  async registerUser(userData: {
+    username: string;
+    email: string;
+    password: string;
+  }): Promise&lt;TestUser&gt; {
+    const response &#x3D; await this.apiContext.post(&#x27;/auth/register&#x27;, {
+      data: userData,
+    });
+
+    if (!response.ok()) {
+      throw new Error(&#x60;Registration failed: ${response.status()} ${response.statusText()}&#x60;);
+    }
+
+    const data &#x3D; await response.json();
+    return {
+      id: data.user.id,
+      username: data.user.username,
+      email: data.user.email,
+      password: userData.password,
+      tokens: {
+        accessToken: data.tokens.accessToken,
+        refreshToken: data.tokens.refreshToken,
+      },
+    };
+  }
+
+  /**
+   * Login user via API
+   */
+  async loginUser(email: string, password: string): Promise&lt;AuthTokens&gt; {
+    const response &#x3D; await this.apiContext.post(&#x27;/auth/login&#x27;, {
+      data: { email, password },
+    });
+
+    if (!response.ok()) {
+      throw new Error(&#x60;Login failed: ${response.status()} ${response.statusText()}&#x60;);
+    }
+
+    const data &#x3D; await response.json();
+    return {
+      accessToken: data.tokens.accessToken,
+      refreshToken: data.tokens.refreshToken,
+    };
+  }
+
+  /**
+   * Set authentication tokens in localStorage
+   */
+  async setAuthTokens(tokens: AuthTokens): Promise&lt;void&gt; {
+    await this.page.evaluate(tokens &#x3D;&gt; {
+      localStorage.setItem(&#x27;accessToken&#x27;, tokens.accessToken);
+      localStorage.setItem(&#x27;refreshToken&#x27;, tokens.refreshToken);
+    }, tokens);
+  }
+
+  /**
+   * Clear authentication tokens
+   */
+  async clearAuthTokens(): Promise&lt;void&gt; {
+    await this.page.evaluate(() &#x3D;&gt; {
+      localStorage.removeItem(&#x27;accessToken&#x27;);
+      localStorage.removeItem(&#x27;refreshToken&#x27;);
+      localStorage.removeItem(&#x27;user&#x27;);
+    });
+  }
+
+  /**
+   * Check if user is authenticated
+   */
+  async isAuthenticated(): Promise&lt;boolean&gt; {
+    return await this.page.evaluate(() &#x3D;&gt; {
+      const token &#x3D; localStorage.getItem(&#x27;accessToken&#x27;);
+      return !!token;
+    });
+  }
+
+  /**
+   * Get current user from localStorage
+   */
+  async getCurrentUser(): Promise&lt;TestUser | null&gt; {
+    return await this.page.evaluate(() &#x3D;&gt; {
+      const userStr &#x3D; localStorage.getItem(&#x27;user&#x27;);
+      return userStr ? JSON.parse(userStr) : null;
+    });
+  }
+
+  /**
+   * Complete registration flow via UI
+   */
+  async registerViaUI(userData: {
+    username: string;
+    email: string;
+    password: string;
+  }): Promise&lt;void&gt; {
+    // Navigate to registration page
+    await this.page.goto(&#x27;/&#x27;);
+
+    // Look for register button/link
+    const registerButton &#x3D; this.page
+      .getByRole(&#x27;button&#x27;, { name: /register|sign up|create account/i })
+      .first();
+    if (await registerButton.isVisible()) {
+      await registerButton.click();
+    }
+
+    // Fill registration form
+    await this.page.fill(&#x27;input[name&#x3D;&quot;username&quot;]&#x27;, userData.username);
+    await this.page.fill(&#x27;input[name&#x3D;&quot;email&quot;]&#x27;, userData.email);
+    await this.page.fill(&#x27;input[type&#x3D;&quot;password&quot;][name&#x3D;&quot;password&quot;]&#x27;, userData.password);
+    await this.page.fill(&#x27;input[name&#x3D;&quot;confirmPassword&quot;]&#x27;, userData.password);
+
+    // Accept terms if present
+    const termsCheckbox &#x3D; this.page.locator(&#x27;input[type&#x3D;&quot;checkbox&quot;]&#x27;).first();
+    if (await termsCheckbox.isVisible()) {
+      await termsCheckbox.check();
+    }
+
+    // Submit form
+    await this.page.getByRole(&#x27;button&#x27;, { name: /sign up|create account|register/i }).click();
+
+    // Wait for success or redirect
+    await this.page.waitForTimeout(2000);
+  }
+
+  /**
+   * Complete login flow via UI
+   */
+  async loginViaUI(email: string, password: string): Promise&lt;void&gt; {
+    // Navigate to login page
+    await this.page.goto(&#x27;/&#x27;);
+
+    // Look for login button/link if needed
+    const loginButton &#x3D; this.page.getByRole(&#x27;button&#x27;, { name: /login|sign in/i }).first();
+    if (await loginButton.isVisible()) {
+      await loginButton.click();
+    }
+
+    // Fill login form
+    await this.page.fill(&#x27;input[name&#x3D;&quot;email&quot;]&#x27;, email);
+    await this.page.fill(&#x27;input[type&#x3D;&quot;password&quot;][name&#x3D;&quot;password&quot;]&#x27;, password);
+
+    // Submit form
+    await this.page.getByRole(&#x27;button&#x27;, { name: /sign in|login/i }).click();
+
+    // Wait for success
+    await this.page.waitForTimeout(2000);
+  }
+
+  /**
+   * Logout user
+   */
+  async logout(): Promise&lt;void&gt; {
+    // Try to find logout button
+    const logoutButton &#x3D; this.page.getByRole(&#x27;button&#x27;, { name: /logout|sign out/i });
+    if (await logoutButton.isVisible()) {
+      await logoutButton.click();
+    } else {
+      // Fallback: clear tokens directly
+      await this.clearAuthTokens();
+      await this.page.reload();
+    }
+  }
+
+  /**
+   * Get API context
+   */
+  getAPIContext(): APIRequestContext {
+    if (!this.apiContext) {
+      throw new Error(&#x27;API context not initialized. Call initAPIContext() first.&#x27;);
+    }
+    return this.apiContext;
+  }
+
+  /**
+   * Cleanup API context
+   */
+  async cleanup(): Promise&lt;void&gt; {
+    if (this.apiContext) {
+      await this.apiContext.dispose();
+    }
+  }
+}
+
+/**
+ * Database Helper for E2E Tests
+ * Manages test data seeding and cleanup
+ */
+export class DatabaseHelper {
+  private db: TestDatabase;
+  private seederInstance: TestDataSeeder;
+  private scenariosInstance: TestScenarios;
+
+  constructor() {
+    this.db &#x3D; new TestDatabase();
+    this.seederInstance &#x3D; new TestDataSeeder(this.db);
+    this.scenariosInstance &#x3D; new TestScenarios(this.seederInstance);
+  }
+
+  /**
+   * Setup database for tests
+   */
+  async setup(): Promise&lt;void&gt; {
+    await this.db.setup();
+  }
+
+  /**
+   * Cleanup database after tests
+   */
+  async cleanup(): Promise&lt;void&gt; {
+    await this.seederInstance.cleanup();
+    await this.db.teardown();
+  }
+
+  /**
+   * Get test scenarios
+   */
+  getScenarios(): TestScenarios {
+    return this.scenariosInstance;
+  }
+
+  /**
+   * Get seeder instance
+   */
+  getSeeder(): TestDataSeeder {
+    return this.seederInstance;
+  }
+}
+
+/**
+ * Page Object Base Class
+ * Provides common functionality for all page objects
+ */
+export abstract class BasePage {
+  protected page: Page;
+  protected baseURL: string;
+
+  constructor(page: Page, baseURL: string &#x3D; &#x27;http://localhost:3001&#x27;) {
+    this.page &#x3D; page;
+    this.baseURL &#x3D; baseURL;
+  }
+
+  /**
+   * Navigate to page
+   */
+  async goto(path: string &#x3D; &#x27;/&#x27;): Promise&lt;void&gt; {
+    await this.page.goto(&#x60;${this.baseURL}${path}&#x60;);
+    await this.page.waitForLoadState(&#x27;networkidle&#x27;);
+  }
+
+  /**
+   * Wait for page to be ready
+   */
+  async waitForReady(): Promise&lt;void&gt; {
+    await this.page.waitForLoadState(&#x27;domcontentloaded&#x27;);
+  }
+
+  /**
+   * Check if element is visible
+   */
+  async isVisible(selector: string): Promise&lt;boolean&gt; {
+    return await this.page.locator(selector).isVisible();
+  }
+
+  /**
+   * Wait for element to be visible
+   */
+  async waitForVisible(selector: string, timeout: number &#x3D; 10000): Promise&lt;void&gt; {
+    await this.page.waitForSelector(selector, { state: &#x27;visible&#x27;, timeout });
+  }
+
+  /**
+   * Click element
+   */
+  async click(selector: string): Promise&lt;void&gt; {
+    await this.page.locator(selector).click();
+  }
+
+  /**
+   * Fill input field
+   */
+  async fill(selector: string, value: string): Promise&lt;void&gt; {
+    await this.page.locator(selector).fill(value);
+  }
+
+  /**
+   * Get text content
+   */
+  async getText(selector: string): Promise&lt;string&gt; {
+    return (await this.page.locator(selector).textContent()) || &#x27;&#x27;;
+  }
+
+  /**
+   * Take screenshot for debugging
+   */
+  async screenshot(name: string): Promise&lt;void&gt; {
+    await this.page.screenshot({ path: &#x60;test-results/screenshots/${name}.png&#x60; });
+  }
+}
+
+/**
+ * WebSocket Helper for real-time features
+ */
+export class WebSocketHelper {
+  private page: Page;
+  private connections: Map&lt;string, unknown&gt; &#x3D; new Map();
+
+  constructor(page: Page) {
+    this.page &#x3D; page;
+  }
+
+  /**
+   * Monitor WebSocket connections
+   */
+  async monitorWebSocket(url: string): Promise&lt;void&gt; {
+    // Implementation would monitor WS connections
+    // This is a placeholder for actual WebSocket monitoring
+  }
+
+  /**
+   * Wait for WebSocket message
+   */
+  async waitForWSMessage(type: string, timeout: number &#x3D; 10000): Promise&lt;unknown&gt; {
+    // Implementation would wait for specific WS messages
+    return new Promise(resolve &#x3D;&gt; {
+      setTimeout(() &#x3D;&gt; resolve({}), timeout);
+    });
+  }
+
+  /**
+   * Check WebSocket connection status
+   */
+  async isWSConnected(url: string): Promise&lt;boolean&gt; {
+    // Implementation would check WS connection status
+    return true; // Placeholder
+  }
+}
+
+/**
+ * Performance Helper
+ * Measures and monitors performance metrics
+ */
+export class PerformanceHelper {
+  private page: Page;
+
+  constructor(page: Page) {
+    this.page &#x3D; page;
+  }
+
+  /**
+   * Measure page load time
+   */
+  async measurePageLoad(): Promise&lt;number&gt; {
+    const startTime &#x3D; Date.now();
+    await this.page.waitForLoadState(&#x27;domcontentloaded&#x27;);
+    return Date.now() - startTime;
+  }
+
+  /**
+   * Get performance metrics
+   */
+  async getMetrics(): Promise&lt;Record&lt;string, unknown&gt;&gt; {
+    return await this.page.evaluate(() &#x3D;&gt; {
+      const perf &#x3D; performance.getEntriesByType(&#x27;navigation&#x27;)[0] as PerformanceNavigationTiming;
+      return {
+        domContentLoaded: perf.domContentLoadedEventEnd - perf.domContentLoadedEventStart,
+        loadComplete: perf.loadEventEnd - perf.loadEventStart,
+        firstPaint: performance.getEntriesByName(&#x27;first-paint&#x27;)[0]?.startTime || 0,
+        firstContentfulPaint:
+          performance.getEntriesByName(&#x27;first-contentful-paint&#x27;)[0]?.startTime || 0,
+      };
+    });
+  }
+
+  /**
+   * Monitor network requests
+   */
+  async monitorNetwork(): Promise&lt;void&gt; {
+    this.page.on(&#x27;request&#x27;, request &#x3D;&gt; {
+      emitLog(&#x60;Request: ${request.method()} ${request.url()}&#x60;);
+    });
+
+    this.page.on(&#x27;response&#x27;, response &#x3D;&gt; {
+      emitLog(&#x60;Response: ${response.status()} ${response.url()}&#x60;);
+    });
+  }
+}
+
+/**
+ * Global test utilities
+ */
+export const TestUtils &#x3D; {
+  /**
+   * Create authenticated user for tests
+   */
+  async createAuthenticatedUser(
+    page: Page,
+    userData?: { username?: string; email?: string; password?: string }
+  ): Promise&lt;TestUser&gt; {
+    const authHelper &#x3D; new AuthHelper(page);
+    await authHelper.initAPIContext();
+
+    const defaultUser &#x3D; {
+      username: &#x60;testuser_${Date.now()}&#x60;,
+      email: &#x60;testuser_${Date.now()}@example.com&#x60;,
+      password: &#x27;SecurePass123!&#x27;,
+      ...userData,
+    };
+
+    try {
+      const user &#x3D; await authHelper.registerUser(defaultUser);
+      if (user.tokens) await authHelper.setAuthTokens(user.tokens);
+      return user;
+    } finally {
+      await authHelper.cleanup();
+    }
+  },
+
+  /**
+   * Setup test environment
+   */
+  async setupTestEnvironment(): Promise&lt;{ db: DatabaseHelper; auth: AuthHelper | null }&gt; {
+    const db &#x3D; new DatabaseHelper();
+    await db.setup();
+
+    // Note: Auth helper needs a page context, so it&#x27;s created per test
+    return { db, auth: null as unknown as AuthHelper | null };
+  },
+
+  /**
+   * Cleanup test environment
+   */
+  async cleanupTestEnvironment(db: DatabaseHelper): Promise&lt;void&gt; {
+    await db.cleanup();
+  },
+
+  /**
+   * Wait for application to be ready
+   */
+  async waitForAppReady(page: Page, timeout: number &#x3D; 30000): Promise&lt;void&gt; {
+    await page.waitForFunction(
+      () &#x3D;&gt; {
+        // Check if main app element is present
+        return (
+          document.querySelector(&#x27;[data-testid&#x3D;&quot;app&quot;]&#x27;) ||
+          document.querySelector(&#x27;main&#x27;) ||
+          document.readyState &#x3D;&#x3D;&#x3D; &#x27;complete&#x27;
+        );
+      },
+      { timeout }
+    );
+  },
+};
+</code></pre>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'interface';
+            var COMPODOC_CURRENT_PAGE_URL = 'TestUser-2.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

@@ -7,11 +7,16 @@ import express from 'express';
 import type { Request, Response } from 'express';
 import { z } from 'zod';
 import { ParliamentService } from '../domain/parliament-service.ts';
-import type { AuthRequest } from '../auth/auth.middleware.ts';
+// Do not import AuthRequest to keep handler signatures compatible with express types
 
 const router = express.Router();
 
 // Validation schemas
+
+/**
+ * Zod schema for validating chamber creation input.
+ * Defines the structure for creating new parliamentary chambers.
+ */
 const CreateChamberSchema = z.object({
   gameId: z.string().uuid(),
   type: z.enum(['commons', 'lords']),
@@ -20,6 +25,10 @@ const CreateChamberSchema = z.object({
   quorumPercentage: z.number().min(0).max(100).default(50),
 });
 
+/**
+ * Zod schema for validating motion creation input.
+ * Defines the structure for creating parliamentary motions and proposals.
+ */
 const CreateMotionSchema = z.object({
   gameId: z.string().uuid().optional(),
   chamberId: z.string().uuid(),
@@ -29,6 +38,10 @@ const CreateMotionSchema = z.object({
   description: z.string().min(1).max(5000),
 });
 
+/**
+ * Zod schema for validating debate scheduling input.
+ * Defines the structure for scheduling parliamentary debates.
+ */
 const ScheduleDebateSchema = z.object({
   motionId: z.string().uuid(),
   startTime: z.string().datetime(),
@@ -37,6 +50,10 @@ const ScheduleDebateSchema = z.object({
   timePerSpeaker: z.number().int().min(30).max(600).default(180), // 30s to 10 min
 });
 
+/**
+ * Zod schema for validating vote casting input.
+ * Defines the structure for casting votes on parliamentary motions.
+ */
 const CastVoteSchema = z.object({
   motionId: z.string().uuid(),
   vote: z.enum(['aye', 'no', 'abstain']),
@@ -48,6 +65,10 @@ const parliamentService = new ParliamentService();
 /**
  * Create a new parliamentary chamber
  * POST /api/parliament/chambers
+ *
+ * @route POST /api/parliament/chambers
+ * @param {CreateChamberSchema} req.body - Chamber creation data
+ * @returns 201 with the created Chamber
  */
 router.post('/chambers', async (req: Request, res: Response): Promise<void> => {
   try {
@@ -86,6 +107,10 @@ router.post('/chambers', async (req: Request, res: Response): Promise<void> => {
 /**
  * Get chamber by ID
  * GET /api/parliament/chambers/:id
+ *
+ * @route GET /api/parliament/chambers/:id
+ * @param {string} id.path - Chamber ID
+ * @returns 200 with Chamber or 404 if not found
  */
 router.get('/chambers/:id', async (req: Request, res: Response): Promise<void> => {
   try {
@@ -124,6 +149,10 @@ router.get('/chambers/:id', async (req: Request, res: Response): Promise<void> =
 /**
  * List all chambers for a game
  * GET /api/parliament/chambers?gameId=xxx
+ *
+ * @route GET /api/parliament/chambers
+ * @param {string} [gameId.query] - Optional game ID filter
+ * @returns 200 with array of Chambers
  */
 router.get('/chambers', async (req: Request, res: Response): Promise<void> => {
   try {
@@ -150,6 +179,10 @@ router.get('/chambers', async (req: Request, res: Response): Promise<void> => {
 /**
  * Create a motion
  * POST /api/parliament/motions
+ *
+ * @route POST /api/parliament/motions
+ * @param {CreateMotionSchema} req.body - Motion details
+ * @returns 201 with created Motion
  */
 router.post('/motions', async (req: Request, res: Response): Promise<void> => {
   try {
@@ -189,6 +222,10 @@ router.post('/motions', async (req: Request, res: Response): Promise<void> => {
 /**
  * Get motion by ID
  * GET /api/parliament/motions/:id
+ *
+ * @route GET /api/parliament/motions/:id
+ * @param {string} id.path - Motion ID
+ * @returns 200 with Motion or 404 if not found
  */
 router.get('/motions/:id', async (req: Request, res: Response): Promise<void> => {
   try {
@@ -227,6 +264,11 @@ router.get('/motions/:id', async (req: Request, res: Response): Promise<void> =>
 /**
  * List motions for a chamber
  * GET /api/parliament/motions?chamberId=xxx
+ *
+ * @route GET /api/parliament/motions
+ * @param {string} [chamberId.query] - Optional chamber filter
+ * @param {string} [gameId.query] - Optional game filter
+ * @returns 200 with array of motions
  */
 router.get('/motions', async (req: Request, res: Response) => {
   try {
@@ -253,6 +295,10 @@ router.get('/motions', async (req: Request, res: Response) => {
 /**
  * Schedule a debate
  * POST /api/parliament/debates
+ *
+ * @route POST /api/parliament/debates
+ * @param {ScheduleDebateSchema} req.body - Debate scheduling details
+ * @returns 201 with created Debate
  */
 router.post('/debates', async (req: Request, res: Response): Promise<void> => {
   try {
@@ -291,6 +337,10 @@ router.post('/debates', async (req: Request, res: Response): Promise<void> => {
 /**
  * Get debate by ID
  * GET /api/parliament/debates/:id
+ *
+ * @route GET /api/parliament/debates/:id
+ * @param {string} id.path - Debate ID
+ * @returns 200 with Debate or 404 if not found
  */
 router.get('/debates/:id', async (req: Request, res: Response): Promise<void> => {
   try {
@@ -329,11 +379,16 @@ router.get('/debates/:id', async (req: Request, res: Response): Promise<void> =>
 /**
  * Cast a vote on a motion
  * POST /api/parliament/votes
+ *
+ * @route POST /api/parliament/votes
+ * @param {CastVoteSchema} req.body - Vote details
+ * @returns 201 with recorded vote
  */
-router.post('/votes', async (req: AuthRequest, res: Response): Promise<void> => {
+router.post('/votes', async (req: Request, res: Response): Promise<void> => {
   try {
     const validated = CastVoteSchema.parse(req.body);
-    const userId = req.user?.userId || req.body.userId; // Get from auth or body
+    const currentUser = (req as Request & { user?: { id: string } }).user;
+    const userId = currentUser?.id || req.body.userId; // Get from auth or body
 
     if (!userId) {
       res.status(401).json({
@@ -374,6 +429,10 @@ router.post('/votes', async (req: AuthRequest, res: Response): Promise<void> => 
 /**
  * Get vote results for a motion
  * GET /api/parliament/votes/results/:motionId
+ *
+ * @route GET /api/parliament/votes/results/:motionId
+ * @param {string} motionId.path - Motion ID
+ * @returns 200 with vote results
  */
 router.get('/votes/results/:motionId', async (req: Request, res: Response): Promise<void> => {
   try {
@@ -404,6 +463,10 @@ router.get('/votes/results/:motionId', async (req: Request, res: Response): Prom
 /**
  * Start voting on a motion
  * POST /api/parliament/motions/:id/start-voting
+ *
+ * @route POST /api/parliament/motions/:id/start-voting
+ * @param {string} id.path - Motion ID
+ * @returns 200 with updated motion status
  */
 router.post('/motions/:id/start-voting', async (req: Request, res: Response): Promise<void> => {
   try {
@@ -434,6 +497,10 @@ router.post('/motions/:id/start-voting', async (req: Request, res: Response): Pr
 /**
  * Close voting on a motion
  * POST /api/parliament/motions/:id/close-voting
+ *
+ * @route POST /api/parliament/motions/:id/close-voting
+ * @param {string} id.path - Motion ID
+ * @returns 200 with updated motion status
  */
 router.post('/motions/:id/close-voting', async (req: Request, res: Response): Promise<void> => {
   try {
@@ -461,4 +528,8 @@ router.post('/motions/:id/close-voting', async (req: Request, res: Response): Pr
   }
 });
 
+/**
+ * Parliament routes router: manage chambers, motions, debates and voting
+ * lifecycle endpoints.
+ */
 export default router;

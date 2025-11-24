@@ -1,5 +1,13 @@
+/**
+ * @ignore
+ */
+
 import { ParliamentDB, prismaDb } from '../services/prisma-database.service.js';
 
+/**
+ * Represents a parliamentary chamber within a game instance.
+ * e.g., House of Commons or House of Lords.
+ */
 export interface Chamber {
   id: string;
   gameId: string;
@@ -10,6 +18,9 @@ export interface Chamber {
   createdAt: string;
 }
 
+/**
+ * A motion (proposal) within a chamber that may go to debate and voting.
+ */
 export interface Motion {
   id: string;
   gameId: string;
@@ -25,6 +36,9 @@ export interface Motion {
   createdAt: string;
 }
 
+/**
+ * A debate scheduled for a motion in a chamber.
+ */
 export interface Debate {
   id: string;
   gameId: string;
@@ -40,6 +54,9 @@ export interface Debate {
   createdAt: string;
 }
 
+/**
+ * A speech made during a debate by a user in the chamber.
+ */
 export interface Speech {
   id: string;
   debateId: string;
@@ -49,6 +66,9 @@ export interface Speech {
   createdAt: string;
 }
 
+/**
+ * A vote cast by a user on a motion.
+ */
 export interface Vote {
   id: string;
   gameId: string;
@@ -59,6 +79,9 @@ export interface Vote {
   createdAt: string;
 }
 
+/**
+ * Aggregated vote results for a motion.
+ */
 export interface VoteResults {
   total: number;
   aye: number;
@@ -66,7 +89,14 @@ export interface VoteResults {
   abstain: number;
 }
 
+/**
+ * Service responsible for creating and managing chambers, motions, debates and votes.
+ */
 export class ParliamentService {
+  /**
+   * Create a new parliamentary chamber for a game
+   * @param data - Chamber creation payload
+   */
   async createChamber(data: {
     gameId: string;
     type: 'commons' | 'lords';
@@ -93,6 +123,10 @@ export class ParliamentService {
     return results as unknown as Chamber[];
   }
 
+  /**
+   * Create a motion in a chamber (proposal for debate/vote)
+   * @param data - Motion creation payload
+   */
   async createMotion(data: {
     gameId: string;
     chamberId: string;
@@ -130,6 +164,11 @@ export class ParliamentService {
     return results as unknown as Motion[];
   }
 
+  /**
+   * Schedule a debate for an existing motion
+   * Uses a transaction to create the debate and update the motion status
+   * @param data - Scheduling details for the debate
+   */
   async scheduleDebate(data: {
     motionId: string;
     startTime: string;
@@ -179,6 +218,10 @@ export class ParliamentService {
     return result as unknown as Debate | null;
   }
 
+  /**
+   * Cast a vote on a motion for a user
+   * @param data - Vote payload including motion and user identifiers
+   */
   async castVote(data: {
     motionId: string;
     userId: string;

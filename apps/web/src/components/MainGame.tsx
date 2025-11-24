@@ -68,6 +68,11 @@ const MainGame: FC<MainGameProps> = ({ userId, username, onLogout }) => {
     return () => clearInterval(interval);
   }, [fetchGameData]);
 
+  // Update page title for game view
+  useEffect(() => {
+    document.title = 'Political Sphere - Game Dashboard';
+  }, []);
+
   // Placeholder handlers for future implementation
   const _handleParliamentAction = async (_action: Record<string, unknown>) => {
     try {

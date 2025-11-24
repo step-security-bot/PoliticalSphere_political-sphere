@@ -1,0 +1,1065 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>political-sphere documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">political-sphere documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content class">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Classes</li>
+  <li class="breadcrumb-item" >CacheService</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>apps/api/src/utils/cache.ts</code>
+        </p>
+
+
+            <p class="comment">
+                <h3>Description</h3>
+            </p>
+            <p class="comment">
+                <p>Service for caching data using Redis or Redis-compatible backends.
+Provides a unified interface for cache operations with metrics tracking
+and flexible Redis configuration options.</p>
+
+            </p>
+
+
+
+
+            <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#metrics" >metrics</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#ownsConnection" >ownsConnection</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#redis" >redis</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#catch" >catch</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#get" >get</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#set" >set</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+            <section data-compodoc="block-constructor">
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(redisInput?: <a href="../undefineds/RedisInput.html" target="_self">RedisInput</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="60" class="link-to-prism">apps/api/src/utils/cache.ts:60</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div class="io-description"><p>Creates a new CacheService instance with the provided Redis configuration.
+Supports various Redis input types including connection strings, instances,
+options objects, and Redis-like interfaces.</p>
+</div>
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                                    <td>Description</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>redisInput</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../miscellaneous/typealiases.html#RedisInput" target="_self" >RedisInput</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            Yes
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <ul>
+<li>Redis configuration or instance to use for caching</li>
+</ul>
+
+                                                        </td>
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+            <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="metrics"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>metrics</b></span>
+                        <a href="#metrics"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/object" target="_blank" >object</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>{
+    hits: 0,
+    misses: 0,
+    sets: 0,
+    gets: 0,
+    errors: 0,
+  }</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="54" class="link-to-prism">apps/api/src/utils/cache.ts:54</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ownsConnection"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>ownsConnection</b></span>
+                        <a href="#ownsConnection"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="53" class="link-to-prism">apps/api/src/utils/cache.ts:53</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="redis"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>redis</b></span>
+                        <a href="#redis"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../miscellaneous/typealiases.html#RedisLike" target="_self" >RedisLike</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="52" class="link-to-prism">apps/api/src/utils/cache.ts:52</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+            <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="catch"></a>
+                    <span class="name">
+                        <span ><b>catch</b></span>
+                        <a href="#catch"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>catch(error: unknown)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="235"
+                                    class="link-to-prism">apps/api/src/utils/cache.ts:235</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>error</td>
+                                            <td>
+                                                        <code>unknown</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="get"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>get</b></span>
+                        <a href="#get"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>get(key: <a href="../unknowns/g.html" target="_self">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="103"
+                                    class="link-to-prism">apps/api/src/utils/cache.ts:103</a></div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="col-md-4">
+                            <b>Type parameters :</b>
+                            <ul class="type-parameters">
+                                    <li>T</li>
+                            </ul>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Retrieves a value from the cache by key.
+Automatically deserializes JSON data and handles different data types.
+Tracks cache hits, misses, and errors for monitoring.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>key</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>The cache key to retrieve</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Promise&lt;T | null&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>The cached value if found, null if not found or on error</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="set"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>set</b></span>
+                        <a href="#set"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>set(key: <a href="../unknowns/g.html" target="_self">string</a>, value: unknown, ttlSeconds?: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="147"
+                                    class="link-to-prism">apps/api/src/utils/cache.ts:147</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Stores a value in the cache with optional time-to-live.
+Automatically serializes the value to JSON and handles different data types efficiently.
+If TTL is 0 or negative, the key is deleted instead of set.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>key</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>The cache key to store the value under</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>value</td>
+                                            <td>
+                                                        <code>unknown</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>The value to cache (will be JSON serialized)</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>ttlSeconds</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    Yes
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>Optional time-to-live in seconds (uses SETEX if provided)</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Promise&lt;void&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+
+
+
+
+
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import type { RedisOptions } from &#x27;ioredis&#x27;;
+import Redis from &#x27;ioredis&#x27;;
+import { getLogger } from &#x27;@political-sphere/shared&#x27;;
+
+/**
+ * Type representing a Redis-like interface with essential caching operations.
+ * This allows for dependency injection of Redis-compatible implementations.
+ */
+type RedisLike &#x3D; Pick&lt;Redis, &#x27;get&#x27; | &#x27;set&#x27; | &#x27;setex&#x27; | &#x27;del&#x27; | &#x27;scan&#x27; | &#x27;pipeline&#x27; | &#x27;quit&#x27;&gt;;
+
+/**
+ * Type representing possible Redis input configurations for cache initialization.
+ * Can be a connection string, Redis instance, Redis options, or Redis-like object.
+ */
+type RedisInput &#x3D; string | Redis | RedisOptions | RedisLike | undefined;
+
+/**
+ * Type guard to check if the input is a Redis instance.
+ * @param input - The value to check
+ * @returns True if the input is a Redis instance
+ */
+function isRedisInstance(input: unknown): input is Redis {
+  return input instanceof Redis;
+}
+
+/**
+ * Type guard to check if the input implements the RedisLike interface.
+ * Verifies that all required Redis methods are present and are functions.
+ * @param input - The value to check
+ * @returns True if the input implements RedisLike interface
+ */
+function isRedisLike(input: unknown): input is RedisLike {
+  if (!input || typeof input !&#x3D;&#x3D; &#x27;object&#x27;) return false;
+  const candidate &#x3D; input as Partial&lt;RedisLike&gt;;
+  return (
+    typeof candidate.get &#x3D;&#x3D;&#x3D; &#x27;function&#x27; &amp;&amp;
+    typeof candidate.set &#x3D;&#x3D;&#x3D; &#x27;function&#x27; &amp;&amp;
+    typeof candidate.setex &#x3D;&#x3D;&#x3D; &#x27;function&#x27; &amp;&amp;
+    typeof candidate.del &#x3D;&#x3D;&#x3D; &#x27;function&#x27; &amp;&amp;
+    typeof candidate.scan &#x3D;&#x3D;&#x3D; &#x27;function&#x27; &amp;&amp;
+    typeof candidate.pipeline &#x3D;&#x3D;&#x3D; &#x27;function&#x27; &amp;&amp;
+    typeof candidate.quit &#x3D;&#x3D;&#x3D; &#x27;function&#x27;
+  );
+}
+
+/**
+ * Service for caching data using Redis or Redis-compatible backends.
+ * Provides a unified interface for cache operations with metrics tracking
+ * and flexible Redis configuration options.
+ */
+export class CacheService {
+  private redis: RedisLike;
+  private ownsConnection &#x3D; false;
+  private metrics &#x3D; {
+    hits: 0,
+    misses: 0,
+    sets: 0,
+    gets: 0,
+    errors: 0,
+  };
+
+  /**
+   * Creates a new CacheService instance with the provided Redis configuration.
+   * Supports various Redis input types including connection strings, instances,
+   * options objects, and Redis-like interfaces.
+   *
+   * @param redisInput - Redis configuration or instance to use for caching
+   */
+  constructor(redisInput?: RedisInput) {
+    if (isRedisInstance(redisInput)) {
+      this.redis &#x3D; redisInput;
+      this.ownsConnection &#x3D; false;
+      return;
+    }
+
+    if (isRedisLike(redisInput)) {
+      this.redis &#x3D; redisInput;
+      this.ownsConnection &#x3D; false;
+      return;
+    }
+
+    if (typeof redisInput &#x3D;&#x3D;&#x3D; &#x27;string&#x27;) {
+      this.redis &#x3D; new Redis(redisInput);
+    } else if (redisInput &amp;&amp; typeof redisInput &#x3D;&#x3D;&#x3D; &#x27;object&#x27;) {
+      this.redis &#x3D; new Redis(redisInput);
+    } else {
+      const connection &#x3D; process.env.REDIS_URL || &#x27;redis://localhost:6379&#x27;;
+      this.redis &#x3D; new Redis(connection);
+    }
+
+    this.ownsConnection &#x3D; true;
+  }
+
+  /**
+   * Retrieves a value from the cache by key.
+   * Automatically deserializes JSON data and handles different data types.
+   * Tracks cache hits, misses, and errors for monitoring.
+   *
+   * @template T - The expected return type of the cached value
+   * @param key - The cache key to retrieve
+   * @returns The cached value if found, null if not found or on error
+   */
+  async get&lt;T&gt;(key: string): Promise&lt;T | null&gt; {
+    this.metrics.gets++;
+    try {
+      const data &#x3D; await this.redis.get(key);
+      if (!data) {
+        this.metrics.misses++;
+        return null;
+      }
+
+      this.metrics.hits++;
+
+      // Fast path for primitives and simple objects
+      if (data.startsWith(&#x27;&quot;&#x27;) &amp;&amp; data.endsWith(&#x27;&quot;&#x27;)) {
+        // String
+        return JSON.parse(data) as T;
+      }
+      if (/^-?\d+(\.\d+)?$/.test(data)) {
+        // Number
+        return (data.includes(&#x27;.&#x27;) ? parseFloat(data) : parseInt(data, 10)) as T;
+      }
+      if (data &#x3D;&#x3D;&#x3D; &#x27;true&#x27; || data &#x3D;&#x3D;&#x3D; &#x27;false&#x27;) {
+        // Boolean
+        return (data &#x3D;&#x3D;&#x3D; &#x27;true&#x27;) as T;
+      }
+
+      // Full JSON parse for complex objects
+      return JSON.parse(data) as T;
+    } catch (error) {
+      this.metrics.errors++;
+      const logger &#x3D; getLogger({ service: &#x27;api-cache&#x27; });
+      logger.warn(&#x27;Cache get error:&#x27;, { error });
+      return null;
+    }
+  }
+
+  /**
+   * Stores a value in the cache with optional time-to-live.
+   * Automatically serializes the value to JSON and handles different data types efficiently.
+   * If TTL is 0 or negative, the key is deleted instead of set.
+   *
+   * @param key - The cache key to store the value under
+   * @param value - The value to cache (will be JSON serialized)
+   * @param ttlSeconds - Optional time-to-live in seconds (uses SETEX if provided)
+   */
+  async set(key: string, value: unknown, ttlSeconds?: number): Promise&lt;void&gt; {
+    this.metrics.sets++;
+    try {
+      let data: string;
+
+      // Optimize serialization for common types
+      if (typeof value &#x3D;&#x3D;&#x3D; &#x27;string&#x27;) {
+        data &#x3D; JSON.stringify(value); // Still need quotes for strings
+      } else if (typeof value &#x3D;&#x3D;&#x3D; &#x27;number&#x27; || typeof value &#x3D;&#x3D;&#x3D; &#x27;boolean&#x27;) {
+        data &#x3D; String(value); // No JSON overhead for primitives
+      } else {
+        data &#x3D; JSON.stringify(value);
+      }
+
+      if (typeof ttlSeconds &#x3D;&#x3D;&#x3D; &#x27;number&#x27; &amp;&amp; Number.isFinite(ttlSeconds)) {
+        const ttl &#x3D; Math.max(0, Math.floor(ttlSeconds));
+        if (ttl &gt; 0) {
+          await this.redis.setex(key, ttl, data);
+        } else {
+          await this.redis.del(key);
+        }
+      } else {
+    this.metrics.sets++;
+    try {
+      let data: string;
+
+      // Optimize serialization for common types
+      if (typeof value &#x3D;&#x3D;&#x3D; &#x27;string&#x27;) {
+        data &#x3D; JSON.stringify(value); // Still need quotes for strings
+      } else if (typeof value &#x3D;&#x3D;&#x3D; &#x27;number&#x27; || typeof value &#x3D;&#x3D;&#x3D; &#x27;boolean&#x27;) {
+        data &#x3D; String(value); // No JSON overhead for primitives
+      } else {
+        data &#x3D; JSON.stringify(value);
+      }
+
+      if (typeof ttlSeconds &#x3D;&#x3D;&#x3D; &#x27;number&#x27; &amp;&amp; Number.isFinite(ttlSeconds)) {
+        const ttl &#x3D; Math.max(0, Math.floor(ttlSeconds));
+        if (ttl &gt; 0) {
+          await this.redis.setex(key, ttl, data);
+        } else {
+          await this.redis.del(key);
+        }
+      } else {
+        await this.redis.set(key, data);
+      }
+    } catch (error) {
+      this.metrics.errors++;
+      const logger &#x3D; getLogger({ service: &#x27;api-cache&#x27; });
+      logger.warn(&#x27;Cache set error:&#x27;, { error });
+    }
+  }
+
+  /**
+   * Deletes a key from the cache.
+   * Silently handles errors and logs warnings for monitoring.
+   *
+   * @param key - The cache key to delete
+   */
+  async del(key: string): Promise&lt;void&gt; {
+    try {
+      await this.redis.del(key);
+    } catch (error) {
+      const logger &#x3D; getLogger({ service: &#x27;api-cache&#x27; });
+      logger.warn(&#x27;Cache del error:&#x27;, { error });
+    }
+  }
+
+  /**
+   * Invalidates all cache keys matching a pattern using Redis SCAN.
+   * Uses pipelining for efficient bulk deletion of multiple keys.
+   * Processes keys in batches of 100 to avoid blocking Redis.
+   *
+   * @param pattern - Redis key pattern to match (e.g., &quot;user:*:votes&quot;)
+   */
+  async invalidatePattern(pattern: string): Promise&lt;void&gt; {
+    try {
+      let cursor &#x3D; &#x27;0&#x27;;
+      do {
+        const [nextCursor, keys] &#x3D; await this.redis.scan(cursor, &#x27;MATCH&#x27;, pattern, &#x27;COUNT&#x27;, 100);
+        if (keys.length &gt; 0) {
+          const pipeline &#x3D; this.redis.pipeline();
+          for (const key of keys) {
+            pipeline.del(key);
+          }
+          await pipeline.exec();
+        }
+        cursor &#x3D; nextCursor;
+      } while (cursor !&#x3D;&#x3D; &#x27;0&#x27;);
+    } catch (error) {
+      const logger &#x3D; getLogger({ service: &#x27;api-cache&#x27; });
+      logger.warn(&#x27;Cache invalidate pattern error:&#x27;, { error });
+    }
+  }
+
+  /**
+   * Closes the Redis connection if this service owns it.
+   * Should be called during application shutdown to clean up resources.
+   */
+  async close(): Promise&lt;void&gt; {
+    if (this.ownsConnection) {
+      await this.redis.quit();
+    }
+  }
+
+  /**
+   * Invalidate all caches related to a vote creation/update.
+   * Clears vote-related cache entries to ensure data consistency
+   * when votes are added, modified, or removed.
+   *
+   * @param billId - The ID of the bill whose vote caches to invalidate
+   * @param userId - The ID of the user whose vote caches to invalidate
+   */
+  async invalidateVoteRelated(billId: string, userId: string): Promise&lt;void&gt; {
+    await Promise.all([
+      this.del(cacheKeys.billVotes(billId)),
+      this.del(cacheKeys.userVotes(userId)),
+      this.del(&#x60;bill:${billId}:voteCounts&#x60;),
+    ]);
+  }
+
+  /**
+   * Returns cache performance metrics for monitoring and debugging.
+   * Includes hit rate calculation and counts of all cache operations.
+   *
+   * @returns Object containing cache metrics including hit rate percentage
+   */
+  getMetrics() {
+    const hitRate &#x3D; this.metrics.gets &gt; 0 ? (this.metrics.hits / this.metrics.gets) * 100 : 0;
+    return {
+      ...this.metrics,
+      hitRate: &#x60;${hitRate.toFixed(2)}%&#x60;,
+    };
+  }
+}
+
+// Cache key generators
+/**
+ * Cache key generator functions for consistent cache key naming across the application.
+ * Provides standardized patterns for caching different types of data.
+ */
+export const cacheKeys &#x3D; {
+  bill: (id: string) &#x3D;&gt; &#x60;bill:${id}&#x60;,
+  bills: (page?: number, limit?: number) &#x3D;&gt; &#x60;bills:${page || 1}:${limit || 10}&#x60;,
+  billVotes: (billId: string) &#x3D;&gt; &#x60;bill:${billId}:votes&#x60;,
+  user: (id: string) &#x3D;&gt; &#x60;user:${id}&#x60;,
+  userBills: (userId: string) &#x3D;&gt; &#x60;user:${userId}:bills&#x60;,
+  userVotes: (userId: string) &#x3D;&gt; &#x60;user:${userId}:votes&#x60;,
+  userByUsername: (username: string) &#x3D;&gt; &#x60;user:username:${username}&#x60;,
+  userByEmail: (email: string) &#x3D;&gt; &#x60;user:email:${email}&#x60;,
+  vote: (id: string) &#x3D;&gt; &#x60;vote:${id}&#x60;,
+  votesByBill: (billId: string) &#x3D;&gt; &#x60;votes:bill:${billId}&#x60;,
+  votesByUser: (userId: string) &#x3D;&gt; &#x60;votes:user:${userId}&#x60;,
+  party: (id: string) &#x3D;&gt; &#x60;party:${id}&#x60;,
+  partyByName: (name: string) &#x3D;&gt; &#x60;party:name:${name}&#x60;,
+  parties: () &#x3D;&gt; &#x60;parties:all&#x60;,
+};
+
+// Cache TTL constants (in seconds)
+/**
+ * Cache time-to-live constants in seconds for different types of cached data.
+ * Defines standard expiration times to balance performance and data freshness.
+ */
+export const CACHE_TTL &#x3D; {
+  BILL: 300, // 5 minutes
+  BILLS_LIST: 60, // 1 minute
+  VOTES: 120, // 2 minutes
+  USER: 600, // 10 minutes
+  PARTY: 300, // 5 minutes
+  PARTY_LIST: 120, // 2 minutes
+};
+</code></pre>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'class';
+            var COMPODOC_CURRENT_PAGE_URL = 'CacheService-1.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

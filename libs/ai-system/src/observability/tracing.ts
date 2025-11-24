@@ -5,6 +5,7 @@
  *
  * @module observability/tracing
  */
+/* eslint-disable no-console */
 
 import type { TraceSpan } from '../types';
 

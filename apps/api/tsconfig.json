@@ -1,12 +1,15 @@
 {
   "extends": "../../tools/config/tsconfig.base.json",
   "compilerOptions": {
-    "ignoreDeprecations": "5.0",
     "rootDir": "../../",
     "baseUrl": "../../",
+    "ignoreDeprecations": "6.0",
     "paths": {
-      "@political-sphere/shared": ["libs/shared/dist/index.js"],
-      "@political-sphere/game-engine": ["libs/game-engine/src/index.ts"]
+      "@political-sphere/shared": ["libs/shared/src/index.ts"],
+      "@political-sphere/shared/*": ["libs/shared/src/*"],
+      "@political-sphere/game-engine": ["libs/game-engine/src/index.ts"],
+      "@political-sphere/feature-flags/*": ["libs/feature-flags/src/*"],
+      "@political-sphere/*": ["libs/*/src/index.ts"]
     },
     "module": "es2022",
     "target": "es2022",

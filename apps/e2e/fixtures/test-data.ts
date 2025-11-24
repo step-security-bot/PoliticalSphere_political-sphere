@@ -398,14 +398,14 @@ export class TestDataSeeder {
       this.generator.generateElection({
         id: faker.string.uuid(),
         status: 'active',
-      }),
+      })
     );
 
     elections.push(
       this.generator.generateElection({
         id: faker.string.uuid(),
         status: 'upcoming',
-      }),
+      })
     );
 
     return elections;

@@ -10,4 +10,8 @@ export const log = (
   level: 'info' | 'warn' | 'error',
   event: string,
   ctx?: Record<string, unknown>
-) => console.log(JSON.stringify({ level, event, ctx: redact(ctx), ts: new Date().toISOString() }));
+) => {
+  const message = JSON.stringify({ level, event, ctx: redact(ctx), ts: new Date().toISOString() });
+  const stream = level === 'info' ? process.stdout : process.stderr;
+  stream.write(`${message}\n`);
+};

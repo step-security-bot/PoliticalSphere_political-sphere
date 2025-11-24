@@ -98,6 +98,14 @@ Brief description of the changes made in this PR.
 - [ ] docs/TODO.md updated
 - [ ] All automated checks (linting, type-check, tests) pass in CI/CD
 - [ ] Observability added (logs, metrics, traces) if applicable
+- [ ] AI-assisted work declared (below) and neutrality/guardrails run when relevant
+- [ ] ADR updated or added when architecture/governance changes apply
+
+AI USE (if any):
+
+- AI-assisted: Yes/No (tools: Copilot/Blackbox/Kilo/Codex/MCP)
+- Neutrality check run: Yes/No (if political content touched)
+- ai:preflight run: Yes/No
 
 ## Constitutional Check (if applicable)
 

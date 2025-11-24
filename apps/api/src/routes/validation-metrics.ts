@@ -8,7 +8,16 @@
 import express from 'express';
 
 // In-memory validation metrics
-const validationMetrics = {
+const validationMetrics: {
+  success: number;
+  failure: number;
+  totalParseTime: number;
+  parseCount: number;
+  routeMetrics: Map<
+    string,
+    { success: number; failure: number; totalParseTime: number; parseCount: number }
+  >;
+} = {
   success: 0,
   failure: 0,
   totalParseTime: 0, // in milliseconds
@@ -19,11 +28,14 @@ const validationMetrics = {
 /**
  * Record a validation attempt with timing.
  *
- * @param {string} route - Route identifier (e.g., 'POST /api/news')
- * @param {boolean} success - Whether validation succeeded
- * @param {number} duration - Parse time in milliseconds
+ * Tracks global and per-route validation success/failure counts and aggregate
+ * parse time to support debugging and performance monitoring of schema validation.
+ *
+ * @param route - Route identifier (e.g., 'POST /api/news')
+ * @param success - Whether validation succeeded
+ * @param duration - Parse time in milliseconds
  */
-export function recordValidation(route, success, duration = 0) {
+export function recordValidation(route: string, success: boolean, duration = 0) {
   // Update global metrics
   if (success) {
     validationMetrics.success++;
@@ -63,7 +75,10 @@ export function getValidationMetrics() {
       ? validationMetrics.totalParseTime / validationMetrics.parseCount
       : 0;
 
-  const routeStats = {};
+  const routeStats: Record<
+    string,
+    { total: number; success: number; failure: number; successRate: number; avgParseTime: number }
+  > = {};
   for (const [route, stats] of validationMetrics.routeMetrics.entries()) {
     const routeTotal = stats.success + stats.failure;
     routeStats[route] = {
@@ -107,7 +122,7 @@ export function createValidationMetricsRouter() {
   const router = express.Router();
 
   // GET /metrics/validation - Retrieve validation metrics
-  router.get('/metrics/validation', (req, res) => {
+  router.get('/metrics/validation', (_req, res) => {
     const metrics = getValidationMetrics();
     res.json({
       success: true,

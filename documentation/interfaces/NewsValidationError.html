@@ -1,0 +1,744 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>political-sphere documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">political-sphere documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content interface">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Interfaces</li>
+  <li class="breadcrumb-item"
+  >
+  NewsValidationError</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>apps/api/src/modules/news-service.ts</code>
+        </p>
+
+
+
+            <p class="comment">
+                <h3>Extends</h3>
+            </p>
+            <p class="comment">
+                        <code>Error</code>
+            </p>
+
+        <section data-compodoc="block-index">
+            <h3 id="index">Index</h3>
+            <table class="table table-sm table-bordered index-table">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <h6><b>Properties</b></h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <ul class="index-list">
+                                <li>
+                                        <a href="#code" 
+>
+                                            code
+                                        </a>
+                                </li>
+                                <li>
+                                            <span class="modifier">Optional</span>
+                                        <a href="#details" 
+>
+                                            details
+                                        </a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+
+
+            <section data-compodoc="block-properties">
+                <h3 id="inputs">Properties</h3>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="code"></a>
+                                        <span class="name "><b>code</b>
+                                            <a href="#code">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>code:         <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="details"></a>
+                                        <span class="name "><b>details</b>
+                                            <a href="#details">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>details:     <code>unknown</code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>    <code>unknown</code>
+
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Optional</i>
+                                        </td>
+                                    </tr>
+
+
+
+
+                        </tbody>
+                    </table>
+            </section>
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">function isValidLength(value: string, min: number, max: number): boolean {
+  const len &#x3D; value.length;
+  return Number.isFinite(min) &amp;&amp; Number.isFinite(max) &amp;&amp; len &gt;&#x3D; min &amp;&amp; len &lt;&#x3D; max;
+}
+
+function isValidInput(value: string): boolean {
+  // Basic guard against script tags and control chars (expand as needed)
+  return !/[&lt;&gt;]/.test(value) &amp;&amp; /^[\p{L}\p{N}\p{Z}\p{P}\p{S}]+$/u.test(value);
+}
+
+function isValidUrl(value: string, allowedProtocols: string[]): boolean {
+  try {
+    const u &#x3D; new URL(value);
+    const proto &#x3D; u.protocol.replace(&#x27;:&#x27;, &#x27;&#x27;);
+    return (
+      allowedProtocols.includes(proto) ||
+      (proto &#x3D;&#x3D;&#x3D; &#x27;http&#x27; &amp;&amp; (u.hostname &#x3D;&#x3D;&#x3D; &#x27;localhost&#x27; || u.hostname &#x3D;&#x3D;&#x3D; &#x27;127.0.0.1&#x27;))
+    );
+  } catch {
+    return false;
+  }
+}
+
+function sanitizeHtml(value: string): string {
+  return value
+    .replace(/&lt;/g, &#x27;&amp;lt;&#x27;)
+    .replace(/&gt;/g, &#x27;&amp;gt;&#x27;)
+    .replace(/&quot;/g, &#x27;&amp;quot;&#x27;)
+    .replace(/&#x27;/g, &#x27;&amp;#39;&#x27;)
+    .replace(/&amp;/g, &#x27;&amp;amp;&#x27;);
+}
+
+const ALLOWED_CATEGORIES &#x3D; [
+  &#x27;politics&#x27;,
+  &#x27;economy&#x27;,
+  &#x27;social&#x27;,
+  &#x27;technology&#x27;,
+  &#x27;environment&#x27;,
+  &#x27;health&#x27;,
+  &#x27;finance&#x27;,
+  &#x27;governance&#x27;,
+  &#x27;policy&#x27;,
+  &#x27;general&#x27;,
+];
+const MAX_TAGS &#x3D; 10;
+const MAX_SOURCES &#x3D; 10;
+const MAX_SOURCE_URL_LENGTH &#x3D; 2048;
+const ALLOWED_SOURCE_PROTOCOLS &#x3D; [&#x27;https&#x27;];
+const LOCALHOST_SOURCE_NAMES &#x3D; [&#x27;localhost&#x27;, &#x27;127.0.0.1&#x27;];
+
+const DEFAULT_CATEGORY &#x3D; &#x27;general&#x27;;
+
+interface NewsValidationError extends Error {
+  code: string;
+  details?: unknown;
+}
+
+function createValidationError(message: string, details?: unknown): NewsValidationError {
+  const error &#x3D; new Error(message);
+  (error as NewsValidationError).code &#x3D; &#x27;VALIDATION_ERROR&#x27;;
+  if (details !&#x3D;&#x3D; undefined) {
+    (error as NewsValidationError).details &#x3D; details;
+  }
+  return error as NewsValidationError;
+}
+
+function assertPayloadObject(payload: unknown) {
+  if (!payload || typeof payload !&#x3D;&#x3D; &#x27;object&#x27; || Array.isArray(payload)) {
+    throw createValidationError(&#x27;Payload must be a JSON object&#x27;, &#x27;payload&#x27;);
+  }
+}
+
+function resolveCategory(category: unknown) {
+  if (category &#x3D;&#x3D;&#x3D; undefined || category &#x3D;&#x3D;&#x3D; null || category &#x3D;&#x3D;&#x3D; &#x27;&#x27;) {
+    return DEFAULT_CATEGORY;
+  }
+  const validated &#x3D; validateCategory(String(category));
+  if (!validated) {
+    throw createValidationError(
+      &#x60;Invalid category. Must be one of: ${ALLOWED_CATEGORIES.join(&#x27;, &#x27;)}&#x60;,
+      &#x27;category&#x27;
+    );
+  }
+  return validated;
+}
+
+function validateTextField(fieldName: string, value: unknown, min: number, max: number) {
+  if (typeof value !&#x3D;&#x3D; &#x27;string&#x27;) {
+    throw createValidationError(&#x60;${fieldName} must be a string&#x60;, fieldName.toLowerCase());
+  }
+  const trimmed &#x3D; value.trim();
+  if (!isValidLength(trimmed, min, max)) {
+    throw createValidationError(
+      &#x60;${fieldName} must be between ${min} and ${max} characters&#x60;,
+      fieldName.toLowerCase()
+    );
+  }
+  if (!isValidInput(trimmed)) {
+    throw createValidationError(
+      &#x60;${fieldName} contains invalid characters or patterns&#x60;,
+      fieldName.toLowerCase()
+    );
+  }
+  return trimmed;
+}
+
+function validateCategory(input: string): string | null {
+  const normalized &#x3D; String(input).trim().toLowerCase();
+  return ALLOWED_CATEGORIES.includes(normalized) ? normalized : null;
+}
+
+function validateTag(input: unknown): string | null {
+  if (typeof input !&#x3D;&#x3D; &#x27;string&#x27;) return null;
+  const t &#x3D; input.trim().toLowerCase();
+  return /^[a-z0-9-]{1,30}$/.test(t) ? t : null;
+}
+
+function sanitizeTagsInput(tags: unknown): string[] {
+  if (tags &#x3D;&#x3D;&#x3D; undefined || tags &#x3D;&#x3D;&#x3D; null) {
+    return [];
+  }
+  if (!Array.isArray(tags)) {
+    throw createValidationError(&#x27;Tags must be an array of strings&#x27;, &#x27;tags&#x27;);
+  }
+  if ((tags as unknown[]).length &gt; MAX_TAGS) {
+    throw createValidationError(&#x60;Too many tags. Maximum allowed: ${MAX_TAGS}&#x60;, &#x27;tags&#x27;);
+  }
+  const sanitized: string[] &#x3D; [];
+  for (const tag of tags as unknown[]) {
+    const validated &#x3D; validateTag(tag);
+    if (!validated) {
+      throw createValidationError(&#x60;Invalid tag format: ${String(tag)}&#x60;, &#x27;tags&#x27;);
+    }
+    sanitized.push(validated);
+  }
+  return Array.from(new Set(sanitized));
+}
+
+function sanitizeSourcesInput(sources: unknown): string[] {
+  if (sources &#x3D;&#x3D;&#x3D; undefined || sources &#x3D;&#x3D;&#x3D; null) {
+    return [];
+  }
+  if (!Array.isArray(sources)) {
+    throw createValidationError(&#x27;Sources must be an array of URLs&#x27;, &#x27;sources&#x27;);
+  }
+  if ((sources as unknown[]).length &gt; MAX_SOURCES) {
+    throw createValidationError(&#x60;Too many sources. Maximum allowed: ${MAX_SOURCES}&#x60;, &#x27;sources&#x27;);
+  }
+
+  const sanitized: string[] &#x3D; [];
+  for (const rawSource of sources as unknown[]) {
+    if (typeof rawSource !&#x3D;&#x3D; &#x27;string&#x27;) {
+      throw createValidationError(&#x27;Source URL must be a string&#x27;, &#x27;sources&#x27;);
+    }
+    const candidate &#x3D; rawSource.trim();
+    if (!candidate) {
+      continue;
+    }
+    if (candidate.length &gt; MAX_SOURCE_URL_LENGTH) {
+      throw createValidationError(
+        &#x60;Source URL exceeds maximum length of ${MAX_SOURCE_URL_LENGTH} characters&#x60;,
+        &#x27;sources&#x27;
+      );
+    }
+    if (!isValidUrl(candidate, [...ALLOWED_SOURCE_PROTOCOLS, &#x27;http&#x27;])) {
+      throw createValidationError(&#x60;Invalid source URL: ${candidate}&#x60;, &#x27;sources&#x27;);
+    }
+    const parsed &#x3D; new URL(candidate);
+    const protocol &#x3D; parsed.protocol.replace(&#x27;:&#x27;, &#x27;&#x27;);
+    if (!ALLOWED_SOURCE_PROTOCOLS.includes(protocol)) {
+      if (!(protocol &#x3D;&#x3D;&#x3D; &#x27;http&#x27; &amp;&amp; LOCALHOST_SOURCE_NAMES.includes(parsed.hostname))) {
+        throw createValidationError(
+          &#x27;Insecure source URL protocol. Use HTTPS or localhost for development-only sources&#x27;,
+          &#x27;sources&#x27;
+        );
+      }
+    }
+    sanitized.push(parsed.toString());
+  }
+
+  return Array.from(new Set(sanitized));
+}
+
+type NewsRecord &#x3D; {
+  id: string;
+  title: string;
+  excerpt: string;
+  content: string;
+  category: string;
+  tags: string[];
+  sources: string[];
+  createdAt: string;
+  updatedAt: string;
+  status?: string;
+};
+
+type StoreLike &#x3D; {
+  read?: () &#x3D;&gt; Promise&lt;unknown[]&gt;;
+  getAll?: () &#x3D;&gt; Promise&lt;unknown[]&gt;;
+  readAll?: () &#x3D;&gt; Promise&lt;unknown[]&gt;;
+  write?: (items: unknown[]) &#x3D;&gt; Promise&lt;unknown&gt;;
+  save?: (items: unknown[]) &#x3D;&gt; Promise&lt;unknown&gt;;
+  writeAll?: (items: unknown[]) &#x3D;&gt; Promise&lt;unknown&gt;;
+  setAll?: (items: unknown[]) &#x3D;&gt; Promise&lt;unknown&gt;;
+};
+
+class NewsService {
+  private store: StoreLike | null;
+  private nowFn: () &#x3D;&gt; Date;
+
+  constructor(store: StoreLike | null, nowFn: () &#x3D;&gt; Date &#x3D; () &#x3D;&gt; new Date()) {
+    this.store &#x3D; store;
+    this.nowFn &#x3D; nowFn;
+  }
+
+  async _readItems(): Promise&lt;unknown[]&gt; {
+    if (!this.store) return [];
+    if (typeof this.store.read &#x3D;&#x3D;&#x3D; &#x27;function&#x27;) return (await this.store.read()) || [];
+    if (typeof this.store.getAll &#x3D;&#x3D;&#x3D; &#x27;function&#x27;) return (await this.store.getAll()) || [];
+    if (typeof this.store.readAll &#x3D;&#x3D;&#x3D; &#x27;function&#x27;) return (await this.store.readAll()) || [];
+    return [];
+  }
+
+  async _writeItems(items: unknown[]): Promise&lt;unknown&gt; {
+    if (!this.store) throw new Error(&#x27;No store configured&#x27;);
+    if (typeof this.store.write &#x3D;&#x3D;&#x3D; &#x27;function&#x27;) return await this.store.write(items);
+    if (typeof this.store.save &#x3D;&#x3D;&#x3D; &#x27;function&#x27;) return await this.store.save(items);
+    if (typeof this.store.writeAll &#x3D;&#x3D;&#x3D; &#x27;function&#x27;) return await this.store.writeAll(items);
+    if (typeof this.store.setAll &#x3D;&#x3D;&#x3D; &#x27;function&#x27;) return await this.store.setAll(items);
+    throw new Error(&#x27;Store does not support write/save APIs&#x27;);
+  }
+
+  _generateId(title &#x3D; &#x27;&#x27;): string {
+    const base &#x3D;
+      String(title || &#x27;news&#x27;)
+        .toLowerCase()
+        .trim()
+        .replace(/[^a-z0-9]+/g, &#x27;-&#x27;)
+        .replace(/(^-|-$)/g, &#x27;&#x27;) || &#x27;item&#x27;;
+    return &#x60;${base}-${Date.now().toString(36)}&#x60;;
+  }
+
+  _validateCreatePayload(payload: Partial&lt;NewsRecord&gt; &#x3D; {}): void {
+    const hasTitle &#x3D; typeof payload.title &#x3D;&#x3D;&#x3D; &#x27;string&#x27; &amp;&amp; payload.title.trim().length &gt; 0;
+    const hasExcerpt &#x3D; typeof payload.excerpt &#x3D;&#x3D;&#x3D; &#x27;string&#x27; &amp;&amp; payload.excerpt.trim().length &gt; 0;
+    const hasContent &#x3D; typeof payload.content &#x3D;&#x3D;&#x3D; &#x27;string&#x27; &amp;&amp; payload.content.trim().length &gt; 0;
+    if (!hasTitle || !hasExcerpt || !hasContent) {
+      throw createValidationError(&#x27;Missing required fields&#x27;, &#x27;payload&#x27;);
+    }
+  }
+
+  // further structural and content validations are handled in create() to allow
+  // sanitization and normalization prior to persistence
+
+  async create(payload: Partial&lt;NewsRecord&gt; &#x3D; {}) {
+    this._validateCreatePayload(payload);
+    // enforce stricter validations and sanitize inputs
+    assertPayloadObject(payload);
+
+    // title/excerpt/content
+    const title &#x3D; sanitizeHtml(validateTextField(&#x27;Title&#x27;, payload.title, 1, 200));
+    const excerpt &#x3D; sanitizeHtml(validateTextField(&#x27;Excerpt&#x27;, payload.excerpt, 1, 1000));
+    const content &#x3D; sanitizeHtml(validateTextField(&#x27;Content&#x27;, payload.content, 1, 20000));
+
+    // category
+    const category &#x3D; resolveCategory(payload.category);
+
+    // tags
+    const tags &#x3D; sanitizeTagsInput(payload.tags);
+
+    // sources
+    const sources &#x3D; sanitizeSourcesInput(payload.sources);
+    const items &#x3D; ((await this._readItems()) || []) as NewsRecord[];
+    const nowIso &#x3D; this.nowFn().toISOString();
+
+    const record: NewsRecord &#x3D; {
+      id: payload.id || this._generateId(title),
+      title,
+      excerpt,
+      content,
+      category,
+      tags,
+      sources,
+      createdAt: nowIso,
+      updatedAt: nowIso,
+    };
+
+    items.push(record);
+    await this._writeItems(items);
+    return record;
+  }
+
+  async list(opts: Partial&lt;{ category: string; tag: string; search: string; limit: number }&gt; &#x3D; {}) {
+    const { category, tag, search, limit } &#x3D; opts || {};
+    let items &#x3D; ((await this._readItems()) || []) as unknown[] as Array&lt;Partial&lt;NewsRecord&gt;&gt;;
+
+    if (category) {
+      // validate category
+      resolveCategory(category);
+      items &#x3D; items.filter(i &#x3D;&gt; i.category &#x3D;&#x3D;&#x3D; category);
+    }
+
+    if (tag) {
+      // validate tag format
+      const validatedTag &#x3D; validateTag(tag);
+      if (!validatedTag) throw createValidationError(&#x27;Invalid tag&#x27;, &#x27;tag&#x27;);
+      items &#x3D; items.filter(i &#x3D;&gt; Array.isArray(i.tags) &amp;&amp; i.tags.includes(validatedTag));
+    }
+
+    if (search) {
+      // validate search input to avoid basic XSS/SQL patterns
+      if (!isValidInput(search)) {
+        throw createValidationError(&#x27;Invalid search query&#x27;, &#x27;search&#x27;);
+      }
+      const q &#x3D; String(search).toLowerCase();
+      items &#x3D; items.filter(
+        i &#x3D;&gt;
+          i.title?.toLowerCase().includes(q) ||
+          i.excerpt?.toLowerCase().includes(q) ||
+          i.content?.toLowerCase().includes(q)
+      );
+    }
+
+    if (limit !&#x3D;&#x3D; undefined) {
+      const n &#x3D; Number(limit);
+      if (!Number.isFinite(n) || n &lt; 0 || n &gt; 1000) {
+        throw createValidationError(&#x27;Invalid limit&#x27;, &#x27;limit&#x27;);
+      }
+      items &#x3D; items.slice(0, n);
+    }
+
+    return items;
+  }
+
+  async update(id: string, changes: Partial&lt;NewsRecord&gt; &#x3D; {}) {
+    if (!id) return null;
+    const items &#x3D; ((await this._readItems()) || []) as NewsRecord[];
+    const idx &#x3D; items.findIndex(it &#x3D;&gt; it.id &#x3D;&#x3D;&#x3D; id);
+    if (idx &#x3D;&#x3D;&#x3D; -1) return null;
+    const existing &#x3D; items[idx];
+    if (!existing) return null;
+    const updated: NewsRecord &#x3D; {
+      ...existing,
+      ...changes,
+      id: existing.id,
+      updatedAt: this.nowFn().toISOString(),
+    };
+    items[idx] &#x3D; updated;
+    await this._writeItems(items);
+    return updated;
+  }
+
+  async analyticsSummary(): Promise&lt;{
+    total: number;
+    categories: Record&lt;string, number&gt;;
+    recent: NewsRecord[];
+  }&gt; {
+    const items &#x3D; ((await this._readItems()) || []) as NewsRecord[];
+    const validItems &#x3D; items.filter(item &#x3D;&gt; {
+      if (!item || typeof item !&#x3D;&#x3D; &#x27;object&#x27;) return false;
+      // Only count published items; skip drafts or malformed entries from legacy data
+      if ((item as NewsRecord).status !&#x3D;&#x3D; &#x27;published&#x27;) return false;
+      try {
+        resolveCategory(item.category);
+      } catch {
+        return false;
+      }
+      return true;
+    });
+    const total &#x3D; validItems.length;
+    const categories &#x3D; validItems.reduce(
+      (acc, it) &#x3D;&gt; {
+        const category &#x3D; resolveCategory(it.category);
+        acc[category] &#x3D; (acc[category] || 0) + 1;
+        return acc;
+      },
+      {} as Record&lt;string, number&gt;
+    );
+    const recent &#x3D; validItems
+      .slice()
+      .filter(i &#x3D;&gt; {
+        if (!i.createdAt) return false;
+        const timestamp &#x3D; new Date(i.createdAt).getTime();
+        return Number.isFinite(timestamp);
+      })
+      .sort(
+        (a, b) &#x3D;&gt;
+          new Date((b as NewsRecord).createdAt).getTime() -
+          new Date((a as NewsRecord).createdAt).getTime()
+      );
+    return { total, categories, recent };
+  }
+}
+
+export { NewsService };
+export default { NewsService };
+</code></pre>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'interface';
+            var COMPODOC_CURRENT_PAGE_URL = 'NewsValidationError.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

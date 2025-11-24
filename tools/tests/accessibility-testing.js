@@ -25,7 +25,7 @@ class AccessibilityTesting {
     try {
       const resultsData = await fs.readFile('ai-learning/accessibility-test-results.json', 'utf8');
       this.testResults = JSON.parse(resultsData);
-    } catch (error) {
+    } catch {
       console.log('📊 No existing accessibility test results found, starting fresh...');
       this.testResults = [];
     }
@@ -650,7 +650,7 @@ class AccessibilityTesting {
       await this.initialize();
 
       // Run comprehensive accessibility tests
-      const results = await this.runAccessibilityTests();
+      await this.runAccessibilityTests();
 
       // Generate detailed report
       const report = await this.generateAccessibilityReport();

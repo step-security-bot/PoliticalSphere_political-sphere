@@ -1,0 +1,981 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>political-sphere documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">political-sphere documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content interface">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Interfaces</li>
+  <li class="breadcrumb-item"
+  >
+  CreateReviewData</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>apps/api/src/domain/judiciary-service.ts</code>
+        </p>
+
+
+            <p class="comment">
+                <h3>Description</h3>
+            </p>
+            <p class="comment">
+                <p>Payload for requesting a review (appeal or judicial review)</p>
+
+            </p>
+
+
+        <section data-compodoc="block-index">
+            <h3 id="index">Index</h3>
+            <table class="table table-sm table-bordered index-table">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <h6><b>Properties</b></h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <ul class="index-list">
+                                <li>
+                                        <a href="#caseId" 
+>
+                                            caseId
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#type" 
+>
+                                            type
+                                        </a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+
+
+            <section data-compodoc="block-properties">
+                <h3 id="inputs">Properties</h3>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="caseId"></a>
+                                        <span class="name "><b>caseId</b>
+                                            <a href="#caseId">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>caseId:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="type"></a>
+                                        <span class="name "><b>type</b>
+                                            <a href="#type">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>type:     <code>&quot;appeal&quot; | &quot;judicial_review&quot;</code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>    <code>&quot;appeal&quot; | &quot;judicial_review&quot;</code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+            </section>
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { getLogger } from &#x27;@political-sphere/shared&#x27;;
+import { JudiciaryDB } from &#x27;../services/database.service.js&#x27;;
+// import { nlpService } from &#x27;../../../../libs/ai-system/src/nlp&#x27;;
+
+/** Helper to safely extract error message */
+function getErrorMessage(error: unknown): string {
+  if (error instanceof Error) return getErrorMessage(error);
+  return String(error);
+}
+const logger &#x3D; getLogger({ service: &#x27;judiciary&#x27; });
+
+/**
+ * Payload for creating a new legal case
+ */
+export interface CreateCaseData {
+  title: string;
+  description?: string;
+  type: &#x27;constitutional&#x27; | &#x27;civil&#x27; | &#x27;criminal&#x27;;
+}
+
+/**
+ * Payload to create a judge appointment
+ */
+export interface CreateJudgeData {
+  userId: string;
+  court: string;
+  position: string;
+  termEndsAt?: Date;
+}
+
+/**
+ * Payload for issuing a ruling on a case
+ */
+export interface CreateRulingData {
+  caseId: string;
+  judgeId: string;
+  decision: string;
+  reasoning?: string;
+}
+
+/**
+ * Payload for requesting a review (appeal or judicial review)
+ */
+export interface CreateReviewData {
+  caseId: string;
+  type: &#x27;appeal&#x27; | &#x27;judicial_review&#x27;;
+}
+
+/**
+ * Payload to create a legal precedent entry
+ */
+export interface CreatePrecedentData {
+  citation: string;
+  summary: string;
+  holding: string;
+  caseId?: string;
+}
+
+/**
+ * JudiciaryService provides APIs for creating and managing legal cases,
+ * judge appointments, rulings, reviews, and legal precedents. It applies
+ * application-level validation and audit-friendly persistence using
+ * &#x60;JudiciaryDB&#x60;.
+ */
+/**
+ * JudiciaryService - manages legal cases, judge appointments, rulings and
+ * reviews within the application domain. Performs validation and persistence
+ * with audit-friendly records.
+ */
+export class JudiciaryService {
+  /**
+   * Create a new case
+   */
+  async createCase(data: CreateCaseData) {
+    try {
+      logger.info(&#x27;Creating case&#x27;, { title: data.title, type: data.type });
+      const caseData &#x3D; await JudiciaryDB.createCase({
+        title: data.title,
+        description: data.description,
+        type: data.type,
+        status: &#x27;filed&#x27;,
+        filedAt: new Date(),
+      });
+      logger.info(&#x27;Case created&#x27;, { id: caseData.id });
+      return caseData;
+    } catch (error) {
+      logger.error(&#x27;Failed to create case&#x27;, { error: getErrorMessage(error), data });
+      throw error;
+    }
+  }
+
+  /**
+   * Get case by ID
+   */
+  async getCase(id: string) {
+    try {
+      const caseData &#x3D; await JudiciaryDB.getCase(id);
+      if (!caseData) {
+        throw new Error(&#x60;Case with id ${id} not found&#x60;);
+      }
+      return caseData;
+    } catch (error) {
+      logger.error(&#x27;Failed to get case&#x27;, { id, error: getErrorMessage(error) });
+      throw error;
+    }
+  }
+
+  /**
+   * List cases with optional filtering
+   */
+  async listCases(options: { status?: string; type?: string; limit?: number } &#x3D; {}) {
+    try {
+      const where: any &#x3D; {};
+      if (options.status) {
+        where.status &#x3D; options.status;
+      }
+      if (options.type) {
+        where.type &#x3D; options.type;
+      }
+
+      const cases &#x3D; await JudiciaryDB.listCases(where, {
+        orderBy: { filedAt: &#x27;desc&#x27; },
+        take: options.limit || 50,
+      });
+
+      return cases;
+    } catch (error) {
+      logger.error(&#x27;Failed to list cases&#x27;, { options, error: getErrorMessage(error) });
+      throw error;
+    }
+  }
+
+  /**
+   * Update case
+   */
+  async updateCase(
+    id: string,
+    data: Partial&lt;CreateCaseData &amp; { status: string; decidedAt?: Date }&gt;
+  ) {
+    try {
+      logger.info(&#x27;Updating case&#x27;, { id, data });
+      const caseData &#x3D; await JudiciaryDB.updateCase(id, data);
+      logger.info(&#x27;Case updated&#x27;, { id });
+      return caseData;
+    } catch (error) {
+      logger.error(&#x27;Failed to update case&#x27;, { id, data, error: getErrorMessage(error) });
+      throw error;
+    }
+  }
+
+  /**
+   * Decide case
+   */
+  async decideCase(id: string) {
+    try {
+      logger.info(&#x27;Deciding case&#x27;, { id });
+      const caseData &#x3D; await this.updateCase(id, {
+        status: &#x27;decided&#x27;,
+        decidedAt: new Date(),
+      });
+      logger.info(&#x27;Case decided&#x27;, { id });
+      return caseData;
+    } catch (error) {
+      logger.error(&#x27;Failed to decide case&#x27;, { id, error: getErrorMessage(error) });
+      throw error;
+    }
+  }
+
+  /**
+   * Create judge
+   */
+  async createJudge(data: CreateJudgeData) {
+    try {
+      logger.info(&#x27;Creating judge&#x27;, {
+        userId: data.userId,
+        court: data.court,
+        position: data.position,
+      });
+      const judge &#x3D; await JudiciaryDB.createJudge({
+        userId: data.userId,
+        court: data.court,
+        position: data.position,
+        appointedAt: new Date(),
+        termEndsAt: data.termEndsAt,
+      });
+      logger.info(&#x27;Judge created&#x27;, { id: judge.id });
+      return judge;
+    } catch (error) {
+      logger.error(&#x27;Failed to create judge&#x27;, { error: getErrorMessage(error), data });
+      throw error;
+    }
+  }
+
+  /**
+   * Get judge by ID
+   */
+  async getJudge(id: string) {
+    try {
+      const judge &#x3D; await JudiciaryDB.getJudge(id);
+      if (!judge) {
+        throw new Error(&#x60;Judge with id ${id} not found&#x60;);
+      }
+      return judge;
+    } catch (error) {
+      logger.error(&#x27;Failed to get judge&#x27;, { id, error: getErrorMessage(error) });
+      throw error;
+    }
+  }
+
+  /**
+   * List judges
+   */
+  async listJudges(options: { court?: string; position?: string; limit?: number } &#x3D; {}) {
+    try {
+      const where: any &#x3D; {};
+      if (options.court) where.court &#x3D; options.court;
+      if (options.position) where.position &#x3D; options.position;
+
+      const judges &#x3D; await JudiciaryDB.listJudges(where);
+
+      return judges;
+    } catch (error) {
+      logger.error(&#x27;Failed to list judges&#x27;, { options, error: getErrorMessage(error) });
+      throw error;
+    }
+  }
+
+  /**
+   * Update judge
+   */
+  async updateJudge(id: string, data: Partial&lt;CreateJudgeData &amp; { termEndsAt?: Date }&gt;) {
+    try {
+      logger.info(&#x27;Updating judge&#x27;, { id, data });
+      const judge &#x3D; await JudiciaryDB.updateJudge(id, data);
+      logger.info(&#x27;Judge updated&#x27;, { id });
+      return judge;
+    } catch (error) {
+      logger.error(&#x27;Failed to update judge&#x27;, { id, data, error: getErrorMessage(error) });
+      throw error;
+    }
+  }
+
+  /**
+   * Create ruling
+   */
+  async createRuling(data: CreateRulingData) {
+    try {
+      logger.info(&#x27;Creating ruling&#x27;, { caseId: data.caseId, judgeId: data.judgeId });
+      const ruling &#x3D; await JudiciaryDB.createRuling({
+        caseId: data.caseId,
+        judgeId: data.judgeId,
+        decision: data.decision,
+        reasoning: data.reasoning,
+        issuedAt: new Date(),
+      });
+      logger.info(&#x27;Ruling created&#x27;, { id: ruling.id });
+      return ruling;
+    } catch (error) {
+      logger.error(&#x27;Failed to create ruling&#x27;, { error: getErrorMessage(error), data });
+      throw error;
+    }
+  }
+
+  /**
+   * Get ruling by ID
+   */
+  async getRuling(id: string) {
+    try {
+      const ruling &#x3D; await JudiciaryDB.getRuling(id);
+      if (!ruling) {
+        throw new Error(&#x60;Ruling with id ${id} not found&#x60;);
+      }
+      return ruling;
+    } catch (error) {
+      logger.error(&#x27;Failed to get ruling&#x27;, { id, error: getErrorMessage(error) });
+      throw error;
+    }
+  }
+
+  /**
+   * List rulings for a case
+   */
+  async listRulings(caseId: string) {
+    try {
+      const rulings &#x3D; await JudiciaryDB.listRulings({ caseId });
+      return rulings;
+    } catch (error) {
+      logger.error(&#x27;Failed to list rulings&#x27;, { caseId, error: getErrorMessage(error) });
+      throw error;
+    }
+  }
+
+  /**
+   * Create review (appeal or judicial review)
+   */
+  async createReview(data: CreateReviewData) {
+    try {
+      logger.info(&#x27;Creating review&#x27;, { caseId: data.caseId, type: data.type });
+      const review &#x3D; await JudiciaryDB.createReview({
+        caseId: data.caseId,
+        type: data.type,
+        status: &#x27;pending&#x27;,
+        filedAt: new Date(),
+      });
+      logger.info(&#x27;Review created&#x27;, { id: review.id });
+      return review;
+    } catch (error) {
+      logger.error(&#x27;Failed to create review&#x27;, { error: getErrorMessage(error), data });
+      throw error;
+    }
+  }
+
+  /**
+   * Get review by ID
+   */
+  async getReview(id: string) {
+    try {
+      const review &#x3D; await JudiciaryDB.getReview(id);
+      if (!review) {
+        throw new Error(&#x60;Review with id ${id} not found&#x60;);
+      }
+      return review;
+    } catch (error) {
+      logger.error(&#x27;Failed to get review&#x27;, { id, error: getErrorMessage(error) });
+      throw error;
+    }
+  }
+
+  /**
+   * List reviews for a case
+   */
+  async listReviews(
+    caseId: string,
+    options: { type?: string; status?: string; limit?: number } &#x3D; {}
+  ) {
+    try {
+      const where: any &#x3D; { caseId };
+      if (options.type) where.type &#x3D; options.type;
+      if (options.status) where.status &#x3D; options.status;
+
+      const reviews &#x3D; await JudiciaryDB.listReviews(where, {
+        orderBy: { filedAt: &#x27;desc&#x27; },
+        take: options.limit || 20,
+      });
+
+      return reviews;
+    } catch (error) {
+      logger.error(&#x27;Failed to list reviews&#x27;, { caseId, options, error: getErrorMessage(error) });
+      throw error;
+    }
+  }
+
+  /**
+   * Update review status
+   */
+  async updateReview(
+    id: string,
+    data: { status: &#x27;pending&#x27; | &#x27;granted&#x27; | &#x27;denied&#x27;; decidedAt?: Date }
+  ) {
+    try {
+      logger.info(&#x27;Updating review&#x27;, { id, status: data.status });
+      const review &#x3D; await JudiciaryDB.updateReview(id, {
+        status: data.status,
+        decidedAt: data.decidedAt || (data.status !&#x3D;&#x3D; &#x27;pending&#x27; ? new Date() : undefined),
+      });
+      logger.info(&#x27;Review updated&#x27;, { id, status: data.status });
+      return review;
+    } catch (error) {
+      logger.error(&#x27;Failed to update review&#x27;, { id, data, error: getErrorMessage(error) });
+      throw error;
+    }
+  }
+
+  /**
+   * Grant review
+   */
+  async grantReview(id: string) {
+    try {
+      return await this.updateReview(id, { status: &#x27;granted&#x27;, decidedAt: new Date() });
+    } catch (error) {
+      logger.error(&#x27;Failed to grant review&#x27;, { id, error: getErrorMessage(error) });
+      throw error;
+    }
+  }
+
+  /**
+   * Deny review
+   */
+  async denyReview(id: string) {
+    try {
+      return await this.updateReview(id, { status: &#x27;denied&#x27;, decidedAt: new Date() });
+    } catch (error) {
+      logger.error(&#x27;Failed to deny review&#x27;, { id, error: getErrorMessage(error) });
+      throw error;
+    }
+  }
+
+  /**
+   * Create precedent
+   */
+  async createPrecedent(data: CreatePrecedentData) {
+    try {
+      logger.info(&#x27;Creating precedent&#x27;, { citation: data.citation });
+      const precedent &#x3D; await JudiciaryDB.createPrecedent({
+        citation: data.citation,
+        summary: data.summary,
+        holding: data.holding,
+        caseId: data.caseId,
+      });
+      logger.info(&#x27;Precedent created&#x27;, { id: precedent.id });
+      return precedent;
+    } catch (error) {
+      logger.error(&#x27;Failed to create precedent&#x27;, { error: getErrorMessage(error), data });
+      throw error;
+    }
+  }
+
+  /**
+   * List precedents
+   */
+  async listPrecedents(options: { caseId?: string; limit?: number } &#x3D; {}) {
+    try {
+      const where: any &#x3D; {};
+      if (options.caseId) where.caseId &#x3D; options.caseId;
+
+      const precedents &#x3D; await JudiciaryDB.listPrecedents(where);
+
+      return precedents;
+    } catch (error) {
+      logger.error(&#x27;Failed to list precedents&#x27;, { options, error: getErrorMessage(error) });
+      throw error;
+    }
+  }
+
+  /**
+   * Get cases by judge
+   */
+  async getCasesByJudge(judgeId: string) {
+    try {
+      // Get all rulings by this judge, then get the associated cases
+      const rulings &#x3D; await JudiciaryDB.listRulings({ judgeId });
+      const caseIds &#x3D; [...new Set(rulings.map(r &#x3D;&gt; r.caseId))];
+
+      if (caseIds.length &#x3D;&#x3D;&#x3D; 0) {
+        return [];
+      }
+
+      const cases &#x3D; await Promise.all(caseIds.map(id &#x3D;&gt; this.getCase(id as string)));
+      return cases;
+    } catch (error) {
+      logger.error(&#x27;Failed to get cases by judge&#x27;, { judgeId, error: getErrorMessage(error) });
+      throw error;
+    }
+  }
+
+  /**
+   * Get active cases (not decided)
+   */
+  async getActiveCases() {
+    try {
+      return await this.listCases({ status: &#x27;filed&#x27; });
+    } catch (error) {
+      logger.error(&#x27;Failed to get active cases&#x27;, { error: getErrorMessage(error) });
+      throw error;
+    }
+  }
+
+  /**
+   * Get cases under review
+   */
+  async getCasesUnderReview() {
+    try {
+      return await this.listCases({ status: &#x27;under_review&#x27; });
+    } catch (error) {
+      logger.error(&#x27;Failed to get cases under review&#x27;, { error: getErrorMessage(error) });
+      throw error;
+    }
+  }
+
+  /**
+   * Analyze case content using NLP for legal insights
+   */
+  async analyzeCaseNLP(caseId: string): Promise&lt;{
+    analysis: any;
+    sentiment: any;
+    entities: any[];
+    keywords: string[];
+    complexity: {
+      score: number;
+      factors: string[];
+    };
+  }&gt; {
+    try {
+      const caseData &#x3D; await this.getCase(caseId);
+      const content &#x3D; &#x60;${caseData.title} ${caseData.description || &#x27;&#x27;}&#x60;;
+
+      // Stub NLP analysis for now
+      const analysis &#x3D; { sentiment: { label: &#x27;neutral&#x27;, score: 0.5 } };
+
+      // Calculate legal complexity
+      const complexity &#x3D; this.calculateLegalComplexity(content);
+
+      return {
+        analysis,
+        sentiment: analysis.sentiment,
+        entities: [],
+        keywords: content.split(&#x27; &#x27;).slice(0, 5),
+        complexity,
+      };
+    } catch (error) {
+      logger.error(&#x27;Failed to analyze case with NLP&#x27;, { caseId, error: getErrorMessage(error) });
+      throw error;
+    }
+  }
+
+  /**
+   * Generate automated legal reasoning for a case
+   */
+  async generateLegalReasoning(caseId: string, judgeId: string): Promise&lt;string&gt; {
+    try {
+      const caseData &#x3D; await this.getCase(caseId);
+      const judge &#x3D; await this.getJudge(judgeId);
+
+      // Stub legal reasoning generation
+      return &#x60;As Judge ${judge.position} in the ${judge.court}, I have reviewed the case &quot;${caseData.title}&quot;. Based on the facts presented and applicable legal principles, I conclude that the matter requires careful consideration of constitutional principles and fairness.&#x60;;
+    } catch (error) {
+      logger.error(&#x27;Failed to generate legal reasoning&#x27;, {
+        caseId,
+        judgeId,
+        error: getErrorMessage(error),
+      });
+      throw error;
+    }
+  }
+
+  /**
+   * Classify case type and suggest similar precedents
+   */
+  async classifyCaseAndFindPrecedents(caseId: string): Promise&lt;{
+    predictedType: string;
+    confidence: number;
+    similarPrecedents: any[];
+  }&gt; {
+    try {
+      const caseData &#x3D; await this.getCase(caseId);
+
+      // Stub classification for now
+      const predictedType &#x3D; caseData.type as string;
+      const confidence &#x3D; 0.8;
+
+      // Find similar precedents (simplified)
+      const precedents &#x3D; await this.listPrecedents({ limit: 10 });
+      const similarPrecedents &#x3D; precedents.slice(0, 3);
+
+      return {
+        predictedType,
+        confidence,
+        similarPrecedents,
+      };
+    } catch (error) {
+      logger.error(&#x27;Failed to classify case and find precedents&#x27;, {
+        caseId,
+        error: getErrorMessage(error),
+      });
+      throw error;
+    }
+  }
+
+  /**
+   * Calculate legal complexity of case content
+   */
+  private calculateLegalComplexity(content: string): { score: number; factors: string[] } {
+    const factors: string[] &#x3D; [];
+    let score &#x3D; 0;
+
+    // Length complexity
+    if (content.length &gt; 1000) {
+      score +&#x3D; 2;
+      factors.push(&#x27;Long case description&#x27;);
+    } else if (content.length &gt; 500) {
+      score +&#x3D; 1;
+      factors.push(&#x27;Moderate length description&#x27;);
+    }
+
+    // Legal terminology density
+    const legalTerms &#x3D; [
+      &#x27;constitutional&#x27;,
+      &#x27;rights&#x27;,
+      &#x27;law&#x27;,
+      &#x27;statute&#x27;,
+      &#x27;precedent&#x27;,
+      &#x27;jurisdiction&#x27;,
+      &#x27;remedy&#x27;,
+    ];
+    const termCount &#x3D; legalTerms.filter(term &#x3D;&gt; content.toLowerCase().includes(term)).length;
+    if (termCount &gt; 3) {
+      score +&#x3D; 2;
+      factors.push(&#x27;High legal terminology density&#x27;);
+    } else if (termCount &gt; 1) {
+      score +&#x3D; 1;
+      factors.push(&#x27;Moderate legal terminology&#x27;);
+    }
+
+    // Multiple parties/issues
+    const partyIndicators &#x3D; [&#x27; vs &#x27;, &#x27; versus &#x27;, &#x27; plaintiff &#x27;, &#x27; defendant &#x27;, &#x27; petitioner &#x27;];
+    const partyCount &#x3D; partyIndicators.filter(indicator &#x3D;&gt;
+      content.toLowerCase().includes(indicator)
+    ).length;
+    if (partyCount &gt; 1) {
+      score +&#x3D; 2;
+      factors.push(&#x27;Multiple parties involved&#x27;);
+    } else if (partyCount &gt; 0) {
+      score +&#x3D; 1;
+      factors.push(&#x27;Multiple parties mentioned&#x27;);
+    }
+
+    // Constitutional issues
+    if (
+      content.toLowerCase().includes(&#x27;constitutional&#x27;) ||
+      content.toLowerCase().includes(&#x27;amendment&#x27;)
+    ) {
+      score +&#x3D; 3;
+      factors.push(&#x27;Constitutional issues involved&#x27;);
+    }
+
+    return {
+      score: Math.min(10, score),
+      factors,
+    };
+  }
+}
+
+// Export singleton instance
+/**
+ * Shared &#x60;judiciaryService&#x60; instance used by HTTP routes. Instantiate the
+ * class directly in tests to supply a mock &#x60;JudiciaryDB&#x60;.
+ */
+export const judiciaryService &#x3D; new JudiciaryService();
+</code></pre>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'interface';
+            var COMPODOC_CURRENT_PAGE_URL = 'CreateReviewData.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

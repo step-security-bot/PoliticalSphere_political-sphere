@@ -75,8 +75,8 @@ test.describe('Parliament Operations', () => {
       expect(errorMessages.length).toBeGreaterThan(0);
       expect(
         errorMessages.some(
-          msg => msg.toLowerCase().includes('title') || msg.toLowerCase().includes('required'),
-        ),
+          msg => msg.toLowerCase().includes('title') || msg.toLowerCase().includes('required')
+        )
       ).toBe(true);
     });
 
@@ -252,7 +252,7 @@ test.describe('Parliament Operations', () => {
         if (await commentSection.isVisible()) {
           // Add a comment
           const commentInput = page.locator(
-            'textarea[name="comment"], [data-testid="comment-input"]',
+            'textarea[name="comment"], [data-testid="comment-input"]'
           );
           const commentText = `Test debate comment ${Date.now()}`;
 
@@ -295,7 +295,7 @@ test.describe('Parliament Operations', () => {
 
         // Look for comment input
         const commentInput = page.locator(
-          'textarea[name="comment"], [data-testid="comment-input"]',
+          'textarea[name="comment"], [data-testid="comment-input"]'
         );
 
         if (await commentInput.isVisible()) {
@@ -369,7 +369,7 @@ test.describe('Parliament Operations', () => {
 
       // Check for session information
       const sessionInfo = page.locator(
-        '[data-testid="session-info"], .session-info, .parliament-session',
+        '[data-testid="session-info"], .session-info, .parliament-session'
       );
       if (await sessionInfo.isVisible()) {
         // Verify session details

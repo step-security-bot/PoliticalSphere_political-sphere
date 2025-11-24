@@ -1,1 +1,1 @@
-export { AppError, ErrorCodes, ErrorFactory, isAppError, normalizeError } from './AppError';
+export { AppError, ErrorCodes, ErrorFactory, isAppError, normalizeError } from './AppError.ts';

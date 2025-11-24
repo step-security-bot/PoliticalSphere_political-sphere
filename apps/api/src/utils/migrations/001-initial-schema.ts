@@ -9,7 +9,12 @@ const { info } = require('../logger');
 
 const name = '001_initial_schema';
 
-function up(db) {
+/**
+ * Applies the initial schema migration by creating core tables and indexes.
+ * Creates tables for users, parties, bills, votes with appropriate constraints and indexes.
+ * @param db - Database connection object with exec method
+ */
+function up(db: { exec: (sql: string) => void }) {
   info('Running migration up function...');
   db.exec(`
     -- Users table
@@ -64,12 +69,16 @@ function up(db) {
   info('Migration up function completed');
 }
 
-function down(db) {
+/**
+ * Rolls back the initial schema migration by dropping all created tables and indexes.
+ * @param db - Database connection object with exec method
+ */
+function down(db: { exec: (sql: string) => void }) {
   db.exec(`
     DROP INDEX IF EXISTS idx_votes_user;
     DROP INDEX IF EXISTS idx_votes_bill;
     DROP INDEX IF EXISTS idx_bills_status;
-    DROP INDEX IF EXISTS idx_bills_author;
+    DROP INDEX IF EXISTS idx_bills_proposer;
     DROP TABLE IF EXISTS votes;
     DROP TABLE IF EXISTS bills;
     DROP TABLE IF EXISTS parties;

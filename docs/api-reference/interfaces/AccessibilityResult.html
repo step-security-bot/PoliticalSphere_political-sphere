@@ -1,0 +1,1054 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>political-sphere documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">political-sphere documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content interface">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Interfaces</li>
+  <li class="breadcrumb-item"
+  >
+  AccessibilityResult</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>libs/ai-system/src/types/index.ts</code>
+        </p>
+
+
+            <p class="comment">
+                <h3>Description</h3>
+            </p>
+            <p class="comment">
+                <p>Accessibility test result (WCAG 2.2 AA)</p>
+
+            </p>
+
+
+        <section data-compodoc="block-index">
+            <h3 id="index">Index</h3>
+            <table class="table table-sm table-bordered index-table">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <h6><b>Properties</b></h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <ul class="index-list">
+                                <li>
+                                        <a href="#criterion" 
+>
+                                            criterion
+                                        </a>
+                                </li>
+                                <li>
+                                            <span class="modifier">Optional</span>
+                                        <a href="#incomplete" 
+>
+                                            incomplete
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#level" 
+>
+                                            level
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#passed" 
+>
+                                            passed
+                                        </a>
+                                </li>
+                                <li>
+                                            <span class="modifier">Optional</span>
+                                        <a href="#passes" 
+>
+                                            passes
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#testId" 
+>
+                                            testId
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#timestamp" 
+>
+                                            timestamp
+                                        </a>
+                                </li>
+                                <li>
+                                            <span class="modifier">Optional</span>
+                                        <a href="#violations" 
+>
+                                            violations
+                                        </a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+
+
+            <section data-compodoc="block-properties">
+                <h3 id="inputs">Properties</h3>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="criterion"></a>
+                                        <span class="name "><b>criterion</b>
+                                            <a href="#criterion">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>criterion:         <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>WCAG criterion</p>
+</div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="incomplete"></a>
+                                        <span class="name "><b>incomplete</b>
+                                            <a href="#incomplete">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>incomplete:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Optional</i>
+                                        </td>
+                                    </tr>
+
+
+
+
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>Count of incomplete checks (if available)</p>
+</div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="level"></a>
+                                        <span class="name "><b>level</b>
+                                            <a href="#level">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>level:     <code>&quot;A&quot; | &quot;AA&quot; | &quot;AAA&quot;</code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>    <code>&quot;A&quot; | &quot;AA&quot; | &quot;AAA&quot;</code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>Level (A, AA, AAA)</p>
+</div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="passed"></a>
+                                        <span class="name "><b>passed</b>
+                                            <a href="#passed">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>passed:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>Pass/fail status</p>
+</div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="passes"></a>
+                                        <span class="name "><b>passes</b>
+                                            <a href="#passes">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>passes:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Optional</i>
+                                        </td>
+                                    </tr>
+
+
+
+
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>Number of passing checks (if available)</p>
+</div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="testId"></a>
+                                        <span class="name "><b>testId</b>
+                                            <a href="#testId">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>testId:         <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>Test ID</p>
+</div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="timestamp"></a>
+                                        <span class="name "><b>timestamp</b>
+                                            <a href="#timestamp">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>timestamp:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date" target="_blank" >Date</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date" target="_blank" >Date</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>Timestamp</p>
+</div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="violations"></a>
+                                        <span class="name "><b>violations</b>
+                                            <a href="#violations">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>violations:         <code><a href="../interfaces/AccessibilityViolation.html" target="_self" >AccessibilityViolation[]</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="../interfaces/AccessibilityViolation.html" target="_self" >AccessibilityViolation[]</a></code>
+
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Optional</i>
+                                        </td>
+                                    </tr>
+
+
+
+
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>Violation details</p>
+</div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+            </section>
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">export interface Agent {
+  /** Unique agent identifier */
+  id: string;
+  /** Human-readable agent name */
+  name: string;
+  /** Agent description and capabilities */
+  description: string;
+  /** Agent execution function */
+  execute: (input: AgentInput) &#x3D;&gt; Promise&lt;AgentOutput&gt;;
+  /** Agent configuration */
+  config?: AgentConfig;
+}
+
+/**
+ * Agent input data structure
+ */
+export interface AgentInput {
+  /** Input prompt or query */
+  prompt: string;
+  /** Execution context */
+  context: Record&lt;string, unknown&gt;;
+  /** Previous agent outputs (for sequential patterns) */
+  previousOutputs?: AgentOutput[];
+  /** Trace ID for observability */
+  traceId?: string;
+}
+
+/**
+ * Agent output data structure
+ */
+export interface AgentOutput {
+  /** Agent ID that produced output */
+  agentId: string;
+  /** Output content */
+  content: string;
+  /** Execution metadata */
+  metadata: {
+    /** Execution time in milliseconds */
+    executionTime: number;
+    /** Model used (if applicable) */
+    model?: string;
+    /** Token usage (if applicable) */
+    tokenUsage?: {
+      prompt: number;
+      completion: number;
+      total: number;
+    };
+    /** Timestamp */
+    timestamp: Date;
+  };
+  /** Error information (if failed) */
+  error?: {
+    message: string;
+    code: string;
+    stack?: string;
+  };
+}
+
+/**
+ * Agent configuration
+ */
+export interface AgentConfig {
+  /** Model provider (openai, anthropic, local) */
+  provider?: string;
+  /** Model name */
+  model?: string;
+  /** Temperature (0-1) */
+  temperature?: number;
+  /** Max tokens */
+  maxTokens?: number;
+  /** Additional provider-specific options */
+  options?: Record&lt;string, unknown&gt;;
+}
+
+/**
+ * Orchestration pattern types
+ */
+export type OrchestrationPattern &#x3D;
+  | &#x27;sequential&#x27;
+  | &#x27;concurrent&#x27;
+  | &#x27;handoff&#x27;
+  | &#x27;group-chat&#x27;
+  | &#x27;magentic&#x27;;
+
+/**
+ * Orchestration engine configuration
+ */
+export interface OrchestrationConfig {
+  /** Framework to use */
+  framework: &#x27;semantic-kernel&#x27; | &#x27;langgraph&#x27;;
+  /** Pattern to apply */
+  pattern: OrchestrationPattern;
+  /** Checkpoint configuration */
+  checkpoint?: {
+    enabled: boolean;
+    storage: &#x27;memory&#x27; | &#x27;sqlite&#x27; | &#x27;postgresql&#x27;;
+    resumeOnFailure?: boolean;
+  };
+}
+
+/**
+ * Validation gate tier levels
+ */
+export enum ValidationTier {
+  CONSTITUTIONAL &#x3D; 0,
+  MANDATORY &#x3D; 1,
+  BEST_PRACTICE &#x3D; 2,
+}
+
+/**
+ * Validation gate configuration
+ */
+export interface ValidationGateConfig {
+  /** Gate tier (0&#x3D;Constitutional, 1&#x3D;Mandatory, 2&#x3D;Best-practice) */
+  tier: ValidationTier;
+  /** Validation rules to apply */
+  rules: string[];
+  /** Whether gate is bypassable */
+  bypassable?: boolean;
+  /** Gate metadata */
+  metadata?: {
+    name: string;
+    description: string;
+    standards?: string[]; // e.g., [&#x27;OWASP ASVS 5.0.0-1.2.5&#x27;]
+  };
+}
+
+/**
+ * Validation result
+ */
+export interface ValidationResult {
+  /** Whether validation passed */
+  passed: boolean;
+  /** Gate tier that was validated */
+  tier: ValidationTier;
+  /** Results per rule */
+  ruleResults: Array&lt;{
+    rule: string;
+    passed: boolean;
+    message?: string;
+    severity?: &#x27;error&#x27; | &#x27;warning&#x27; | &#x27;info&#x27;;
+  }&gt;;
+  /** Timestamp */
+  timestamp: Date;
+}
+
+/**
+ * Governance function types (NIST AI RMF)
+ */
+export type GovernanceFunction &#x3D; &#x27;govern&#x27; | &#x27;map&#x27; | &#x27;measure&#x27; | &#x27;manage&#x27;;
+
+/**
+ * Model card structure (NIST requirement)
+ */
+export interface ModelCard {
+  /** Model identifier */
+  modelId: string;
+  /** Model name */
+  modelName: string;
+  /** Model version */
+  version: string;
+  /** Model description */
+  description: string;
+  /** Intended use */
+  intendedUse: string;
+  /** Known limitations */
+  limitations: string[];
+  /** Training data */
+  trainingData: {
+    source: string;
+    size: number;
+    timeframe: string;
+  };
+  /** Performance metrics */
+  performance: {
+    accuracy?: number;
+    precision?: number;
+    recall?: number;
+    f1Score?: number;
+  };
+  /** Fairness metrics */
+  fairness: {
+    demographicParity?: number;
+    equalOpportunity?: number;
+    biasScore?: number;
+  };
+  /** Ethical considerations */
+  ethics: {
+    biasAssessment: string;
+    privacyImpact: string;
+    politicalNeutrality: boolean;
+  };
+  /** Owner and contact */
+  owner: {
+    name: string;
+    email: string;
+    team: string;
+  };
+  /** Last updated */
+  lastUpdated: Date;
+}
+
+/**
+ * Observability trace span
+ */
+export interface TraceSpan {
+  /** Span ID */
+  spanId: string;
+  /** Trace ID */
+  traceId: string;
+  /** Parent span ID */
+  parentId?: string;
+  /** Operation name */
+  name: string;
+  /** Start time */
+  startTime: Date;
+  /** End time */
+  endTime?: Date;
+  /** Span attributes */
+  attributes: Record&lt;string, string | number | boolean&gt;;
+  /** Span events */
+  events: Array&lt;{
+    timestamp: Date;
+    name: string;
+    attributes?: Record&lt;string, unknown&gt;;
+  }&gt;;
+  /** Span status */
+  status: { code: &#x27;ok&#x27; | &#x27;error&#x27;; message?: string };
+}
+
+/**
+ * Service Level Indicator (SLI)
+ */
+export interface SLI {
+  /** SLI name */
+  name: string;
+  /** SLI description */
+  description: string;
+  /** Measurement query */
+  query: string;
+  /** Target value */
+  target: number;
+  /** Current value */
+  currentValue?: number;
+}
+
+/**
+ * Service Level Objective (SLO)
+ */
+export interface SLO {
+  /** SLO name */
+  name: string;
+  /** Associated SLI */
+  sli: SLI;
+  /** Target percentage (0-1) */
+  target: number;
+  /** Time window */
+  window: string; // e.g., &#x27;30d&#x27;, &#x27;7d&#x27;
+  /** Error budget */
+  errorBudget: {
+    total: number;
+    consumed: number;
+    remaining: number;
+  };
+}
+
+/**
+ * SLO metrics and status
+ */
+export interface SLOMetrics {
+  /** Service name for which SLO is calculated */
+  service: string;
+  /** Availability ratio (0-1) */
+  availability: number;
+  /** Latency percentiles */
+  latency: { p50: number; p95: number; p99: number };
+  /** Error rate ratio (0-1) */
+  errorRate: number;
+  /** Time window covered by this calculation */
+  window: { start: Date; end: Date };
+}
+
+/**
+ * DSAR (Data Subject Access Request) types
+ */
+export type DSARType &#x3D; &#x27;access&#x27; | &#x27;erasure&#x27; | &#x27;portability&#x27; | &#x27;rectification&#x27;;
+
+/**
+ * DSAR request structure
+ */
+export interface DSARRequest {
+  /** Request ID */
+  requestId: string;
+  /** Request type */
+  type: DSARType;
+  /** User ID */
+  userId: string;
+  /** User email */
+  email: string;
+  /** Request timestamp */
+  requestedAt: Date;
+  /** Due date (30 days from request) */
+  dueDate: Date;
+  /** Request status */
+  status: &#x27;pending&#x27; | &#x27;processing&#x27; | &#x27;completed&#x27; | &#x27;rejected&#x27;;
+  /** Completion timestamp */
+  completedAt?: Date;
+  /** Rejection reason */
+  rejectionReason?: string;
+  /** Timestamp */
+  timestamp?: Date;
+  /** Optional details provided by the requester */
+  details?: string;
+}
+
+/** Alias for backward compatibility */
+export type DataSubjectRequest &#x3D; DSARRequest;
+
+/**
+ * Consent record for GDPR compliance
+ */
+export interface ConsentRecord {
+  /** User ID */
+  userId: string;
+  /** Purpose of data processing */
+  purpose: string;
+  /** Whether consent is currently granted */
+  granted: boolean;
+  /** Legal basis */
+  legalBasis?: string;
+  /** Timestamp of the consent record */
+  timestamp: Date;
+  /** Expiry date */
+  expiryDate?: Date;
+}
+
+/**
+ * Accessibility violation detail
+ */
+export interface AccessibilityViolation {
+  id?: string;
+  node?: string;
+  impact: &#x27;critical&#x27; | &#x27;serious&#x27; | &#x27;moderate&#x27; | &#x27;minor&#x27;;
+  message: string;
+  help: string;
+  helpUrl: string;
+  /** Optional WCAG criterion for this violation */
+  criterion?: string;
+  /** Optional list of nodes from axe-like reports */
+  nodes?: Array&lt;{ html: string; target: string[] }&gt;;
+}
+
+/**
+ * Accessibility test result (WCAG 2.2 AA)
+ */
+export interface AccessibilityResult {
+  /** Test ID */
+  testId: string;
+  /** WCAG criterion */
+  criterion: string; // e.g., &#x27;1.4.3&#x27; (contrast)
+  /** Level (A, AA, AAA) */
+  level: &#x27;A&#x27; | &#x27;AA&#x27; | &#x27;AAA&#x27;;
+  /** Pass/fail status */
+  passed: boolean;
+  /** Number of passing checks (if available) */
+  passes?: number;
+  /** Count of incomplete checks (if available) */
+  incomplete?: number;
+  /** Violation details */
+  violations?: AccessibilityViolation[];
+  /** Timestamp */
+  timestamp: Date;
+}
+
+/**
+ * Error types
+ */
+export class AISystemError extends Error {
+  constructor(
+    message: string,
+    public code: string,
+    public metadata?: Record&lt;string, unknown&gt;,
+    public findings?: unknown[],
+    public score?: number,
+    public violations?: unknown[]
+  ) {
+    super(message);
+    this.name &#x3D; &#x27;AISystemError&#x27;;
+  }
+}
+
+export class ValidationError extends AISystemError {
+  constructor(message: string, metadata?: Record&lt;string, unknown&gt;) {
+    super(message, &#x27;VALIDATION_ERROR&#x27;, metadata);
+    this.name &#x3D; &#x27;ValidationError&#x27;;
+  }
+}
+
+export class GovernanceError extends AISystemError {
+  constructor(message: string, metadata?: Record&lt;string, unknown&gt;) {
+    super(message, &#x27;GOVERNANCE_ERROR&#x27;, metadata);
+    this.name &#x3D; &#x27;GovernanceError&#x27;;
+  }
+}
+
+export class PrivacyError extends AISystemError {
+  constructor(message: string, metadata?: Record&lt;string, unknown&gt;) {
+    super(message, &#x27;PRIVACY_ERROR&#x27;, metadata);
+    this.name &#x3D; &#x27;PrivacyError&#x27;;
+  }
+}
+</code></pre>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'interface';
+            var COMPODOC_CURRENT_PAGE_URL = 'AccessibilityResult.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

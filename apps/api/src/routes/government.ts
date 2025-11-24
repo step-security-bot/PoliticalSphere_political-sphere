@@ -3,12 +3,21 @@
  * Handles cabinet management, ministerial appointments, and executive actions
  */
 
-import express from 'express';
+import express, { type Request, type Response } from 'express';
 import { z } from 'zod';
 
+/**
+ * Express router for government-related endpoints.
+ * Handles cabinet management, ministerial appointments, executive actions, and cabinet meetings.
+ */
 const router = express.Router();
 
 // Validation schemas
+
+/**
+ * Zod schema for creating a new government.
+ * Validates government data including game ID, prime minister, name, type, and formation date.
+ */
 const CreateGovernmentSchema = z.object({
   gameId: z.string().uuid(),
   primeMinisterId: z.string().uuid(),
@@ -17,6 +26,10 @@ const CreateGovernmentSchema = z.object({
   formationDate: z.string().datetime(),
 });
 
+/**
+ * Zod schema for appointing a minister to a government.
+ * Validates minister appointment data including government ID, user ID, position, and department.
+ */
 const AppointMinisterSchema = z.object({
   governmentId: z.string().uuid(),
   userId: z.string().uuid(),
@@ -37,6 +50,10 @@ const AppointMinisterSchema = z.object({
   department: z.string().min(1).max(200),
 });
 
+/**
+ * Zod schema for creating an executive action.
+ * Validates action data including government ID, minister ID, type, title, description, and approval requirements.
+ */
 const ExecutiveActionSchema = z.object({
   governmentId: z.string().uuid(),
   ministerId: z.string().uuid(),
@@ -46,6 +63,10 @@ const ExecutiveActionSchema = z.object({
   requiresParliamentApproval: z.boolean().default(false),
 });
 
+/**
+ * Zod schema for scheduling a cabinet meeting.
+ * Validates meeting data including government ID, agenda, scheduled date, and attendees.
+ */
 const CabinetMeetingSchema = z.object({
   governmentId: z.string().uuid(),
   agenda: z.string().min(1).max(2000),
@@ -53,25 +74,110 @@ const CabinetMeetingSchema = z.object({
   attendees: z.array(z.string().uuid()),
 });
 
+// Domain types
+/**
+ * Government represents an administration formed within a game.
+ * It tracks leadership, formation date and status.
+ */
+export interface Government {
+  id: string;
+  gameId: string;
+  primeMinisterId: string;
+  name: string;
+  type: 'coalition' | 'majority' | 'minority';
+  formationDate: string;
+  status: 'active' | 'dissolved';
+  confidence: number;
+  createdAt: string;
+  dissolvedAt: string | null;
+}
+
+/**
+ * Minister represents an appointment within a government for a user.
+ */
+export interface Minister {
+  id: string;
+  governmentId: string;
+  userId: string;
+  position: string;
+  department: string;
+  appointedAt: string;
+  resignedAt: string | null;
+  status: 'active' | 'resigned';
+}
+
+/**
+ * ExecutiveAction represents an action taken by a government minister.
+ */
+export interface ExecutiveAction {
+  id: string;
+  governmentId: string;
+  ministerId: string;
+  type: 'order' | 'regulation' | 'appointment' | 'treaty' | 'emergency';
+  title: string;
+  description: string;
+  requiresParliamentApproval: boolean;
+  status: 'pending_approval' | 'enacted' | 'rejected';
+  createdAt: string;
+  enactedAt: string | null;
+}
+
+/**
+ * CabinetMeeting represents a scheduled or completed cabinet meeting.
+ */
+export interface CabinetMeeting {
+  id: string;
+  governmentId: string;
+  agenda: string;
+  scheduledDate: string;
+  attendees: string[];
+  status: 'scheduled' | 'in_progress' | 'completed' | 'cancelled';
+  decisions: string[];
+  createdAt: string;
+}
+
 // In-memory storage
-const governments = new Map();
-const ministers = new Map();
-const executiveActions = new Map();
-const cabinetMeetings = new Map();
+
+/**
+ * In-memory store for government records.
+ * Maps government ID to Government object. Placeholder for database layer.
+ */
+const governments = new Map<string, Government>();
+/**
+ * In-memory store for minister records.
+ * Maps minister ID to Minister object. Placeholder for database layer.
+ */
+const ministers = new Map<string, Minister>();
+/**
+ * In-memory store for executive action records.
+ * Maps action ID to ExecutiveAction object. Placeholder for database layer.
+ */
+const executiveActions = new Map<string, ExecutiveAction>();
+/**
+ * In-memory store for cabinet meeting records.
+ * Maps meeting ID to CabinetMeeting object. Placeholder for database layer.
+ */
+const cabinetMeetings = new Map<string, CabinetMeeting>();
 
 /**
  * Create a new government
- * POST /api/government
+ * @param req - Express request object containing government creation data
+ * @param res - Express response object
+ * @returns Promise resolving to response with created government data
  */
-router.post('/', async (req, res) => {
+router.post('/', async (req: Request, res: Response): Promise<Response> => {
   try {
     const validated = CreateGovernmentSchema.parse(req.body);
 
     const governmentId = `gov-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
-    const government = {
+    const government: Government = {
       id: governmentId,
-      ...validated,
-      status: 'active',
+      gameId: validated.gameId,
+      primeMinisterId: validated.primeMinisterId,
+      name: validated.name,
+      type: validated.type,
+      formationDate: validated.formationDate,
+      status: 'active' as 'active' | 'dissolved',
       confidence: 100,
       createdAt: new Date().toISOString(),
       dissolvedAt: null,
@@ -79,7 +185,7 @@ router.post('/', async (req, res) => {
 
     governments.set(governmentId, government);
 
-    res.status(201).json({
+    return res.status(201).json({
       success: true,
       data: government,
     });
@@ -92,7 +198,7 @@ router.post('/', async (req, res) => {
       });
     }
 
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       error: 'Failed to create government',
       message: (error as Error).message,
@@ -102,10 +208,19 @@ router.post('/', async (req, res) => {
 
 /**
  * Get government by ID
- * GET /api/government/:id
+ * @param req - Express request object with government ID in params
+ * @param res - Express response object
+ * @returns Response with government data or error
  */
-router.get('/:id', (req, res) => {
-  const government = governments.get(req.params.id);
+router.get('/:id', (req: Request, res: Response): Response => {
+  const { id } = req.params;
+  if (!id) {
+    return res.status(400).json({
+      success: false,
+      error: 'Government ID required',
+    });
+  }
+  const government = governments.get(id);
 
   if (!government) {
     return res.status(404).json({
@@ -119,7 +234,7 @@ router.get('/:id', (req, res) => {
     m => m.governmentId === government.id
   );
 
-  res.json({
+  return res.json({
     success: true,
     data: {
       ...government,
@@ -130,10 +245,12 @@ router.get('/:id', (req, res) => {
 
 /**
  * List governments for a game
- * GET /api/government?gameId=xxx
+ * @param req - Express request object with optional gameId query parameter
+ * @param res - Express response object
+ * @returns Response with array of governments or error
  */
-router.get('/', (req, res) => {
-  const { gameId } = req.query;
+router.get('/', (req: Request, res: Response): Response => {
+  const { gameId } = req.query as { gameId?: string };
 
   if (!gameId) {
     return res.status(400).json({
@@ -144,17 +261,19 @@ router.get('/', (req, res) => {
 
   const gameGovernments = Array.from(governments.values()).filter(g => g.gameId === gameId);
 
-  res.json({
+  return res.json({
     success: true,
     data: gameGovernments,
   });
 });
 
 /**
- * Appoint a minister
- * POST /api/government/ministers
+ * Appoint a minister to a government position
+ * @param req - Express request object with minister appointment data in body
+ * @param res - Express response object
+ * @returns Promise resolving to response with appointed minister data
  */
-router.post('/ministers', async (req, res) => {
+router.post('/ministers', async (req: Request, res: Response): Promise<Response> => {
   try {
     const validated = AppointMinisterSchema.parse(req.body);
 
@@ -181,17 +300,20 @@ router.post('/ministers', async (req, res) => {
     }
 
     const ministerId = `minister-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
-    const minister = {
+    const minister: Minister = {
       id: ministerId,
-      ...validated,
+      governmentId: validated.governmentId,
+      userId: validated.userId,
+      position: validated.position,
+      department: validated.department,
       appointedAt: new Date().toISOString(),
       resignedAt: null,
-      status: 'active',
+      status: 'active' as 'active' | 'resigned',
     };
 
     ministers.set(ministerId, minister);
 
-    res.status(201).json({
+    return res.status(201).json({
       success: true,
       data: minister,
     });
@@ -204,7 +326,7 @@ router.post('/ministers', async (req, res) => {
       });
     }
 
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       error: 'Failed to appoint minister',
       message: (error as Error).message,
@@ -213,11 +335,20 @@ router.post('/ministers', async (req, res) => {
 });
 
 /**
- * Remove a minister
- * DELETE /api/government/ministers/:id
+ * Remove a minister from their position
+ * @param req - Express request object with minister ID in params
+ * @param res - Express response object
+ * @returns Response confirming minister removal
  */
-router.delete('/ministers/:id', (req, res) => {
-  const minister = ministers.get(req.params.id);
+router.delete('/ministers/:id', (req: Request, res: Response): Response => {
+  const { id } = req.params;
+  if (!id) {
+    return res.status(400).json({
+      success: false,
+      error: 'Minister ID required',
+    });
+  }
+  const minister = ministers.get(id);
 
   if (!minister) {
     return res.status(404).json({
@@ -226,10 +357,10 @@ router.delete('/ministers/:id', (req, res) => {
     });
   }
 
-  minister.status = 'resigned';
+  minister.status = 'resigned' as 'active' | 'resigned';
   minister.resignedAt = new Date().toISOString();
 
-  res.json({
+  return res.json({
     success: true,
     data: minister,
   });
@@ -237,14 +368,16 @@ router.delete('/ministers/:id', (req, res) => {
 
 /**
  * List ministers for a government
- * GET /api/government/:governmentId/ministers
+ * @param req - Express request object with government ID in params
+ * @param res - Express response object
+ * @returns Response with array of active ministers for the government
  */
-router.get('/:governmentId/ministers', (req, res) => {
+router.get('/:governmentId/ministers', (req: Request, res: Response): Response => {
   const governmentMinisters = Array.from(ministers.values()).filter(
     m => m.governmentId === req.params.governmentId && m.status === 'active'
   );
 
-  res.json({
+  return res.json({
     success: true,
     data: governmentMinisters,
   });
@@ -252,9 +385,11 @@ router.get('/:governmentId/ministers', (req, res) => {
 
 /**
  * Create an executive action
- * POST /api/government/actions
+ * @param req - Express request object containing executive action data in body
+ * @param res - Express response object
+ * @returns Promise resolving to response with created executive action data
  */
-router.post('/actions', async (req, res) => {
+router.post('/actions', async (req: Request, res: Response): Promise<Response> => {
   try {
     const validated = ExecutiveActionSchema.parse(req.body);
 
@@ -276,17 +411,25 @@ router.post('/actions', async (req, res) => {
     }
 
     const actionId = `action-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
-    const action = {
+    const action: ExecutiveAction = {
       id: actionId,
-      ...validated,
-      status: validated.requiresParliamentApproval ? 'pending_approval' : 'enacted',
+      governmentId: validated.governmentId,
+      ministerId: validated.ministerId,
+      type: validated.type,
+      title: validated.title,
+      description: validated.description,
+      requiresParliamentApproval: validated.requiresParliamentApproval,
+      status: (validated.requiresParliamentApproval ? 'pending_approval' : 'enacted') as
+        | 'pending_approval'
+        | 'enacted'
+        | 'rejected',
       createdAt: new Date().toISOString(),
       enactedAt: validated.requiresParliamentApproval ? null : new Date().toISOString(),
     };
 
     executiveActions.set(actionId, action);
 
-    res.status(201).json({
+    return res.status(201).json({
       success: true,
       data: action,
     });
@@ -299,7 +442,7 @@ router.post('/actions', async (req, res) => {
       });
     }
 
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       error: 'Failed to create executive action',
       message: (error as Error).message,
@@ -309,10 +452,19 @@ router.post('/actions', async (req, res) => {
 
 /**
  * Get executive action by ID
- * GET /api/government/actions/:id
+ * @param req - Express request object with action ID in params
+ * @param res - Express response object
+ * @returns Response with executive action data or error
  */
-router.get('/actions/:id', (req, res) => {
-  const action = executiveActions.get(req.params.id);
+router.get('/actions/:id', (req: Request, res: Response): Response => {
+  const { id } = req.params;
+  if (!id) {
+    return res.status(400).json({
+      success: false,
+      error: 'Action ID required',
+    });
+  }
+  const action = executiveActions.get(id);
 
   if (!action) {
     return res.status(404).json({
@@ -321,7 +473,7 @@ router.get('/actions/:id', (req, res) => {
     });
   }
 
-  res.json({
+  return res.json({
     success: true,
     data: action,
   });
@@ -329,14 +481,16 @@ router.get('/actions/:id', (req, res) => {
 
 /**
  * List executive actions for a government
- * GET /api/government/:governmentId/actions
+ * @param req - Express request object with government ID in params
+ * @param res - Express response object
+ * @returns Response with array of executive actions for the government
  */
-router.get('/:governmentId/actions', (req, res) => {
+router.get('/:governmentId/actions', (req: Request, res: Response): Response => {
   const governmentActions = Array.from(executiveActions.values()).filter(
     a => a.governmentId === req.params.governmentId
   );
 
-  res.json({
+  return res.json({
     success: true,
     data: governmentActions,
   });
@@ -344,9 +498,11 @@ router.get('/:governmentId/actions', (req, res) => {
 
 /**
  * Schedule a cabinet meeting
- * POST /api/government/cabinet-meetings
+ * @param req - Express request object containing cabinet meeting data in body
+ * @param res - Express response object
+ * @returns Promise resolving to response with scheduled cabinet meeting data
  */
-router.post('/cabinet-meetings', async (req, res) => {
+router.post('/cabinet-meetings', async (req: Request, res: Response): Promise<Response> => {
   try {
     const validated = CabinetMeetingSchema.parse(req.body);
 
@@ -360,17 +516,20 @@ router.post('/cabinet-meetings', async (req, res) => {
     }
 
     const meetingId = `meeting-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
-    const meeting = {
+    const meeting: CabinetMeeting = {
       id: meetingId,
-      ...validated,
-      status: 'scheduled',
+      governmentId: validated.governmentId,
+      agenda: validated.agenda,
+      scheduledDate: validated.scheduledDate,
+      attendees: validated.attendees,
+      status: 'scheduled' as 'scheduled' | 'in_progress' | 'completed',
       decisions: [],
       createdAt: new Date().toISOString(),
     };
 
     cabinetMeetings.set(meetingId, meeting);
 
-    res.status(201).json({
+    return res.status(201).json({
       success: true,
       data: meeting,
     });
@@ -383,7 +542,7 @@ router.post('/cabinet-meetings', async (req, res) => {
       });
     }
 
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       error: 'Failed to schedule cabinet meeting',
       message: (error as Error).message,
@@ -393,10 +552,19 @@ router.post('/cabinet-meetings', async (req, res) => {
 
 /**
  * Get cabinet meeting by ID
- * GET /api/government/cabinet-meetings/:id
+ * @param req - Express request object with cabinet meeting ID in params
+ * @param res - Express response object
+ * @returns Response with cabinet meeting data or error
  */
-router.get('/cabinet-meetings/:id', (req, res) => {
-  const meeting = cabinetMeetings.get(req.params.id);
+router.get('/cabinet-meetings/:id', (req: Request, res: Response): Response => {
+  const { id } = req.params;
+  if (!id) {
+    return res.status(400).json({
+      success: false,
+      error: 'Cabinet meeting ID required',
+    });
+  }
+  const meeting = cabinetMeetings.get(id);
 
   if (!meeting) {
     return res.status(404).json({
@@ -405,7 +573,7 @@ router.get('/cabinet-meetings/:id', (req, res) => {
     });
   }
 
-  res.json({
+  return res.json({
     success: true,
     data: meeting,
   });
@@ -413,10 +581,19 @@ router.get('/cabinet-meetings/:id', (req, res) => {
 
 /**
  * Dissolve a government
- * POST /api/government/:id/dissolve
+ * @param req - Express request object with government ID in params
+ * @param res - Express response object
+ * @returns Response with dissolved government data
  */
-router.post('/:id/dissolve', (req, res) => {
-  const government = governments.get(req.params.id);
+router.post('/:id/dissolve', (req: Request, res: Response): Response => {
+  const { id } = req.params;
+  if (!id) {
+    return res.status(400).json({
+      success: false,
+      error: 'Government ID required',
+    });
+  }
+  const government = governments.get(id);
 
   if (!government) {
     return res.status(404).json({
@@ -443,7 +620,7 @@ router.post('/:id/dissolve', (req, res) => {
       m.resignedAt = new Date().toISOString();
     });
 
-  res.json({
+  return res.json({
     success: true,
     data: government,
   });
@@ -451,10 +628,19 @@ router.post('/:id/dissolve', (req, res) => {
 
 /**
  * Vote of no confidence
- * POST /api/government/:id/no-confidence
+ * @param req - Express request object with government ID in params
+ * @param res - Express response object
+ * @returns Response with updated government data after confidence vote
  */
-router.post('/:id/no-confidence', (req, res) => {
-  const government = governments.get(req.params.id);
+router.post('/:id/no-confidence', (req: Request, res: Response): Response => {
+  const { id } = req.params;
+  if (!id) {
+    return res.status(400).json({
+      success: false,
+      error: 'Government ID required',
+    });
+  }
+  const government = governments.get(id);
 
   if (!government) {
     return res.status(404).json({
@@ -468,14 +654,18 @@ router.post('/:id/no-confidence', (req, res) => {
 
   // If confidence drops below threshold, dissolve
   if (government.confidence < 50) {
-    government.status = 'dissolved';
+    government.status = 'dissolved' as 'active' | 'dissolved';
     government.dissolvedAt = new Date().toISOString();
   }
 
-  res.json({
+  return res.json({
     success: true,
     data: government,
   });
 });
 
+/**
+ * Government API router: endpoints to manage governments, ministers,
+ * executive actions and cabinet meetings.
+ */
 export default router;

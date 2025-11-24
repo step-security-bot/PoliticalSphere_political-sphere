@@ -37,12 +37,12 @@ test.describe('Government Simulation', () => {
 
       // Check for key government metrics
       const metricsSection = page.locator(
-        '[data-testid="government-metrics"], .government-metrics',
+        '[data-testid="government-metrics"], .government-metrics'
       );
       if (await metricsSection.isVisible()) {
         // Should show approval ratings, budget, etc.
         const approvalRating = metricsSection.locator(
-          '[data-testid="approval-rating"], .approval-rating',
+          '[data-testid="approval-rating"], .approval-rating'
         );
         const budgetInfo = metricsSection.locator('[data-testid="budget"], .budget');
 
@@ -61,12 +61,12 @@ test.describe('Government Simulation', () => {
 
       // Check for cabinet/government structure
       const cabinetSection = page.locator(
-        '[data-testid="cabinet"], .cabinet, .government-structure',
+        '[data-testid="cabinet"], .cabinet, .government-structure'
       );
       if (await cabinetSection.isVisible()) {
         // Should show ministers or government positions
         const ministerPositions = cabinetSection.locator(
-          '[data-testid="minister"], .minister, .position',
+          '[data-testid="minister"], .minister, .position'
         );
         const positionCount = await ministerPositions.count();
 
@@ -105,7 +105,7 @@ test.describe('Government Simulation', () => {
 
       // Check if minister interface is available
       const ministerDashboard = page.locator(
-        '[data-testid="minister-dashboard"], .minister-dashboard',
+        '[data-testid="minister-dashboard"], .minister-dashboard'
       );
       const accessDenied = page.getByText(/access denied|not authorized/i);
 
@@ -121,13 +121,13 @@ test.describe('Government Simulation', () => {
       await page.goto('/government/minister');
 
       const ministerDashboard = page.locator(
-        '[data-testid="minister-dashboard"], .minister-dashboard',
+        '[data-testid="minister-dashboard"], .minister-dashboard'
       );
       if (await ministerDashboard.isVisible()) {
         // Should show minister portfolio information
         const portfolioSection = ministerDashboard.locator('[data-testid="portfolio"], .portfolio');
         const responsibilities = ministerDashboard.locator(
-          '[data-testid="responsibilities"], .responsibilities',
+          '[data-testid="responsibilities"], .responsibilities'
         );
 
         // Should have some minister-specific content
@@ -145,15 +145,15 @@ test.describe('Government Simulation', () => {
       await page.goto('/government/minister');
 
       const ministerDashboard = page.locator(
-        '[data-testid="minister-dashboard"], .minister-dashboard',
+        '[data-testid="minister-dashboard"], .minister-dashboard'
       );
       if (await ministerDashboard.isVisible()) {
         // Look for action buttons or decision interfaces
         const actionButtons = ministerDashboard.locator(
-          '[data-testid="minister-action"], .minister-action button',
+          '[data-testid="minister-action"], .minister-action button'
         );
         const decisionInterface = ministerDashboard.locator(
-          '[data-testid="decisions"], .decisions',
+          '[data-testid="decisions"], .decisions'
         );
 
         if (await actionButtons.first().isVisible()) {
@@ -178,7 +178,7 @@ test.describe('Government Simulation', () => {
       if (await cabinetSection.isVisible()) {
         // Should show cabinet composition or meetings
         const cabinetMembers = cabinetSection.locator(
-          '[data-testid="cabinet-member"], .cabinet-member',
+          '[data-testid="cabinet-member"], .cabinet-member'
         );
         const meetings = cabinetSection.locator('[data-testid="meeting"], .meeting');
 
@@ -200,7 +200,7 @@ test.describe('Government Simulation', () => {
       if (await budgetSection.isVisible()) {
         // Should show budget allocations, spending, etc.
         const budgetItems = budgetSection.locator(
-          '[data-testid="budget-item"], .budget-item, .allocation',
+          '[data-testid="budget-item"], .budget-item, .allocation'
         );
         const spendingData = budgetSection.locator('[data-testid="spending"], .spending');
 
@@ -221,7 +221,7 @@ test.describe('Government Simulation', () => {
       const announcementsSection = page.locator('[data-testid="announcements"], .announcements');
       if (await announcementsSection.isVisible()) {
         const announcementItems = announcementsSection.locator(
-          '[data-testid="announcement"], .announcement',
+          '[data-testid="announcement"], .announcement'
         );
         const announcementCount = await announcementItems.count();
 
@@ -241,7 +241,7 @@ test.describe('Government Simulation', () => {
       await page.goto('/government/executive');
 
       const executiveDashboard = page.locator(
-        '[data-testid="executive-dashboard"], .executive-dashboard',
+        '[data-testid="executive-dashboard"], .executive-dashboard'
       );
       if (await executiveDashboard.isVisible()) {
         // Look for executive actions on bills
@@ -284,13 +284,13 @@ test.describe('Government Simulation', () => {
 
       // Check for diplomatic information
       const diplomacySection = page.locator(
-        '[data-testid="diplomacy"], .diplomacy, .foreign-affairs',
+        '[data-testid="diplomacy"], .diplomacy, .foreign-affairs'
       );
       if (await diplomacySection.isVisible()) {
         // Should show treaties, alliances, or diplomatic relations
         const relations = diplomacySection.locator('[data-testid="relation"], .relation, .treaty');
         const diplomaticActions = diplomacySection.locator(
-          '[data-testid="diplomatic-action"], .diplomatic-action',
+          '[data-testid="diplomatic-action"], .diplomatic-action'
         );
 
         const hasDiplomacy =
@@ -313,7 +313,7 @@ test.describe('Government Simulation', () => {
       if (await approvalSection.isVisible()) {
         // Should show approval metrics
         const ratingValue = approvalSection.locator(
-          '[data-testid="rating-value"], .rating-value, .percentage',
+          '[data-testid="rating-value"], .rating-value, .percentage'
         );
         const ratingChart = approvalSection.locator('[data-testid="rating-chart"], .chart, canvas');
 
@@ -335,7 +335,7 @@ test.describe('Government Simulation', () => {
         // Should show KPIs, effectiveness measures, etc.
         const kpiItems = performanceSection.locator('[data-testid="kpi"], .kpi, .metric');
         const effectivenessData = performanceSection.locator(
-          '[data-testid="effectiveness"], .effectiveness',
+          '[data-testid="effectiveness"], .effectiveness'
         );
 
         const hasPerformanceData =
@@ -356,10 +356,10 @@ test.describe('Government Simulation', () => {
       if (await servicesSection.isVisible()) {
         // Should show service quality, delivery times, etc.
         const serviceMetrics = servicesSection.locator(
-          '[data-testid="service-metric"], .service-metric',
+          '[data-testid="service-metric"], .service-metric'
         );
         const deliveryStats = servicesSection.locator(
-          '[data-testid="delivery-stat"], .delivery-stat',
+          '[data-testid="delivery-stat"], .delivery-stat'
         );
 
         const hasServiceData =
@@ -401,7 +401,7 @@ test.describe('Government Simulation', () => {
       if (await spendingSection.isVisible()) {
         // Should show detailed spending breakdowns
         const spendingItems = spendingSection.locator(
-          '[data-testid="spending-item"], .spending-item',
+          '[data-testid="spending-item"], .spending-item'
         );
         const breakdown = spendingSection.locator('[data-testid="breakdown"], .breakdown');
 
@@ -423,10 +423,10 @@ test.describe('Government Simulation', () => {
       if (await trackingSection.isVisible()) {
         // Should show bill progress, status updates, etc.
         const billProgress = trackingSection.locator(
-          '[data-testid="bill-progress"], .bill-progress',
+          '[data-testid="bill-progress"], .bill-progress'
         );
         const statusUpdates = trackingSection.locator(
-          '[data-testid="status-update"], .status-update',
+          '[data-testid="status-update"], .status-update'
         );
 
         const hasTracking =
@@ -468,7 +468,7 @@ test.describe('Government Simulation', () => {
       if (await crisisSection.isVisible()) {
         // Should show crisis response tools
         const responseTools = crisisSection.locator(
-          '[data-testid="response-tool"], .response-tool',
+          '[data-testid="response-tool"], .response-tool'
         );
         const crisisPlans = crisisSection.locator('[data-testid="crisis-plan"], .crisis-plan');
 

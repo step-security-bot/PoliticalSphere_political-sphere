@@ -1,0 +1,1181 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>political-sphere documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">political-sphere documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content interface">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Interfaces</li>
+  <li class="breadcrumb-item"
+  >
+  Minister</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>apps/api/src/routes/government.ts</code>
+        </p>
+
+
+
+
+        <section data-compodoc="block-index">
+            <h3 id="index">Index</h3>
+            <table class="table table-sm table-bordered index-table">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <h6><b>Properties</b></h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <ul class="index-list">
+                                <li>
+                                        <a href="#appointedAt" 
+>
+                                            appointedAt
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#department" 
+>
+                                            department
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#governmentId" 
+>
+                                            governmentId
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#id" 
+>
+                                            id
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#position" 
+>
+                                            position
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#resignedAt" 
+>
+                                            resignedAt
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#status" 
+>
+                                            status
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#userId" 
+>
+                                            userId
+                                        </a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+
+
+            <section data-compodoc="block-properties">
+                <h3 id="inputs">Properties</h3>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="appointedAt"></a>
+                                        <span class="name "><b>appointedAt</b>
+                                            <a href="#appointedAt">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>appointedAt:         <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="department"></a>
+                                        <span class="name "><b>department</b>
+                                            <a href="#department">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>department:         <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="governmentId"></a>
+                                        <span class="name "><b>governmentId</b>
+                                            <a href="#governmentId">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>governmentId:         <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="id"></a>
+                                        <span class="name "><b>id</b>
+                                            <a href="#id">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>id:         <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="position"></a>
+                                        <span class="name "><b>position</b>
+                                            <a href="#position">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>position:         <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="resignedAt"></a>
+                                        <span class="name "><b>resignedAt</b>
+                                            <a href="#resignedAt">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>resignedAt:         <code><a href="../miscellaneous/variables.html#g" target="_self" >string | null</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="../miscellaneous/variables.html#g" target="_self" >string | null</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="status"></a>
+                                        <span class="name "><b>status</b>
+                                            <a href="#status">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>status:         <code><a href="../miscellaneous/variables.html#g" target="_self" >&quot;active&quot; | &quot;resigned&quot;</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="../miscellaneous/variables.html#g" target="_self" >&quot;active&quot; | &quot;resigned&quot;</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="userId"></a>
+                                        <span class="name "><b>userId</b>
+                                            <a href="#userId">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>userId:         <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+            </section>
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import express, { type Request, type Response } from &#x27;express&#x27;;
+import { z } from &#x27;zod&#x27;;
+
+const router &#x3D; express.Router();
+
+// Validation schemas
+const CreateGovernmentSchema &#x3D; z.object({
+  gameId: z.string().uuid(),
+  primeMinisterId: z.string().uuid(),
+  name: z.string().min(1).max(200),
+  type: z.enum([&#x27;coalition&#x27;, &#x27;majority&#x27;, &#x27;minority&#x27;]),
+  formationDate: z.string().datetime(),
+});
+
+const AppointMinisterSchema &#x3D; z.object({
+  governmentId: z.string().uuid(),
+  userId: z.string().uuid(),
+  position: z.enum([
+    &#x27;prime_minister&#x27;,
+    &#x27;chancellor&#x27;,
+    &#x27;foreign_secretary&#x27;,
+    &#x27;home_secretary&#x27;,
+    &#x27;defence_secretary&#x27;,
+    &#x27;health_secretary&#x27;,
+    &#x27;education_secretary&#x27;,
+    &#x27;justice_secretary&#x27;,
+    &#x27;environment_secretary&#x27;,
+    &#x27;transport_secretary&#x27;,
+    &#x27;business_secretary&#x27;,
+    &#x27;work_pensions_secretary&#x27;,
+  ]),
+  department: z.string().min(1).max(200),
+});
+
+const ExecutiveActionSchema &#x3D; z.object({
+  governmentId: z.string().uuid(),
+  ministerId: z.string().uuid(),
+  type: z.enum([&#x27;order&#x27;, &#x27;regulation&#x27;, &#x27;appointment&#x27;, &#x27;treaty&#x27;, &#x27;emergency&#x27;]),
+  title: z.string().min(1).max(200),
+  description: z.string().min(1).max(5000),
+  requiresParliamentApproval: z.boolean().default(false),
+});
+
+const CabinetMeetingSchema &#x3D; z.object({
+  governmentId: z.string().uuid(),
+  agenda: z.string().min(1).max(2000),
+  scheduledDate: z.string().datetime(),
+  attendees: z.array(z.string().uuid()),
+});
+
+// Domain types
+interface Government {
+  id: string;
+  gameId: string;
+  primeMinisterId: string;
+  name: string;
+  type: &#x27;coalition&#x27; | &#x27;majority&#x27; | &#x27;minority&#x27;;
+  formationDate: string;
+  status: &#x27;active&#x27; | &#x27;dissolved&#x27;;
+  confidence: number;
+  createdAt: string;
+  dissolvedAt: string | null;
+}
+
+interface Minister {
+  id: string;
+  governmentId: string;
+  userId: string;
+  position: string;
+  department: string;
+  appointedAt: string;
+  resignedAt: string | null;
+  status: &#x27;active&#x27; | &#x27;resigned&#x27;;
+}
+
+interface ExecutiveAction {
+  id: string;
+  governmentId: string;
+  ministerId: string;
+  type: &#x27;order&#x27; | &#x27;regulation&#x27; | &#x27;appointment&#x27; | &#x27;treaty&#x27; | &#x27;emergency&#x27;;
+  title: string;
+  description: string;
+  requiresParliamentApproval: boolean;
+  status: &#x27;pending_approval&#x27; | &#x27;enacted&#x27; | &#x27;rejected&#x27;;
+  createdAt: string;
+  enactedAt: string | null;
+}
+
+interface CabinetMeeting {
+  id: string;
+  governmentId: string;
+  agenda: string;
+  scheduledDate: string;
+  attendees: string[];
+  status: &#x27;scheduled&#x27; | &#x27;in_progress&#x27; | &#x27;completed&#x27; | &#x27;cancelled&#x27;;
+  decisions: string[];
+  createdAt: string;
+}
+
+// In-memory storage
+const governments &#x3D; new Map&lt;string, Government&gt;();
+const ministers &#x3D; new Map&lt;string, Minister&gt;();
+const executiveActions &#x3D; new Map&lt;string, ExecutiveAction&gt;();
+const cabinetMeetings &#x3D; new Map&lt;string, CabinetMeeting&gt;();
+
+/**
+ * Create a new government
+ * @param req - Express request object containing government creation data
+ * @param res - Express response object
+ * @returns Promise resolving to response with created government data
+ */
+router.post(&#x27;/&#x27;, async (req: Request, res: Response): Promise&lt;Response&gt; &#x3D;&gt; {
+  try {
+    const validated &#x3D; CreateGovernmentSchema.parse(req.body);
+
+    const governmentId &#x3D; &#x60;gov-${Date.now()}-${Math.random().toString(36).substr(2, 9)}&#x60;;
+    const government: Government &#x3D; {
+      id: governmentId,
+      gameId: validated.gameId,
+      primeMinisterId: validated.primeMinisterId,
+      name: validated.name,
+      type: validated.type,
+      formationDate: validated.formationDate,
+      status: &#x27;active&#x27; as &#x27;active&#x27; | &#x27;dissolved&#x27;,
+      confidence: 100,
+      createdAt: new Date().toISOString(),
+      dissolvedAt: null,
+    };
+
+    governments.set(governmentId, government);
+
+    return res.status(201).json({
+      success: true,
+      data: government,
+    });
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      return res.status(400).json({
+        success: false,
+        error: &#x27;Validation failed&#x27;,
+        details: error.errors,
+      });
+    }
+
+    return res.status(500).json({
+      success: false,
+      error: &#x27;Failed to create government&#x27;,
+      message: (error as Error).message,
+    });
+  }
+});
+
+/**
+ * Get government by ID
+ * @param req - Express request object with government ID in params
+ * @param res - Express response object
+ * @returns Response with government data or error
+ */
+router.get(&#x27;/:id&#x27;, (req: Request, res: Response): Response &#x3D;&gt; {
+  const { id } &#x3D; req.params;
+  if (!id) {
+    return res.status(400).json({
+      success: false,
+      error: &#x27;Government ID required&#x27;,
+    });
+  }
+  const government &#x3D; governments.get(id);
+
+  if (!government) {
+    return res.status(404).json({
+      success: false,
+      error: &#x27;Government not found&#x27;,
+    });
+  }
+
+  // Get all ministers for this government
+  const governmentMinisters &#x3D; Array.from(ministers.values()).filter(
+    m &#x3D;&gt; m.governmentId &#x3D;&#x3D;&#x3D; government.id
+  );
+
+  return res.json({
+    success: true,
+    data: {
+      ...government,
+      ministers: governmentMinisters,
+    },
+  });
+});
+
+/**
+ * List governments for a game
+ * @param req - Express request object with optional gameId query parameter
+ * @param res - Express response object
+ * @returns Response with array of governments or error
+ */
+router.get(&#x27;/&#x27;, (req: Request, res: Response): Response &#x3D;&gt; {
+  const { gameId } &#x3D; req.query as { gameId?: string };
+
+  if (!gameId) {
+    return res.status(400).json({
+      success: false,
+      error: &#x27;gameId query parameter required&#x27;,
+    });
+  }
+
+  const gameGovernments &#x3D; Array.from(governments.values()).filter(g &#x3D;&gt; g.gameId &#x3D;&#x3D;&#x3D; gameId);
+
+  return res.json({
+    success: true,
+    data: gameGovernments,
+  });
+});
+
+/**
+ * Appoint a minister to a government position
+ * @param req - Express request object with minister appointment data in body
+ * @param res - Express response object
+ * @returns Promise resolving to response with appointed minister data
+ */
+router.post(&#x27;/ministers&#x27;, async (req: Request, res: Response): Promise&lt;Response&gt; &#x3D;&gt; {
+  try {
+    const validated &#x3D; AppointMinisterSchema.parse(req.body);
+
+    // Verify government exists
+    const government &#x3D; governments.get(validated.governmentId);
+    if (!government) {
+      return res.status(404).json({
+        success: false,
+        error: &#x27;Government not found&#x27;,
+      });
+    }
+
+    // Check if position already filled
+    const existingMinister &#x3D; Array.from(ministers.values()).find(
+      m &#x3D;&gt; m.governmentId &#x3D;&#x3D;&#x3D; validated.governmentId &amp;&amp; m.position &#x3D;&#x3D;&#x3D; validated.position
+    );
+
+    if (existingMinister) {
+      return res.status(400).json({
+        success: false,
+        error: &#x27;Position already filled&#x27;,
+        currentMinister: existingMinister,
+      });
+    }
+
+    const ministerId &#x3D; &#x60;minister-${Date.now()}-${Math.random().toString(36).substr(2, 9)}&#x60;;
+    const minister: Minister &#x3D; {
+      id: ministerId,
+      governmentId: validated.governmentId,
+      userId: validated.userId,
+      position: validated.position,
+      department: validated.department,
+      appointedAt: new Date().toISOString(),
+      resignedAt: null,
+      status: &#x27;active&#x27; as &#x27;active&#x27; | &#x27;resigned&#x27;,
+    };
+
+    ministers.set(ministerId, minister);
+
+    return res.status(201).json({
+      success: true,
+      data: minister,
+    });
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      return res.status(400).json({
+        success: false,
+        error: &#x27;Validation failed&#x27;,
+        details: error.errors,
+      });
+    }
+
+    return res.status(500).json({
+      success: false,
+      error: &#x27;Failed to appoint minister&#x27;,
+      message: (error as Error).message,
+    });
+  }
+});
+
+/**
+ * Remove a minister from their position
+ * @param req - Express request object with minister ID in params
+ * @param res - Express response object
+ * @returns Response confirming minister removal
+ */
+router.delete(&#x27;/ministers/:id&#x27;, (req: Request, res: Response): Response &#x3D;&gt; {
+  const { id } &#x3D; req.params;
+  if (!id) {
+    return res.status(400).json({
+      success: false,
+      error: &#x27;Minister ID required&#x27;,
+    });
+  }
+  const minister &#x3D; ministers.get(id);
+
+  if (!minister) {
+    return res.status(404).json({
+      success: false,
+      error: &#x27;Minister not found&#x27;,
+    });
+  }
+
+  minister.status &#x3D; &#x27;resigned&#x27; as &#x27;active&#x27; | &#x27;resigned&#x27;;
+  minister.resignedAt &#x3D; new Date().toISOString();
+
+  return res.json({
+    success: true,
+    data: minister,
+  });
+});
+
+/**
+ * List ministers for a government
+ * @param req - Express request object with government ID in params
+ * @param res - Express response object
+ * @returns Response with array of active ministers for the government
+ */
+router.get(&#x27;/:governmentId/ministers&#x27;, (req: Request, res: Response): Response &#x3D;&gt; {
+  const governmentMinisters &#x3D; Array.from(ministers.values()).filter(
+    m &#x3D;&gt; m.governmentId &#x3D;&#x3D;&#x3D; req.params.governmentId &amp;&amp; m.status &#x3D;&#x3D;&#x3D; &#x27;active&#x27;
+  );
+
+  return res.json({
+    success: true,
+    data: governmentMinisters,
+  });
+});
+
+/**
+ * Create an executive action
+ * @param req - Express request object containing executive action data in body
+ * @param res - Express response object
+ * @returns Promise resolving to response with created executive action data
+ */
+router.post(&#x27;/actions&#x27;, async (req: Request, res: Response): Promise&lt;Response&gt; &#x3D;&gt; {
+  try {
+    const validated &#x3D; ExecutiveActionSchema.parse(req.body);
+
+    // Verify government and minister exist
+    const government &#x3D; governments.get(validated.governmentId);
+    if (!government) {
+      return res.status(404).json({
+        success: false,
+        error: &#x27;Government not found&#x27;,
+      });
+    }
+
+    const minister &#x3D; ministers.get(validated.ministerId);
+    if (!minister || minister.governmentId !&#x3D;&#x3D; validated.governmentId) {
+      return res.status(404).json({
+        success: false,
+        error: &#x27;Minister not found or not part of this government&#x27;,
+      });
+    }
+
+    const actionId &#x3D; &#x60;action-${Date.now()}-${Math.random().toString(36).substr(2, 9)}&#x60;;
+    const action: ExecutiveAction &#x3D; {
+      id: actionId,
+      governmentId: validated.governmentId,
+      ministerId: validated.ministerId,
+      type: validated.type,
+      title: validated.title,
+      description: validated.description,
+      requiresParliamentApproval: validated.requiresParliamentApproval,
+      status: (validated.requiresParliamentApproval ? &#x27;pending_approval&#x27; : &#x27;enacted&#x27;) as
+        | &#x27;pending_approval&#x27;
+        | &#x27;enacted&#x27;
+        | &#x27;rejected&#x27;,
+      createdAt: new Date().toISOString(),
+      enactedAt: validated.requiresParliamentApproval ? null : new Date().toISOString(),
+    };
+
+    executiveActions.set(actionId, action);
+
+    return res.status(201).json({
+      success: true,
+      data: action,
+    });
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      return res.status(400).json({
+        success: false,
+        error: &#x27;Validation failed&#x27;,
+        details: error.errors,
+      });
+    }
+
+    return res.status(500).json({
+      success: false,
+      error: &#x27;Failed to create executive action&#x27;,
+      message: (error as Error).message,
+    });
+  }
+});
+
+/**
+ * Get executive action by ID
+ * @param req - Express request object with action ID in params
+ * @param res - Express response object
+ * @returns Response with executive action data or error
+ */
+router.get(&#x27;/actions/:id&#x27;, (req: Request, res: Response): Response &#x3D;&gt; {
+  const { id } &#x3D; req.params;
+  if (!id) {
+    return res.status(400).json({
+      success: false,
+      error: &#x27;Action ID required&#x27;,
+    });
+  }
+  const action &#x3D; executiveActions.get(id);
+
+  if (!action) {
+    return res.status(404).json({
+      success: false,
+      error: &#x27;Executive action not found&#x27;,
+    });
+  }
+
+  return res.json({
+    success: true,
+    data: action,
+  });
+});
+
+/**
+ * List executive actions for a government
+ * @param req - Express request object with government ID in params
+ * @param res - Express response object
+ * @returns Response with array of executive actions for the government
+ */
+router.get(&#x27;/:governmentId/actions&#x27;, (req: Request, res: Response): Response &#x3D;&gt; {
+  const governmentActions &#x3D; Array.from(executiveActions.values()).filter(
+    a &#x3D;&gt; a.governmentId &#x3D;&#x3D;&#x3D; req.params.governmentId
+  );
+
+  return res.json({
+    success: true,
+    data: governmentActions,
+  });
+});
+
+/**
+ * Schedule a cabinet meeting
+ * @param req - Express request object containing cabinet meeting data in body
+ * @param res - Express response object
+ * @returns Promise resolving to response with scheduled cabinet meeting data
+ */
+router.post(&#x27;/cabinet-meetings&#x27;, async (req: Request, res: Response): Promise&lt;Response&gt; &#x3D;&gt; {
+  try {
+    const validated &#x3D; CabinetMeetingSchema.parse(req.body);
+
+    // Verify government exists
+    const government &#x3D; governments.get(validated.governmentId);
+    if (!government) {
+      return res.status(404).json({
+        success: false,
+        error: &#x27;Government not found&#x27;,
+      });
+    }
+
+    const meetingId &#x3D; &#x60;meeting-${Date.now()}-${Math.random().toString(36).substr(2, 9)}&#x60;;
+    const meeting: CabinetMeeting &#x3D; {
+      id: meetingId,
+      governmentId: validated.governmentId,
+      agenda: validated.agenda,
+      scheduledDate: validated.scheduledDate,
+      attendees: validated.attendees,
+      status: &#x27;scheduled&#x27; as &#x27;scheduled&#x27; | &#x27;in_progress&#x27; | &#x27;completed&#x27;,
+      decisions: [],
+      createdAt: new Date().toISOString(),
+    };
+
+    cabinetMeetings.set(meetingId, meeting);
+
+    return res.status(201).json({
+      success: true,
+      data: meeting,
+    });
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      return res.status(400).json({
+        success: false,
+        error: &#x27;Validation failed&#x27;,
+        details: error.errors,
+      });
+    }
+
+    return res.status(500).json({
+      success: false,
+      error: &#x27;Failed to schedule cabinet meeting&#x27;,
+      message: (error as Error).message,
+    });
+  }
+});
+
+/**
+ * Get cabinet meeting by ID
+ * @param req - Express request object with cabinet meeting ID in params
+ * @param res - Express response object
+ * @returns Response with cabinet meeting data or error
+ */
+router.get(&#x27;/cabinet-meetings/:id&#x27;, (req: Request, res: Response): Response &#x3D;&gt; {
+  const { id } &#x3D; req.params;
+  if (!id) {
+    return res.status(400).json({
+      success: false,
+      error: &#x27;Cabinet meeting ID required&#x27;,
+    });
+  }
+  const meeting &#x3D; cabinetMeetings.get(id);
+
+  if (!meeting) {
+    return res.status(404).json({
+      success: false,
+      error: &#x27;Cabinet meeting not found&#x27;,
+    });
+  }
+
+  return res.json({
+    success: true,
+    data: meeting,
+  });
+});
+
+/**
+ * Dissolve a government
+ * @param req - Express request object with government ID in params
+ * @param res - Express response object
+ * @returns Response with dissolved government data
+ */
+router.post(&#x27;/:id/dissolve&#x27;, (req: Request, res: Response): Response &#x3D;&gt; {
+  const { id } &#x3D; req.params;
+  if (!id) {
+    return res.status(400).json({
+      success: false,
+      error: &#x27;Government ID required&#x27;,
+    });
+  }
+  const government &#x3D; governments.get(id);
+
+  if (!government) {
+    return res.status(404).json({
+      success: false,
+      error: &#x27;Government not found&#x27;,
+    });
+  }
+
+  if (government.status !&#x3D;&#x3D; &#x27;active&#x27;) {
+    return res.status(400).json({
+      success: false,
+      error: &#x27;Government is not active&#x27;,
+    });
+  }
+
+  government.status &#x3D; &#x27;dissolved&#x27;;
+  government.dissolvedAt &#x3D; new Date().toISOString();
+
+  // Resign all ministers
+  Array.from(ministers.values())
+    .filter(m &#x3D;&gt; m.governmentId &#x3D;&#x3D;&#x3D; government.id &amp;&amp; m.status &#x3D;&#x3D;&#x3D; &#x27;active&#x27;)
+    .forEach(m &#x3D;&gt; {
+      m.status &#x3D; &#x27;resigned&#x27;;
+      m.resignedAt &#x3D; new Date().toISOString();
+    });
+
+  return res.json({
+    success: true,
+    data: government,
+  });
+});
+
+/**
+ * Vote of no confidence
+ * @param req - Express request object with government ID in params
+ * @param res - Express response object
+ * @returns Response with updated government data after confidence vote
+ */
+router.post(&#x27;/:id/no-confidence&#x27;, (req: Request, res: Response): Response &#x3D;&gt; {
+  const { id } &#x3D; req.params;
+  if (!id) {
+    return res.status(400).json({
+      success: false,
+      error: &#x27;Government ID required&#x27;,
+    });
+  }
+  const government &#x3D; governments.get(id);
+
+  if (!government) {
+    return res.status(404).json({
+      success: false,
+      error: &#x27;Government not found&#x27;,
+    });
+  }
+
+  // Reduce confidence
+  government.confidence &#x3D; Math.max(0, government.confidence - 10);
+
+  // If confidence drops below threshold, dissolve
+  if (government.confidence &lt; 50) {
+    government.status &#x3D; &#x27;dissolved&#x27; as &#x27;active&#x27; | &#x27;dissolved&#x27;;
+    government.dissolvedAt &#x3D; new Date().toISOString();
+  }
+
+  return res.json({
+    success: true,
+    data: government,
+  });
+});
+
+export default router;
+</code></pre>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'interface';
+            var COMPODOC_CURRENT_PAGE_URL = 'Minister.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

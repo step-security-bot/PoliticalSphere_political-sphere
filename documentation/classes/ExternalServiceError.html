@@ -1,0 +1,559 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>political-sphere documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">political-sphere documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content class">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Classes</li>
+  <li class="breadcrumb-item" >ExternalServiceError</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>apps/api/src/utils/error-handler.ts</code>
+        </p>
+
+
+            <p class="comment">
+                <h3>Description</h3>
+            </p>
+            <p class="comment">
+                <p>Error thrown when an external service or API call fails.
+Maps to HTTP 502 Bad Gateway status.</p>
+
+            </p>
+
+            <p class="comment">
+                <h3>Extends</h3>
+            </p>
+            <p class="comment">
+                        <code>Error</code>
+            </p>
+
+
+
+
+            <section data-compodoc="block-constructor">
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(service: <a href="../unknowns/g.html" target="_self">string</a>, message: <a href="../unknowns/g.html" target="_self">string</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="136" class="link-to-prism">apps/api/src/utils/error-handler.ts:136</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>service</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>message</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+
+
+
+
+
+
+
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import type { NextFunction, Request, Response } from &#x27;express&#x27;;
+
+import { sanitizeErrorForLog } from &#x27;./log-sanitizer&#x27;;
+import { getLogger } from &#x27;@political-sphere/shared&#x27;;
+
+/**
+ * Express error handling middleware that sanitizes errors for logging and returns appropriate HTTP responses.
+ * Handles different error types with appropriate status codes and prevents information leakage.
+ * @param err - The error that occurred
+ * @param req - Express request object
+ * @param res - Express response object
+ * @param _next - Express next function (unused)
+ */
+export function handleError(err: Error, req: Request, res: Response, _next: NextFunction): void {
+  // Security: Sanitize error data before logging to prevent log injection
+  const sanitizedError &#x3D; sanitizeErrorForLog(err, req as unknown as Record&lt;string, unknown&gt;);
+  const logger &#x3D; getLogger({ service: &#x27;api-error-handler&#x27; });
+  logger.error(&#x27;Error:&#x27;, { error: sanitizedError });
+
+  // Don&#x27;t leak internal errors
+  const isDevelopment &#x3D; process.env.NODE_ENV &#x3D;&#x3D;&#x3D; &#x27;development&#x27;;
+  const message &#x3D; isDevelopment ? err.message : &#x27;Internal server error&#x27;;
+
+  // Determine status code
+  let statusCode &#x3D; 500;
+  if (err.name &#x3D;&#x3D;&#x3D; &#x27;ValidationError&#x27;) {
+    statusCode &#x3D; 400;
+  } else if (err.name &#x3D;&#x3D;&#x3D; &#x27;UnauthorizedError&#x27;) {
+    statusCode &#x3D; 401;
+  } else if (err.name &#x3D;&#x3D;&#x3D; &#x27;NotFoundError&#x27;) {
+    statusCode &#x3D; 404;
+  } else if (err.name &#x3D;&#x3D;&#x3D; &#x27;ConflictError&#x27;) {
+    statusCode &#x3D; 409;
+  } else if (err.name &#x3D;&#x3D;&#x3D; &#x27;RateLimitError&#x27;) {
+    statusCode &#x3D; 429;
+  } else if (err.name &#x3D;&#x3D;&#x3D; &#x27;DatabaseError&#x27;) {
+    statusCode &#x3D; 500;
+  } else if (err.name &#x3D;&#x3D;&#x3D; &#x27;ExternalServiceError&#x27;) {
+    statusCode &#x3D; 502;
+  }
+
+  res.status(statusCode).json({
+    error: {
+      type: err.name,
+      message,
+      ...(isDevelopment &amp;&amp; { stack: err.stack }),
+    },
+  });
+}
+
+/**
+ * Higher-order function that wraps async route handlers to catch rejected promises and forward them to error handling middleware.
+ * Eliminates the need for try-catch blocks in async route handlers.
+ * @param fn - The async route handler function to wrap
+ * @returns A wrapped function that catches and forwards errors
+ */
+export function asyncHandler(
+  fn: (req: Request, res: Response, _next: NextFunction) &#x3D;&gt; Promise&lt;void&gt;
+) {
+  return (req: Request, res: Response, next: NextFunction) &#x3D;&gt; {
+    Promise.resolve(fn(req, res, next)).catch(next);
+  };
+}
+
+// Custom error classes
+/**
+ * Error thrown when request validation fails (e.g., invalid input data).
+ * Maps to HTTP 400 Bad Request status.
+ */
+export class ValidationError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name &#x3D; &#x27;ValidationError&#x27;;
+  }
+}
+
+/**
+ * Error thrown when a requested resource cannot be found.
+ * Maps to HTTP 404 Not Found status.
+ */
+export class NotFoundError extends Error {
+  constructor(resource: string) {
+    super(&#x60;${resource} not found&#x60;);
+    this.name &#x3D; &#x27;NotFoundError&#x27;;
+  }
+}
+
+/**
+ * Error thrown when authentication is required but not provided or invalid.
+ * Maps to HTTP 401 Unauthorized status.
+ */
+export class UnauthorizedError extends Error {
+  constructor(message: string &#x3D; &#x27;Unauthorized&#x27;) {
+    super(message);
+    this.name &#x3D; &#x27;UnauthorizedError&#x27;;
+  }
+}
+
+/**
+ * Error thrown when the request conflicts with the current state of the resource.
+ * Maps to HTTP 409 Conflict status.
+ */
+export class ConflictError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name &#x3D; &#x27;ConflictError&#x27;;
+  }
+}
+
+/**
+ * Error thrown when the request rate limit has been exceeded.
+ * Maps to HTTP 429 Too Many Requests status.
+ */
+export class RateLimitError extends Error {
+  constructor(message: string &#x3D; &#x27;Too many requests&#x27;) {
+    super(message);
+    this.name &#x3D; &#x27;RateLimitError&#x27;;
+  }
+}
+
+/**
+ * Error thrown when a database operation fails.
+ * Maps to HTTP 500 Internal Server Error status.
+ */
+export class DatabaseError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name &#x3D; &#x27;DatabaseError&#x27;;
+  }
+}
+
+/**
+ * Error thrown when an external service or API call fails.
+ * Maps to HTTP 502 Bad Gateway status.
+ */
+export class ExternalServiceError extends Error {
+  constructor(service: string, message: string) {
+    super(&#x60;${service}: ${message}&#x60;);
+    this.name &#x3D; &#x27;ExternalServiceError&#x27;;
+  }
+}
+
+// Circuit breaker for external services
+/**
+ * Circuit breaker pattern implementation for external service calls.
+ * Prevents cascading failures by temporarily stopping calls to failing services.
+ * Automatically transitions between CLOSED, OPEN, and HALF_OPEN states.
+ */
+export class CircuitBreaker {
+  private failures &#x3D; 0;
+  private lastFailureTime &#x3D; 0;
+  private state: &#x27;CLOSED&#x27; | &#x27;OPEN&#x27; | &#x27;HALF_OPEN&#x27; &#x3D; &#x27;CLOSED&#x27;;
+
+  constructor(
+    private failureThreshold: number &#x3D; 5,
+    private recoveryTimeout: number &#x3D; 60000 // 1 minute
+  ) {}
+
+  /**
+   * Executes a function with circuit breaker protection.
+   * Tracks failures and manages circuit state transitions.
+   * @param fn - The async function to execute with circuit breaker protection
+   * @returns Promise resolving to the result of the executed function
+   * @throws ExternalServiceError if circuit is open, or the original error if execution fails
+   */
+  async execute&lt;T&gt;(fn: () &#x3D;&gt; Promise&lt;T&gt;): Promise&lt;T&gt; {
+    if (this.state &#x3D;&#x3D;&#x3D; &#x27;OPEN&#x27;) {
+      if (Date.now() - this.lastFailureTime &gt; this.recoveryTimeout) {
+        this.state &#x3D; &#x27;HALF_OPEN&#x27;;
+      } else {
+        throw new ExternalServiceError(&#x27;CircuitBreaker&#x27;, &#x27;Service is currently unavailable&#x27;);
+      }
+    }
+
+    try {
+      const result &#x3D; await fn();
+      this.onSuccess();
+      return result;
+    } catch (error) {
+      this.onFailure();
+      throw error;
+    }
+  }
+
+  private onSuccess() {
+    this.failures &#x3D; 0;
+    this.state &#x3D; &#x27;CLOSED&#x27;;
+  }
+
+  private onFailure() {
+    this.failures++;
+    this.lastFailureTime &#x3D; Date.now();
+
+    if (this.failures &gt;&#x3D; this.failureThreshold) {
+      this.state &#x3D; &#x27;OPEN&#x27;;
+    }
+  }
+
+  /**
+   * Gets the current state of the circuit breaker.
+   * @returns The current circuit breaker state (&#x27;CLOSED&#x27;, &#x27;OPEN&#x27;, or &#x27;HALF_OPEN&#x27;)
+   */
+  getState() {
+    return this.state;
+  }
+}
+
+// Retry mechanism with exponential backoff
+/**
+ * Retries an async function with exponential backoff on failure.
+ * Implements jitter-free exponential backoff to prevent thundering herd problems.
+ * @param fn - The async function to retry on failure
+ * @param maxRetries - Maximum number of retry attempts (default: 3)
+ * @param baseDelay - Base delay in milliseconds for exponential backoff (default: 1000)
+ * @returns Promise resolving to the result of the successfully executed function
+ * @throws The last error encountered if all retry attempts fail
+ */
+export const retryWithBackoff &#x3D; async &lt;T&gt;(
+  fn: () &#x3D;&gt; Promise&lt;T&gt;,
+  maxRetries: number &#x3D; 3,
+  baseDelay: number &#x3D; 1000
+): Promise&lt;T&gt; &#x3D;&gt; {
+  let _lastError: Error | undefined;
+
+  for (let attempt &#x3D; 0; attempt &lt;&#x3D; maxRetries; attempt++) {
+    try {
+      return await fn();
+    } catch (error) {
+      _lastError &#x3D; error as Error;
+
+      if (attempt &#x3D;&#x3D;&#x3D; maxRetries) {
+        throw _lastError;
+      }
+
+      const delay &#x3D; baseDelay * 2 ** attempt;
+      await new Promise(resolve &#x3D;&gt; setTimeout(resolve, delay));
+    }
+  }
+
+  // This should never be reached, but TypeScript requires it
+  throw new Error(&#x27;Unexpected error in retry mechanism&#x27;);
+};
+</code></pre>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'class';
+            var COMPODOC_CURRENT_PAGE_URL = 'ExternalServiceError.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

@@ -1,0 +1,16 @@
+{
+  "low": true,
+  "moderate": false,
+  "high": true,
+  "critical": true,
+  "allowlist": [],
+  "report": {
+    "type": "important",
+    "reporters": ["console"]
+  },
+  "path-allowlist": [],
+  "ignore-dev-dependencies": false,
+  "retry": {
+    "count": 5
+  }
+}

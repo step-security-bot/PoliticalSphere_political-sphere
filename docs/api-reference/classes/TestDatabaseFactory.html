@@ -1,0 +1,735 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>political-sphere documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">political-sphere documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content class">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Classes</li>
+  <li class="breadcrumb-item" >TestDatabaseFactory</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>tools/testing/testcontainers.ts</code>
+        </p>
+
+
+            <p class="comment">
+                <h3>Description</h3>
+            </p>
+            <p class="comment">
+                <p>Test database factory</p>
+
+            </p>
+
+
+
+
+            <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Static</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#createPostgreSQL" >createPostgreSQL</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Static</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#createSQLite" >createSQLite</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+
+
+            <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="createPostgreSQL"></a>
+                    <span class="name">
+                            <span class="modifier">Static</span>
+                            <span class="modifier">Async</span>
+                        <span ><b>createPostgreSQL</b></span>
+                        <a href="#createPostgreSQL"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>createPostgreSQL(options: literal type)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="280"
+                                    class="link-to-prism">tools/testing/testcontainers.ts:280</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Default value</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>options</td>
+                                            <td>
+                                                        <code>literal type</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+                                            <td>
+                                                    <code>{}</code>
+                                            </td>
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Promise&lt;TestDatabase&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="createSQLite"></a>
+                    <span class="name">
+                            <span class="modifier">Static</span>
+                            <span class="modifier">Async</span>
+                        <span ><b>createSQLite</b></span>
+                        <a href="#createSQLite"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>createSQLite(options: literal type)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="257"
+                                    class="link-to-prism">tools/testing/testcontainers.ts:257</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Default value</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>options</td>
+                                            <td>
+                                                        <code>literal type</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+                                            <td>
+                                                    <code>{}</code>
+                                            </td>
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Promise&lt;TestDatabase&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+
+
+
+
+
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { GenericContainer, StartedTestContainer } from &#x27;testcontainers&#x27;;
+import Database from &#x27;better-sqlite3&#x27;;
+import path from &#x27;node:path&#x27;;
+import fs from &#x27;node:fs/promises&#x27;;
+import { fileURLToPath } from &#x27;node:url&#x27;;
+
+const __dirname &#x3D; path.dirname(fileURLToPath(import.meta.url));
+
+export interface DatabaseConfig {
+  type: &#x27;sqlite&#x27; | &#x27;postgresql&#x27;;
+  database?: string;
+  host?: string;
+  port?: number;
+  username?: string;
+  password?: string;
+}
+
+export interface TestDatabase {
+  config: DatabaseConfig;
+  container?: StartedTestContainer;
+  sqliteDb?: Database.Database;
+  close: () &#x3D;&gt; Promise&lt;void&gt;;
+}
+
+/**
+ * Create an in-memory SQLite database for fast unit testing
+ */
+export async function createSQLiteDatabase(
+  schemaPath?: string,
+  seedData?: string[]
+): Promise&lt;TestDatabase&gt; {
+  const db &#x3D; new Database(&#x27;:memory:&#x27;);
+
+  // Enable foreign keys
+  db.pragma(&#x27;foreign_keys &#x3D; ON&#x27;);
+
+  // Load schema if provided
+  if (schemaPath) {
+    const schema &#x3D; await fs.readFile(schemaPath, &#x27;utf-8&#x27;);
+    db.exec(schema);
+  }
+
+  // Seed data if provided
+  if (seedData) {
+    for (const seed of seedData) {
+      db.exec(seed);
+    }
+  }
+
+  return {
+    config: { type: &#x27;sqlite&#x27; },
+    sqliteDb: db,
+    close: async () &#x3D;&gt; {
+      db.close();
+    },
+  };
+}
+
+/**
+ * Create a PostgreSQL container for integration testing
+ */
+export async function createPostgreSQLDatabase(
+  databaseName &#x3D; &#x27;test_db&#x27;,
+  schemaPath?: string,
+  seedData?: string[]
+): Promise&lt;TestDatabase&gt; {
+  const container &#x3D; await new GenericContainer(&#x27;postgres:15-alpine&#x27;)
+    .withEnvironment({
+      POSTGRES_DB: databaseName,
+      POSTGRES_USER: &#x27;testuser&#x27;,
+      POSTGRES_PASSWORD: &#x27;testpass&#x27;,
+    })
+    .withExposedPorts(5432)
+    .start();
+
+  const config: DatabaseConfig &#x3D; {
+    type: &#x27;postgresql&#x27;,
+    database: databaseName,
+    host: container.getHost(),
+    port: container.getMappedPort(5432),
+    username: &#x27;testuser&#x27;,
+    password: &#x27;testpass&#x27;,
+  };
+
+  // Wait for database to be ready
+  await waitForPostgresReady(config);
+
+  // Load schema if provided
+  if (schemaPath) {
+    await loadPostgresSchema(config, schemaPath);
+  }
+
+  // Seed data if provided
+  if (seedData) {
+    await seedPostgresData(config, seedData);
+  }
+
+  return {
+    config,
+    container,
+    close: async () &#x3D;&gt; {
+      await container.stop();
+    },
+  };
+}
+
+/**
+ * Wait for PostgreSQL to be ready
+ */
+async function waitForPostgresReady(config: DatabaseConfig): Promise&lt;void&gt; {
+  const { Client } &#x3D; await import(&#x27;pg&#x27;);
+  const client &#x3D; new Client({
+    host: config.host,
+    port: config.port,
+    user: config.username,
+    password: config.password,
+    database: config.database,
+  });
+
+  let retries &#x3D; 30;
+  while (retries &gt; 0) {
+    try {
+      await client.connect();
+      await client.end();
+      return;
+    } catch (error) {
+      retries--;
+      if (retries &#x3D;&#x3D;&#x3D; 0) throw error;
+      await new Promise(resolve &#x3D;&gt; setTimeout(resolve, 1000));
+    }
+  }
+}
+
+/**
+ * Load schema into PostgreSQL database
+ */
+async function loadPostgresSchema(config: DatabaseConfig, schemaPath: string): Promise&lt;void&gt; {
+  const { Client } &#x3D; await import(&#x27;pg&#x27;);
+  const client &#x3D; new Client({
+    host: config.host,
+    port: config.port,
+    user: config.username,
+    password: config.password,
+    database: config.database,
+  });
+
+  await client.connect();
+  try {
+    const schema &#x3D; await fs.readFile(schemaPath, &#x27;utf-8&#x27;);
+    await client.query(schema);
+  } finally {
+    await client.end();
+  }
+}
+
+/**
+ * Seed data into PostgreSQL database
+ */
+async function seedPostgresData(config: DatabaseConfig, seedData: string[]): Promise&lt;void&gt; {
+  const { Client } &#x3D; await import(&#x27;pg&#x27;);
+  const client &#x3D; new Client({
+    host: config.host,
+    port: config.port,
+    user: config.username,
+    password: config.password,
+    database: config.database,
+  });
+
+  await client.connect();
+  try {
+    for (const seed of seedData) {
+      await client.query(seed);
+    }
+  } finally {
+    await client.end();
+  }
+}
+
+/**
+ * Database migration utilities
+ */
+export class DatabaseMigrator {
+  constructor(private db: TestDatabase) {}
+
+  async runMigrations(migrationsPath: string): Promise&lt;void&gt; {
+    const migrationFiles &#x3D; await fs.readdir(migrationsPath);
+    const sqlFiles &#x3D; migrationFiles.filter(file &#x3D;&gt; file.endsWith(&#x27;.sql&#x27;)).sort();
+
+    for (const file of sqlFiles) {
+      const migrationSQL &#x3D; await fs.readFile(path.join(migrationsPath, file), &#x27;utf-8&#x27;);
+
+      if (this.db.config.type &#x3D;&#x3D;&#x3D; &#x27;sqlite&#x27; &amp;&amp; this.db.sqliteDb) {
+        this.db.sqliteDb.exec(migrationSQL);
+      } else if (this.db.config.type &#x3D;&#x3D;&#x3D; &#x27;postgresql&#x27;) {
+        const { Client } &#x3D; await import(&#x27;pg&#x27;);
+        const client &#x3D; new Client({
+          host: this.db.config.host,
+          port: this.db.config.port,
+          user: this.db.config.username,
+          password: this.db.config.password,
+          database: this.db.config.database,
+        });
+
+        await client.connect();
+        try {
+          await client.query(migrationSQL);
+        } finally {
+          await client.end();
+        }
+      }
+    }
+  }
+
+  async seedDatabase(seedPath: string): Promise&lt;void&gt; {
+    const seedFiles &#x3D; await fs.readdir(seedPath);
+    const sqlFiles &#x3D; seedFiles.filter(file &#x3D;&gt; file.endsWith(&#x27;.sql&#x27;)).sort();
+
+    for (const file of sqlFiles) {
+      const seedSQL &#x3D; await fs.readFile(path.join(seedPath, file), &#x27;utf-8&#x27;);
+
+      if (this.db.config.type &#x3D;&#x3D;&#x3D; &#x27;sqlite&#x27; &amp;&amp; this.db.sqliteDb) {
+        this.db.sqliteDb.exec(seedSQL);
+      } else if (this.db.config.type &#x3D;&#x3D;&#x3D; &#x27;postgresql&#x27;) {
+        const { Client } &#x3D; await import(&#x27;pg&#x27;);
+        const client &#x3D; new Client({
+          host: this.db.config.host,
+          port: this.db.config.port,
+          user: this.db.config.username,
+          password: this.db.config.password,
+          database: this.db.config.database,
+        });
+
+        await client.connect();
+        try {
+          await client.query(seedSQL);
+        } finally {
+          await client.end();
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Test database factory
+ */
+export class TestDatabaseFactory {
+  static async createSQLite(
+    options: {
+      schemaPath?: string;
+      seedData?: string[];
+      migrationsPath?: string;
+      seedPath?: string;
+    } &#x3D; {}
+  ): Promise&lt;TestDatabase&gt; {
+    const db &#x3D; await createSQLiteDatabase(options.schemaPath, options.seedData);
+
+    if (options.migrationsPath || options.seedPath) {
+      const migrator &#x3D; new DatabaseMigrator(db);
+      if (options.migrationsPath) {
+        await migrator.runMigrations(options.migrationsPath);
+      }
+      if (options.seedPath) {
+        await migrator.seedDatabase(options.seedPath);
+      }
+    }
+
+    return db;
+  }
+
+  static async createPostgreSQL(
+    options: {
+      databaseName?: string;
+      schemaPath?: string;
+      seedData?: string[];
+      migrationsPath?: string;
+      seedPath?: string;
+    } &#x3D; {}
+  ): Promise&lt;TestDatabase&gt; {
+    const db &#x3D; await createPostgreSQLDatabase(
+      options.databaseName,
+      options.schemaPath,
+      options.seedData
+    );
+
+    if (options.migrationsPath || options.seedPath) {
+      const migrator &#x3D; new DatabaseMigrator(db);
+      if (options.migrationsPath) {
+        await migrator.runMigrations(options.migrationsPath);
+      }
+      if (options.seedPath) {
+        await migrator.seedDatabase(options.seedPath);
+      }
+    }
+
+    return db;
+  }
+}
+</code></pre>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'class';
+            var COMPODOC_CURRENT_PAGE_URL = 'TestDatabaseFactory.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

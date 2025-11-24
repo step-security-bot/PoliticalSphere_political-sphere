@@ -4,8 +4,14 @@
  */
 
 import { EventEmitter } from 'node:events';
-import type { WebSocketServer } from '../websocket/WebSocketServer';
+import type { WebSocketServer } from '@political-sphere/shared';
 
+/**
+ * GameEvent - basic event payload emitted by the server event system.
+ *
+ * Includes a type (one of EVENT_TYPES), optional game scoping information,
+ * an opaque data object with event-specific fields and a timestamp.
+ */
 export interface GameEvent {
   type: string;
   gameId?: string;
@@ -14,6 +20,12 @@ export interface GameEvent {
 }
 
 // Event types for different game activities
+/**
+ * EVENT_TYPES - canonical string constants for supported in-game event types.
+ *
+ * These are used for local EventEmitter events and for broadcasting over
+ * WebSocket transports so clients can react to game, parliament and media events.
+ */
 export const EVENT_TYPES = {
   // Parliament events
   PARLIAMENT_VOTE: 'parliament-vote',
@@ -46,6 +58,12 @@ export const EVENT_TYPES = {
   PLAYER_LEFT: 'player-left',
 } as const;
 
+/**
+ * EventType - string literal union of all supported `EVENT_TYPES` values.
+ *
+ * Used for stronger typing where a function strictly accepts one of the known
+ * event type constants defined in `EVENT_TYPES`.
+ */
 export type EventType = (typeof EVENT_TYPES)[keyof typeof EVENT_TYPES];
 
 class GameEventEmitter extends EventEmitter {
@@ -151,4 +169,10 @@ class GameEventEmitter extends EventEmitter {
 }
 
 // Global event emitter instance
+/**
+ * Global game event emitter instance.
+ *
+ * Use `gameEventEmitter` to register listeners or broadcast `GameEvent` objects
+ * to both local listeners and connected WebSocket clients (when configured).
+ */
 export const gameEventEmitter = new GameEventEmitter();

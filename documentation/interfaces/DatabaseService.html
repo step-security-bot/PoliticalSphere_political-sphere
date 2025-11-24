@@ -1,0 +1,1089 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>political-sphere documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">political-sphere documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content interface">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Interfaces</li>
+  <li class="breadcrumb-item"
+  >
+  DatabaseService</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>apps/api/src/modules/ageVerificationService.ts</code>
+        </p>
+
+
+
+
+        <section data-compodoc="block-index">
+            <h3 id="index">Index</h3>
+            <table class="table table-sm table-bordered index-table">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <h6><b>Properties</b></h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <ul class="index-list">
+                                <li>
+                                        <a href="#create" 
+>
+                                            create
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#getAll" 
+>
+                                            getAll
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#getById" 
+>
+                                            getById
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#update" 
+>
+                                            update
+                                        </a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+
+
+            <section data-compodoc="block-properties">
+                <h3 id="inputs">Properties</h3>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="create"></a>
+                                        <span class="name "><b>create</b>
+                                            <a href="#create">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>create:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/function" target="_blank" >function</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/function" target="_blank" >function</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="getAll"></a>
+                                        <span class="name "><b>getAll</b>
+                                            <a href="#getAll">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>getAll:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/function" target="_blank" >function</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/function" target="_blank" >function</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="getById"></a>
+                                        <span class="name "><b>getById</b>
+                                            <a href="#getById">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>getById:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/function" target="_blank" >function</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/function" target="_blank" >function</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="update"></a>
+                                        <span class="name "><b>update</b>
+                                            <a href="#update">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>update:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/function" target="_blank" >function</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/function" target="_blank" >function</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+            </section>
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import * as crypto from &#x27;node:crypto&#x27;;
+
+import jwt from &#x27;jsonwebtoken&#x27;;
+
+import logger from &#x27;../utils/logger.js&#x27;;
+
+interface VerificationResult {
+  success: boolean;
+  verified?: boolean;
+  verificationId?: string;
+  userId?: string;
+  method?: string;
+  instructions?: string;
+  expiresAt?: string;
+  age?: number;
+  confidence?: string;
+  requiresAdditionalVerification?: boolean;
+  restrictions?: Record&lt;string, unknown&gt;;
+  message?: string;
+  consentToken?: string;
+  nextStep?: string;
+  error?: string;
+  reason?: string;
+  id?: string;
+}
+
+interface ConsentResult {
+  success: boolean;
+  childUserId?: string;
+  restrictions?: Record&lt;string, unknown&gt;;
+  error?: string;
+}
+
+interface VerificationStatus {
+  verified: boolean;
+  age: number | null;
+}
+
+interface DatabaseService {
+  create: (record: Record&lt;string, unknown&gt;) &#x3D;&gt; Promise&lt;Record&lt;string, unknown&gt;&gt;;
+  getById: (id: string) &#x3D;&gt; Promise&lt;Record&lt;string, unknown&gt; | null&gt;;
+  update: (id: string, data: Record&lt;string, unknown&gt;) &#x3D;&gt; Promise&lt;Record&lt;string, unknown&gt; | null&gt;;
+  getAll: () &#x3D;&gt; Promise&lt;Record&lt;string, unknown&gt;[]&gt;;
+}
+
+class AgeVerificationService {
+  db?: DatabaseService;
+  verificationTokens: Map&lt;string, Record&lt;string, unknown&gt;&gt;;
+  parentalConsents: Map&lt;string, Record&lt;string, unknown&gt;&gt;;
+  tokenExpiry: number;
+
+  constructor(db?: DatabaseService) {
+    this.db &#x3D; db; // Injected database for tests
+    this.verificationTokens &#x3D; new Map(); // In production, use Redis
+    this.parentalConsents &#x3D; new Map(); // Store parental consent records
+    this.tokenExpiry &#x3D; 24 * 60 * 60 * 1000; // 24 hours
+  }
+
+  /**
+   * Initiate age verification process
+   */
+  async initiateVerification(
+    userId: string,
+    method: string &#x3D; &#x27;self_declaration&#x27;
+  ): Promise&lt;VerificationResult&gt; {
+    try {
+      logger.info(&#x27;Initiating age verification&#x27;, { userId, method });
+
+      const token &#x3D; this.generateVerificationToken(userId);
+      const verificationId &#x3D; crypto.randomUUID();
+
+      const verification &#x3D; {
+        id: verificationId,
+        userId,
+        method,
+        status: &#x27;pending&#x27;,
+        createdAt: new Date().toISOString(),
+        expiresAt: new Date(Date.now() + this.tokenExpiry).toISOString(),
+        token,
+      };
+
+      // Store verification request
+      this.verificationTokens.set(verificationId, verification);
+
+      // Clean up expired tokens periodically
+      this.cleanupExpiredTokens();
+
+      logger.info(&#x27;Age verification initiated&#x27;, {
+        verificationId,
+        userId,
+        method,
+      });
+
+      return {
+        success: true,
+        verificationId,
+        method,
+        instructions: this.getMethodInstructions(method),
+        expiresAt: verification.expiresAt,
+      };
+    } catch (error) {
+      logger.error(&#x27;Age verification initiation failed&#x27;, {
+        error: (error as Error).message,
+        userId,
+      });
+      return { success: false, error: &#x27;Verification initiation failed&#x27; };
+    }
+  }
+
+  /**
+   * Complete age verification
+   */
+  async completeVerification(
+    verificationId: string,
+    verificationData: Record&lt;string, unknown&gt;
+  ): Promise&lt;VerificationResult&gt; {
+    try {
+      const verification &#x3D; this.verificationTokens.get(verificationId);
+
+      if (!verification) {
+        return { success: false, error: &#x27;Invalid verification ID&#x27; };
+      }
+
+      if (new Date() &gt; new Date(verification.expiresAt as string)) {
+        this.verificationTokens.delete(verificationId);
+        return { success: false, error: &#x27;Verification expired&#x27; };
+      }
+
+      const result &#x3D; await this.processVerification(verification, verificationData);
+
+      if (result.success) {
+        verification.status &#x3D; &#x27;completed&#x27;;
+        verification.completedAt &#x3D; new Date().toISOString();
+        verification.age &#x3D; result.age;
+        verification.confidence &#x3D; result.confidence;
+
+        // Store verified age in user profile (pseudo-code)
+        // await db.users.update({ id: verification.userId }, { verifiedAge: result.age });
+
+        logger.info(&#x27;Age verification completed&#x27;, {
+          verificationId,
+          userId: verification.userId,
+          age: result.age,
+          method: verification.method,
+        });
+      } else {
+        verification.status &#x3D; &#x27;failed&#x27;;
+        verification.failedAt &#x3D; new Date().toISOString();
+        verification.failureReason &#x3D; result.error;
+      }
+
+      return result;
+    } catch (error) {
+      logger.error(&#x27;Age verification completion failed&#x27;, {
+        error: (error as Error).message,
+        verificationId,
+      });
+      return { success: false, error: &#x27;Verification processing failed&#x27; };
+    }
+  }
+
+  /**
+   * Process verification based on method
+   */
+  async processVerification(
+    verification: Record&lt;string, unknown&gt;,
+    data: Record&lt;string, unknown&gt;
+  ): Promise&lt;VerificationResult&gt; {
+    switch (verification.method) {
+      case &#x27;self_declaration&#x27;:
+        return this.processSelfDeclaration(data);
+      case &#x27;credit_card&#x27;:
+        return this.processCreditCardVerification(data);
+      case &#x27;government_id&#x27;:
+        return this.processGovernmentIdVerification(data);
+      case &#x27;parental_consent&#x27;:
+        return this.processParentalConsent(data);
+      default:
+        return { success: false, error: &#x27;Unsupported verification method&#x27; };
+    }
+  }
+
+  /**
+   * Process self-declaration (basic method)
+   */
+  async processSelfDeclaration(data: Record&lt;string, unknown&gt;): Promise&lt;VerificationResult&gt; {
+    const { age, consent } &#x3D; data;
+
+    if (!consent) {
+      return { success: false, error: &#x27;User consent required&#x27; };
+    }
+
+    const ageNum &#x3D; age as number;
+    if (!ageNum || ageNum &lt; 13) {
+      return {
+        success: false,
+        error: &#x27;Must be 13 or older to use this service&#x27;,
+      };
+    }
+
+    // For self-declaration, we trust the user but flag for additional verification if suspicious
+    const requiresAdditionalVerification &#x3D; ageNum &gt;&#x3D; 13 &amp;&amp; ageNum &lt;&#x3D; 15;
+
+    return {
+      success: true,
+      age: parseInt(String(ageNum), 10),
+      confidence: &#x27;low&#x27;, // Self-declaration has low confidence
+      requiresAdditionalVerification,
+      restrictions: this.getAgeRestrictions(parseInt(String(ageNum), 10)),
+    };
+  }
+
+  /**
+   * Process credit card verification (age estimation)
+   */
+  async processCreditCardVerification(data: Record&lt;string, unknown&gt;): Promise&lt;VerificationResult&gt; {
+    // In production, integrate with payment processor for age verification
+    // This is a placeholder - actual implementation would use services like:
+    // - Stripe Radar for age estimation
+    // - Third-party age verification services
+
+    try {
+      // Simulate API call to payment processor
+      const ageEstimation &#x3D; await this.estimateAgeFromPayment(
+        (data.cardToken ?? {}) as Record&lt;string, unknown&gt;
+      );
+
+      if (ageEstimation.confidence &gt; 0.8) {
+        return {
+          success: true,
+          age: ageEstimation.age,
+          confidence: &#x27;high&#x27;,
+          restrictions: this.getAgeRestrictions(ageEstimation.age),
+        };
+      } else {
+        return {
+          success: false,
+          error: &#x27;Unable to verify age with sufficient confidence&#x27;,
+        };
+      }
+    } catch (error) {
+      logger.error(&#x27;Credit card verification failed&#x27;, { error: (error as Error).message });
+      return { success: false, error: &#x27;Payment verification failed&#x27; };
+    }
+  }
+
+  /**
+   * Process government ID verification
+   */
+  async processGovernmentIdVerification(
+    data: Record&lt;string, unknown&gt;
+  ): Promise&lt;VerificationResult&gt; {
+    // In production, integrate with ID verification services like:
+    // - Veriff, Yoti, or similar KYC providers
+
+    try {
+      // Simulate document verification
+      const verificationResult &#x3D; await this.verifyGovernmentId(
+        (data.idDocument ?? {}) as Record&lt;string, unknown&gt;,
+        (data.selfie ?? {}) as Record&lt;string, unknown&gt;
+      );
+
+      if (verificationResult.isValid &amp;&amp; verificationResult.age !&#x3D;&#x3D; undefined) {
+        return {
+          success: true,
+          age: verificationResult.age,
+          confidence: &#x27;very_high&#x27;,
+          restrictions: this.getAgeRestrictions(verificationResult.age),
+        };
+      } else {
+        return {
+          success: false,
+          error: verificationResult.error || &#x27;ID verification failed&#x27;,
+        };
+      }
+    } catch (error) {
+      logger.error(&#x27;Government ID verification failed&#x27;, {
+        error: (error as Error).message,
+      });
+      return { success: false, error: &#x27;ID verification service unavailable&#x27; };
+    }
+  }
+
+  /**
+   * Process parental consent for minors
+   */
+  async processParentalConsent(data: Record&lt;string, unknown&gt;): Promise&lt;VerificationResult&gt; {
+    const { parentEmail, parentConsent, childAge } &#x3D; data;
+
+    if (!parentConsent) {
+      return { success: false, error: &#x27;Parental consent required&#x27; };
+    }
+
+    if ((childAge as number) &gt;&#x3D; 13) {
+      return {
+        success: false,
+        error: &#x27;Parental consent not required for users 13+&#x27;,
+      };
+    }
+
+    // Generate consent token for parent
+    const consentToken &#x3D; this.generateParentalConsentToken(String(parentEmail), childAge as number);
+
+    // Store consent request
+    this.parentalConsents.set(consentToken, {
+      parentEmail,
+      childAge,
+      requestedAt: new Date().toISOString(),
+      status: &#x27;pending&#x27;,
+    });
+
+    // Send email to parent (pseudo-code)
+    // await emailService.sendParentalConsentEmail(parentEmail, consentToken);
+
+    logger.info(&#x27;Parental consent requested&#x27;, { parentEmail, childAge });
+
+    return {
+      success: true,
+      message: &#x27;Parental consent email sent&#x27;,
+      consentToken,
+      nextStep: &#x27;parent_verification&#x27;,
+    };
+  }
+
+  /**
+   * Verify parental consent
+   */
+  async verifyParentalConsent(consentToken: string, approved: boolean): Promise&lt;ConsentResult&gt; {
+    const consent &#x3D; this.parentalConsents.get(consentToken);
+
+    if (!consent) {
+      return { success: false, error: &#x27;Invalid consent token&#x27; };
+    }
+
+    consent.status &#x3D; approved ? &#x27;approved&#x27; : &#x27;denied&#x27;;
+    consent.respondedAt &#x3D; new Date().toISOString();
+
+    if (approved) {
+      // Create verified user account for child
+      const childUserId &#x3D; await this.createChildAccount(consent);
+
+      logger.info(&#x27;Parental consent approved&#x27;, {
+        parentEmail: consent.parentEmail,
+        childAge: consent.childAge,
+        childUserId,
+      });
+
+      return {
+        success: true,
+        childUserId,
+        restrictions: this.getAgeRestrictions(consent.childAge as number),
+      };
+    } else {
+      logger.info(&#x27;Parental consent denied&#x27;, {
+        parentEmail: consent.parentEmail,
+      });
+      return { success: false, error: &#x27;Parental consent denied&#x27; };
+    }
+  }
+
+  /**
+   * Get age-appropriate restrictions
+   */
+  getAgeRestrictions(age: number): {
+    contentRating: string;
+    features: string[];
+    monitoring: boolean;
+  } {
+    const restrictions &#x3D; {
+      contentRating: &#x27;U&#x27;, // Default safe
+      features: [] as string[],
+      monitoring: false,
+    };
+
+    if (age &lt; 13) {
+      restrictions.contentRating &#x3D; &#x27;U&#x27;;
+      restrictions.features &#x3D; [&#x27;parental_controls&#x27;, &#x27;time_limits&#x27;, &#x27;content_filtering&#x27;];
+      restrictions.monitoring &#x3D; true;
+    } else if (age &lt; 16) {
+      restrictions.contentRating &#x3D; &#x27;12&#x27;;
+      restrictions.features &#x3D; [&#x27;content_warnings&#x27;];
+      restrictions.monitoring &#x3D; false;
+    } else if (age &lt; 18) {
+      restrictions.contentRating &#x3D; &#x27;15&#x27;;
+      restrictions.features &#x3D; [&#x27;age_verification&#x27;];
+      restrictions.monitoring &#x3D; false;
+    } else {
+      restrictions.contentRating &#x3D; &#x27;18&#x27;;
+      restrictions.features &#x3D; [&#x27;full_access&#x27;];
+      restrictions.monitoring &#x3D; false;
+    }
+
+    return restrictions;
+  }
+
+  /**
+   * Check if user can access content based on age
+   */
+  canAccessContent(userAge: number, contentRating: string): boolean {
+    const ratingLevels: Record&lt;string, number&gt; &#x3D; { U: 0, PG: 8, 12: 12, 15: 15, 18: 18 };
+    const requiredAge &#x3D; ratingLevels[contentRating] || 18;
+    return userAge &gt;&#x3D; requiredAge;
+  }
+
+  /**
+   * Get method-specific instructions
+   */
+  getMethodInstructions(method: string): string {
+    const instructions: Record&lt;string, string&gt; &#x3D; {
+      self_declaration: &#x27;Please confirm your age. This will be used to customize your experience.&#x27;,
+      credit_card: &#x27;We will verify your age using payment information. No charges will be made.&#x27;,
+      government_id: &#x27;Upload a photo of your government-issued ID and a selfie for verification.&#x27;,
+      parental_consent: &#x27;We will send a consent request to your parent/guardian for approval.&#x27;,
+    };
+    return instructions[method] || &#x27;Please follow the verification prompts.&#x27;;
+  }
+
+  /**
+   * Generate secure verification token
+   */
+  generateVerificationToken(userId: string): string {
+    const payload &#x3D; {
+      userId,
+      type: &#x27;age_verification&#x27;,
+      iat: Math.floor(Date.now() / 1000),
+      exp: Math.floor((Date.now() + this.tokenExpiry) / 1000),
+    };
+
+    return jwt.sign(payload, process.env.JWT_SECRET ?? &#x27;&#x27;);
+  }
+
+  /**
+   * Generate parental consent token
+   */
+  generateParentalConsentToken(parentEmail: string, childAge: number): string {
+    const payload &#x3D; {
+      parentEmail,
+      childAge,
+      type: &#x27;parental_consent&#x27;,
+      iat: Math.floor(Date.now() / 1000),
+      exp: Math.floor((Date.now() + this.tokenExpiry) / 1000),
+    };
+
+    return jwt.sign(payload, process.env.JWT_SECRET ?? &#x27;&#x27;);
+  }
+
+  // Placeholder methods for external integrations
+  async estimateAgeFromPayment(
+    _cardToken: Record&lt;string, unknown&gt;
+  ): Promise&lt;{ age: number; confidence: number }&gt; {
+    // Integrate with payment processor
+    return { age: 25, confidence: 0.9 };
+  }
+
+  async verifyGovernmentId(
+    _document: Record&lt;string, unknown&gt;,
+    _selfie: Record&lt;string, unknown&gt;
+  ): Promise&lt;{ isValid: boolean; age?: number; error?: string }&gt; {
+    // Integrate with ID verification service
+    return { isValid: true, age: 25 };
+  }
+
+  async createChildAccount(_consent: Record&lt;string, unknown&gt;): Promise&lt;string&gt; {
+    // Create child user account with restrictions
+    return &#x60;child_${crypto.randomUUID()}&#x60;;
+  }
+
+  /**
+   * Clean up expired verification tokens
+   */
+  cleanupExpiredTokens(): void {
+    const now &#x3D; new Date();
+    for (const [id, verification] of this.verificationTokens) {
+      if (new Date(verification.expiresAt as string) &lt; now) {
+        this.verificationTokens.delete(id);
+      }
+    }
+  }
+
+  /**
+   * Verify age for a user (test-compatible method)
+   */
+  async verifyAge(verificationData: Record&lt;string, unknown&gt;): Promise&lt;VerificationResult&gt; {
+    const { userId, dateOfBirth, verificationMethod } &#x3D; verificationData;
+
+    // Validate required fields
+    const missingFields &#x3D; [];
+    if (!dateOfBirth) missingFields.push(&#x27;dateOfBirth&#x27;);
+    if (!verificationMethod) missingFields.push(&#x27;verificationMethod&#x27;);
+
+    if (missingFields.length &gt; 0) {
+      throw new Error(&#x60;Missing required fields: ${missingFields.join(&#x27;, &#x27;)}&#x60;);
+    }
+
+    // Parse and validate date
+    const dob &#x3D; new Date(dateOfBirth as string);
+    if (Number.isNaN(dob.getTime())) {
+      throw new Error(&#x27;Invalid date of birth format&#x27;);
+    }
+
+    // Calculate age
+    const today &#x3D; new Date();
+    let age &#x3D; today.getFullYear() - dob.getFullYear();
+    const monthDiff &#x3D; today.getMonth() - dob.getMonth();
+    if (monthDiff &lt; 0 || (monthDiff &#x3D;&#x3D;&#x3D; 0 &amp;&amp; today.getDate() &lt; dob.getDate())) {
+      age--;
+    }
+
+    // Ensure age is a valid number
+    if (Number.isNaN(age) || age &lt; 0) {
+      throw new Error(&#x27;Invalid age calculation&#x27;);
+    }
+
+    // Check minimum age requirement (18+)
+    const verified &#x3D; age &gt;&#x3D; 18;
+
+    if (!verified) {
+      return {
+        success: false,
+        verified: false,
+        age,
+        reason: &#x27;User must be at least 18 years old&#x27;,
+      };
+    }
+
+    // Create verification record using injected db
+    if (this.db?.create) {
+      const verificationRecord &#x3D; {
+        ...verificationData,
+        verified: true,
+        age,
+        verifiedAt: new Date().toISOString(),
+      };
+
+      const result &#x3D; await this.db.create(verificationRecord);
+      return { success: true, ...result } as VerificationResult;
+    }
+
+    // Fallback if no db
+    return {
+      success: true,
+      verified: true,
+      age,
+      id: crypto.randomUUID(),
+      userId: String(userId),
+      method: String(verificationMethod),
+    };
+  }
+
+  /**
+   * Get verification status for user (test-compatible method)
+   */
+  async getVerificationStatus(userId: string): Promise&lt;VerificationStatus | null&gt; {
+    // Use injected db if available
+    if (this.db?.getById) {
+      const result &#x3D; await this.db.getById(userId);
+      return result as unknown as VerificationStatus | null;
+    }
+
+    // Fallback
+    return { verified: false, age: null };
+  }
+
+  /**
+   * Update verification record (test-compatible method)
+   */
+  async updateVerification(
+    verificationId: string,
+    updateData: Record&lt;string, unknown&gt;
+  ): Promise&lt;Record&lt;string, unknown&gt; | null&gt; {
+    // Use injected db if available
+    if (this.db?.update) {
+      return await this.db.update(verificationId, updateData);
+    }
+
+    // Fallback
+    return { id: verificationId, ...updateData };
+  }
+
+  /**
+   * Check if user is eligible for specific content type (test-compatible method)
+   */
+  async isEligibleForContent(
+    userId: string,
+    contentType: string
+  ): Promise&lt;{ eligible: boolean; reason?: string; age?: number }&gt; {
+    const verification &#x3D; await this.getVerificationStatus(userId);
+
+    if (!verification) {
+      return {
+        eligible: false,
+        reason: &#x27;Age verification required&#x27;,
+      };
+    }
+
+    // Check content type requirements
+    const contentMinAge &#x3D; contentType &#x3D;&#x3D;&#x3D; &#x27;adult_content&#x27; ? 18 : 13;
+
+    if ((verification.age ?? 0) &lt; contentMinAge) {
+      return {
+        eligible: false,
+        reason: &#x60;Content requires age ${contentMinAge}+&#x60;,
+      };
+    }
+
+    return {
+      eligible: true,
+      age: verification.age ?? undefined,
+    };
+  }
+
+  /**
+   * Get verification statistics (test-compatible method)
+   */
+  async getVerificationStats(): Promise&lt;Record&lt;string, unknown&gt;&gt; {
+    let verifications: Record&lt;string, unknown&gt;[] &#x3D; [];
+
+    // Use injected db if available
+    if (this.db?.getAll) {
+      verifications &#x3D; (await this.db.getAll()) as Record&lt;string, unknown&gt;[];
+    }
+
+    const totalVerifications &#x3D; verifications.length;
+    const verifiedCount &#x3D; verifications.filter(v &#x3D;&gt; v.verified &#x3D;&#x3D;&#x3D; true).length;
+    const rejectedCount &#x3D; verifications.filter(v &#x3D;&gt; v.verified &#x3D;&#x3D;&#x3D; false).length;
+
+    const totalAge &#x3D; verifications.reduce((sum: number, v) &#x3D;&gt; sum + ((v.age as number) || 0), 0);
+    const averageAge &#x3D;
+      totalVerifications &gt; 0
+        ? Math.round(((totalAge as number) / totalVerifications) * 100) / 100
+        : 0;
+
+    const methodStats: Map&lt;string, number&gt; &#x3D; new Map();
+    verifications.forEach(v &#x3D;&gt; {
+      const method &#x3D; String(v.method || v.verificationMethod || &#x27;unknown&#x27;);
+      methodStats.set(method, (methodStats.get(method) || 0) + 1);
+    });
+    const methodStatsObj: Record&lt;string, unknown&gt; &#x3D; {};
+    for (const [method, count] of methodStats) {
+      methodStatsObj[method] &#x3D; count;
+    }
+
+    return {
+      totalVerifications,
+      verifiedCount,
+      rejectedCount,
+      averageAge,
+      methodStats: methodStatsObj,
+    };
+  }
+}
+
+// Backward/forward compatibility:
+// - Tests expect to import a class and call &#x60;new AgeVerificationService(...)&#x60;.
+// - Application code expects to &#x60;require(&#x27;../ageVerificationService&#x27;)&#x60; and get a singleton instance.
+// To support both without changing all callers, export the class but attach a bound
+// default instance&#x27;s methods as static methods on the class. This lets the module be
+// used either as a constructor or as a singleton with the same methods.
+const _defaultAgeVerificationInstance &#x3D; new AgeVerificationService();
+// Copy prototype methods to the constructor as bound functions so callers using the
+// singleton-style API (require(...) and call methods) continue to work.
+Object.getOwnPropertyNames(AgeVerificationService.prototype).forEach(name &#x3D;&gt; {
+  if (name &#x3D;&#x3D;&#x3D; &#x27;constructor&#x27;) return;
+  const desc &#x3D; Object.getOwnPropertyDescriptor(AgeVerificationService.prototype, name);
+  if (desc &amp;&amp; typeof desc.value &#x3D;&#x3D;&#x3D; &#x27;function&#x27;) {
+    // biome-ignore lint/suspicious/noExplicitAny: Dynamic singleton method binding requires any
+    (AgeVerificationService as any)[name] &#x3D; (_defaultAgeVerificationInstance as any)[name].bind(
+      _defaultAgeVerificationInstance
+    );
+  }
+});
+// biome-ignore lint/suspicious/noExplicitAny: Dynamic property assignment on class requires any
+(AgeVerificationService as any).defaultInstance &#x3D; _defaultAgeVerificationInstance;
+
+export default AgeVerificationService;
+</code></pre>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'interface';
+            var COMPODOC_CURRENT_PAGE_URL = 'DatabaseService.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

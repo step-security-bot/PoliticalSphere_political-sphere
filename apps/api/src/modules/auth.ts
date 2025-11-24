@@ -2,6 +2,67 @@ import jwt from 'jsonwebtoken';
 import { scrypt as _scrypt, randomBytes } from 'node:crypto';
 import { promisify } from 'node:util';
 
+// Types for JWT payloads
+interface JWTPayload {
+  userId: string;
+  email: string;
+  role: string;
+  sessionId: string;
+}
+
+interface JWTRefreshPayload {
+  userId: string;
+  sessionId: string;
+}
+
+// Types for sessions
+interface Session {
+  id: string;
+  userId: string;
+  email: string;
+  role: string;
+  userAgent: string;
+  ip: string;
+  createdAt: Date;
+  lastActivity: Date;
+  expiresAt: Date;
+}
+
+// Types for authentication results
+interface AuthResult {
+  user: Omit<AuthUser, 'passwordHash' | 'passwordResetToken' | 'passwordResetExpires'>;
+  accessToken: string;
+  refreshToken: string;
+}
+
+// Simplified User type for auth module
+interface AuthUser {
+  id: string;
+  email: string;
+  role: string;
+  username?: string;
+  isActive?: boolean;
+  passwordHash?: string;
+  passwordResetToken?: string;
+  passwordResetExpires?: Date;
+}
+
+// Express types (minimal for auth middleware)
+interface Request {
+  user?: JWTPayload;
+  session?: Session;
+  body?: unknown;
+  headers?: Record<string, string | undefined>;
+}
+
+interface Response {
+  status(code: number): Response;
+  json(data: unknown): Response;
+  send(data: unknown): Response;
+}
+
+type NextFunction = () => void;
+
 /*
   filepath: /Users/morganlowman/politicial-sphere (V1)/apps/api/src/auth.js
   Purpose: In-memory authentication utilities used by tests.
@@ -18,9 +79,9 @@ const ROLES = {
 type Role = (typeof ROLES)[keyof typeof ROLES];
 
 // In-memory stores exposed for tests
-const users: Map<string, any> = new Map(); // key: email -> user object
+const users: Map<string, AuthUser> = new Map(); // key: email -> user object
 const refreshTokens: Set<string> = new Set(); // active refresh tokens
-const activeSessions: Map<string, any> = new Map(); // key: sessionId -> session object
+const activeSessions: Map<string, Session> = new Map(); // key: sessionId -> session object
 
 // Read and validate secrets at module load (tests set env before import)
 // SECURITY: NO empty string fallbacks - fail fast if secrets are missing
@@ -46,6 +107,11 @@ const JWT_REFRESH_EXPIRES_IN = process.env.JWT_REFRESH_EXPIRES_IN || '7d';
 // Stored format: <salt>$<derivedKeyBase64>
 const scrypt = promisify(_scrypt);
 
+/**
+ * Hashes a password using scrypt algorithm for secure storage.
+ * @param password - The plain text password to hash
+ * @returns Promise resolving to hashed password string in format $2b$<salt>$<hash>
+ */
 async function hashPassword(password: string): Promise<string> {
   // Use scrypt internally for deterministic, fast, pure-Node hashing in tests.
   // Return a value prefixed with `$2b$` so existing tests that assert on
@@ -58,6 +124,12 @@ async function hashPassword(password: string): Promise<string> {
   return `$2b$${salt}$${(derived as Buffer).toString('hex')}`;
 }
 
+/**
+ * Verifies a password against its stored hash.
+ * @param password - The plain text password to verify
+ * @param stored - The stored hash string
+ * @returns Promise resolving to true if password matches, false otherwise
+ */
 async function verifyPassword(password: string, stored: string): Promise<boolean> {
   if (!stored || typeof stored !== 'string') return false;
   // Support both legacy '<salt>$<hex>' format and our '$2b$<salt>$<hex>' shim.
@@ -65,9 +137,14 @@ async function verifyPassword(password: string, stored: string): Promise<boolean
   if (stored.startsWith('$2b$')) {
     const parts = stored.slice(4).split('$');
     // parts[0] = salt, parts[1] = hex
-    [salt, keyHex] = parts;
+    if (parts.length < 2 || !parts[0] || !parts[1]) return false;
+    salt = parts[0];
+    keyHex = parts[1];
   } else {
-    [salt, keyHex] = stored.split('$');
+    const parts = stored.split('$');
+    if (parts.length < 2 || !parts[0] || !parts[1]) return false;
+    salt = parts[0];
+    keyHex = parts[1];
   }
   if (!salt || !keyHex) return false;
   const derived = await scrypt(String(password || ''), salt, 64);
@@ -75,59 +152,67 @@ async function verifyPassword(password: string, stored: string): Promise<boolean
 }
 
 // Token generation & verification
-function generateAccessToken(user: any): string {
-  const payload = {
+function generateAccessToken(user: AuthUser): string {
+  const payload: JWTPayload = {
     userId: user.id,
     email: user.email,
     role: user.role,
-    type: 'access',
+    sessionId: randomBytes(8).toString('hex'),
   };
-  return (jwt.sign as any)(payload, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
+  return (jwt.sign as (payload: object, secret: string, options?: object) => string)(
+    payload,
+    JWT_SECRET,
+    { expiresIn: JWT_EXPIRES_IN }
+  );
 }
 
-function generateRefreshToken(user: any): string {
-  const payload = {
+function generateRefreshToken(user: AuthUser): string {
+  const payload: JWTRefreshPayload = {
     userId: user.id,
-    type: 'refresh',
+    sessionId: randomBytes(8).toString('hex'),
   };
-  const token = (jwt.sign as any)(payload, JWT_REFRESH_SECRET, {
-    expiresIn: JWT_REFRESH_EXPIRES_IN,
-  });
+  const token = (jwt.sign as (payload: object, secret: string, options?: object) => string)(
+    payload,
+    JWT_REFRESH_SECRET,
+    {
+      expiresIn: JWT_REFRESH_EXPIRES_IN,
+    }
+  );
   refreshTokens.add(token);
   return token;
 }
 
-function verifyAccessToken(token: string): any {
+function verifyAccessToken(token: string): JWTPayload | null {
   try {
-    const payload = jwt.verify(token, JWT_SECRET);
+    const payload = jwt.verify(token, JWT_SECRET) as JWTPayload;
     return payload;
   } catch {
     return null;
   }
 }
 
-function verifyRefreshToken(token: string): any {
+function verifyRefreshToken(token: string): JWTRefreshPayload | null {
   try {
     if (!refreshTokens.has(token)) return null;
-    const decoded = jwt.verify(token, JWT_REFRESH_SECRET);
-    if (decoded && decoded.type === 'refresh') return decoded;
-    return null;
+    const decoded = jwt.verify(token, JWT_REFRESH_SECRET) as JWTRefreshPayload;
+    return decoded;
   } catch {
     return null;
   }
 }
 
 // Sanitize outgoing user objects (tests assert sensitive fields are not exposed)
-function sanitizeUser(user: any): any {
+function sanitizeUser(
+  user: AuthUser
+): Omit<AuthUser, 'passwordHash' | 'passwordResetToken' | 'passwordResetExpires'> {
   // Destructure to filter out sensitive fields (unused vars intentionally prefixed with _)
   const {
     passwordHash: _passwordHash,
     passwordResetToken: _passwordResetToken,
     passwordResetExpires: _passwordResetExpires,
-    password: _password,
-    ...rest
+    ...safeUser
   } = user;
-  return rest;
+  return safeUser;
 }
 
 // User management
@@ -135,7 +220,7 @@ async function createUser(
   email: string,
   password: string = '',
   role: Role = ROLES.VIEWER
-): Promise<any> {
+): Promise<AuthUser> {
   if (!email) throw new Error('Email required');
   if (users.has(email)) throw new Error('User already exists');
   const id = randomBytes(16).toString('hex');
@@ -154,9 +239,22 @@ async function createUser(
   return sanitizeUser(user);
 }
 
-async function authenticateUser(email: string, password: string): Promise<any> {
-  const user = users.get(email);
-  if (!user) return null;
+/**
+ * Authenticates a user with identifier (email or username) and password.
+ * @param identifier - Email or username
+ * @param password - Plain text password
+ * @returns Promise resolving to AuthResult with user and tokens, or null if authentication fails
+ */
+async function authenticateUser(identifier: string, password: string): Promise<AuthResult | null> {
+  // Find user by email or username
+  let user: AuthUser | undefined;
+  for (const u of users.values()) {
+    if (u.email === identifier || u.username === identifier) {
+      user = u;
+      break;
+    }
+  }
+  if (!user || !user.passwordHash) return null;
   const valid = await verifyPassword(password, user.passwordHash);
   if (!valid) return null;
   const accessToken = generateAccessToken(user);
@@ -191,32 +289,41 @@ async function resetPassword(token: string, newPassword: string): Promise<void> 
 }
 
 // Session management
-function createSession(userId: string, userAgent: string, ip: string): string {
+function createSession(
+  userId: string,
+  email: string,
+  role: string,
+  userAgent: string,
+  ip: string
+): string {
   const sessionId = randomBytes(16).toString('hex');
   const now = new Date();
-  const session = {
+  const session: Session = {
     id: sessionId,
     userId,
+    email,
+    role,
     userAgent,
     ip,
     createdAt: now,
     lastActivity: now,
+    expiresAt: new Date(now.getTime() + 24 * 60 * 60 * 1000), // 24 hours
   };
   activeSessions.set(sessionId, session);
   return sessionId;
 }
 
-function getSession(sessionId: string): any {
+function getSession(sessionId: string): Session | null {
   const s = activeSessions.get(sessionId);
   return s ? { ...s } : null;
 }
 
-function updateSessionActivity(sessionId: string): any {
+function updateSessionActivity(sessionId: string): boolean {
   const s = activeSessions.get(sessionId);
-  if (!s) return null;
+  if (!s) return false;
   s.lastActivity = new Date();
   activeSessions.set(sessionId, s);
-  return s;
+  return true;
 }
 
 function destroySession(sessionId: string): void {
@@ -233,10 +340,12 @@ function cleanupExpiredSessions(maxAgeMs: number): void {
 }
 
 // Lookup
-function getUserById(id: string): any {
+function getUserById(
+  id: string
+): Omit<AuthUser, 'passwordHash' | 'passwordResetToken' | 'passwordResetExpires'> | null {
   if (!id) return null;
   const user = Array.from(users.values()).find(u => u.id === id);
-  return sanitizeUser(user);
+  return user ? sanitizeUser(user) : null;
 }
 
 // Token revocation
@@ -250,8 +359,10 @@ function revokeAllUserTokens(): void {
 }
 
 // Authorization middleware
-function requireAuth(allowedRoles: string[] = []): any {
-  return (req: any, res: any, next: any) => {
+function requireAuth(
+  allowedRoles: string[] = []
+): (req: Request, res: Response, next: NextFunction) => void {
+  return (req: Request, res: Response, next: NextFunction) => {
     const authHeader = req.headers && (req.headers.authorization || req.headers.Authorization);
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
       return res.status(401).json({ error: 'Access token required' });
@@ -261,7 +372,7 @@ function requireAuth(allowedRoles: string[] = []): any {
     if (!decoded) {
       return res.status(401).json({ error: 'Invalid or expired token' });
     }
-    req.user = { id: decoded.userId, email: decoded.email, role: decoded.role };
+    req.user = decoded;
     if (allowedRoles && allowedRoles.length > 0 && !allowedRoles.includes(req.user.role)) {
       return res.status(403).json({ error: 'Insufficient permissions' });
     }
@@ -269,7 +380,7 @@ function requireAuth(allowedRoles: string[] = []): any {
   };
 }
 
-function requireEditor(): any {
+function requireEditor(): (req: Request, res: Response, next: NextFunction) => void {
   return requireAuth([ROLES.EDITOR, ROLES.ADMIN]);
 }
 

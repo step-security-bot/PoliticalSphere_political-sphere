@@ -1,0 +1,732 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>political-sphere documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">political-sphere documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content interface">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Interfaces</li>
+  <li class="breadcrumb-item"
+  >
+  JwtPayload</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>apps/api/src/middleware/auth.ts</code>
+        </p>
+
+
+
+
+        <section data-compodoc="block-index">
+            <h3 id="index">Index</h3>
+            <table class="table table-sm table-bordered index-table">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <h6><b>Properties</b></h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <ul class="index-list">
+                                <li>
+                                        <a href="#email" 
+>
+                                            email
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#role" 
+>
+                                            role
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#type" 
+>
+                                            type
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#userId" 
+>
+                                            userId
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#username" 
+>
+                                            username
+                                        </a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+
+
+            <section data-compodoc="block-properties">
+                <h3 id="inputs">Properties</h3>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="email"></a>
+                                        <span class="name "><b>email</b>
+                                            <a href="#email">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>email:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="role"></a>
+                                        <span class="name "><b>role</b>
+                                            <a href="#role">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>role:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="type"></a>
+                                        <span class="name "><b>type</b>
+                                            <a href="#type">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>type:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="userId"></a>
+                                        <span class="name "><b>userId</b>
+                                            <a href="#userId">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>userId:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="username"></a>
+                                        <span class="name "><b>username</b>
+                                            <a href="#username">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>username:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+            </section>
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import jwt from &#x27;jsonwebtoken&#x27;;
+import type { Request, Response, NextFunction } from &#x27;express&#x27;;
+import logger from &#x27;../utils/logger&#x27;;
+
+/**
+ * AuthUser - structure of an authenticated user stored on the request.
+ *
+ * - &#x60;id&#x60; is the primary user id stored on the token
+ * - &#x60;userId&#x60; is an alias used across the codebase for compatibility
+ * - &#x60;username&#x60; is the display or login name
+ * - &#x60;role&#x60; is used for role-based authorization checks
+ * - &#x60;email&#x60; is optional and may not be present in all tokens
+ */
+// Local definition of AuthUser (was previously imported from non-existent auth.middleware)
+/** Auto-generated doc: AuthUser — please replace with meaningful description. */
+export interface AuthUser {
+  id: string;
+  userId: string;
+  username: string;
+  role: string;
+  email?: string;
+}
+
+// JWT configuration
+const JWT_SECRET &#x3D; process.env.JWT_SECRET;
+const JWT_REFRESH_SECRET &#x3D; process.env.JWT_REFRESH_SECRET || JWT_SECRET;
+
+if (!JWT_SECRET) {
+  throw new Error(&#x27;JWT_SECRET environment variable is required&#x27;);
+}
+if (!JWT_REFRESH_SECRET) {
+  throw new Error(&#x27;JWT_REFRESH_SECRET environment variable is required&#x27;);
+}
+
+// Ensure secrets are defined for TypeScript
+const jwtSecret: string &#x3D; JWT_SECRET;
+const jwtRefreshSecret: string &#x3D; JWT_REFRESH_SECRET;
+
+interface User {
+  id: string;
+  userId: string;
+  username: string;
+  email: string;
+  role: string;
+}
+
+declare global {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
+  namespace Express {
+    interface Request {
+      user?: User;
+    }
+  }
+}
+
+interface JwtPayload {
+  userId: string;
+  username: string;
+  email: string;
+  role: string;
+  type: string;
+}
+
+/**
+ * authenticate - JWT authentication middleware
+ *
+ * Verifies access tokens from either the Authorization header (Bearer token),
+ * or an httpOnly cookie &#x60;accessToken&#x60;. On success attaches &#x60;AuthUser&#x60; to the
+ * request as &#x60;req.user&#x60; for compatibility across the codebase. Returns 401
+ * on missing/invalid tokens and logs authentication failures.
+ */
+function authenticate(req: Request, res: Response, next: NextFunction): void {
+  try {
+    const authHeader &#x3D; req.headers.authorization;
+    const token &#x3D; authHeader?.startsWith(&#x27;Bearer &#x27;)
+      ? authHeader.substring(7)
+      : req.cookies?.accessToken;
+
+    if (!token) {
+      res.status(401).json({
+        success: false,
+        error: &#x27;Access token required&#x27;,
+        message: &#x27;Please provide a valid access token&#x27;,
+      });
+      return;
+    }
+
+    // Verify token
+    const decoded &#x3D; jwt.verify(token, jwtSecret) as JwtPayload;
+
+    if (!decoded || decoded.type !&#x3D;&#x3D; &#x27;access&#x27;) {
+      res.status(401).json({
+        success: false,
+        error: &#x27;Invalid token&#x27;,
+        message: &#x27;Token is invalid or expired&#x27;,
+      });
+      return;
+    }
+
+    // Attach user to request
+    req.user &#x3D; {
+      id: decoded.userId,
+      userId: decoded.userId,
+      username: decoded.username,
+      role: decoded.role,
+      // Optional fields only if present in token
+      ...(decoded.email ? { email: decoded.email as string } : {}),
+    } as AuthUser;
+
+    logger.debug(&#x27;User authenticated&#x27;, { userId: req.user?.id || decoded.userId, path: req.path });
+    next();
+  } catch (error) {
+    if ((error as Error).name &#x3D;&#x3D;&#x3D; &#x27;TokenExpiredError&#x27;) {
+      res.status(401).json({
+        success: false,
+        error: &#x27;Token expired&#x27;,
+        message: &#x27;Access token has expired&#x27;,
+      });
+      return;
+    }
+
+    logger.error(&#x27;Authentication failed&#x27;, {
+      error: (error as Error).message,
+      path: req.path,
+    });
+    res.status(401).json({
+      success: false,
+      error: &#x27;Authentication failed&#x27;,
+      message: &#x27;Invalid authentication credentials&#x27;,
+    });
+  }
+}
+
+/**
+ * Role-based Authorization Middleware Factory
+ * @param requiredRoles - Required role(s)
+ * @returns Middleware function
+ */
+function requireRole(requiredRoles: string | string[]) {
+  return (req: Request, res: Response, next: NextFunction): void &#x3D;&gt; {
+    if (!req.user) {
+      res.status(401).json({
+        success: false,
+        error: &#x27;Authentication required&#x27;,
+        message: &#x27;User must be authenticated&#x27;,
+      });
+      return;
+    }
+
+    const userRole &#x3D; req.user.role;
+    const roles &#x3D; Array.isArray(requiredRoles) ? requiredRoles : [requiredRoles];
+
+    if (!roles.includes(userRole)) {
+      logger.warn(&#x27;Access denied&#x27;, {
+        userId: req.user.id,
+        userRole,
+        requiredRoles: roles,
+        path: req.path,
+      });
+
+      res.status(403).json({
+        success: false,
+        error: &#x27;Insufficient permissions&#x27;,
+        message: &#x60;Required role: ${roles.join(&#x27; or &#x27;)}&#x60;,
+      });
+      return;
+    }
+
+    next();
+  };
+}
+
+/**
+ * optionalAuth - Optional authentication middleware
+ *
+ * Attempts to attach an authenticated user to the request if a valid access
+ * token is present (either Authorization header or cookie). Does not return
+ * an error if token is missing or invalid allowing downstream handlers to
+ * treat requests as unauthenticated.
+ */
+function optionalAuth(req: Request, _res: Response, next: NextFunction): void {
+  try {
+    const authHeader &#x3D; req.headers.authorization;
+    const token &#x3D; authHeader?.startsWith(&#x27;Bearer &#x27;)
+      ? authHeader.substring(7)
+      : req.cookies?.accessToken;
+
+    if (token) {
+      const decoded &#x3D; jwt.verify(token, jwtSecret) as JwtPayload;
+      if (decoded &amp;&amp; decoded.type &#x3D;&#x3D;&#x3D; &#x27;access&#x27;) {
+        req.user &#x3D; {
+          id: decoded.userId,
+          userId: decoded.userId,
+          username: decoded.username,
+          email: decoded.email,
+          role: decoded.role,
+        };
+      }
+    }
+  } catch {
+    // Ignore auth errors for optional auth
+  }
+
+  next();
+}
+
+/**
+ * requireAdmin - middleware to assert the authenticated user has the &#x60;ADMIN&#x60; role
+ */
+function requireAdmin(req: Request, res: Response, next: NextFunction): void {
+  requireRole(&#x27;ADMIN&#x27;)(req, res, next);
+}
+
+/**
+ * requireModerator - middleware to assert the authenticated user has either the
+ * &#x60;ADMIN&#x60; or &#x60;MODERATOR&#x60; role
+ */
+function requireModerator(req: Request, res: Response, next: NextFunction): void {
+  requireRole([&#x27;ADMIN&#x27;, &#x27;MODERATOR&#x27;])(req, res, next);
+}
+
+/**
+ * authenticateRefreshToken - Verifies refresh tokens used for access token rotation
+ *
+ * Reads &#x60;refreshToken&#x60; from the request body and validates it; on success
+ * attaches an &#x60;AuthUser&#x60; object on the request as &#x60;req.user&#x60;.
+ */
+function authenticateRefreshToken(req: Request, res: Response, next: NextFunction): void {
+  try {
+    const { refreshToken } &#x3D; req.body as { refreshToken?: string };
+
+    if (!refreshToken) {
+      res.status(401).json({
+        success: false,
+        error: &#x27;Refresh token required&#x27;,
+        message: &#x27;Please provide a refresh token&#x27;,
+      });
+      return;
+    }
+
+    const decoded &#x3D; jwt.verify(refreshToken, jwtRefreshSecret) as JwtPayload;
+
+    if (!decoded || decoded.type !&#x3D;&#x3D; &#x27;refresh&#x27;) {
+      res.status(401).json({
+        success: false,
+        error: &#x27;Invalid refresh token&#x27;,
+        message: &#x27;Refresh token is invalid&#x27;,
+      });
+      return;
+    }
+
+    req.user &#x3D; {
+      id: decoded.userId,
+      userId: decoded.userId,
+      username: decoded.username,
+      email: decoded.email,
+      role: decoded.role,
+    };
+    next();
+  } catch (error) {
+    logger.error(&#x27;Refresh token authentication failed&#x27;, {
+      error: (error as Error).message,
+    });
+    res.status(401).json({
+      success: false,
+      error: &#x27;Invalid refresh token&#x27;,
+      message: &#x27;Refresh token verification failed&#x27;,
+    });
+  }
+}
+
+export {
+  authenticate,
+  authenticateRefreshToken,
+  optionalAuth,
+  requireAdmin,
+  requireModerator,
+  requireRole,
+};
+</code></pre>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'interface';
+            var COMPODOC_CURRENT_PAGE_URL = 'JwtPayload.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

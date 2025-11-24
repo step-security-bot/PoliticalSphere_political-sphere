@@ -180,6 +180,10 @@ export const MANUAL_TEST_CHECKLIST: ManualTestItem[] = [
 
 /**
  * Manual Testing Tracker
+ *
+ * Tracks manual accessibility testing results and provides completion metrics.
+ * Manages test checklists, records test outcomes, and generates progress reports
+ * for WCAG 2.2 AA compliance verification.
  */
 export class ManualTestingTracker {
   private results: ManualTestResult[] = [];

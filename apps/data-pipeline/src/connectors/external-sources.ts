@@ -23,6 +23,11 @@ export interface DataFeed<T = unknown> {
   metadata?: Record<string, unknown>;
 }
 
+/**
+ * Connector for external data sources and third-party APIs.
+ * Manages connections to REST APIs, GraphQL endpoints, webhooks, and data feeds
+ * with event-driven data processing and error handling.
+ */
 export class ExternalSourcesConnector {
   private sources: Map<string, ExternalSourceConfig> = new Map();
   private listeners: Map<string, Set<(data: DataFeed) => void>> = new Map();

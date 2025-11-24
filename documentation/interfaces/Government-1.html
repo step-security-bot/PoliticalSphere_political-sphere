@@ -1,0 +1,983 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>political-sphere documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">political-sphere documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content interface">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Interfaces</li>
+  <li class="breadcrumb-item"
+  >
+  Government</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>apps/web/src/services/api.ts</code>
+        </p>
+
+
+
+
+        <section data-compodoc="block-index">
+            <h3 id="index">Index</h3>
+            <table class="table table-sm table-bordered index-table">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <h6><b>Properties</b></h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <ul class="index-list">
+                                <li>
+                                        <a href="#actions" 
+>
+                                            actions
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#cabinet" 
+>
+                                            cabinet
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#id" 
+>
+                                            id
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#policies" 
+>
+                                            policies
+                                        </a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+
+
+            <section data-compodoc="block-properties">
+                <h3 id="inputs">Properties</h3>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="actions"></a>
+                                        <span class="name "><b>actions</b>
+                                            <a href="#actions">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>actions:     <code>unknown[]</code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>    <code>unknown[]</code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="cabinet"></a>
+                                        <span class="name "><b>cabinet</b>
+                                            <a href="#cabinet">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>cabinet:     <code>unknown[]</code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>    <code>unknown[]</code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="id"></a>
+                                        <span class="name "><b>id</b>
+                                            <a href="#id">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>id:         <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="policies"></a>
+                                        <span class="name "><b>policies</b>
+                                            <a href="#policies">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>policies:     <code>unknown[]</code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>    <code>unknown[]</code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+            </section>
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import type { AxiosResponse } from &#x27;axios&#x27;;
+import axios from &#x27;axios&#x27;;
+import { getMockSimulationState, updateMockSimulationState } from &#x27;./simulationMock&#x27;;
+
+export interface SimulationState {
+  id: string;
+  currentTurn: number;
+  status: &#x27;active&#x27; | &#x27;paused&#x27; | &#x27;completed&#x27;;
+  players: Array&lt;{
+    id: string;
+    name: string;
+    role: string;
+    influence: number;
+  }&gt;;
+  policies: Array&lt;{
+    id: string;
+    title: string;
+    description: string;
+    status: &#x27;proposed&#x27; | &#x27;active&#x27; | &#x27;rejected&#x27;;
+    votes: {
+      yes: number;
+      no: number;
+      abstain: number;
+    };
+  }&gt;;
+  economy: {
+    gdp: number;
+    unemployment: number;
+    inflation: number;
+  };
+  society: {
+    happiness: number;
+    education: number;
+    health: number;
+  };
+  environment: {
+    pollution: number;
+    renewableEnergy: number;
+    biodiversity: number;
+  };
+  lastUpdated: string;
+}
+
+export interface Proposal {
+  id: string;
+  title: string;
+  description?: string;
+  status: &#x27;proposed&#x27; | &#x27;active&#x27; | &#x27;rejected&#x27;;
+  votes: { yes: number; no: number; abstain: number };
+  createdAt?: string;
+}
+
+export interface VoteResults {
+  proposalId: string;
+  totals: { yes: number; no: number; abstain: number };
+}
+
+export interface VoteCastResult {
+  voteId?: string;
+  status?: string;
+}
+
+export interface Election {
+  id: string;
+  gameId: string;
+  name: string;
+  electionType: &#x27;general&#x27; | &#x27;by_election&#x27; | &#x27;local&#x27; | &#x27;referendum&#x27;;
+  type?: &#x27;general&#x27; | &#x27;by_election&#x27; | &#x27;local&#x27; | &#x27;referendum&#x27;; // Alias for electionType
+  startDate: string;
+  endDate: string;
+  description?: string;
+  status: &#x27;scheduled&#x27; | &#x27;active&#x27; | &#x27;closed&#x27; | &#x27;certified&#x27;;
+  createdAt: string;
+  totalVotes: number;
+  totalVoters?: number; // Alias for totalVotes
+  turnout: number;
+  certifiedAt?: string;
+}
+
+export interface Constituency {
+  id: string;
+  electionId: string;
+  name: string;
+  population: number;
+  registeredVoters: number;
+  region: string;
+  createdAt: string;
+  votesCast: number;
+  turnoutPercentage: number;
+  candidates?: Array&lt;{
+    id: string;
+    name: string;
+    party: string;
+    votes?: number;
+  }&gt;;
+}
+
+export interface ElectionVoteResult {
+  electionId: string;
+  constituencyId: string;
+  voteCast: boolean;
+}
+
+export interface Government {
+  id: string;
+  cabinet: unknown[];
+  actions: unknown[];
+  policies: unknown[];
+}
+
+export interface Chamber {
+  id: string;
+  name: string;
+  type: string;
+}
+
+export interface Motion {
+  id: string;
+  title: string;
+  status: string;
+}
+
+export interface JudicialCase {
+  id: string;
+  title: string;
+  status: string;
+  caseNumber?: string;
+  description?: string;
+  type?: &#x27;constitutional&#x27; | &#x27;criminal&#x27; | &#x27;civil&#x27; | &#x27;administrative&#x27;;
+  court?: &#x27;supreme&#x27; | &#x27;appeal&#x27; | &#x27;high&#x27;;
+  plaintiff?: string;
+  defendant?: string;
+  filedBy?: string;
+  filedAt?: string;
+  priority?: &#x27;low&#x27; | &#x27;medium&#x27; | &#x27;high&#x27; | &#x27;urgent&#x27;;
+}
+
+export interface Judge {
+  id: string;
+  name: string;
+  userId?: string;
+  username?: string;
+  court?: &#x27;supreme&#x27; | &#x27;appeal&#x27; | &#x27;high&#x27;;
+  appointedAt?: string;
+  status?: &#x27;active&#x27; | &#x27;retired&#x27;;
+}
+
+export interface Poll {
+  id: string;
+  question: string;
+  options: unknown[];
+}
+
+export interface PressRelease {
+  id: string;
+  title: string;
+  content: string;
+}
+
+const API_BASE_URL &#x3D; import.meta.env.VITE_API_URL || import.meta.env.VITE_API_BASE_URL || &#x27;/api&#x27;;
+const USE_SIMULATION_STUB &#x3D;
+  import.meta.env.VITE_USE_SIMULATION_STUB &#x3D;&#x3D;&#x3D; &#x27;true&#x27; ||
+  (import.meta.env.DEV &amp;&amp; !import.meta.env.VITE_API_URL &amp;&amp; !import.meta.env.VITE_API_BASE_URL);
+
+const apiClient &#x3D; axios.create({
+  baseURL: API_BASE_URL,
+  timeout: 10000,
+  headers: {
+    &#x27;Content-Type&#x27;: &#x27;application/json&#x27;,
+  },
+});
+
+// Request interceptor for authentication
+apiClient.interceptors.request.use(
+  config &#x3D;&gt; {
+    const token &#x3D; localStorage.getItem(&#x27;authToken&#x27;);
+    if (token) {
+      config.headers.Authorization &#x3D; &#x60;Bearer ${token}&#x60;;
+    }
+    return config;
+  },
+  error &#x3D;&gt; Promise.reject(error)
+);
+
+// Response interceptor for error handling
+apiClient.interceptors.response.use(
+  response &#x3D;&gt; response,
+  error &#x3D;&gt; {
+    if (error.response?.status &#x3D;&#x3D;&#x3D; 401) {
+      // Handle unauthorized access
+      localStorage.removeItem(&#x27;authToken&#x27;);
+      window.location.href &#x3D; &#x27;/login&#x27;;
+    }
+    return Promise.reject(error);
+  }
+);
+
+interface ApiResponse&lt;T&gt; {
+  success: boolean;
+  data?: T;
+  error?: string;
+}
+
+interface ApiMethods {
+  // Authentication endpoints
+  login: (credentials: {
+    email: string;
+    password: string;
+  }) &#x3D;&gt; Promise&lt;ApiResponse&lt;{ token: string }&gt;&gt;;
+  register: (userData: {
+    email: string;
+    password: string;
+    username: string;
+  }) &#x3D;&gt; Promise&lt;ApiResponse&lt;{ token: string }&gt;&gt;;
+  logout: () &#x3D;&gt; Promise&lt;ApiResponse&lt;void&gt;&gt;;
+  // Simulation endpoints
+  getSimulationState: () &#x3D;&gt; Promise&lt;ApiResponse&lt;SimulationState&gt;&gt;;
+  updateSimulationState: (
+    updates: Partial&lt;SimulationState&gt;
+  ) &#x3D;&gt; Promise&lt;ApiResponse&lt;SimulationState&gt;&gt;;
+  // Governance endpoints
+  getProposals: () &#x3D;&gt; Promise&lt;ApiResponse&lt;Proposal[]&gt;&gt;;
+  createProposal: (proposal: Partial&lt;Proposal&gt;) &#x3D;&gt; Promise&lt;ApiResponse&lt;Proposal&gt;&gt;;
+  // Voting endpoints
+  castVote: (voteData: {
+    proposalId: string;
+    vote: &#x27;yes&#x27; | &#x27;no&#x27; | &#x27;abstain&#x27;;
+  }) &#x3D;&gt; Promise&lt;ApiResponse&lt;VoteCastResult&gt;&gt;;
+  getVoteResults: (proposalId: string) &#x3D;&gt; Promise&lt;ApiResponse&lt;VoteResults&gt;&gt;;
+  // Elections endpoints
+  getElections: () &#x3D;&gt; Promise&lt;
+    ApiResponse&lt;{ elections: Election[]; constituencies: Constituency[] }&gt;
+  &gt;;
+  castElectionVote: (
+    electionId: string,
+    voteData: { candidateId: string }
+  ) &#x3D;&gt; Promise&lt;ApiResponse&lt;ElectionVoteResult&gt;&gt;;
+  // Government endpoints
+  getGovernment: () &#x3D;&gt; Promise&lt;ApiResponse&lt;Government&gt;&gt;;
+  issueExecutiveAction: (action: unknown) &#x3D;&gt; Promise&lt;ApiResponse&lt;unknown&gt;&gt;;
+  // Parliament endpoints
+  getChambers: () &#x3D;&gt; Promise&lt;ApiResponse&lt;Chamber[]&gt;&gt;;
+  getMotions: () &#x3D;&gt; Promise&lt;ApiResponse&lt;Motion[]&gt;&gt;;
+  createMotion: (motion: unknown) &#x3D;&gt; Promise&lt;ApiResponse&lt;Motion&gt;&gt;;
+  // Judiciary endpoints
+  getCases: () &#x3D;&gt; Promise&lt;ApiResponse&lt;{ judges: Judge[]; cases: JudicialCase[] }&gt;&gt;;
+  fileCase: (caseData: unknown) &#x3D;&gt; Promise&lt;ApiResponse&lt;unknown&gt;&gt;;
+  issueRuling: (ruling: unknown) &#x3D;&gt; Promise&lt;ApiResponse&lt;unknown&gt;&gt;;
+  // Media endpoints
+  getPressReleases: () &#x3D;&gt; Promise&lt;ApiResponse&lt;PressRelease[]&gt;&gt;;
+  getPolls: () &#x3D;&gt; Promise&lt;ApiResponse&lt;Poll[]&gt;&gt;;
+  votePoll: (pollId: string, option: unknown) &#x3D;&gt; Promise&lt;ApiResponse&lt;unknown&gt;&gt;;
+}
+
+export const api: ApiMethods &#x3D; {
+  // Authentication endpoints
+  login: async (credentials: {
+    email: string;
+    password: string;
+  }): Promise&lt;ApiResponse&lt;{ token: string }&gt;&gt; &#x3D;&gt; {
+    try {
+      const response: AxiosResponse &#x3D; await apiClient.post(&#x27;/auth/login&#x27;, credentials);
+      return { success: true, data: response.data };
+    } catch (error) {
+      return { success: false, error: error instanceof Error ? error.message : &#x27;Login failed&#x27; };
+    }
+  },
+
+  register: async (userData: {
+    email: string;
+    password: string;
+    username: string;
+  }): Promise&lt;ApiResponse&lt;{ token: string }&gt;&gt; &#x3D;&gt; {
+    try {
+      const response: AxiosResponse &#x3D; await apiClient.post(&#x27;/auth/register&#x27;, userData);
+      return { success: true, data: response.data };
+    } catch (error) {
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : &#x27;Registration failed&#x27;,
+      };
+    }
+  },
+
+  logout: async (): Promise&lt;ApiResponse&lt;void&gt;&gt; &#x3D;&gt; {
+    try {
+      const response: AxiosResponse &#x3D; await apiClient.post(&#x27;/auth/logout&#x27;);
+      return { success: true, data: response.data };
+    } catch (error) {
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : &#x27;Logout failed&#x27;,
+      };
+    }
+  },
+
+  // Simulation endpoints
+  getSimulationState: async (): Promise&lt;ApiResponse&lt;SimulationState&gt;&gt; &#x3D;&gt; {
+    // Allow running the UI without the API gateway in local dev
+    if (USE_SIMULATION_STUB) {
+      return { success: true, data: getMockSimulationState() };
+    }
+
+    try {
+      const response: AxiosResponse &#x3D; await apiClient.get(&#x27;/simulation/state&#x27;);
+      return { success: true, data: response.data };
+    } catch (error) {
+      // Fallback to mock state if the gateway is unavailable so the UI remains usable
+      if (import.meta.env.DEV) {
+        // eslint-disable-next-line no-console
+        console.warn(&#x27;Simulation API unreachable, using mock state instead.&#x27;, error);
+        return { success: true, data: getMockSimulationState() };
+      }
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : &#x27;Failed to fetch simulation state&#x27;,
+      };
+    }
+  },
+
+  updateSimulationState: async (
+    updates: Partial&lt;SimulationState&gt;
+  ): Promise&lt;ApiResponse&lt;SimulationState&gt;&gt; &#x3D;&gt; {
+    if (USE_SIMULATION_STUB) {
+      return { success: true, data: updateMockSimulationState(updates) };
+    }
+
+    try {
+      const response: AxiosResponse &#x3D; await apiClient.patch(&#x27;/simulation/state&#x27;, updates);
+      return { success: true, data: response.data };
+    } catch (error) {
+      if (import.meta.env.DEV) {
+        // eslint-disable-next-line no-console
+        console.warn(&#x27;Simulation API unreachable, updating mock state locally.&#x27;, error);
+        return { success: true, data: updateMockSimulationState(updates) };
+      }
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : &#x27;Failed to update simulation state&#x27;,
+      };
+    }
+  },
+
+  // Governance endpoints
+  getProposals: async (): Promise&lt;ApiResponse&lt;Proposal[]&gt;&gt; &#x3D;&gt; {
+    try {
+      const response: AxiosResponse &#x3D; await apiClient.get(&#x27;/governance/proposals&#x27;);
+      return { success: true, data: response.data };
+    } catch (error) {
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : &#x27;Failed to fetch proposals&#x27;,
+      };
+    }
+  },
+
+  createProposal: async (proposal: Partial&lt;Proposal&gt;): Promise&lt;ApiResponse&lt;Proposal&gt;&gt; &#x3D;&gt; {
+    try {
+      const response: AxiosResponse &#x3D; await apiClient.post(&#x27;/governance/proposals&#x27;, proposal);
+      return { success: true, data: response.data };
+    } catch (error) {
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : &#x27;Failed to create proposal&#x27;,
+      };
+    }
+  },
+
+  // Voting endpoints
+  castVote: async (voteData: {
+    proposalId: string;
+    vote: &#x27;yes&#x27; | &#x27;no&#x27; | &#x27;abstain&#x27;;
+  }): Promise&lt;ApiResponse&lt;VoteCastResult&gt;&gt; &#x3D;&gt; {
+    try {
+      const response: AxiosResponse &#x3D; await apiClient.post(&#x27;/voting/cast&#x27;, voteData);
+      return { success: true, data: response.data };
+    } catch (error) {
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : &#x27;Failed to cast vote&#x27;,
+      };
+    }
+  },
+
+  getVoteResults: async (proposalId: string): Promise&lt;ApiResponse&lt;VoteResults&gt;&gt; &#x3D;&gt; {
+    try {
+      const response: AxiosResponse &#x3D; await apiClient.get(&#x60;/voting/results/${proposalId}&#x60;);
+      return { success: true, data: response.data };
+    } catch (error) {
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : &#x27;Failed to fetch vote results&#x27;,
+      };
+    }
+  },
+
+  // Elections endpoints
+  getElections: async (): Promise&lt;
+    ApiResponse&lt;{ elections: Election[]; constituencies: Constituency[] }&gt;
+  &gt; &#x3D;&gt; {
+    try {
+      const response: AxiosResponse &#x3D; await apiClient.get(&#x27;/elections&#x27;);
+      return { success: true, data: response.data };
+    } catch (error) {
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : &#x27;Failed to fetch elections&#x27;,
+      };
+    }
+  },
+
+  castElectionVote: async (
+    electionId: string,
+    voteData: { candidateId: string }
+  ): Promise&lt;ApiResponse&lt;ElectionVoteResult&gt;&gt; &#x3D;&gt; {
+    try {
+      const response: AxiosResponse &#x3D; await apiClient.post(
+        &#x60;/elections/${electionId}/vote&#x60;,
+        voteData
+      );
+      return { success: true, data: response.data };
+    } catch (error) {
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : &#x27;Failed to cast election vote&#x27;,
+      };
+    }
+  },
+
+  // Government endpoints
+  getGovernment: async (): Promise&lt;ApiResponse&lt;Government&gt;&gt; &#x3D;&gt; {
+    try {
+      const response: AxiosResponse &#x3D; await apiClient.get(&#x27;/government&#x27;);
+      return { success: true, data: response.data };
+    } catch (error) {
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : &#x27;Failed to fetch government&#x27;,
+      };
+    }
+  },
+
+  issueExecutiveAction: async (action: unknown): Promise&lt;ApiResponse&lt;unknown&gt;&gt; &#x3D;&gt; {
+    try {
+      const response: AxiosResponse &#x3D; await apiClient.post(&#x27;/government/actions&#x27;, action);
+      return { success: true, data: response.data };
+    } catch (error) {
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : &#x27;Failed to issue executive action&#x27;,
+      };
+    }
+  },
+
+  // Parliament endpoints
+  getChambers: async (): Promise&lt;ApiResponse&lt;Chamber[]&gt;&gt; &#x3D;&gt; {
+    try {
+      const response: AxiosResponse &#x3D; await apiClient.get(&#x27;/parliament/chambers&#x27;);
+      return { success: true, data: response.data };
+    } catch (error) {
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : &#x27;Failed to fetch chambers&#x27;,
+      };
+    }
+  },
+
+  getMotions: async (): Promise&lt;ApiResponse&lt;Motion[]&gt;&gt; &#x3D;&gt; {
+    try {
+      const response: AxiosResponse &#x3D; await apiClient.get(&#x27;/parliament/motions&#x27;);
+      return { success: true, data: response.data };
+    } catch (error) {
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : &#x27;Failed to fetch motions&#x27;,
+      };
+    }
+  },
+
+  createMotion: async (motion: unknown): Promise&lt;ApiResponse&lt;Motion&gt;&gt; &#x3D;&gt; {
+    try {
+      const response: AxiosResponse &#x3D; await apiClient.post(&#x27;/parliament/motions&#x27;, motion);
+      return { success: true, data: response.data };
+    } catch (error) {
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : &#x27;Failed to create motion&#x27;,
+      };
+    }
+  },
+
+  // Judiciary endpoints
+  getCases: async (): Promise&lt;ApiResponse&lt;{ judges: Judge[]; cases: JudicialCase[] }&gt;&gt; &#x3D;&gt; {
+    try {
+      const response: AxiosResponse &#x3D; await apiClient.get(&#x27;/judiciary/cases&#x27;);
+      return { success: true, data: response.data };
+    } catch (error) {
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : &#x27;Failed to fetch cases&#x27;,
+      };
+    }
+  },
+
+  fileCase: async (caseData: unknown): Promise&lt;ApiResponse&lt;unknown&gt;&gt; &#x3D;&gt; {
+    try {
+      const response: AxiosResponse &#x3D; await apiClient.post(&#x27;/judiciary/cases&#x27;, caseData);
+      return { success: true, data: response.data };
+    } catch (error) {
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : &#x27;Failed to file case&#x27;,
+      };
+    }
+  },
+
+  issueRuling: async (ruling: unknown): Promise&lt;ApiResponse&lt;unknown&gt;&gt; &#x3D;&gt; {
+    try {
+      const response: AxiosResponse &#x3D; await apiClient.post(&#x27;/judiciary/rulings&#x27;, ruling);
+      return { success: true, data: response.data };
+    } catch (error) {
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : &#x27;Failed to issue ruling&#x27;,
+      };
+    }
+  },
+
+  // Media endpoints
+  getPressReleases: async (): Promise&lt;ApiResponse&lt;PressRelease[]&gt;&gt; &#x3D;&gt; {
+    try {
+      const response: AxiosResponse &#x3D; await apiClient.get(&#x27;/media/press-releases&#x27;);
+      return { success: true, data: response.data };
+    } catch (error) {
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : &#x27;Failed to fetch press releases&#x27;,
+      };
+    }
+  },
+
+  getPolls: async (): Promise&lt;ApiResponse&lt;Poll[]&gt;&gt; &#x3D;&gt; {
+    try {
+      const response: AxiosResponse &#x3D; await apiClient.get(&#x27;/media/polls&#x27;);
+      return { success: true, data: response.data };
+    } catch (error) {
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : &#x27;Failed to fetch polls&#x27;,
+      };
+    }
+  },
+
+  votePoll: async (pollId: string, option: unknown): Promise&lt;ApiResponse&lt;unknown&gt;&gt; &#x3D;&gt; {
+    try {
+      const response: AxiosResponse &#x3D; await apiClient.post(&#x60;/media/polls/${pollId}/vote&#x60;, {
+        option,
+      });
+      return { success: true, data: response.data };
+    } catch (error) {
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : &#x27;Failed to vote on poll&#x27;,
+      };
+    }
+  },
+};
+
+export type { ApiResponse };
+</code></pre>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'interface';
+            var COMPODOC_CURRENT_PAGE_URL = 'Government-1.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

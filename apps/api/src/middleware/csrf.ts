@@ -1,8 +1,8 @@
-c; // Express CSRF protection middleware setup
+// Express CSRF protection middleware setup
 // Uses modern 'csrf' package (csurf is deprecated)
 // See: https://www.npmjs.com/package/csrf
 import { doubleCsrf } from 'csrf-csrf';
-import { Request, Response, NextFunction } from 'express';
+import type { Request, Response, NextFunction } from 'express';
 
 // Configure CSRF protection using double-submit cookie pattern
 const { invalidCsrfTokenError, generateCsrfToken, doubleCsrfProtection } = doubleCsrf({

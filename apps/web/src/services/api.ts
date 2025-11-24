@@ -1,630 +1,576 @@
 /**
- * API Client Service
- * Centralized API communication with authentication
+ * API Service
+ * Centralized API client for the Political Sphere application
+ * Handles authentication, error handling, and request/response formatting
+ * WCAG 2.2 AA Compliant (no direct UI impact)
  */
 
-// Type definitions based on shared schemas
-export interface User {
+import type { AxiosResponse } from 'axios';
+import axios from 'axios';
+import { getMockSimulationState, updateMockSimulationState } from './simulationMock';
+
+export interface SimulationState {
   id: string;
-  username: string;
-  email?: string;
-  createdAt: Date;
-  updatedAt: Date;
+  currentTurn: number;
+  status: 'active' | 'paused' | 'completed';
+  players: Array<{
+    id: string;
+    name: string;
+    role: string;
+    influence: number;
+  }>;
+  policies: Array<{
+    id: string;
+    title: string;
+    description: string;
+    status: 'proposed' | 'active' | 'rejected';
+    votes: {
+      yes: number;
+      no: number;
+      abstain: number;
+    };
+  }>;
+  economy: {
+    gdp: number;
+    unemployment: number;
+    inflation: number;
+  };
+  society: {
+    happiness: number;
+    education: number;
+    health: number;
+  };
+  environment: {
+    pollution: number;
+    renewableEnergy: number;
+    biodiversity: number;
+  };
+  lastUpdated: string;
 }
 
-export interface Bill {
+export interface Proposal {
   id: string;
   title: string;
   description?: string;
-  proposerId: string;
-  status: 'proposed' | 'debating' | 'passed' | 'rejected';
-  createdAt: Date;
-  updatedAt: Date;
+  status: 'proposed' | 'active' | 'rejected';
+  votes: { yes: number; no: number; abstain: number };
+  createdAt?: string;
 }
 
-export interface Party {
+export interface VoteResults {
+  proposalId: string;
+  totals: { yes: number; no: number; abstain: number };
+}
+
+export interface VoteCastResult {
+  voteId?: string;
+  status?: string;
+}
+
+export interface Election {
+  id: string;
+  gameId: string;
+  name: string;
+  electionType: 'general' | 'by_election' | 'local' | 'referendum';
+  type?: 'general' | 'by_election' | 'local' | 'referendum'; // Alias for electionType
+  startDate: string;
+  endDate: string;
+  description?: string;
+  status: 'scheduled' | 'active' | 'closed' | 'certified';
+  createdAt: string;
+  totalVotes: number;
+  totalVoters?: number; // Alias for totalVotes
+  turnout: number;
+  certifiedAt?: string;
+}
+
+export interface Constituency {
+  id: string;
+  electionId: string;
+  name: string;
+  population: number;
+  registeredVoters: number;
+  region: string;
+  createdAt: string;
+  votesCast: number;
+  turnoutPercentage: number;
+  candidates?: Array<{
+    id: string;
+    name: string;
+    party: string;
+    votes?: number;
+  }>;
+}
+
+export interface ElectionVoteResult {
+  electionId: string;
+  constituencyId: string;
+  voteCast: boolean;
+}
+
+export interface Government {
+  id: string;
+  cabinet: unknown[];
+  actions: unknown[];
+  policies: unknown[];
+}
+
+export interface Chamber {
   id: string;
   name: string;
-  description?: string;
-  color: string;
-  createdAt: Date;
+  type: string;
 }
 
-export interface Vote {
+export interface Motion {
   id: string;
-  billId: string;
-  userId: string;
-  vote: 'aye' | 'nay' | 'abstain';
-  createdAt: Date;
+  title: string;
+  status: string;
 }
 
-export interface VoteCounts {
-  aye: number;
-  nay: number;
-  abstain: number;
-  total: number;
+export interface JudicialCase {
+  id: string;
+  title: string;
+  status: string;
+  caseNumber?: string;
+  description?: string;
+  type?: 'constitutional' | 'criminal' | 'civil' | 'administrative';
+  court?: 'supreme' | 'appeal' | 'high';
+  plaintiff?: string;
+  defendant?: string;
+  filedBy?: string;
+  filedAt?: string;
+  priority?: 'low' | 'medium' | 'high' | 'urgent';
 }
 
 export interface Judge {
   id: string;
-  userId: string;
-  username: string;
-  court: 'supreme' | 'appeal' | 'high';
-  appointedAt: string;
-  status: 'active' | 'retired';
-}
-
-export interface Case {
-  id: string;
-  caseNumber: string;
-  title: string;
-  description: string;
-  type: 'constitutional' | 'criminal' | 'civil' | 'administrative';
-  court: 'supreme' | 'appeal' | 'high';
-  plaintiff: string;
-  defendant: string;
-  filedBy: string;
-  filedAt: string;
-  status: 'filed' | 'hearing' | 'deliberation' | 'ruled';
-  priority: 'low' | 'medium' | 'high' | 'urgent';
-}
-
-export interface JudiciaryData {
-  judges: Judge[];
-  cases: Case[];
-}
-
-export interface CaseResponse {
-  id: string;
-  title: string;
-  description: string;
-  type: 'constitutional' | 'criminal' | 'civil' | 'administrative';
-  createdAt: string;
-}
-
-export interface RulingResponse {
-  id: string;
-  caseId: string;
-  decision: 'upheld' | 'overturned' | 'dismissed' | 'remanded';
-  reasoning: string;
-  issuedAt: string;
-}
-
-export interface BillsResponse {
-  bills: Bill[];
-  total?: number;
-  page?: number;
-  limit?: number;
-}
-
-export interface PartiesResponse {
-  parties: Party[];
-}
-
-export interface VotesResponse {
-  votes: Vote[];
-}
-
-interface ApiResponse<T = unknown> {
-  success: boolean;
-  data?: T;
-  error?: string;
-  message?: string;
-}
-
-// Internal API payload helpers (avoid `any`)
-interface ElectionSource {
-  id: string | number;
   name: string;
-  electionType?: string;
-  startDate?: string;
-  endDate?: string;
-  status?: 'upcoming' | 'active' | 'completed';
-  gameId?: string;
-  totalVoters?: number;
-  turnout?: number;
+  userId?: string;
+  username?: string;
+  court?: 'supreme' | 'appeal' | 'high';
+  appointedAt?: string;
+  status?: 'active' | 'retired';
 }
 
-type GovernmentPayload = { cabinet?: unknown; actions?: unknown[]; policies?: unknown[] } | null;
-
-type ChamberRaw = {
+export interface Poll {
   id: string;
-  gameId?: string;
-  type?: string;
-  name?: string;
-  maxSeats?: number;
-  quorumPercentage?: number;
-  seats?: string[];
-  status?: string;
-  createdAt?: string;
-};
+  question: string;
+  options: unknown[];
+}
 
-type MotionRaw = {
-  id: string;
-  gameId?: string;
-  chamberId: string;
-  proposerId?: string;
-  type?: string;
-  title?: string;
-  description?: string;
-  status?: string;
-  createdAt?: string;
-  result?: 'passed' | 'failed';
-};
-
-type PressRelease = {
+export interface PressRelease {
   id: string;
   title: string;
   content: string;
-  author: string;
-  category: string;
-  publishedAt: string;
-  views: number;
-};
-
-type MediaPoll = {
-  id: string;
-  question: string;
-  options: string[];
-  votes: number[];
-  totalVotes: number;
-  createdAt: string;
-  expiresAt: string;
-  status: 'active' | 'closed';
-};
-
-// Deprecated: kept for historical reference; single-world mode no longer uses game summaries
-type _GameSummary = {
-  id: string;
-  name: string;
-  status: string;
-  players?: Array<{ username: string }>;
-  settings?: { maxPlayers?: number };
-};
-
-class ApiClient {
-  private baseUrl: string;
-
-  constructor(baseUrl: string = '/api') {
-    this.baseUrl = baseUrl;
-    // Tokens are now managed by httpOnly cookies on the server side
-  }
-
-  // Elections
-  async getElections(params?: { gameId?: string }): Promise<
-    ApiResponse<{
-      elections: Array<{
-        id: string;
-        name: string;
-        type: 'general' | 'by-election' | 'local' | string;
-        status: 'upcoming' | 'active' | 'completed';
-        startDate: string;
-        endDate: string;
-        totalVoters: number;
-        turnout: number;
-      }>;
-      constituencies: Array<{
-        id: string;
-        name: string;
-        region?: string;
-        population?: number;
-        registeredVoters?: number;
-        candidates?: Array<{
-          id: string;
-          userId?: string;
-          username?: string;
-          party?: string;
-          votes?: number;
-          manifesto?: string;
-        }>;
-      }>;
-    }>
-  > {
-    const qs = params?.gameId ? `?gameId=${encodeURIComponent(params.gameId)}` : '';
-    const res = await this.request<ElectionSource[] | unknown>(`/elections${qs}`);
-    if (!res.success) {
-      return { success: true, data: { elections: [], constituencies: [] } };
-    }
-
-    const raw: ElectionSource[] = Array.isArray(res.data) ? (res.data as ElectionSource[]) : [];
-    const elections = raw.map(e => ({
-      id: String(e.id ?? ''),
-      name: String(e.name ?? 'Election'),
-      type: (e.electionType as string) || 'general',
-      status: (e.status as 'upcoming' | 'active' | 'completed') ?? 'upcoming',
-      startDate: String(e.startDate ?? new Date().toISOString()),
-      endDate: String(e.endDate ?? new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString()),
-      totalVoters: Number(e.totalVoters ?? 0),
-      turnout: Number(e.turnout ?? 0),
-    }));
-
-    return { success: true, data: { elections, constituencies: [] } };
-  }
-
-  async castElectionVote(
-    electionId: string,
-    data: { constituencyId?: string; candidateId?: string },
-  ): Promise<ApiResponse<{ voted: boolean }>> {
-    return this.request(`/elections/${encodeURIComponent(electionId)}/vote`, {
-      method: 'POST',
-      body: JSON.stringify(data ?? {}),
-    });
-  }
-
-  // Government
-  async getGovernment(): Promise<
-    ApiResponse<{
-      cabinet: unknown | null;
-      actions: unknown[];
-      policies: unknown[];
-    }>
-  > {
-    const res = await this.request<GovernmentPayload>('/government');
-    if (!res.success) {
-      return { success: true, data: { cabinet: null, actions: [], policies: [] } };
-    }
-    // Some stubs return {success:true,data:null}; normalize to expected structure
-    const base: GovernmentPayload = (res.data as GovernmentPayload) || {};
-    return {
-      success: true,
-      data: {
-        cabinet: base.cabinet ?? base ?? null,
-        actions: base.actions ?? [],
-        policies: base.policies ?? [],
-      },
-    };
-  }
-
-  async issueExecutiveAction(
-    governmentId: string,
-    data: {
-      ministerId: string;
-      type: 'policy' | 'appointment' | 'budget' | 'emergency' | string;
-      title: string;
-      description: string;
-      portfolio?: string;
-    },
-  ): Promise<ApiResponse<{ id: string } | { executed: boolean }>> {
-    return this.request(`/government/${encodeURIComponent(governmentId)}/actions`, {
-      method: 'POST',
-      body: JSON.stringify(data),
-    });
-  }
-
-  // Parliament
-  async getChambers(gameId?: string): Promise<ApiResponse<ChamberRaw[]>> {
-    const qs = gameId ? `?gameId=${encodeURIComponent(gameId)}` : '';
-    const res = await this.request<ChamberRaw[] | unknown>(`/parliament/chambers${qs}`);
-    if (!res.success) return { success: true, data: [] };
-    return { success: true, data: (Array.isArray(res.data) ? res.data : []) as ChamberRaw[] };
-  }
-
-  async getMotions(chamberId: string): Promise<ApiResponse<MotionRaw[]>> {
-    const res = await this.request<MotionRaw[] | unknown>(
-      `/parliament/motions?chamberId=${encodeURIComponent(chamberId)}`,
-    );
-    if (!res.success) return { success: true, data: [] };
-    return {
-      success: true,
-      data: (Array.isArray(res.data) ? (res.data as MotionRaw[]) : []) as MotionRaw[],
-    };
-  }
-
-  async getVoteResults(
-    motionId: string,
-  ): Promise<ApiResponse<{ total: number; aye: number; no: number; abstain: number }>> {
-    const res = await this.request(`/parliament/votes/results/${encodeURIComponent(motionId)}`);
-    if (!res.success) return { success: true, data: { total: 0, aye: 0, no: 0, abstain: 0 } };
-    return res as ApiResponse<{ total: number; aye: number; no: number; abstain: number }>;
-  }
-
-  async createMotion(data: {
-    chamberId: string;
-    proposerId: string;
-    type: 'debate' | 'vote' | 'amendment' | 'procedural' | string;
-    title: string;
-    description: string;
-    gameId?: string;
-  }): Promise<
-    ApiResponse<{
-      id?: string;
-      gameId?: string;
-      chamberId?: string;
-      proposerId?: string;
-      type?: string;
-      title?: string;
-      description?: string;
-      status?: string;
-      createdAt?: string;
-    }>
-  > {
-    return this.request('/parliament/motions', {
-      method: 'POST',
-      body: JSON.stringify(data),
-    });
-  }
-
-  async castVote(
-    motionId: string,
-    vote: 'aye' | 'no' | 'abstain',
-  ): Promise<ApiResponse<{ id?: string }>> {
-    return this.request('/parliament/votes', {
-      method: 'POST',
-      body: JSON.stringify({ motionId, vote }),
-    });
-  }
-
-  // Media
-  async getPressReleases(): Promise<
-    ApiResponse<
-      Array<{
-        id: string;
-        title: string;
-        content: string;
-        author: string;
-        category: string;
-        publishedAt: string;
-        views: number;
-      }>
-    >
-  > {
-    const res = await this.request<PressRelease[] | unknown>('/media/press');
-    if (!res.success) return { success: true, data: [] };
-    return {
-      success: true,
-      data: (Array.isArray(res.data) ? (res.data as PressRelease[]) : []) as PressRelease[],
-    };
-  }
-
-  async getPolls(): Promise<
-    ApiResponse<
-      Array<{
-        id: string;
-        question: string;
-        options: string[];
-        votes: number[];
-        totalVotes: number;
-        createdAt: string;
-        expiresAt: string;
-        status: 'active' | 'closed';
-      }>
-    >
-  > {
-    const res = await this.request<MediaPoll[] | unknown>('/media/polls');
-    if (!res.success) return { success: true, data: [] };
-    return {
-      success: true,
-      data: (Array.isArray(res.data) ? (res.data as MediaPoll[]) : []) as MediaPoll[],
-    };
-  }
-
-  async votePoll(pollId: string, optionIndex: number): Promise<ApiResponse<MediaPoll>> {
-    return this.request(`/media/polls/${encodeURIComponent(pollId)}/vote`, {
-      method: 'POST',
-      body: JSON.stringify({ optionIndex }),
-    });
-  }
-
-  // Single-world mode: no lobby endpoints required
-
-  private async request<T = unknown>(
-    endpoint: string,
-    options: RequestInit = {},
-  ): Promise<ApiResponse<T>> {
-    const url = `${this.baseUrl}${endpoint}`;
-    const headers: Record<string, string> = {
-      'Content-Type': 'application/json',
-      ...(options.headers as Record<string, string>),
-    };
-
-    // Authorization is now handled via httpOnly cookies
-    // No client-side token management
-
-    try {
-      const response = await fetch(url, {
-        ...options,
-        headers,
-        credentials: 'include', // Include cookies for authentication
-      });
-
-      // If unauthorized, redirect to login
-      if (response.status === 401) {
-        window.location.href = '/login';
-        throw new Error('Session expired. Please log in again.');
-      }
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        return {
-          success: false,
-          error: data.message || data.error || 'Request failed',
-        };
-      }
-
-      return {
-        success: true,
-        data: data.data || data,
-      };
-    } catch {
-      return {
-        success: false,
-        error: 'Network error',
-      };
-    }
-  }
-
-  // Authentication
-  async login(emailOrUsername: string, password: string): Promise<ApiResponse<{ user: User }>> {
-    const response = await this.request<{ user: User }>('/auth/login', {
-      method: 'POST',
-      body: JSON.stringify({
-        email: emailOrUsername.includes('@') ? emailOrUsername : undefined,
-        username: emailOrUsername.includes('@') ? undefined : emailOrUsername,
-        password,
-      }),
-    });
-
-    return response;
-  }
-
-  async register(username: string, email: string, password: string): Promise<ApiResponse<{ user: User }>> {
-    const response = await this.request<{ user: User }>('/auth/register', {
-      method: 'POST',
-      body: JSON.stringify({ username, email, password }),
-    });
-
-    return response;
-  }
-
-  async logout(): Promise<ApiResponse> {
-    return this.request('/auth/logout', {
-      method: 'POST',
-    });
-  }
-
-  // User Management
-  async getUsers(): Promise<ApiResponse<User[]>> {
-    return this.request('/users');
-  }
-
-  async getUser(userId: string): Promise<ApiResponse<User>> {
-    return this.request(`/users/${userId}`);
-  }
-
-  async updateUser(userId: string, data: Partial<User>): Promise<ApiResponse<User>> {
-    return this.request(`/users/${userId}`, {
-      method: 'PUT',
-      body: JSON.stringify(data),
-    });
-  }
-
-  async deleteUser(userId: string): Promise<ApiResponse> {
-    return this.request(`/users/${userId}`, {
-      method: 'DELETE',
-    });
-  }
-
-  // Bill Operations
-  async getBills(page?: number, limit?: number): Promise<ApiResponse<BillsResponse>> {
-    const params = new URLSearchParams();
-    if (page) params.append('page', page.toString());
-    if (limit) params.append('limit', limit.toString());
-    const query = params.toString() ? `?${params.toString()}` : '';
-    return this.request(`/bills${query}`);
-  }
-
-  async getBill(billId: string): Promise<ApiResponse<Bill>> {
-    return this.request(`/bills/${billId}`);
-  }
-
-  async createBill(data: Omit<Bill, 'id' | 'createdAt' | 'updatedAt'>): Promise<ApiResponse<Bill>> {
-    return this.request('/bills', {
-      method: 'POST',
-      body: JSON.stringify(data),
-    });
-  }
-
-  async updateBill(
-    billId: string,
-    data: Partial<Pick<Bill, 'title' | 'description' | 'status'>>,
-  ): Promise<ApiResponse<Bill>> {
-    return this.request(`/bills/${billId}`, {
-      method: 'PUT',
-      body: JSON.stringify(data),
-    });
-  }
-
-  // Party Management
-  async getParties(): Promise<ApiResponse<PartiesResponse>> {
-    return this.request('/parties');
-  }
-
-  async getParty(partyId: string): Promise<ApiResponse<Party>> {
-    return this.request(`/parties/${partyId}`);
-  }
-
-  async createParty(data: Omit<Party, 'id' | 'createdAt'>): Promise<ApiResponse<Party>> {
-    return this.request('/parties', {
-      method: 'POST',
-      body: JSON.stringify(data),
-    });
-  }
-
-  async updateParty(
-    partyId: string,
-    data: Partial<Pick<Party, 'name' | 'description' | 'color'>>,
-  ): Promise<ApiResponse<Party>> {
-    return this.request(`/parties/${partyId}`, {
-      method: 'PUT',
-      body: JSON.stringify(data),
-    });
-  }
-
-  async deleteParty(partyId: string): Promise<ApiResponse> {
-    return this.request(`/parties/${partyId}`, {
-      method: 'DELETE',
-    });
-  }
-
-  // Voting
-  async createVote(data: Omit<Vote, 'id' | 'createdAt'>): Promise<ApiResponse<Vote>> {
-    return this.request('/votes', {
-      method: 'POST',
-      body: JSON.stringify(data),
-    });
-  }
-
-  async getVotesForBill(billId: string): Promise<ApiResponse<VotesResponse>> {
-    return this.request(`/bills/${billId}/votes`);
-  }
-
-  async getVoteCounts(billId: string): Promise<ApiResponse<VoteCounts>> {
-    return this.request(`/bills/${billId}/vote-counts`);
-  }
-
-  // Judiciary
-  async getCases(gameId: string = 'default'): Promise<ApiResponse<JudiciaryData>> {
-    return this.request(`/judiciary/cases?gameId=${gameId}`);
-  }
-
-  async fileCase(data: {
-    gameId?: string;
-    plaintiffId?: string | null;
-    defendantId?: string | null;
-    title: string;
-    description: string;
-    type: 'constitutional' | 'criminal' | 'civil' | 'administrative';
-    court?: 'supreme' | 'appeal' | 'high';
-    plaintiff?: string;
-    defendant?: string;
-    priority?: 'low' | 'medium' | 'high' | 'urgent';
-    legalBasis?: string;
-    targetLawId?: string | null;
-    targetActionId?: string | null;
-  }): Promise<ApiResponse<CaseResponse>> {
-    return this.request('/judiciary/cases', {
-      method: 'POST',
-      body: JSON.stringify(data),
-    });
-  }
-
-  async issueRuling(
-    caseId: string,
-    data: {
-      decision: 'upheld' | 'overturned' | 'dismissed' | 'remanded';
-      reasoning: string;
-      precedentSetting?: boolean;
-      constitutionalImpact?: 'none' | 'low' | 'moderate' | 'high';
-    },
-  ): Promise<ApiResponse<RulingResponse>> {
-    return this.request(`/judiciary/rulings`, {
-      method: 'POST',
-      body: JSON.stringify({ caseId, ...data }),
-    });
-  }
 }
 
-// Export singleton instance
-export const api = new ApiClient();
-export default api;
+const API_BASE_URL = import.meta.env.VITE_API_URL || import.meta.env.VITE_API_BASE_URL || '/api';
+const USE_SIMULATION_STUB =
+  import.meta.env.VITE_USE_SIMULATION_STUB === 'true' ||
+  (import.meta.env.DEV && !import.meta.env.VITE_API_URL && !import.meta.env.VITE_API_BASE_URL);
+
+const apiClient = axios.create({
+  baseURL: API_BASE_URL,
+  timeout: 10000,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
+
+// Request interceptor for authentication
+apiClient.interceptors.request.use(
+  config => {
+    const token = localStorage.getItem('authToken');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  error => Promise.reject(error)
+);
+
+// Response interceptor for error handling
+apiClient.interceptors.response.use(
+  response => response,
+  error => {
+    if (error.response?.status === 401) {
+      // Handle unauthorized access
+      localStorage.removeItem('authToken');
+      window.location.href = '/login';
+    }
+    return Promise.reject(error);
+  }
+);
+
+interface ApiResponse<T> {
+  success: boolean;
+  data?: T;
+  error?: string;
+}
+
+interface ApiMethods {
+  // Authentication endpoints
+  login: (credentials: {
+    email: string;
+    password: string;
+  }) => Promise<ApiResponse<{ token: string }>>;
+  register: (userData: {
+    email: string;
+    password: string;
+    username: string;
+  }) => Promise<ApiResponse<{ token: string }>>;
+  logout: () => Promise<ApiResponse<void>>;
+  // Simulation endpoints
+  getSimulationState: () => Promise<ApiResponse<SimulationState>>;
+  updateSimulationState: (
+    updates: Partial<SimulationState>
+  ) => Promise<ApiResponse<SimulationState>>;
+  // Governance endpoints
+  getProposals: () => Promise<ApiResponse<Proposal[]>>;
+  createProposal: (proposal: Partial<Proposal>) => Promise<ApiResponse<Proposal>>;
+  // Voting endpoints
+  castVote: (voteData: {
+    proposalId: string;
+    vote: 'yes' | 'no' | 'abstain';
+  }) => Promise<ApiResponse<VoteCastResult>>;
+  getVoteResults: (proposalId: string) => Promise<ApiResponse<VoteResults>>;
+  // Elections endpoints
+  getElections: () => Promise<
+    ApiResponse<{ elections: Election[]; constituencies: Constituency[] }>
+  >;
+  castElectionVote: (
+    electionId: string,
+    voteData: { candidateId: string }
+  ) => Promise<ApiResponse<ElectionVoteResult>>;
+  // Government endpoints
+  getGovernment: () => Promise<ApiResponse<Government>>;
+  issueExecutiveAction: (action: unknown) => Promise<ApiResponse<unknown>>;
+  // Parliament endpoints
+  getChambers: () => Promise<ApiResponse<Chamber[]>>;
+  getMotions: () => Promise<ApiResponse<Motion[]>>;
+  createMotion: (motion: unknown) => Promise<ApiResponse<Motion>>;
+  // Judiciary endpoints
+  getCases: () => Promise<ApiResponse<{ judges: Judge[]; cases: JudicialCase[] }>>;
+  fileCase: (caseData: unknown) => Promise<ApiResponse<unknown>>;
+  issueRuling: (ruling: unknown) => Promise<ApiResponse<unknown>>;
+  // Media endpoints
+  getPressReleases: () => Promise<ApiResponse<PressRelease[]>>;
+  getPolls: () => Promise<ApiResponse<Poll[]>>;
+  votePoll: (pollId: string, option: unknown) => Promise<ApiResponse<unknown>>;
+}
+
+export const api: ApiMethods = {
+  // Authentication endpoints
+  login: async (credentials: {
+    email: string;
+    password: string;
+  }): Promise<ApiResponse<{ token: string }>> => {
+    try {
+      const response: AxiosResponse = await apiClient.post('/auth/login', credentials);
+      return { success: true, data: response.data };
+    } catch (error) {
+      return { success: false, error: error instanceof Error ? error.message : 'Login failed' };
+    }
+  },
+
+  register: async (userData: {
+    email: string;
+    password: string;
+    username: string;
+  }): Promise<ApiResponse<{ token: string }>> => {
+    try {
+      const response: AxiosResponse = await apiClient.post('/auth/register', userData);
+      return { success: true, data: response.data };
+    } catch (error) {
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Registration failed',
+      };
+    }
+  },
+
+  logout: async (): Promise<ApiResponse<void>> => {
+    try {
+      const response: AxiosResponse = await apiClient.post('/auth/logout');
+      return { success: true, data: response.data };
+    } catch (error) {
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Logout failed',
+      };
+    }
+  },
+
+  // Simulation endpoints
+  getSimulationState: async (): Promise<ApiResponse<SimulationState>> => {
+    // Allow running the UI without the API gateway in local dev
+    if (USE_SIMULATION_STUB) {
+      return { success: true, data: getMockSimulationState() };
+    }
+
+    try {
+      const response: AxiosResponse = await apiClient.get('/simulation/state');
+      return { success: true, data: response.data };
+    } catch (error) {
+      // Fallback to mock state if the gateway is unavailable so the UI remains usable
+      if (import.meta.env.DEV) {
+        // eslint-disable-next-line no-console
+        console.warn('Simulation API unreachable, using mock state instead.', error);
+        return { success: true, data: getMockSimulationState() };
+      }
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Failed to fetch simulation state',
+      };
+    }
+  },
+
+  updateSimulationState: async (
+    updates: Partial<SimulationState>
+  ): Promise<ApiResponse<SimulationState>> => {
+    if (USE_SIMULATION_STUB) {
+      return { success: true, data: updateMockSimulationState(updates) };
+    }
+
+    try {
+      const response: AxiosResponse = await apiClient.patch('/simulation/state', updates);
+      return { success: true, data: response.data };
+    } catch (error) {
+      if (import.meta.env.DEV) {
+        // eslint-disable-next-line no-console
+        console.warn('Simulation API unreachable, updating mock state locally.', error);
+        return { success: true, data: updateMockSimulationState(updates) };
+      }
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Failed to update simulation state',
+      };
+    }
+  },
+
+  // Governance endpoints
+  getProposals: async (): Promise<ApiResponse<Proposal[]>> => {
+    try {
+      const response: AxiosResponse = await apiClient.get('/governance/proposals');
+      return { success: true, data: response.data };
+    } catch (error) {
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Failed to fetch proposals',
+      };
+    }
+  },
+
+  createProposal: async (proposal: Partial<Proposal>): Promise<ApiResponse<Proposal>> => {
+    try {
+      const response: AxiosResponse = await apiClient.post('/governance/proposals', proposal);
+      return { success: true, data: response.data };
+    } catch (error) {
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Failed to create proposal',
+      };
+    }
+  },
+
+  // Voting endpoints
+  castVote: async (voteData: {
+    proposalId: string;
+    vote: 'yes' | 'no' | 'abstain';
+  }): Promise<ApiResponse<VoteCastResult>> => {
+    try {
+      const response: AxiosResponse = await apiClient.post('/voting/cast', voteData);
+      return { success: true, data: response.data };
+    } catch (error) {
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Failed to cast vote',
+      };
+    }
+  },
+
+  getVoteResults: async (proposalId: string): Promise<ApiResponse<VoteResults>> => {
+    try {
+      const response: AxiosResponse = await apiClient.get(`/voting/results/${proposalId}`);
+      return { success: true, data: response.data };
+    } catch (error) {
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Failed to fetch vote results',
+      };
+    }
+  },
+
+  // Elections endpoints
+  getElections: async (): Promise<
+    ApiResponse<{ elections: Election[]; constituencies: Constituency[] }>
+  > => {
+    try {
+      const response: AxiosResponse = await apiClient.get('/elections');
+      return { success: true, data: response.data };
+    } catch (error) {
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Failed to fetch elections',
+      };
+    }
+  },
+
+  castElectionVote: async (
+    electionId: string,
+    voteData: { candidateId: string }
+  ): Promise<ApiResponse<ElectionVoteResult>> => {
+    try {
+      const response: AxiosResponse = await apiClient.post(
+        `/elections/${electionId}/vote`,
+        voteData
+      );
+      return { success: true, data: response.data };
+    } catch (error) {
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Failed to cast election vote',
+      };
+    }
+  },
+
+  // Government endpoints
+  getGovernment: async (): Promise<ApiResponse<Government>> => {
+    try {
+      const response: AxiosResponse = await apiClient.get('/government');
+      return { success: true, data: response.data };
+    } catch (error) {
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Failed to fetch government',
+      };
+    }
+  },
+
+  issueExecutiveAction: async (action: unknown): Promise<ApiResponse<unknown>> => {
+    try {
+      const response: AxiosResponse = await apiClient.post('/government/actions', action);
+      return { success: true, data: response.data };
+    } catch (error) {
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Failed to issue executive action',
+      };
+    }
+  },
+
+  // Parliament endpoints
+  getChambers: async (): Promise<ApiResponse<Chamber[]>> => {
+    try {
+      const response: AxiosResponse = await apiClient.get('/parliament/chambers');
+      return { success: true, data: response.data };
+    } catch (error) {
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Failed to fetch chambers',
+      };
+    }
+  },
+
+  getMotions: async (): Promise<ApiResponse<Motion[]>> => {
+    try {
+      const response: AxiosResponse = await apiClient.get('/parliament/motions');
+      return { success: true, data: response.data };
+    } catch (error) {
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Failed to fetch motions',
+      };
+    }
+  },
+
+  createMotion: async (motion: unknown): Promise<ApiResponse<Motion>> => {
+    try {
+      const response: AxiosResponse = await apiClient.post('/parliament/motions', motion);
+      return { success: true, data: response.data };
+    } catch (error) {
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Failed to create motion',
+      };
+    }
+  },
+
+  // Judiciary endpoints
+  getCases: async (): Promise<ApiResponse<{ judges: Judge[]; cases: JudicialCase[] }>> => {
+    try {
+      const response: AxiosResponse = await apiClient.get('/judiciary/cases');
+      return { success: true, data: response.data };
+    } catch (error) {
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Failed to fetch cases',
+      };
+    }
+  },
+
+  fileCase: async (caseData: unknown): Promise<ApiResponse<unknown>> => {
+    try {
+      const response: AxiosResponse = await apiClient.post('/judiciary/cases', caseData);
+      return { success: true, data: response.data };
+    } catch (error) {
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Failed to file case',
+      };
+    }
+  },
+
+  issueRuling: async (ruling: unknown): Promise<ApiResponse<unknown>> => {
+    try {
+      const response: AxiosResponse = await apiClient.post('/judiciary/rulings', ruling);
+      return { success: true, data: response.data };
+    } catch (error) {
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Failed to issue ruling',
+      };
+    }
+  },
+
+  // Media endpoints
+  getPressReleases: async (): Promise<ApiResponse<PressRelease[]>> => {
+    try {
+      const response: AxiosResponse = await apiClient.get('/media/press-releases');
+      return { success: true, data: response.data };
+    } catch (error) {
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Failed to fetch press releases',
+      };
+    }
+  },
+
+  getPolls: async (): Promise<ApiResponse<Poll[]>> => {
+    try {
+      const response: AxiosResponse = await apiClient.get('/media/polls');
+      return { success: true, data: response.data };
+    } catch (error) {
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Failed to fetch polls',
+      };
+    }
+  },
+
+  votePoll: async (pollId: string, option: unknown): Promise<ApiResponse<unknown>> => {
+    try {
+      const response: AxiosResponse = await apiClient.post(`/media/polls/${pollId}/vote`, {
+        option,
+      });
+      return { success: true, data: response.data };
+    } catch (error) {
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Failed to vote on poll',
+      };
+    }
+  },
+};
+
+export type { ApiResponse };

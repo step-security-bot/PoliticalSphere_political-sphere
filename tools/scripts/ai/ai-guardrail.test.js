@@ -17,6 +17,7 @@ import assert from 'node:assert';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const ROOT_DIR = path.join(__dirname, '../../..');
+const hasOwn = (obj, prop) => Object.prototype.hasOwnProperty.call(obj, prop);
 
 describe('AI Guardrail Tests', () => {
   describe('Sensitive Command Validation', () => {
@@ -30,9 +31,9 @@ describe('AI Guardrail Tests', () => {
       const parsed = JSON.parse(result);
 
       // Validate structure
-      assert(parsed.hasOwnProperty('improvements'), 'Should have improvements property');
-      assert(parsed.hasOwnProperty('duration'), 'Should have duration property');
-      assert(parsed.hasOwnProperty('message'), 'Should have message property');
+      assert(hasOwn(parsed, 'improvements'), 'Should have improvements property');
+      assert(hasOwn(parsed, 'duration'), 'Should have duration property');
+      assert(hasOwn(parsed, 'message'), 'Should have message property');
       assert(Array.isArray(parsed.improvements), 'Improvements should be an array');
       assert(typeof parsed.duration === 'number', 'Duration should be a number');
       assert(typeof parsed.message === 'string', 'Message should be a string');
@@ -40,8 +41,8 @@ describe('AI Guardrail Tests', () => {
       // Validate improvement structure
       if (parsed.improvements.length > 0) {
         const improvement = parsed.improvements[0];
-        assert(improvement.hasOwnProperty('type'), 'Improvement should have type');
-        assert(improvement.hasOwnProperty('action'), 'Improvement should have action');
+        assert(hasOwn(improvement, 'type'), 'Improvement should have type');
+        assert(hasOwn(improvement, 'action'), 'Improvement should have action');
         assert(
           ['critical-fixes', 'quality-improvement'].includes(improvement.type),
           'Type should be valid'
@@ -87,7 +88,7 @@ describe('AI Guardrail Tests', () => {
           });
 
           const parsed = JSON.parse(result);
-          assert(parsed.hasOwnProperty('type'), 'Should have type property');
+          assert(hasOwn(parsed, 'type'), 'Should have type property');
           assert.strictEqual(parsed.type, 'error', 'Type should be error');
         } catch (error) {
           // Graceful failure is acceptable
@@ -102,9 +103,9 @@ describe('AI Guardrail Tests', () => {
       const cachePath = path.join(ROOT_DIR, 'ai/cache/workspace-state.json');
 
       // Get initial state
-      let initialState;
+      let _initialState;
       if (fs.existsSync(cachePath)) {
-        initialState = JSON.parse(fs.readFileSync(cachePath, 'utf8'));
+        _initialState = JSON.parse(fs.readFileSync(cachePath, 'utf8'));
       }
 
       // Run a safe operation
@@ -119,10 +120,10 @@ describe('AI Guardrail Tests', () => {
       const finalState = JSON.parse(fs.readFileSync(cachePath, 'utf8'));
 
       // Should have required properties
-      assert(finalState.hasOwnProperty('timestamp'), 'Should have timestamp');
-      assert(finalState.hasOwnProperty('git'), 'Should have git info');
-      assert(finalState.hasOwnProperty('files'), 'Should have files info');
-      assert(finalState.hasOwnProperty('tests'), 'Should have tests info');
+      assert(hasOwn(finalState, 'timestamp'), 'Should have timestamp');
+      assert(hasOwn(finalState, 'git'), 'Should have git info');
+      assert(hasOwn(finalState, 'files'), 'Should have files info');
+      assert(hasOwn(finalState, 'tests'), 'Should have tests info');
 
       // Timestamp should be updated or at least maintained
       assert(finalState.timestamp !== undefined, 'Timestamp should be defined');
@@ -236,7 +237,7 @@ describe('AI Guardrail Tests', () => {
         });
 
         const parsed = JSON.parse(current);
-        assert(parsed.hasOwnProperty('type'), 'Should have type property');
+        assert(hasOwn(parsed, 'type'), 'Should have type property');
         assert(['learning-assistance', 'error'].includes(parsed.type), 'Type should be valid');
       } catch {
         // Consistent failure is acceptable

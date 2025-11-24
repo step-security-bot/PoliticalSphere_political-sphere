@@ -6,6 +6,11 @@
 const API_BASE_URL =
   (import.meta.env?.VITE_API_URL as string | undefined) || 'http://localhost:3001';
 
+/**
+ * Client for making authenticated API requests to the Political Sphere backend.
+ * Manages JWT tokens, automatic token refresh, and provides typed request methods.
+ * Handles authentication state and token persistence in localStorage.
+ */
 class ApiClient {
   private accessToken: string | null = null;
   private refreshToken: string | null = null;

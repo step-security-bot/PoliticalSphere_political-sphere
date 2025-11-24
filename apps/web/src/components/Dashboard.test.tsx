@@ -60,7 +60,7 @@ describe('Dashboard Component', () => {
         }
         if (url.includes('/metrics/news')) {
           return Promise.resolve(
-            new Response(JSON.stringify({ data: mockSummary }), { status: 200 }),
+            new Response(JSON.stringify({ data: mockSummary }), { status: 200 })
           );
         }
         return Promise.reject(new Error('Unknown URL'));
@@ -95,7 +95,7 @@ describe('Dashboard Component', () => {
 
       await waitFor(() => {
         expect(
-          screen.getByText(/API unavailable: News API responded with 500/i),
+          screen.getByText(/API unavailable: News API responded with 500/i)
         ).toBeInTheDocument();
       });
     });
@@ -119,7 +119,7 @@ describe('Dashboard Component', () => {
 
       await waitFor(() => {
         expect(
-          screen.getByText(/API unavailable: Metrics API responded with 503/i),
+          screen.getByText(/API unavailable: Metrics API responded with 503/i)
         ).toBeInTheDocument();
       });
     });
@@ -179,7 +179,7 @@ describe('Dashboard Component', () => {
 
       await waitFor(() => {
         expect(
-          screen.getByText(/No stories yet. The data pipeline will populate this feed shortly./i),
+          screen.getByText(/No stories yet. The data pipeline will populate this feed shortly./i)
         ).toBeInTheDocument();
       });
     });
@@ -236,7 +236,7 @@ describe('Dashboard Component', () => {
   describe('Status Messages', () => {
     it('should show success message after data loads', async () => {
       mockFetch.mockImplementation(() =>
-        Promise.resolve(new Response(JSON.stringify({ data: [] }), { status: 200 })),
+        Promise.resolve(new Response(JSON.stringify({ data: [] }), { status: 200 }))
       );
 
       render(<Dashboard />);

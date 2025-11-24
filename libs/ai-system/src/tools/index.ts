@@ -8,6 +8,12 @@ export interface ToolDefinition<TArgs = any, TResult = any> {
   handler: (args: TArgs) => Promise<TResult> | TResult;
 }
 
+/**
+ * Registry for managing and accessing AI agent tools
+ *
+ * Provides centralized registration and lookup of tools that agents can use
+ * during execution, enabling dynamic tool discovery and invocation.
+ */
 export class ToolRegistry {
   private tools = new Map<string, ToolDefinition>();
 

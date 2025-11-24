@@ -5,7 +5,7 @@
  */
 
 import type React from 'react';
-import { type FormEvent, useEffect, useState } from 'react';
+import { type FormEvent, useState } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 import { useLoading } from '../../contexts/LoadingContext';
 import './Auth.css';
@@ -16,34 +16,24 @@ interface LoginProps {
   onSwitchToRegister: () => void;
 }
 
-const Login: React.FC<LoginProps> = ({
-  onLoginSuccess,
-  onSwitchToRegister: _onSwitchToRegister,
-}) => {
+const Login: React.FC<LoginProps> = ({ onLoginSuccess, onSwitchToRegister }) => {
   const { login } = useAuth();
   const { isLoading } = useLoading();
-  const [email, setEmail] = useState('');
+  const [identifier, setIdentifier] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [showPassword, setShowPassword] = useState(false);
   const [showForgotPassword, setShowForgotPassword] = useState(false);
 
-  useEffect(() => {}, []);
-
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setError(null);
 
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      setError('Invalid email format');
-      return;
-    }
-
     try {
-      const result = await login(email, password);
+      const result = await login(identifier, password);
 
       if (result.success) {
+        setPassword(''); // Clear password for security
         onLoginSuccess();
       } else {
         setError(result.error || 'Login failed');
@@ -74,22 +64,22 @@ const Login: React.FC<LoginProps> = ({
           )}
 
           <div className="form-group">
-            <label htmlFor="email">
+            <label htmlFor="identifier">
               Email Address or Username
               <span className="required">*</span>
             </label>
             <input
-              type="email"
-              id="email"
-              name="email"
-              value={email}
-              onChange={e => setEmail(e.target.value)}
+              type="text"
+              id="identifier"
+              name="identifier"
+              value={identifier}
+              onChange={e => setIdentifier(e.target.value)}
               required
-              autoComplete="email"
+              autoComplete="username"
               aria-required="true"
               aria-invalid={error ? 'true' : 'false'}
               disabled={isLoading('auth-login')}
-              placeholder="your.email@example.com"
+              placeholder="Email address or username"
             />
           </div>
 
@@ -151,7 +141,7 @@ const Login: React.FC<LoginProps> = ({
           <button
             type="submit"
             className="btn-primary btn-full-width"
-            disabled={isLoading('auth-login') || !email || !password}
+            disabled={isLoading('auth-login') || !identifier || !password}
           >
             {isLoading('auth-login') ? 'Logging in...' : 'Log In'}
           </button>
@@ -164,6 +154,14 @@ const Login: React.FC<LoginProps> = ({
               disabled={isLoading('auth-login')}
             >
               Forgot password?
+            </button>
+            <button
+              type="button"
+              className="link-button"
+              onClick={onSwitchToRegister}
+              disabled={isLoading('auth-login')}
+            >
+              Don't have an account? Register
             </button>
           </div>
         </form>

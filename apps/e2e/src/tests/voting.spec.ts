@@ -2,7 +2,9 @@
  * Voting Flow E2E Tests
  * Tests proposal creation, voting, and vote tallying in the single world
  */
-import { test, expect } from '@playwright/test';
+import { test, expect } from '../fixtures';
+import { AuthHelper } from '../test-utils';
+import { setupMockApi } from '../mock-api';
 
 import { GameBoardPage } from '../pages/GameBoardPage';
 import { LoginPage } from '../pages/LoginPage';
@@ -10,19 +12,32 @@ import { LoginPage } from '../pages/LoginPage';
 test.describe('Voting and Proposals', () => {
   let loginPage: LoginPage;
   let gamePage: GameBoardPage;
+  let authHelper: AuthHelper;
 
-  test.beforeEach(async ({ page }) => {
+  test.beforeEach(async ({ page, baseURL }) => {
     loginPage = new LoginPage(page);
     gamePage = new GameBoardPage(page);
+    authHelper = new AuthHelper(page, baseURL);
 
-    // Login to enter the game world
+    await authHelper.initAPIContext();
+
+    // Login via API and set tokens for faster and reliable auth
+    await authHelper
+      .loginUser('test@example.com', 'password123')
+      .then(tokens => authHelper.setAuthTokens(tokens));
+
+    // Go to the main page and wait for game load
     await loginPage.goto();
-    await loginPage.login('test@example.com', 'password123');
     await loginPage.waitForSuccess();
+    await gamePage.initHarness();
     await gamePage.waitForProposalsLoad();
   });
 
   test('should create a new proposal', async () => {
+    // First check if existing proposals are visible
+    const initialProposals = await gamePage.getProposalTitles();
+    console.log('Initial proposals:', initialProposals);
+
     const title = `Test Proposal ${Date.now()}`;
     const description = 'This is a test proposal for E2E testing';
 
@@ -30,6 +45,7 @@ test.describe('Voting and Proposals', () => {
 
     // Proposal should appear in the list
     const proposals = await gamePage.getProposalTitles();
+    console.log('Proposals after creation:', proposals);
     expect(proposals).toContain(title);
   });
 
@@ -66,7 +82,7 @@ test.describe('Voting and Proposals', () => {
     expect(votes.abstain).toBeGreaterThan(0);
   });
 
-  test('should reflect votes from multiple users', async ({ browser }) => {
+  test('should reflect votes from multiple users', async ({ page }) => {
     const title = `Multi-User Vote ${Date.now()}`;
     await gamePage.createProposal(title, 'Testing concurrent voting');
 
@@ -74,12 +90,13 @@ test.describe('Voting and Proposals', () => {
     await gamePage.voteOnProposal(title, 'aye');
 
     // Second user votes nay
-    const context2 = await browser.newContext();
-    const page2 = await context2.newPage();
+    const page2 = await page.context().newPage();
+    await setupMockApi(page2);
     const login2 = new LoginPage(page2);
     const game2 = new GameBoardPage(page2);
 
     await login2.goto();
+    await game2.initHarness();
     await login2.login('user2@example.com', 'password123');
     await login2.waitForSuccess();
     await game2.waitForProposalsLoad();
@@ -91,7 +108,7 @@ test.describe('Voting and Proposals', () => {
     expect(votes.aye).toBe(1);
     expect(votes.nay).toBe(1);
 
-    await context2.close();
+    await page2.close();
   });
 
   test('should display all existing proposals', async () => {
@@ -110,14 +127,16 @@ test.describe('Voting and Proposals', () => {
     const initialProposals = await gamePage.getProposalTitles();
 
     // Second user creates a proposal
-    const context2 = await browser.newContext();
-    const page2 = await context2.newPage();
+    const page2 = await page.context().newPage();
+    await setupMockApi(page2);
     const login2 = new LoginPage(page2);
     const game2 = new GameBoardPage(page2);
 
     await login2.goto();
+    await game2.initHarness();
     await login2.login('user2@example.com', 'password123');
     await login2.waitForSuccess();
+    await game2.waitForProposalsLoad();
 
     const newTitle = `Real-time Test ${Date.now()}`;
     await game2.createProposal(newTitle, 'Testing real-time updates');
@@ -130,7 +149,7 @@ test.describe('Voting and Proposals', () => {
     expect(updatedProposals.length).toBeGreaterThan(initialProposals.length);
     expect(updatedProposals).toContain(newTitle);
 
-    await context2.close();
+    await page2.close();
   });
 });
 
@@ -141,18 +160,28 @@ test.describe('Voting and Proposals', () => {
 test.describe('Voting Lifecycle (Full Flow)', () => {
   let loginPage: LoginPage;
   let gamePage: GameBoardPage;
+  let authHelper: AuthHelper;
 
-  test.beforeEach(async ({ page }) => {
+  test.beforeEach(async ({ page, baseURL }) => {
     loginPage = new LoginPage(page);
     gamePage = new GameBoardPage(page);
+    authHelper = new AuthHelper(page, baseURL);
 
+    await authHelper.initAPIContext();
+
+    // Login via API and set tokens for faster and reliable auth
+    await authHelper
+      .loginUser('test@example.com', 'password123')
+      .then(tokens => authHelper.setAuthTokens(tokens));
+
+    // Go to the main page and wait for game load
     await loginPage.goto();
-    await loginPage.login('test@example.com', 'password123');
     await loginPage.waitForSuccess();
+    await gamePage.initHarness();
     await gamePage.waitForProposalsLoad();
   });
 
-  test('should complete full proposal lifecycle: create → vote → tally', async ({ browser }) => {
+  test('should complete full proposal lifecycle: create → vote → tally', async ({ page }) => {
     const title = `Lifecycle Test ${Date.now()}`;
     const description = 'Testing complete voting lifecycle';
 
@@ -166,24 +195,26 @@ test.describe('Voting Lifecycle (Full Flow)', () => {
     await gamePage.voteOnProposal(title, 'aye');
 
     // Step 3: Vote with second user (aye)
-    const context2 = await browser.newContext();
-    const page2 = await context2.newPage();
+    const page2 = await page.context().newPage();
+    await setupMockApi(page2);
     const login2 = new LoginPage(page2);
     const game2 = new GameBoardPage(page2);
 
     await login2.goto();
+    await game2.initHarness();
     await login2.login('user2@example.com', 'password123');
     await login2.waitForSuccess();
     await game2.waitForProposalsLoad();
     await game2.voteOnProposal(title, 'aye');
 
     // Step 4: Vote with third user (nay)
-    const context3 = await browser.newContext();
-    const page3 = await context3.newPage();
+    const page3 = await page.context().newPage();
+    await setupMockApi(page3);
     const login3 = new LoginPage(page3);
     const game3 = new GameBoardPage(page3);
 
     await login3.goto();
+    await game3.initHarness();
     await login3.login('user3@example.com', 'password123');
     await login3.waitForSuccess();
     await game3.waitForProposalsLoad();
@@ -195,8 +226,8 @@ test.describe('Voting Lifecycle (Full Flow)', () => {
     expect(finalVotes.nay).toBe(1);
     expect(finalVotes.abstain).toBe(0);
 
-    await context2.close();
-    await context3.close();
+    await page2.close();
+    await page3.close();
   });
 
   test('should prevent duplicate voting by same user', async () => {
@@ -258,7 +289,7 @@ test.describe('Voting Lifecycle (Full Flow)', () => {
     expect(votes.abstain).toBe(0);
   });
 
-  test('should correctly tally tied votes', async ({ browser }) => {
+  test('should correctly tally tied votes', async ({ page, browser }) => {
     const title = `Tied Vote Test ${Date.now()}`;
     await gamePage.createProposal(title, 'Testing tied vote scenarios');
 
@@ -268,13 +299,18 @@ test.describe('Voting Lifecycle (Full Flow)', () => {
     // Second user: nay
     const context2 = await browser.newContext();
     const page2 = await context2.newPage();
+    await setupMockApi(page2);
     const login2 = new LoginPage(page2);
     const game2 = new GameBoardPage(page2);
-
     await login2.goto();
+    await game2.initHarness();
     await login2.login('user2@example.com', 'password123');
     await login2.waitForSuccess();
     await game2.waitForProposalsLoad();
+
+    // Wait for polling to sync the proposal
+    await page.waitForTimeout(2000);
+
     await game2.voteOnProposal(title, 'nay');
 
     // Verify tie
@@ -295,14 +331,24 @@ test.describe('Voting Lifecycle (Full Flow)', () => {
 test.describe('Voting Edge Cases', () => {
   let loginPage: LoginPage;
   let gamePage: GameBoardPage;
+  let authHelper: AuthHelper;
 
-  test.beforeEach(async ({ page }) => {
+  test.beforeEach(async ({ page, baseURL }) => {
     loginPage = new LoginPage(page);
     gamePage = new GameBoardPage(page);
+    authHelper = new AuthHelper(page, baseURL);
 
+    await authHelper.initAPIContext();
+
+    // Login via API and set tokens for faster and reliable auth
+    await authHelper
+      .loginUser('test@example.com', 'password123')
+      .then(tokens => authHelper.setAuthTokens(tokens));
+
+    // Go to the main page and wait for game load
     await loginPage.goto();
-    await loginPage.login('test@example.com', 'password123');
     await loginPage.waitForSuccess();
+    await gamePage.initHarness();
     await gamePage.waitForProposalsLoad();
   });
 
@@ -453,6 +499,7 @@ test.describe('Voting Edge Cases', () => {
 
     // Refresh page
     await gamePage.page.reload();
+    await gamePage.initHarness();
     await gamePage.waitForProposalsLoad();
 
     // Verify votes persisted
@@ -469,14 +516,24 @@ test.describe('Voting Edge Cases', () => {
 test.describe('Voting Performance', () => {
   let loginPage: LoginPage;
   let gamePage: GameBoardPage;
+  let authHelper: AuthHelper;
 
-  test.beforeEach(async ({ page }) => {
+  test.beforeEach(async ({ page, baseURL }) => {
     loginPage = new LoginPage(page);
     gamePage = new GameBoardPage(page);
+    authHelper = new AuthHelper(page, baseURL);
 
+    await authHelper.initAPIContext();
+
+    // Login via API and set tokens for faster and reliable auth
+    await authHelper
+      .loginUser('test@example.com', 'password123')
+      .then(tokens => authHelper.setAuthTokens(tokens));
+
+    // Go to the main page and wait for game load
     await loginPage.goto();
-    await loginPage.login('test@example.com', 'password123');
     await loginPage.waitForSuccess();
+    await gamePage.initHarness();
     await gamePage.waitForProposalsLoad();
   });
 

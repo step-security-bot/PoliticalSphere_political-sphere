@@ -67,7 +67,7 @@ const e2eExclude = ['**/e2e/**', '**/playwright.config.js'];
 const testFileExclude = [
   // Exclude Playwright tests, a11y suites and tooling tests from Vitest collector
   // EXCEPT: Include ai-system.integration.test.* (Vitest uses micromatch extglob: "!(pattern)" = anything except pattern)
-  'tools/**/!(ai-system.integration.test).{js,mjs,cjs,ts}',
+  'tools/**/!(ai-system.integration.test|guard-change-budget.test|ci-neutrality-check.test|ai-health.test).{js,mjs,cjs,ts}',
   'tools/**/*.config.{js,mjs,cjs,ts}',
   // Exclude Node.js native test runner files (use node:test instead)
   'libs/shared/src/path-security.test.mjs',
@@ -95,7 +95,6 @@ const createBaseTestConfig = () => ({
   poolOptions: {
     threads: {
       singleThread: isCI,
-      isolate: true,
     },
   },
   // Automatic mock cleanup between tests
@@ -122,10 +121,15 @@ const createBaseTestConfig = () => ({
 });
 
 // Factory function to create project configurations
-const createProject = (name: string, include: string[]) => ({
+const createProject = (
+  name: string,
+  include: string[],
+  overrides: Partial<typeof createBaseTestConfig> = {}
+) => ({
   name,
   test: {
     ...createBaseTestConfig(),
+    ...overrides,
     include,
   },
   esbuild: {
@@ -142,14 +146,24 @@ const projects =
           'libs/shared/src/__tests__/**/*.{test,spec}.{js,mjs,ts,tsx,jsx}',
         ]),
         createProject('ai-integration', ['tools/**/ai-system.integration.test.{js,mjs,cjs,ts}']),
+        createProject('ai-guardrails', ['tools/scripts/ai/guard-change-budget.test.ts']),
+        createProject('ai-neutrality', ['tools/scripts/ai/ci-neutrality-check.test.ts']),
+        createProject('ai-health', ['tools/scripts/ai/ai-health.test.ts']),
       ]
     : [
-        createProject('apps', [
-          'apps/*/src/**/*.{test,spec}.{js,mjs,ts,tsx,jsx}',
-          'apps/*/tests/**/*.{test,spec}.{js,mjs,ts,tsx,jsx}',
-        ]),
+        createProject(
+          'apps',
+          [
+            'apps/*/src/**/*.{test,spec}.{js,mjs,ts,tsx,jsx}',
+            'apps/*/tests/**/*.{test,spec}.{js,mjs,ts,tsx,jsx}',
+          ],
+          { environment: 'jsdom' }
+        ),
         createProject('libs', ['libs/*/src/**/*.{test,spec}.{js,mjs,ts,tsx,jsx}']),
         createProject('ai-integration', ['tools/**/ai-system.integration.test.{js,mjs,cjs,ts}']),
+        createProject('ai-guardrails', ['tools/scripts/ai/guard-change-budget.test.ts']),
+        createProject('ai-neutrality', ['tools/scripts/ai/ci-neutrality-check.test.ts']),
+        createProject('ai-health', ['tools/scripts/ai/ai-health.test.ts']),
       ];
 
 const config = {
@@ -178,6 +192,10 @@ const config = {
       '@political-sphere/shared': resolve(projectRoot, 'libs/shared/cjs-shared.cjs'),
       '@political-sphere/ui': resolve(projectRoot, 'libs/ui/src'),
       '@political-sphere/platform': resolve(projectRoot, 'libs/platform/src'),
+      '@political-sphere/observability': resolve(
+        projectRoot,
+        'libs/observability/cjs-observability.cjs'
+      ),
       '@political-sphere/ci-utils': resolve(projectRoot, 'libs/ci/src'),
       '@political-sphere/infrastructure': resolve(projectRoot, 'libs/infrastructure/src'),
       '@political-sphere/game-engine': resolve(projectRoot, 'libs/game-engine/src'),

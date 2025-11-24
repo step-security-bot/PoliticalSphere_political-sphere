@@ -53,10 +53,10 @@ export function initTelemetry(config: TelemetryConfig): NodeSDK {
   const {
     serviceName,
     serviceVersion = '0.0.0',
-    environment = process.env['NODE_ENV'] || 'development',
-    traceEndpoint = process.env['OTEL_EXPORTER_OTLP_TRACES_ENDPOINT'] ||
+    environment = process.env.NODE_ENV || 'development',
+    traceEndpoint = process.env.OTEL_EXPORTER_OTLP_TRACES_ENDPOINT ||
       'http://localhost:4318/v1/traces',
-    metricsEndpoint = process.env['OTEL_EXPORTER_OTLP_METRICS_ENDPOINT'] ||
+    metricsEndpoint = process.env.OTEL_EXPORTER_OTLP_METRICS_ENDPOINT ||
       'http://localhost:4318/v1/metrics',
     enableAutoInstrumentation = true,
   } = config;

@@ -1,0 +1,1299 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>political-sphere documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">political-sphere documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content class">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Classes</li>
+  <li class="breadcrumb-item" >GovernmentService</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>libs/domain-governance/src/services.ts</code>
+        </p>
+
+
+            <p class="comment">
+                <h3>Description</h3>
+            </p>
+            <p class="comment">
+                <p>Government Service
+Handles government-related operations</p>
+
+            </p>
+
+
+
+
+            <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#db" >db</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#createCabinetMeeting" >createCabinetMeeting</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#createExecutiveAction" >createExecutiveAction</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#createGovernment" >createGovernment</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#createMinister" >createMinister</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#dissolveGovernment" >dissolveGovernment</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#getGovernment" >getGovernment</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#getMinister" >getMinister</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#signExecutiveAction" >signExecutiveAction</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+            <section data-compodoc="block-constructor">
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(database?: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="26" class="link-to-prism">libs/domain-governance/src/services.ts:26</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>database</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            Yes
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+            <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="db"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>db</b></span>
+                        <a href="#db"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="26" class="link-to-prism">libs/domain-governance/src/services.ts:26</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+            <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="createCabinetMeeting"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>createCabinetMeeting</b></span>
+                        <a href="#createCabinetMeeting"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>createCabinetMeeting(input: <a href="../undefineds/CreateCabinetMeetingInput.html" target="_self">CreateCabinetMeetingInput</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="131"
+                                    class="link-to-prism">libs/domain-governance/src/services.ts:131</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Create cabinet meeting</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>input</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/typealiases.html#CreateCabinetMeetingInput" target="_self" >CreateCabinetMeetingInput</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../miscellaneous/variables.html#g" target="_self" >Promise&lt;CabinetMeeting&gt;</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="createExecutiveAction"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>createExecutiveAction</b></span>
+                        <a href="#createExecutiveAction"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>createExecutiveAction(input: <a href="../undefineds/CreateExecutiveActionInput.html" target="_self">CreateExecutiveActionInput</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="102"
+                                    class="link-to-prism">libs/domain-governance/src/services.ts:102</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Create executive action</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>input</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/typealiases.html#CreateExecutiveActionInput" target="_self" >CreateExecutiveActionInput</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../miscellaneous/typealiases.html#ExecutiveAction" target="_self" >Promise&lt;ExecutiveAction&gt;</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="createGovernment"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>createGovernment</b></span>
+                        <a href="#createGovernment"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>createGovernment(input: <a href="../undefineds/CreateGovernmentInput.html" target="_self">CreateGovernmentInput</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="35"
+                                    class="link-to-prism">libs/domain-governance/src/services.ts:35</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Create a new government</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>input</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/typealiases.html#CreateGovernmentInput" target="_self" >CreateGovernmentInput</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../miscellaneous/typealiases.html#Government" target="_self" >Promise&lt;Government&gt;</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="createMinister"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>createMinister</b></span>
+                        <a href="#createMinister"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>createMinister(input: <a href="../undefineds/CreateMinisterInput.html" target="_self">CreateMinisterInput</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="73"
+                                    class="link-to-prism">libs/domain-governance/src/services.ts:73</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Create minister</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>input</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/typealiases.html#CreateMinisterInput" target="_self" >CreateMinisterInput</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../miscellaneous/typealiases.html#Minister" target="_self" >Promise&lt;Minister&gt;</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="dissolveGovernment"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>dissolveGovernment</b></span>
+                        <a href="#dissolveGovernment"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>dissolveGovernment(id: <a href="../unknowns/g.html" target="_self">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="64"
+                                    class="link-to-prism">libs/domain-governance/src/services.ts:64</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Dissolve government</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>id</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../miscellaneous/typealiases.html#Government" target="_self" >Promise&lt;Government | null&gt;</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getGovernment"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>getGovernment</b></span>
+                        <a href="#getGovernment"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getGovernment(id: <a href="../unknowns/g.html" target="_self">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="55"
+                                    class="link-to-prism">libs/domain-governance/src/services.ts:55</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Get government by ID</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>id</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../miscellaneous/typealiases.html#Government" target="_self" >Promise&lt;Government | null&gt;</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getMinister"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>getMinister</b></span>
+                        <a href="#getMinister"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getMinister(id: <a href="../unknowns/g.html" target="_self">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="93"
+                                    class="link-to-prism">libs/domain-governance/src/services.ts:93</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Get minister by ID</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>id</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../miscellaneous/typealiases.html#Minister" target="_self" >Promise&lt;Minister | null&gt;</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="signExecutiveAction"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>signExecutiveAction</b></span>
+                        <a href="#signExecutiveAction"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>signExecutiveAction(id: <a href="../unknowns/g.html" target="_self">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="122"
+                                    class="link-to-prism">libs/domain-governance/src/services.ts:122</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Sign executive action</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>id</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../miscellaneous/typealiases.html#ExecutiveAction" target="_self" >Promise&lt;ExecutiveAction | null&gt;</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+
+
+
+
+
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { getLogger } from &#x27;@political-sphere/shared&#x27;;
+import type {
+  Government,
+  CreateGovernmentInput,
+  Minister,
+  CreateMinisterInput,
+  ExecutiveAction,
+  CreateExecutiveActionInput,
+  CabinetMeeting,
+  CreateCabinetMeetingInput,
+  Chamber,
+  Motion,
+  Debate,
+  ParliamentVote,
+  ParliamentVoteResults,
+} from &#x27;./types.js&#x27;;
+
+const logger &#x3D; getLogger({ service: &#x27;domain-governance&#x27; });
+
+/**
+ * Government Service
+ * Handles government-related operations
+ */
+export class GovernmentService {
+  // Placeholder for database operations - would be injected in real implementation
+  private db: any;
+
+  constructor(database?: any) {
+    this.db &#x3D; database;
+  }
+
+  /**
+   * Create a new government
+   */
+  async createGovernment(input: CreateGovernmentInput): Promise&lt;Government&gt; {
+    logger.info(&#x27;Creating government&#x27;, { name: input.name });
+
+    const government: Government &#x3D; {
+      id: &#x60;government-${Date.now()}&#x60;,
+      name: input.name,
+      leaderId: input.leaderId,
+      status: &#x27;active&#x27;,
+      formedAt: new Date(),
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+
+    logger.info(&#x27;Government created&#x27;, { id: government.id });
+    return government;
+  }
+
+  /**
+   * Get government by ID
+   */
+  async getGovernment(id: string): Promise&lt;Government | null&gt; {
+    logger.info(&#x27;Getting government&#x27;, { id });
+    // Placeholder implementation
+    return null;
+  }
+
+  /**
+   * Dissolve government
+   */
+  async dissolveGovernment(id: string): Promise&lt;Government | null&gt; {
+    logger.info(&#x27;Dissolving government&#x27;, { id });
+    // Placeholder implementation
+    return null;
+  }
+
+  /**
+   * Create minister
+   */
+  async createMinister(input: CreateMinisterInput): Promise&lt;Minister&gt; {
+    logger.info(&#x27;Creating minister&#x27;, { userId: input.userId, portfolio: input.portfolio });
+
+    const minister: Minister &#x3D; {
+      id: &#x60;minister-${Date.now()}&#x60;,
+      userId: input.userId,
+      governmentId: input.governmentId,
+      portfolio: input.portfolio,
+      appointedAt: new Date(),
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+
+    logger.info(&#x27;Minister created&#x27;, { id: minister.id });
+    return minister;
+  }
+
+  /**
+   * Get minister by ID
+   */
+  async getMinister(id: string): Promise&lt;Minister | null&gt; {
+    logger.info(&#x27;Getting minister&#x27;, { id });
+    // Placeholder implementation
+    return null;
+  }
+
+  /**
+   * Create executive action
+   */
+  async createExecutiveAction(input: CreateExecutiveActionInput): Promise&lt;ExecutiveAction&gt; {
+    logger.info(&#x27;Creating executive action&#x27;, { title: input.title, type: input.type });
+
+    const action: ExecutiveAction &#x3D; {
+      id: &#x60;executive-action-${Date.now()}&#x60;,
+      title: input.title,
+      description: input.description,
+      type: input.type,
+      status: &#x27;proposed&#x27;,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+
+    logger.info(&#x27;Executive action created&#x27;, { id: action.id });
+    return action;
+  }
+
+  /**
+   * Sign executive action
+   */
+  async signExecutiveAction(id: string): Promise&lt;ExecutiveAction | null&gt; {
+    logger.info(&#x27;Signing executive action&#x27;, { id });
+    // Placeholder implementation
+    return null;
+  }
+
+  /**
+   * Create cabinet meeting
+   */
+  async createCabinetMeeting(input: CreateCabinetMeetingInput): Promise&lt;CabinetMeeting&gt; {
+    logger.info(&#x27;Creating cabinet meeting&#x27;, { title: input.title });
+
+    const meeting: CabinetMeeting &#x3D; {
+      id: &#x60;cabinet-meeting-${Date.now()}&#x60;,
+      title: input.title,
+      agenda: input.agenda,
+      scheduledAt: input.scheduledAt,
+      status: &#x27;scheduled&#x27;,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+
+    logger.info(&#x27;Cabinet meeting created&#x27;, { id: meeting.id });
+    return meeting;
+  }
+}
+
+/**
+ * Parliament Service
+ * Handles parliament-related operations
+ */
+export class ParliamentService {
+  // Placeholder for database operations - would be injected in real implementation
+  private db: any;
+
+  constructor(database?: any) {
+    this.db &#x3D; database;
+  }
+
+  /**
+   * Create chamber
+   */
+  async createChamber(data: {
+    gameId: string;
+    type: &#x27;commons&#x27; | &#x27;lords&#x27;;
+    name: string;
+    maxSeats: number;
+    quorumPercentage?: number;
+  }): Promise&lt;Chamber&gt; {
+    logger.info(&#x27;Creating chamber&#x27;, { gameId: data.gameId, name: data.name });
+
+    const chamber: Chamber &#x3D; {
+      id: &#x60;chamber-${Date.now()}&#x60;,
+      gameId: data.gameId,
+      name: data.name,
+      type: data.type,
+      maxSeats: data.maxSeats,
+      quorumPercentage: data.quorumPercentage ?? 50,
+      createdAt: new Date(),
+    };
+
+    logger.info(&#x27;Chamber created&#x27;, { id: chamber.id });
+    return chamber;
+  }
+
+  /**
+   * Get chamber by ID
+   */
+  async getChamber(id: string): Promise&lt;Chamber | null&gt; {
+    logger.info(&#x27;Getting chamber&#x27;, { id });
+    // Placeholder implementation
+    return null;
+  }
+
+  /**
+   * Create motion
+   */
+  async createMotion(data: {
+    gameId: string;
+    chamberId: string;
+    proposerId: string;
+    type: &#x27;debate&#x27; | &#x27;vote&#x27; | &#x27;amendment&#x27; | &#x27;procedural&#x27;;
+    title: string;
+    description?: string;
+  }): Promise&lt;Motion&gt; {
+    logger.info(&#x27;Creating motion&#x27;, { gameId: data.gameId, title: data.title });
+
+    const motion: Motion &#x3D; {
+      id: &#x60;motion-${Date.now()}&#x60;,
+      gameId: data.gameId,
+      chamberId: data.chamberId,
+      proposerId: data.proposerId,
+      type: data.type,
+      title: data.title,
+      description: data.description,
+      status: &#x27;proposed&#x27;,
+      createdAt: new Date(),
+    };
+
+    logger.info(&#x27;Motion created&#x27;, { id: motion.id });
+    return motion;
+  }
+
+  /**
+   * Get motion by ID
+   */
+  async getMotion(id: string): Promise&lt;Motion | null&gt; {
+    logger.info(&#x27;Getting motion&#x27;, { id });
+    // Placeholder implementation
+    return null;
+  }
+
+  /**
+   * Schedule debate
+   */
+  async scheduleDebate(data: {
+    motionId: string;
+    startTime: Date;
+    duration: number;
+    speakingOrder?: string[];
+    timePerSpeaker?: number;
+  }): Promise&lt;Debate&gt; {
+    logger.info(&#x27;Scheduling debate&#x27;, { motionId: data.motionId });
+
+    const debate: Debate &#x3D; {
+      id: &#x60;debate-${Date.now()}&#x60;,
+      gameId: &#x27;placeholder-game-id&#x27;, // Would be retrieved from motion
+      motionId: data.motionId,
+      chamberId: &#x27;placeholder-chamber-id&#x27;, // Would be retrieved from motion
+      startTime: data.startTime,
+      duration: data.duration,
+      speakingOrder: data.speakingOrder ?? [],
+      timePerSpeaker: data.timePerSpeaker ?? 180,
+      status: &#x27;scheduled&#x27;,
+      currentSpeakerIndex: 0,
+      createdAt: new Date(),
+    };
+
+    logger.info(&#x27;Debate scheduled&#x27;, { id: debate.id });
+    return debate;
+  }
+
+  /**
+   * Cast parliament vote
+   */
+  async castVote(data: {
+    motionId: string;
+    userId: string;
+    vote: &#x27;aye&#x27; | &#x27;no&#x27; | &#x27;abstain&#x27;;
+  }): Promise&lt;ParliamentVote&gt; {
+    logger.info(&#x27;Casting parliament vote&#x27;, { motionId: data.motionId, userId: data.userId });
+
+    const vote: ParliamentVote &#x3D; {
+      id: &#x60;parliament-vote-${Date.now()}&#x60;,
+      gameId: &#x27;placeholder-game-id&#x27;, // Would be retrieved from motion
+      motionId: data.motionId,
+      userId: data.userId,
+      vote: data.vote,
+      createdAt: new Date(),
+    };
+
+    logger.info(&#x27;Parliament vote cast&#x27;, { id: vote.id });
+    return vote;
+  }
+
+  /**
+   * Get vote results for motion
+   */
+  async getVoteResults(motionId: string): Promise&lt;ParliamentVoteResults&gt; {
+    logger.info(&#x27;Getting vote results&#x27;, { motionId });
+
+    // Placeholder implementation
+    return {
+      total: 0,
+      aye: 0,
+      no: 0,
+      abstain: 0,
+    };
+  }
+
+  /**
+   * Start voting on motion
+   */
+  async startVoting(motionId: string): Promise&lt;Motion | null&gt; {
+    logger.info(&#x27;Starting voting&#x27;, { motionId });
+    // Placeholder implementation
+    return null;
+  }
+
+  /**
+   * Close voting on motion
+   */
+  async closeVoting(motionId: string): Promise&lt;Motion | null&gt; {
+    logger.info(&#x27;Closing voting&#x27;, { motionId });
+    // Placeholder implementation
+    return null;
+  }
+}
+
+// Export singleton instances
+export const governmentService &#x3D; new GovernmentService();
+export const parliamentService &#x3D; new ParliamentService();
+</code></pre>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'class';
+            var COMPODOC_CURRENT_PAGE_URL = 'GovernmentService.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

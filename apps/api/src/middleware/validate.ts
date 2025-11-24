@@ -12,6 +12,12 @@ import { Request, Response, NextFunction } from 'express';
  * @param source - Where to get data from ('body', 'query', 'params')
  * @returns Express middleware function
  */
+/**
+ * Factory that returns middleware validating a single request source against a Zod schema.
+ *
+ * Example: `validate(CreateUserSchema, 'body')` will parse and attach validated
+ * data to `req.validated` or return a 400 with validation errors.
+ */
 export const validate =
   (schema: z.ZodSchema, source: 'body' | 'query' | 'params' = 'body') =>
   (req: Request, res: Response, next: NextFunction): void => {

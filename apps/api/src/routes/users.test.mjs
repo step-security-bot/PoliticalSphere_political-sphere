@@ -111,13 +111,14 @@ describe('Users Routes', () => {
         headers: bearer(authToken),
       });
       assert.strictEqual(getResponse.status, 200);
-      assert.deepStrictEqual(getResponse.body, createResponse.body.data);
+      assert.deepStrictEqual(getResponse.body.data, createResponse.body.data);
     });
 
     it('should return 404 for non-existent user', async () => {
       const response = await dispatchRequest(app, {
         method: 'GET',
         url: '/api/users/non-existent-id',
+        headers: bearer(authToken),
       });
       assert.strictEqual(response.status, 404);
       assert.strictEqual(response.body.error, 'User not found');

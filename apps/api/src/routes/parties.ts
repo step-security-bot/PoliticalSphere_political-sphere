@@ -87,11 +87,16 @@ router.post('/parties', requireAuth, async (req: Request, res: Response) => {
 // PUT /parties/:id - Update party (requires authentication)
 router.put('/parties/:id', requireAuth, async (req: Request, res: Response) => {
   try {
+    const { id } = req.params;
+    if (!id) {
+      return res.status(400).json({ error: 'Party ID is required' });
+    }
+
     // Validate input with UpdatePartySchema
     const validated = UpdatePartySchema.parse(req.body);
 
     const store = getPartyStore() as unknown as PartyStoreExtras;
-    const party = await store.update(req.params.id, validated);
+    const party = await store.update(id, validated);
     if (!party) {
       return res.status(404).json({ error: 'Party not found' });
     }
@@ -118,8 +123,13 @@ router.put('/parties/:id', requireAuth, async (req: Request, res: Response) => {
 // DELETE /parties/:id - Delete party (requires authentication)
 router.delete('/parties/:id', requireAuth, async (req: Request, res: Response) => {
   try {
+    const { id } = req.params;
+    if (!id) {
+      return res.status(400).json({ error: 'Party ID is required' });
+    }
+
     const store = getPartyStore() as unknown as PartyStoreExtras;
-    const deleted = await store.delete(req.params.id);
+    const deleted = await store.delete(id);
     if (!deleted) {
       return res.status(404).json({ error: 'Party not found' });
     }
@@ -130,4 +140,8 @@ router.delete('/parties/:id', requireAuth, async (req: Request, res: Response) =
   }
 });
 
+/**
+ * Parties router: endpoints for creating, listing and managing political
+ * parties used in simulations and governance flows.
+ */
 export default router;

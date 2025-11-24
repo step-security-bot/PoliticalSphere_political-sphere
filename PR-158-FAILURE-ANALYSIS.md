@@ -19,7 +19,7 @@ PR #158 attempted to apply Biome formatting across 92 files and fix TypeScript l
    - Action: Review neutrality-check logs and remove any political bias
 
 2. **CodeQL Analysis (javascript)**
-   - Status: FAILURE  
+   - Status: FAILURE
    - Workflow: CodeQL Security Analysis
    - Issue: Security vulnerabilities detected in JavaScript/TypeScript code
    - Action: Review CodeQL findings and fix security issues
@@ -85,9 +85,11 @@ PR #158 attempted to apply Biome formatting across 92 files and fix TypeScript l
     - Action: Review Checkov/tfsec findings
 
 ### ⚠️ Cancelled:
+
 - **Docker Build and Push** - Build cancelled due to early failures
 
 ### ✅ Passing Checks:
+
 - Pre-flight Checks
 - OpenSSF Scorecard
 - NIST AI RMF Compliance
@@ -141,42 +143,47 @@ npm run build
 ### Phase 2: Fix Specific Issues
 
 1. **TypeScript Errors:**
+
    ```bash
    # Review type errors
    npm run type-check 2>&1 | tee type-errors.log
-   
+
    # Fix missing types, incorrect imports, etc.
    ```
 
 2. **Test Failures:**
+
    ```bash
    # Run failing tests individually
    npm test -- --reporter=verbose
-   
+
    # Fix test expectations, mocks, fixtures
    ```
 
 3. **Accessibility Violations:**
+
    ```bash
    # Run accessibility tests
    npm run test:accessibility
-   
+
    # Fix WCAG violations in components
    ```
 
 4. **Political Neutrality:**
+
    ```bash
    # Scan for political bias
    npm run ai:neutrality-check
-   
+
    # Remove biased language from code/docs
    ```
 
 5. **Security Issues:**
+
    ```bash
    # Review vulnerabilities
    npm audit
-   
+
    # Update dependencies or apply fixes
    npm audit fix
    ```
@@ -184,6 +191,7 @@ npm run build
 ### Phase 3: Incremental Fixes
 
 **Option A: Revert and Retry**
+
 ```bash
 # Revert the PR
 git revert <commit-sha>
@@ -192,6 +200,7 @@ git revert <commit-sha>
 ```
 
 **Option B: Fix in Place**
+
 ```bash
 # Fix each category of failures
 # Commit fixes separately
@@ -210,6 +219,7 @@ git push origin <branch-name>
 ## Prevention for Future PRs
 
 1. **Run full CI locally before pushing:**
+
    ```bash
    npm run ci:local  # If available
    ```
@@ -219,6 +229,7 @@ git push origin <branch-name>
    - Test after each type of change
 
 3. **Enable pre-commit hooks:**
+
    ```bash
    # Install Lefthook/Husky
    npm run prepare

@@ -38,6 +38,7 @@ const AuthForm: React.FC<AuthFormProps> = ({ onAuthSuccess }) => {
   const [showLoginPassword, setShowLoginPassword] = useState(false);
   const [showForgotPassword, setShowForgotPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
+  const modalRef = useRef<HTMLDivElement | null>(null);
 
   // Validation states
   const [fieldValidation, setFieldValidation] = useState<Record<string, boolean | null>>({});
@@ -109,6 +110,51 @@ const AuthForm: React.FC<AuthFormProps> = ({ onAuthSuccess }) => {
     };
   }, [mode, loginEmail, loginPassword]);
 
+  useEffect(() => {
+    if (!showForgotPassword) return;
+
+    const trapFocus = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        setShowForgotPassword(false);
+        return;
+      }
+
+      if (event.key !== 'Tab' || !modalRef.current) return;
+      const focusable = Array.from(
+        modalRef.current.querySelectorAll<HTMLElement>(
+          'button, input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        )
+      ).filter(el => !el.hasAttribute('disabled'));
+      if (focusable.length === 0) return;
+
+      const currentIndex = focusable.indexOf(document.activeElement as HTMLElement);
+      const nextIndex = event.shiftKey
+        ? currentIndex <= 0
+          ? focusable.length - 1
+          : currentIndex - 1
+        : currentIndex === focusable.length - 1
+          ? 0
+          : currentIndex + 1;
+      event.preventDefault();
+      focusable[nextIndex]?.focus();
+    };
+
+    const moveInitialFocus = () => {
+      const initial = modalRef.current?.querySelector<HTMLElement>(
+        'button, input, [tabindex]:not([tabindex="-1"])'
+      );
+      initial?.focus();
+    };
+
+    document.addEventListener('keydown', trapFocus);
+    moveInitialFocus();
+
+    return () => {
+      document.removeEventListener('keydown', trapFocus);
+    };
+  }, [showForgotPassword]);
+
   // Email typo detection
   const detectEmailTypo = (email: string): string | null => {
     const commonDomains = ['gmail.com', 'yahoo.com', 'outlook.com', 'hotmail.com', 'icloud.com'];
@@ -145,7 +191,7 @@ const AuthForm: React.FC<AuthFormProps> = ({ onAuthSuccess }) => {
           currentRow[j] = Math.min(
             (prevRow[j - 1] ?? 0) + 1,
             (currentRow[j - 1] ?? 0) + 1,
-            (prevRow[j] ?? 0) + 1,
+            (prevRow[j] ?? 0) + 1
           );
         }
       }
@@ -197,7 +243,7 @@ const AuthForm: React.FC<AuthFormProps> = ({ onAuthSuccess }) => {
     setCaptchaError(null);
 
     // Comprehensive form validation (no CAPTCHA required for login)
-    const validation = validateLoginForm(loginEmail, loginPassword, null);
+    const validation = validateLoginForm(loginEmail, loginPassword);
     if (!validation.isValid) {
       const firstError = Object.values(validation.errors)[0] ?? 'Validation failed';
       setError(firstError);
@@ -218,7 +264,7 @@ const AuthForm: React.FC<AuthFormProps> = ({ onAuthSuccess }) => {
       } else {
         const errorMsg = result.error || 'Login failed';
         if (errorMsg.includes('not found') || errorMsg.includes('does not exist')) {
-          setError(errorMsg + ' Would you like to create an account?');
+          setError(`${errorMsg} Would you like to create an account?`);
         } else if (errorMsg.includes('password')) {
           setError(`${errorMsg}. Reset your password?`);
         } else {
@@ -246,7 +292,7 @@ const AuthForm: React.FC<AuthFormProps> = ({ onAuthSuccess }) => {
       signupPassword,
       confirmPassword,
       agreedToTerms,
-      captchaToken,
+      captchaToken
     );
 
     if (!validation.isValid) {
@@ -262,7 +308,7 @@ const AuthForm: React.FC<AuthFormProps> = ({ onAuthSuccess }) => {
       const result = await register(
         sanitizeUsername(username),
         sanitizeEmail(signupEmail),
-        signupPassword,
+        signupPassword
       );
 
       if (result.success) {
@@ -287,13 +333,30 @@ const AuthForm: React.FC<AuthFormProps> = ({ onAuthSuccess }) => {
 
   return (
     <main className="auth-container">
+      <a
+        href="#main-content"
+        className="skip-link"
+        style={{
+          position: 'absolute',
+          top: '-40px',
+          left: '6px',
+          background: '#000',
+          color: '#fff',
+          padding: '8px',
+          textDecoration: 'none',
+          zIndex: 1000,
+          borderRadius: '4px',
+        }}
+      >
+        Skip to main content
+      </a>
       <div className="auth-card">
         <header className="auth-header">
           <h1>Political Sphere</h1>
           <p>{mode === 'login' ? 'Ready to take your seat?' : 'UK Political Simulation Game'}</p>
         </header>
 
-        <form className="auth-form" onSubmit={handleSubmit} noValidate>
+        <form id="main-content" className="auth-form" onSubmit={handleSubmit} noValidate>
           {showSuccess && (
             <div className="success-celebration">
               <div className="success-checkmark">
@@ -315,6 +378,8 @@ const AuthForm: React.FC<AuthFormProps> = ({ onAuthSuccess }) => {
               className={`toggle-button ${mode === 'login' ? 'active' : ''}`}
               onClick={() => setMode('login')}
               disabled={isLoading}
+              tabIndex={mode === 'login' ? 0 : -1}
+              aria-pressed={mode === 'login'}
             >
               Login
             </button>
@@ -323,6 +388,8 @@ const AuthForm: React.FC<AuthFormProps> = ({ onAuthSuccess }) => {
               className={`toggle-button ${mode === 'signup' ? 'active' : ''}`}
               onClick={() => setMode('signup')}
               disabled={isLoading}
+              tabIndex={mode === 'signup' ? 0 : -1}
+              aria-pressed={mode === 'signup'}
             >
               Signup
             </button>
@@ -399,6 +466,11 @@ const AuthForm: React.FC<AuthFormProps> = ({ onAuthSuccess }) => {
                   {fieldValidation.loginEmail === true && (
                     <span className="validation-icon valid">✓</span>
                   )}
+                  {fieldValidation.loginEmail === false && (
+                    <div className="field-error" role="alert" aria-live="polite">
+                      Please enter a valid email address
+                    </div>
+                  )}
                 </div>
 
                 <div className="form-group floating-label-group">
@@ -462,6 +534,11 @@ const AuthForm: React.FC<AuthFormProps> = ({ onAuthSuccess }) => {
                       </svg>
                     </button>
                   </div>
+                  {fieldValidation.loginPassword === false && (
+                    <div className="field-error" role="alert" aria-live="polite">
+                      Password must be at least 8 characters
+                    </div>
+                  )}
                 </div>
 
                 <div className="form-group checkbox-group remember-me-group">
@@ -481,7 +558,8 @@ const AuthForm: React.FC<AuthFormProps> = ({ onAuthSuccess }) => {
                 <button
                   type="submit"
                   className="btn-primary btn-full-width"
-                  disabled={isLoading || !loginEmail || !loginPassword}
+                  disabled={isLoading}
+                  style={{ minHeight: '48px', minWidth: '48px' }}
                 >
                   {isLoading && <span className="button-spinner" aria-hidden="true"></span>}
                   {isLoading ? 'Logging in...' : 'Log In'}
@@ -766,7 +844,16 @@ const AuthForm: React.FC<AuthFormProps> = ({ onAuthSuccess }) => {
                   )}
                 </div>
                 <div className="form-group checkbox-group">
-                  <label htmlFor="terms" className="checkbox-label">
+                  <label
+                    htmlFor="terms"
+                    className="checkbox-label"
+                    style={{
+                      minHeight: '44px',
+                      minWidth: '44px',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                    }}
+                  >
                     <input
                       type="checkbox"
                       id="terms"
@@ -807,6 +894,7 @@ const AuthForm: React.FC<AuthFormProps> = ({ onAuthSuccess }) => {
                     !agreedToTerms ||
                     !captchaToken
                   }
+                  style={{ minHeight: '48px', minWidth: '48px' }}
                 >
                   {isLoading && <span className="button-spinner" aria-hidden="true"></span>}
                   {isLoading ? 'Creating account...' : 'Signup'}

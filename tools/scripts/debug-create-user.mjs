@@ -14,7 +14,7 @@ import { closeDatabase, getDatabase } from '../../apps/api/src/stores/index.js';
 
     const app = express();
     app.use(express.text({ type: '*/*' }));
-    app.use((req, res, next) => {
+    app.use((req, _res, next) => {
       try {
         if (typeof req.body === 'string' && req.body.length > 0) {
           req.body = JSON.parse(req.body);
@@ -38,7 +38,7 @@ import { closeDatabase, getDatabase } from '../../apps/api/src/stores/index.js';
       .buffer(true)
       .parse((res, cb) => {
         res.setEncoding('utf8');
-        res.on('data', d => {});
+        res.on('data', () => {});
         cb(null, res);
       });
 
@@ -59,7 +59,7 @@ import { closeDatabase, getDatabase } from '../../apps/api/src/stores/index.js';
     console.error('Debug script caught error:', err);
     try {
       closeDatabase();
-    } catch (e) {}
+    } catch {}
     process.exit(3);
   }
 })();

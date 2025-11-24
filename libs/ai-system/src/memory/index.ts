@@ -10,6 +10,12 @@ export interface Memory {
   truncate?(runId: string, maxMessages?: number): Promise<void>;
 }
 
+/**
+ * In-memory implementation of the Memory interface
+ *
+ * Provides volatile storage for agent conversation transcripts using a Map.
+ * Suitable for development and testing environments where persistence is not required.
+ */
 export class InMemoryMemory implements Memory {
   private store = new Map<string, Message[]>();
 

@@ -5,9 +5,9 @@
  * Usage: node scripts/observability/generate-dashboard.mjs <dashboard-type> <output-file>
  */
 
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -171,6 +171,469 @@ const dashboardTemplates = {
             legendFormat: '5xx errors',
           },
         ],
+      },
+    ],
+  },
+
+  'performance-monitoring': {
+    title: 'Performance Monitoring Dashboard',
+    description: 'Monitor application performance metrics, Lighthouse scores, and resource usage',
+    panels: [
+      {
+        id: 1,
+        title: 'Lighthouse Performance Score',
+        type: 'stat',
+        targets: [
+          {
+            expr: 'lighthouse_performance_score',
+            legendFormat: 'Performance Score',
+          },
+        ],
+        fieldConfig: {
+          defaults: {
+            unit: 'percent',
+            thresholds: {
+              mode: 'absolute',
+              steps: [
+                { color: 'red', value: null },
+                { color: 'orange', value: 85 },
+                { color: 'green', value: 90 },
+              ],
+            },
+          },
+        },
+      },
+      {
+        id: 2,
+        title: 'Lighthouse Accessibility Score',
+        type: 'stat',
+        targets: [
+          {
+            expr: 'lighthouse_accessibility_score',
+            legendFormat: 'Accessibility Score',
+          },
+        ],
+        fieldConfig: {
+          defaults: {
+            unit: 'percent',
+            thresholds: {
+              mode: 'absolute',
+              steps: [
+                { color: 'red', value: null },
+                { color: 'green', value: 100 },
+              ],
+            },
+          },
+        },
+      },
+      {
+        id: 3,
+        title: 'Core Web Vitals',
+        type: 'graph',
+        targets: [
+          {
+            expr: 'lighthouse_lcp_seconds',
+            legendFormat: 'Largest Contentful Paint',
+          },
+          {
+            expr: 'lighthouse_fid_seconds',
+            legendFormat: 'First Input Delay',
+          },
+          {
+            expr: 'lighthouse_cls_score',
+            legendFormat: 'Cumulative Layout Shift',
+          },
+        ],
+      },
+      {
+        id: 4,
+        title: 'Application Response Times',
+        type: 'graph',
+        targets: [
+          {
+            expr: 'http_request_duration_seconds{quantile="0.95"}',
+            legendFormat: '95th percentile',
+          },
+          {
+            expr: 'http_request_duration_seconds{quantile="0.50"}',
+            legendFormat: 'Median',
+          },
+        ],
+      },
+      {
+        id: 5,
+        title: 'Resource Usage Trends',
+        type: 'graph',
+        targets: [
+          {
+            expr: 'process_resident_memory_bytes',
+            legendFormat: 'Memory Usage',
+          },
+          {
+            expr: 'rate(process_cpu_user_seconds_total[5m])',
+            legendFormat: 'CPU Usage',
+          },
+        ],
+      },
+      {
+        id: 6,
+        title: 'Performance Budget Violations',
+        type: 'table',
+        targets: [
+          {
+            expr: 'lighthouse_budget_violations_total',
+            legendFormat: 'Budget Violations',
+          },
+        ],
+      },
+    ],
+  },
+
+  'application-overview': {
+    title: 'Application Overview Dashboard',
+    description: 'High-level overview of application health, performance, and key metrics',
+    panels: [
+      {
+        id: 1,
+        title: 'Application Uptime',
+        type: 'stat',
+        targets: [
+          {
+            expr: 'up{job="political-sphere-api"}',
+            legendFormat: 'Uptime',
+          },
+        ],
+        fieldConfig: {
+          defaults: {
+            unit: 'percentunit',
+            thresholds: {
+              mode: 'absolute',
+              steps: [
+                { color: 'red', value: null },
+                { color: 'green', value: 1 },
+              ],
+            },
+          },
+        },
+      },
+      {
+        id: 2,
+        title: 'Request Rate',
+        type: 'stat',
+        targets: [
+          {
+            expr: 'rate(political_sphere_api_http_requests_total[5m])',
+            legendFormat: 'Requests/sec',
+          },
+        ],
+      },
+      {
+        id: 3,
+        title: 'Error Rate',
+        type: 'stat',
+        targets: [
+          {
+            expr: 'rate(political_sphere_api_http_requests_total{status_code=~"5.."}[5m]) / rate(political_sphere_api_http_requests_total[5m])',
+            legendFormat: 'Error Rate',
+          },
+        ],
+        fieldConfig: {
+          defaults: {
+            unit: 'percentunit',
+            thresholds: {
+              mode: 'absolute',
+              steps: [
+                { color: 'green', value: null },
+                { color: 'orange', value: 0.05 },
+                { color: 'red', value: 0.1 },
+              ],
+            },
+          },
+        },
+      },
+      {
+        id: 4,
+        title: '95th Percentile Response Time',
+        type: 'stat',
+        targets: [
+          {
+            expr: 'histogram_quantile(0.95, rate(political_sphere_api_http_request_duration_seconds_bucket[5m]))',
+            legendFormat: '95th percentile',
+          },
+        ],
+        fieldConfig: {
+          defaults: {
+            unit: 'seconds',
+            thresholds: {
+              mode: 'absolute',
+              steps: [
+                { color: 'green', value: null },
+                { color: 'orange', value: 2 },
+                { color: 'red', value: 5 },
+              ],
+            },
+          },
+        },
+      },
+      {
+        id: 5,
+        title: 'HTTP Requests by Status',
+        type: 'graph',
+        targets: [
+          {
+            expr: 'rate(political_sphere_api_http_requests_total{status_code=~"2.."}[5m])',
+            legendFormat: '2xx',
+          },
+          {
+            expr: 'rate(political_sphere_api_http_requests_total{status_code=~"4.."}[5m])',
+            legendFormat: '4xx',
+          },
+          {
+            expr: 'rate(political_sphere_api_http_requests_total{status_code=~"5.."}[5m])',
+            legendFormat: '5xx',
+          },
+        ],
+      },
+      {
+        id: 6,
+        title: 'Memory Usage',
+        type: 'graph',
+        targets: [
+          {
+            expr: 'political_sphere_api_memory_usage_bytes / 1024 / 1024',
+            legendFormat: 'Memory Usage (MB)',
+          },
+        ],
+        yAxes: [{ unit: 'MB', label: 'Memory' }],
+      },
+      {
+        id: 7,
+        title: 'Active Connections',
+        type: 'stat',
+        targets: [
+          {
+            expr: 'political_sphere_api_active_connections',
+            legendFormat: 'Active Connections',
+          },
+        ],
+      },
+      {
+        id: 8,
+        title: 'Top Error Routes',
+        type: 'table',
+        targets: [
+          {
+            expr: 'topk(10, rate(political_sphere_api_http_requests_total{status_code=~"5.."}[5m]))',
+            legendFormat: '{{ route }}',
+          },
+        ],
+        transformations: [
+          {
+            id: 'organize',
+            options: {
+              excludeByName: {
+                __name__: true,
+                job: true,
+                instance: true,
+              },
+            },
+          },
+        ],
+      },
+    ],
+  },
+
+  'error-monitoring': {
+    title: 'Error Monitoring Dashboard',
+    description: 'Monitor application errors, exceptions, and failure patterns',
+    panels: [
+      {
+        id: 1,
+        title: 'Total Errors (Last 24h)',
+        type: 'stat',
+        targets: [
+          {
+            expr: 'increase(political_sphere_api_business_logic_errors_total[24h])',
+            legendFormat: 'Business Logic Errors',
+          },
+        ],
+      },
+      {
+        id: 2,
+        title: 'HTTP Error Rate Trend',
+        type: 'graph',
+        targets: [
+          {
+            expr: 'rate(political_sphere_api_http_requests_total{status_code=~"4.."}[5m])',
+            legendFormat: '4xx errors',
+          },
+          {
+            expr: 'rate(political_sphere_api_http_requests_total{status_code=~"5.."}[5m])',
+            legendFormat: '5xx errors',
+          },
+        ],
+      },
+      {
+        id: 3,
+        title: 'Errors by Component',
+        type: 'table',
+        targets: [
+          {
+            expr: 'increase(political_sphere_api_business_logic_errors_total[1h])',
+            legendFormat: '{{ component }}',
+          },
+        ],
+      },
+      {
+        id: 4,
+        title: 'External API Errors',
+        type: 'graph',
+        targets: [
+          {
+            expr: 'rate(political_sphere_api_external_api_errors_total[5m])',
+            legendFormat: '{{ service }}',
+          },
+        ],
+      },
+      {
+        id: 5,
+        title: 'Error Rate by Route',
+        type: 'table',
+        targets: [
+          {
+            expr: 'rate(political_sphere_api_http_requests_total{status_code=~"5.."}[5m]) / rate(political_sphere_api_http_requests_total[5m])',
+            legendFormat: '{{ route }}',
+          },
+        ],
+        fieldConfig: {
+          defaults: {
+            unit: 'percentunit',
+            thresholds: {
+              mode: 'absolute',
+              steps: [
+                { color: 'green', value: null },
+                { color: 'orange', value: 0.05 },
+                { color: 'red', value: 0.1 },
+              ],
+            },
+          },
+        },
+      },
+      {
+        id: 6,
+        title: 'Recent Error Spike Alert',
+        type: 'alert',
+        targets: [
+          {
+            expr: 'rate(political_sphere_api_business_logic_errors_total[5m]) > 5',
+            legendFormat: 'Error spike detected',
+          },
+        ],
+        thresholds: [{ value: 5, color: 'red' }],
+      },
+    ],
+  },
+
+  'database-monitoring': {
+    title: 'Database Monitoring Dashboard',
+    description: 'Monitor database performance, connections, and query metrics',
+    panels: [
+      {
+        id: 1,
+        title: 'Active Database Connections',
+        type: 'stat',
+        targets: [
+          {
+            expr: 'political_sphere_database_connections_active',
+            legendFormat: 'Active Connections',
+          },
+        ],
+      },
+      {
+        id: 2,
+        title: 'Database Connection Pool Usage',
+        type: 'gauge',
+        targets: [
+          {
+            expr: 'political_sphere_database_connections_active / political_sphere_database_connections_max',
+            legendFormat: 'Pool Usage %',
+          },
+        ],
+        fieldConfig: {
+          defaults: {
+            unit: 'percentunit',
+            thresholds: {
+              mode: 'absolute',
+              steps: [
+                { color: 'green', value: null },
+                { color: 'orange', value: 0.8 },
+                { color: 'red', value: 0.95 },
+              ],
+            },
+          },
+        },
+      },
+      {
+        id: 3,
+        title: 'Database Query Duration',
+        type: 'graph',
+        targets: [
+          {
+            expr: 'histogram_quantile(0.95, rate(database_query_duration_seconds_bucket[5m]))',
+            legendFormat: '95th percentile',
+          },
+          {
+            expr: 'histogram_quantile(0.50, rate(database_query_duration_seconds_bucket[5m]))',
+            legendFormat: 'Median',
+          },
+        ],
+        yAxes: [{ unit: 'seconds', label: 'Duration' }],
+      },
+      {
+        id: 4,
+        title: 'Slow Queries',
+        type: 'table',
+        targets: [
+          {
+            expr: 'increase(database_query_duration_seconds_count{le="1"}[5m])',
+            legendFormat: 'Queries > 1s',
+          },
+        ],
+      },
+      {
+        id: 5,
+        title: 'Database Errors',
+        type: 'stat',
+        targets: [
+          {
+            expr: 'rate(database_errors_total[5m])',
+            legendFormat: 'Errors/min',
+          },
+        ],
+      },
+      {
+        id: 6,
+        title: 'Cache Hit Rate',
+        type: 'stat',
+        targets: [
+          {
+            expr: 'rate(political_sphere_cache_hits_total[5m]) / (rate(political_sphere_cache_hits_total[5m]) + rate(political_sphere_cache_misses_total[5m]))',
+            legendFormat: 'Cache Hit Rate',
+          },
+        ],
+        fieldConfig: {
+          defaults: {
+            unit: 'percentunit',
+            thresholds: {
+              mode: 'absolute',
+              steps: [
+                { color: 'red', value: null },
+                { color: 'orange', value: 0.8 },
+                { color: 'green', value: 0.9 },
+              ],
+            },
+          },
+        },
       },
     ],
   },

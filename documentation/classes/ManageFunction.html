@@ -1,0 +1,847 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>political-sphere documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">political-sphere documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content class">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Classes</li>
+  <li class="breadcrumb-item" >ManageFunction</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>libs/ai-system/src/governance/nist-ai-rmf.ts</code>
+        </p>
+
+
+            <p class="comment">
+                <h3>Description</h3>
+            </p>
+            <p class="comment">
+                <p>AI RMF MANAGE Function</p>
+<p>Implements controls and responses to AI risks.</p>
+
+            </p>
+
+
+
+
+            <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#implementControl" >implementControl</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#respondToIncident" >respondToIncident</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+
+
+            <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="implementControl"></a>
+                    <span class="name">
+                        <span ><b>implementControl</b></span>
+                        <a href="#implementControl"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>implementControl(systemId: <a href="../unknowns/g.html" target="_self">string</a>, _risk: <a href="../unknowns/g.html" target="_self">string</a>, control: literal type)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="274"
+                                    class="link-to-prism">libs/ai-system/src/governance/nist-ai-rmf.ts:274</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Implement control for identified risk</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>systemId</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>_risk</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>control</td>
+                                            <td>
+                                                        <code>literal type</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="respondToIncident"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>respondToIncident</b></span>
+                        <a href="#respondToIncident"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>respondToIncident(incident: literal type)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="300"
+                                    class="link-to-prism">libs/ai-system/src/governance/nist-ai-rmf.ts:300</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Respond to incident</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>incident</td>
+                                            <td>
+                                                        <code>literal type</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Promise&lt;literal type&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+
+
+
+
+
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">export interface AISystemRegistration {
+  /** System ID */
+  id: string;
+  /** System name */
+  name: string;
+  /** System description and purpose */
+  description: string;
+  /** Owner/responsible party */
+  owner: string;
+  /** Risk level */
+  riskLevel: &#x27;low&#x27; | &#x27;medium&#x27; | &#x27;high&#x27; | &#x27;critical&#x27;;
+  /** Model information */
+  model: {
+    provider: string;
+    version: string;
+    type: &#x27;generative&#x27; | &#x27;discriminative&#x27; | &#x27;reinforcement&#x27;;
+  };
+  /** Data sources */
+  dataSources: string[];
+  /** Known limitations */
+  limitations: string[];
+  /** Bias mitigations */
+  biasMitigations: string[];
+  /** Registration date */
+  registeredAt: Date;
+  /** Last audit date */
+  lastAuditedAt?: Date;
+}
+
+/**
+ * AI RMF GOVERN Function
+ *
+ * Establishes governance structures and accountability.
+ */
+export class GovernFunction {
+  private systems: Map&lt;string, AISystemRegistration&gt; &#x3D; new Map();
+
+  /**
+   * Register an AI system
+   */
+  registerSystem(system: AISystemRegistration): void {
+    this.systems.set(system.id, system);
+  }
+
+  /**
+   * Get registered system
+   */
+  getSystem(id: string): AISystemRegistration | undefined {
+    return this.systems.get(id);
+  }
+
+  /**
+   * Get all systems by risk level
+   */
+  getSystemsByRisk(riskLevel: AISystemRegistration[&#x27;riskLevel&#x27;]): AISystemRegistration[] {
+    return Array.from(this.systems.values()).filter(s &#x3D;&gt; s.riskLevel &#x3D;&#x3D;&#x3D; riskLevel);
+  }
+
+  /**
+   * Require approval for high-risk operations
+   */
+  requiresApproval(systemId: string, operationType: string): boolean {
+    const system &#x3D; this.systems.get(systemId);
+    if (!system) return true;
+
+    // High and critical risk systems always require approval
+    if (system.riskLevel &#x3D;&#x3D;&#x3D; &#x27;high&#x27; || system.riskLevel &#x3D;&#x3D;&#x3D; &#x27;critical&#x27;) {
+      return true;
+    }
+
+    // Political content always requires approval
+    const politicalOperations &#x3D; [&#x27;voting&#x27;, &#x27;speech&#x27;, &#x27;moderation&#x27;, &#x27;power&#x27;, &#x27;policy&#x27;];
+    if (politicalOperations.includes(operationType)) {
+      return true;
+    }
+
+    return false;
+  }
+}
+
+/**
+ * AI RMF MAP Function
+ *
+ * Identifies and documents AI system context and impacts.
+ */
+export class MapFunction {
+  /**
+   * Create impact assessment for AI system
+   */
+  async assessImpact(
+    _systemId: string,
+    context: {
+      stakeholders: string[];
+      affectedRights: string[];
+      dataProcessing: string[];
+    }
+  ): Promise&lt;{
+    impactLevel: &#x27;low&#x27; | &#x27;medium&#x27; | &#x27;high&#x27; | &#x27;critical&#x27;;
+    findings: string[];
+    recommendations: string[];
+  }&gt; {
+    const findings: string[] &#x3D; [];
+    const recommendations: string[] &#x3D; [];
+    let impactLevel: &#x27;low&#x27; | &#x27;medium&#x27; | &#x27;high&#x27; | &#x27;critical&#x27; &#x3D; &#x27;low&#x27;;
+
+    // Check for fundamental rights impact
+    const fundamentalRights &#x3D; [&#x27;voting&#x27;, &#x27;freedom of speech&#x27;, &#x27;privacy&#x27;, &#x27;equality&#x27;];
+    const affectedFundamentalRights &#x3D; context.affectedRights.filter(r &#x3D;&gt;
+      fundamentalRights.includes(r.toLowerCase())
+    );
+
+    if (affectedFundamentalRights.length &gt; 0) {
+      impactLevel &#x3D; &#x27;critical&#x27;;
+      findings.push(&#x60;Affects fundamental rights: ${affectedFundamentalRights.join(&#x27;, &#x27;)}&#x60;);
+      recommendations.push(&#x27;Require human oversight and approval&#x27;);
+      recommendations.push(&#x27;Implement contestability mechanisms&#x27;);
+    }
+
+    // Check for PII processing
+    const processesPII &#x3D; context.dataProcessing.some(
+      d &#x3D;&gt; d.includes(&#x27;personal&#x27;) || d.includes(&#x27;PII&#x27;)
+    );
+
+    if (processesPII) {
+      if (impactLevel &#x3D;&#x3D;&#x3D; &#x27;low&#x27;) impactLevel &#x3D; &#x27;medium&#x27;;
+      findings.push(&#x27;Processes personally identifiable information&#x27;);
+      recommendations.push(&#x27;Conduct DPIA (Data Protection Impact Assessment)&#x27;);
+      recommendations.push(&#x27;Ensure GDPR compliance&#x27;);
+    }
+
+    // Check stakeholder count
+    if (context.stakeholders.length &gt; 100) {
+      if (impactLevel &#x3D;&#x3D;&#x3D; &#x27;low&#x27;) impactLevel &#x3D; &#x27;medium&#x27;;
+      findings.push(&#x27;Large-scale impact (&gt;100 stakeholders)&#x27;);
+      recommendations.push(&#x27;Implement monitoring and feedback mechanisms&#x27;);
+    }
+
+    return { impactLevel, findings, recommendations };
+  }
+
+  /**
+   * Generate model card (NIST requirement)
+   */
+  generateModelCard(system: AISystemRegistration): string {
+    return &#x60;
+# Model Card: ${system.name}
+
+## Model Details
+- **Owner**: ${system.owner}
+- **Version**: ${system.model.version}
+- **Type**: ${system.model.type}
+- **Provider**: ${system.model.provider}
+
+## Intended Use
+${system.description}
+
+## Limitations
+${system.limitations.map(l &#x3D;&gt; &#x60;- ${l}&#x60;).join(&#x27;\n&#x27;)}
+
+## Data Sources
+${system.dataSources.map(d &#x3D;&gt; &#x60;- ${d}&#x60;).join(&#x27;\n&#x27;)}
+
+## Bias Mitigations
+${system.biasMitigations.map(m &#x3D;&gt; &#x60;- ${m}&#x60;).join(&#x27;\n&#x27;)}
+
+## Risk Level
+${system.riskLevel.toUpperCase()}
+
+## Governance
+- **Registered**: ${system.registeredAt.toISOString()}
+- **Last Audit**: ${system.lastAuditedAt?.toISOString() || &#x27;Never&#x27;}
+&#x60;.trim();
+  }
+}
+
+/**
+ * AI RMF MEASURE Function
+ *
+ * Tracks and measures AI system performance and risks.
+ */
+export class MeasureFunction {
+  /**
+   * Measure bias metrics
+   */
+  async measureBias(
+    _systemId: string,
+    outputs: Array&lt;{
+      text: string;
+      metadata?: Record&lt;string, unknown&gt;;
+    }&gt;
+  ): Promise&lt;{
+    biasScore: number;
+    metrics: {
+      sentimentVariance: number;
+      keywordBalance: number;
+      framingNeutrality: number;
+    };
+    passed: boolean;
+  }&gt; {
+    // Simple bias detection (placeholder - replace with actual NLP model)
+    let totalSentiment &#x3D; 0;
+    let sentimentCount &#x3D; 0;
+
+    for (const output of outputs) {
+      // Count positive vs negative words (simplified)
+      const positiveWords &#x3D; [&#x27;good&#x27;, &#x27;great&#x27;, &#x27;excellent&#x27;, &#x27;positive&#x27;, &#x27;beneficial&#x27;];
+      const negativeWords &#x3D; [&#x27;bad&#x27;, &#x27;poor&#x27;, &#x27;negative&#x27;, &#x27;harmful&#x27;, &#x27;detrimental&#x27;];
+
+      const text &#x3D; output.text.toLowerCase();
+      const positiveCount &#x3D; positiveWords.filter(w &#x3D;&gt; text.includes(w)).length;
+      const negativeCount &#x3D; negativeWords.filter(w &#x3D;&gt; text.includes(w)).length;
+
+      const sentiment &#x3D; (positiveCount - negativeCount) / (positiveCount + negativeCount + 1);
+      totalSentiment +&#x3D; sentiment;
+      sentimentCount++;
+    }
+
+    const avgSentiment &#x3D; sentimentCount &gt; 0 ? totalSentiment / sentimentCount : 0;
+    const biasScore &#x3D; Math.abs(avgSentiment);
+
+    // Bias threshold: &lt; 0.1 is acceptable
+    const passed &#x3D; biasScore &lt; 0.1;
+
+    return {
+      biasScore,
+      metrics: {
+        sentimentVariance: biasScore,
+        keywordBalance: 1 - biasScore, // Higher is better
+        framingNeutrality: 1 - biasScore,
+      },
+      passed,
+    };
+  }
+
+  /**
+   * Track performance metrics
+   */
+  trackPerformance(
+    systemId: string,
+    metrics: {
+      latencyMs: number;
+      tokensUsed: number;
+      errorRate: number;
+      timestamp: Date;
+    }
+  ): void {
+    // Store metrics for trending analysis
+    console.log(&#x60;[MEASURE] ${systemId}:&#x60;, metrics);
+  }
+}
+
+/**
+ * AI RMF MANAGE Function
+ *
+ * Implements controls and responses to AI risks.
+ */
+export class ManageFunction {
+  /**
+   * Implement control for identified risk
+   */
+  implementControl(
+    systemId: string,
+    _risk: string,
+    control: {
+      type: &#x27;preventive&#x27; | &#x27;detective&#x27; | &#x27;corrective&#x27;;
+      description: string;
+      automated: boolean;
+    }
+  ): void {
+    console.log(
+      &#x60;[MANAGE] Implementing ${control.type} control for ${systemId}:&#x60;,
+      control.description
+    );
+
+    if (control.automated) {
+      // Automated controls are enforced in validation gates
+      console.log(&#x27;Control will be enforced automatically in validation pipeline&#x27;);
+    } else {
+      // Manual controls require human review
+      console.log(&#x27;Control requires human review and approval&#x27;);
+    }
+  }
+
+  /**
+   * Respond to incident
+   */
+  async respondToIncident(incident: {
+    systemId: string;
+    type: &#x27;bias-detected&#x27; | &#x27;security-breach&#x27; | &#x27;privacy-violation&#x27; | &#x27;manipulation-attempt&#x27;;
+    severity: &#x27;low&#x27; | &#x27;medium&#x27; | &#x27;high&#x27; | &#x27;critical&#x27;;
+    description: string;
+    timestamp: Date;
+  }): Promise&lt;{
+    action: string;
+    escalated: boolean;
+    notified: string[];
+  }&gt; {
+    const actions: string[] &#x3D; [];
+    const notified: string[] &#x3D; [];
+    let escalated &#x3D; false;
+
+    // Critical incidents require immediate escalation
+    if (incident.severity &#x3D;&#x3D;&#x3D; &#x27;critical&#x27;) {
+      actions.push(&#x27;Suspend system immediately&#x27;);
+      actions.push(&#x27;Notify governance committee&#x27;);
+      actions.push(&#x27;Initiate incident response plan&#x27;);
+      notified.push(&#x27;governance-committee&#x27;);
+      notified.push(&#x27;security-team&#x27;);
+      escalated &#x3D; true;
+    }
+
+    // Bias incidents require review
+    if (incident.type &#x3D;&#x3D;&#x3D; &#x27;bias-detected&#x27;) {
+      actions.push(&#x27;Flag outputs for review&#x27;);
+      actions.push(&#x27;Retrain model with balanced dataset&#x27;);
+      notified.push(&#x27;ai-ethics-team&#x27;);
+    }
+
+    // Privacy violations trigger GDPR breach protocol
+    if (incident.type &#x3D;&#x3D;&#x3D; &#x27;privacy-violation&#x27;) {
+      actions.push(&#x27;Assess data exposure&#x27;);
+      actions.push(&#x27;Notify affected users (72-hour GDPR requirement)&#x27;);
+      actions.push(&#x27;Report to supervisory authority if required&#x27;);
+      notified.push(&#x27;data-protection-officer&#x27;);
+      notified.push(&#x27;legal-team&#x27;);
+    }
+
+    return {
+      action: actions.join(&#x27;; &#x27;),
+      escalated,
+      notified,
+    };
+  }
+}
+
+/**
+ * NIST AI RMF Orchestrator
+ *
+ * Coordinates all 4 functions.
+ */
+export class NISTAIRMFOrchestrator {
+  public readonly govern: GovernFunction;
+  public readonly map: MapFunction;
+  public readonly measure: MeasureFunction;
+  public readonly manage: ManageFunction;
+
+  constructor() {
+    this.govern &#x3D; new GovernFunction();
+    this.map &#x3D; new MapFunction();
+    this.measure &#x3D; new MeasureFunction();
+    this.manage &#x3D; new ManageFunction();
+  }
+
+  /**
+   * Full lifecycle governance workflow
+   */
+  async governSystem(
+    system: AISystemRegistration,
+    operationType: string,
+    outputs: Array&lt;{ text: string; metadata?: Record&lt;string, unknown&gt; }&gt;
+  ): Promise&lt;{
+    approved: boolean;
+    requiresHumanReview: boolean;
+    findings: string[];
+  }&gt; {
+    const findings: string[] &#x3D; [];
+
+    // GOVERN: Register system
+    this.govern.registerSystem(system);
+
+    // MAP: Assess impact
+    const impact &#x3D; await this.map.assessImpact(system.id, {
+      stakeholders: [&#x27;citizens&#x27;, &#x27;administrators&#x27;],
+      affectedRights: [&#x27;voting&#x27;, &#x27;freedom of speech&#x27;],
+      dataProcessing: [&#x27;user preferences&#x27;, &#x27;voting history&#x27;],
+    });
+
+    findings.push(...impact.findings);
+
+    // MEASURE: Check bias
+    const biasCheck &#x3D; await this.measure.measureBias(system.id, outputs);
+    if (!biasCheck.passed) {
+      findings.push(&#x60;Bias detected: ${biasCheck.biasScore.toFixed(3)} (threshold: 0.1)&#x60;);
+    }
+
+    // MANAGE: Determine approval requirements
+    const requiresHumanReview &#x3D; this.govern.requiresApproval(system.id, operationType);
+    const approved &#x3D; biasCheck.passed &amp;&amp; (impact.impactLevel !&#x3D;&#x3D; &#x27;critical&#x27; || requiresHumanReview);
+
+    return {
+      approved,
+      requiresHumanReview,
+      findings,
+    };
+  }
+}
+</code></pre>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'class';
+            var COMPODOC_CURRENT_PAGE_URL = 'ManageFunction.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

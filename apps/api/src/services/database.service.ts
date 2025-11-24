@@ -12,3 +12,5 @@ export {
   MediaDB,
   ElectionsDB,
 } from './prisma-database.service.js';
+
+export type { WhereClause } from './prisma-database.service.js';

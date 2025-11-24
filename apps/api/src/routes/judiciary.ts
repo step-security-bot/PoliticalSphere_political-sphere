@@ -3,12 +3,21 @@
  * Handles constitutional review, legal challenges, and judicial appointments
  */
 
-import express from 'express';
+import express, { type Request, type Response } from 'express';
 import { z } from 'zod';
 
+/**
+ * Express router for judiciary-related endpoints.
+ * Handles legal cases, judicial appointments, rulings, constitutional reviews, and precedent tracking.
+ */
 const router = express.Router();
 
 // Validation schemas
+
+/**
+ * Zod schema for validating legal case filing input.
+ * Defines the structure for filing constitutional reviews and legal challenges.
+ */
 const FileCaseSchema = z.object({
   gameId: z.string().uuid(),
   plaintiffId: z.string().uuid(),
@@ -21,6 +30,10 @@ const FileCaseSchema = z.object({
   targetActionId: z.string().uuid().optional(),
 });
 
+/**
+ * Zod schema for validating judge appointment input.
+ * Defines the structure for appointing judges to various courts.
+ */
 const AppointJudgeSchema = z.object({
   gameId: z.string().uuid(),
   userId: z.string().uuid(),
@@ -30,6 +43,10 @@ const AppointJudgeSchema = z.object({
   termYears: z.number().int().min(1).max(30).optional(),
 });
 
+/**
+ * Zod schema for validating judicial ruling input.
+ * Defines the structure for issuing court rulings and decisions.
+ */
 const IssueRulingSchema = z.object({
   caseId: z.string().uuid(),
   judgeId: z.string().uuid(),
@@ -39,6 +56,10 @@ const IssueRulingSchema = z.object({
   constitutionalImpact: z.enum(['none', 'minor', 'major', 'landmark']).default('none'),
 });
 
+/**
+ * Zod schema for validating constitutional review requests.
+ * Defines the structure for requesting judicial review of laws and actions.
+ */
 const RequestReviewSchema = z.object({
   gameId: z.string().uuid(),
   requesterId: z.string().uuid(),
@@ -48,26 +69,189 @@ const RequestReviewSchema = z.object({
   urgency: z.enum(['routine', 'expedited', 'emergency']).default('routine'),
 });
 
+// Domain types
+/**
+ * LegalCase represents a judicial filing in the simulation.
+ * It captures the parties, status and timestamps relevant for the lifecycle of a case.
+ */
+export interface LegalCase {
+  /** Unique identifier for the legal case */
+  id: string;
+  /** Game ID this case belongs to */
+  gameId: string;
+  /** User ID of the party bringing the case */
+  plaintiffId: string;
+  /** User ID of the party being sued (optional) */
+  defendantId?: string;
+  /** Type of legal proceeding */
+  caseType: 'constitutional_review' | 'legal_challenge' | 'appeal' | 'judicial_review';
+  /** Case title/name */
+  title: string;
+  /** Detailed description of the case */
+  description: string;
+  /** Legal basis and arguments for the case */
+  legalBasis: string;
+  /** ID of law being challenged (if applicable) */
+  targetLawId?: string;
+  /** ID of action being challenged (if applicable) */
+  targetActionId?: string;
+  /** Current status of the case */
+  status: 'filed' | 'hearing_scheduled' | 'in_progress' | 'closed';
+  /** Timestamp when case was filed */
+  filedAt: string;
+  /** Scheduled hearing date (null if not yet scheduled) */
+  hearingDate: string | null;
+  /** Timestamp when case was closed (null if still open) */
+  closedAt: string | null;
+  /** Final outcome/decision (null if not yet decided) */
+  outcome: string | null;
+  /** ID of judge assigned to the case (optional) */
+  assignedJudge?: string | null;
+}
+
+/**
+ * Judge represents an appointed jurist in a court.
+ * Includes metadata about their tenure and statistics for decisions issued.
+ */
+export interface Judge {
+  /** Unique identifier for the judge */
+  id: string;
+  /** Game ID this judge belongs to */
+  gameId: string;
+  /** User ID of the person serving as judge */
+  userId: string;
+  /** Court level where judge serves */
+  court: 'supreme_court' | 'high_court' | 'appeals_court';
+  /** Official position title */
+  position: string;
+  /** Type of tenure (lifetime, fixed term, or renewable) */
+  tenure: 'life' | 'fixed_term' | 'renewable';
+  /** Length of term in years (if fixed term or renewable) */
+  termYears?: number;
+  /** Timestamp when judge was appointed */
+  appointedAt: string;
+  /** Timestamp when judge retired (null if still active) */
+  retiredAt: string | null;
+  /** Current status of the judge */
+  status: 'active' | 'retired';
+  /** Total number of cases heard by this judge */
+  casesHeard: number;
+  /** Total number of rulings issued by this judge */
+  rulingsIssued: number;
+}
+
+/**
+ * Ruling represents the result of a judicial decision for a case.
+ * Contains the decision outcome, reasoning and whether it created legal precedent.
+ */
+export interface Ruling {
+  /** Unique identifier for the ruling */
+  id: string;
+  /** ID of the case this ruling applies to */
+  caseId: string;
+  /** ID of the judge who issued the ruling */
+  judgeId: string;
+  /** Decision outcome */
+  decision: 'upheld' | 'overturned' | 'remanded' | 'dismissed';
+  /** Detailed legal reasoning for the decision */
+  reasoning: string;
+  /** Whether this ruling establishes legal precedent */
+  precedentSetting: boolean;
+  /** Level of constitutional impact */
+  constitutionalImpact: 'none' | 'minor' | 'major' | 'landmark';
+  /** Timestamp when ruling was issued */
+  issuedAt: string;
+  /** Whether the ruling can be appealed */
+  appealable: boolean;
+  /** Whether the ruling has been appealed */
+  appealed: boolean;
+}
+
+/**
+ * Review is a request for judicial review of actions or laws, including urgency and grounds.
+ */
+export interface Review {
+  id: string;
+  gameId: string;
+  requesterId: string;
+  targetType: 'law' | 'executive_action' | 'parliamentary_procedure';
+  targetId: string;
+  grounds: string;
+  urgency: 'routine' | 'expedited' | 'emergency';
+  status: 'pending' | 'under_review' | 'decided';
+  requestedAt: string;
+  assignedJudge: string | null;
+  decision: string | null;
+  decidedAt: string | null;
+}
+
+/**
+ * Precedent represents a legal principle established by a ruling that may be cited in later cases.
+ */
+export interface Precedent {
+  id: string;
+  caseId: string;
+  rulingId: string;
+  title: string;
+  principle: string;
+  impact: 'none' | 'minor' | 'major' | 'landmark';
+  establishedAt: string;
+  citations: number;
+}
+
 // In-memory storage
-const cases = new Map();
-const judges = new Map();
-const rulings = new Map();
-const reviews = new Map();
-const precedents = new Map();
+
+/**
+ * In-memory store for legal case records.
+ * Maps case ID to LegalCase object. Placeholder for database layer.
+ */
+const cases = new Map<string, LegalCase>();
+/**
+ * In-memory store for judge records.
+ * Maps judge ID to Judge object. Placeholder for database layer.
+ */
+const judges = new Map<string, Judge>();
+/**
+ * In-memory store for ruling records.
+ * Maps ruling ID to Ruling object. Placeholder for database layer.
+ */
+const rulings = new Map<string, Ruling>();
+/**
+ * In-memory store for constitutional review requests.
+ * Maps review ID to Review object. Placeholder for database layer.
+ */
+const reviews = new Map<string, Review>();
+/**
+ * In-memory store for legal precedent records.
+ * Maps precedent ID to Precedent object. Placeholder for database layer.
+ */
+const precedents = new Map<string, Precedent>();
 
 /**
  * File a legal case
  * POST /api/judiciary/cases
+ *
+ * @route POST /api/judiciary/cases
+ * @param {FileCaseSchema} req.body - Case details for filing
+ * @returns 201 with the created LegalCase
  */
-router.post('/cases', async (req, res) => {
+router.post('/cases', async (req: Request, res: Response): Promise<Response> => {
   try {
     const validated = FileCaseSchema.parse(req.body);
 
     const caseId = `case-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
-    const legalCase = {
+    const legalCase: LegalCase = {
       id: caseId,
-      ...validated,
-      status: 'filed',
+      gameId: validated.gameId,
+      plaintiffId: validated.plaintiffId,
+      defendantId: validated.defendantId,
+      caseType: validated.caseType,
+      title: validated.title,
+      description: validated.description,
+      legalBasis: validated.legalBasis,
+      targetLawId: validated.targetLawId,
+      targetActionId: validated.targetActionId,
+      status: 'filed' as 'filed' | 'hearing_scheduled' | 'in_progress' | 'closed',
       filedAt: new Date().toISOString(),
       hearingDate: null,
       closedAt: null,
@@ -76,7 +260,7 @@ router.post('/cases', async (req, res) => {
 
     cases.set(caseId, legalCase);
 
-    res.status(201).json({
+    return res.status(201).json({
       success: true,
       data: legalCase,
     });
@@ -89,7 +273,7 @@ router.post('/cases', async (req, res) => {
       });
     }
 
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       error: 'Failed to file case',
       message: (error as Error).message,
@@ -100,9 +284,20 @@ router.post('/cases', async (req, res) => {
 /**
  * Get case by ID
  * GET /api/judiciary/cases/:id
+ *
+ * @route GET /api/judiciary/cases/:id
+ * @param {string} id.path - Case ID
+ * @returns 200 with the LegalCase and rulings, or 404 if not found
  */
-router.get('/cases/:id', (req, res) => {
-  const legalCase = cases.get(req.params.id);
+router.get('/cases/:id', (req: Request, res: Response): Response => {
+  const { id } = req.params;
+  if (!id) {
+    return res.status(400).json({
+      success: false,
+      error: 'Case ID required',
+    });
+  }
+  const legalCase = cases.get(id);
 
   if (!legalCase) {
     return res.status(404).json({
@@ -114,7 +309,7 @@ router.get('/cases/:id', (req, res) => {
   // Get associated rulings
   const caseRulings = Array.from(rulings.values()).filter(r => r.caseId === legalCase.id);
 
-  res.json({
+  return res.json({
     success: true,
     data: {
       ...legalCase,
@@ -126,9 +321,14 @@ router.get('/cases/:id', (req, res) => {
 /**
  * List cases for a game
  * GET /api/judiciary/cases?gameId=xxx&status=xxx
+ *
+ * @route GET /api/judiciary/cases
+ * @param {string} gameId.query - Filter by game
+ * @param {string} [status.query] - Optional case status filter
+ * @returns 200 with array of LegalCase entries
  */
-router.get('/cases', (req, res) => {
-  const { gameId, status } = req.query;
+router.get('/cases', (req: Request, res: Response): Response => {
+  const { gameId, status } = req.query as { gameId?: string; status?: string };
 
   if (!gameId) {
     return res.status(400).json({
@@ -143,7 +343,7 @@ router.get('/cases', (req, res) => {
     filtered = filtered.filter(c => c.status === status);
   }
 
-  res.json({
+  return res.json({
     success: true,
     data: filtered,
   });
@@ -152,25 +352,34 @@ router.get('/cases', (req, res) => {
 /**
  * Appoint a judge
  * POST /api/judiciary/judges
+ *
+ * @route POST /api/judiciary/judges
+ * @param {AppointJudgeSchema} req.body - Appointment details
+ * @returns 201 with the appointed Judge
  */
-router.post('/judges', async (req, res) => {
+router.post('/judges', async (req: Request, res: Response): Promise<Response> => {
   try {
     const validated = AppointJudgeSchema.parse(req.body);
 
     const judgeId = `judge-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
-    const judge = {
+    const judge: Judge = {
       id: judgeId,
-      ...validated,
+      gameId: validated.gameId,
+      userId: validated.userId,
+      court: validated.court,
+      position: validated.position,
+      tenure: validated.tenure,
+      termYears: validated.termYears,
       appointedAt: new Date().toISOString(),
       retiredAt: null,
-      status: 'active',
+      status: 'active' as 'active' | 'retired',
       casesHeard: 0,
       rulingsIssued: 0,
     };
 
     judges.set(judgeId, judge);
 
-    res.status(201).json({
+    return res.status(201).json({
       success: true,
       data: judge,
     });
@@ -183,7 +392,7 @@ router.post('/judges', async (req, res) => {
       });
     }
 
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       error: 'Failed to appoint judge',
       message: (error as Error).message,
@@ -194,9 +403,20 @@ router.post('/judges', async (req, res) => {
 /**
  * Get judge by ID
  * GET /api/judiciary/judges/:id
+ *
+ * @route GET /api/judiciary/judges/:id
+ * @param {string} id.path - Judge ID
+ * @returns 200 with Judge info or 404 if not found
  */
-router.get('/judges/:id', (req, res) => {
-  const judge = judges.get(req.params.id);
+router.get('/judges/:id', (req: Request, res: Response): Response => {
+  const { id } = req.params;
+  if (!id) {
+    return res.status(400).json({
+      success: false,
+      error: 'Judge ID required',
+    });
+  }
+  const judge = judges.get(id);
 
   if (!judge) {
     return res.status(404).json({
@@ -205,7 +425,7 @@ router.get('/judges/:id', (req, res) => {
     });
   }
 
-  res.json({
+  return res.json({
     success: true,
     data: judge,
   });
@@ -214,9 +434,14 @@ router.get('/judges/:id', (req, res) => {
 /**
  * List judges for a game
  * GET /api/judiciary/judges?gameId=xxx&court=xxx
+ *
+ * @route GET /api/judiciary/judges
+ * @param {string} gameId.query - Filter by game
+ * @param {string} [court.query] - Optional court filter
+ * @returns 200 with array of Judge entries
  */
-router.get('/judges', (req, res) => {
-  const { gameId, court } = req.query;
+router.get('/judges', (req: Request, res: Response): Response => {
+  const { gameId, court } = req.query as { gameId?: string; court?: string };
 
   if (!gameId) {
     return res.status(400).json({
@@ -233,7 +458,7 @@ router.get('/judges', (req, res) => {
     filtered = filtered.filter(j => j.court === court);
   }
 
-  res.json({
+  return res.json({
     success: true,
     data: filtered,
   });
@@ -242,8 +467,12 @@ router.get('/judges', (req, res) => {
 /**
  * Issue a ruling on a case
  * POST /api/judiciary/rulings
+ *
+ * @route POST /api/judiciary/rulings
+ * @param {IssueRulingSchema} req.body - Ruling details to persist
+ * @returns 201 with the created Ruling object
  */
-router.post('/rulings', async (req, res) => {
+router.post('/rulings', async (req: Request, res: Response): Promise<Response> => {
   try {
     const validated = IssueRulingSchema.parse(req.body);
 
@@ -266,9 +495,14 @@ router.post('/rulings', async (req, res) => {
     }
 
     const rulingId = `ruling-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
-    const ruling = {
+    const ruling: Ruling = {
       id: rulingId,
-      ...validated,
+      caseId: validated.caseId,
+      judgeId: validated.judgeId,
+      decision: validated.decision,
+      reasoning: validated.reasoning,
+      precedentSetting: validated.precedentSetting,
+      constitutionalImpact: validated.constitutionalImpact,
       issuedAt: new Date().toISOString(),
       appealable: true,
       appealed: false,
@@ -277,7 +511,8 @@ router.post('/rulings', async (req, res) => {
     rulings.set(rulingId, ruling);
 
     // Update case status
-    legalCase.status = 'decided';
+    // Map decided terminal state to closed to satisfy LegalCase status union
+    legalCase.status = 'closed';
     legalCase.outcome = validated.decision;
     legalCase.closedAt = new Date().toISOString();
 
@@ -301,7 +536,7 @@ router.post('/rulings', async (req, res) => {
       precedents.set(precedentId, precedent);
     }
 
-    res.status(201).json({
+    return res.status(201).json({
       success: true,
       data: ruling,
     });
@@ -314,7 +549,7 @@ router.post('/rulings', async (req, res) => {
       });
     }
 
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       error: 'Failed to issue ruling',
       message: (error as Error).message,
@@ -325,9 +560,20 @@ router.post('/rulings', async (req, res) => {
 /**
  * Get ruling by ID
  * GET /api/judiciary/rulings/:id
+ *
+ * @route GET /api/judiciary/rulings/:id
+ * @param {string} id.path - Ruling ID
+ * @returns 200 with Ruling or 404 if not found
  */
-router.get('/rulings/:id', (req, res) => {
-  const ruling = rulings.get(req.params.id);
+router.get('/rulings/:id', (req: Request, res: Response): Response => {
+  const { id } = req.params;
+  if (!id) {
+    return res.status(400).json({
+      success: false,
+      error: 'Ruling ID required',
+    });
+  }
+  const ruling = rulings.get(id);
 
   if (!ruling) {
     return res.status(404).json({
@@ -336,7 +582,7 @@ router.get('/rulings/:id', (req, res) => {
     });
   }
 
-  res.json({
+  return res.json({
     success: true,
     data: ruling,
   });
@@ -345,16 +591,25 @@ router.get('/rulings/:id', (req, res) => {
 /**
  * Request constitutional review
  * POST /api/judiciary/reviews
+ *
+ * @route POST /api/judiciary/reviews
+ * @param {RequestReviewSchema} req.body - Review request details
+ * @returns 201 with the created Review
  */
-router.post('/reviews', async (req, res) => {
+router.post('/reviews', async (req: Request, res: Response): Promise<Response> => {
   try {
     const validated = RequestReviewSchema.parse(req.body);
 
     const reviewId = `review-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
-    const review = {
+    const review: Review = {
       id: reviewId,
-      ...validated,
-      status: 'pending',
+      gameId: validated.gameId,
+      requesterId: validated.requesterId,
+      targetType: validated.targetType,
+      targetId: validated.targetId,
+      grounds: validated.grounds,
+      urgency: validated.urgency,
+      status: 'pending' as 'pending' | 'under_review' | 'decided',
       requestedAt: new Date().toISOString(),
       assignedJudge: null,
       decision: null,
@@ -363,7 +618,7 @@ router.post('/reviews', async (req, res) => {
 
     reviews.set(reviewId, review);
 
-    res.status(201).json({
+    return res.status(201).json({
       success: true,
       data: review,
     });
@@ -376,7 +631,7 @@ router.post('/reviews', async (req, res) => {
       });
     }
 
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       error: 'Failed to request review',
       message: (error as Error).message,
@@ -387,9 +642,20 @@ router.post('/reviews', async (req, res) => {
 /**
  * Get review by ID
  * GET /api/judiciary/reviews/:id
+ *
+ * @route GET /api/judiciary/reviews/:id
+ * @param {string} id.path - Review ID
+ * @returns 200 with Review or 404 if not found
  */
-router.get('/reviews/:id', (req, res) => {
-  const review = reviews.get(req.params.id);
+router.get('/reviews/:id', (req: Request, res: Response): Response => {
+  const { id } = req.params;
+  if (!id) {
+    return res.status(400).json({
+      success: false,
+      error: 'Review ID required',
+    });
+  }
+  const review = reviews.get(id);
 
   if (!review) {
     return res.status(404).json({
@@ -398,7 +664,7 @@ router.get('/reviews/:id', (req, res) => {
     });
   }
 
-  res.json({
+  return res.json({
     success: true,
     data: review,
   });
@@ -407,9 +673,14 @@ router.get('/reviews/:id', (req, res) => {
 /**
  * List reviews for a game
  * GET /api/judiciary/reviews?gameId=xxx&status=xxx
+ *
+ * @route GET /api/judiciary/reviews
+ * @param {string} gameId.query - Filter by game
+ * @param {string} [status.query] - Optional status filter
+ * @returns 200 with array of Review objects
  */
-router.get('/reviews', (req, res) => {
-  const { gameId, status } = req.query;
+router.get('/reviews', (req: Request, res: Response): Response => {
+  const { gameId, status } = req.query as { gameId?: string; status?: string };
 
   if (!gameId) {
     return res.status(400).json({
@@ -424,7 +695,7 @@ router.get('/reviews', (req, res) => {
     filtered = filtered.filter(r => r.status === status);
   }
 
-  res.json({
+  return res.json({
     success: true,
     data: filtered,
   });
@@ -433,9 +704,13 @@ router.get('/reviews', (req, res) => {
 /**
  * Get legal precedents
  * GET /api/judiciary/precedents?gameId=xxx
+ *
+ * @route GET /api/judiciary/precedents
+ * @param {string} gameId.query - Filter by game
+ * @returns 200 with array of Precedent objects
  */
-router.get('/precedents', (req, res) => {
-  const { gameId } = req.query;
+router.get('/precedents', (req: Request, res: Response): Response => {
+  const { gameId } = req.query as { gameId?: string };
 
   if (!gameId) {
     return res.status(400).json({
@@ -453,7 +728,7 @@ router.get('/precedents', (req, res) => {
 
   const gamePrecedents = Array.from(precedents.values()).filter(p => gameCaseIds.has(p.caseId));
 
-  res.json({
+  return res.json({
     success: true,
     data: gamePrecedents,
   });
@@ -462,9 +737,21 @@ router.get('/precedents', (req, res) => {
 /**
  * Schedule case hearing
  * POST /api/judiciary/cases/:id/schedule
+ *
+ * @route POST /api/judiciary/cases/:id/schedule
+ * @param {string} id.path - Case ID
+ * @param {string} req.body.hearingDate - Hearing date string
+ * @returns 200 with updated LegalCase
  */
-router.post('/cases/:id/schedule', (req, res) => {
-  const legalCase = cases.get(req.params.id);
+router.post('/cases/:id/schedule', (req: Request, res: Response): Response => {
+  const { id } = req.params;
+  if (!id) {
+    return res.status(400).json({
+      success: false,
+      error: 'Case ID required',
+    });
+  }
+  const legalCase = cases.get(id);
 
   if (!legalCase) {
     return res.status(404).json({
@@ -482,11 +769,12 @@ router.post('/cases/:id/schedule', (req, res) => {
     });
   }
 
-  legalCase.status = 'scheduled';
+  // Map scheduled hearing to hearing_scheduled per allowed status literals
+  legalCase.status = 'hearing_scheduled';
   legalCase.hearingDate = hearingDate;
   legalCase.assignedJudge = assignedJudge || null;
 
-  res.json({
+  return res.json({
     success: true,
     data: legalCase,
   });
@@ -495,9 +783,20 @@ router.post('/cases/:id/schedule', (req, res) => {
 /**
  * Retire a judge
  * POST /api/judiciary/judges/:id/retire
+ *
+ * @route POST /api/judiciary/judges/:id/retire
+ * @param {string} id.path - Judge ID
+ * @returns 200 with updated Judge
  */
-router.post('/judges/:id/retire', (req, res) => {
-  const judge = judges.get(req.params.id);
+router.post('/judges/:id/retire', (req: Request, res: Response): Response => {
+  const { id } = req.params;
+  if (!id) {
+    return res.status(400).json({
+      success: false,
+      error: 'Judge ID required',
+    });
+  }
+  const judge = judges.get(id);
 
   if (!judge) {
     return res.status(404).json({
@@ -506,13 +805,17 @@ router.post('/judges/:id/retire', (req, res) => {
     });
   }
 
-  judge.status = 'retired';
+  judge.status = 'retired' as 'active' | 'retired';
   judge.retiredAt = new Date().toISOString();
 
-  res.json({
+  return res.json({
     success: true,
     data: judge,
   });
 });
 
+/**
+ * Judiciary router: endpoints to file cases, appoint judges, issue rulings,
+ * request reviews and manage legal precedents.
+ */
 export default router;

@@ -6,6 +6,7 @@
  */
 
 import { OrchestrationEngine } from '../libs/ai-system/src/orchestration/engine';
+import { InMemoryResponseCache } from '../libs/ai-system/src/orchestration/cache';
 import { nlpService } from '../libs/ai-system/src/nlp';
 import type {
   Agent,
@@ -59,7 +60,7 @@ export class AdaptiveLearningSystem {
   /**
    * Get the most effective strategy for a given context
    */
-  getBestStrategy(context: Record<string, unknown>): string {
+  getBestStrategy(): string {
     const relevantStrategies = Array.from(this.strategyEffectiveness.entries())
       .map(([strategy, stats]) => ({
         strategy,
@@ -142,8 +143,8 @@ export class AdaptiveLearningSystem {
  */
 export class PoliticalAIOrchestrator {
   private engine: OrchestrationEngine;
-  private governanceEnabled: boolean = true;
   private learningSystem: AdaptiveLearningSystem;
+  private cache: InMemoryResponseCache;
 
   constructor(config?: Partial<OrchestrationConfig>) {
     this.engine = new OrchestrationEngine({
@@ -152,6 +153,10 @@ export class PoliticalAIOrchestrator {
       ...config,
     });
     this.learningSystem = new AdaptiveLearningSystem();
+    this.cache = new InMemoryResponseCache({
+      maxEntries: 512,
+      defaultTtlMs: 3 * 60 * 1000, // 3 minutes
+    });
   }
 
   /**
@@ -160,7 +165,7 @@ export class PoliticalAIOrchestrator {
   async analyzePoliticalScenario(
     agents: Agent[],
     scenario: string,
-    context?: Record<string, unknown>,
+    context?: Record<string, unknown>
   ): Promise<{
     outputs: AgentOutput[];
     nlpAnalysis: NLPAnalysisResult;
@@ -183,6 +188,7 @@ export class PoliticalAIOrchestrator {
       agents,
       prompt: input.prompt,
       context: input.context,
+      cache: this.cache,
     });
 
     if (!result.success) {
@@ -205,7 +211,7 @@ export class PoliticalAIOrchestrator {
   async simulatePolicyDebate(
     agents: Agent[],
     policyProposal: string,
-    stakeholders: string[],
+    stakeholders: string[]
   ): Promise<AgentOutput[]> {
     // Use group-chat pattern for debate
     this.engine.setPattern('group-chat');
@@ -223,6 +229,7 @@ export class PoliticalAIOrchestrator {
       agents,
       prompt: input.prompt,
       context: input.context,
+      cache: this.cache,
     });
 
     if (!result.success) {
@@ -252,6 +259,7 @@ export class PoliticalAIOrchestrator {
       agents,
       prompt: input.prompt,
       context: input.context,
+      cache: this.cache,
     });
 
     if (!result.success) {
@@ -267,7 +275,7 @@ export class PoliticalAIOrchestrator {
   async simulateLegislation(
     agents: Agent[],
     billText: string,
-    committeeMembers: string[],
+    committeeMembers: string[]
   ): Promise<AgentOutput[]> {
     // Use handoff pattern for legislative stages
     this.engine.setPattern('handoff');
@@ -285,6 +293,7 @@ export class PoliticalAIOrchestrator {
       agents,
       prompt: input.prompt,
       context: input.context,
+      cache: this.cache,
     });
 
     if (!result.success) {
@@ -299,7 +308,7 @@ export class PoliticalAIOrchestrator {
    */
   async executeAdaptiveStrategy(
     playerActions: string[],
-    currentContext: Record<string, unknown>,
+    currentContext: Record<string, unknown>
   ): Promise<{
     strategy: string;
     execution: AgentOutput[];
@@ -309,7 +318,7 @@ export class PoliticalAIOrchestrator {
     const learning = this.learningSystem.analyzePlayerPatterns();
 
     // Get best strategy based on learning
-    const strategy = this.learningSystem.getBestStrategy(currentContext);
+    const strategy = this.learningSystem.getBestStrategy();
 
     // Adapt strategy based on player actions
     let adaptedStrategy = strategy;
@@ -359,7 +368,7 @@ export class PoliticalAIOrchestrator {
   recordPlayerAction(
     action: string,
     context: Record<string, unknown>,
-    outcome: 'success' | 'failure' | 'neutral',
+    outcome: 'success' | 'failure' | 'neutral'
   ): void {
     this.learningSystem.recordLearning({
       playerAction: action,
@@ -383,13 +392,6 @@ export class PoliticalAIOrchestrator {
    */
   setPattern(pattern: OrchestrationPattern): void {
     this.engine.setPattern(pattern);
-  }
-
-  /**
-   * Enable/disable governance features
-   */
-  setGovernance(enabled: boolean): void {
-    this.governanceEnabled = enabled;
   }
 
   /**
@@ -514,7 +516,7 @@ export const orchestrationUtils = {
     // Relevance based on political keywords
     const politicalKeywords = ['policy', 'government', 'democracy', 'citizen', 'law'];
     const keywordMatches = outputs.filter(o =>
-      politicalKeywords.some(kw => o.content.toLowerCase().includes(kw)),
+      politicalKeywords.some(kw => o.content.toLowerCase().includes(kw))
     ).length;
     relevance = keywordMatches / outputs.length;
 

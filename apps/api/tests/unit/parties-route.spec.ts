@@ -4,8 +4,11 @@ import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
 import partiesRouter from '../../src/routes/parties.ts';
 import { closeDatabase, getDatabase } from '../index.js';
+import { describeHttp, shouldSkipHttpTests } from '../utils/http-test-guard.ts';
 
-describe('parties routes', () => {
+const suite = shouldSkipHttpTests ? describe.skip : describeHttp;
+
+suite('parties routes', () => {
   let app;
 
   beforeEach(() => {

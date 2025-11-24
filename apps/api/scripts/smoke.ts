@@ -1,12 +1,19 @@
 /**
+ * @ignore
  * API Smoke Test
  * Verifies auth and game routes end-to-end without manual server control.
  */
 import request from 'supertest';
 
-import app from '../src/index';
+import { app } from '../src/index';
 
-async function run() {
+/**
+ * run - Execute a basic API smoke-test covering health, auth, and game endpoints
+ *
+ * Exported for tooling and documentation so compodoc can reference the
+ * smoke test behavior as part of the API maintenance tooling.
+ */
+export async function run() {
   const username = `user_${Date.now().toString(36)}`;
   const password = 'passw0rd123';
 
@@ -58,6 +65,7 @@ async function run() {
     .set('Content-Type', 'application/json');
   if (propose.status !== 200) throw new Error(`Propose failed: ${propose.text}`);
 
+  // eslint-disable-next-line no-console
   console.log('SMOKE PASS:', {
     user: username,
     gameId,
@@ -66,6 +74,7 @@ async function run() {
 }
 
 run().catch(err => {
+  // eslint-disable-next-line no-console
   console.error('SMOKE FAIL:', err.message);
   process.exit(1);
 });

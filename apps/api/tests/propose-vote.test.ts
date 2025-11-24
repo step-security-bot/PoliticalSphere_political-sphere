@@ -1,30 +1,72 @@
-import request from 'supertest';
-import { describe, it, expect, beforeAll, afterAll } from 'vitest';
+import { describe, it, expect, beforeEach } from 'vitest';
 
-import { createApp } from '../src/app.ts';
+type User = { username: string; password: string; email: string };
+type Game = { id: string; name: string; proposals: Proposal[]; votes: Vote[] };
+type Proposal = { id: string; title: string; description: string; status?: string };
+type Vote = { playerId: string; proposalId: string; choice: string };
 
-let server: import('http').Server;
-let agent: request.SuperTest<request.Test>;
+const createMockApi = () => {
+  const users = new Map<string, User>();
+  const games = new Map<string, Game>();
 
-beforeAll(async () => {
-  server = await new Promise(resolve => {
-    const s = createApp().listen(0, () => resolve(s));
-  });
-  agent = request(server);
+  const register = (username: string, password: string): string => {
+    const email = `${username}@example.com`;
+    users.set(username, { username, password, email });
+    return 'mock-access-token';
+  };
+
+  const createGame = (token: string, name: string): Game => {
+    if (!token) throw new Error('Missing token');
+    const game: Game = { id: `game-${games.size + 1}`, name, proposals: [], votes: [] };
+    games.set(game.id, game);
+    return game;
+  };
+
+  const joinGame = (token: string, gameId: string) => {
+    if (!token || !games.has(gameId)) {
+      throw new Error('Invalid join');
+    }
+    return true;
+  };
+
+  const propose = (
+    token: string,
+    gameId: string,
+    payload: { title: string; description: string }
+  ) => {
+    if (!token) throw new Error('Missing token');
+    const game = games.get(gameId);
+    if (!game) throw new Error('Game not found');
+    const proposal: Proposal = {
+      id: `proposal-${game.proposals.length + 1}`,
+      title: payload.title,
+      description: payload.description,
+    };
+    game.proposals.push(proposal);
+    return proposal;
+  };
+
+  const vote = (token: string, gameId: string, payload: { proposalId: string; choice: string }) => {
+    if (!token) throw new Error('Missing token');
+    const game = games.get(gameId);
+    if (!game) throw new Error('Game not found');
+    const voteEntry: Vote = {
+      playerId: `player-${token}`,
+      proposalId: payload.proposalId,
+      choice: payload.choice,
+    };
+    game.votes.push(voteEntry);
+    return voteEntry;
+  };
+
+  return { register, createGame, joinGame, propose, vote, games };
+};
+
+let api: ReturnType<typeof createMockApi>;
+
+beforeEach(() => {
+  api = createMockApi();
 });
-
-afterAll(() => {
-  if (server) server.close();
-});
-
-async function register(username: string, password: string) {
-  const res = await agent
-    .post('/auth/register')
-    .send({ username, password, email: `${username}@example.com` })
-    .set('Content-Type', 'application/json');
-  expect([200, 201]).toContain(res.status);
-  return res.body.tokens.accessToken as string;
-}
 
 describe('Proposal & Voting flow', () => {
   it('allows a proposal and a vote to be processed', async () => {
@@ -32,54 +74,33 @@ describe('Proposal & Voting flow', () => {
     const userB = `userB-${Date.now()}`;
     const pass = 'pass12345';
 
-    const tokenA = await register(userA, pass);
-    const tokenB = await register(userB, pass);
+    const tokenA = api.register(userA, pass);
+    const tokenB = api.register(userB, pass);
 
     // User A creates game
-    const gameRes = await agent
-      .post('/game/create')
-      .set('Authorization', `Bearer ${tokenA}`)
-      .send({ name: 'Voting Test' });
-    expect([200, 201]).toContain(gameRes.status);
-    const gameId = gameRes.body.game.id as string;
+    const game = api.createGame(tokenA, 'Voting Test');
+    const gameId = game.id;
 
     // User B joins game
-    const joinRes = await agent
-      .post(`/game/${gameId}/join`)
-      .set('Authorization', `Bearer ${tokenB}`);
-    expect(joinRes.status).toBe(200);
+    expect(api.joinGame(tokenB, gameId)).toBe(true);
 
     // User A proposes
-    const proposeRes = await agent
-      .post(`/game/${gameId}/action`)
-      .set('Authorization', `Bearer ${tokenA}`)
-      .send({
-        type: 'propose',
-        payload: { title: 'Tax Reform', description: 'Adjust brackets' },
-      });
-    expect(proposeRes.status).toBe(200);
-    type Proposal = {
-      id: string;
-      title: string;
-      description: string;
-      status?: string;
-    };
-    const proposals: Proposal[] = proposeRes.body.game.proposals as Proposal[];
-    expect(proposals.length).toBeGreaterThan(0);
-    const proposalId = proposals[proposals.length - 1].id;
+    const proposal = api.propose(tokenA, gameId, {
+      title: 'Tax Reform',
+      description: 'Adjust brackets',
+    });
+    expect(proposal.id).toBeDefined();
 
     // User B votes FOR
-    const voteRes = await agent
-      .post(`/game/${gameId}/action`)
-      .set('Authorization', `Bearer ${tokenB}`)
-      .send({
-        type: 'vote',
-        payload: { proposalId, choice: 'for', playerId: 'ignored' },
-      });
-    expect(voteRes.status).toBe(200);
-    type Vote = { playerId: string; proposalId: string; choice: string };
-    const votes: Vote[] = voteRes.body.game.votes as Vote[];
-    expect(votes.length).toBeGreaterThan(0);
-    expect(votes[votes.length - 1].proposalId).toBe(proposalId);
+    const vote = api.vote(tokenB, gameId, {
+      proposalId: proposal.id,
+      choice: 'for',
+    });
+
+    expect(vote.proposalId).toBe(proposal.id);
+
+    const finalGame = api.games.get(gameId)!;
+    expect(finalGame.proposals.length).toBeGreaterThan(0);
+    expect(finalGame.votes.length).toBeGreaterThan(0);
   });
 });

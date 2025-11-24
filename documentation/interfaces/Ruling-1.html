@@ -1,0 +1,1045 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>political-sphere documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">political-sphere documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content interface">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Interfaces</li>
+  <li class="breadcrumb-item"
+  >
+  Ruling</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>apps/web/src/components/Judiciary/JudiciarySystem.tsx</code>
+        </p>
+
+
+
+
+        <section data-compodoc="block-index">
+            <h3 id="index">Index</h3>
+            <table class="table table-sm table-bordered index-table">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <h6><b>Properties</b></h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <ul class="index-list">
+                                <li>
+                                        <a href="#caseId" 
+>
+                                            caseId
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#decision" 
+>
+                                            decision
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#id" 
+>
+                                            id
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#issuedAt" 
+>
+                                            issuedAt
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#judgeId" 
+>
+                                            judgeId
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#judgeName" 
+>
+                                            judgeName
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#precedent" 
+>
+                                            precedent
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#reasoning" 
+>
+                                            reasoning
+                                        </a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+
+
+            <section data-compodoc="block-properties">
+                <h3 id="inputs">Properties</h3>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="caseId"></a>
+                                        <span class="name "><b>caseId</b>
+                                            <a href="#caseId">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>caseId:         <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="decision"></a>
+                                        <span class="name "><b>decision</b>
+                                            <a href="#decision">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>decision:     <code>&quot;upheld&quot; | &quot;overturned&quot; | &quot;dismissed&quot; | &quot;remanded&quot;</code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>    <code>&quot;upheld&quot; | &quot;overturned&quot; | &quot;dismissed&quot; | &quot;remanded&quot;</code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="id"></a>
+                                        <span class="name "><b>id</b>
+                                            <a href="#id">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>id:         <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="issuedAt"></a>
+                                        <span class="name "><b>issuedAt</b>
+                                            <a href="#issuedAt">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>issuedAt:         <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="judgeId"></a>
+                                        <span class="name "><b>judgeId</b>
+                                            <a href="#judgeId">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>judgeId:         <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="judgeName"></a>
+                                        <span class="name "><b>judgeName</b>
+                                            <a href="#judgeName">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>judgeName:         <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="precedent"></a>
+                                        <span class="name "><b>precedent</b>
+                                            <a href="#precedent">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>precedent:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="reasoning"></a>
+                                        <span class="name "><b>reasoning</b>
+                                            <a href="#reasoning">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>reasoning:         <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+            </section>
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import type React from &#x27;react&#x27;;
+import { useCallback, useEffect, useState } from &#x27;react&#x27;;
+import { api, type Judge, type JudicialCase } from &#x27;../../services/api&#x27;;
+import { z } from &#x27;zod&#x27;;
+import &#x27;./JudiciarySystem.css&#x27;;
+
+type LegalCase &#x3D; JudicialCase;
+
+interface Ruling {
+  id: string;
+  caseId: string;
+  judgeId: string;
+  judgeName: string;
+  decision: &#x27;upheld&#x27; | &#x27;overturned&#x27; | &#x27;dismissed&#x27; | &#x27;remanded&#x27;;
+  reasoning: string;
+  issuedAt: string;
+  precedent: boolean;
+}
+
+interface JudiciarySystemProps {
+  userId: string;
+  onError?: (error: string) &#x3D;&gt; void;
+}
+
+const _FileCaseSchema &#x3D; z.object({
+  title: z.string().min(1).max(200),
+  description: z.string().min(1).max(5000),
+  type: z.enum([&#x27;constitutional&#x27;, &#x27;criminal&#x27;, &#x27;civil&#x27;, &#x27;administrative&#x27;]),
+  court: z.enum([&#x27;supreme&#x27;, &#x27;appeal&#x27;, &#x27;high&#x27;]),
+  plaintiff: z.string().min(1),
+  defendant: z.string().min(1),
+  priority: z.enum([&#x27;low&#x27;, &#x27;medium&#x27;, &#x27;high&#x27;, &#x27;urgent&#x27;]),
+});
+
+const _IssueRulingSchema &#x3D; z.object({
+  decision: z.enum([&#x27;upheld&#x27;, &#x27;overturned&#x27;, &#x27;dismissed&#x27;, &#x27;remanded&#x27;]),
+  reasoning: z.string().min(1).max(10000),
+});
+
+export const JudiciarySystem: React.FC&lt;JudiciarySystemProps&gt; &#x3D; ({ userId, onError }) &#x3D;&gt; {
+  const [judges, setJudges] &#x3D; useState&lt;Judge[]&gt;([]);
+  const [cases, setCases] &#x3D; useState&lt;LegalCase[]&gt;([]);
+  const [selectedCase, setSelectedCase] &#x3D; useState&lt;LegalCase | null&gt;(null);
+  const [_ruling, _setRuling] &#x3D; useState&lt;Ruling | null&gt;(null);
+  const [loading, setLoading] &#x3D; useState(true);
+  const [activeTab, setActiveTab] &#x3D; useState&lt;&#x27;cases&#x27; | &#x27;judges&#x27; | &#x27;rulings&#x27;&gt;(&#x27;cases&#x27;);
+  const [_showCaseForm, _setShowCaseForm] &#x3D; useState(false);
+
+  // Form state for filing cases
+  const [_caseForm, _setCaseForm] &#x3D; useState({
+    title: &#x27;&#x27;,
+    description: &#x27;&#x27;,
+    type: &#x27;civil&#x27; as LegalCase[&#x27;type&#x27;],
+    court: &#x27;high&#x27; as LegalCase[&#x27;court&#x27;],
+    plaintiff: &#x27;&#x27;,
+    defendant: &#x27;&#x27;,
+    priority: &#x27;medium&#x27; as LegalCase[&#x27;priority&#x27;],
+  });
+
+  const fetchJudiciary &#x3D; useCallback(async () &#x3D;&gt; {
+    try {
+      setLoading(true);
+      const response &#x3D; await api.getCases();
+
+      if (!response.success) {
+        throw new Error(response.error || &#x27;Failed to fetch judiciary data&#x27;);
+      }
+
+      setJudges(response.data?.judges || []);
+      setCases(response.data?.cases || []);
+    } catch (error) {
+      const message &#x3D; error instanceof Error ? error.message : &#x27;Failed to fetch judiciary data&#x27;;
+      onError?.(message);
+    } finally {
+      setLoading(false);
+    }
+  }, [onError]);
+
+  useEffect(() &#x3D;&gt; {
+    fetchJudiciary();
+  }, [fetchJudiciary]);
+
+  const handleFileCase &#x3D; (event: React.FormEvent&lt;HTMLFormElement&gt;) &#x3D;&gt; {
+    event.preventDefault();
+    const formData &#x3D; new FormData(event.currentTarget);
+    const data &#x3D; {
+      gameId: &#x27;default&#x27;,
+      plaintiffId: userId,
+      defendantId: null,
+      title: formData.get(&#x27;caseTitle&#x27;) as string,
+      description: formData.get(&#x27;caseDescription&#x27;) as string,
+      type: formData.get(&#x27;caseType&#x27;) as &#x27;constitutional&#x27; | &#x27;criminal&#x27; | &#x27;civil&#x27; | &#x27;administrative&#x27;,
+      court: formData.get(&#x27;caseCourt&#x27;) as &#x27;supreme&#x27; | &#x27;appeal&#x27; | &#x27;high&#x27;,
+      plaintiff: formData.get(&#x27;plaintiff&#x27;) as string,
+      defendant: formData.get(&#x27;defendant&#x27;) as string,
+      priority: formData.get(&#x27;priority&#x27;) as &#x27;low&#x27; | &#x27;medium&#x27; | &#x27;high&#x27; | &#x27;urgent&#x27;,
+      legalBasis: &#x27;Filed via judiciary system&#x27;,
+      targetLawId: null,
+      targetActionId: null,
+    };
+
+    try {
+      api
+        .fileCase(data)
+        .then(() &#x3D;&gt; {
+          event.currentTarget.reset();
+          fetchJudiciary(); // Refresh data
+        })
+        .catch((_error: unknown) &#x3D;&gt; {
+          const message &#x3D; _error instanceof Error ? _error.message : &#x27;Failed to file case&#x27;;
+          onError?.(message);
+        });
+    } catch {
+      onError?.(&#x27;Invalid form data&#x27;);
+    }
+  };
+
+  const handleIssueRuling &#x3D; (event: React.FormEvent&lt;HTMLFormElement&gt;) &#x3D;&gt; {
+    event.preventDefault();
+    if (!selectedCase) return;
+
+    const formData &#x3D; new FormData(event.currentTarget);
+    const data &#x3D; {
+      caseId: selectedCase.id,
+      judgeId: userId,
+      decision: formData.get(&#x27;decision&#x27;) as &#x27;upheld&#x27; | &#x27;overturned&#x27; | &#x27;dismissed&#x27; | &#x27;remanded&#x27;,
+      reasoning: formData.get(&#x27;reasoning&#x27;) as string,
+      precedentSetting: false,
+      constitutionalImpact: &#x27;none&#x27; as const,
+    };
+
+    try {
+      api
+        .issueRuling(data)
+        .then(() &#x3D;&gt; {
+          event.currentTarget.reset();
+          setSelectedCase(null);
+          fetchJudiciary(); // Refresh data
+        })
+        .catch((_error: unknown) &#x3D;&gt; {
+          const message &#x3D; _error instanceof Error ? _error.message : &#x27;Failed to issue ruling&#x27;;
+          onError?.(message);
+        });
+    } catch {
+      onError?.(&#x27;Invalid form data&#x27;);
+    }
+  };
+
+  if (loading) {
+    return (
+      &lt;output className&#x3D;&quot;judiciary-system&quot; aria-live&#x3D;&quot;polite&quot;&gt;
+        Loading judiciary system...
+      &lt;/output&gt;
+    );
+  }
+
+  return (
+    &lt;div className&#x3D;&quot;judiciary-system&quot;&gt;
+      &lt;header className&#x3D;&quot;judiciary-header&quot;&gt;
+        &lt;h1&gt;Judiciary System&lt;/h1&gt;
+        &lt;p className&#x3D;&quot;judiciary-subtitle&quot;&gt;Supreme Court and Legal System&lt;/p&gt;
+      &lt;/header&gt;
+
+      &lt;nav className&#x3D;&quot;judiciary-tabs&quot; aria-label&#x3D;&quot;Judiciary sections&quot;&gt;
+        &lt;div role&#x3D;&quot;tablist&quot; aria-label&#x3D;&quot;Judiciary sections&quot;&gt;
+          &lt;button
+            type&#x3D;&quot;button&quot;
+            role&#x3D;&quot;tab&quot;
+            aria-selected&#x3D;{activeTab &#x3D;&#x3D;&#x3D; &#x27;cases&#x27;}
+            aria-controls&#x3D;&quot;cases-panel&quot;
+            id&#x3D;&quot;cases-tab&quot;
+            onClick&#x3D;{() &#x3D;&gt; setActiveTab(&#x27;cases&#x27;)}
+            className&#x3D;{activeTab &#x3D;&#x3D;&#x3D; &#x27;cases&#x27; ? &#x27;active&#x27; : &#x27;&#x27;}
+          &gt;
+            Legal Cases
+          &lt;/button&gt;
+          &lt;button
+            type&#x3D;&quot;button&quot;
+            role&#x3D;&quot;tab&quot;
+            aria-selected&#x3D;{activeTab &#x3D;&#x3D;&#x3D; &#x27;judges&#x27;}
+            aria-controls&#x3D;&quot;judges-panel&quot;
+            id&#x3D;&quot;judges-tab&quot;
+            onClick&#x3D;{() &#x3D;&gt; setActiveTab(&#x27;judges&#x27;)}
+            className&#x3D;{activeTab &#x3D;&#x3D;&#x3D; &#x27;judges&#x27; ? &#x27;active&#x27; : &#x27;&#x27;}
+          &gt;
+            Judges
+          &lt;/button&gt;
+          &lt;button
+            type&#x3D;&quot;button&quot;
+            role&#x3D;&quot;tab&quot;
+            aria-selected&#x3D;{activeTab &#x3D;&#x3D;&#x3D; &#x27;rulings&#x27;}
+            aria-controls&#x3D;&quot;rulings-panel&quot;
+            id&#x3D;&quot;rulings-tab&quot;
+            onClick&#x3D;{() &#x3D;&gt; setActiveTab(&#x27;rulings&#x27;)}
+            className&#x3D;{activeTab &#x3D;&#x3D;&#x3D; &#x27;rulings&#x27; ? &#x27;active&#x27; : &#x27;&#x27;}
+          &gt;
+            Rulings
+          &lt;/button&gt;
+        &lt;/div&gt;
+      &lt;/nav&gt;
+
+      {activeTab &#x3D;&#x3D;&#x3D; &#x27;cases&#x27; &amp;&amp; (
+        &lt;section
+          id&#x3D;&quot;cases-panel&quot;
+          role&#x3D;&quot;tabpanel&quot;
+          aria-labelledby&#x3D;&quot;cases-tab&quot;
+          className&#x3D;&quot;cases-section&quot;
+        &gt;
+          &lt;h2&gt;Legal Cases&lt;/h2&gt;
+
+          {cases.length &#x3D;&#x3D;&#x3D; 0 ? (
+            &lt;p&gt;No cases filed yet.&lt;/p&gt;
+          ) : (
+            &lt;ul className&#x3D;&quot;cases-list&quot; aria-label&#x3D;&quot;List of legal cases&quot;&gt;
+              {cases.map(legalCase &#x3D;&gt; (
+                &lt;li key&#x3D;{legalCase.id} className&#x3D;&quot;case-card&quot;&gt;
+                  &lt;button
+                    type&#x3D;&quot;button&quot;
+                    className&#x3D;&quot;case-card-button&quot;
+                    aria-pressed&#x3D;{selectedCase?.id &#x3D;&#x3D;&#x3D; legalCase.id}
+                    onClick&#x3D;{() &#x3D;&gt; setSelectedCase(legalCase)}
+                  &gt;
+                    &lt;div className&#x3D;&quot;case-header&quot;&gt;
+                      &lt;h3&gt;
+                        {legalCase.caseNumber}: {legalCase.title}
+                      &lt;/h3&gt;
+                      &lt;span className&#x3D;{&#x60;case-status status-${legalCase.status}&#x60;}&gt;
+                        {legalCase.status}
+                      &lt;/span&gt;
+                    &lt;/div&gt;
+                    &lt;p className&#x3D;&quot;case-description&quot;&gt;{legalCase.description}&lt;/p&gt;
+                    &lt;div className&#x3D;&quot;case-meta&quot;&gt;
+                      &lt;span className&#x3D;&quot;case-type&quot;&gt;{legalCase.type}&lt;/span&gt;
+                      &lt;span&gt;
+                        Filed:{&#x27; &#x27;}
+                        {legalCase.filedAt
+                          ? new Date(legalCase.filedAt).toLocaleDateString()
+                          : &#x27;Unknown&#x27;}
+                      &lt;/span&gt;
+                    &lt;/div&gt;
+                    &lt;div className&#x3D;&quot;case-parties&quot;&gt;
+                      &lt;span&gt;Plaintiff: {legalCase.plaintiff}&lt;/span&gt;
+                      &lt;span&gt;Defendant: {legalCase.defendant}&lt;/span&gt;
+                    &lt;/div&gt;
+                  &lt;/button&gt;
+                &lt;/li&gt;
+              ))}
+            &lt;/ul&gt;
+          )}
+
+          &lt;form
+            className&#x3D;&quot;file-case-form&quot;
+            onSubmit&#x3D;{handleFileCase}
+            aria-labelledby&#x3D;&quot;file-case-heading&quot;
+          &gt;
+            &lt;h3 id&#x3D;&quot;file-case-heading&quot;&gt;File New Case&lt;/h3&gt;
+
+            &lt;div className&#x3D;&quot;form-group&quot;&gt;
+              &lt;label htmlFor&#x3D;&quot;case-title&quot;&gt;
+                Case Title &lt;span aria-hidden&#x3D;&quot;true&quot;&gt;*&lt;/span&gt;
+              &lt;/label&gt;
+              &lt;input
+                type&#x3D;&quot;text&quot;
+                id&#x3D;&quot;case-title&quot;
+                name&#x3D;&quot;caseTitle&quot;
+                required
+                aria-required&#x3D;&quot;true&quot;
+                maxLength&#x3D;{200}
+                placeholder&#x3D;&quot;Enter case title&quot;
+              /&gt;
+            &lt;/div&gt;
+
+            &lt;div className&#x3D;&quot;form-group&quot;&gt;
+              &lt;label htmlFor&#x3D;&quot;case-type&quot;&gt;
+                Case Type &lt;span aria-hidden&#x3D;&quot;true&quot;&gt;*&lt;/span&gt;
+              &lt;/label&gt;
+              &lt;select id&#x3D;&quot;case-type&quot; name&#x3D;&quot;caseType&quot; required aria-required&#x3D;&quot;true&quot;&gt;
+                &lt;option value&#x3D;&quot;&quot;&gt;Select type...&lt;/option&gt;
+                &lt;option value&#x3D;&quot;constitutional&quot;&gt;Constitutional Review&lt;/option&gt;
+                &lt;option value&#x3D;&quot;civil&quot;&gt;Civil Case&lt;/option&gt;
+                &lt;option value&#x3D;&quot;criminal&quot;&gt;Criminal Case&lt;/option&gt;
+                &lt;option value&#x3D;&quot;administrative&quot;&gt;Administrative Law&lt;/option&gt;
+              &lt;/select&gt;
+            &lt;/div&gt;
+
+            &lt;div className&#x3D;&quot;form-group&quot;&gt;
+              &lt;label htmlFor&#x3D;&quot;case-court&quot;&gt;
+                Court &lt;span aria-hidden&#x3D;&quot;true&quot;&gt;*&lt;/span&gt;
+              &lt;/label&gt;
+              &lt;select id&#x3D;&quot;case-court&quot; name&#x3D;&quot;caseCourt&quot; required aria-required&#x3D;&quot;true&quot;&gt;
+                &lt;option value&#x3D;&quot;&quot;&gt;Select court...&lt;/option&gt;
+                &lt;option value&#x3D;&quot;supreme&quot;&gt;Supreme Court&lt;/option&gt;
+                &lt;option value&#x3D;&quot;appeal&quot;&gt;Appeal Court&lt;/option&gt;
+                &lt;option value&#x3D;&quot;high&quot;&gt;High Court&lt;/option&gt;
+              &lt;/select&gt;
+            &lt;/div&gt;
+
+            &lt;div className&#x3D;&quot;form-group&quot;&gt;
+              &lt;label htmlFor&#x3D;&quot;plaintiff&quot;&gt;
+                Plaintiff &lt;span aria-hidden&#x3D;&quot;true&quot;&gt;*&lt;/span&gt;
+              &lt;/label&gt;
+              &lt;input
+                type&#x3D;&quot;text&quot;
+                id&#x3D;&quot;plaintiff&quot;
+                name&#x3D;&quot;plaintiff&quot;
+                required
+                aria-required&#x3D;&quot;true&quot;
+                placeholder&#x3D;&quot;Enter plaintiff name&quot;
+              /&gt;
+            &lt;/div&gt;
+
+            &lt;div className&#x3D;&quot;form-group&quot;&gt;
+              &lt;label htmlFor&#x3D;&quot;defendant&quot;&gt;
+                Defendant &lt;span aria-hidden&#x3D;&quot;true&quot;&gt;*&lt;/span&gt;
+              &lt;/label&gt;
+              &lt;input
+                type&#x3D;&quot;text&quot;
+                id&#x3D;&quot;defendant&quot;
+                name&#x3D;&quot;defendant&quot;
+                required
+                aria-required&#x3D;&quot;true&quot;
+                placeholder&#x3D;&quot;Enter defendant name&quot;
+              /&gt;
+            &lt;/div&gt;
+
+            &lt;div className&#x3D;&quot;form-group&quot;&gt;
+              &lt;label htmlFor&#x3D;&quot;priority&quot;&gt;
+                Priority &lt;span aria-hidden&#x3D;&quot;true&quot;&gt;*&lt;/span&gt;
+              &lt;/label&gt;
+              &lt;select id&#x3D;&quot;priority&quot; name&#x3D;&quot;priority&quot; required aria-required&#x3D;&quot;true&quot;&gt;
+                &lt;option value&#x3D;&quot;&quot;&gt;Select priority...&lt;/option&gt;
+                &lt;option value&#x3D;&quot;low&quot;&gt;Low&lt;/option&gt;
+                &lt;option value&#x3D;&quot;medium&quot;&gt;Medium&lt;/option&gt;
+                &lt;option value&#x3D;&quot;high&quot;&gt;High&lt;/option&gt;
+                &lt;option value&#x3D;&quot;urgent&quot;&gt;Urgent&lt;/option&gt;
+              &lt;/select&gt;
+            &lt;/div&gt;
+
+            &lt;div className&#x3D;&quot;form-group&quot;&gt;
+              &lt;label htmlFor&#x3D;&quot;case-description&quot;&gt;
+                Description &lt;span aria-hidden&#x3D;&quot;true&quot;&gt;*&lt;/span&gt;
+              &lt;/label&gt;
+              &lt;textarea
+                id&#x3D;&quot;case-description&quot;
+                name&#x3D;&quot;caseDescription&quot;
+                required
+                aria-required&#x3D;&quot;true&quot;
+                maxLength&#x3D;{5000}
+                rows&#x3D;{4}
+                placeholder&#x3D;&quot;Describe the case&quot;
+              /&gt;
+            &lt;/div&gt;
+
+            &lt;button type&#x3D;&quot;submit&quot; className&#x3D;&quot;btn-primary&quot;&gt;
+              File Case
+            &lt;/button&gt;
+          &lt;/form&gt;
+
+          {selectedCase &amp;&amp; (
+            &lt;form
+              className&#x3D;&quot;issue-ruling-form&quot;
+              onSubmit&#x3D;{handleIssueRuling}
+              aria-labelledby&#x3D;&quot;issue-ruling-heading&quot;
+            &gt;
+              &lt;h3 id&#x3D;&quot;issue-ruling-heading&quot;&gt;Issue Ruling for {selectedCase.caseNumber}&lt;/h3&gt;
+
+              &lt;div className&#x3D;&quot;form-group&quot;&gt;
+                &lt;label htmlFor&#x3D;&quot;ruling-decision&quot;&gt;
+                  Decision &lt;span aria-hidden&#x3D;&quot;true&quot;&gt;*&lt;/span&gt;
+                &lt;/label&gt;
+                &lt;select id&#x3D;&quot;ruling-decision&quot; name&#x3D;&quot;decision&quot; required aria-required&#x3D;&quot;true&quot;&gt;
+                  &lt;option value&#x3D;&quot;&quot;&gt;Select decision...&lt;/option&gt;
+                  &lt;option value&#x3D;&quot;upheld&quot;&gt;Upheld&lt;/option&gt;
+                  &lt;option value&#x3D;&quot;overturned&quot;&gt;Overturned&lt;/option&gt;
+                  &lt;option value&#x3D;&quot;dismissed&quot;&gt;Dismissed&lt;/option&gt;
+                  &lt;option value&#x3D;&quot;remanded&quot;&gt;Remanded&lt;/option&gt;
+                &lt;/select&gt;
+              &lt;/div&gt;
+
+              &lt;div className&#x3D;&quot;form-group&quot;&gt;
+                &lt;label htmlFor&#x3D;&quot;ruling-reasoning&quot;&gt;
+                  Reasoning &lt;span aria-hidden&#x3D;&quot;true&quot;&gt;*&lt;/span&gt;
+                &lt;/label&gt;
+                &lt;textarea
+                  id&#x3D;&quot;ruling-reasoning&quot;
+                  name&#x3D;&quot;reasoning&quot;
+                  required
+                  aria-required&#x3D;&quot;true&quot;
+                  maxLength&#x3D;{10000}
+                  rows&#x3D;{6}
+                  placeholder&#x3D;&quot;Provide detailed legal reasoning&quot;
+                /&gt;
+              &lt;/div&gt;
+
+              &lt;button type&#x3D;&quot;submit&quot; className&#x3D;&quot;btn-primary&quot;&gt;
+                Issue Ruling
+              &lt;/button&gt;
+            &lt;/form&gt;
+          )}
+        &lt;/section&gt;
+      )}
+
+      {activeTab &#x3D;&#x3D;&#x3D; &#x27;judges&#x27; &amp;&amp; (
+        &lt;section
+          id&#x3D;&quot;judges-panel&quot;
+          role&#x3D;&quot;tabpanel&quot;
+          aria-labelledby&#x3D;&quot;judges-tab&quot;
+          className&#x3D;&quot;judges-section&quot;
+        &gt;
+          &lt;h2&gt;Judges&lt;/h2&gt;
+
+          {judges.length &#x3D;&#x3D;&#x3D; 0 ? (
+            &lt;p&gt;No judges appointed yet.&lt;/p&gt;
+          ) : (
+            &lt;ul className&#x3D;&quot;judges-list&quot; aria-label&#x3D;&quot;List of judges&quot;&gt;
+              {judges.map(judge &#x3D;&gt; (
+                &lt;li key&#x3D;{judge.id} className&#x3D;&quot;judge-card&quot;&gt;
+                  &lt;div className&#x3D;&quot;judge-info&quot;&gt;
+                    &lt;h3&gt;{judge.court}&lt;/h3&gt;
+                    &lt;p&gt;
+                      Appointed:{&#x27; &#x27;}
+                      {judge.appointedAt
+                        ? new Date(judge.appointedAt).toLocaleDateString()
+                        : &#x27;Unknown&#x27;}
+                    &lt;/p&gt;
+                    &lt;span className&#x3D;{&#x60;judge-status status-${judge.status}&#x60;}&gt;{judge.status}&lt;/span&gt;
+                  &lt;/div&gt;
+                &lt;/li&gt;
+              ))}
+            &lt;/ul&gt;
+          )}
+        &lt;/section&gt;
+      )}
+
+      {activeTab &#x3D;&#x3D;&#x3D; &#x27;rulings&#x27; &amp;&amp; (
+        &lt;section
+          id&#x3D;&quot;rulings-panel&quot;
+          role&#x3D;&quot;tabpanel&quot;
+          aria-labelledby&#x3D;&quot;rulings-tab&quot;
+          className&#x3D;&quot;rulings-section&quot;
+        &gt;
+          &lt;h2&gt;Rulings&lt;/h2&gt;
+
+          {cases.filter(c &#x3D;&gt; c.status &#x3D;&#x3D;&#x3D; &#x27;ruled&#x27;).length &#x3D;&#x3D;&#x3D; 0 ? (
+            &lt;p&gt;No rulings issued yet.&lt;/p&gt;
+          ) : (
+            &lt;ul className&#x3D;&quot;rulings-list&quot; aria-label&#x3D;&quot;List of rulings&quot;&gt;
+              {cases
+                .filter(c &#x3D;&gt; c.status &#x3D;&#x3D;&#x3D; &#x27;ruled&#x27;)
+                .map(legalCase &#x3D;&gt; (
+                  &lt;li key&#x3D;{legalCase.id} className&#x3D;&quot;ruling-card&quot;&gt;
+                    &lt;div className&#x3D;&quot;ruling-header&quot;&gt;
+                      &lt;h3&gt;
+                        Case {legalCase.caseNumber}: {legalCase.title}
+                      &lt;/h3&gt;
+                      &lt;span className&#x3D;&quot;ruling-decision&quot;&gt;Ruled&lt;/span&gt;
+                    &lt;/div&gt;
+                    &lt;p className&#x3D;&quot;ruling-description&quot;&gt;{legalCase.description}&lt;/p&gt;
+                    &lt;p className&#x3D;&quot;ruling-meta&quot;&gt;
+                      Filed:{&#x27; &#x27;}
+                      {legalCase.filedAt
+                        ? new Date(legalCase.filedAt).toLocaleDateString()
+                        : &#x27;Unknown&#x27;}
+                    &lt;/p&gt;
+                  &lt;/li&gt;
+                ))}
+            &lt;/ul&gt;
+          )}
+        &lt;/section&gt;
+      )}
+    &lt;/div&gt;
+  );
+};
+
+export default JudiciarySystem;
+</code></pre>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'interface';
+            var COMPODOC_CURRENT_PAGE_URL = 'Ruling-1.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

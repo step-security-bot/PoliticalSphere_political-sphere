@@ -12,7 +12,8 @@
         "outputPath": "libs/shared/dist",
         "main": "libs/shared/src/index.ts",
         "tsConfig": "libs/shared/tsconfig.lib.json",
-        "assets": []
+        "assets": ["libs/shared/src/**/*.js"],
+        "sourceMap": true
       }
     },
     "lint": {

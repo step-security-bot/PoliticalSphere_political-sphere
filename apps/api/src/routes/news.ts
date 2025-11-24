@@ -1,23 +1,31 @@
 import express from 'express';
+import type { Request, Response } from 'express';
 
-import { FileNewsStore, NewsService } from '../news-service.js';
+import { NewsService } from '../news-service.js';
 import { CreateNewsSchema, UpdateNewsSchema } from '../utils/shared-shim.js';
 
 const router = express.Router();
-const newsService = new NewsService(new FileNewsStore());
+const newsService = new NewsService();
 
-function handleValidationError(res, error) {
+function handleValidationError(
+  res: Response,
+  error: { message?: string; details?: unknown } | unknown
+) {
+  const err = error as { message?: string; details?: unknown };
   return res.status(400).json({
     success: false,
-    error: error?.message || 'Invalid request',
-    details: error?.details,
+    error: err?.message || 'Invalid request',
+    details: err?.details,
   });
 }
 
-router.get('/news', async (req, res) => {
+/**
+ * GET /news - List news items with optional filters (category, tag, search, limit)
+ */
+router.get('/news', async (req: Request, res: Response) => {
   try {
     const { category, tag, search, limit } = req.query;
-    const options = {};
+    const options: { category?: string; tag?: string; search?: string; limit?: number } = {};
 
     if (category) {
       options.category = newsService.validateCategory(String(category));
@@ -49,13 +57,18 @@ router.get('/news', async (req, res) => {
     }
 
     const news = await newsService.list(options);
-    res.json({ success: true, data: news });
+    return res.json({ success: true, data: news });
   } catch (error) {
-    if (error?.code === 'VALIDATION_ERROR') {
+    const err = error as { code?: string } | unknown;
+    if (
+      typeof (err as { code?: string })?.code === 'string' &&
+      (err as { code?: string }).code === 'VALIDATION_ERROR'
+    ) {
       return handleValidationError(res, error);
     }
+    // eslint-disable-next-line no-console
     console.error('Error fetching news:', error);
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       error: 'Internal server error',
       message: 'Failed to fetch news',
@@ -63,27 +76,38 @@ router.get('/news', async (req, res) => {
   }
 });
 
-router.post('/news', async (req, res) => {
+/**
+ * POST /news - Create a news item
+ */
+router.post('/news', async (req: Request, res: Response) => {
   try {
     const input = CreateNewsSchema.parse(req.body);
     const newsItem = await newsService.create(input);
-    res.status(201).json({ success: true, data: newsItem });
+    return res.status(201).json({ success: true, data: newsItem });
   } catch (error) {
-    if (error.name === 'ZodError') {
+    const err = error as
+      | { name?: string; errors?: Array<{ path: string[]; message: string }>; code?: string }
+      | unknown;
+    if ((err as { name?: string }).name === 'ZodError') {
       return res.status(400).json({
         success: false,
         error: 'Validation failed',
-        details: error.errors.map(e => ({
-          field: e.path.join('.'),
-          message: e.message,
-        })),
+        details:
+          (err as { errors?: Array<{ path: string[]; message: string }> }).errors?.map(e => ({
+            field: e.path.join('.'),
+            message: e.message,
+          })) || [],
       });
     }
-    if (error?.code === 'VALIDATION_ERROR') {
+    if (
+      typeof (err as { code?: string })?.code === 'string' &&
+      (err as { code?: string }).code === 'VALIDATION_ERROR'
+    ) {
       return handleValidationError(res, error);
     }
+    // eslint-disable-next-line no-console
     console.error('Error creating news:', error);
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       error: 'Internal server error',
       message: 'Failed to create news item',
@@ -91,9 +115,15 @@ router.post('/news', async (req, res) => {
   }
 });
 
-router.get('/news/:id', async (req, res) => {
+/**
+ * GET /news/:id - Get a single news item by ID
+ */
+router.get('/news/:id', async (req: Request, res: Response) => {
   try {
-    const { id } = req.params;
+    const { id } = req.params as { id?: string };
+    if (!id) {
+      return res.status(400).json({ success: false, error: 'Invalid id' });
+    }
     const item = await newsService.getById(id);
     if (!item) {
       return res.status(404).json({
@@ -102,10 +132,11 @@ router.get('/news/:id', async (req, res) => {
         message: 'News item not found',
       });
     }
-    res.json({ success: true, data: item });
+    return res.json({ success: true, data: item });
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.error('Error fetching news item:', error);
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       error: 'Internal server error',
       message: 'Failed to fetch news item',
@@ -113,9 +144,13 @@ router.get('/news/:id', async (req, res) => {
   }
 });
 
-router.put('/news/:id', async (req, res) => {
+/**
+ * PUT /news/:id - Update a news item
+ */
+router.put('/news/:id', async (req: Request, res: Response) => {
   try {
-    const { id } = req.params;
+    const { id } = req.params as { id?: string };
+    if (!id) return res.status(400).json({ success: false, error: 'Invalid id' });
     const input = UpdateNewsSchema.parse(req.body);
     const updatedItem = await newsService.update(id, input);
     if (!updatedItem) {
@@ -125,23 +160,32 @@ router.put('/news/:id', async (req, res) => {
         message: 'News item not found',
       });
     }
-    res.json({ success: true, data: updatedItem });
+    return res.json({ success: true, data: updatedItem });
   } catch (error) {
-    if (error.name === 'ZodError') {
+    const err = error as
+      | { name?: string; errors?: Array<{ path: string[]; message: string }>; code?: string }
+      | unknown;
+    if ((err as { name?: string }).name === 'ZodError') {
       return res.status(400).json({
         success: false,
         error: 'Validation failed',
-        details: error.errors.map(e => ({
-          field: e.path.join('.'),
-          message: e.message,
-        })),
+        details: (err as { errors?: Array<{ path: string[]; message: string }> }).errors?.map(
+          e => ({
+            field: e.path.join('.'),
+            message: e.message,
+          })
+        ),
       });
     }
-    if (error?.code === 'VALIDATION_ERROR') {
+    if (
+      typeof (err as { code?: string })?.code === 'string' &&
+      (err as { code?: string }).code === 'VALIDATION_ERROR'
+    ) {
       return handleValidationError(res, error);
     }
+    // eslint-disable-next-line no-console
     console.error('Error updating news:', error);
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       error: 'Internal server error',
       message: 'Failed to update news item',
@@ -149,13 +193,17 @@ router.put('/news/:id', async (req, res) => {
   }
 });
 
-router.get('/metrics/news', async (_req, res) => {
+/**
+ * GET /metrics/news - Return analytics summary for news items
+ */
+router.get('/metrics/news', async (_req: Request, res: Response) => {
   try {
     const summary = await newsService.analyticsSummary();
-    res.json({ success: true, data: summary });
+    return res.json({ success: true, data: summary });
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.error('Error fetching news metrics:', error);
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       error: 'Internal server error',
       message: 'Failed to fetch news metrics',
@@ -163,4 +211,14 @@ router.get('/metrics/news', async (_req, res) => {
   }
 });
 
+/**
+ * Express router exposing `/news` endpoints for listing, creating,
+ * retrieving and updating news items as well as `/metrics/news` for
+ * analytics. Routes use `NewsService` for validation and persistence.
+ */
+/**
+ * Default `express.Router` for news endpoints.
+ *
+ * Exposes listing, creation and metrics endpoints for news and articles.
+ */
 export default router;

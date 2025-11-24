@@ -1,0 +1,960 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>political-sphere documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">political-sphere documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content interface">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Interfaces</li>
+  <li class="breadcrumb-item"
+  >
+  QueuedBackup</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>apps/api/src/utils/database-backup.ts</code>
+        </p>
+
+
+
+
+        <section data-compodoc="block-index">
+            <h3 id="index">Index</h3>
+            <table class="table table-sm table-bordered index-table">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <h6><b>Properties</b></h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <ul class="index-list">
+                                <li>
+                                        <a href="#backupPath" 
+>
+                                            backupPath
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#compress" 
+>
+                                            compress
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#dbPath" 
+>
+                                            dbPath
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#reject" 
+>
+                                            reject
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#resolve" 
+>
+                                            resolve
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#verify" 
+>
+                                            verify
+                                        </a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+
+
+            <section data-compodoc="block-properties">
+                <h3 id="inputs">Properties</h3>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="backupPath"></a>
+                                        <span class="name "><b>backupPath</b>
+                                            <a href="#backupPath">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>backupPath:         <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="compress"></a>
+                                        <span class="name "><b>compress</b>
+                                            <a href="#compress">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>compress:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="dbPath"></a>
+                                        <span class="name "><b>dbPath</b>
+                                            <a href="#dbPath">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>dbPath:         <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="reject"></a>
+                                        <span class="name "><b>reject</b>
+                                            <a href="#reject">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>reject:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/function" target="_blank" >function</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/function" target="_blank" >function</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="resolve"></a>
+                                        <span class="name "><b>resolve</b>
+                                            <a href="#resolve">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>resolve:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/function" target="_blank" >function</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/function" target="_blank" >function</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="verify"></a>
+                                        <span class="name "><b>verify</b>
+                                            <a href="#verify">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>verify:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+            </section>
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import * as fsSync from &#x27;node:fs&#x27;;
+import * as pathModule from &#x27;node:path&#x27;;
+import * as fs from &#x27;node:fs&#x27;;
+
+// Note: Avoid using child_process for backup operations; prefer library APIs
+import * as loggerModule from &#x27;./logger.js&#x27;;
+
+const loggerBackup &#x3D; loggerModule.default || loggerModule;
+
+/**
+ * Database Backup Manager
+ * Provides automated backup functionality with compression and retention
+ * @see docs/architecture/decisions/adr-0004-database-backup.md
+ */
+
+interface BackupOptions {
+  backupDir?: string;
+  retentionDays?: number;
+  compressionEnabled?: boolean;
+  maxConcurrentBackups?: number;
+}
+
+interface BackupConfig {
+  name?: string;
+  compress?: boolean;
+  verify?: boolean;
+}
+
+interface ScheduleConfig {
+  intervalHours?: number;
+  maxBackups?: number;
+}
+
+interface QueuedBackup {
+  dbPath: string;
+  backupPath: string;
+  compress: boolean;
+  verify: boolean;
+  resolve: (value: Record&lt;string, unknown&gt;) &#x3D;&gt; void;
+  reject: (reason?: Error) &#x3D;&gt; void;
+}
+
+/**
+ * Database backup manager for creating, managing, and restoring database backups.
+ * Supports compression, verification, retention policies, and concurrent backup operations.
+ * Designed for production use with proper error handling and monitoring.
+ */
+class DatabaseBackupManager {
+  private backupDir: string;
+  private retentionDays: number;
+  private compressionEnabled: boolean;
+  private maxConcurrentBackups: number;
+  private backupQueue: QueuedBackup[];
+  private activeBackups: number;
+
+  constructor(options: BackupOptions &#x3D; {}) {
+    this.backupDir &#x3D; options.backupDir || pathModule.join(process.cwd(), &#x27;backups&#x27;);
+    this.retentionDays &#x3D; options.retentionDays || 30;
+    this.compressionEnabled &#x3D; options.compressionEnabled !&#x3D;&#x3D; false;
+    this.maxConcurrentBackups &#x3D; options.maxConcurrentBackups || 3;
+    this.backupQueue &#x3D; [];
+    this.activeBackups &#x3D; 0;
+
+    // Ensure backup directory exists
+    if (!fsSync.existsSync(this.backupDir)) {
+      fsSync.mkdirSync(this.backupDir, { recursive: true });
+      loggerBackup.info(&#x27;Backup directory created&#x27;, { backupDir: this.backupDir });
+    }
+  }
+
+  /**
+   * Create a database backup
+   * @param {string} dbPath - Path to database file
+   * @param {Object} options - Backup options
+   * @returns {Promise&lt;Object&gt;} Backup result
+   */
+  async createBackup(dbPath: string, options: BackupConfig &#x3D; {}): Promise&lt;Record&lt;string, unknown&gt;&gt; {
+    const {
+      name &#x3D; this.generateBackupName(),
+      compress &#x3D; this.compressionEnabled,
+      verify &#x3D; true,
+    } &#x3D; options;
+
+    const backupPath &#x3D; pathModule.join(this.backupDir, name);
+
+    // Queue backup if too many are running
+    if (this.activeBackups &gt;&#x3D; this.maxConcurrentBackups) {
+      return new Promise((resolve, reject) &#x3D;&gt; {
+        this.backupQueue.push({
+          dbPath,
+          backupPath,
+          compress,
+          verify,
+          resolve,
+          reject,
+        });
+      });
+    }
+
+    return this.performBackup(dbPath, backupPath, compress, verify);
+  }
+
+  async performBackup(
+    dbPath: string,
+    backupPath: string,
+    compress: boolean,
+    verify: boolean
+  ): Promise&lt;Record&lt;string, unknown&gt;&gt; {
+    this.activeBackups++;
+
+    const startTime &#x3D; Date.now();
+    const result &#x3D; {
+      success: false,
+      backupPath,
+      size: 0,
+      duration: 0,
+      compressed: compress,
+      verified: false,
+    };
+
+    try {
+      logger.info(&#x27;Starting database backup&#x27;, { dbPath, backupPath, compress });
+
+      // Create backup using SQLite .backup command
+      await this.createSQLiteBackup(dbPath, backupPath);
+
+      // Get backup file size
+      const stats &#x3D; fs.statSync(backupPath);
+      result.size &#x3D; stats.size;
+
+      // Compress if requested
+      if (compress) {
+        const compressedPath &#x3D; await this.compressBackup(backupPath);
+        // Remove uncompressed file
+        fs.unlinkSync(backupPath);
+        result.backupPath &#x3D; compressedPath;
+        result.size &#x3D; fs.statSync(compressedPath).size;
+      }
+
+      // Verify backup if requested
+      if (verify) {
+        await this.verifyBackup(result.backupPath, dbPath);
+        result.verified &#x3D; true;
+      }
+
+      result.success &#x3D; true;
+      result.duration &#x3D; Date.now() - startTime;
+
+      logger.info(&#x27;Database backup completed&#x27;, {
+        backupPath: result.backupPath,
+        size: result.size,
+        duration: result.duration,
+        compressed: compress,
+        verified: result.verified,
+      });
+    } catch (error) {
+      logger.error(&#x27;Database backup failed&#x27;, {
+        dbPath,
+        backupPath,
+        error: (error as Error).message,
+      });
+      throw error;
+    } finally {
+      this.activeBackups--;
+
+      // Process next queued backup
+      if (this.backupQueue.length &gt; 0 &amp;&amp; this.activeBackups &lt; this.maxConcurrentBackups) {
+        const next &#x3D; this.backupQueue.shift();
+        if (next) {
+          await this.performBackup(next.dbPath, next.backupPath, next.compress, next.verify)
+            .then(result &#x3D;&gt; next.resolve(result))
+            .catch(err &#x3D;&gt; next.reject(err));
+        }
+      }
+    }
+
+    return result;
+  }
+
+  async createSQLiteBackup(dbPath: string, backupPath: string): Promise&lt;void&gt; {
+    return new Promise&lt;void&gt;((resolve, reject) &#x3D;&gt; {
+      const sqlite3 &#x3D; require(&#x27;better-sqlite3&#x27;);
+
+      try {
+        const db &#x3D; sqlite3(dbPath);
+        const backup &#x3D; db.backup(backupPath);
+
+        backup.step(-1); // Backup all pages
+        backup.finish();
+
+        db.close();
+        resolve();
+      } catch (error) {
+        reject(error);
+      }
+    });
+  }
+
+  async compressBackup(backupPath: string): Promise&lt;string&gt; {
+    const compressedPath &#x3D; &#x60;${backupPath}.gz&#x60;;
+
+    return new Promise&lt;string&gt;((resolve, reject) &#x3D;&gt; {
+      const gzip &#x3D; require(&#x27;node:zlib&#x27;).createGzip();
+      const input &#x3D; fs.createReadStream(backupPath);
+      const output &#x3D; fs.createWriteStream(compressedPath);
+
+      input.pipe(gzip).pipe(output);
+
+      output.on(&#x27;finish&#x27;, () &#x3D;&gt; resolve(compressedPath));
+      output.on(&#x27;error&#x27;, reject);
+    });
+  }
+
+  async verifyBackup(backupPath: string, _originalDbPath: string): Promise&lt;void&gt; {
+    // For compressed backups, we need to decompress first
+    let tempPath &#x3D; backupPath;
+    if (backupPath.endsWith(&#x27;.gz&#x27;)) {
+      tempPath &#x3D; backupPath.replace(&#x27;.gz&#x27;, &#x27;.tmp&#x27;);
+      await this.decompressBackup(backupPath, tempPath);
+    }
+
+    try {
+      const sqlite3 &#x3D; require(&#x27;better-sqlite3&#x27;);
+
+      // Open backup database and verify it has the expected tables
+      const backupDb &#x3D; sqlite3(tempPath);
+
+      const tables &#x3D; backupDb
+        .prepare(&quot;SELECT name FROM sqlite_master WHERE type&#x3D;&#x27;table&#x27; AND name NOT LIKE &#x27;sqlite_%&#x27;&quot;)
+        .all();
+
+      if (tables.length &#x3D;&#x3D;&#x3D; 0) {
+        throw new Error(&#x27;Backup database contains no tables&#x27;);
+      }
+
+      // Verify foreign key constraints
+      const fkViolations &#x3D; backupDb.prepare(&#x27;PRAGMA foreign_key_check&#x27;).all();
+      if (fkViolations.length &gt; 0) {
+        throw new Error(&#x60;Backup has foreign key violations: ${JSON.stringify(fkViolations)}&#x60;);
+      }
+
+      backupDb.close();
+
+      logger.debug(&#x27;Backup verification completed&#x27;, { backupPath });
+    } finally {
+      // Clean up temporary file
+      if (tempPath !&#x3D;&#x3D; backupPath &amp;&amp; fs.existsSync(tempPath)) {
+        fs.unlinkSync(tempPath);
+      }
+    }
+  }
+
+  async decompressBackup(compressedPath: string, outputPath: string): Promise&lt;void&gt; {
+    return new Promise&lt;void&gt;((resolve, reject) &#x3D;&gt; {
+      const gunzip &#x3D; require(&#x27;node:zlib&#x27;).createGunzip();
+      const input &#x3D; fs.createReadStream(compressedPath);
+      const output &#x3D; fs.createWriteStream(outputPath);
+
+      input.pipe(gunzip).pipe(output);
+
+      output.on(&#x27;finish&#x27;, () &#x3D;&gt; resolve());
+      output.on(&#x27;error&#x27;, reject);
+    });
+  }
+
+  /**
+   * Restore database from backup
+   * @param {string} backupPath - Path to backup file
+   * @param {string} dbPath - Path to restore database to
+   * @returns {Promise&lt;Object&gt;} Restore result
+   */
+  async restoreBackup(
+    backupPath: string,
+    dbPath: string
+  ): Promise&lt;{ success: boolean; backupPath: string; dbPath: string; duration: number }&gt; {
+    const startTime &#x3D; Date.now();
+    const result &#x3D; {
+      success: false,
+      backupPath,
+      dbPath,
+      duration: 0,
+    };
+
+    try {
+      logger.info(&#x27;Starting database restore&#x27;, { backupPath, dbPath });
+
+      // Handle compressed backups
+      let tempPath &#x3D; backupPath;
+      if (backupPath.endsWith(&#x27;.gz&#x27;)) {
+        tempPath &#x3D; backupPath.replace(&#x27;.gz&#x27;, &#x27;.tmp&#x27;);
+        await this.decompressBackup(backupPath, tempPath);
+      }
+
+      // Ensure target directory exists
+      const dbDir &#x3D; pathModule.dirname(dbPath);
+      if (!fs.existsSync(dbDir)) {
+        fs.mkdirSync(dbDir, { recursive: true });
+      }
+
+      // Copy backup to target location
+      fs.copyFileSync(tempPath, dbPath);
+
+      // Clean up temp file
+      if (tempPath !&#x3D;&#x3D; backupPath) {
+        fs.unlinkSync(tempPath);
+      }
+
+      // Verify restored database
+      const sqlite3 &#x3D; require(&#x27;better-sqlite3&#x27;);
+      const db &#x3D; sqlite3(dbPath);
+
+      // Run integrity check
+      const integrity &#x3D; db.prepare(&#x27;PRAGMA integrity_check&#x27;).get();
+      if (integrity.integrity_check !&#x3D;&#x3D; &#x27;ok&#x27;) {
+        throw new Error(&#x27;Database integrity check failed&#x27;);
+      }
+
+      db.close();
+
+      result.success &#x3D; true;
+      result.duration &#x3D; Date.now() - startTime;
+
+      logger.info(&#x27;Database restore completed&#x27;, {
+        backupPath,
+        dbPath,
+        duration: result.duration,
+      });
+    } catch (error) {
+      logger.error(&#x27;Database restore failed&#x27;, {
+        backupPath,
+        dbPath,
+        error: (error as Error).message,
+      });
+      throw error;
+    }
+
+    return result;
+  }
+
+  /**
+   * Clean up old backups based on retention policy
+   * @returns {Promise&lt;Array&lt;string&gt;&gt;} List of deleted backup files
+   */
+  async cleanupOldBackups() {
+    const deletedFiles &#x3D; [];
+    const cutoffDate &#x3D; new Date();
+    cutoffDate.setDate(cutoffDate.getDate() - this.retentionDays);
+
+    try {
+      const files &#x3D; fs.readdirSync(this.backupDir);
+
+      for (const file of files) {
+        const filePath &#x3D; pathModule.join(this.backupDir, file);
+        const stats &#x3D; fs.statSync(filePath);
+
+        if (stats.mtime &lt; cutoffDate) {
+          fs.unlinkSync(filePath);
+          deletedFiles.push(file);
+          logger.debug(&#x27;Old backup deleted&#x27;, { file, age: stats.mtime });
+        }
+      }
+
+      if (deletedFiles.length &gt; 0) {
+        logger.info(&#x27;Old backups cleaned up&#x27;, {
+          deletedCount: deletedFiles.length,
+          retentionDays: this.retentionDays,
+        });
+      }
+    } catch (error) {
+      logger.error(&#x27;Failed to cleanup old backups&#x27;, { error: (error as Error).message });
+    }
+
+    return deletedFiles;
+  }
+
+  /**
+   * Get backup statistics
+   * @returns {Object} Backup statistics
+   */
+  getBackupStats() {
+    try {
+      const files &#x3D; fs.readdirSync(this.backupDir);
+      let totalSize &#x3D; 0;
+      let oldestBackup &#x3D; null;
+      let newestBackup &#x3D; null;
+
+      for (const file of files) {
+        const filePath &#x3D; pathModule.join(this.backupDir, file);
+        const stats &#x3D; fs.statSync(filePath);
+        totalSize +&#x3D; stats.size;
+
+        if (!oldestBackup || stats.mtime &lt; oldestBackup.mtime) {
+          oldestBackup &#x3D; { file, mtime: stats.mtime };
+        }
+
+        if (!newestBackup || stats.mtime &gt; newestBackup.mtime) {
+          newestBackup &#x3D; { file, mtime: stats.mtime };
+        }
+      }
+
+      return {
+        totalBackups: files.length,
+        totalSize,
+        oldestBackup,
+        newestBackup,
+        backupDir: this.backupDir,
+        retentionDays: this.retentionDays,
+      };
+    } catch (error) {
+      logger.error(&#x27;Failed to get backup stats&#x27;, { error: (error as Error).message });
+      return { error: (error as Error).message };
+    }
+  }
+
+  generateBackupName() {
+    const timestamp &#x3D; new Date().toISOString().replace(/[:.]/g, &#x27;-&#x27;);
+    return &#x60;political-sphere-${timestamp}.db&#x60;;
+  }
+
+  /**
+   * Schedule automated backups
+   * @param {string} dbPath - Database path
+   * @param {Object} schedule - Backup schedule options
+   */
+  scheduleAutomatedBackups(dbPath: string, schedule: ScheduleConfig &#x3D; {}): NodeJS.Timeout {
+    const {
+      intervalHours &#x3D; 24, // Daily backups
+      maxBackups &#x3D; 30,
+    } &#x3D; schedule;
+
+    const intervalMs &#x3D; intervalHours * 60 * 60 * 1000;
+
+    loggerBackup.info(&#x27;Scheduling automated backups&#x27;, {
+      intervalHours,
+      maxBackups,
+      dbPath,
+    });
+
+    return setInterval(async () &#x3D;&gt; {
+      try {
+        await this.createBackup(dbPath);
+
+        // Cleanup old backups
+        await this.cleanupOldBackups();
+
+        // Check if we exceed max backups
+        const stats &#x3D; this.getBackupStats();
+        if (
+          &#x27;totalBackups&#x27; in stats &amp;&amp;
+          stats.totalBackups !&#x3D;&#x3D; undefined &amp;&amp;
+          stats.totalBackups &gt; maxBackups
+        ) {
+          logger.warn(&#x27;Too many backups, consider increasing retention or reducing schedule&#x27;, {
+            totalBackups: stats.totalBackups,
+            maxBackups,
+          });
+        }
+      } catch (error) {
+        loggerBackup.error(&#x27;Automated backup failed&#x27;, { error: (error as Error).message });
+      }
+    }, intervalMs);
+  }
+}
+
+// Create singleton instance
+const backupManager &#x3D; new DatabaseBackupManager();
+
+export { DatabaseBackupManager, backupManager };
+</code></pre>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'interface';
+            var COMPODOC_CURRENT_PAGE_URL = 'QueuedBackup.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

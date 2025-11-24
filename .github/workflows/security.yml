@@ -214,6 +214,25 @@ jobs:
         with:
           persist-credentials: false
 
+      - name: Guard: limit changed files for PRs
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
+        with:
+          script: |
+            const pr = context.payload.pull_request;
+            if (!pr) return;
+            const files = await github.paginate(
+              github.rest.pulls.listFiles,
+              { owner: context.repo.owner, repo: context.repo.repo, pull_number: pr.number, per_page: 100 },
+              response => response.data.map(file => file.filename)
+            );
+            const limit = 300;
+            if (files.length >= limit) {
+              core.setFailed(`CodeQL diff mode unavailable: PR changes ${files.length} files (limit ${limit - 1}). Split into smaller PRs to enable diff-aware scanning.`);
+            } else {
+              core.info(`PR changes ${files.length} files; proceeding with diff-aware CodeQL.`);
+            }
+
       - name: Initialize CodeQL
         uses: github/codeql-action/init@e12f0178983d466f2f6028f5cc7a6d786fd97f4b # v4.31.4
         with:

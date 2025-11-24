@@ -1,0 +1,785 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>political-sphere documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">political-sphere documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content interface">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Interfaces</li>
+  <li class="breadcrumb-item"
+  >
+  GameData</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>apps/web/src/components/MainGame.tsx</code>
+        </p>
+
+
+
+
+        <section data-compodoc="block-index">
+            <h3 id="index">Index</h3>
+            <table class="table table-sm table-bordered index-table">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <h6><b>Properties</b></h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <ul class="index-list">
+                                <li>
+                                            <span class="modifier">Optional</span>
+                                        <a href="#currentTurn" 
+>
+                                            currentTurn
+                                        </a>
+                                </li>
+                                <li>
+                                            <span class="modifier">Optional</span>
+                                        <a href="#name" 
+>
+                                            name
+                                        </a>
+                                </li>
+                                <li>
+                                            <span class="modifier">Optional</span>
+                                        <a href="#players" 
+>
+                                            players
+                                        </a>
+                                </li>
+                                <li>
+                                            <span class="modifier">Optional</span>
+                                        <a href="#status" 
+>
+                                            status
+                                        </a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+
+
+            <section data-compodoc="block-properties">
+                <h3 id="inputs">Properties</h3>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="currentTurn"></a>
+                                        <span class="name "><b>currentTurn</b>
+                                            <a href="#currentTurn">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>currentTurn:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Optional</i>
+                                        </td>
+                                    </tr>
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="name"></a>
+                                        <span class="name "><b>name</b>
+                                            <a href="#name">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>name:         <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Optional</i>
+                                        </td>
+                                    </tr>
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="players"></a>
+                                        <span class="name "><b>players</b>
+                                            <a href="#players">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>players:     <code>literal type[]</code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>    <code>literal type[]</code>
+
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Optional</i>
+                                        </td>
+                                    </tr>
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="status"></a>
+                                        <span class="name "><b>status</b>
+                                            <a href="#status">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>status:         <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Optional</i>
+                                        </td>
+                                    </tr>
+
+
+
+
+                        </tbody>
+                    </table>
+            </section>
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { type FC, useCallback, useEffect, useState } from &#x27;react&#x27;;
+import ElectionsCenter from &#x27;./Elections/ElectionsCenter&#x27;;
+import GovernmentDashboard from &#x27;./Government/GovernmentDashboard&#x27;;
+import JudiciarySystem from &#x27;./Judiciary/JudiciarySystem&#x27;;
+import &#x27;./MainGame.css&#x27;;
+import MediaCenter from &#x27;./Media/MediaCenter&#x27;;
+import ParliamentChamber from &#x27;./Parliament/ParliamentChamber&#x27;;
+import UserProfile from &#x27;./Profile/UserProfile&#x27;;
+import { useLoading } from &#x27;../contexts/LoadingContext&#x27;;
+import { useToast } from &#x27;../contexts/ToastContext&#x27;;
+import { SkeletonList } from &#x27;../components/common/Skeleton&#x27;;
+
+interface MainGameProps {
+  userId: string;
+  username: string;
+  onLogout: () &#x3D;&gt; void;
+}
+
+type GameView &#x3D;
+  | &#x27;overview&#x27;
+  | &#x27;parliament&#x27;
+  | &#x27;government&#x27;
+  | &#x27;judiciary&#x27;
+  | &#x27;media&#x27;
+  | &#x27;elections&#x27;
+  | &#x27;profile&#x27;;
+
+interface GameData {
+  name?: string;
+  players?: { id: string; name: string }[];
+  currentTurn?: number;
+  status?: string;
+}
+
+const MainGame: FC&lt;MainGameProps&gt; &#x3D; ({ userId, username, onLogout }) &#x3D;&gt; {
+  const [currentView, setCurrentView] &#x3D; useState&lt;GameView&gt;(&#x27;overview&#x27;);
+  const [gameData, setGameData] &#x3D; useState&lt;GameData | null&gt;(null);
+  const { withLoading, isLoading } &#x3D; useLoading();
+  const { showToast } &#x3D; useToast();
+
+  const fetchGameData &#x3D; useCallback(async () &#x3D;&gt; {
+    try {
+      const data &#x3D; await withLoading(&#x27;game-data&#x27;, async () &#x3D;&gt; {
+        // Fetch simulation state (single world)
+        const response &#x3D; await fetch(&#x27;/api/simulation/state&#x27;);
+        if (!response.ok) throw new Error(&#x27;Failed to fetch simulation data&#x27;);
+        const result &#x3D; await response.json();
+        if (!result.success) throw new Error(&#x27;Failed to fetch simulation data&#x27;);
+        return result.data;
+      });
+
+      setGameData(data);
+    } catch {
+      showToast(&#x27;error&#x27;, &#x27;Failed to load game data&#x27;, &#x27;Please refresh the page to try again.&#x27;);
+    }
+  }, [withLoading, showToast]);
+
+  useEffect(() &#x3D;&gt; {
+    fetchGameData();
+    // Poll for updates every 30 seconds
+    const interval &#x3D; setInterval(fetchGameData, 30000);
+    return () &#x3D;&gt; clearInterval(interval);
+  }, [fetchGameData]);
+
+  // Update page title for game view
+  useEffect(() &#x3D;&gt; {
+    document.title &#x3D; &#x27;Political Sphere - Game Dashboard&#x27;;
+  }, []);
+
+  // Placeholder handlers for future implementation
+  const _handleParliamentAction &#x3D; async (_action: Record&lt;string, unknown&gt;) &#x3D;&gt; {
+    try {
+      await withLoading(&#x27;parliament-action&#x27;, async () &#x3D;&gt; {
+        // Handle parliament actions
+        // Simulate API call
+        await new Promise(resolve &#x3D;&gt; setTimeout(resolve, 1000));
+      });
+      showToast(&#x27;success&#x27;, &#x27;Parliament action submitted&#x27;, &#x27;Your action has been recorded.&#x27;);
+      await fetchGameData();
+    } catch {
+      showToast(&#x27;error&#x27;, &#x27;Action failed&#x27;, &#x27;Please try again.&#x27;);
+    }
+  };
+
+  const _handleGovernmentAction &#x3D; async (_action: Record&lt;string, unknown&gt;) &#x3D;&gt; {
+    try {
+      await withLoading(&#x27;government-action&#x27;, async () &#x3D;&gt; {
+        // Handle government actions
+        // Simulate API call
+        await new Promise(resolve &#x3D;&gt; setTimeout(resolve, 1000));
+      });
+      showToast(&#x27;success&#x27;, &#x27;Government action submitted&#x27;, &#x27;Your action has been recorded.&#x27;);
+      await fetchGameData();
+    } catch {
+      showToast(&#x27;error&#x27;, &#x27;Action failed&#x27;, &#x27;Please try again.&#x27;);
+    }
+  };
+
+  const _handleElectionAction &#x3D; async (_action: Record&lt;string, unknown&gt;) &#x3D;&gt; {
+    try {
+      await withLoading(&#x27;election-action&#x27;, async () &#x3D;&gt; {
+        // Handle election actions
+        // Simulate API call
+        await new Promise(resolve &#x3D;&gt; setTimeout(resolve, 1000));
+      });
+      showToast(&#x27;success&#x27;, &#x27;Election action submitted&#x27;, &#x27;Your action has been recorded.&#x27;);
+      await fetchGameData();
+    } catch {
+      showToast(&#x27;error&#x27;, &#x27;Action failed&#x27;, &#x27;Please try again.&#x27;);
+    }
+  };
+
+  if (isLoading(&#x27;game-data&#x27;)) {
+    return (
+      &lt;div className&#x3D;&quot;main-game loading&quot; aria-live&#x3D;&quot;polite&quot;&gt;
+        &lt;div className&#x3D;&quot;loading-spinner&quot; /&gt;
+        &lt;p&gt;Loading game...&lt;/p&gt;
+      &lt;/div&gt;
+    );
+  }
+
+  return (
+    &lt;div className&#x3D;&quot;main-game&quot;&gt;
+      {/* Top Navigation Bar */}
+      &lt;header className&#x3D;&quot;game-header&quot;&gt;
+        &lt;div className&#x3D;&quot;header-content&quot;&gt;
+          &lt;div className&#x3D;&quot;game-title&quot;&gt;
+            &lt;h1&gt;Political Sphere&lt;/h1&gt;
+            &lt;span className&#x3D;&quot;game-status&quot;&gt;UK Political Simulation&lt;/span&gt;
+            &lt;span className&#x3D;&quot;user-info&quot;&gt;Welcome, {username}&lt;/span&gt;
+          &lt;/div&gt;
+
+          &lt;nav className&#x3D;&quot;header-nav&quot; aria-label&#x3D;&quot;Main navigation&quot;&gt;
+            &lt;button
+              type&#x3D;&quot;button&quot;
+              onClick&#x3D;{() &#x3D;&gt; setCurrentView(&#x27;overview&#x27;)}
+              className&#x3D;{currentView &#x3D;&#x3D;&#x3D; &#x27;overview&#x27; ? &#x27;active&#x27; : &#x27;&#x27;}
+              aria-current&#x3D;{currentView &#x3D;&#x3D;&#x3D; &#x27;overview&#x27; ? &#x27;page&#x27; : undefined}
+            &gt;
+              &lt;span className&#x3D;&quot;nav-icon&quot;&gt;🏛️&lt;/span&gt;
+              Overview
+            &lt;/button&gt;
+            &lt;button
+              type&#x3D;&quot;button&quot;
+              onClick&#x3D;{() &#x3D;&gt; setCurrentView(&#x27;parliament&#x27;)}
+              className&#x3D;{currentView &#x3D;&#x3D;&#x3D; &#x27;parliament&#x27; ? &#x27;active&#x27; : &#x27;&#x27;}
+              aria-current&#x3D;{currentView &#x3D;&#x3D;&#x3D; &#x27;parliament&#x27; ? &#x27;page&#x27; : undefined}
+            &gt;
+              &lt;span className&#x3D;&quot;nav-icon&quot;&gt;⚖️&lt;/span&gt;
+              Parliament
+            &lt;/button&gt;
+            &lt;button
+              type&#x3D;&quot;button&quot;
+              onClick&#x3D;{() &#x3D;&gt; setCurrentView(&#x27;government&#x27;)}
+              className&#x3D;{currentView &#x3D;&#x3D;&#x3D; &#x27;government&#x27; ? &#x27;active&#x27; : &#x27;&#x27;}
+              aria-current&#x3D;{currentView &#x3D;&#x3D;&#x3D; &#x27;government&#x27; ? &#x27;page&#x27; : undefined}
+            &gt;
+              &lt;span className&#x3D;&quot;nav-icon&quot;&gt;🏢&lt;/span&gt;
+              Government
+            &lt;/button&gt;
+            &lt;button
+              type&#x3D;&quot;button&quot;
+              onClick&#x3D;{() &#x3D;&gt; setCurrentView(&#x27;judiciary&#x27;)}
+              className&#x3D;{currentView &#x3D;&#x3D;&#x3D; &#x27;judiciary&#x27; ? &#x27;active&#x27; : &#x27;&#x27;}
+              aria-current&#x3D;{currentView &#x3D;&#x3D;&#x3D; &#x27;judiciary&#x27; ? &#x27;page&#x27; : undefined}
+            &gt;
+              &lt;span className&#x3D;&quot;nav-icon&quot;&gt;⚖️&lt;/span&gt;
+              Judiciary
+            &lt;/button&gt;
+            &lt;button
+              type&#x3D;&quot;button&quot;
+              onClick&#x3D;{() &#x3D;&gt; setCurrentView(&#x27;media&#x27;)}
+              className&#x3D;{currentView &#x3D;&#x3D;&#x3D; &#x27;media&#x27; ? &#x27;active&#x27; : &#x27;&#x27;}
+              aria-current&#x3D;{currentView &#x3D;&#x3D;&#x3D; &#x27;media&#x27; ? &#x27;page&#x27; : undefined}
+            &gt;
+              &lt;span className&#x3D;&quot;nav-icon&quot;&gt;📰&lt;/span&gt;
+              Media
+            &lt;/button&gt;
+            &lt;button
+              type&#x3D;&quot;button&quot;
+              onClick&#x3D;{() &#x3D;&gt; setCurrentView(&#x27;elections&#x27;)}
+              className&#x3D;{currentView &#x3D;&#x3D;&#x3D; &#x27;elections&#x27; ? &#x27;active&#x27; : &#x27;&#x27;}
+              aria-current&#x3D;{currentView &#x3D;&#x3D;&#x3D; &#x27;elections&#x27; ? &#x27;page&#x27; : undefined}
+            &gt;
+              &lt;span className&#x3D;&quot;nav-icon&quot;&gt;🗳️&lt;/span&gt;
+              Elections
+            &lt;/button&gt;
+            &lt;button
+              type&#x3D;&quot;button&quot;
+              onClick&#x3D;{() &#x3D;&gt; setCurrentView(&#x27;profile&#x27;)}
+              className&#x3D;{currentView &#x3D;&#x3D;&#x3D; &#x27;profile&#x27; ? &#x27;active&#x27; : &#x27;&#x27;}
+              aria-current&#x3D;{currentView &#x3D;&#x3D;&#x3D; &#x27;profile&#x27; ? &#x27;page&#x27; : undefined}
+            &gt;
+              &lt;span className&#x3D;&quot;nav-icon&quot;&gt;👤&lt;/span&gt;
+              Profile
+            &lt;/button&gt;
+          &lt;/nav&gt;
+
+          &lt;button type&#x3D;&quot;button&quot; onClick&#x3D;{onLogout} className&#x3D;&quot;btn-logout&quot; aria-label&#x3D;&quot;Log out&quot;&gt;
+            Log Out
+          &lt;/button&gt;
+        &lt;/div&gt;
+      &lt;/header&gt;
+
+      {/* Main Content Area */}
+      &lt;main className&#x3D;&quot;game-content&quot;&gt;
+        {currentView &#x3D;&#x3D;&#x3D; &#x27;overview&#x27; &amp;&amp; (
+          &lt;div className&#x3D;&quot;overview-view&quot;&gt;
+            &lt;h2&gt;Game Overview&lt;/h2&gt;
+
+            {isLoading(&#x27;game-data&#x27;) ? (
+              &lt;SkeletonList
+                items&#x3D;{6}
+                className&#x3D;&quot;overview-grid&quot;
+                itemProps&#x3D;{{
+                  showAvatar: false,
+                  showTitle: true,
+                  showSubtitle: false,
+                  showContent: true,
+                  contentLines: 2,
+                }}
+              /&gt;
+            ) : (
+              &lt;div className&#x3D;&quot;overview-grid&quot;&gt;
+                &lt;section className&#x3D;&quot;overview-card&quot; aria-labelledby&#x3D;&quot;parliament-overview&quot;&gt;
+                  &lt;h3 id&#x3D;&quot;parliament-overview&quot;&gt;Parliament&lt;/h3&gt;
+                  &lt;p&gt;Active motions, debates, and voting sessions&lt;/p&gt;
+                  &lt;button
+                    type&#x3D;&quot;button&quot;
+                    onClick&#x3D;{() &#x3D;&gt; setCurrentView(&#x27;parliament&#x27;)}
+                    className&#x3D;&quot;btn-primary&quot;
+                  &gt;
+                    Go to Parliament
+                  &lt;/button&gt;
+                &lt;/section&gt;
+
+                &lt;section className&#x3D;&quot;overview-card&quot; aria-labelledby&#x3D;&quot;government-overview&quot;&gt;
+                  &lt;h3 id&#x3D;&quot;government-overview&quot;&gt;Government&lt;/h3&gt;
+                  &lt;p&gt;Cabinet, ministers, and executive actions&lt;/p&gt;
+                  &lt;button
+                    type&#x3D;&quot;button&quot;
+                    onClick&#x3D;{() &#x3D;&gt; setCurrentView(&#x27;government&#x27;)}
+                    className&#x3D;&quot;btn-primary&quot;
+                  &gt;
+                    Go to Government
+                  &lt;/button&gt;
+                &lt;/section&gt;
+
+                &lt;section className&#x3D;&quot;overview-card&quot; aria-labelledby&#x3D;&quot;judiciary-overview&quot;&gt;
+                  &lt;h3 id&#x3D;&quot;judiciary-overview&quot;&gt;Judiciary&lt;/h3&gt;
+                  &lt;p&gt;Legal cases, rulings, and constitutional review&lt;/p&gt;
+                  &lt;button
+                    type&#x3D;&quot;button&quot;
+                    onClick&#x3D;{() &#x3D;&gt; setCurrentView(&#x27;judiciary&#x27;)}
+                    className&#x3D;&quot;btn-primary&quot;
+                  &gt;
+                    Go to Judiciary
+                  &lt;/button&gt;
+                &lt;/section&gt;
+
+                &lt;section className&#x3D;&quot;overview-card&quot; aria-labelledby&#x3D;&quot;media-overview&quot;&gt;
+                  &lt;h3 id&#x3D;&quot;media-overview&quot;&gt;Media&lt;/h3&gt;
+                  &lt;p&gt;Press releases, polls, and public opinion&lt;/p&gt;
+                  &lt;button
+                    type&#x3D;&quot;button&quot;
+                    onClick&#x3D;{() &#x3D;&gt; setCurrentView(&#x27;media&#x27;)}
+                    className&#x3D;&quot;btn-primary&quot;
+                  &gt;
+                    Go to Media
+                  &lt;/button&gt;
+                &lt;/section&gt;
+
+                &lt;section className&#x3D;&quot;overview-card&quot; aria-labelledby&#x3D;&quot;elections-overview&quot;&gt;
+                  &lt;h3 id&#x3D;&quot;elections-overview&quot;&gt;Elections&lt;/h3&gt;
+                  &lt;p&gt;Campaigns, constituencies, and voting&lt;/p&gt;
+                  &lt;button
+                    type&#x3D;&quot;button&quot;
+                    onClick&#x3D;{() &#x3D;&gt; setCurrentView(&#x27;elections&#x27;)}
+                    className&#x3D;&quot;btn-primary&quot;
+                  &gt;
+                    Go to Elections
+                  &lt;/button&gt;
+                &lt;/section&gt;
+
+                &lt;section className&#x3D;&quot;overview-card&quot; aria-labelledby&#x3D;&quot;profile-overview&quot;&gt;
+                  &lt;h3 id&#x3D;&quot;profile-overview&quot;&gt;Your Profile&lt;/h3&gt;
+                  &lt;p&gt;Settings, achievements, and statistics&lt;/p&gt;
+                  &lt;button
+                    type&#x3D;&quot;button&quot;
+                    onClick&#x3D;{() &#x3D;&gt; setCurrentView(&#x27;profile&#x27;)}
+                    className&#x3D;&quot;btn-primary&quot;
+                  &gt;
+                    Go to Profile
+                  &lt;/button&gt;
+                &lt;/section&gt;
+              &lt;/div&gt;
+            )}
+
+            &lt;section className&#x3D;&quot;recent-activity&quot; aria-labelledby&#x3D;&quot;recent-activity-heading&quot;&gt;
+              &lt;h3 id&#x3D;&quot;recent-activity-heading&quot;&gt;Recent Activity&lt;/h3&gt;
+              {isLoading(&#x27;game-data&#x27;) ? (
+                &lt;SkeletonList
+                  items&#x3D;{3}
+                  className&#x3D;&quot;activity-list&quot;
+                  itemProps&#x3D;{{
+                    showAvatar: false,
+                    showTitle: false,
+                    showSubtitle: false,
+                    showContent: true,
+                    contentLines: 1,
+                  }}
+                /&gt;
+              ) : (
+                &lt;ul className&#x3D;&quot;activity-list&quot;&gt;
+                  &lt;li&gt;No recent activity&lt;/li&gt;
+                &lt;/ul&gt;
+              )}
+            &lt;/section&gt;
+          &lt;/div&gt;
+        )}
+
+        {currentView &#x3D;&#x3D;&#x3D; &#x27;parliament&#x27; &amp;&amp; &lt;ParliamentChamber userId&#x3D;{userId} /&gt;}
+
+        {currentView &#x3D;&#x3D;&#x3D; &#x27;government&#x27; &amp;&amp; &lt;GovernmentDashboard userId&#x3D;{userId} /&gt;}
+
+        {currentView &#x3D;&#x3D;&#x3D; &#x27;judiciary&#x27; &amp;&amp; &lt;JudiciarySystem userId&#x3D;{userId} /&gt;}
+
+        {currentView &#x3D;&#x3D;&#x3D; &#x27;media&#x27; &amp;&amp; &lt;MediaCenter userId&#x3D;{userId} /&gt;}
+
+        {currentView &#x3D;&#x3D;&#x3D; &#x27;elections&#x27; &amp;&amp; &lt;ElectionsCenter userId&#x3D;{userId} /&gt;}
+
+        {currentView &#x3D;&#x3D;&#x3D; &#x27;profile&#x27; &amp;&amp; &lt;UserProfile userId&#x3D;{userId} /&gt;}
+      &lt;/main&gt;
+
+      {/* Footer */}
+      &lt;footer className&#x3D;&quot;game-footer&quot;&gt;
+        &lt;p&gt;Political Sphere - UK Political Simulation Game&lt;/p&gt;
+        &lt;p className&#x3D;&quot;footer-meta&quot;&gt;
+          Active Players: {gameData?.players?.length || 0} | Current Turn:{&#x27; &#x27;}
+          {gameData?.currentTurn || 1}
+        &lt;/p&gt;
+      &lt;/footer&gt;
+    &lt;/div&gt;
+  );
+};
+
+export default MainGame;
+</code></pre>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'interface';
+            var COMPODOC_CURRENT_PAGE_URL = 'GameData.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

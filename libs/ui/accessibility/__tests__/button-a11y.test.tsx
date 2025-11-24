@@ -1,12 +1,13 @@
 import { expect, test } from 'vitest';
 import { axe, toHaveNoViolations } from 'jest-axe';
+import React from 'react';
 import { render } from '@testing-library/react';
 
 expect.extend(toHaveNoViolations);
 
 function AccessibleButton(props: { label: string; onClick?: () => void }) {
   return (
-    <button type="button" aria-label={props.label} onClick={props.onClick}>
+    <button aria-label={props.label} onClick={props.onClick}>
       {props.label}
     </button>
   );

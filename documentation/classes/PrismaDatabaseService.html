@@ -1,0 +1,1765 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>political-sphere documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">political-sphere documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content class">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Classes</li>
+  <li class="breadcrumb-item" >PrismaDatabaseService</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>apps/api/src/services/prisma-database.service.ts</code>
+        </p>
+
+
+            <p class="comment">
+                <h3>Description</h3>
+            </p>
+            <p class="comment">
+                <p>Generic CRUD operations using Prisma</p>
+
+            </p>
+
+
+
+
+            <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#count" >count</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#create" >create</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#delete" >delete</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#disconnect" >disconnect</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#exists" >exists</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#findById" >findById</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#findMany" >findMany</a>
+                            </li>
+                            <li>
+                                <a href="#getClient" >getClient</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#transaction" >transaction</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#update" >update</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+
+
+            <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="count"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>count</b></span>
+                        <a href="#count"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>count(model: <a href="../unknowns/g.html" target="_self">string</a>, where: <a href="../undefineds/WhereClause.html" target="_self">WhereClause</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="229"
+                                    class="link-to-prism">apps/api/src/services/prisma-database.service.ts:229</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Counts the number of records matching the specified criteria.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Default value</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>model</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+                                            <td>
+                                            </td>
+
+                                            <td>
+                                                    <ul>
+<li>The Prisma model name (e.g., &#39;user&#39;, &#39;bill&#39;, &#39;vote&#39;)</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>where</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/typealiases.html#WhereClause" target="_self" >WhereClause</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+                                            <td>
+                                                    <code>{}</code>
+                                            </td>
+
+                                            <td>
+                                                    <ul>
+<li>Filter criteria to count records against</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Promise&lt;number&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Promise resolving to the count of matching records</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="create"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>create</b></span>
+                        <a href="#create"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>create(model: <a href="../unknowns/g.html" target="_self">string</a>, data: <a href="../undefineds/DatabaseRecord.html" target="_self">DatabaseRecord</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="125"
+                                    class="link-to-prism">apps/api/src/services/prisma-database.service.ts:125</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Creates a new record in the specified model.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>model</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>data</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/typealiases.html#DatabaseRecord" target="_self" >DatabaseRecord</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../interfaces/Database.html" target="_self" >Promise&lt;DatabaseRecord&gt;</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="delete"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>delete</b></span>
+                        <a href="#delete"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>delete(model: <a href="../unknowns/g.html" target="_self">string</a>, id: <a href="../unknowns/g.html" target="_self">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="295"
+                                    class="link-to-prism">apps/api/src/services/prisma-database.service.ts:295</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Deletes a single record by ID.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>model</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>The Prisma model name (e.g., &#39;user&#39;, &#39;bill&#39;, &#39;vote&#39;)</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>id</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>The unique identifier of the record to delete</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>unknown</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Promise resolving to true if deletion was successful</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="disconnect"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>disconnect</b></span>
+                        <a href="#disconnect"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>disconnect()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="374"
+                                    class="link-to-prism">apps/api/src/services/prisma-database.service.ts:374</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Disconnects from the database and closes all connections.
+This should be called when shutting down the application to ensure
+proper cleanup of database connections.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Promise that resolves when disconnection is complete</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="exists"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>exists</b></span>
+                        <a href="#exists"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>exists(model: <a href="../unknowns/g.html" target="_self">string</a>, where: <a href="../undefineds/WhereClause.html" target="_self">WhereClause</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="348"
+                                    class="link-to-prism">apps/api/src/services/prisma-database.service.ts:348</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Checks if any records exist matching the specified criteria.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>model</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>The Prisma model name (e.g., &#39;user&#39;, &#39;bill&#39;, &#39;vote&#39;)</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>where</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/typealiases.html#WhereClause" target="_self" >WhereClause</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>Filter criteria to check for record existence</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Promise&lt;boolean&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Promise resolving to true if at least one matching record exists, false otherwise</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="findById"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>findById</b></span>
+                        <a href="#findById"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>findById(model: <a href="../unknowns/g.html" target="_self">string</a>, id: <a href="../unknowns/g.html" target="_self">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="153"
+                                    class="link-to-prism">apps/api/src/services/prisma-database.service.ts:153</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Finds a single record by its ID in the specified model.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>model</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>The Prisma model name (e.g., &#39;user&#39;, &#39;bill&#39;, &#39;vote&#39;)</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>id</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>The unique identifier of the record to find</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../interfaces/Database.html" target="_self" >Promise&lt;DatabaseRecord | null&gt;</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Promise resolving to the found record or null if not found</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="findMany"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>findMany</b></span>
+                        <a href="#findMany"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>findMany(model: <a href="../unknowns/g.html" target="_self">string</a>, where: <a href="../undefineds/WhereClause.html" target="_self">WhereClause</a>, options: <a href="../undefineds/QueryOptions.html" target="_self">QueryOptions</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="186"
+                                    class="link-to-prism">apps/api/src/services/prisma-database.service.ts:186</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Finds multiple records matching the specified criteria with optional pagination and sorting.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Default value</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>model</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+                                            <td>
+                                            </td>
+
+                                            <td>
+                                                    <ul>
+<li>The Prisma model name (e.g., &#39;user&#39;, &#39;bill&#39;, &#39;vote&#39;)</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>where</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/typealiases.html#WhereClause" target="_self" >WhereClause</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+                                            <td>
+                                                    <code>{}</code>
+                                            </td>
+
+                                            <td>
+                                                    <ul>
+<li>Filter criteria to match records against</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>options</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/typealiases.html#QueryOptions" target="_self" >QueryOptions</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+                                            <td>
+                                                    <code>{}</code>
+                                            </td>
+
+                                            <td>
+                                                    <ul>
+<li>Query options for pagination and sorting</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../interfaces/Database.html" target="_self" >Promise&lt;DatabaseRecord[]&gt;</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Promise resolving to array of matching records</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getClient"></a>
+                    <span class="name">
+                        <span ><b>getClient</b></span>
+                        <a href="#getClient"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getClient()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="364"
+                                    class="link-to-prism">apps/api/src/services/prisma-database.service.ts:364</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Gets the Prisma client instance for advanced database operations.
+Use this method when you need direct access to Prisma&#39;s full API.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>The PrismaClient instance configured for the current environment</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="transaction"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>transaction</b></span>
+                        <a href="#transaction"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>transaction(callback: (tx: Omit<PrismaClient | "$connect" | "$disconnect" | "$on" | "$transaction" | "$extends">) => void)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="325"
+                                    class="link-to-prism">apps/api/src/services/prisma-database.service.ts:325</a></div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="col-md-4">
+                            <b>Type parameters :</b>
+                            <ul class="type-parameters">
+                                    <li>T</li>
+                            </ul>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Execute a transaction with automatic rollback on failure.
+All database operations within the callback function are executed atomically.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>callback</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/function" target="_blank" >function</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>Function containing database operations to execute within the transaction</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Promise&lt;T&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Promise resolving to the result of the callback function</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="update"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>update</b></span>
+                        <a href="#update"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>update(model: <a href="../unknowns/g.html" target="_self">string</a>, id: <a href="../unknowns/g.html" target="_self">string</a>, data: <a href="../undefineds/DatabaseRecord.html" target="_self">DatabaseRecord</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="256"
+                                    class="link-to-prism">apps/api/src/services/prisma-database.service.ts:256</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Updates a single record by ID with the provided data.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>model</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>The Prisma model name (e.g., &#39;user&#39;, &#39;bill&#39;, &#39;vote&#39;)</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>id</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>The unique identifier of the record to update</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                                <td>data</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/typealiases.html#DatabaseRecord" target="_self" >DatabaseRecord</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>The data to update the record with</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../interfaces/Database.html" target="_self" >Promise&lt;DatabaseRecord&gt;</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Promise resolving to the updated record</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+
+
+
+
+
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { getLogger } from &#x27;@political-sphere/shared&#x27;;
+import path from &#x27;node:path&#x27;;
+import { PrismaClient } from &#x27;@prisma/client&#x27;;
+import { PrismaPg } from &#x27;@prisma/adapter-pg&#x27;;
+import { PrismaLibSql } from &#x27;@prisma/adapter-libsql&#x27;;
+import { Pool } from &#x27;pg&#x27;;
+
+const logger &#x3D; getLogger({ service: &#x27;database&#x27; });
+
+// Type definitions for database operations
+export type DatabaseRecord &#x3D; Record&lt;string, unknown&gt;;
+export type WhereClause &#x3D; Record&lt;string, unknown&gt;;
+export type QueryOptions &#x3D; {
+  skip?: number;
+  take?: number;
+  orderBy?: Record&lt;string, &#x27;asc&#x27; | &#x27;desc&#x27;&gt;;
+};
+
+// Type-safe access to Prisma models
+type _PrismaModels &#x3D; {
+  [K in keyof PrismaClient]: PrismaClient[K] extends {
+    create: (args: unknown) &#x3D;&gt; unknown;
+    findUnique: (args: unknown) &#x3D;&gt; unknown;
+  }
+    ? PrismaClient[K]
+    : never;
+};
+
+// Ensure test DATABASE_URL is set as Prisma requires a file: URL for SQLite
+// This default is safe for test runs only and will not override an existing env var.
+if (!process.env.DATABASE_URL &amp;&amp; process.env.NODE_ENV &#x3D;&#x3D;&#x3D; &#x27;test&#x27;) {
+  const dbPath &#x3D; path.join(process.cwd(), &#x27;test.db&#x27;);
+  process.env.DATABASE_URL &#x3D; &#x60;file:${dbPath}&#x60;;
+}
+
+// Initialize Prisma client with adapter for Prisma 7
+const connectionString &#x3D; process.env.DATABASE_URL;
+if (!connectionString) {
+  throw new Error(&#x27;DATABASE_URL environment variable is required&#x27;);
+}
+
+let adapter: PrismaPg | PrismaLibSql;
+try {
+  if (connectionString.startsWith(&#x27;file:&#x27;)) {
+    // Use LibSQL adapter for SQLite files (used in tests)
+    adapter &#x3D; new PrismaLibSql({ url: connectionString });
+  } else {
+    // Use PostgreSQL adapter for production
+    const pool &#x3D; new Pool({ connectionString });
+    adapter &#x3D; new PrismaPg(pool);
+  }
+} catch (err) {
+  // Redact password from connection string for logging
+  const safeConnStr &#x3D; connectionString.replace(
+    /(postgresql:\/\/)([^:]+):([^@]+)@/,
+    &#x27;$1$2:&lt;redacted&gt;@&#x27;
+  );
+  logger.error(
+    &#x27;Failed to initialize database adapter. Check your DATABASE_URL and database configuration.&#x27;,
+    {
+      error: err,
+      connectionString: safeConnStr,
+    }
+  );
+  throw new Error(&#x27;Database adapter initialization failed. See logs for details.&#x27;);
+}
+
+const prisma &#x3D; new PrismaClient({
+  adapter,
+  log: [
+    { level: &#x27;query&#x27;, emit: &#x27;event&#x27; },
+    { level: &#x27;info&#x27;, emit: &#x27;event&#x27; },
+    { level: &#x27;warn&#x27;, emit: &#x27;event&#x27; },
+    { level: &#x27;error&#x27;, emit: &#x27;event&#x27; },
+  ],
+});
+
+// Configure connection pool settings via environment variables
+if (process.env.DATABASE_URL?.startsWith(&#x27;postgresql://&#x27;)) {
+  // PostgreSQL connection pool settings
+  process.env.PRISMA_CONNECTION_POOL_SIZE &#x3D; process.env.PRISMA_CONNECTION_POOL_SIZE || &#x27;10&#x27;;
+  process.env.PRISMA_CONNECTION_IDLE_TIMEOUT &#x3D;
+    process.env.PRISMA_CONNECTION_IDLE_TIMEOUT || &#x27;300000&#x27;; // 5 minutes
+  process.env.PRISMA_CONNECTION_MAX_LIFETIME &#x3D;
+    process.env.PRISMA_CONNECTION_MAX_LIFETIME || &#x27;600000&#x27;; // 10 minutes
+}
+
+// Log database queries in development
+if (process.env.NODE_ENV &#x3D;&#x3D;&#x3D; &#x27;development&#x27;) {
+  prisma.$on(&#x27;query&#x27;, e &#x3D;&gt; {
+    logger.debug(&#x27;Database query&#x27;, {
+      query: e.query,
+      params: e.params,
+      duration: e.duration,
+    });
+  });
+}
+
+prisma.$on(&#x27;info&#x27;, e &#x3D;&gt; logger.info(&#x27;Database info&#x27;, { message: e.message }));
+prisma.$on(&#x27;warn&#x27;, e &#x3D;&gt; logger.warn(&#x27;Database warning&#x27;, { message: e.message }));
+prisma.$on(&#x27;error&#x27;, e &#x3D;&gt; logger.error(&#x27;Database error&#x27;, { message: e.message }));
+
+// Export the raw Prisma client for direct use
+export { prisma };
+
+/**
+ * Generic CRUD operations using Prisma
+ */
+class PrismaDatabaseService {
+  /**
+   * Create a new record
+   */
+  /**
+   * Creates a new record in the specified model.
+   * @param model - The Prisma model name (e.g., &#x27;user&#x27;, &#x27;bill&#x27;, &#x27;vote&#x27;)
+   * @param data - The data to create the record with
+   * @returns Promise resolving to the created record
+   * @throws Error if the model doesn&#x27;t exist or creation fails
+   */
+  async create(model: string, data: DatabaseRecord): Promise&lt;DatabaseRecord&gt; {
+    try {
+      const modelClient &#x3D; (
+        prisma as unknown as Record&lt;
+          string,
+          { create: (args: { data: DatabaseRecord }) &#x3D;&gt; Promise&lt;DatabaseRecord&gt; }
+        &gt;
+      )[model];
+      if (!modelClient) {
+        throw new Error(&#x60;Model ${model} not found&#x60;);
+      }
+      const result &#x3D; await modelClient.create({ data });
+      logger.debug(&#x27;Record created&#x27;, { model, id: result.id });
+      return result;
+    } catch (error) {
+      const err &#x3D; error as Error;
+      logger.error(&#x27;Failed to create record&#x27;, { model, error: err.message, data });
+      throw error;
+    }
+  }
+
+  /**
+   * Finds a single record by its ID in the specified model.
+   * @param model - The Prisma model name (e.g., &#x27;user&#x27;, &#x27;bill&#x27;, &#x27;vote&#x27;)
+   * @param id - The unique identifier of the record to find
+   * @returns Promise resolving to the found record or null if not found
+   * @throws Error if the model doesn&#x27;t exist or query fails
+   */
+  async findById(model: string, id: string): Promise&lt;DatabaseRecord | null&gt; {
+    try {
+      const modelClient &#x3D; (
+        prisma as unknown as Record&lt;
+          string,
+          { findUnique: (args: { where: { id: string } }) &#x3D;&gt; Promise&lt;DatabaseRecord | null&gt; }
+        &gt;
+      )[model];
+      if (!modelClient) {
+        throw new Error(&#x60;Model ${model} not found&#x60;);
+      }
+      const result &#x3D; await modelClient.findUnique({
+        where: { id },
+      });
+      return result;
+    } catch (error) {
+      const err &#x3D; error as Error;
+      logger.error(&#x27;Failed to find record by ID&#x27;, { model, id, error: err.message });
+      throw error;
+    }
+  }
+
+  /**
+   * Finds multiple records matching the specified criteria with optional pagination and sorting.
+   * @param model - The Prisma model name (e.g., &#x27;user&#x27;, &#x27;bill&#x27;, &#x27;vote&#x27;)
+   * @param where - Filter criteria to match records against
+   * @param options - Query options for pagination and sorting
+   * @param options.skip - Number of records to skip (for pagination)
+   * @param options.take - Maximum number of records to return
+   * @param options.orderBy - Sort order specification
+   * @returns Promise resolving to array of matching records
+   * @throws Error if the model doesn&#x27;t exist or query fails
+   */
+  async findMany(
+    model: string,
+    where: WhereClause &#x3D; {},
+    options: QueryOptions &#x3D; {}
+  ): Promise&lt;DatabaseRecord[]&gt; {
+    try {
+      const modelClient &#x3D; (
+        prisma as unknown as Record&lt;
+          string,
+          {
+            findMany: (args: {
+              where?: WhereClause;
+              skip?: number;
+              take?: number;
+              orderBy?: Record&lt;string, string&gt;;
+            }) &#x3D;&gt; Promise&lt;DatabaseRecord[]&gt;;
+          }
+        &gt;
+      )[model];
+      if (!modelClient) {
+        throw new Error(&#x60;Model ${model} not found&#x60;);
+      }
+      const result &#x3D; await modelClient.findMany({
+        where,
+        skip: options.skip,
+        take: options.take,
+        orderBy: options.orderBy,
+      });
+      return result;
+    } catch (error) {
+      const err &#x3D; error as Error;
+      logger.error(&#x27;Failed to find records&#x27;, { model, where, options, error: err.message });
+      throw error;
+    }
+  }
+
+  /**
+   * Counts the number of records matching the specified criteria.
+   * @param model - The Prisma model name (e.g., &#x27;user&#x27;, &#x27;bill&#x27;, &#x27;vote&#x27;)
+   * @param where - Filter criteria to count records against
+   * @returns Promise resolving to the count of matching records
+   * @throws Error if the model doesn&#x27;t exist or query fails
+   */
+  async count(model: string, where: WhereClause &#x3D; {}): Promise&lt;number&gt; {
+    try {
+      const modelClient &#x3D; (
+        prisma as unknown as Record&lt;
+          string,
+          { count: (args: { where?: WhereClause }) &#x3D;&gt; Promise&lt;number&gt; }
+        &gt;
+      )[model];
+      if (!modelClient) {
+        throw new Error(&#x60;Model ${model} not found&#x60;);
+      }
+      return await modelClient.count({ where });
+    } catch (error) {
+      const err &#x3D; error as Error;
+      logger.error(&#x27;Failed to count records&#x27;, { model, where, error: err.message });
+      throw error;
+    }
+  }
+
+  /**
+   * Updates a single record by ID with the provided data.
+   * @param model - The Prisma model name (e.g., &#x27;user&#x27;, &#x27;bill&#x27;, &#x27;vote&#x27;)
+   * @param id - The unique identifier of the record to update
+   * @param data - The data to update the record with
+   * @returns Promise resolving to the updated record
+   * @throws Error if the model doesn&#x27;t exist, record not found, or update fails
+   */
+  async update(model: string, id: string, data: DatabaseRecord): Promise&lt;DatabaseRecord&gt; {
+    try {
+      const modelClient &#x3D; (
+        prisma as unknown as Record&lt;
+          string,
+          {
+            update: (args: {
+              where: { id: string };
+              data: DatabaseRecord;
+            }) &#x3D;&gt; Promise&lt;DatabaseRecord&gt;;
+          }
+        &gt;
+      )[model];
+      if (!modelClient) {
+        throw new Error(&#x60;Model ${model} not found&#x60;);
+      }
+      const result &#x3D; await modelClient.update({
+        where: { id },
+        data: {
+          ...data,
+          updatedAt: new Date(),
+        },
+      });
+      logger.debug(&#x27;Record updated&#x27;, { model, id });
+      return result;
+    } catch (error) {
+      const err &#x3D; error as Error;
+      logger.error(&#x27;Failed to update record&#x27;, { model, id, data, error: err.message });
+      throw error;
+    }
+  }
+
+  /**
+   * Deletes a single record by ID.
+   * @param model - The Prisma model name (e.g., &#x27;user&#x27;, &#x27;bill&#x27;, &#x27;vote&#x27;)
+   * @param id - The unique identifier of the record to delete
+   * @returns Promise resolving to true if deletion was successful
+   * @throws Error if the model doesn&#x27;t exist, record not found, or deletion fails
+   */
+  async delete(model: string, id: string) {
+    try {
+      const modelClient &#x3D; (
+        prisma as unknown as Record&lt;
+          string,
+          { delete: (args: { where: { id: string } }) &#x3D;&gt; Promise&lt;void&gt; }
+        &gt;
+      )[model];
+      if (!modelClient) {
+        throw new Error(&#x60;Model ${model} not found&#x60;);
+      }
+      await modelClient.delete({
+        where: { id },
+      });
+      logger.debug(&#x27;Record deleted&#x27;, { model, id });
+      return true;
+    } catch (error) {
+      const err &#x3D; error as Error;
+      logger.error(&#x27;Failed to delete record&#x27;, { model, id, error: err.message });
+      throw error;
+    }
+  }
+
+  /**
+   * Execute a transaction with automatic rollback on failure.
+   * All database operations within the callback function are executed atomically.
+   * @param callback - Function containing database operations to execute within the transaction
+   * @returns Promise resolving to the result of the callback function
+   * @throws Error if the transaction fails or any operation within it fails
+   */
+  async transaction&lt;T&gt;(
+    callback: (
+      tx: Omit&lt;PrismaClient, &#x27;$connect&#x27; | &#x27;$disconnect&#x27; | &#x27;$on&#x27; | &#x27;$transaction&#x27; | &#x27;$extends&#x27;&gt;
+    ) &#x3D;&gt; Promise&lt;T&gt;
+  ): Promise&lt;T&gt; {
+    try {
+      return await prisma.$transaction(async tx &#x3D;&gt; {
+        return await callback(tx);
+      });
+    } catch (error) {
+      const err &#x3D; error as Error;
+      logger.error(&#x27;Transaction failed&#x27;, { error: err.message });
+      throw error;
+    }
+  }
+
+  /**
+   * Checks if any records exist matching the specified criteria.
+   * @param model - The Prisma model name (e.g., &#x27;user&#x27;, &#x27;bill&#x27;, &#x27;vote&#x27;)
+   * @param where - Filter criteria to check for record existence
+   * @returns Promise resolving to true if at least one matching record exists, false otherwise
+   * @throws Error if the model doesn&#x27;t exist or query fails
+   */
+  async exists(model: string, where: WhereClause): Promise&lt;boolean&gt; {
+    try {
+      const count &#x3D; await this.count(model, where);
+      return count &gt; 0;
+    } catch (error) {
+      const err &#x3D; error as Error;
+      logger.error(&#x27;Failed to check record existence&#x27;, { model, where, error: err.message });
+      throw error;
+    }
+  }
+
+  /**
+   * Gets the Prisma client instance for advanced database operations.
+   * Use this method when you need direct access to Prisma&#x27;s full API.
+   * @returns The PrismaClient instance configured for the current environment
+   */
+  getClient() {
+    return prisma;
+  }
+
+  /**
+   * Disconnects from the database and closes all connections.
+   * This should be called when shutting down the application to ensure
+   * proper cleanup of database connections.
+   * @returns Promise that resolves when disconnection is complete
+   */
+  async disconnect() {
+    await prisma.$disconnect();
+    logger.info(&#x27;Database disconnected&#x27;);
+  }
+}
+
+// Export singleton instance
+export const prismaDb &#x3D; new PrismaDatabaseService();
+
+// Parliament-specific operations
+/**
+ * Parliament database operations service.
+ * Provides CRUD operations for parliamentary entities like chambers, motions, debates, and votes.
+ */
+export const ParliamentDB &#x3D; {
+  createChamber: (data: DatabaseRecord) &#x3D;&gt; prismaDb.create(&#x27;chamber&#x27;, data),
+  getChamber: (id: string) &#x3D;&gt; prismaDb.findById(&#x27;chamber&#x27;, id),
+  listChambers: (where: WhereClause &#x3D; {}, options: QueryOptions &#x3D; {}) &#x3D;&gt;
+    prismaDb.findMany(&#x27;chamber&#x27;, where, options),
+
+  createMotion: (data: DatabaseRecord) &#x3D;&gt; prismaDb.create(&#x27;motion&#x27;, data),
+  getMotion: (id: string) &#x3D;&gt; prismaDb.findById(&#x27;motion&#x27;, id),
+  listMotions: (where: WhereClause &#x3D; {}, options: QueryOptions &#x3D; {}) &#x3D;&gt;
+    prismaDb.findMany(&#x27;motion&#x27;, where, options),
+  updateMotion: (id: string, data: DatabaseRecord) &#x3D;&gt; prismaDb.update(&#x27;motion&#x27;, id, data),
+
+  createDebate: (data: DatabaseRecord) &#x3D;&gt; prismaDb.create(&#x27;debate&#x27;, data),
+  getDebate: (id: string) &#x3D;&gt; prismaDb.findById(&#x27;debate&#x27;, id),
+  updateDebate: (id: string, data: DatabaseRecord) &#x3D;&gt; prismaDb.update(&#x27;debate&#x27;, id, data),
+
+  createVote: (data: DatabaseRecord) &#x3D;&gt; prismaDb.create(&#x27;vote&#x27;, data),
+  listVotes: (where: WhereClause &#x3D; {}) &#x3D;&gt; prismaDb.findMany(&#x27;vote&#x27;, where),
+  voteExists: (where: WhereClause) &#x3D;&gt; prismaDb.exists(&#x27;vote&#x27;, where),
+  countVotes: (where: WhereClause &#x3D; {}) &#x3D;&gt; prismaDb.count(&#x27;vote&#x27;, where),
+};
+
+// Government-specific operations
+/**
+ * Government database operations service.
+ * Provides CRUD operations for government entities like governments, ministers, executive actions, and cabinet meetings.
+ */
+export const GovernmentDB &#x3D; {
+  createGovernment: (data: DatabaseRecord) &#x3D;&gt; prismaDb.create(&#x27;government&#x27;, data),
+  getGovernment: (id: string) &#x3D;&gt; prismaDb.findById(&#x27;government&#x27;, id),
+  listGovernments: (where: WhereClause &#x3D; {}, options: QueryOptions &#x3D; {}) &#x3D;&gt;
+    prismaDb.findMany(&#x27;government&#x27;, where, options),
+  updateGovernment: (id: string, data: DatabaseRecord) &#x3D;&gt; prismaDb.update(&#x27;government&#x27;, id, data),
+
+  createMinister: (data: DatabaseRecord) &#x3D;&gt; prismaDb.create(&#x27;minister&#x27;, data),
+  getMinister: (id: string) &#x3D;&gt; prismaDb.findById(&#x27;minister&#x27;, id),
+  listMinisters: (where: WhereClause &#x3D; {}) &#x3D;&gt; prismaDb.findMany(&#x27;minister&#x27;, where),
+  updateMinister: (id: string, data: DatabaseRecord) &#x3D;&gt; prismaDb.update(&#x27;minister&#x27;, id, data),
+
+  createExecutiveAction: (data: DatabaseRecord) &#x3D;&gt; prismaDb.create(&#x27;executiveAction&#x27;, data),
+  getExecutiveAction: (id: string) &#x3D;&gt; prismaDb.findById(&#x27;executiveAction&#x27;, id),
+  listExecutiveActions: (where: WhereClause &#x3D; {}, options: QueryOptions &#x3D; {}) &#x3D;&gt;
+    prismaDb.findMany(&#x27;executiveAction&#x27;, where, options),
+  updateExecutiveAction: (id: string, data: DatabaseRecord) &#x3D;&gt;
+    prismaDb.update(&#x27;executiveAction&#x27;, id, data),
+
+  createCabinetMeeting: (data: DatabaseRecord) &#x3D;&gt; prismaDb.create(&#x27;cabinetMeeting&#x27;, data),
+  getCabinetMeeting: (id: string) &#x3D;&gt; prismaDb.findById(&#x27;cabinetMeeting&#x27;, id),
+  updateCabinetMeeting: (id: string, data: DatabaseRecord) &#x3D;&gt;
+    prismaDb.update(&#x27;cabinetMeeting&#x27;, id, data),
+};
+
+// Judiciary-specific operations
+/**
+ * Judiciary database operations service.
+ * Provides CRUD operations for judicial entities like cases, judges, rulings, reviews, and legal precedents.
+ */
+export const JudiciaryDB &#x3D; {
+  createCase: (data: DatabaseRecord) &#x3D;&gt; prismaDb.create(&#x27;case&#x27;, data),
+  getCase: (id: string) &#x3D;&gt; prismaDb.findById(&#x27;case&#x27;, id),
+  listCases: (where: WhereClause &#x3D; {}, options: QueryOptions &#x3D; {}) &#x3D;&gt;
+    prismaDb.findMany(&#x27;case&#x27;, where, options),
+  updateCase: (id: string, data: DatabaseRecord) &#x3D;&gt; prismaDb.update(&#x27;case&#x27;, id, data),
+
+  createJudge: (data: DatabaseRecord) &#x3D;&gt; prismaDb.create(&#x27;judge&#x27;, data),
+  getJudge: (id: string) &#x3D;&gt; prismaDb.findById(&#x27;judge&#x27;, id),
+  listJudges: (where: WhereClause &#x3D; {}) &#x3D;&gt; prismaDb.findMany(&#x27;judge&#x27;, where),
+  updateJudge: (id: string, data: DatabaseRecord) &#x3D;&gt; prismaDb.update(&#x27;judge&#x27;, id, data),
+
+  createRuling: (data: DatabaseRecord) &#x3D;&gt; prismaDb.create(&#x27;ruling&#x27;, data),
+  getRuling: (id: string) &#x3D;&gt; prismaDb.findById(&#x27;ruling&#x27;, id),
+  listRulings: (where: WhereClause &#x3D; {}) &#x3D;&gt; prismaDb.findMany(&#x27;ruling&#x27;, where),
+
+  createReview: (data: DatabaseRecord) &#x3D;&gt; prismaDb.create(&#x27;review&#x27;, data),
+  getReview: (id: string) &#x3D;&gt; prismaDb.findById(&#x27;review&#x27;, id),
+  listReviews: (where: WhereClause &#x3D; {}, options: QueryOptions &#x3D; {}) &#x3D;&gt;
+    prismaDb.findMany(&#x27;review&#x27;, where, options),
+  updateReview: (id: string, data: DatabaseRecord) &#x3D;&gt; prismaDb.update(&#x27;review&#x27;, id, data),
+
+  createPrecedent: (data: DatabaseRecord) &#x3D;&gt; prismaDb.create(&#x27;precedent&#x27;, data),
+  listPrecedents: (where: WhereClause &#x3D; {}) &#x3D;&gt; prismaDb.findMany(&#x27;precedent&#x27;, where),
+};
+
+// Media-specific operations
+/**
+ * Media database operations service.
+ * Provides CRUD operations for media entities like press releases, polls, coverage, narratives, and approval ratings.
+ */
+export const MediaDB &#x3D; {
+  createPressRelease: (data: DatabaseRecord) &#x3D;&gt; prismaDb.create(&#x27;pressRelease&#x27;, data),
+  getPressRelease: (id: string) &#x3D;&gt; prismaDb.findById(&#x27;pressRelease&#x27;, id),
+  listPressReleases: (where: WhereClause &#x3D; {}, options: QueryOptions &#x3D; {}) &#x3D;&gt;
+    prismaDb.findMany(&#x27;pressRelease&#x27;, where, options),
+  updatePressRelease: (id: string, data: DatabaseRecord) &#x3D;&gt;
+    prismaDb.update(&#x27;pressRelease&#x27;, id, data),
+
+  createPoll: (data: DatabaseRecord) &#x3D;&gt; prismaDb.create(&#x27;poll&#x27;, data),
+  getPoll: (id: string) &#x3D;&gt; prismaDb.findById(&#x27;poll&#x27;, id),
+  listPolls: (where: WhereClause &#x3D; {}, options: QueryOptions &#x3D; {}) &#x3D;&gt;
+    prismaDb.findMany(&#x27;poll&#x27;, where, options),
+  updatePoll: (id: string, data: DatabaseRecord) &#x3D;&gt; prismaDb.update(&#x27;poll&#x27;, id, data),
+
+  createPollVote: (data: DatabaseRecord) &#x3D;&gt; prismaDb.create(&#x27;pollVote&#x27;, data),
+  pollVoteExists: (where: WhereClause) &#x3D;&gt; prismaDb.exists(&#x27;pollVote&#x27;, where),
+
+  createCoverage: (data: DatabaseRecord) &#x3D;&gt; prismaDb.create(&#x27;coverage&#x27;, data),
+  listCoverage: (where: WhereClause &#x3D; {}, options: QueryOptions &#x3D; {}) &#x3D;&gt;
+    prismaDb.findMany(&#x27;coverage&#x27;, where, options),
+
+  createNarrative: (data: DatabaseRecord) &#x3D;&gt; prismaDb.create(&#x27;narrative&#x27;, data),
+  getNarrative: (id: string) &#x3D;&gt; prismaDb.findById(&#x27;narrative&#x27;, id),
+  listNarratives: (where: WhereClause &#x3D; {}, options: QueryOptions &#x3D; {}) &#x3D;&gt;
+    prismaDb.findMany(&#x27;narrative&#x27;, where, options),
+
+  getApprovalRating: async (key: string) &#x3D;&gt; {
+    // For approval ratings, we use a composite key approach
+    const [entityId, entityType] &#x3D; key.split(&#x27;:&#x27;);
+    return await prismaDb
+      .findMany(
+        &#x27;approvalRating&#x27;,
+        {
+          entityId,
+          entityType,
+        },
+        { orderBy: { measuredAt: &#x27;desc&#x27; }, take: 1 }
+      )
+      .then(r &#x3D;&gt; r[0]);
+  },
+
+  setApprovalRating: async (key: string, data: DatabaseRecord) &#x3D;&gt; {
+    const [entityId, entityType] &#x3D; key.split(&#x27;:&#x27;);
+    return await prismaDb.create(&#x27;approvalRating&#x27;, {
+      entityId,
+      entityType,
+      ...data,
+    });
+  },
+
+  listApprovalRatings: (where: WhereClause &#x3D; {}) &#x3D;&gt; prismaDb.findMany(&#x27;approvalRating&#x27;, where),
+};
+
+// Elections-specific operations
+/**
+ * Elections database operations service.
+ * Provides CRUD operations for election entities like elections, campaigns, constituencies, and candidates.
+ */
+export const ElectionsDB &#x3D; {
+  createElection: (data: DatabaseRecord) &#x3D;&gt; prismaDb.create(&#x27;election&#x27;, data),
+  getElection: (id: string) &#x3D;&gt; prismaDb.findById(&#x27;election&#x27;, id),
+  listElections: (where: WhereClause &#x3D; {}, options: QueryOptions &#x3D; {}) &#x3D;&gt;
+    prismaDb.findMany(&#x27;election&#x27;, where, options),
+  updateElection: (id: string, data: DatabaseRecord) &#x3D;&gt; prismaDb.update(&#x27;election&#x27;, id, data),
+
+  createCampaign: (data: DatabaseRecord) &#x3D;&gt; prismaDb.create(&#x27;campaign&#x27;, data),
+  listCampaigns: (where: WhereClause &#x3D; {}) &#x3D;&gt; prismaDb.findMany(&#x27;campaign&#x27;, where),
+
+  createConstituency: (data: DatabaseRecord) &#x3D;&gt; prismaDb.create(&#x27;constituency&#x27;, data),
+  getConstituency: (id: string) &#x3D;&gt; prismaDb.findById(&#x27;constituency&#x27;, id),
+  listConstituencies: (where: WhereClause &#x3D; {}) &#x3D;&gt; prismaDb.findMany(&#x27;constituency&#x27;, where),
+  updateConstituency: (id: string, data: DatabaseRecord) &#x3D;&gt;
+    prismaDb.update(&#x27;constituency&#x27;, id, data),
+
+  createCandidate: (data: DatabaseRecord) &#x3D;&gt; prismaDb.create(&#x27;candidate&#x27;, data),
+  getCandidate: (id: string) &#x3D;&gt; prismaDb.findById(&#x27;candidate&#x27;, id),
+  listCandidates: (where: WhereClause &#x3D; {}) &#x3D;&gt; prismaDb.findMany(&#x27;candidate&#x27;, where),
+  updateCandidate: (id: string, data: DatabaseRecord) &#x3D;&gt; prismaDb.update(&#x27;candidate&#x27;, id, data),
+
+  createVote: (data: DatabaseRecord) &#x3D;&gt; prismaDb.create(&#x27;electionVote&#x27;, data),
+  voteExists: (where: WhereClause) &#x3D;&gt; prismaDb.exists(&#x27;electionVote&#x27;, where),
+};
+</code></pre>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'class';
+            var COMPODOC_CURRENT_PAGE_URL = 'PrismaDatabaseService.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

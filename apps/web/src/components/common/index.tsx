@@ -2,7 +2,7 @@
  * Common reusable UI components
  */
 
-import React from 'react';
+import type { FC } from 'react';
 
 export interface ButtonProps {
   children: React.ReactNode;
@@ -12,7 +12,7 @@ export interface ButtonProps {
   className?: string;
 }
 
-export const Button: React.FC<ButtonProps> = ({
+export const Button: FC<ButtonProps> = ({
   children,
   onClick,
   variant = 'primary',
@@ -28,6 +28,7 @@ export const Button: React.FC<ButtonProps> = ({
 
   return (
     <button
+      type="button"
       className={`${baseClasses} ${variantClasses[variant]} ${className}`}
       onClick={onClick}
       disabled={disabled}
@@ -42,7 +43,7 @@ export interface LoadingSpinnerProps {
   className?: string;
 }
 
-export const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({ size = 'md', className = '' }) => {
+export const LoadingSpinner: FC<LoadingSpinnerProps> = ({ size = 'md', className = '' }) => {
   const sizeClasses = {
     sm: 'w-4 h-4',
     md: 'w-6 h-6',
@@ -52,7 +53,6 @@ export const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({ size = 'md', cla
   return (
     <div
       className={`animate-spin rounded-full border-2 border-gray-300 border-t-blue-600 ${sizeClasses[size]} ${className}`}
-      role="status"
     >
       <span className="sr-only">Loading...</span>
     </div>
@@ -65,7 +65,7 @@ export interface CardProps {
   title?: string;
 }
 
-export const Card: React.FC<CardProps> = ({ children, className = '', title }) => {
+export const Card: FC<CardProps> = ({ children, className = '', title }) => {
   return (
     <div className={`bg-white rounded-lg shadow-md p-6 ${className}`}>
       {title && <h3 className="text-lg font-semibold mb-4">{title}</h3>}

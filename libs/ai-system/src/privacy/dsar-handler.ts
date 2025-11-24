@@ -5,6 +5,7 @@
  *
  * @module privacy/dsar-handler
  */
+/* eslint-disable no-console */
 
 import type { DataSubjectRequest } from '../types/index';
 

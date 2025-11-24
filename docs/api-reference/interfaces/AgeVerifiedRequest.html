@@ -1,0 +1,615 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>political-sphere documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">political-sphere documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content interface">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Interfaces</li>
+  <li class="breadcrumb-item"
+  >
+  AgeVerifiedRequest</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>apps/api/src/middleware/ageVerification.middleware.ts</code>
+        </p>
+
+
+            <p class="comment">
+                <h3>Description</h3>
+            </p>
+            <p class="comment">
+                <p>Auto-generated doc: AgeVerifiedRequest — please replace with meaningful description.</p>
+
+            </p>
+
+            <p class="comment">
+                <h3>Extends</h3>
+            </p>
+            <p class="comment">
+                            <code><a href="../interfaces/Request.html" target="_self" >Request</a></code>
+            </p>
+
+        <section data-compodoc="block-index">
+            <h3 id="index">Index</h3>
+            <table class="table table-sm table-bordered index-table">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <h6><b>Properties</b></h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <ul class="index-list">
+                                <li>
+                                            <span class="modifier">Optional</span>
+                                        <a href="#ageVerification" 
+>
+                                            ageVerification
+                                        </a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+
+
+            <section data-compodoc="block-properties">
+                <h3 id="inputs">Properties</h3>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="ageVerification"></a>
+                                        <span class="name "><b>ageVerification</b>
+                                            <a href="#ageVerification">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>ageVerification:     <code>literal type</code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>    <code>literal type</code>
+
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Optional</i>
+                                        </td>
+                                    </tr>
+
+
+
+
+                        </tbody>
+                    </table>
+            </section>
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import type { Request, Response, NextFunction } from &#x27;express&#x27;;
+import AgeVerificationService from &#x27;../modules/ageVerificationService.js&#x27;;
+import ComplianceService from &#x27;../modules/complianceService.js&#x27;;
+import logger from &#x27;../utils/logger.js&#x27;;
+
+/** Auto-generated doc: AgeVerifiedRequest — please replace with meaningful description. */
+export interface AgeVerifiedRequest extends Request {
+  ageVerification?: {
+    verified: boolean;
+    age?: number;
+    restrictions?: Record&lt;string, unknown&gt;;
+  };
+}
+
+/**
+ * Middleware to require age verification for protected content
+ */
+export function requireAgeVerification(minAge &#x3D; 18) {
+  return async (req: Request, res: Response, next: NextFunction): Promise&lt;void&gt; &#x3D;&gt; {
+    try {
+      const user &#x3D; (req as any).authUser || (req as any).user;
+
+      if (!user?.userId) {
+        res.status(401).json({
+          error: &#x27;Authentication required&#x27;,
+          message: &#x27;You must be logged in to access this content&#x27;,
+        });
+        return;
+      }
+
+      // Check age verification status
+      const verification &#x3D; await (AgeVerificationService as any).getVerificationStatus(user.userId);
+
+      if (!verification?.verified) {
+        res.status(403).json({
+          error: &#x27;Age verification required&#x27;,
+          message: &#x60;This content requires age verification (minimum age: ${minAge})&#x60;,
+          nextStep: &#x27;age_verification_required&#x27;,
+        });
+        return;
+      }
+
+      if ((verification.age ?? 0) &lt; minAge) {
+        res.status(403).json({
+          error: &#x27;Age requirement not met&#x27;,
+          message: &#x60;You must be at least ${minAge} years old to access this content&#x60;,
+          userAge: verification.age,
+        });
+        return;
+      }
+
+      // Attach verification info to request
+      (req as AgeVerifiedRequest).ageVerification &#x3D; {
+        verified: true,
+        age: verification.age,
+        restrictions: (AgeVerificationService as any).getAgeRestrictions(verification.age ?? 0),
+      };
+
+      // Log compliance event
+      (ComplianceService as any).logComplianceEvent({
+        category: &#x27;age_verification&#x27;,
+        action: &#x27;content_access_granted&#x27;,
+        userId: user.userId,
+        resource: req.path,
+        details: {
+          minAge,
+          userAge: verification.age,
+          restrictions: (req as AgeVerifiedRequest).ageVerification?.restrictions,
+        },
+        ip: req.ip,
+        userAgent: req.get(&#x27;User-Agent&#x27;),
+        complianceFrameworks: [&#x27;COPPA&#x27;, &#x27;Online Safety Act&#x27;],
+      });
+
+      next();
+    } catch (error) {
+      logger.error(&#x27;Age verification middleware error&#x27;, {
+        error: (error as Error).message,
+        userId: (req as any).authUser?.userId,
+        path: req.path,
+      });
+
+      res.status(500).json({
+        error: &#x27;Verification service unavailable&#x27;,
+        message: &#x27;Unable to verify age at this time&#x27;,
+      });
+    }
+  };
+}
+
+/**
+ * Middleware for content with age-based restrictions
+ */
+export function applyAgeRestrictions() {
+  return async (req: Request, res: Response, next: NextFunction): Promise&lt;void&gt; &#x3D;&gt; {
+    try {
+      const user &#x3D; (req as any).authUser || (req as any).user;
+
+      if (user?.userId) {
+        const verification &#x3D; await (AgeVerificationService as any).getVerificationStatus(
+          user.userId
+        );
+
+        if (verification?.verified) {
+          const restrictions &#x3D; (AgeVerificationService as any).getAgeRestrictions(
+            verification.age ?? 0
+          );
+
+          // Attach restrictions to request for route handlers to use
+          (req as AgeVerifiedRequest).ageVerification &#x3D; {
+            verified: true,
+            age: verification.age,
+            restrictions,
+          };
+
+          // Add age-based headers to response
+          res.set({
+            &#x27;X-User-Age-Verified&#x27;: &#x27;true&#x27;,
+            &#x27;X-User-Age-Rating&#x27;: restrictions.contentRating,
+            &#x27;X-User-Restrictions&#x27;: JSON.stringify(restrictions.features),
+          });
+        }
+      }
+
+      next();
+    } catch (error) {
+      logger.error(&#x27;Age restrictions middleware error&#x27;, {
+        error: (error as Error).message,
+        userId: (req as any).authUser?.userId,
+      });
+      // Don&#x27;t fail the request, just continue without restrictions
+      next();
+    }
+  };
+}
+
+/**
+ * Middleware to check content access based on age ratings
+ */
+export function checkContentAccess(contentRating: string) {
+  return async (req: Request, res: Response, next: NextFunction): Promise&lt;void&gt; &#x3D;&gt; {
+    try {
+      const user &#x3D; (req as any).authUser || (req as any).user;
+
+      if (!user?.userId) {
+        // Allow anonymous access for public content, but log it
+        (ComplianceService as any).logComplianceEvent({
+          category: &#x27;content_access&#x27;,
+          action: &#x27;anonymous_access&#x27;,
+          resource: req.path,
+          details: { contentRating },
+          ip: req.ip,
+          userAgent: req.get(&#x27;User-Agent&#x27;),
+          complianceFrameworks: [&#x27;Online Safety Act&#x27;],
+        });
+        next();
+        return;
+      }
+
+      const verification &#x3D; await (AgeVerificationService as any).getVerificationStatus(user.userId);
+
+      if (!verification?.verified) {
+        // Allow access but mark as unverified
+        res.set(&#x27;X-Age-Unverified&#x27;, &#x27;true&#x27;);
+        (ComplianceService as any).logComplianceEvent({
+          category: &#x27;content_access&#x27;,
+          action: &#x27;unverified_access&#x27;,
+          userId: user.userId,
+          resource: req.path,
+          details: { contentRating },
+          ip: req.ip,
+          userAgent: req.get(&#x27;User-Agent&#x27;),
+          complianceFrameworks: [&#x27;Online Safety Act&#x27;],
+        });
+        next();
+        return;
+      }
+
+      const canAccess &#x3D; (AgeVerificationService as any).canAccessContent(
+        verification.age ?? 0,
+        contentRating
+      );
+
+      if (!canAccess) {
+        res.status(403).json({
+          error: &#x27;Content access denied&#x27;,
+          message: &#x60;This content (${contentRating}) is not suitable for users under the required age&#x60;,
+          userAge: verification.age,
+          contentRating,
+        });
+        return;
+      }
+
+      // Log successful access
+      (ComplianceService as any).logComplianceEvent({
+        category: &#x27;content_access&#x27;,
+        action: &#x27;verified_access_granted&#x27;,
+        userId: user.userId,
+        resource: req.path,
+        details: {
+          contentRating,
+          userAge: verification.age,
+        },
+        ip: req.ip,
+        userAgent: req.get(&#x27;User-Agent&#x27;),
+        complianceFrameworks: [&#x27;Online Safety Act&#x27;, &#x27;COPPA&#x27;],
+      });
+
+      next();
+    } catch (error) {
+      logger.error(&#x27;Content access check error&#x27;, {
+        error: (error as Error).message,
+        userId: (req as any).authUser?.userId,
+        contentRating,
+      });
+
+      // Fail safely - deny access if we can&#x27;t verify
+      res.status(403).json({
+        error: &#x27;Access verification failed&#x27;,
+        message: &#x27;Unable to verify content access permissions&#x27;,
+      });
+    }
+  };
+}
+
+/**
+ * Middleware for parental consent verification (for users under 13)
+ */
+export function requireParentalConsent() {
+  return async (req: Request, res: Response, next: NextFunction): Promise&lt;void&gt; &#x3D;&gt; {
+    try {
+      const user &#x3D; (req as any).authUser || (req as any).user;
+
+      if (!user?.userId) {
+        res.status(401).json({
+          error: &#x27;Authentication required&#x27;,
+          message: &#x27;You must be logged in to access this feature&#x27;,
+        });
+        return;
+      }
+
+      const verification &#x3D; await (AgeVerificationService as any).getVerificationStatus(user.userId);
+
+      if (!verification?.verified) {
+        res.status(403).json({
+          error: &#x27;Age verification required&#x27;,
+          message: &#x27;Parental consent requires initial age verification&#x27;,
+          nextStep: &#x27;age_verification_required&#x27;,
+        });
+        return;
+      }
+
+      if ((verification.age ?? 0) &gt;&#x3D; 13) {
+        // No parental consent needed for 13+
+        next();
+        return;
+      }
+
+      // For users under 13, check if parental consent was obtained
+      // This would need to be implemented based on how parental consent is stored
+      // For now, we&#x27;ll assume consent is part of the verification record
+
+      const hasParentalConsent &#x3D; verification.age !&#x3D;&#x3D; undefined &amp;&amp; verification.age &lt; 13;
+      // This is a simplification - in reality, you&#x27;d check a separate parental consent flag
+
+      if (!hasParentalConsent) {
+        res.status(403).json({
+          error: &#x27;Parental consent required&#x27;,
+          message: &#x27;Users under 13 require parental consent to access this feature&#x27;,
+          nextStep: &#x27;parental_consent_required&#x27;,
+        });
+        return;
+      }
+
+      (ComplianceService as any).logComplianceEvent({
+        category: &#x27;parental_consent&#x27;,
+        action: &#x27;feature_access_granted&#x27;,
+        userId: user.userId,
+        resource: req.path,
+        details: { userAge: verification.age },
+        ip: req.ip,
+        userAgent: req.get(&#x27;User-Agent&#x27;),
+        complianceFrameworks: [&#x27;COPPA&#x27;, &#x27;Online Safety Act&#x27;],
+      });
+
+      next();
+    } catch (error) {
+      logger.error(&#x27;Parental consent check error&#x27;, {
+        error: (error as Error).message,
+        userId: (req as any).authUser?.userId,
+      });
+
+      res.status(500).json({
+        error: &#x27;Consent verification failed&#x27;,
+        message: &#x27;Unable to verify parental consent&#x27;,
+      });
+    }
+  };
+}
+</code></pre>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'interface';
+            var COMPODOC_CURRENT_PAGE_URL = 'AgeVerifiedRequest.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

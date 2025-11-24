@@ -104,7 +104,11 @@ const Captcha = forwardRef<CaptchaRef, CaptchaProps>(
               overflow: 'hidden',
             }}
           >
-            <div style={{ width: '304px', maxWidth: '100%', overflow: 'hidden' }}>
+            <div
+              role="group"
+              aria-label="Complete the CAPTCHA challenge to verify you are not a robot"
+              style={{ width: '304px', maxWidth: '100%', overflow: 'hidden' }}
+            >
               <ReCAPTCHA
                 ref={recaptchaRef}
                 sitekey={siteKey}
@@ -113,7 +117,6 @@ const Captcha = forwardRef<CaptchaRef, CaptchaProps>(
                 onError={onError}
                 size={size}
                 theme={theme}
-                aria-label="Complete the CAPTCHA challenge to verify you are not a robot"
               />
             </div>
           </div>
@@ -128,7 +131,7 @@ const Captcha = forwardRef<CaptchaRef, CaptchaProps>(
         `}</style>
       </div>
     );
-  },
+  }
 );
 
 Captcha.displayName = 'Captcha';

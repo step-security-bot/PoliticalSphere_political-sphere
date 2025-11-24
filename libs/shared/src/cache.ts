@@ -47,6 +47,12 @@ interface CacheEntry<T = unknown> {
 }
 
 // In-memory cache implementation
+/**
+ * In-memory cache implementation with TTL support
+ *
+ * Provides fast, local caching using a Map with automatic expiration
+ * and size limits for memory-constrained environments.
+ */
 class MemoryCache {
   private cache = new Map<string, CacheEntry>();
   private maxSize: number;
@@ -118,6 +124,12 @@ type RedisClient = {
   disconnect: () => Promise<void>;
 };
 
+/**
+ * Redis-based cache implementation with connection pooling
+ *
+ * Provides distributed caching using Redis with automatic reconnection,
+ * lazy loading, and error handling for production environments.
+ */
 class RedisCache {
   private client: RedisClient | null = null;
   private connected = false;
@@ -212,6 +224,12 @@ class RedisCache {
 }
 
 // File-based cache implementation for large objects
+/**
+ * File-based cache implementation for large objects and persistent storage
+ *
+ * Provides disk-based caching with size limits and automatic cleanup
+ * for scenarios where memory cache is insufficient or persistence is required.
+ */
 class FileCache {
   private directory: string;
   private maxFileSize: number;
@@ -302,6 +320,12 @@ class FileCache {
 }
 
 // Main cache service
+/**
+ * Main cache service providing unified interface for multiple cache backends
+ *
+ * Orchestrates memory, Redis, and file caches with automatic fallback,
+ * compression, and performance monitoring for high-throughput applications.
+ */
 class CacheService {
   private memoryCache: MemoryCache;
   private redisCache: RedisCache;

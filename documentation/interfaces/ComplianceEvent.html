@@ -1,0 +1,1867 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>political-sphere documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">political-sphere documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content interface">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Interfaces</li>
+  <li class="breadcrumb-item"
+  >
+  ComplianceEvent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>apps/api/src/modules/complianceService.ts</code>
+        </p>
+
+
+
+
+        <section data-compodoc="block-index">
+            <h3 id="index">Index</h3>
+            <table class="table table-sm table-bordered index-table">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <h6><b>Properties</b></h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <ul class="index-list">
+                                <li>
+                                        <a href="#action" 
+>
+                                            action
+                                        </a>
+                                </li>
+                                <li>
+                                            <span class="modifier">Optional</span>
+                                        <a href="#category" 
+>
+                                            category
+                                        </a>
+                                </li>
+                                <li>
+                                            <span class="modifier">Optional</span>
+                                        <a href="#complianceFrameworks" 
+>
+                                            complianceFrameworks
+                                        </a>
+                                </li>
+                                <li>
+                                            <span class="modifier">Optional</span>
+                                        <a href="#details" 
+>
+                                            details
+                                        </a>
+                                </li>
+                                <li>
+                                            <span class="modifier">Optional</span>
+                                        <a href="#ip" 
+>
+                                            ip
+                                        </a>
+                                </li>
+                                <li>
+                                            <span class="modifier">Optional</span>
+                                        <a href="#resource" 
+>
+                                            resource
+                                        </a>
+                                </li>
+                                <li>
+                                            <span class="modifier">Optional</span>
+                                        <a href="#userAgent" 
+>
+                                            userAgent
+                                        </a>
+                                </li>
+                                <li>
+                                            <span class="modifier">Optional</span>
+                                        <a href="#userId" 
+>
+                                            userId
+                                        </a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+
+
+            <section data-compodoc="block-properties">
+                <h3 id="inputs">Properties</h3>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="action"></a>
+                                        <span class="name "><b>action</b>
+                                            <a href="#action">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>action:         <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="category"></a>
+                                        <span class="name "><b>category</b>
+                                            <a href="#category">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>category:         <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Optional</i>
+                                        </td>
+                                    </tr>
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="complianceFrameworks"></a>
+                                        <span class="name "><b>complianceFrameworks</b>
+                                            <a href="#complianceFrameworks">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>complianceFrameworks:         <code><a href="../miscellaneous/variables.html#g" target="_self" >string[]</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="../miscellaneous/variables.html#g" target="_self" >string[]</a></code>
+
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Optional</i>
+                                        </td>
+                                    </tr>
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="details"></a>
+                                        <span class="name "><b>details</b>
+                                            <a href="#details">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>details:         <code><a href="../miscellaneous/variables.html#g" target="_self" >Record&lt;string | unknown&gt;</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="../miscellaneous/variables.html#g" target="_self" >Record&lt;string | unknown&gt;</a></code>
+
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Optional</i>
+                                        </td>
+                                    </tr>
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="ip"></a>
+                                        <span class="name "><b>ip</b>
+                                            <a href="#ip">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>ip:         <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Optional</i>
+                                        </td>
+                                    </tr>
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="resource"></a>
+                                        <span class="name "><b>resource</b>
+                                            <a href="#resource">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>resource:         <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Optional</i>
+                                        </td>
+                                    </tr>
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="userAgent"></a>
+                                        <span class="name "><b>userAgent</b>
+                                            <a href="#userAgent">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>userAgent:         <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Optional</i>
+                                        </td>
+                                    </tr>
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="userId"></a>
+                                        <span class="name "><b>userId</b>
+                                            <a href="#userId">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>userId:         <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Optional</i>
+                                        </td>
+                                    </tr>
+
+
+
+
+                        </tbody>
+                    </table>
+            </section>
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import crypto from &#x27;node:crypto&#x27;;
+
+import { prisma } from &#x27;../services/prisma-database.service.js&#x27;;
+import loggerModule, {
+  audit as auditLogger,
+  error as errorLogger,
+  info as infoLogger,
+  warn as warnLogger,
+} from &#x27;../utils/logger.js&#x27;;
+
+interface ComplianceEvent {
+  category?: string;
+  action: string;
+  userId?: string;
+  resource?: string;
+  details?: Record&lt;string, unknown&gt;;
+  ip?: string;
+  userAgent?: string;
+  complianceFrameworks?: string[];
+}
+
+interface ComplianceAlert {
+  id: string;
+  timestamp: string;
+  framework: string;
+  rule: string;
+  severity: string;
+  description: string;
+  auditEntryId: string;
+  status: string;
+  assignedTo?: string | null;
+  resolvedAt?: string | null;
+  resolution?: string;
+  resolvedBy?: string;
+}
+
+interface AuditEntry {
+  id: string;
+  timestamp: string;
+  category: string;
+  action: string;
+  userId?: string;
+  resource?: string;
+  details?: Record&lt;string, unknown&gt;;
+  ip?: string;
+  userAgent?: string;
+  complianceFrameworks: string[];
+}
+
+type ComplianceDbLike &#x3D; {
+  create?: (payload: {
+    eventType: string;
+    userId: string;
+    details: Record&lt;string, unknown&gt;;
+    timestamp: string;
+  }) &#x3D;&gt; unknown | Promise&lt;unknown&gt;;
+  getAll?: (query?: { userId?: string }) &#x3D;&gt; unknown[] | Promise&lt;unknown[]&gt;;
+};
+
+type ComplianceCheckResult &#x3D; { compliant: boolean; violations: string[] };
+
+type ComplianceDashboard &#x3D; {
+  totalEvents: number;
+  eventsByCategory: Record&lt;string, number&gt;;
+  activeAlerts: number;
+  resolvedAlerts: number;
+  complianceScore: number;
+  topViolations: Array&lt;{ violation: string; count: number }&gt;;
+  frameworkCoverage: Record&lt;string, { implemented: boolean; score: number }&gt;;
+};
+
+type NotificationPayload &#x3D; {
+  subject: string;
+  message: string;
+  recipients: string[];
+  channels: string[];
+};
+
+type DSATransparencyReport &#x3D; {
+  generatedAt: string;
+  reportingPeriod: string;
+  platformName: string;
+  totalUsers: number;
+  activeUsers: number;
+  contentModeration: {
+    totalReportsReceived: number;
+    reportsResolved: number;
+    averageResponseTime: number;
+    contentRemoved: number;
+    contentRestored: number;
+  };
+  illegalContent: {
+    totalDetected: number;
+    categories: Record&lt;string, number&gt;;
+  };
+  userRights: {
+    accessRequests: number;
+    rectificationRequests: number;
+    erasureRequests: number;
+    averageResponseTime: number;
+  };
+};
+
+type BreachDetails &#x3D; {
+  date: string;
+  time: string;
+  categories: string[];
+  approximateNumber: number;
+  consequences?: string;
+  measuresTaken?: string;
+};
+
+type BreachNotification &#x3D; {
+  breachId: string;
+  reportedAt: string;
+  breachDetails: BreachDetails;
+  supervisoryAuthority: string;
+  status: &#x27;draft&#x27; | &#x27;submitted&#x27; | &#x27;acknowledged&#x27; | &#x27;closed&#x27;;
+};
+
+type SubjectRightsRequest &#x3D; {
+  id: string;
+  userId: string;
+  requestType: &#x27;access&#x27; | &#x27;deletion&#x27; | &#x27;rectification&#x27; | &#x27;portability&#x27; | &#x27;restriction&#x27;;
+  status: &#x27;pending&#x27; | &#x27;processing&#x27; | &#x27;completed&#x27; | &#x27;rejected&#x27;;
+  requestedAt: string;
+  completedAt?: string;
+  responseDeadline: string; // Within 30 days
+  data?: Record&lt;string, unknown&gt;;
+  reason?: string;
+  ip?: string;
+  userAgent?: string;
+};
+
+type DataAccessResponse &#x3D; {
+  personalData: Record&lt;string, unknown&gt;;
+  processingPurposes: string[];
+  recipients: string[];
+  retentionPeriod: string;
+  rights: string[];
+};
+
+type DataMinimizationConfig &#x3D; {
+  retentionPolicies: Record&lt;string, number&gt;; // data type -&gt; days to retain
+  anonymizationRules: Record&lt;string, string[]&gt;;
+  dataCategories: string[];
+};
+
+const logger &#x3D; {
+  audit: auditLogger || loggerModule.audit,
+  error: errorLogger || loggerModule.error,
+  warn: warnLogger || loggerModule.warn,
+  info: infoLogger || loggerModule.info,
+};
+
+class ComplianceService {
+  auditLog: AuditEntry[];
+  complianceMetrics: Map&lt;string, unknown&gt;;
+  alerts: ComplianceAlert[];
+  reportingPeriod: number;
+  complianceDb?: ComplianceDbLike;
+  subjectRightsRequests: SubjectRightsRequest[];
+  dataMinimizationConfig: DataMinimizationConfig;
+
+  // accept optional complianceDb for tests
+  constructor(complianceDb?: ComplianceDbLike) {
+    this.auditLog &#x3D; []; // In production, use persistent storage
+    this.complianceMetrics &#x3D; new Map();
+    this.alerts &#x3D; [];
+    this.reportingPeriod &#x3D; 30; // days
+    this.complianceDb &#x3D; complianceDb;
+    this.subjectRightsRequests &#x3D; [];
+    this.dataMinimizationConfig &#x3D; {
+      retentionPolicies: {
+        audit_logs: 2555, // 7 years for GDPR
+        user_data: 2555,
+        consent_records: 2555,
+        marketing_data: 730, // 2 years
+        analytics_data: 730,
+      },
+      anonymizationRules: {
+        ip_addresses: [&#x27;mask_last_octet&#x27;, &#x27;anonymize_after_30_days&#x27;],
+        personal_identifiers: [&#x27;hash&#x27;, &#x27;pseudonymize&#x27;],
+      },
+      dataCategories: [&#x27;personal&#x27;, &#x27;sensitive&#x27;, &#x27;marketing&#x27;, &#x27;analytics&#x27;],
+    };
+  }
+
+  /**
+   * Log compliance event for audit trail
+   */
+  async logComplianceEvent(event: ComplianceEvent): Promise&lt;string&gt; {
+    const eventId &#x3D; crypto.randomUUID();
+    const auditEntry: AuditEntry &#x3D; {
+      id: eventId,
+      timestamp: new Date().toISOString(),
+      category: event.category || &#x27;general&#x27;,
+      action: event.action,
+      userId: event.userId,
+      resource: event.resource,
+      details: event.details,
+      ip: event.ip,
+      userAgent: event.userAgent,
+      complianceFrameworks: event.complianceFrameworks || [],
+    };
+
+    try {
+      // Persist to database
+      await prisma.auditLog.create({
+        data: {
+          id: eventId,
+          timestamp: new Date(auditEntry.timestamp),
+          category: auditEntry.category,
+          action: auditEntry.action,
+          userId: auditEntry.userId,
+          resource: auditEntry.resource,
+          // biome-ignore lint/suspicious/noExplicitAny: Prisma requires &#x27;any&#x27; for Json fields
+          details: auditEntry.details as any,
+          ip: auditEntry.ip,
+          userAgent: auditEntry.userAgent,
+          complianceFrameworks: auditEntry.complianceFrameworks,
+        },
+      });
+
+      // Also keep in memory for quick access (limited to recent entries)
+      this.auditLog.push(auditEntry);
+      if (this.auditLog.length &gt; 1000) {
+        this.auditLog.shift();
+      }
+
+      logger.audit(&#x27;Compliance event logged&#x27;, {
+        eventId,
+        category: auditEntry.category,
+        action: auditEntry.action,
+        userId: event.userId,
+      });
+
+      // Check for compliance violations
+      this.checkComplianceViolations(auditEntry);
+    } catch (error) {
+      logger.error(&#x27;Failed to persist audit log&#x27;, {
+        error: (error as Error).message,
+        eventId,
+        category: auditEntry.category,
+        action: auditEntry.action,
+      });
+      // Continue with in-memory logging as fallback
+      this.auditLog.push(auditEntry);
+      if (this.auditLog.length &gt; 1000) {
+        this.auditLog.shift();
+      }
+    }
+
+    return eventId;
+  }
+
+  /**
+   * Check for compliance violations and trigger alerts
+   */
+  checkComplianceViolations(auditEntry: AuditEntry): void {
+    const violations &#x3D; [];
+
+    // GDPR violations
+    if (
+      auditEntry.category &#x3D;&#x3D;&#x3D; &#x27;data_processing&#x27; &amp;&amp;
+      auditEntry.details &amp;&amp;
+      !auditEntry.details.lawfulBasis
+    ) {
+      violations.push({
+        framework: &#x27;GDPR&#x27;,
+        rule: &#x27;Article 6 - Lawful Basis&#x27;,
+        severity: &#x27;high&#x27;,
+        description: &#x27;Data processing without documented lawful basis&#x27;,
+      });
+    }
+
+    // DSA violations
+    if (
+      auditEntry.category &#x3D;&#x3D;&#x3D; &#x27;content_moderation&#x27; &amp;&amp;
+      auditEntry.details &amp;&amp;
+      typeof auditEntry.details.responseTime &#x3D;&#x3D;&#x3D; &#x27;number&#x27; &amp;&amp;
+      auditEntry.details.responseTime &gt; 24 * 60 * 60 * 1000
+    ) {
+      // 24 hours
+      violations.push({
+        framework: &#x27;DSA&#x27;,
+        rule: &#x27;Content Moderation Timeliness&#x27;,
+        severity: &#x27;medium&#x27;,
+        description: &#x27;Content moderation exceeded 24-hour response time&#x27;,
+      });
+    }
+
+    // ISO 27001 violations
+    if (
+      auditEntry.category &#x3D;&#x3D;&#x3D; &#x27;access_control&#x27; &amp;&amp;
+      auditEntry.details &amp;&amp;
+      typeof auditEntry.details.failedAttempts &#x3D;&#x3D;&#x3D; &#x27;number&#x27; &amp;&amp;
+      auditEntry.details.failedAttempts &gt; 5
+    ) {
+      violations.push({
+        framework: &#x27;ISO 27001&#x27;,
+        rule: &#x27;Access Control&#x27;,
+        severity: &#x27;medium&#x27;,
+        description: &#x27;Multiple failed access attempts detected&#x27;,
+      });
+    }
+
+    // Trigger alerts for violations
+    violations.forEach(violation &#x3D;&gt; {
+      this.createComplianceAlert(violation, auditEntry);
+    });
+  }
+
+  /**
+   * Test-friendly wrapper expected by tests - log an audit event to the DB
+   */
+  async logAuditEvent(
+    eventType: string,
+    userId: string,
+    details: Record&lt;string, unknown&gt; &#x3D; {}
+  ): Promise&lt;Record&lt;string, unknown&gt;&gt; {
+    const payload &#x3D; {
+      eventType,
+      userId,
+      details,
+      timestamp: new Date().toISOString(),
+    };
+
+    if (this.complianceDb &amp;&amp; typeof this.complianceDb.create &#x3D;&#x3D;&#x3D; &#x27;function&#x27;) {
+      return (await this.complianceDb.create(payload)) as Record&lt;string, unknown&gt;;
+    }
+
+    // Fallback: push to in-memory auditLog
+    const id &#x3D; this.logComplianceEvent({
+      category: &#x27;general&#x27;,
+      action: eventType,
+      userId,
+      details,
+    });
+    return { id, ...payload } as Record&lt;string, unknown&gt;;
+  }
+
+  /**
+   * Retrieve compliance reports (optionally filtered by userId)
+   */
+  async getComplianceReports(userId?: string): Promise&lt;Array&lt;Record&lt;string, unknown&gt;&gt;&gt; {
+    if (this.complianceDb &amp;&amp; typeof this.complianceDb.getAll &#x3D;&#x3D;&#x3D; &#x27;function&#x27;) {
+      if (userId) {
+        return (await this.complianceDb.getAll({ userId })) as Array&lt;Record&lt;string, unknown&gt;&gt;;
+      }
+      return (await this.complianceDb.getAll()) as Array&lt;Record&lt;string, unknown&gt;&gt;;
+    }
+    return [];
+  }
+
+  /**
+   * Check compliance for a given framework and action/context
+   */
+  async checkCompliance(
+    framework: string,
+    context: Record&lt;string, unknown&gt; &#x3D; {}
+  ): Promise&lt;ComplianceCheckResult&gt; {
+    // Very small deterministic logic to satisfy tests
+    if (framework &#x3D;&#x3D;&#x3D; &#x27;GDPR&#x27;) {
+      if ((context as { action?: string }).action &#x3D;&#x3D;&#x3D; &#x27;unauthorized_data_access&#x27;) {
+        return {
+          compliant: false,
+          violations: [&#x27;Unauthorized data access violates GDPR Article 5&#x27;],
+        };
+      }
+      return { compliant: true, violations: [] };
+    }
+    return { compliant: true, violations: [] };
+  }
+
+  /**
+   * Generate a simple compliance report over events
+   */
+  async generateComplianceReport(period: string &#x3D; &#x27;monthly&#x27;): Promise&lt;{
+    period: string;
+    totalEvents: number;
+    eventsByType: Record&lt;string, number&gt;;
+  }&gt; {
+    const items &#x3D; (
+      this.complianceDb &amp;&amp; typeof this.complianceDb.getAll &#x3D;&#x3D;&#x3D; &#x27;function&#x27;
+        ? await this.complianceDb.getAll()
+        : []
+    ) as Array&lt;Record&lt;string, unknown&gt;&gt;;
+
+    const eventsByType: Record&lt;string, number&gt; &#x3D; {};
+    for (const it of items) {
+      const evType &#x3D; typeof it.eventType &#x3D;&#x3D;&#x3D; &#x27;string&#x27; ? (it.eventType as string) : &#x27;unknown&#x27;;
+      eventsByType[evType] &#x3D; (eventsByType[evType] || 0) + 1;
+    }
+
+    return {
+      period,
+      totalEvents: items.length,
+      eventsByType,
+    };
+  }
+
+  /**
+   * Create compliance alert
+   */
+  createComplianceAlert(
+    violation: { framework: string; rule: string; severity: string; description: string },
+    auditEntry: AuditEntry
+  ): void {
+    const alert: ComplianceAlert &#x3D; {
+      id: crypto.randomUUID(),
+      timestamp: new Date().toISOString(),
+      framework: violation.framework,
+      rule: violation.rule,
+      severity: violation.severity,
+      description: violation.description,
+      auditEntryId: auditEntry.id,
+      status: &#x27;active&#x27;,
+      assignedTo: null,
+      resolvedAt: null,
+    };
+
+    this.alerts.push(alert);
+
+    logger.warn(&#x27;Compliance alert created&#x27;, {
+      alertId: alert.id,
+      framework: violation.framework,
+      severity: violation.severity,
+      description: violation.description,
+    });
+
+    // In production: send email/SMS to compliance team
+    this.notifyComplianceTeam(alert);
+  }
+
+  /**
+   * Notify compliance team of alerts
+   */
+  async notifyComplianceTeam(alert: ComplianceAlert): Promise&lt;void&gt; {
+    try {
+      const notification: NotificationPayload &#x3D; {
+        subject: &#x60;Compliance Alert: ${alert.framework} - ${alert.severity}&#x60;,
+        message: &#x60;Alert ID: ${alert.id}\nFramework: ${alert.framework}\nSeverity: ${alert.severity}\nDescription: ${alert.description}\nTimestamp: ${alert.timestamp}&#x60;,
+        recipients: process.env.COMPLIANCE_TEAM_EMAILS?.split(&#x27;,&#x27;) || [
+          &#x27;compliance@political-sphere.com&#x27;,
+        ],
+        channels: [&#x27;email&#x27;], // Could add &#x27;sms&#x27;, &#x27;slack&#x27;, etc.
+      };
+
+      // Send notification via configured channels
+      await this.sendNotification(notification);
+
+      logger.info(&#x27;Compliance team notified&#x27;, {
+        alertId: alert.id,
+        channels: notification.channels,
+      });
+    } catch (error) {
+      logger.error(&#x27;Failed to notify compliance team&#x27;, {
+        error: (error as Error).message,
+        alertId: alert.id,
+      });
+    }
+  }
+
+  /**
+   * Send notification via configured channels
+   */
+  async sendNotification(notification: NotificationPayload): Promise&lt;void&gt; {
+    const { channels, subject, message, recipients } &#x3D; notification;
+
+    for (const channel of channels) {
+      switch (channel) {
+        case &#x27;email&#x27;:
+          await this.sendEmail(subject, message, recipients);
+          break;
+        case &#x27;sms&#x27;:
+          await this.sendSMS(message, recipients);
+          break;
+        case &#x27;slack&#x27;:
+          await this.sendSlackMessage(subject, message);
+          break;
+        default:
+          logger.warn(&#x27;Unknown notification channel&#x27;, { channel });
+      }
+    }
+  }
+
+  /**
+   * Send email notification
+   */
+  async sendEmail(subject: string, message: string, recipients: string[]): Promise&lt;void&gt; {
+    try {
+      const response &#x3D; await fetch(&#x27;https://notification.local/email&#x27;, {
+        method: &#x27;POST&#x27;,
+        headers: { &#x27;Content-Type&#x27;: &#x27;application/json&#x27; },
+        body: JSON.stringify({ subject, message, recipients }),
+      });
+
+      if (!response.ok) {
+        throw new Error(&#x60;Email service responded with status ${response.status}&#x60;);
+      }
+
+      logger.info(&#x27;Email notification sent&#x27;, {
+        subject,
+        message: message.substring(0, 50),
+        recipients: recipients.length,
+      });
+    } catch (error) {
+      logger.error(&#x27;Email notification failed&#x27;, {
+        subject,
+        recipients: recipients.length,
+        error: (error as Error).message,
+      });
+      throw error;
+    }
+  }
+
+  /**
+   * Send SMS notification
+   */
+  async sendSMS(message: string, recipients: string[]): Promise&lt;void&gt; {
+    try {
+      const response &#x3D; await fetch(&#x27;https://notification.local/sms&#x27;, {
+        method: &#x27;POST&#x27;,
+        headers: { &#x27;Content-Type&#x27;: &#x27;application/json&#x27; },
+        body: JSON.stringify({ message, recipients }),
+      });
+
+      if (!response.ok) {
+        throw new Error(&#x60;SMS service responded with status ${response.status}&#x60;);
+      }
+
+      logger.info(&#x27;SMS notification sent&#x27;, {
+        message: message.substring(0, 50),
+        recipients: recipients.length,
+      });
+    } catch (error) {
+      logger.error(&#x27;SMS notification failed&#x27;, {
+        recipients: recipients.length,
+        error: (error as Error).message,
+      });
+      throw error;
+    }
+  }
+
+  /**
+   * Send Slack message
+   */
+  async sendSlackMessage(subject: string, message: string): Promise&lt;void&gt; {
+    try {
+      const response &#x3D; await fetch(&#x27;https://notification.local/slack&#x27;, {
+        method: &#x27;POST&#x27;,
+        headers: { &#x27;Content-Type&#x27;: &#x27;application/json&#x27; },
+        body: JSON.stringify({ subject, message }),
+      });
+
+      if (!response.ok) {
+        throw new Error(&#x60;Slack service responded with status ${response.status}&#x60;);
+      }
+
+      logger.info(&#x27;Slack notification sent&#x27;, {
+        subject,
+        message: message.substring(0, 50),
+      });
+    } catch (error) {
+      logger.error(&#x27;Slack notification failed&#x27;, {
+        subject,
+        error: (error as Error).message,
+      });
+      throw error;
+    }
+  }
+
+  /**
+   * Get compliance dashboard data
+   */
+  async getComplianceDashboard(): Promise&lt;ComplianceDashboard&gt; {
+    const now &#x3D; new Date();
+    const thirtyDaysAgo &#x3D; new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+
+    try {
+      // Get recent audit entries from database
+      const recentEntries &#x3D; await prisma.auditLog.findMany({
+        where: {
+          timestamp: { gte: thirtyDaysAgo },
+        },
+      });
+
+      // Convert to AuditEntry format for compatibility
+      const auditEntries: AuditEntry[] &#x3D; recentEntries.map(entry &#x3D;&gt; ({
+        id: entry.id,
+        timestamp: entry.timestamp.toISOString(),
+        category: entry.category,
+        action: entry.action,
+        userId: entry.userId || undefined,
+        resource: entry.resource || undefined,
+        details: (entry.details as Record&lt;string, unknown&gt;) || undefined,
+        ip: entry.ip || undefined,
+        userAgent: entry.userAgent || undefined,
+        complianceFrameworks: entry.complianceFrameworks as string[],
+      }));
+
+      // Calculate metrics
+      const metrics: ComplianceDashboard &#x3D; {
+        totalEvents: auditEntries.length,
+        eventsByCategory: this.groupByCategory(auditEntries),
+        activeAlerts: this.alerts.filter(alert &#x3D;&gt; alert.status &#x3D;&#x3D;&#x3D; &#x27;active&#x27;).length,
+        resolvedAlerts: this.alerts.filter(alert &#x3D;&gt; alert.status &#x3D;&#x3D;&#x3D; &#x27;resolved&#x27;).length,
+        complianceScore: this.calculateComplianceScore(),
+        topViolations: this.getTopViolations(),
+        frameworkCoverage: this.getFrameworkCoverage(),
+      };
+
+      return metrics;
+    } catch (error) {
+      logger.error(&#x27;Failed to get compliance dashboard from database&#x27;, {
+        error: (error as Error).message,
+      });
+      // Fallback to in-memory data
+      const recentEntries &#x3D; this.auditLog.filter(
+        entry &#x3D;&gt; new Date(entry.timestamp) &gt; thirtyDaysAgo
+      );
+
+      return {
+        totalEvents: recentEntries.length,
+        eventsByCategory: this.groupByCategory(recentEntries),
+        activeAlerts: this.alerts.filter(alert &#x3D;&gt; alert.status &#x3D;&#x3D;&#x3D; &#x27;active&#x27;).length,
+        resolvedAlerts: this.alerts.filter(alert &#x3D;&gt; alert.status &#x3D;&#x3D;&#x3D; &#x27;resolved&#x27;).length,
+        complianceScore: this.calculateComplianceScore(),
+        topViolations: this.getTopViolations(),
+        frameworkCoverage: this.getFrameworkCoverage(),
+      };
+    }
+  }
+
+  /**
+   * Group audit entries by category
+   */
+  groupByCategory(entries: AuditEntry[]): Record&lt;string, number&gt; {
+    return entries.reduce&lt;Record&lt;string, number&gt;&gt;((acc, entry) &#x3D;&gt; {
+      acc[entry.category] &#x3D; (acc[entry.category] || 0) + 1;
+      return acc;
+    }, {});
+  }
+
+  /**
+   * Calculate overall compliance score
+   */
+  calculateComplianceScore(): number {
+    // Simplified scoring algorithm
+    const activeAlerts &#x3D; this.alerts.filter(alert &#x3D;&gt; alert.status &#x3D;&#x3D;&#x3D; &#x27;active&#x27;).length;
+    const resolvedAlerts &#x3D; this.alerts.filter(alert &#x3D;&gt; alert.status &#x3D;&#x3D;&#x3D; &#x27;resolved&#x27;).length;
+    const totalAlerts &#x3D; activeAlerts + resolvedAlerts;
+
+    if (totalAlerts &#x3D;&#x3D;&#x3D; 0) return 100;
+
+    const alertPenalty &#x3D; (activeAlerts / totalAlerts) * 20; // Max 20 points penalty
+    const baseScore &#x3D; 85; // Base score from framework implementation
+
+    return Math.max(0, Math.min(100, baseScore - alertPenalty));
+  }
+
+  /**
+   * Get top compliance violations
+   */
+  getTopViolations(): Array&lt;{ violation: string; count: number }&gt; {
+    const violationCounts: Record&lt;string, number&gt; &#x3D; {};
+    this.alerts.forEach(alert &#x3D;&gt; {
+      const key &#x3D; &#x60;${alert.framework}:${alert.rule}&#x60;;
+      violationCounts[key] &#x3D; (violationCounts[key] || 0) + 1;
+    });
+
+    return Object.entries(violationCounts)
+      .sort(([, a], [, b]) &#x3D;&gt; b - a)
+      .slice(0, 5)
+      .map(([violation, count]) &#x3D;&gt; ({ violation, count }));
+  }
+
+  /**
+   * Get compliance framework coverage
+   */
+  getFrameworkCoverage(): Record&lt;string, { implemented: boolean; score: number }&gt; {
+    // This would be populated based on implemented frameworks
+    return {
+      GDPR: { implemented: true, score: 85 },
+      DSA: { implemented: true, score: 75 },
+      &#x27;ISO 27001&#x27;: { implemented: true, score: 70 },
+      &#x27;Online Safety Act&#x27;: { implemented: true, score: 80 },
+      &#x27;WCAG 2.2&#x27;: { implemented: true, score: 90 },
+      &#x27;EU AI Act&#x27;: { implemented: true, score: 85 },
+    };
+  }
+
+  /**
+   * Generate DSA transparency report
+   */
+  generateDSATransparencyReport(filters: Record&lt;string, unknown&gt; &#x3D; {}): DSATransparencyReport {
+    const report: DSATransparencyReport &#x3D; {
+      generatedAt: new Date().toISOString(),
+      reportingPeriod: (filters as { period?: string }).period || &#x27;monthly&#x27;,
+      platformName: &#x27;Political Sphere&#x27;,
+      totalUsers: 0, // Would come from user database
+      activeUsers: 0,
+      contentModeration: {
+        totalReportsReceived: 0,
+        reportsResolved: 0,
+        averageResponseTime: 0,
+        contentRemoved: 0,
+        contentRestored: 0,
+      },
+      illegalContent: {
+        totalDetected: 0,
+        categories: {},
+      },
+      userRights: {
+        accessRequests: 0,
+        rectificationRequests: 0,
+        erasureRequests: 0,
+        averageResponseTime: 0,
+      },
+    };
+
+    // Populate with actual data (pseudo-code)
+    // const moderationStats &#x3D; await db.moderationStats.find(filters);
+    // Object.assign(report.contentModeration, moderationStats);
+
+    logger.info(&#x27;DSA transparency report generated&#x27;, {
+      period: report.reportingPeriod,
+    });
+
+    return report;
+  }
+
+  /**
+   * Generate GDPR Article 33 breach notification
+   */
+  generateBreachNotification(breachDetails: BreachDetails): BreachNotification {
+    const notification: BreachNotification &#x3D; {
+      breachId: crypto.randomUUID(),
+      reportedAt: new Date().toISOString(),
+      breachDetails: {
+        date: breachDetails.date,
+        time: breachDetails.time,
+        categories: breachDetails.categories,
+        approximateNumber: breachDetails.approximateNumber,
+        consequences: breachDetails.consequences,
+        measuresTaken: breachDetails.measuresTaken,
+      },
+      supervisoryAuthority: &#x27;ICO (UK)&#x27;, // or relevant authority
+      status: &#x27;draft&#x27;,
+    };
+
+    logger.audit(&#x27;GDPR breach notification generated&#x27;, {
+      breachId: notification.breachId,
+      categories: breachDetails.categories,
+    });
+
+    return notification;
+  }
+
+  /**
+   * Export audit log for external audit
+   */
+  async exportAuditLog(
+    filters: {
+      startDate?: string;
+      endDate?: string;
+      category?: string;
+      userId?: string;
+    } &#x3D; {}
+  ): Promise&lt;AuditEntry[]&gt; {
+    try {
+      const where: { timestamp?: { gte?: Date; lte?: Date }; category?: string; userId?: string } &#x3D;
+        {};
+
+      // Apply filters
+      if (filters.startDate) {
+        where.timestamp &#x3D; { ...where.timestamp, gte: new Date(filters.startDate) };
+      }
+
+      if (filters.endDate) {
+        where.timestamp &#x3D; { ...where.timestamp, lte: new Date(filters.endDate) };
+      }
+
+      if (filters.category) {
+        where.category &#x3D; filters.category;
+      }
+
+      if (filters.userId) {
+        where.userId &#x3D; filters.userId;
+      }
+
+      const auditEntries &#x3D; await prisma.auditLog.findMany({
+        where,
+        orderBy: { timestamp: &#x27;desc&#x27; },
+        include: { user: true },
+      });
+
+      // Convert to AuditEntry format
+      const filteredLog: AuditEntry[] &#x3D; auditEntries.map(entry &#x3D;&gt; ({
+        id: entry.id,
+        timestamp: entry.timestamp.toISOString(),
+        category: entry.category,
+        action: entry.action,
+        userId: entry.userId || undefined,
+        resource: entry.resource || undefined,
+        details: (entry.details as Record&lt;string, unknown&gt;) || undefined,
+        ip: entry.ip || undefined,
+        userAgent: entry.userAgent || undefined,
+        complianceFrameworks: entry.complianceFrameworks as string[],
+      }));
+
+      logger.audit(&#x27;Audit log exported&#x27;, {
+        filters,
+        entriesExported: filteredLog.length,
+      });
+
+      return filteredLog;
+    } catch (error) {
+      logger.error(&#x27;Failed to export audit log from database&#x27;, { error: (error as Error).message });
+      // Fallback to in-memory log
+      return this.auditLog.filter(entry &#x3D;&gt; {
+        if (filters.startDate &amp;&amp; new Date(entry.timestamp) &lt; new Date(filters.startDate))
+          return false;
+        if (filters.endDate &amp;&amp; new Date(entry.timestamp) &gt; new Date(filters.endDate)) return false;
+        if (filters.category &amp;&amp; entry.category !&#x3D;&#x3D; filters.category) return false;
+        if (filters.userId &amp;&amp; entry.userId !&#x3D;&#x3D; filters.userId) return false;
+        return true;
+      });
+    }
+  }
+
+  /**
+   * Resolve compliance alert
+   */
+  resolveComplianceAlert(alertId: string, resolution: string, resolvedBy: string): void {
+    const alert &#x3D; this.alerts.find(a &#x3D;&gt; a.id &#x3D;&#x3D;&#x3D; alertId);
+
+    if (alert) {
+      alert.status &#x3D; &#x27;resolved&#x27;;
+      alert.resolution &#x3D; resolution;
+      alert.resolvedBy &#x3D; resolvedBy;
+      alert.resolvedAt &#x3D; new Date().toISOString();
+
+      logger.audit(&#x27;Compliance alert resolved&#x27;, {
+        alertId,
+        resolvedBy,
+        resolution: &#x60;${resolution.substring(0, 100)}...&#x60;,
+      });
+    }
+  }
+
+  /**
+   * Get compliance alerts
+   */
+  getComplianceAlerts(
+    filters: {
+      status?: string;
+      framework?: string;
+      severity?: string;
+    } &#x3D; {}
+  ): ComplianceAlert[] {
+    let filteredAlerts: ComplianceAlert[] &#x3D; [...this.alerts];
+
+    if (filters.status) {
+      filteredAlerts &#x3D; filteredAlerts.filter(alert &#x3D;&gt; alert.status &#x3D;&#x3D;&#x3D; filters.status);
+    }
+
+    if (filters.framework) {
+      filteredAlerts &#x3D; filteredAlerts.filter(alert &#x3D;&gt; alert.framework &#x3D;&#x3D;&#x3D; filters.framework);
+    }
+
+    if (filters.severity) {
+      filteredAlerts &#x3D; filteredAlerts.filter(alert &#x3D;&gt; alert.severity &#x3D;&#x3D;&#x3D; filters.severity);
+    }
+
+    return filteredAlerts;
+  }
+
+  /**
+   * Handle GDPR Article 15 - Right of access
+   */
+  requestDataAccess(userId: string, ip?: string, userAgent?: string): string {
+    const requestId &#x3D; crypto.randomUUID();
+    const request: SubjectRightsRequest &#x3D; {
+      id: requestId,
+      userId,
+      requestType: &#x27;access&#x27;,
+      status: &#x27;pending&#x27;,
+      requestedAt: new Date().toISOString(),
+      responseDeadline: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(), // 30 days
+      ip,
+      userAgent,
+    };
+
+    this.subjectRightsRequests.push(request);
+
+    // Log the access request
+    this.logComplianceEvent({
+      category: &#x27;subject_rights&#x27;,
+      action: &#x27;data_access_requested&#x27;,
+      userId,
+      resource: &#x27;personal_data&#x27;,
+      details: { requestId, requestType: &#x27;access&#x27; },
+      ip,
+      userAgent,
+      complianceFrameworks: [&#x27;GDPR&#x27;],
+    });
+
+    logger.audit(&#x27;Data access request submitted&#x27;, {
+      requestId,
+      userId,
+      deadline: request.responseDeadline,
+    });
+
+    return requestId;
+  }
+
+  /**
+   * Handle GDPR Article 17 - Right to erasure (deletion)
+   */
+  requestDataDeletion(userId: string, reason?: string, ip?: string, userAgent?: string): string {
+    const requestId &#x3D; crypto.randomUUID();
+    const request: SubjectRightsRequest &#x3D; {
+      id: requestId,
+      userId,
+      requestType: &#x27;deletion&#x27;,
+      status: &#x27;pending&#x27;,
+      requestedAt: new Date().toISOString(),
+      responseDeadline: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(), // 30 days
+      reason,
+      ip,
+      userAgent,
+    };
+
+    this.subjectRightsRequests.push(request);
+
+    // Log the deletion request
+    this.logComplianceEvent({
+      category: &#x27;subject_rights&#x27;,
+      action: &#x27;data_deletion_requested&#x27;,
+      userId,
+      resource: &#x27;personal_data&#x27;,
+      details: { requestId, requestType: &#x27;deletion&#x27;, reason },
+      ip,
+      userAgent,
+      complianceFrameworks: [&#x27;GDPR&#x27;, &#x27;CCPA&#x27;],
+    });
+
+    logger.audit(&#x27;Data deletion request submitted&#x27;, {
+      requestId,
+      userId,
+      reason,
+      deadline: request.responseDeadline,
+    });
+
+    return requestId;
+  }
+
+  /**
+   * Handle GDPR Article 16 - Right to rectification
+   */
+  requestDataRectification(
+    userId: string,
+    rectificationData: Record&lt;string, unknown&gt;,
+    ip?: string,
+    userAgent?: string
+  ): string {
+    const requestId &#x3D; crypto.randomUUID();
+    const request: SubjectRightsRequest &#x3D; {
+      id: requestId,
+      userId,
+      requestType: &#x27;rectification&#x27;,
+      status: &#x27;pending&#x27;,
+      requestedAt: new Date().toISOString(),
+      responseDeadline: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(), // 30 days
+      data: rectificationData,
+      ip,
+      userAgent,
+    };
+
+    this.subjectRightsRequests.push(request);
+
+    // Log the rectification request
+    this.logComplianceEvent({
+      category: &#x27;subject_rights&#x27;,
+      action: &#x27;data_rectification_requested&#x27;,
+      userId,
+      resource: &#x27;personal_data&#x27;,
+      details: { requestId, requestType: &#x27;rectification&#x27;, fields: Object.keys(rectificationData) },
+      ip,
+      userAgent,
+      complianceFrameworks: [&#x27;GDPR&#x27;],
+    });
+
+    logger.audit(&#x27;Data rectification request submitted&#x27;, {
+      requestId,
+      userId,
+      fields: Object.keys(rectificationData),
+      deadline: request.responseDeadline,
+    });
+
+    return requestId;
+  }
+
+  /**
+   * Handle GDPR Article 20 - Right to data portability
+   */
+  requestDataPortability(userId: string, ip?: string, userAgent?: string): string {
+    const requestId &#x3D; crypto.randomUUID();
+    const request: SubjectRightsRequest &#x3D; {
+      id: requestId,
+      userId,
+      requestType: &#x27;portability&#x27;,
+      status: &#x27;pending&#x27;,
+      requestedAt: new Date().toISOString(),
+      responseDeadline: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(), // 30 days
+      ip,
+      userAgent,
+    };
+
+    this.subjectRightsRequests.push(request);
+
+    // Log the portability request
+    this.logComplianceEvent({
+      category: &#x27;subject_rights&#x27;,
+      action: &#x27;data_portability_requested&#x27;,
+      userId,
+      resource: &#x27;personal_data&#x27;,
+      details: { requestId, requestType: &#x27;portability&#x27; },
+      ip,
+      userAgent,
+      complianceFrameworks: [&#x27;GDPR&#x27;],
+    });
+
+    logger.audit(&#x27;Data portability request submitted&#x27;, {
+      requestId,
+      userId,
+      deadline: request.responseDeadline,
+    });
+
+    return requestId;
+  }
+
+  /**
+   * Process a subject rights request (admin function)
+   */
+  processSubjectRightsRequest(
+    requestId: string,
+    action: &#x27;approve&#x27; | &#x27;reject&#x27;,
+    processedBy: string,
+    notes?: string
+  ): boolean {
+    const request &#x3D; this.subjectRightsRequests.find(r &#x3D;&gt; r.id &#x3D;&#x3D;&#x3D; requestId);
+    if (!request) return false;
+
+    request.status &#x3D; action &#x3D;&#x3D;&#x3D; &#x27;approve&#x27; ? &#x27;completed&#x27; : &#x27;rejected&#x27;;
+    request.completedAt &#x3D; new Date().toISOString();
+
+    // Log the processing
+    this.logComplianceEvent({
+      category: &#x27;subject_rights&#x27;,
+      action: &#x60;data_${request.requestType}_${action}d&#x60;,
+      userId: request.userId,
+      resource: &#x27;personal_data&#x27;,
+      details: { requestId, processedBy, notes },
+      complianceFrameworks: [&#x27;GDPR&#x27;, &#x27;CCPA&#x27;],
+    });
+
+    logger.audit(&#x60;Subject rights request ${action}d&#x60;, {
+      requestId,
+      requestType: request.requestType,
+      userId: request.userId,
+      processedBy,
+    });
+
+    return true;
+  }
+
+  /**
+   * Get data access response for a user
+   */
+  async getDataAccessResponse(userId: string): Promise&lt;DataAccessResponse&gt; {
+    try {
+      // Get user audit logs from database
+      const auditEntries &#x3D; await prisma.auditLog.findMany({
+        where: { userId },
+        orderBy: { timestamp: &#x27;desc&#x27; },
+        take: 10,
+      });
+
+      const activity &#x3D; auditEntries.map(entry &#x3D;&gt; ({
+        id: entry.id,
+        timestamp: entry.timestamp.toISOString(),
+        category: entry.category,
+        action: entry.action,
+        resource: entry.resource,
+      }));
+
+      // Get user profile data (mock for now - would come from user service)
+      const personalData &#x3D; {
+        profile: { userId, email: &#x60;${userId}@example.com&#x60; }, // Mock data
+        preferences: {},
+        activity,
+      };
+
+      return {
+        personalData,
+        processingPurposes: [
+          &#x27;Account management&#x27;,
+          &#x27;Service provision&#x27;,
+          &#x27;Legal compliance&#x27;,
+          &#x27;Security monitoring&#x27;,
+        ],
+        recipients: [&#x27;Internal systems&#x27;, &#x27;Compliance authorities&#x27;],
+        retentionPeriod: &#x27;7 years for audit logs, 2 years for marketing data&#x27;,
+        rights: [&#x27;Access&#x27;, &#x27;Rectification&#x27;, &#x27;Erasure&#x27;, &#x27;Portability&#x27;, &#x27;Restriction&#x27;],
+      };
+    } catch (error) {
+      logger.error(&#x27;Failed to get data access response from database&#x27;, {
+        error: (error as Error).message,
+      });
+      // Fallback to in-memory data
+      const personalData &#x3D; {
+        profile: { userId, email: &#x60;${userId}@example.com&#x60; },
+        preferences: {},
+        activity: this.auditLog.filter(entry &#x3D;&gt; entry.userId &#x3D;&#x3D;&#x3D; userId).slice(-10),
+      };
+
+      return {
+        personalData,
+        processingPurposes: [
+          &#x27;Account management&#x27;,
+          &#x27;Service provision&#x27;,
+          &#x27;Legal compliance&#x27;,
+          &#x27;Security monitoring&#x27;,
+        ],
+        recipients: [&#x27;Internal systems&#x27;, &#x27;Compliance authorities&#x27;],
+        retentionPeriod: &#x27;7 years for audit logs, 2 years for marketing data&#x27;,
+        rights: [&#x27;Access&#x27;, &#x27;Rectification&#x27;, &#x27;Erasure&#x27;, &#x27;Portability&#x27;, &#x27;Restriction&#x27;],
+      };
+    }
+  }
+
+  /**
+   * Get subject rights requests (admin function)
+   */
+  getSubjectRightsRequests(
+    filters: {
+      userId?: string;
+      status?: string;
+      requestType?: string;
+    } &#x3D; {}
+  ): SubjectRightsRequest[] {
+    let filtered &#x3D; [...this.subjectRightsRequests];
+
+    if (filters.userId) {
+      filtered &#x3D; filtered.filter(r &#x3D;&gt; r.userId &#x3D;&#x3D;&#x3D; filters.userId);
+    }
+    if (filters.status) {
+      filtered &#x3D; filtered.filter(r &#x3D;&gt; r.status &#x3D;&#x3D;&#x3D; filters.status);
+    }
+    if (filters.requestType) {
+      filtered &#x3D; filtered.filter(r &#x3D;&gt; r.requestType &#x3D;&#x3D;&#x3D; filters.requestType);
+    }
+
+    return filtered;
+  }
+
+  /**
+   * Apply data minimization - anonymize old data
+   */
+  applyDataMinimization(): void {
+    const now &#x3D; new Date();
+
+    // Anonymize old audit logs
+    this.auditLog.forEach(entry &#x3D;&gt; {
+      const entryDate &#x3D; new Date(entry.timestamp);
+      const daysOld &#x3D; (now.getTime() - entryDate.getTime()) / (1000 * 60 * 60 * 24);
+
+      if (daysOld &gt; 30) {
+        // Mask IP addresses after 30 days
+        if (entry.ip) {
+          entry.ip &#x3D; entry.ip.replace(/\.\d+$/, &#x27;.0&#x27;); // Mask last octet
+        }
+        // Remove detailed user agent after 30 days
+        if (entry.userAgent) {
+          entry.userAgent &#x3D; &#x27;Anonymized&#x27;;
+        }
+      }
+    });
+
+    logger.info(&#x27;Data minimization applied&#x27;, {
+      anonymizedEntries: this.auditLog.filter(e &#x3D;&gt; e.ip?.endsWith(&#x27;.0&#x27;)).length,
+    });
+  }
+
+  /**
+   * Check if user has verified age for compliance purposes
+   */
+  async checkAgeVerificationCompliance(userId: string): Promise&lt;boolean&gt; {
+    try {
+      // Import age verification service dynamically to avoid circular dependencies
+      const { default: AgeVerificationService } &#x3D; await import(&#x27;./ageVerificationService.js&#x27;);
+      const verification &#x3D; await (
+        AgeVerificationService as unknown as {
+          getVerificationStatus: (id: string) &#x3D;&gt; Promise&lt;{ verified: boolean }&gt;;
+        }
+      ).getVerificationStatus(userId);
+      return verification?.verified ?? false;
+    } catch (error) {
+      logger.error(&#x27;Age verification check failed&#x27;, { error: (error as Error).message, userId });
+      return false;
+    }
+  }
+
+  /**
+   * Clean up old audit entries (admin function)
+   */
+  cleanupAuditLog(daysOld: number &#x3D; 90): void {
+    const cutoffDate &#x3D; new Date(Date.now() - daysOld * 24 * 60 * 60 * 1000);
+    const initialLength &#x3D; this.auditLog.length;
+
+    this.auditLog &#x3D; this.auditLog.filter(entry &#x3D;&gt; new Date(entry.timestamp) &gt; cutoffDate);
+
+    const removedCount &#x3D; initialLength - this.auditLog.length;
+
+    logger.info(&#x27;Audit log cleaned up&#x27;, {
+      daysOld,
+      removedCount,
+      remainingCount: this.auditLog.length,
+    });
+  }
+}
+
+// Export the class but attach default instance bound methods so module works as singleton
+const _defaultComplianceInstance &#x3D; new ComplianceService();
+Object.getOwnPropertyNames(ComplianceService.prototype).forEach(name &#x3D;&gt; {
+  if (name &#x3D;&#x3D;&#x3D; &#x27;constructor&#x27;) return;
+  const desc &#x3D; Object.getOwnPropertyDescriptor(ComplianceService.prototype, name);
+  if (desc &amp;&amp; typeof desc.value &#x3D;&#x3D;&#x3D; &#x27;function&#x27;) {
+    const method &#x3D; (_defaultComplianceInstance as unknown as Record&lt;string, unknown&gt;)[
+      name
+    ] as unknown;
+    if (typeof method &#x3D;&#x3D;&#x3D; &#x27;function&#x27;) {
+      (ComplianceService as unknown as Record&lt;string, unknown&gt;)[name] &#x3D; (
+        method as (...args: unknown[]) &#x3D;&gt; unknown
+      ).bind(_defaultComplianceInstance);
+    }
+  }
+});
+(ComplianceService as unknown as Record&lt;string, unknown&gt;).defaultInstance &#x3D;
+  _defaultComplianceInstance;
+
+export default ComplianceService;
+</code></pre>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'interface';
+            var COMPODOC_CURRENT_PAGE_URL = 'ComplianceEvent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

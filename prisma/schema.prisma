@@ -5,6 +5,7 @@ generator client {
 
 datasource db {
   provider = "sqlite"
+  url = "file:./test.db"
 }
 
 // Parliament Models
@@ -433,21 +434,23 @@ enum UserRole {
 }
 
 model User {
-  id            String   @id @default(cuid())
-  email         String   @unique
-  username      String?  @unique
-  passwordHash  String?
-  role          UserRole @default(VIEWER)
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+   id            String   @id @default(cuid())
+   email         String   @unique
+   username      String?  @unique
+   passwordHash  String?
+   role          UserRole @default(VIEWER)
+   createdAt     DateTime @default(now())
+   updatedAt     DateTime @updatedAt
 
-  // Relations
-  proposedBills Bill[]
-  votes         Vote[]
+   // Relations
+   proposedBills Bill[]
+   votes         Vote[]
+   sessions      Session[]
+   auditLogs     AuditLog[]
 
-  @@index([username])
-  @@index([email])
-  @@map("users")
+   @@index([username])
+   @@index([email])
+   @@map("users")
 }
 
 // Bill Models
@@ -484,19 +487,62 @@ model Party {
 
 // Vote Models (updated to match bill votes)
 model Vote {
-  id        String   @id @default(cuid())
-  billId    String
-  userId    String
-  vote      String // "aye" | "nay" | "abstain"
-  createdAt DateTime @default(now())
+   id        String   @id @default(cuid())
+   billId    String
+   userId    String
+   vote      String // "aye" | "nay" | "abstain"
+   createdAt DateTime @default(now())
 
-  // Relations
-  bill Bill @relation(fields: [billId], references: [id], onDelete: Cascade)
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+   // Relations
+   bill Bill @relation(fields: [billId], references: [id], onDelete: Cascade)
+   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@index([billId])
-  @@index([userId])
-  @@index([billId, userId])
-  @@unique([billId, userId])
-  @@map("votes")
+   @@index([billId])
+   @@index([userId])
+   @@index([billId, userId])
+   @@unique([billId, userId])
+   @@map("votes")
+}
+
+// Session Models for user authentication
+model Session {
+   id           String   @id @default(cuid())
+   userId       String
+   refreshToken String   @unique
+   expiresAt    DateTime
+   revokedAt    DateTime?
+   createdAt    DateTime @default(now())
+   updatedAt    DateTime @updatedAt
+
+   // Relations
+   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+   @@index([userId])
+   @@index([refreshToken])
+   @@index([expiresAt])
+   @@map("sessions")
+}
+
+// Audit Log Models for compliance
+model AuditLog {
+   id             String   @id @default(cuid())
+   timestamp      DateTime @default(now())
+   category       String
+   action         String
+   userId         String?
+   resource       String?
+   details        Json?
+   ip             String?
+   userAgent      String?
+   complianceFrameworks Json // Array of framework names
+   createdAt      DateTime @default(now())
+
+   // Relations
+   user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+   @@index([timestamp])
+   @@index([category])
+   @@index([userId])
+   @@index([action])
+   @@map("audit_logs")
 }

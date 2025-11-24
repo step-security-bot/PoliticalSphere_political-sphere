@@ -1,0 +1,729 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>political-sphere documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">political-sphere documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content class">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Classes</li>
+  <li class="breadcrumb-item" >HttpError</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>apps/api/src/middleware/validation.middleware.ts</code>
+        </p>
+
+
+            <p class="comment">
+                <h3>Description</h3>
+            </p>
+            <p class="comment">
+                <p>Custom error class for HTTP errors with status codes</p>
+
+            </p>
+
+            <p class="comment">
+                <h3>Extends</h3>
+            </p>
+            <p class="comment">
+                        <code>Error</code>
+            </p>
+
+
+
+            <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#statusCode" >statusCode</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+            <section data-compodoc="block-constructor">
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(message: <a href="../unknowns/g.html" target="_self">string</a>, statusCode: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="176" class="link-to-prism">apps/api/src/middleware/validation.middleware.ts:176</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>message</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>statusCode</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+            <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="statusCode"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>statusCode</b></span>
+                        <a href="#statusCode"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="176" class="link-to-prism">apps/api/src/middleware/validation.middleware.ts:176</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+
+
+
+
+
+
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import type { Request, Response, NextFunction } from &#x27;express&#x27;;
+import DOMPurify from &#x27;dompurify&#x27;;
+import { JSDOM } from &#x27;jsdom&#x27;;
+
+// Initialize DOMPurify with JSDOM
+const window &#x3D; new JSDOM(&#x27;&#x27;).window;
+const DOMPurifyInstance &#x3D; DOMPurify(window);
+
+// Input limits (OWASP recommendations)
+const LIMITS &#x3D; {
+  string: {
+    min: 0,
+    max: 10000, // 10KB max for text inputs
+  },
+  array: {
+    max: 1000, // Max array length
+  },
+  object: {
+    maxKeys: 100, // Max object keys
+    maxDepth: 10, // Max nesting depth
+  },
+} as const;
+
+// Dangerous patterns to reject
+const DANGEROUS_PATTERNS &#x3D; [
+  /(\bUNION\b|\bSELECT\b|\bINSERT\b|\bUPDATE\b|\bDELETE\b|\bDROP\b|\bCREATE\b|\bALTER\b|\bEXEC\b|\bEXECUTE\b)/i,
+  /(&lt;script|javascript:|vbscript:|onload&#x3D;|onerror&#x3D;|onclick&#x3D;|onmouseover&#x3D;)/i,
+  /(\.\.|\/etc\/|\/proc\/|\/home\/|\/root\/|\/var\/|\/usr\/)/i,
+  /(&#x27;|(\\x27)|(\\x2D\\x2D)|(#)|(%27)|(%22)|(%3B)|(%3C)|(%3E)|(%00))/i,
+];
+
+/**
+ * Enhanced input sanitization with multiple layers
+ */
+export function sanitizeInput(input: unknown, depth &#x3D; 0): unknown {
+  // Prevent deep recursion
+  if (depth &gt; LIMITS.object.maxDepth) {
+    throw new Error(&#x27;Input validation failed: maximum nesting depth exceeded&#x27;);
+  }
+
+  if (typeof input &#x3D;&#x3D;&#x3D; &#x27;string&#x27;) {
+    return sanitizeString(input);
+  }
+
+  if (Array.isArray(input)) {
+    if (input.length &gt; LIMITS.array.max) {
+      throw new Error(&#x27;Input validation failed: array too large&#x27;);
+    }
+    return input.map(item &#x3D;&gt; sanitizeInput(item, depth + 1));
+  }
+
+  if (input &amp;&amp; typeof input &#x3D;&#x3D;&#x3D; &#x27;object&#x27;) {
+    const obj &#x3D; input as Record&lt;string, unknown&gt;;
+    const keys &#x3D; Object.keys(obj);
+
+    if (keys.length &gt; LIMITS.object.maxKeys) {
+      throw new Error(&#x27;Input validation failed: object has too many keys&#x27;);
+    }
+
+    const sanitized: Record&lt;string, unknown&gt; &#x3D; {};
+    for (const [key, value] of Object.entries(obj)) {
+      // Validate key name
+      if (!isValidKeyName(key)) {
+        throw new Error(&#x60;Input validation failed: invalid key name &#x27;${key}&#x27;&#x60;);
+      }
+      sanitized[key] &#x3D; sanitizeInput(value, depth + 1);
+    }
+    return sanitized;
+  }
+
+  // Allow primitive types as-is
+  if (
+    input &#x3D;&#x3D;&#x3D; null ||
+    input &#x3D;&#x3D;&#x3D; undefined ||
+    typeof input &#x3D;&#x3D;&#x3D; &#x27;number&#x27; ||
+    typeof input &#x3D;&#x3D;&#x3D; &#x27;boolean&#x27;
+  ) {
+    return input;
+  }
+
+  // Reject other types (functions, symbols, etc.)
+  throw new Error(&#x27;Input validation failed: unsupported data type&#x27;);
+}
+
+/**
+ * Sanitize string inputs with multiple security layers
+ */
+function sanitizeString(input: string): string {
+  // Length validation
+  if (input.length &gt; LIMITS.string.max) {
+    throw new Error(&#x27;Input validation failed: string too long&#x27;);
+  }
+
+  // HTML sanitization first
+  let sanitized &#x3D; DOMPurifyInstance.sanitize(input, {
+    ALLOWED_TAGS: [], // No HTML tags allowed
+    ALLOWED_ATTR: [],
+    ALLOW_DATA_ATTR: false,
+  });
+
+  // Check for dangerous patterns in the sanitized content
+  for (const pattern of DANGEROUS_PATTERNS) {
+    if (pattern.test(sanitized)) {
+      throw new Error(&#x27;Input validation failed: dangerous content detected after sanitization&#x27;);
+    }
+  }
+
+  // Length validation (already done above, but double-check)
+  if (sanitized.length &gt; LIMITS.string.max) {
+    throw new Error(&#x27;Input validation failed: sanitized string too long&#x27;);
+  }
+
+  // Basic HTML entity encoding for additional safety
+  sanitized &#x3D; sanitized
+    .replace(/&amp;/g, &#x27;&amp;&#x27;)
+    .replace(/&lt;/g, &#x27;&lt;&#x27;)
+    .replace(/&gt;/g, &#x27;&gt;&#x27;)
+    .replace(/&quot;/g, &#x27;&quot;&#x27;)
+    .replace(/&#x27;/g, &#x27;&amp;#x27;&#x27;)
+    .replace(/\//g, &#x27;&amp;#x2F;&#x27;);
+
+  return sanitized;
+}
+
+/**
+ * Validate key names (prevent prototype pollution, etc.)
+ */
+function isValidKeyName(key: string): boolean {
+  // Reject keys that could cause prototype pollution
+  if (key &#x3D;&#x3D;&#x3D; &#x27;__proto__&#x27; || key &#x3D;&#x3D;&#x3D; &#x27;constructor&#x27; || key &#x3D;&#x3D;&#x3D; &#x27;prototype&#x27;) {
+    return false;
+  }
+
+  // Reject keys with dangerous characters
+  if (!/^[a-zA-Z_$][a-zA-Z0-9_$]*$/.test(key)) {
+    return false;
+  }
+
+  return key.length &lt;&#x3D; 100; // Reasonable key length limit
+}
+
+/**
+ * Enhanced middleware to sanitize request body, query, and params
+ */
+export function sanitizeRequest(req: Request, _res: Response, next: NextFunction): void {
+  try {
+    if (req.body &amp;&amp; typeof req.body &#x3D;&#x3D;&#x3D; &#x27;object&#x27;) {
+      req.body &#x3D; sanitizeInput(req.body) as typeof req.body;
+    }
+    if (req.query &amp;&amp; typeof req.query &#x3D;&#x3D;&#x3D; &#x27;object&#x27;) {
+      req.query &#x3D; sanitizeInput(req.query) as typeof req.query;
+    }
+    if (req.params &amp;&amp; typeof req.params &#x3D;&#x3D;&#x3D; &#x27;object&#x27;) {
+      req.params &#x3D; sanitizeInput(req.params) as typeof req.params;
+    }
+    next();
+  } catch (error) {
+    const message &#x3D; error instanceof Error ? error.message : &#x27;Input sanitization failed&#x27;;
+    _res.status(400).json({
+      error: &#x27;Bad Request&#x27;,
+      message: &#x27;Input validation failed&#x27;,
+      details: process.env.NODE_ENV &#x3D;&#x3D;&#x3D; &#x27;development&#x27; ? message : undefined,
+    });
+  }
+}
+
+/**
+ * Custom error class for HTTP errors with status codes
+ */
+class HttpError extends Error {
+  public statusCode: number;
+
+  constructor(message: string, statusCode: number) {
+    super(message);
+    this.statusCode &#x3D; statusCode;
+    this.name &#x3D; &#x27;HttpError&#x27;;
+  }
+}
+
+/**
+ * Validate content type with additional security checks
+ */
+// biome-ignore lint/correctness/noUnusedFunctionParameters: callback is used in error handling
+export function validateContentType(
+  req: Request,
+  res: Response,
+  callback: (error?: Error) &#x3D;&gt; void
+): void {
+  const contentType &#x3D; req.headers[&#x27;content-type&#x27;];
+  const contentLength &#x3D; req.headers[&#x27;content-length&#x27;];
+
+  // Check content type for write operations
+  if ([&#x27;POST&#x27;, &#x27;PUT&#x27;, &#x27;PATCH&#x27;].includes(req.method)) {
+    if (!contentType) {
+      const error &#x3D; new HttpError(&#x27;Content-Type header required&#x27;, 400);
+      callback(error);
+      return;
+    }
+
+    if (!contentType.includes(&#x27;application/json&#x27;)) {
+      const error &#x3D; new HttpError(&#x27;Content-Type must be application/json&#x27;, 415);
+      callback(error);
+      return;
+    }
+
+    // Check content length to prevent oversized payloads
+    if (contentLength) {
+      const length &#x3D; parseInt(contentLength, 10);
+      if (length &gt; 1024 * 1024) {
+        // 1MB limit
+        const error &#x3D; new HttpError(&#x27;Request payload exceeds maximum allowed size&#x27;, 413);
+        callback(error);
+        return;
+      }
+    }
+  }
+
+  callback();
+}
+
+/**
+ * Validate request size and structure
+ */
+// biome-ignore lint/correctness/noUnusedFunctionParameters: callback is used in error handling
+export function validateRequestSize(
+  req: Request,
+  res: Response,
+  callback: (error?: Error) &#x3D;&gt; void
+): void {
+  // Additional size checks beyond content-length header
+  let bodySize &#x3D; 0;
+
+  const originalWrite &#x3D; req.socket.write.bind(req.socket);
+  req.socket.write &#x3D; function (
+    chunk: string | Uint8Array,
+    encodingOrCb?: BufferEncoding | ((err?: Error | null) &#x3D;&gt; void),
+    cb?: (err?: Error | null) &#x3D;&gt; void
+  ) {
+    if (typeof chunk &#x3D;&#x3D;&#x3D; &#x27;string&#x27;) {
+      bodySize +&#x3D; Buffer.byteLength(chunk, &#x27;utf8&#x27;);
+    } else if (chunk &amp;&amp; Buffer.isBuffer(chunk)) {
+      bodySize +&#x3D; chunk.length;
+    }
+
+    if (bodySize &gt; 1024 * 1024) {
+      // 1MB limit
+      const error &#x3D; new HttpError(&#x27;Request payload exceeds maximum allowed size&#x27;, 413);
+      callback(error);
+      req.socket.destroy();
+      return false;
+    }
+
+    // Dispatch based on parameter nature preserving original overloads
+    if (typeof encodingOrCb &#x3D;&#x3D;&#x3D; &#x27;function&#x27;) {
+      return (
+        originalWrite as {
+          (chunk: string | Uint8Array, cb?: (err?: Error | null) &#x3D;&gt; void): boolean;
+          (
+            chunk: string | Uint8Array,
+            encoding?: BufferEncoding,
+            cb?: (err?: Error | null) &#x3D;&gt; void
+          ): boolean;
+        }
+      ).call(this, chunk, undefined, encodingOrCb);
+    }
+    return (
+      originalWrite as {
+        (chunk: string | Uint8Array, cb?: (err?: Error | null) &#x3D;&gt; void): boolean;
+        (
+          chunk: string | Uint8Array,
+          encoding?: BufferEncoding,
+          cb?: (err?: Error | null) &#x3D;&gt; void
+        ): boolean;
+      }
+    ).call(this, chunk, encodingOrCb, cb);
+  };
+
+  // For GET requests or requests without body, call callback immediately
+  if (req.method &#x3D;&#x3D;&#x3D; &#x27;GET&#x27; || req.method &#x3D;&#x3D;&#x3D; &#x27;HEAD&#x27; || !req.headers[&#x27;content-length&#x27;]) {
+    callback();
+  } else {
+    // Wait for the request to end to check final size
+    req.on(&#x27;end&#x27;, () &#x3D;&gt; {
+      callback();
+    });
+  }
+}
+
+/**
+ * Comprehensive input validation middleware combining all checks
+ */
+export function validateAndSanitizeRequest(req: Request, res: Response, next: NextFunction): void {
+  try {
+    // Validate content type
+    validateContentType(req, res, (error?: Error) &#x3D;&gt; {
+      if (error) {
+        const statusCode &#x3D; (error as HttpError).statusCode || 400;
+        const errorMessage &#x3D; error.message || &#x27;Validation failed&#x27;;
+        let responseBody;
+
+        if (statusCode &#x3D;&#x3D;&#x3D; 400 &amp;&amp; errorMessage &#x3D;&#x3D;&#x3D; &#x27;Content-Type header required&#x27;) {
+          responseBody &#x3D; {
+            error: &#x27;Content-Type header required&#x27;,
+            message: &#x27;Content-Type must be specified for this request method&#x27;,
+          };
+        } else if (statusCode &#x3D;&#x3D;&#x3D; 413) {
+          responseBody &#x3D; {
+            error: &#x27;Payload Too Large&#x27;,
+            message: errorMessage,
+          };
+        } else if (statusCode &#x3D;&#x3D;&#x3D; 415) {
+          responseBody &#x3D; {
+            error: &#x27;Unsupported Media Type&#x27;,
+            message: errorMessage,
+          };
+        } else {
+          responseBody &#x3D; {
+            error: &#x27;Validation Error&#x27;,
+            message: errorMessage,
+          };
+        }
+
+        return res.status(statusCode).json(responseBody);
+      }
+
+      if (res.headersSent) {
+        return;
+      }
+
+      // Validate request size
+      validateRequestSize(req, res, (error?: Error) &#x3D;&gt; {
+        if (error) {
+          const statusCode &#x3D; (error as HttpError).statusCode || 400;
+          const message &#x3D; error.message || &#x27;Validation failed&#x27;;
+          return res.status(statusCode).json({
+            error: statusCode &#x3D;&#x3D;&#x3D; 413 ? &#x27;Payload Too Large&#x27; : &#x27;Validation Error&#x27;,
+            message,
+          });
+        }
+
+        if (res.headersSent) {
+          return;
+        }
+
+        // Sanitize request
+        sanitizeRequest(req, res, next);
+      });
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+</code></pre>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'class';
+            var COMPODOC_CURRENT_PAGE_URL = 'HttpError.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

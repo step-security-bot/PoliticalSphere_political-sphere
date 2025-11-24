@@ -1,0 +1,3857 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>political-sphere documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">political-sphere documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content miscellaneous-typealiases">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Miscellaneous</li>
+  <li class="breadcrumb-item">Type aliases</li>
+</ol>
+
+<section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <ul class="index-list">
+                        <li>
+                            <a href="#_PrismaModels" title="apps/api/src/services/prisma-database.service.ts" ><b>_PrismaModels</b>&nbsp;&nbsp;&nbsp;(apps/.../prisma-database.service.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#AgeVerificationApi" title="apps/api/stores/index.ts" ><b>AgeVerificationApi</b>&nbsp;&nbsp;&nbsp;(apps/.../index.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#AgeVerificationStore" title="apps/api/src/services/age-verification.service.ts" ><b>AgeVerificationStore</b>&nbsp;&nbsp;&nbsp;(apps/.../age-verification.service.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#AnalyzeContentInput" title="libs/shared/src/domain/moderation.ts" ><b>AnalyzeContentInput</b>&nbsp;&nbsp;&nbsp;(libs/.../moderation.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#AuditNext" title="libs/shared/src/audit.ts" ><b>AuditNext</b>&nbsp;&nbsp;&nbsp;(libs/.../audit.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#AuthedRequest" title="apps/api/src/routes/users.ts" ><b>AuthedRequest</b>&nbsp;&nbsp;&nbsp;(apps/.../users.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#AuthMode" title="apps/web/src/components/Auth/AuthForm.tsx" ><b>AuthMode</b>&nbsp;&nbsp;&nbsp;(apps/.../AuthForm.tsx)</a>
+                        </li>
+                        <li>
+                            <a href="#Bill" title="libs/domain-legislation/src/types.ts" ><b>Bill</b>&nbsp;&nbsp;&nbsp;(libs/.../types.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#Bill" title="libs/shared/src/domain/bill.ts" ><b>Bill</b>&nbsp;&nbsp;&nbsp;(libs/.../bill.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#BillsApi" title="apps/api/stores/index.ts" ><b>BillsApi</b>&nbsp;&nbsp;&nbsp;(apps/.../index.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#BillStage" title="libs/shared/src/domain/bill-stage.ts" ><b>BillStage</b>&nbsp;&nbsp;&nbsp;(libs/.../bill-stage.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#BillStatus" title="libs/domain-legislation/src/types.ts" ><b>BillStatus</b>&nbsp;&nbsp;&nbsp;(libs/.../types.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#BillStatus" title="libs/shared/src/domain/bill.ts" ><b>BillStatus</b>&nbsp;&nbsp;&nbsp;(libs/.../bill.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#BreachDetails" title="apps/api/src/modules/complianceService.ts" ><b>BreachDetails</b>&nbsp;&nbsp;&nbsp;(apps/.../complianceService.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#BreachNotification" title="apps/api/src/modules/complianceService.ts" ><b>BreachNotification</b>&nbsp;&nbsp;&nbsp;(apps/.../complianceService.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#CabinetMeeting" title="libs/domain-governance/src/types.ts" ><b>CabinetMeeting</b>&nbsp;&nbsp;&nbsp;(libs/.../types.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#CabinetMeetingStatus" title="libs/domain-governance/src/types.ts" ><b>CabinetMeetingStatus</b>&nbsp;&nbsp;&nbsp;(libs/.../types.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#Chamber" title="libs/domain-governance/src/types.ts" ><b>Chamber</b>&nbsp;&nbsp;&nbsp;(libs/.../types.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#ChamberType" title="libs/domain-governance/src/types.ts" ><b>ChamberType</b>&nbsp;&nbsp;&nbsp;(libs/.../types.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#CompleteVerificationInput" title="libs/shared/src/domain/age-verification.ts" ><b>CompleteVerificationInput</b>&nbsp;&nbsp;&nbsp;(libs/.../age-verification.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#ComplianceApi" title="apps/api/stores/index.ts" ><b>ComplianceApi</b>&nbsp;&nbsp;&nbsp;(apps/.../index.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#ComplianceCheckResult" title="apps/api/src/modules/complianceService.ts" ><b>ComplianceCheckResult</b>&nbsp;&nbsp;&nbsp;(apps/.../complianceService.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#ComplianceDashboard" title="apps/api/src/modules/complianceService.ts" ><b>ComplianceDashboard</b>&nbsp;&nbsp;&nbsp;(apps/.../complianceService.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#ComplianceDbLike" title="apps/api/src/modules/complianceService.ts" ><b>ComplianceDbLike</b>&nbsp;&nbsp;&nbsp;(apps/.../complianceService.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#ComplianceFramework" title="libs/shared/src/domain/compliance.ts" ><b>ComplianceFramework</b>&nbsp;&nbsp;&nbsp;(libs/.../compliance.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#ComplianceModule" title="apps/api/src/game/game.service.ts" ><b>ComplianceModule</b>&nbsp;&nbsp;&nbsp;(apps/.../game.service.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#ComplianceSeverity" title="libs/shared/src/domain/compliance.ts" ><b>ComplianceSeverity</b>&nbsp;&nbsp;&nbsp;(libs/.../compliance.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#ComplianceStatus" title="libs/shared/src/domain/compliance.ts" ><b>ComplianceStatus</b>&nbsp;&nbsp;&nbsp;(libs/.../compliance.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#ContentType" title="libs/shared/src/domain/moderation.ts" ><b>ContentType</b>&nbsp;&nbsp;&nbsp;(libs/.../moderation.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#Control" title="tools/scripts/controls-runner.ts" ><b>Control</b>&nbsp;&nbsp;&nbsp;(tools/.../controls-runner.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#CreateBillInput" title="libs/domain-legislation/src/types.ts" ><b>CreateBillInput</b>&nbsp;&nbsp;&nbsp;(libs/.../types.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#CreateBillInput" title="libs/shared/src/domain/bill.ts" ><b>CreateBillInput</b>&nbsp;&nbsp;&nbsp;(libs/.../bill.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#CreateCabinetMeetingInput" title="libs/domain-governance/src/types.ts" ><b>CreateCabinetMeetingInput</b>&nbsp;&nbsp;&nbsp;(libs/.../types.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#CreateElectionInput" title="libs/domain-election/src/types.ts" ><b>CreateElectionInput</b>&nbsp;&nbsp;&nbsp;(libs/.../types.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#CreateExecutiveActionInput" title="libs/domain-governance/src/types.ts" ><b>CreateExecutiveActionInput</b>&nbsp;&nbsp;&nbsp;(libs/.../types.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#CreateGovernmentInput" title="libs/domain-governance/src/types.ts" ><b>CreateGovernmentInput</b>&nbsp;&nbsp;&nbsp;(libs/.../types.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#CreateMinisterInput" title="libs/domain-governance/src/types.ts" ><b>CreateMinisterInput</b>&nbsp;&nbsp;&nbsp;(libs/.../types.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#CreateNewsInput" title="libs/shared/src/domain/news.ts" ><b>CreateNewsInput</b>&nbsp;&nbsp;&nbsp;(libs/.../news.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#CreatePartyInput" title="libs/shared/src/domain/party.ts" ><b>CreatePartyInput</b>&nbsp;&nbsp;&nbsp;(libs/.../party.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#CreatePrecedentInput" title="libs/domain-legislation/src/types.ts" ><b>CreatePrecedentInput</b>&nbsp;&nbsp;&nbsp;(libs/.../types.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#CreateReportInput" title="libs/shared/src/domain/moderation.ts" ><b>CreateReportInput</b>&nbsp;&nbsp;&nbsp;(libs/.../moderation.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#CreateReviewInput" title="libs/domain-legislation/src/types.ts" ><b>CreateReviewInput</b>&nbsp;&nbsp;&nbsp;(libs/.../types.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#CreateUserInput" title="libs/shared/src/domain/user.ts" ><b>CreateUserInput</b>&nbsp;&nbsp;&nbsp;(libs/.../user.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#CreateVoteInput" title="libs/domain-election/src/types.ts" ><b>CreateVoteInput</b>&nbsp;&nbsp;&nbsp;(libs/.../types.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#CreateVoteInput" title="libs/shared/src/domain/vote.ts" ><b>CreateVoteInput</b>&nbsp;&nbsp;&nbsp;(libs/.../vote.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#DataAccessResponse" title="apps/api/src/modules/complianceService.ts" ><b>DataAccessResponse</b>&nbsp;&nbsp;&nbsp;(apps/.../complianceService.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#DatabaseRecord" title="apps/api/src/services/prisma-database.service.ts" ><b>DatabaseRecord</b>&nbsp;&nbsp;&nbsp;(apps/.../prisma-database.service.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#DataMinimizationConfig" title="apps/api/src/modules/complianceService.ts" ><b>DataMinimizationConfig</b>&nbsp;&nbsp;&nbsp;(apps/.../complianceService.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#DataSubjectRequest" title="libs/ai-system/src/types/index.ts" ><b>DataSubjectRequest</b>&nbsp;&nbsp;&nbsp;(libs/.../index.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#Debate" title="libs/domain-governance/src/types.ts" ><b>Debate</b>&nbsp;&nbsp;&nbsp;(libs/.../types.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#Debate" title="libs/shared/src/domain/debate.ts" ><b>Debate</b>&nbsp;&nbsp;&nbsp;(libs/.../debate.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#DebateState" title="libs/shared/src/domain/debate.ts" ><b>DebateState</b>&nbsp;&nbsp;&nbsp;(libs/.../debate.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#DebateStatus" title="libs/domain-governance/src/types.ts" ><b>DebateStatus</b>&nbsp;&nbsp;&nbsp;(libs/.../types.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#DiscordNotificationChannel" title="libs/observability/src/alerting.ts" ><b>DiscordNotificationChannel</b>&nbsp;&nbsp;&nbsp;(libs/.../alerting.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#Division" title="libs/shared/src/domain/division.ts" ><b>Division</b>&nbsp;&nbsp;&nbsp;(libs/.../division.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#DivisionResult" title="libs/shared/src/domain/division.ts" ><b>DivisionResult</b>&nbsp;&nbsp;&nbsp;(libs/.../division.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#DSARType" title="libs/ai-system/src/types/index.ts" ><b>DSARType</b>&nbsp;&nbsp;&nbsp;(libs/.../index.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#DSATransparencyReport" title="apps/api/src/modules/complianceService.ts" ><b>DSATransparencyReport</b>&nbsp;&nbsp;&nbsp;(apps/.../complianceService.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#Election" title="libs/domain-election/src/types.ts" ><b>Election</b>&nbsp;&nbsp;&nbsp;(libs/.../types.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#Election" title="libs/shared/src/domain/election.ts" ><b>Election</b>&nbsp;&nbsp;&nbsp;(libs/.../election.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#ElectionStatus" title="libs/domain-election/src/types.ts" ><b>ElectionStatus</b>&nbsp;&nbsp;&nbsp;(libs/.../types.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#ElectionStatus" title="libs/shared/src/domain/election.ts" ><b>ElectionStatus</b>&nbsp;&nbsp;&nbsp;(libs/.../election.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#EventType" title="apps/api/src/events/index.ts" ><b>EventType</b>&nbsp;&nbsp;&nbsp;(apps/.../index.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#ExecutiveAction" title="libs/domain-governance/src/types.ts" ><b>ExecutiveAction</b>&nbsp;&nbsp;&nbsp;(libs/.../types.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#ExecutiveActionStatus" title="libs/domain-governance/src/types.ts" ><b>ExecutiveActionStatus</b>&nbsp;&nbsp;&nbsp;(libs/.../types.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#ExecutiveActionType" title="libs/domain-governance/src/types.ts" ><b>ExecutiveActionType</b>&nbsp;&nbsp;&nbsp;(libs/.../types.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#FileCaseInput" title="libs/domain-legislation/src/types.ts" ><b>FileCaseInput</b>&nbsp;&nbsp;&nbsp;(libs/.../types.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#FileCaseInput" title="libs/shared/src/domain/judiciary.ts" ><b>FileCaseInput</b>&nbsp;&nbsp;&nbsp;(libs/.../judiciary.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#FlagValue" title="libs/feature-flags/types.ts" ><b>FlagValue</b>&nbsp;&nbsp;&nbsp;(libs/.../types.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#GameView" title="apps/web/src/components/MainGame.tsx" ><b>GameView</b>&nbsp;&nbsp;&nbsp;(apps/.../MainGame.tsx)</a>
+                        </li>
+                        <li>
+                            <a href="#GovernanceFunction" title="libs/ai-system/src/types/index.ts" ><b>GovernanceFunction</b>&nbsp;&nbsp;&nbsp;(libs/.../index.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#Government" title="libs/domain-governance/src/types.ts" ><b>Government</b>&nbsp;&nbsp;&nbsp;(libs/.../types.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#GovernmentStatus" title="libs/domain-governance/src/types.ts" ><b>GovernmentStatus</b>&nbsp;&nbsp;&nbsp;(libs/.../types.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#HealthStatus" title="libs/observability/src/types.ts" ><b>HealthStatus</b>&nbsp;&nbsp;&nbsp;(libs/.../types.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#ID" title="libs/shared/src/types/game.ts" ><b>ID</b>&nbsp;&nbsp;&nbsp;(libs/.../game.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#InitiateVerificationInput" title="libs/shared/src/domain/age-verification.ts" ><b>InitiateVerificationInput</b>&nbsp;&nbsp;&nbsp;(libs/.../age-verification.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#IssueRulingInput" title="libs/domain-legislation/src/types.ts" ><b>IssueRulingInput</b>&nbsp;&nbsp;&nbsp;(libs/.../types.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#IssueRulingInput" title="libs/shared/src/domain/judiciary.ts" ><b>IssueRulingInput</b>&nbsp;&nbsp;&nbsp;(libs/.../judiciary.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#Judge" title="libs/domain-legislation/src/types.ts" ><b>Judge</b>&nbsp;&nbsp;&nbsp;(libs/.../types.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#Judge" title="libs/shared/src/domain/judiciary.ts" ><b>Judge</b>&nbsp;&nbsp;&nbsp;(libs/.../judiciary.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#JudgeCourt" title="libs/domain-legislation/src/types.ts" ><b>JudgeCourt</b>&nbsp;&nbsp;&nbsp;(libs/.../types.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#JudiciaryResponse" title="libs/shared/src/domain/judiciary.ts" ><b>JudiciaryResponse</b>&nbsp;&nbsp;&nbsp;(libs/.../judiciary.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#JwtExpiry" title="apps/api/src/auth/auth.service.ts" ><b>JwtExpiry</b>&nbsp;&nbsp;&nbsp;(apps/.../auth.service.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#LegalCase" title="libs/domain-legislation/src/types.ts" ><b>LegalCase</b>&nbsp;&nbsp;&nbsp;(libs/.../types.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#LegalCase" title="libs/shared/src/domain/judiciary.ts" ><b>LegalCase</b>&nbsp;&nbsp;&nbsp;(libs/.../judiciary.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#LegalCase" title="apps/web/src/components/Judiciary/JudiciarySystem.tsx" ><b>LegalCase</b>&nbsp;&nbsp;&nbsp;(apps/.../JudiciarySystem.tsx)</a>
+                        </li>
+                        <li>
+                            <a href="#LegalCasePriority" title="libs/domain-legislation/src/types.ts" ><b>LegalCasePriority</b>&nbsp;&nbsp;&nbsp;(libs/.../types.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#LegalCaseStatus" title="libs/domain-legislation/src/types.ts" ><b>LegalCaseStatus</b>&nbsp;&nbsp;&nbsp;(libs/.../types.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#LegalCaseType" title="libs/domain-legislation/src/types.ts" ><b>LegalCaseType</b>&nbsp;&nbsp;&nbsp;(libs/.../types.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#LegislationResponse" title="libs/domain-legislation/src/types.ts" ><b>LegislationResponse</b>&nbsp;&nbsp;&nbsp;(libs/.../types.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#LogLevel" title="libs/ai-system/src/observability/logging.ts" ><b>LogLevel</b>&nbsp;&nbsp;&nbsp;(libs/.../logging.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#MatchMediaLike" title="scripts/test-setup.ts" ><b>MatchMediaLike</b>&nbsp;&nbsp;&nbsp;(scripts/.../test-setup.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#Migration" title="apps/api/src/utils/migrations/index.ts" ><b>Migration</b>&nbsp;&nbsp;&nbsp;(apps/.../index.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#Minister" title="libs/domain-governance/src/types.ts" ><b>Minister</b>&nbsp;&nbsp;&nbsp;(libs/.../types.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#ModerationApi" title="apps/api/stores/index.ts" ><b>ModerationApi</b>&nbsp;&nbsp;&nbsp;(apps/.../index.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#ModerationDecision" title="libs/shared/src/domain/moderation.ts" ><b>ModerationDecision</b>&nbsp;&nbsp;&nbsp;(libs/.../moderation.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#ModerationResult" title="apps/api/src/modules/moderationService.ts" ><b>ModerationResult</b>&nbsp;&nbsp;&nbsp;(apps/.../moderationService.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#ModerationRules" title="apps/api/src/services/moderation.service.ts" ><b>ModerationRules</b>&nbsp;&nbsp;&nbsp;(apps/.../moderation.service.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#ModerationStore" title="apps/api/src/services/moderation.service.ts" ><b>ModerationStore</b>&nbsp;&nbsp;&nbsp;(apps/.../moderation.service.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#Motion" title="libs/domain-governance/src/types.ts" ><b>Motion</b>&nbsp;&nbsp;&nbsp;(libs/.../types.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#MotionResult" title="libs/domain-governance/src/types.ts" ><b>MotionResult</b>&nbsp;&nbsp;&nbsp;(libs/.../types.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#MotionStatus" title="libs/domain-governance/src/types.ts" ><b>MotionStatus</b>&nbsp;&nbsp;&nbsp;(libs/.../types.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#MotionType" title="libs/domain-governance/src/types.ts" ><b>MotionType</b>&nbsp;&nbsp;&nbsp;(libs/.../types.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#MP" title="libs/shared/src/domain/mp.ts" ><b>MP</b>&nbsp;&nbsp;&nbsp;(libs/.../mp.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#MPRole" title="libs/shared/src/domain/mp.ts" ><b>MPRole</b>&nbsp;&nbsp;&nbsp;(libs/.../mp.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#NewsCategory" title="libs/shared/src/domain/news.ts" ><b>NewsCategory</b>&nbsp;&nbsp;&nbsp;(libs/.../news.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#NewsRecord" title="apps/api/src/modules/news-service.ts" ><b>NewsRecord</b>&nbsp;&nbsp;&nbsp;(apps/.../news-service.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#NextFunction" title="apps/api/src/modules/auth.ts" ><b>NextFunction</b>&nbsp;&nbsp;&nbsp;(apps/.../auth.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#NotificationPayload" title="apps/api/src/modules/complianceService.ts" ><b>NotificationPayload</b>&nbsp;&nbsp;&nbsp;(apps/.../complianceService.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#OrchestrationPattern" title="libs/ai-system/src/types/index.ts" ><b>OrchestrationPattern</b>&nbsp;&nbsp;&nbsp;(libs/.../index.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#Orchestrator" title="libs/ai-system/src/types.ts" ><b>Orchestrator</b>&nbsp;&nbsp;&nbsp;(libs/.../types.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#OrderPaperItem" title="libs/shared/src/domain/order-paper-item.ts" ><b>OrderPaperItem</b>&nbsp;&nbsp;&nbsp;(libs/.../order-paper-item.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#ParliamentarySession" title="libs/shared/src/domain/session.ts" ><b>ParliamentarySession</b>&nbsp;&nbsp;&nbsp;(libs/.../session.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#ParliamentVote" title="libs/domain-governance/src/types.ts" ><b>ParliamentVote</b>&nbsp;&nbsp;&nbsp;(libs/.../types.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#ParliamentVoteResults" title="libs/domain-governance/src/types.ts" ><b>ParliamentVoteResults</b>&nbsp;&nbsp;&nbsp;(libs/.../types.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#Party" title="libs/shared/src/domain/party.ts" ><b>Party</b>&nbsp;&nbsp;&nbsp;(libs/.../party.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#PartyStoreExtras" title="apps/api/src/routes/parties.ts" ><b>PartyStoreExtras</b>&nbsp;&nbsp;&nbsp;(apps/.../parties.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#PlayerAction" title="libs/shared/src/types/game.ts" ><b>PlayerAction</b>&nbsp;&nbsp;&nbsp;(libs/.../game.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#Policy" title="libs/ai-system/src/types.ts" ><b>Policy</b>&nbsp;&nbsp;&nbsp;(libs/.../types.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#Precedent" title="libs/domain-legislation/src/types.ts" ><b>Precedent</b>&nbsp;&nbsp;&nbsp;(libs/.../types.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#QueryOptions" title="apps/api/src/services/prisma-database.service.ts" ><b>QueryOptions</b>&nbsp;&nbsp;&nbsp;(apps/.../prisma-database.service.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#RawUserData" title="apps/data-pipeline/src/transformers/normalize-user-data.ts" ><b>RawUserData</b>&nbsp;&nbsp;&nbsp;(apps/.../normalize-user-data.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#ReceiverChannelConfig" title="libs/observability/src/alerting.ts" ><b>ReceiverChannelConfig</b>&nbsp;&nbsp;&nbsp;(libs/.../alerting.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#RedisClient" title="libs/shared/src/cache.ts" ><b>RedisClient</b>&nbsp;&nbsp;&nbsp;(libs/.../cache.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#RedisInput" title="apps/api/src/utils/cache.ts" ><b>RedisInput</b>&nbsp;&nbsp;&nbsp;(apps/.../cache.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#RedisLike" title="apps/api/src/utils/cache.ts" ><b>RedisLike</b>&nbsp;&nbsp;&nbsp;(apps/.../cache.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#ReportCategory" title="libs/shared/src/domain/moderation.ts" ><b>ReportCategory</b>&nbsp;&nbsp;&nbsp;(libs/.../moderation.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#Review" title="libs/domain-legislation/src/types.ts" ><b>Review</b>&nbsp;&nbsp;&nbsp;(libs/.../types.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#ReviewContentInput" title="libs/shared/src/domain/moderation.ts" ><b>ReviewContentInput</b>&nbsp;&nbsp;&nbsp;(libs/.../moderation.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#ReviewStatus" title="libs/domain-legislation/src/types.ts" ><b>ReviewStatus</b>&nbsp;&nbsp;&nbsp;(libs/.../types.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#ReviewType" title="libs/domain-legislation/src/types.ts" ><b>ReviewType</b>&nbsp;&nbsp;&nbsp;(libs/.../types.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#Role" title="libs/ai-system/src/types.ts" ><b>Role</b>&nbsp;&nbsp;&nbsp;(libs/.../types.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#Role" title="apps/api/src/modules/auth.ts" ><b>Role</b>&nbsp;&nbsp;&nbsp;(apps/.../auth.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#Ruling" title="libs/domain-legislation/src/types.ts" ><b>Ruling</b>&nbsp;&nbsp;&nbsp;(libs/.../types.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#Ruling" title="libs/shared/src/domain/judiciary.ts" ><b>Ruling</b>&nbsp;&nbsp;&nbsp;(libs/.../judiciary.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#RulingDecision" title="libs/domain-legislation/src/types.ts" ><b>RulingDecision</b>&nbsp;&nbsp;&nbsp;(libs/.../types.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#Scores" title="apps/api/src/modules/moderationService.ts" ><b>Scores</b>&nbsp;&nbsp;&nbsp;(apps/.../moderationService.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#SeederFunction" title="apps/api/src/utils/database-seeder.ts" ><b>SeederFunction</b>&nbsp;&nbsp;&nbsp;(apps/.../database-seeder.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#SimulationState" title="libs/shared/src/domain/simulation.ts" ><b>SimulationState</b>&nbsp;&nbsp;&nbsp;(libs/.../simulation.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#SittingDay" title="libs/shared/src/domain/sitting-day.ts" ><b>SittingDay</b>&nbsp;&nbsp;&nbsp;(libs/.../sitting-day.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#SlackChannelConfig" title="libs/observability/src/alerting.ts" ><b>SlackChannelConfig</b>&nbsp;&nbsp;&nbsp;(libs/.../alerting.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#SlackNotificationChannel" title="libs/observability/src/alerting.ts" ><b>SlackNotificationChannel</b>&nbsp;&nbsp;&nbsp;(libs/.../alerting.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#Speech" title="libs/domain-governance/src/types.ts" ><b>Speech</b>&nbsp;&nbsp;&nbsp;(libs/.../types.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#StoreLike" title="apps/api/src/modules/news-service.ts" ><b>StoreLike</b>&nbsp;&nbsp;&nbsp;(apps/.../news-service.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#SubjectRightsRequest" title="apps/api/src/modules/complianceService.ts" ><b>SubjectRightsRequest</b>&nbsp;&nbsp;&nbsp;(apps/.../complianceService.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#ToastType" title="apps/web/src/components/common/Toast.tsx" ><b>ToastType</b>&nbsp;&nbsp;&nbsp;(apps/.../Toast.tsx)</a>
+                        </li>
+                        <li>
+                            <a href="#UpdateBillInput" title="libs/domain-legislation/src/types.ts" ><b>UpdateBillInput</b>&nbsp;&nbsp;&nbsp;(libs/.../types.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#UpdateBillInput" title="libs/shared/src/domain/bill.ts" ><b>UpdateBillInput</b>&nbsp;&nbsp;&nbsp;(libs/.../bill.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#UpdateNewsInput" title="libs/shared/src/domain/news.ts" ><b>UpdateNewsInput</b>&nbsp;&nbsp;&nbsp;(libs/.../news.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#UpdatePartyInput" title="libs/shared/src/domain/party.ts" ><b>UpdatePartyInput</b>&nbsp;&nbsp;&nbsp;(libs/.../party.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#UpdateUserInput" title="libs/shared/src/domain/user.ts" ><b>UpdateUserInput</b>&nbsp;&nbsp;&nbsp;(libs/.../user.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#UpdateVoteInput" title="libs/domain-election/src/types.ts" ><b>UpdateVoteInput</b>&nbsp;&nbsp;&nbsp;(libs/.../types.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#UpdateVoteInput" title="libs/shared/src/domain/vote.ts" ><b>UpdateVoteInput</b>&nbsp;&nbsp;&nbsp;(libs/.../vote.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#User" title="libs/shared/src/domain/user.ts" ><b>User</b>&nbsp;&nbsp;&nbsp;(libs/.../user.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#UserRole" title="libs/shared/src/domain/user.ts" ><b>UserRole</b>&nbsp;&nbsp;&nbsp;(libs/.../user.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#UsersApi" title="apps/api/stores/index.ts" ><b>UsersApi</b>&nbsp;&nbsp;&nbsp;(apps/.../index.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#ValidationRule" title="libs/ai-system/src/validation/index.ts" ><b>ValidationRule</b>&nbsp;&nbsp;&nbsp;(libs/.../index.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#Validator" title="libs/ai-system/src/types.ts" ><b>Validator</b>&nbsp;&nbsp;&nbsp;(libs/.../types.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#ValidMessageType" title="libs/shared/src/websocket/WebSocketServer.ts" ><b>ValidMessageType</b>&nbsp;&nbsp;&nbsp;(libs/.../WebSocketServer.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#VerificationMethod" title="libs/shared/src/domain/age-verification.ts" ><b>VerificationMethod</b>&nbsp;&nbsp;&nbsp;(libs/.../age-verification.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#VerificationRecord" title="apps/api/src/services/age-verification.service.ts" ><b>VerificationRecord</b>&nbsp;&nbsp;&nbsp;(apps/.../age-verification.service.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#VerificationStatus" title="libs/shared/src/domain/age-verification.ts" ><b>VerificationStatus</b>&nbsp;&nbsp;&nbsp;(libs/.../age-verification.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#Vote" title="libs/domain-election/src/types.ts" ><b>Vote</b>&nbsp;&nbsp;&nbsp;(libs/.../types.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#Vote" title="libs/shared/src/domain/vote.ts" ><b>Vote</b>&nbsp;&nbsp;&nbsp;(libs/.../vote.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#Vote" title="apps/api/src/modules/stores/vote-store.ts" ><b>Vote</b>&nbsp;&nbsp;&nbsp;(apps/.../vote-store.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#VoteResults" title="libs/domain-election/src/types.ts" ><b>VoteResults</b>&nbsp;&nbsp;&nbsp;(libs/.../types.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#VoteType" title="libs/domain-election/src/types.ts" ><b>VoteType</b>&nbsp;&nbsp;&nbsp;(libs/.../types.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#VoteType" title="libs/shared/src/domain/vote.ts" ><b>VoteType</b>&nbsp;&nbsp;&nbsp;(libs/.../vote.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#WebhookChannelConfig" title="libs/observability/src/alerting.ts" ><b>WebhookChannelConfig</b>&nbsp;&nbsp;&nbsp;(libs/.../alerting.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#WhereClause" title="apps/api/src/services/prisma-database.service.ts" ><b>WhereClause</b>&nbsp;&nbsp;&nbsp;(apps/.../prisma-database.service.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#ZodLikeError" title="apps/api/src/routes/ageVerification.ts" ><b>ZodLikeError</b>&nbsp;&nbsp;&nbsp;(apps/.../ageVerification.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#ZodLikeError" title="apps/api/src/routes/moderation.ts" ><b>ZodLikeError</b>&nbsp;&nbsp;&nbsp;(apps/.../moderation.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#ZodLikeErrorItem" title="apps/api/src/routes/ageVerification.ts" ><b>ZodLikeErrorItem</b>&nbsp;&nbsp;&nbsp;(apps/.../ageVerification.ts)</a>
+                        </li>
+                        <li>
+                            <a href="#ZodLikeErrorItem" title="apps/api/src/routes/moderation.ts" ><b>ZodLikeErrorItem</b>&nbsp;&nbsp;&nbsp;(apps/.../moderation.ts)</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+
+    <h3>apps/api/src/services/prisma-database.service.ts</h3>
+    <section data-compodoc="block-typealias">
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="_PrismaModels"></a>
+                    <span class="name "><b>_PrismaModels</b><a href="#_PrismaModels"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>unknown</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="DatabaseRecord"></a>
+                    <span class="name "><b>DatabaseRecord</b><a href="#DatabaseRecord"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>        <code><a href="../miscellaneous/variables.html#g" target="_self" >Record&lt;string | unknown&gt;</a></code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="QueryOptions"></a>
+                    <span class="name "><b>QueryOptions</b><a href="#QueryOptions"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>literal type</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="WhereClause"></a>
+                    <span class="name "><b>WhereClause</b><a href="#WhereClause"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>        <code><a href="../miscellaneous/variables.html#g" target="_self" >Record&lt;string | unknown&gt;</a></code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>    <h3>apps/api/stores/index.ts</h3>
+    <section data-compodoc="block-typealias">
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="AgeVerificationApi"></a>
+                    <span class="name "><b>AgeVerificationApi</b><a href="#AgeVerificationApi"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>        <code><a href="../miscellaneous/variables.html#g" target="_self" >Record&lt;string | Promise&lt;unknown&gt;&gt;</a></code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="BillsApi"></a>
+                    <span class="name "><b>BillsApi</b><a href="#BillsApi"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>literal type</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ComplianceApi"></a>
+                    <span class="name "><b>ComplianceApi</b><a href="#ComplianceApi"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>        <code><a href="../miscellaneous/variables.html#g" target="_self" >Record&lt;string | Promise&lt;unknown&gt;&gt;</a></code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ModerationApi"></a>
+                    <span class="name "><b>ModerationApi</b><a href="#ModerationApi"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>        <code><a href="../miscellaneous/variables.html#g" target="_self" >Record&lt;string | Promise&lt;unknown&gt;&gt;</a></code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="UsersApi"></a>
+                    <span class="name "><b>UsersApi</b><a href="#UsersApi"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>literal type</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>    <h3>apps/api/src/services/age-verification.service.ts</h3>
+    <section data-compodoc="block-typealias">
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="AgeVerificationStore"></a>
+                    <span class="name "><b>AgeVerificationStore</b><a href="#AgeVerificationStore"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Interface for age verification data persistence operations.
+Provides methods to create, retrieve, update, and query verification records.
+Implementations should handle data validation and error handling appropriately.</p>
+</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>literal type</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="VerificationRecord"></a>
+                    <span class="name "><b>VerificationRecord</b><a href="#VerificationRecord"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>literal type</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>    <h3>libs/shared/src/domain/moderation.ts</h3>
+    <section data-compodoc="block-typealias">
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="AnalyzeContentInput"></a>
+                    <span class="name "><b>AnalyzeContentInput</b><a href="#AnalyzeContentInput"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>z.infer&lt;unknown&gt;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ContentType"></a>
+                    <span class="name "><b>ContentType</b><a href="#ContentType"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>z.infer&lt;unknown&gt;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="CreateReportInput"></a>
+                    <span class="name "><b>CreateReportInput</b><a href="#CreateReportInput"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>z.infer&lt;unknown&gt;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ModerationDecision"></a>
+                    <span class="name "><b>ModerationDecision</b><a href="#ModerationDecision"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>z.infer&lt;unknown&gt;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ReportCategory"></a>
+                    <span class="name "><b>ReportCategory</b><a href="#ReportCategory"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>z.infer&lt;unknown&gt;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ReviewContentInput"></a>
+                    <span class="name "><b>ReviewContentInput</b><a href="#ReviewContentInput"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>z.infer&lt;unknown&gt;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>    <h3>libs/shared/src/audit.ts</h3>
+    <section data-compodoc="block-typealias">
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="AuditNext"></a>
+                    <span class="name "><b>AuditNext</b><a href="#AuditNext"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/function" target="_blank" >function</a></code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>    <h3>apps/api/src/routes/users.ts</h3>
+    <section data-compodoc="block-typealias">
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="AuthedRequest"></a>
+                    <span class="name "><b>AuthedRequest</b><a href="#AuthedRequest"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>unknown</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>    <h3>apps/web/src/components/Auth/AuthForm.tsx</h3>
+    <section data-compodoc="block-typealias">
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="AuthMode"></a>
+                    <span class="name "><b>AuthMode</b><a href="#AuthMode"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>&quot;login&quot; | &quot;signup&quot;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>    <h3>libs/domain-legislation/src/types.ts</h3>
+    <section data-compodoc="block-typealias">
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="Bill"></a>
+                    <span class="name "><b>Bill</b><a href="#Bill"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>z.infer&lt;unknown&gt;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="BillStatus"></a>
+                    <span class="name "><b>BillStatus</b><a href="#BillStatus"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>z.infer&lt;unknown&gt;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="CreateBillInput"></a>
+                    <span class="name "><b>CreateBillInput</b><a href="#CreateBillInput"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>z.infer&lt;unknown&gt;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="CreatePrecedentInput"></a>
+                    <span class="name "><b>CreatePrecedentInput</b><a href="#CreatePrecedentInput"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>z.infer&lt;unknown&gt;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="CreateReviewInput"></a>
+                    <span class="name "><b>CreateReviewInput</b><a href="#CreateReviewInput"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>z.infer&lt;unknown&gt;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="FileCaseInput"></a>
+                    <span class="name "><b>FileCaseInput</b><a href="#FileCaseInput"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>z.infer&lt;unknown&gt;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="IssueRulingInput"></a>
+                    <span class="name "><b>IssueRulingInput</b><a href="#IssueRulingInput"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>z.infer&lt;unknown&gt;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="Judge"></a>
+                    <span class="name "><b>Judge</b><a href="#Judge"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>z.infer&lt;unknown&gt;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="JudgeCourt"></a>
+                    <span class="name "><b>JudgeCourt</b><a href="#JudgeCourt"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>z.infer&lt;unknown&gt;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="LegalCase"></a>
+                    <span class="name "><b>LegalCase</b><a href="#LegalCase"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>z.infer&lt;unknown&gt;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="LegalCasePriority"></a>
+                    <span class="name "><b>LegalCasePriority</b><a href="#LegalCasePriority"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>z.infer&lt;unknown&gt;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="LegalCaseStatus"></a>
+                    <span class="name "><b>LegalCaseStatus</b><a href="#LegalCaseStatus"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>z.infer&lt;unknown&gt;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="LegalCaseType"></a>
+                    <span class="name "><b>LegalCaseType</b><a href="#LegalCaseType"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>z.infer&lt;unknown&gt;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="LegislationResponse"></a>
+                    <span class="name "><b>LegislationResponse</b><a href="#LegislationResponse"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>z.infer&lt;unknown&gt;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="Precedent"></a>
+                    <span class="name "><b>Precedent</b><a href="#Precedent"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>z.infer&lt;unknown&gt;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="Review"></a>
+                    <span class="name "><b>Review</b><a href="#Review"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>z.infer&lt;unknown&gt;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ReviewStatus"></a>
+                    <span class="name "><b>ReviewStatus</b><a href="#ReviewStatus"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>z.infer&lt;unknown&gt;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ReviewType"></a>
+                    <span class="name "><b>ReviewType</b><a href="#ReviewType"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>z.infer&lt;unknown&gt;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="Ruling"></a>
+                    <span class="name "><b>Ruling</b><a href="#Ruling"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>z.infer&lt;unknown&gt;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="RulingDecision"></a>
+                    <span class="name "><b>RulingDecision</b><a href="#RulingDecision"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>z.infer&lt;unknown&gt;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="UpdateBillInput"></a>
+                    <span class="name "><b>UpdateBillInput</b><a href="#UpdateBillInput"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>z.infer&lt;unknown&gt;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>    <h3>libs/shared/src/domain/bill.ts</h3>
+    <section data-compodoc="block-typealias">
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="Bill"></a>
+                    <span class="name "><b>Bill</b><a href="#Bill"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Type representing a bill in the political sphere system.
+Bills are legislative proposals that can be debated and voted on by users.</p>
+</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>z.infer&lt;unknown&gt;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="BillStatus"></a>
+                    <span class="name "><b>BillStatus</b><a href="#BillStatus"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Type representing the status of a bill in the legislative process.</p>
+<ul>
+<li>proposed: Bill has been submitted but not yet debated</li>
+<li>debating: Bill is currently under discussion in parliament</li>
+<li>passed: Bill has been approved and become law</li>
+<li>rejected: Bill has been voted down or withdrawn</li>
+</ul>
+</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>z.infer&lt;unknown&gt;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="CreateBillInput"></a>
+                    <span class="name "><b>CreateBillInput</b><a href="#CreateBillInput"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Type representing input data for creating a new bill.
+Used by bill proposal endpoints and legislative interfaces.</p>
+</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>z.infer&lt;unknown&gt;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="UpdateBillInput"></a>
+                    <span class="name "><b>UpdateBillInput</b><a href="#UpdateBillInput"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Type representing input data for updating an existing bill.
+Used by bill amendment endpoints and parliamentary management.</p>
+</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>z.infer&lt;unknown&gt;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>    <h3>libs/shared/src/domain/bill-stage.ts</h3>
+    <section data-compodoc="block-typealias">
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="BillStage"></a>
+                    <span class="name "><b>BillStage</b><a href="#BillStage"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>z.infer&lt;unknown&gt;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>    <h3>apps/api/src/modules/complianceService.ts</h3>
+    <section data-compodoc="block-typealias">
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="BreachDetails"></a>
+                    <span class="name "><b>BreachDetails</b><a href="#BreachDetails"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>literal type</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="BreachNotification"></a>
+                    <span class="name "><b>BreachNotification</b><a href="#BreachNotification"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>literal type</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ComplianceCheckResult"></a>
+                    <span class="name "><b>ComplianceCheckResult</b><a href="#ComplianceCheckResult"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>literal type</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ComplianceDashboard"></a>
+                    <span class="name "><b>ComplianceDashboard</b><a href="#ComplianceDashboard"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>literal type</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ComplianceDbLike"></a>
+                    <span class="name "><b>ComplianceDbLike</b><a href="#ComplianceDbLike"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>literal type</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="DataAccessResponse"></a>
+                    <span class="name "><b>DataAccessResponse</b><a href="#DataAccessResponse"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>literal type</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="DataMinimizationConfig"></a>
+                    <span class="name "><b>DataMinimizationConfig</b><a href="#DataMinimizationConfig"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>literal type</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="DSATransparencyReport"></a>
+                    <span class="name "><b>DSATransparencyReport</b><a href="#DSATransparencyReport"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>literal type</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="NotificationPayload"></a>
+                    <span class="name "><b>NotificationPayload</b><a href="#NotificationPayload"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>literal type</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="SubjectRightsRequest"></a>
+                    <span class="name "><b>SubjectRightsRequest</b><a href="#SubjectRightsRequest"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>literal type</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>    <h3>libs/domain-governance/src/types.ts</h3>
+    <section data-compodoc="block-typealias">
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="CabinetMeeting"></a>
+                    <span class="name "><b>CabinetMeeting</b><a href="#CabinetMeeting"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>z.infer&lt;unknown&gt;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="CabinetMeetingStatus"></a>
+                    <span class="name "><b>CabinetMeetingStatus</b><a href="#CabinetMeetingStatus"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>z.infer&lt;unknown&gt;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="Chamber"></a>
+                    <span class="name "><b>Chamber</b><a href="#Chamber"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>z.infer&lt;unknown&gt;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ChamberType"></a>
+                    <span class="name "><b>ChamberType</b><a href="#ChamberType"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>z.infer&lt;unknown&gt;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="CreateCabinetMeetingInput"></a>
+                    <span class="name "><b>CreateCabinetMeetingInput</b><a href="#CreateCabinetMeetingInput"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>z.infer&lt;unknown&gt;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="CreateExecutiveActionInput"></a>
+                    <span class="name "><b>CreateExecutiveActionInput</b><a href="#CreateExecutiveActionInput"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>z.infer&lt;unknown&gt;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="CreateGovernmentInput"></a>
+                    <span class="name "><b>CreateGovernmentInput</b><a href="#CreateGovernmentInput"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>z.infer&lt;unknown&gt;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="CreateMinisterInput"></a>
+                    <span class="name "><b>CreateMinisterInput</b><a href="#CreateMinisterInput"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>z.infer&lt;unknown&gt;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="Debate"></a>
+                    <span class="name "><b>Debate</b><a href="#Debate"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>z.infer&lt;unknown&gt;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="DebateStatus"></a>
+                    <span class="name "><b>DebateStatus</b><a href="#DebateStatus"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>z.infer&lt;unknown&gt;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ExecutiveAction"></a>
+                    <span class="name "><b>ExecutiveAction</b><a href="#ExecutiveAction"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>z.infer&lt;unknown&gt;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ExecutiveActionStatus"></a>
+                    <span class="name "><b>ExecutiveActionStatus</b><a href="#ExecutiveActionStatus"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>z.infer&lt;unknown&gt;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ExecutiveActionType"></a>
+                    <span class="name "><b>ExecutiveActionType</b><a href="#ExecutiveActionType"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>z.infer&lt;unknown&gt;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="Government"></a>
+                    <span class="name "><b>Government</b><a href="#Government"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>z.infer&lt;unknown&gt;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="GovernmentStatus"></a>
+                    <span class="name "><b>GovernmentStatus</b><a href="#GovernmentStatus"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>z.infer&lt;unknown&gt;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="Minister"></a>
+                    <span class="name "><b>Minister</b><a href="#Minister"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>z.infer&lt;unknown&gt;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="Motion"></a>
+                    <span class="name "><b>Motion</b><a href="#Motion"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>z.infer&lt;unknown&gt;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="MotionResult"></a>
+                    <span class="name "><b>MotionResult</b><a href="#MotionResult"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>z.infer&lt;unknown&gt;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="MotionStatus"></a>
+                    <span class="name "><b>MotionStatus</b><a href="#MotionStatus"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>z.infer&lt;unknown&gt;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="MotionType"></a>
+                    <span class="name "><b>MotionType</b><a href="#MotionType"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>z.infer&lt;unknown&gt;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ParliamentVote"></a>
+                    <span class="name "><b>ParliamentVote</b><a href="#ParliamentVote"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>z.infer&lt;unknown&gt;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ParliamentVoteResults"></a>
+                    <span class="name "><b>ParliamentVoteResults</b><a href="#ParliamentVoteResults"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>z.infer&lt;unknown&gt;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="Speech"></a>
+                    <span class="name "><b>Speech</b><a href="#Speech"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>z.infer&lt;unknown&gt;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>    <h3>libs/shared/src/domain/age-verification.ts</h3>
+    <section data-compodoc="block-typealias">
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="CompleteVerificationInput"></a>
+                    <span class="name "><b>CompleteVerificationInput</b><a href="#CompleteVerificationInput"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>z.infer&lt;unknown&gt;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="InitiateVerificationInput"></a>
+                    <span class="name "><b>InitiateVerificationInput</b><a href="#InitiateVerificationInput"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>z.infer&lt;unknown&gt;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="VerificationMethod"></a>
+                    <span class="name "><b>VerificationMethod</b><a href="#VerificationMethod"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>z.infer&lt;unknown&gt;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="VerificationStatus"></a>
+                    <span class="name "><b>VerificationStatus</b><a href="#VerificationStatus"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>z.infer&lt;unknown&gt;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>    <h3>libs/shared/src/domain/compliance.ts</h3>
+    <section data-compodoc="block-typealias">
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ComplianceFramework"></a>
+                    <span class="name "><b>ComplianceFramework</b><a href="#ComplianceFramework"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>z.infer&lt;unknown&gt;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ComplianceSeverity"></a>
+                    <span class="name "><b>ComplianceSeverity</b><a href="#ComplianceSeverity"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>z.infer&lt;unknown&gt;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ComplianceStatus"></a>
+                    <span class="name "><b>ComplianceStatus</b><a href="#ComplianceStatus"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>z.infer&lt;unknown&gt;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>    <h3>apps/api/src/game/game.service.ts</h3>
+    <section data-compodoc="block-typealias">
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ComplianceModule"></a>
+                    <span class="name "><b>ComplianceModule</b><a href="#ComplianceModule"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>unknown</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>    <h3>tools/scripts/controls-runner.ts</h3>
+    <section data-compodoc="block-typealias">
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="Control"></a>
+                    <span class="name "><b>Control</b><a href="#Control"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>        <code><a href="../miscellaneous/typealiases.html#Control" target="_self" >CommandControl | MetricControl</a></code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>    <h3>libs/domain-election/src/types.ts</h3>
+    <section data-compodoc="block-typealias">
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="CreateElectionInput"></a>
+                    <span class="name "><b>CreateElectionInput</b><a href="#CreateElectionInput"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>z.infer&lt;unknown&gt;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="CreateVoteInput"></a>
+                    <span class="name "><b>CreateVoteInput</b><a href="#CreateVoteInput"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>z.infer&lt;unknown&gt;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="Election"></a>
+                    <span class="name "><b>Election</b><a href="#Election"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>z.infer&lt;unknown&gt;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ElectionStatus"></a>
+                    <span class="name "><b>ElectionStatus</b><a href="#ElectionStatus"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>z.infer&lt;unknown&gt;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="UpdateVoteInput"></a>
+                    <span class="name "><b>UpdateVoteInput</b><a href="#UpdateVoteInput"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>z.infer&lt;unknown&gt;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="Vote"></a>
+                    <span class="name "><b>Vote</b><a href="#Vote"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>z.infer&lt;unknown&gt;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="VoteResults"></a>
+                    <span class="name "><b>VoteResults</b><a href="#VoteResults"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>z.infer&lt;unknown&gt;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="VoteType"></a>
+                    <span class="name "><b>VoteType</b><a href="#VoteType"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>z.infer&lt;unknown&gt;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>    <h3>libs/shared/src/domain/news.ts</h3>
+    <section data-compodoc="block-typealias">
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="CreateNewsInput"></a>
+                    <span class="name "><b>CreateNewsInput</b><a href="#CreateNewsInput"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>z.infer&lt;unknown&gt;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="NewsCategory"></a>
+                    <span class="name "><b>NewsCategory</b><a href="#NewsCategory"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>z.infer&lt;unknown&gt;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="UpdateNewsInput"></a>
+                    <span class="name "><b>UpdateNewsInput</b><a href="#UpdateNewsInput"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>z.infer&lt;unknown&gt;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>    <h3>libs/shared/src/domain/party.ts</h3>
+    <section data-compodoc="block-typealias">
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="CreatePartyInput"></a>
+                    <span class="name "><b>CreatePartyInput</b><a href="#CreatePartyInput"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Type representing input data for creating a new party.
+Inferred from CreatePartySchema for type safety.</p>
+</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>z.infer&lt;unknown&gt;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="Party"></a>
+                    <span class="name "><b>Party</b><a href="#Party"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Type representing a political party in the system.
+Inferred from PartySchema for type safety and validation.</p>
+</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>z.infer&lt;unknown&gt;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="UpdatePartyInput"></a>
+                    <span class="name "><b>UpdatePartyInput</b><a href="#UpdatePartyInput"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Type representing input data for updating an existing party.
+Inferred from UpdatePartySchema for type safety.</p>
+</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>z.infer&lt;unknown&gt;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>    <h3>libs/shared/src/domain/user.ts</h3>
+    <section data-compodoc="block-typealias">
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="CreateUserInput"></a>
+                    <span class="name "><b>CreateUserInput</b><a href="#CreateUserInput"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Type representing input data for creating a new user.
+Used by user registration and creation endpoints.</p>
+</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>z.infer&lt;unknown&gt;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="UpdateUserInput"></a>
+                    <span class="name "><b>UpdateUserInput</b><a href="#UpdateUserInput"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Type representing input data for updating an existing user.
+Used by user profile update endpoints and administrative user management.</p>
+</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>z.infer&lt;unknown&gt;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="User"></a>
+                    <span class="name "><b>User</b><a href="#User"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Type representing a user in the political sphere system.
+Contains all user profile information and metadata.</p>
+</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>z.infer&lt;unknown&gt;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="UserRole"></a>
+                    <span class="name "><b>UserRole</b><a href="#UserRole"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Type representing user roles in the political sphere system.</p>
+<ul>
+<li>ADMIN: Full system access and management capabilities</li>
+<li>MODERATOR: Content moderation and user management capabilities</li>
+<li>VIEWER: Read-only access to public content and basic participation</li>
+</ul>
+</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>z.infer&lt;unknown&gt;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>    <h3>libs/shared/src/domain/vote.ts</h3>
+    <section data-compodoc="block-typealias">
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="CreateVoteInput"></a>
+                    <span class="name "><b>CreateVoteInput</b><a href="#CreateVoteInput"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Type representing input data for casting a new vote.
+Inferred from CreateVoteSchema for type safety.</p>
+</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>z.infer&lt;unknown&gt;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="UpdateVoteInput"></a>
+                    <span class="name "><b>UpdateVoteInput</b><a href="#UpdateVoteInput"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Type representing input data for updating an existing vote.
+Inferred from UpdateVoteSchema for type safety.</p>
+</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>z.infer&lt;unknown&gt;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="Vote"></a>
+                    <span class="name "><b>Vote</b><a href="#Vote"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Type representing a parliamentary vote in the system.
+Inferred from VoteSchema for type safety and validation.</p>
+</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>z.infer&lt;unknown&gt;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="VoteType"></a>
+                    <span class="name "><b>VoteType</b><a href="#VoteType"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Type representing the possible vote types in the system.
+Inferred from VoteTypeSchema for type safety.</p>
+</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>z.infer&lt;unknown&gt;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>    <h3>libs/ai-system/src/types/index.ts</h3>
+    <section data-compodoc="block-typealias">
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="DataSubjectRequest"></a>
+                    <span class="name "><b>DataSubjectRequest</b><a href="#DataSubjectRequest"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Alias for backward compatibility</p>
+</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>        <code><a href="../interfaces/DSARRequest.html" target="_self" >DSARRequest</a></code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="DSARType"></a>
+                    <span class="name "><b>DSARType</b><a href="#DSARType"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>DSAR (Data Subject Access Request) types</p>
+</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>&quot;access&quot; | &quot;erasure&quot; | &quot;portability&quot; | &quot;rectification&quot;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="GovernanceFunction"></a>
+                    <span class="name "><b>GovernanceFunction</b><a href="#GovernanceFunction"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Governance function types (NIST AI RMF)</p>
+</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>        <code><a href="../miscellaneous/variables.html#g" target="_self" >&quot;govern&quot; | &quot;map&quot; | &quot;measure&quot; | &quot;manage&quot;</a></code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="OrchestrationPattern"></a>
+                    <span class="name "><b>OrchestrationPattern</b><a href="#OrchestrationPattern"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Orchestration pattern types</p>
+</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>        <code><a href="../miscellaneous/variables.html#g" target="_self" >&quot;sequential&quot; | &quot;concurrent&quot; | &quot;handoff&quot; | &quot;group-chat&quot; | &quot;magentic&quot;</a></code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>    <h3>libs/shared/src/domain/debate.ts</h3>
+    <section data-compodoc="block-typealias">
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="Debate"></a>
+                    <span class="name "><b>Debate</b><a href="#Debate"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>z.infer&lt;unknown&gt;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="DebateState"></a>
+                    <span class="name "><b>DebateState</b><a href="#DebateState"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>z.infer&lt;unknown&gt;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>    <h3>libs/observability/src/alerting.ts</h3>
+    <section data-compodoc="block-typealias">
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="DiscordNotificationChannel"></a>
+                    <span class="name "><b>DiscordNotificationChannel</b><a href="#DiscordNotificationChannel"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>NonNullable&lt;unknown&gt;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ReceiverChannelConfig"></a>
+                    <span class="name "><b>ReceiverChannelConfig</b><a href="#ReceiverChannelConfig"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>literal type</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="SlackChannelConfig"></a>
+                    <span class="name "><b>SlackChannelConfig</b><a href="#SlackChannelConfig"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>literal type</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="SlackNotificationChannel"></a>
+                    <span class="name "><b>SlackNotificationChannel</b><a href="#SlackNotificationChannel"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>NonNullable&lt;unknown&gt;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="WebhookChannelConfig"></a>
+                    <span class="name "><b>WebhookChannelConfig</b><a href="#WebhookChannelConfig"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>literal type</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>    <h3>libs/shared/src/domain/division.ts</h3>
+    <section data-compodoc="block-typealias">
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="Division"></a>
+                    <span class="name "><b>Division</b><a href="#Division"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>z.infer&lt;unknown&gt;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="DivisionResult"></a>
+                    <span class="name "><b>DivisionResult</b><a href="#DivisionResult"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>z.infer&lt;unknown&gt;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>    <h3>libs/shared/src/domain/election.ts</h3>
+    <section data-compodoc="block-typealias">
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="Election"></a>
+                    <span class="name "><b>Election</b><a href="#Election"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>z.infer&lt;unknown&gt;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ElectionStatus"></a>
+                    <span class="name "><b>ElectionStatus</b><a href="#ElectionStatus"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>z.infer&lt;unknown&gt;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>    <h3>apps/api/src/events/index.ts</h3>
+    <section data-compodoc="block-typealias">
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="EventType"></a>
+                    <span class="name "><b>EventType</b><a href="#EventType"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>unknown</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>    <h3>libs/shared/src/domain/judiciary.ts</h3>
+    <section data-compodoc="block-typealias">
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="FileCaseInput"></a>
+                    <span class="name "><b>FileCaseInput</b><a href="#FileCaseInput"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>z.infer&lt;unknown&gt;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="IssueRulingInput"></a>
+                    <span class="name "><b>IssueRulingInput</b><a href="#IssueRulingInput"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>z.infer&lt;unknown&gt;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="Judge"></a>
+                    <span class="name "><b>Judge</b><a href="#Judge"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>z.infer&lt;unknown&gt;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="JudiciaryResponse"></a>
+                    <span class="name "><b>JudiciaryResponse</b><a href="#JudiciaryResponse"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>z.infer&lt;unknown&gt;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="LegalCase"></a>
+                    <span class="name "><b>LegalCase</b><a href="#LegalCase"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>z.infer&lt;unknown&gt;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="Ruling"></a>
+                    <span class="name "><b>Ruling</b><a href="#Ruling"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>z.infer&lt;unknown&gt;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>    <h3>libs/feature-flags/types.ts</h3>
+    <section data-compodoc="block-typealias">
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="FlagValue"></a>
+                    <span class="name "><b>FlagValue</b><a href="#FlagValue"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Feature flag value types</p>
+</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>        <code><a href="../miscellaneous/variables.html#g" target="_self" >boolean | string | number</a></code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>    <h3>apps/web/src/components/MainGame.tsx</h3>
+    <section data-compodoc="block-typealias">
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="GameView"></a>
+                    <span class="name "><b>GameView</b><a href="#GameView"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>&quot;overview&quot; | &quot;parliament&quot; | &quot;government&quot; | &quot;judiciary&quot; | &quot;media&quot; | &quot;elections&quot; | &quot;profile&quot;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>    <h3>libs/observability/src/types.ts</h3>
+    <section data-compodoc="block-typealias">
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="HealthStatus"></a>
+                    <span class="name "><b>HealthStatus</b><a href="#HealthStatus"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Observability Types</p>
+</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>        <code><a href="../miscellaneous/variables.html#g" target="_self" >&quot;healthy&quot; | &quot;degraded&quot; | &quot;unhealthy&quot;</a></code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>    <h3>libs/shared/src/types/game.ts</h3>
+    <section data-compodoc="block-typealias">
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ID"></a>
+                    <span class="name "><b>ID</b><a href="#ID"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Shared game types for Political Sphere
+Location: <code>libs/shared/src/types/game.ts</code>
+Purpose: single-source-of-truth for game data shapes used by server and frontend</p>
+</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>        <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="PlayerAction"></a>
+                    <span class="name "><b>PlayerAction</b><a href="#PlayerAction"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Player action types that mutate game state</p>
+</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>literal type | literal type | literal type</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>    <h3>apps/api/src/auth/auth.service.ts</h3>
+    <section data-compodoc="block-typealias">
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="JwtExpiry"></a>
+                    <span class="name "><b>JwtExpiry</b><a href="#JwtExpiry"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>JWT expiry time type - accepts time strings (e.g., &#39;15m&#39;, &#39;7d&#39;) or milliseconds
+Using StringValue from &#39;ms&#39; package for proper JWT compatibility</p>
+</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>        <code><a href="../miscellaneous/variables.html#g" target="_self" >StringValue | number</a></code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>    <h3>apps/web/src/components/Judiciary/JudiciarySystem.tsx</h3>
+    <section data-compodoc="block-typealias">
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="LegalCase"></a>
+                    <span class="name "><b>LegalCase</b><a href="#LegalCase"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>        <code><a href="../interfaces/JudicialCase.html" target="_self" >JudicialCase</a></code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>    <h3>libs/ai-system/src/observability/logging.ts</h3>
+    <section data-compodoc="block-typealias">
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="LogLevel"></a>
+                    <span class="name "><b>LogLevel</b><a href="#LogLevel"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Structured Logging</p>
+<p>JSON-formatted logs with correlation IDs.</p>
+</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>&quot;debug&quot; | &quot;info&quot; | &quot;warn&quot; | &quot;error&quot; | &quot;fatal&quot;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>    <h3>scripts/test-setup.ts</h3>
+    <section data-compodoc="block-typealias">
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="MatchMediaLike"></a>
+                    <span class="name "><b>MatchMediaLike</b><a href="#MatchMediaLike"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>literal type</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>    <h3>apps/api/src/utils/migrations/index.ts</h3>
+    <section data-compodoc="block-typealias">
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="Migration"></a>
+                    <span class="name "><b>Migration</b><a href="#Migration"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>literal type</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>    <h3>apps/api/src/modules/moderationService.ts</h3>
+    <section data-compodoc="block-typealias">
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ModerationResult"></a>
+                    <span class="name "><b>ModerationResult</b><a href="#ModerationResult"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>literal type</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="Scores"></a>
+                    <span class="name "><b>Scores</b><a href="#Scores"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>        <code><a href="../miscellaneous/variables.html#g" target="_self" >Record&lt;string | unknown&gt;</a></code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>    <h3>apps/api/src/services/moderation.service.ts</h3>
+    <section data-compodoc="block-typealias">
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ModerationRules"></a>
+                    <span class="name "><b>ModerationRules</b><a href="#ModerationRules"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Configuration for moderation rules and thresholds.
+Defines scoring thresholds for different types of content violations.
+Custom rules can be added for domain-specific moderation needs.</p>
+</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>literal type</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ModerationStore"></a>
+                    <span class="name "><b>ModerationStore</b><a href="#ModerationStore"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Interface for moderation data persistence operations.
+Provides methods to store, retrieve, and update moderation records.
+All methods are optional to support different storage implementations.</p>
+</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>literal type</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>    <h3>libs/shared/src/domain/mp.ts</h3>
+    <section data-compodoc="block-typealias">
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="MP"></a>
+                    <span class="name "><b>MP</b><a href="#MP"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>z.infer&lt;unknown&gt;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="MPRole"></a>
+                    <span class="name "><b>MPRole</b><a href="#MPRole"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>z.infer&lt;unknown&gt;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>    <h3>apps/api/src/modules/news-service.ts</h3>
+    <section data-compodoc="block-typealias">
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="NewsRecord"></a>
+                    <span class="name "><b>NewsRecord</b><a href="#NewsRecord"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>literal type</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="StoreLike"></a>
+                    <span class="name "><b>StoreLike</b><a href="#StoreLike"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>literal type</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>    <h3>apps/api/src/modules/auth.ts</h3>
+    <section data-compodoc="block-typealias">
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="NextFunction"></a>
+                    <span class="name "><b>NextFunction</b><a href="#NextFunction"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/function" target="_blank" >function</a></code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="Role"></a>
+                    <span class="name "><b>Role</b><a href="#Role"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>unknown</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>    <h3>libs/ai-system/src/types.ts</h3>
+    <section data-compodoc="block-typealias">
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="Orchestrator"></a>
+                    <span class="name "><b>Orchestrator</b><a href="#Orchestrator"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>literal type</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="Policy"></a>
+                    <span class="name "><b>Policy</b><a href="#Policy"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/function" target="_blank" >function</a></code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="Role"></a>
+                    <span class="name "><b>Role</b><a href="#Role"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Shared types for ai-system. These types are designed to be Copilot-friendly
+with clear names, JSDoc, and small, composable interfaces.</p>
+</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>&quot;system&quot; | &quot;user&quot; | &quot;assistant&quot; | &quot;tool&quot;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="Validator"></a>
+                    <span class="name "><b>Validator</b><a href="#Validator"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/function" target="_blank" >function</a></code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>    <h3>libs/shared/src/domain/order-paper-item.ts</h3>
+    <section data-compodoc="block-typealias">
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="OrderPaperItem"></a>
+                    <span class="name "><b>OrderPaperItem</b><a href="#OrderPaperItem"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>z.infer&lt;unknown&gt;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>    <h3>libs/shared/src/domain/session.ts</h3>
+    <section data-compodoc="block-typealias">
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ParliamentarySession"></a>
+                    <span class="name "><b>ParliamentarySession</b><a href="#ParliamentarySession"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>z.infer&lt;unknown&gt;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>    <h3>apps/api/src/routes/parties.ts</h3>
+    <section data-compodoc="block-typealias">
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="PartyStoreExtras"></a>
+                    <span class="name "><b>PartyStoreExtras</b><a href="#PartyStoreExtras"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>literal type</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>    <h3>apps/data-pipeline/src/transformers/normalize-user-data.ts</h3>
+    <section data-compodoc="block-typealias">
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="RawUserData"></a>
+                    <span class="name "><b>RawUserData</b><a href="#RawUserData"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>z.infer&lt;unknown&gt;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>    <h3>libs/shared/src/cache.ts</h3>
+    <section data-compodoc="block-typealias">
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="RedisClient"></a>
+                    <span class="name "><b>RedisClient</b><a href="#RedisClient"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>literal type</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>    <h3>apps/api/src/utils/cache.ts</h3>
+    <section data-compodoc="block-typealias">
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="RedisInput"></a>
+                    <span class="name "><b>RedisInput</b><a href="#RedisInput"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Type representing possible Redis input configurations for cache initialization.
+Can be a connection string, Redis instance, Redis options, or Redis-like object.</p>
+</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>        <code><a href="../miscellaneous/typealiases.html#RedisLike" target="_self" >string | Redis | RedisOptions | RedisLike | undefined</a></code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="RedisLike"></a>
+                    <span class="name "><b>RedisLike</b><a href="#RedisLike"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Type representing a Redis-like interface with essential caching operations.
+This allows for dependency injection of Redis-compatible implementations.</p>
+</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>        <code><a href="../miscellaneous/variables.html#g" target="_self" >Pick&lt;Redis | &quot;get&quot; | &quot;set&quot; | &quot;setex&quot; | &quot;del&quot; | &quot;scan&quot; | &quot;pipeline&quot; | &quot;quit&quot;&gt;</a></code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>    <h3>apps/api/src/utils/database-seeder.ts</h3>
+    <section data-compodoc="block-typealias">
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="SeederFunction"></a>
+                    <span class="name "><b>SeederFunction</b><a href="#SeederFunction"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/function" target="_blank" >function</a></code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>    <h3>libs/shared/src/domain/simulation.ts</h3>
+    <section data-compodoc="block-typealias">
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="SimulationState"></a>
+                    <span class="name "><b>SimulationState</b><a href="#SimulationState"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>z.infer&lt;unknown&gt;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>    <h3>libs/shared/src/domain/sitting-day.ts</h3>
+    <section data-compodoc="block-typealias">
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="SittingDay"></a>
+                    <span class="name "><b>SittingDay</b><a href="#SittingDay"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>z.infer&lt;unknown&gt;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>    <h3>apps/web/src/components/common/Toast.tsx</h3>
+    <section data-compodoc="block-typealias">
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ToastType"></a>
+                    <span class="name "><b>ToastType</b><a href="#ToastType"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>&quot;success&quot; | &quot;error&quot; | &quot;warning&quot; | &quot;info&quot;</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>    <h3>libs/ai-system/src/validation/index.ts</h3>
+    <section data-compodoc="block-typealias">
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ValidationRule"></a>
+                    <span class="name "><b>ValidationRule</b><a href="#ValidationRule"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>literal type</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>    <h3>libs/shared/src/websocket/WebSocketServer.ts</h3>
+    <section data-compodoc="block-typealias">
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ValidMessageType"></a>
+                    <span class="name "><b>ValidMessageType</b><a href="#ValidMessageType"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>unknown</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>    <h3>apps/api/src/modules/stores/vote-store.ts</h3>
+    <section data-compodoc="block-typealias">
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="Vote"></a>
+                    <span class="name "><b>Vote</b><a href="#Vote"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>literal type</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>    <h3>apps/api/src/routes/ageVerification.ts</h3>
+    <section data-compodoc="block-typealias">
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ZodLikeError"></a>
+                    <span class="name "><b>ZodLikeError</b><a href="#ZodLikeError"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>literal type</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ZodLikeErrorItem"></a>
+                    <span class="name "><b>ZodLikeErrorItem</b><a href="#ZodLikeErrorItem"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>literal type</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>    <h3>apps/api/src/routes/moderation.ts</h3>
+    <section data-compodoc="block-typealias">
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ZodLikeError"></a>
+                    <span class="name "><b>ZodLikeError</b><a href="#ZodLikeError"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>literal type</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ZodLikeErrorItem"></a>
+                    <span class="name "><b>ZodLikeErrorItem</b><a href="#ZodLikeErrorItem"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>literal type</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'miscellaneous-typealiases';
+            var COMPODOC_CURRENT_PAGE_URL = 'typealiases.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

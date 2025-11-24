@@ -150,7 +150,7 @@ class RepositoryReorganizer {
     try {
       execSync('git --version', { cwd: ROOT_DIR, stdio: 'pipe' });
       this.log('✓ Git is available');
-    } catch (error) {
+    } catch {
       throw new Error('Git is not available. This script requires git to preserve history.');
     }
 
@@ -158,7 +158,7 @@ class RepositoryReorganizer {
     try {
       execSync('git rev-parse --git-dir', { cwd: ROOT_DIR, stdio: 'pipe' });
       this.log('✓ Running in git repository');
-    } catch (error) {
+    } catch {
       throw new Error('Not in a git repository');
     }
 

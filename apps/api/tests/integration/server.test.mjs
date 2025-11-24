@@ -1,7 +1,14 @@
+import { spawnSync } from 'node:child_process';
 import { describe, expect, test } from 'vitest';
 
 import { NewsService } from '../../src/news-service.js';
 import { createNewsServer } from '../../src/server.ts';
+
+const serverBinding = resolveServerBindingHost();
+const serverBindHost = serverBinding.host ?? '127.0.0.1';
+const serverAccessHost =
+  process.env.API_TEST_ACCESS_HOST || (serverBindHost === '::' ? '[::1]' : '127.0.0.1');
+const serverSuite = serverBinding.canBind ? describe : describe.skip;
 
 class MemoryStore {
   constructor(initial = []) {
@@ -30,7 +37,7 @@ class MemoryStore {
   }
 }
 
-describe('Server API Tests', () => {
+serverSuite('Server API Tests', () => {
   test('GET /api/news returns seeded data', async () => {
     const { baseUrl, close } = await startServerWithData([
       {
@@ -344,13 +351,28 @@ describe('Server API Tests', () => {
 });
 
 async function startServerWithData(seed = []) {
+  if (!serverBinding.canBind) {
+    throw new Error('Local server binding is disabled in this environment');
+  }
+
   const store = new MemoryStore(seed);
   const service = new NewsService(store, () => new Date('2024-03-10T14:00:00.000Z'));
   const server = createNewsServer(service);
 
-  await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
+  await new Promise((resolve, reject) => {
+    const onError = error => {
+      server.off('error', onError);
+      reject(error);
+    };
+
+    server.once('error', onError);
+    server.listen(0, serverBindHost, () => {
+      server.off('error', onError);
+      resolve();
+    });
+  });
   const address = server.address();
-  const baseUrl = `http://127.0.0.1:${address.port}`;
+  const baseUrl = `http://${serverAccessHost}:${address.port}`;
 
   const close = async () =>
     new Promise(resolve => {
@@ -358,4 +380,41 @@ async function startServerWithData(seed = []) {
     });
 
   return { baseUrl, service, store, close };
+}
+
+function resolveServerBindingHost() {
+  if (process.env.SKIP_API_SERVER_TESTS === '1') {
+    return { canBind: false, host: null };
+  }
+
+  const hostPreferences = [
+    process.env.API_TEST_BIND_HOST || '127.0.0.1',
+    process.env.API_TEST_BIND_FALLBACK || '0.0.0.0',
+    '::',
+  ].filter(Boolean);
+
+  for (const host of hostPreferences) {
+    const canBind = canBindToHost(host);
+    if (canBind) {
+      return { canBind: true, host };
+    }
+  }
+
+  return { canBind: false, host: null };
+}
+
+function canBindToHost(host) {
+  const probeScript = `
+    const http = require('http');
+    const server = http.createServer();
+    const finish = code => server.close(() => process.exit(code));
+    server.once('error', () => finish(2));
+    server.listen(0, '${host.replaceAll("'", "\\\\'")}', () => finish(0));
+    setTimeout(() => finish(3), 750);
+  `;
+
+  const result = spawnSync(process.execPath, ['-e', probeScript], {
+    stdio: 'ignore',
+  });
+  return result.status === 0;
 }

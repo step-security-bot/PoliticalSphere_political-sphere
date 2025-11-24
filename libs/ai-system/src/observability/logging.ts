@@ -5,6 +5,7 @@
  *
  * @module observability/logging
  */
+/* eslint-disable no-console */
 
 /**
  * Log level
@@ -29,7 +30,9 @@ export interface LogEntry {
 }
 
 /**
- * Structured Logger
+ * Structured logger for AI system observability.
+ * Provides consistent, machine-readable log output with service context,
+ * timestamps, and structured metadata for monitoring and debugging.
  */
 export class StructuredLogger {
   private serviceName: string;

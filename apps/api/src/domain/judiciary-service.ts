@@ -3,23 +3,49 @@
  * Handles judiciary-related operations using Prisma database
  */
 
+/**
+ * @ignore
+ */
+
 import { getLogger } from '@political-sphere/shared';
-import { JudiciaryDB } from '../services/database.service.js';
+import { JudiciaryDB, WhereClause } from '../services/database.service.js';
+// import type { NLPAnalysisResult } from '../../../libs/ai-system/src/nlp/index.js';
+// import type { Precedent } from '../../../libs/domain-legislation/src/types.js';
 // import { nlpService } from '../../../../libs/ai-system/src/nlp';
+
+/**
+ * Temporary type placeholder for NLP analysis results.
+ * TODO: Import from ai-system once available.
+ */
+type NLPAnalysisResult = {
+  sentiment?: unknown;
+  entities?: unknown;
+};
 
 /** Helper to safely extract error message */
 function getErrorMessage(error: unknown): string {
-  if (error instanceof Error) return getErrorMessage(error);
+  if (error instanceof Error) return error.message;
   return String(error);
 }
+
+/**
+ * Logger instance for judiciary service operations.
+ * Tagged with service name for filtering and tracing.
+ */
 const logger = getLogger({ service: 'judiciary' });
 
+/**
+ * Payload for creating a new legal case
+ */
 export interface CreateCaseData {
   title: string;
   description?: string;
   type: 'constitutional' | 'civil' | 'criminal';
 }
 
+/**
+ * Payload to create a judge appointment
+ */
 export interface CreateJudgeData {
   userId: string;
   court: string;
@@ -27,6 +53,9 @@ export interface CreateJudgeData {
   termEndsAt?: Date;
 }
 
+/**
+ * Payload for issuing a ruling on a case
+ */
 export interface CreateRulingData {
   caseId: string;
   judgeId: string;
@@ -34,11 +63,17 @@ export interface CreateRulingData {
   reasoning?: string;
 }
 
+/**
+ * Payload for requesting a review (appeal or judicial review)
+ */
 export interface CreateReviewData {
   caseId: string;
   type: 'appeal' | 'judicial_review';
 }
 
+/**
+ * Payload to create a legal precedent entry
+ */
 export interface CreatePrecedentData {
   citation: string;
   summary: string;
@@ -46,6 +81,31 @@ export interface CreatePrecedentData {
   caseId?: string;
 }
 
+/**
+ * Result of case NLP analysis
+ */
+export interface CaseNLPAnalysisResult {
+  analysis: NLPAnalysisResult;
+  sentiment: NLPAnalysisResult['sentiment'];
+  entities: NLPAnalysisResult['entities'];
+  keywords: string[];
+  complexity: {
+    score: number;
+    factors: string[];
+  };
+}
+
+/**
+ * JudiciaryService provides APIs for creating and managing legal cases,
+ * judge appointments, rulings, reviews, and legal precedents. It applies
+ * application-level validation and audit-friendly persistence using
+ * `JudiciaryDB`.
+ */
+/**
+ * JudiciaryService - manages legal cases, judge appointments, rulings and
+ * reviews within the application domain. Performs validation and persistence
+ * with audit-friendly records.
+ */
 export class JudiciaryService {
   /**
    * Create a new case
@@ -89,7 +149,7 @@ export class JudiciaryService {
    */
   async listCases(options: { status?: string; type?: string; limit?: number } = {}) {
     try {
-      const where: any = {};
+      const where: WhereClause = {};
       if (options.status) {
         where.status = options.status;
       }
@@ -191,7 +251,7 @@ export class JudiciaryService {
    */
   async listJudges(options: { court?: string; position?: string; limit?: number } = {}) {
     try {
-      const where: any = {};
+      const where: WhereClause = {};
       if (options.court) where.court = options.court;
       if (options.position) where.position = options.position;
 
@@ -313,7 +373,7 @@ export class JudiciaryService {
     options: { type?: string; status?: string; limit?: number } = {}
   ) {
     try {
-      const where: any = { caseId };
+      const where: WhereClause = { caseId };
       if (options.type) where.type = options.type;
       if (options.status) where.status = options.status;
 
@@ -399,7 +459,7 @@ export class JudiciaryService {
    */
   async listPrecedents(options: { caseId?: string; limit?: number } = {}) {
     try {
-      const where: any = {};
+      const where: WhereClause = {};
       if (options.caseId) where.caseId = options.caseId;
 
       const precedents = await JudiciaryDB.listPrecedents(where);
@@ -459,16 +519,7 @@ export class JudiciaryService {
   /**
    * Analyze case content using NLP for legal insights
    */
-  async analyzeCaseNLP(caseId: string): Promise<{
-    analysis: any;
-    sentiment: any;
-    entities: any[];
-    keywords: string[];
-    complexity: {
-      score: number;
-      factors: string[];
-    };
-  }> {
+  async analyzeCaseNLP(caseId: string): Promise<CaseNLPAnalysisResult> {
     try {
       const caseData = await this.getCase(caseId);
       const content = `${caseData.title} ${caseData.description || ''}`;
@@ -518,7 +569,7 @@ export class JudiciaryService {
   async classifyCaseAndFindPrecedents(caseId: string): Promise<{
     predictedType: string;
     confidence: number;
-    similarPrecedents: any[];
+    similarPrecedents: unknown[];
   }> {
     try {
       const caseData = await this.getCase(caseId);
@@ -610,4 +661,8 @@ export class JudiciaryService {
 }
 
 // Export singleton instance
+/**
+ * Shared `judiciaryService` instance used by HTTP routes. Instantiate the
+ * class directly in tests to supply a mock `JudiciaryDB`.
+ */
 export const judiciaryService = new JudiciaryService();

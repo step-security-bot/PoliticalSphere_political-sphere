@@ -1,8 +1,25 @@
-import { type CreateUserInput, CreateUserSchema, type User } from '@political-sphere/shared';
+import {
+  type CreateUserInput,
+  CreateUserSchema,
+  type User,
+  type UserRole,
+} from '@political-sphere/shared';
 
 import bcrypt from 'bcrypt';
+/**
+ * @ignore
+ */
+
 import { getDatabase } from '../stores/index.js';
 
+/**
+ * UserService manages user lifecycle operations such as registration,
+ * retrieval and lookup by username/email. It validates incoming payloads and
+ * maps persistence records to domain types used by the application.
+ *
+ * The service obtains the current database store via `getDatabase()` so it
+ * remains compatible with multiple store implementations and test harnesses.
+ */
 export class UserService {
   // Use a lazy getter so the service always obtains the current database connection.
   // This avoids holding a stale/closed DatabaseConnection across test lifecycle boundaries.
@@ -40,20 +57,51 @@ export class UserService {
       id: result.id,
       username: result.username || '',
       email: result.email || '',
+      role: (result.role as UserRole) || 'VIEWER',
       createdAt: new Date(result.createdAt),
       updatedAt: new Date(result.updatedAt),
     };
   }
 
   async getUserById(id: string): Promise<User | null> {
-    return this.db.users.getById(id);
+    const user = await this.db.users.getById(id);
+    if (!user) return null;
+
+    return {
+      id: user.id as string,
+      username: user.username as string,
+      email: user.email as string,
+      role: (user.role as UserRole) || 'VIEWER',
+      createdAt: new Date(user.createdAt as string),
+      updatedAt: new Date(user.updatedAt as string),
+    };
   }
 
   async getUserByUsername(username: string): Promise<User | null> {
-    return this.db.users.getByUsername(username);
+    const user = await this.db.users.getByUsername(username);
+    if (!user) return null;
+
+    return {
+      id: user.id as string,
+      username: user.username as string,
+      email: user.email as string,
+      role: (user.role as UserRole) || 'VIEWER',
+      createdAt: new Date(user.createdAt as string),
+      updatedAt: new Date(user.updatedAt as string),
+    };
   }
 
   async getUserByEmail(email: string): Promise<User | null> {
-    return this.db.users.getByEmail(email);
+    const user = await this.db.users.getByEmail(email);
+    if (!user) return null;
+
+    return {
+      id: user.id as string,
+      username: user.username as string,
+      email: user.email as string,
+      role: (user.role as UserRole) || 'VIEWER',
+      createdAt: new Date(user.createdAt as string),
+      updatedAt: new Date(user.updatedAt as string),
+    };
   }
 }

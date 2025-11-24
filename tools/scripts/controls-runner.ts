@@ -177,7 +177,7 @@ async function runMetricControl(ctrl: MetricControl, repoRoot: string) {
     const json = JSON.parse(raw);
     const v = getByPath(json, ctrl.metric.jsonPath);
     value = typeof v === 'number' ? v : Number(v);
-  } catch (_e) {
+  } catch {
     annotate(
       ctrl.severity === 'blocker' ? 'error' : 'warning',
       `Metric file not readable: ${metricPath}`

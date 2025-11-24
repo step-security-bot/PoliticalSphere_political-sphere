@@ -18,8 +18,8 @@ async function bootstrap() {
       container.innerText = 'Host app: remote mounted successfully (default export).';
     }
   } catch (e) {
-    container.innerText = 'Host app: failed to load remote: ' + e.message;
-    console.error(e);
+    container.innerText = `Host app: failed to load remote: ${e.message}`;
+    // Error details are displayed in the UI container for debugging
   }
 }
 

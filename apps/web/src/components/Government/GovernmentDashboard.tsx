@@ -80,7 +80,8 @@ export const GovernmentDashboard: React.FC<GovernmentDashboardProps> = ({ userId
         throw new Error(response.error || 'Failed to fetch government data');
       }
 
-      setCabinet((response.data?.cabinet as Cabinet) || null);
+      const cabinetData = response.data?.cabinet;
+      setCabinet(Array.isArray(cabinetData) ? (cabinetData as unknown as Cabinet) : null);
       setActions((response.data?.actions as ExecutiveAction[]) || []);
       setPolicies((response.data?.policies as Policy[]) || []);
     } catch (error) {
@@ -103,7 +104,8 @@ export const GovernmentDashboard: React.FC<GovernmentDashboardProps> = ({ userId
     setSubmittingAction(true);
 
     try {
-      const response = await api.issueExecutiveAction(cabinet?.id || '', {
+      const response = await api.issueExecutiveAction({
+        cabinetId: cabinet?.id || '',
         ...actionForm,
         ministerId: userId,
       });

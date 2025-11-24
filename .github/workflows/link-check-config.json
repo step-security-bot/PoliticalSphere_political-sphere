@@ -1,0 +1,35 @@
+{
+  "ignorePatterns": [
+    {
+      "pattern": "^https://github\\.com/"
+    },
+    {
+      "pattern": "^https://docs\\.github\\.com/"
+    },
+    {
+      "pattern": "^https://www\\.w3\\.org/"
+    },
+    {
+      "pattern": "^https://developer\\.mozilla\\.org/"
+    },
+    {
+      "pattern": "^https://nodejs\\.org/"
+    },
+    {
+      "pattern": "^https://npmjs\\.com/"
+    },
+    {
+      "pattern": "^http://localhost"
+    },
+    {
+      "pattern": "^https://127\\.0\\.0\\.1"
+    }
+  ],
+  "replacementPatterns": [],
+  "httpHeaders": [],
+  "timeout": "20s",
+  "retryOn429": true,
+  "retryCount": 3,
+  "fallbackRetryDelay": "30s",
+  "aliveStatusCodes": [200, 206]
+}

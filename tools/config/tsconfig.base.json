@@ -7,10 +7,11 @@
     "downlevelIteration": true,
     "experimentalDecorators": true,
     "moduleResolution": "bundler",
+    "rewriteRelativeImportExtensions": true,
     "importHelpers": true,
-    "target": "es2015",
-    "module": "esnext",
-    "lib": ["es2020", "dom"],
+    "target": "ES2022",
+    "module": "ES2022",
+    "lib": ["es2022", "dom"],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "jsx": "react-jsx",
@@ -28,9 +29,10 @@
       "@political-sphere/shared": ["libs/shared/src/index.ts"],
       "@political-sphere/ui": ["libs/ui/src/index.ts"],
       "@political-sphere/platform": ["libs/platform/src/index.ts"],
+      "@political-sphere/observability": ["libs/observability/src/index.ts"],
       "@political-sphere/ci-utils": ["libs/ci/src/index.ts"],
       "@political-sphere/infrastructure": ["libs/infrastructure/src/index.ts"]
     }
   },
-  "exclude": ["node_modules", "tmp", "dist", "coverage", ".cache"]
+  "exclude": ["node_modules", "tmp", "dist", "coverage", ".cache", "tools/tests"]
 }

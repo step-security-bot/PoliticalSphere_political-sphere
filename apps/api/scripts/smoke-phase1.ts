@@ -1,5 +1,6 @@
 #!/usr/bin/env ts-node
 /**
+ * @ignore
  * Phase 1 Smoke Script
  * Verifies health, register/login, game create/list endpoints without Vitest overhead.
  */
@@ -7,7 +8,13 @@ import request from 'supertest';
 
 import { createApp } from '../src/app';
 
-async function run() {
+/**
+ * run - Phase 1 smoke script which verifies a subset of critical endpoints
+ * such as health, register/login, and basic gameplay flows.
+ *
+ * Exported for documentation and programmatic use in maintenance tooling.
+ */
+export async function run() {
   const app = createApp();
   const server = app.listen(0);
   const address = server.address();
@@ -68,6 +75,7 @@ async function run() {
     server.close();
   }
 
+  // eslint-disable-next-line no-console
   console.log(JSON.stringify(results, null, 2));
 }
 

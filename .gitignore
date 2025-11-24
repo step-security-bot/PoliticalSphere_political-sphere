@@ -156,3 +156,6 @@ tools/tmp/
 .playwright/
 *.log
 .cache/
+
+# Generated documentation (regenerated on build)
+docs/api-reference/

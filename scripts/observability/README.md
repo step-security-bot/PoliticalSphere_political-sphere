@@ -46,8 +46,28 @@ node scripts/observability/generate-dashboard.mjs <template> <output-file>
 
 - `ci-cd-health`: CI/CD pipeline health monitoring
 - `application-health`: Application performance monitoring
+- `performance-monitoring`: Detailed performance metrics and Lighthouse scores
+- `application-overview`: High-level application health and key metrics
+- `error-monitoring`: Error tracking and failure analysis
+- `database-monitoring`: Database performance and connection monitoring
 
-### 3. SigNoz Integration (`signoz.sh`)
+### 3. Alerting Configuration Generation (`generate-alerts.mjs`)
+
+Generates Prometheus alerting rules, Alertmanager configuration, and Docker Compose setup for the monitoring stack.
+
+**Usage:**
+
+```bash
+node scripts/observability/generate-alerts.mjs [output-directory]
+```
+
+**Generated files:**
+
+- `prometheus-rules.yml`: Prometheus alerting rules
+- `alertmanager.yml`: Alertmanager notification configuration
+- `docker-compose.monitoring.yml`: Complete monitoring stack (Prometheus, Alertmanager, Grafana, Node Exporter)
+
+### 4. SigNoz Integration (`signoz.sh`)
 
 Helper script to manage the SigNoz observability stack.
 

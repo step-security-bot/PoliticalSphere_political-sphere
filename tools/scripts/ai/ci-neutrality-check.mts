@@ -59,7 +59,7 @@ interface NeutralityResult {
   score: number; // 0-1, where 1 is completely neutral
 }
 
-async function checkNeutrality(text: string): Promise<NeutralityResult> {
+export async function checkNeutrality(text: string): Promise<NeutralityResult> {
   const biases: BiasDetection[] = [];
 
   // Check if content is in a neutral exception context
@@ -86,7 +86,8 @@ async function checkNeutrality(text: string): Promise<NeutralityResult> {
   }
 
   const score = biases.length === 0 ? 1.0 : Math.max(0, 1 - biases.length * 0.1);
-  const passed = biases.length === 0 || score >= 0.7; // Allow up to 3 minor biases
+  // Tighten: fail when any bias is detected; use score only as severity signal.
+  const passed = biases.length === 0;
 
   return { passed, biases, score };
 }
@@ -119,7 +120,7 @@ async function main() {
 
     // Skip test files, fixtures, and examples (allowed to contain political content)
     // Check for standard test/fixture directories and file patterns
-    const isTestOrFixtureFile = (
+    const isTestOrFixtureFile =
       // Standard test directories
       file.includes('/tests/') ||
       file.includes('/__tests__/') ||
@@ -139,8 +140,7 @@ async function main() {
       file.includes('.test.') ||
       file.includes('.spec.') ||
       file.includes('.fixture.') ||
-      file.includes('.mock.')
-        );
+      file.includes('.mock.');
 
     if (isTestOrFixtureFile) {
       continue;

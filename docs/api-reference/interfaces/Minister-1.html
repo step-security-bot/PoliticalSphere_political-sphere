@@ -1,0 +1,885 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>political-sphere documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">political-sphere documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content interface">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Interfaces</li>
+  <li class="breadcrumb-item"
+  >
+  Minister</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>apps/web/src/components/Government/GovernmentDashboard.tsx</code>
+        </p>
+
+
+
+
+        <section data-compodoc="block-index">
+            <h3 id="index">Index</h3>
+            <table class="table table-sm table-bordered index-table">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <h6><b>Properties</b></h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <ul class="index-list">
+                                <li>
+                                        <a href="#appointedAt" 
+>
+                                            appointedAt
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#id" 
+>
+                                            id
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#portfolio" 
+>
+                                            portfolio
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#status" 
+>
+                                            status
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#userId" 
+>
+                                            userId
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#username" 
+>
+                                            username
+                                        </a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+
+
+            <section data-compodoc="block-properties">
+                <h3 id="inputs">Properties</h3>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="appointedAt"></a>
+                                        <span class="name "><b>appointedAt</b>
+                                            <a href="#appointedAt">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>appointedAt:         <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="id"></a>
+                                        <span class="name "><b>id</b>
+                                            <a href="#id">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>id:         <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="portfolio"></a>
+                                        <span class="name "><b>portfolio</b>
+                                            <a href="#portfolio">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>portfolio:         <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="status"></a>
+                                        <span class="name "><b>status</b>
+                                            <a href="#status">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>status:         <code><a href="../miscellaneous/variables.html#g" target="_self" >&quot;active&quot; | &quot;resigned&quot; | &quot;dismissed&quot;</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="../miscellaneous/variables.html#g" target="_self" >&quot;active&quot; | &quot;resigned&quot; | &quot;dismissed&quot;</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="userId"></a>
+                                        <span class="name "><b>userId</b>
+                                            <a href="#userId">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>userId:         <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="username"></a>
+                                        <span class="name "><b>username</b>
+                                            <a href="#username">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>username:         <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+            </section>
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import type React from &#x27;react&#x27;;
+import { useCallback, useEffect, useState } from &#x27;react&#x27;;
+import { api } from &#x27;../../services/api&#x27;;
+import &#x27;./GovernmentDashboard.css&#x27;;
+
+interface Minister {
+  id: string;
+  userId: string;
+  username: string;
+  portfolio: string;
+  appointedAt: string;
+  status: &#x27;active&#x27; | &#x27;resigned&#x27; | &#x27;dismissed&#x27;;
+}
+
+interface Cabinet {
+  id: string;
+  primeMinisterId: string;
+  primeMinisterName: string;
+  party: string;
+  formedAt: string;
+  status: &#x27;active&#x27; | &#x27;dissolved&#x27;;
+  ministers: Minister[];
+}
+
+interface ExecutiveAction {
+  id: string;
+  ministerId: string;
+  ministerName: string;
+  portfolio: string;
+  type: &#x27;policy&#x27; | &#x27;appointment&#x27; | &#x27;budget&#x27; | &#x27;emergency&#x27;;
+  title: string;
+  description: string;
+  status: &#x27;proposed&#x27; | &#x27;approved&#x27; | &#x27;rejected&#x27; | &#x27;implemented&#x27;;
+  createdAt: string;
+}
+
+interface Policy {
+  id: string;
+  title: string;
+  description: string;
+  portfolio: string;
+  status: &#x27;draft&#x27; | &#x27;active&#x27; | &#x27;suspended&#x27; | &#x27;repealed&#x27;;
+  implementedAt?: string;
+}
+
+interface GovernmentDashboardProps {
+  userId: string;
+  onError?: (error: string) &#x3D;&gt; void;
+}
+
+export const GovernmentDashboard: React.FC&lt;GovernmentDashboardProps&gt; &#x3D; ({ userId, onError }) &#x3D;&gt; {
+  const [cabinet, setCabinet] &#x3D; useState&lt;Cabinet | null&gt;(null);
+  const [actions, setActions] &#x3D; useState&lt;ExecutiveAction[]&gt;([]);
+  const [policies, setPolicies] &#x3D; useState&lt;Policy[]&gt;([]);
+  const [loading, setLoading] &#x3D; useState(true);
+  const [activeTab, setActiveTab] &#x3D; useState&lt;&#x27;cabinet&#x27; | &#x27;actions&#x27; | &#x27;policies&#x27;&gt;(&#x27;cabinet&#x27;);
+  const [showActionForm, setShowActionForm] &#x3D; useState(false);
+  const [submittingAction, setSubmittingAction] &#x3D; useState(false);
+
+  // Form state for executive actions
+  const [actionForm, setActionForm] &#x3D; useState({
+    type: &#x27;policy&#x27; as ExecutiveAction[&#x27;type&#x27;],
+    title: &#x27;&#x27;,
+    description: &#x27;&#x27;,
+    portfolio: &#x27;&#x27;,
+  });
+
+  const fetchGovernment &#x3D; useCallback(async () &#x3D;&gt; {
+    try {
+      setLoading(true);
+      const response &#x3D; await api.getGovernment();
+
+      if (!response.success) {
+        throw new Error(response.error || &#x27;Failed to fetch government data&#x27;);
+      }
+
+      const cabinetData &#x3D; response.data?.cabinet;
+      setCabinet(Array.isArray(cabinetData) ? (cabinetData as unknown as Cabinet) : null);
+      setActions((response.data?.actions as ExecutiveAction[]) || []);
+      setPolicies((response.data?.policies as Policy[]) || []);
+    } catch (error) {
+      const message &#x3D; error instanceof Error ? error.message : &#x27;Failed to fetch government data&#x27;;
+      onError?.(message);
+    } finally {
+      setLoading(false);
+    }
+  }, [onError]);
+
+  useEffect(() &#x3D;&gt; {
+    fetchGovernment();
+    // Poll for updates every 30 seconds
+    const interval &#x3D; setInterval(fetchGovernment, 30000);
+    return () &#x3D;&gt; clearInterval(interval);
+  }, [fetchGovernment]);
+
+  const handleProposeAction &#x3D; async (e: React.FormEvent) &#x3D;&gt; {
+    e.preventDefault();
+    setSubmittingAction(true);
+
+    try {
+      const response &#x3D; await api.issueExecutiveAction({
+        cabinetId: cabinet?.id || &#x27;&#x27;,
+        ...actionForm,
+        ministerId: userId,
+      });
+
+      if (!response.success) {
+        throw new Error(response.error || &#x27;Failed to propose action&#x27;);
+      }
+
+      // Reset form and refresh
+      setActionForm({ type: &#x27;policy&#x27;, title: &#x27;&#x27;, description: &#x27;&#x27;, portfolio: &#x27;&#x27; });
+      setShowActionForm(false);
+      fetchGovernment();
+    } catch (error) {
+      const message &#x3D; error instanceof Error ? error.message : &#x27;Failed to propose action&#x27;;
+      onError?.(message);
+    } finally {
+      setSubmittingAction(false);
+    }
+  };
+
+  const isMinister &#x3D; cabinet?.ministers.some(m &#x3D;&gt; m.userId &#x3D;&#x3D;&#x3D; userId &amp;&amp; m.status &#x3D;&#x3D;&#x3D; &#x27;active&#x27;);
+  const isPrimeMinister &#x3D; cabinet?.primeMinisterId &#x3D;&#x3D;&#x3D; userId;
+
+  if (loading) {
+    return (
+      &lt;div className&#x3D;&quot;government-dashboard loading&quot; aria-live&#x3D;&quot;polite&quot;&gt;
+        &lt;p&gt;Loading Government...&lt;/p&gt;
+      &lt;/div&gt;
+    );
+  }
+
+  if (!cabinet) {
+    return (
+      &lt;div className&#x3D;&quot;government-dashboard empty&quot;&gt;
+        &lt;h2&gt;No Government Formed&lt;/h2&gt;
+        &lt;p&gt;No government has been formed yet. A government must be formed after elections.&lt;/p&gt;
+      &lt;/div&gt;
+    );
+  }
+
+  return (
+    &lt;div className&#x3D;&quot;government-dashboard&quot;&gt;
+      &lt;header className&#x3D;&quot;government-header&quot;&gt;
+        &lt;div className&#x3D;&quot;government-title&quot;&gt;
+          &lt;h1&gt;Her Majesty&#x27;s Government&lt;/h1&gt;
+          &lt;div className&#x3D;&quot;government-meta&quot;&gt;
+            &lt;span className&#x3D;&quot;pm-name&quot;&gt;
+              Prime Minister: &lt;strong&gt;{cabinet.primeMinisterName}&lt;/strong&gt;
+            &lt;/span&gt;
+            &lt;span className&#x3D;&quot;party-badge&quot;&gt;{cabinet.party}&lt;/span&gt;
+            &lt;span className&#x3D;&quot;status-badge status-{cabinet.status}&quot;&gt;{cabinet.status}&lt;/span&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;nav className&#x3D;&quot;government-tabs&quot; aria-label&#x3D;&quot;Government sections&quot;&gt;
+          &lt;button
+            type&#x3D;&quot;button&quot;
+            onClick&#x3D;{() &#x3D;&gt; setActiveTab(&#x27;cabinet&#x27;)}
+            className&#x3D;{activeTab &#x3D;&#x3D;&#x3D; &#x27;cabinet&#x27; ? &#x27;active&#x27; : &#x27;&#x27;}
+            aria-current&#x3D;{activeTab &#x3D;&#x3D;&#x3D; &#x27;cabinet&#x27; ? &#x27;page&#x27; : undefined}
+          &gt;
+            Cabinet ({cabinet.ministers.length})
+          &lt;/button&gt;
+          &lt;button
+            type&#x3D;&quot;button&quot;
+            onClick&#x3D;{() &#x3D;&gt; setActiveTab(&#x27;actions&#x27;)}
+            className&#x3D;{activeTab &#x3D;&#x3D;&#x3D; &#x27;actions&#x27; ? &#x27;active&#x27; : &#x27;&#x27;}
+            aria-current&#x3D;{activeTab &#x3D;&#x3D;&#x3D; &#x27;actions&#x27; ? &#x27;page&#x27; : undefined}
+          &gt;
+            Executive Actions ({actions.length})
+          &lt;/button&gt;
+          &lt;button
+            type&#x3D;&quot;button&quot;
+            onClick&#x3D;{() &#x3D;&gt; setActiveTab(&#x27;policies&#x27;)}
+            className&#x3D;{activeTab &#x3D;&#x3D;&#x3D; &#x27;policies&#x27; ? &#x27;active&#x27; : &#x27;&#x27;}
+            aria-current&#x3D;{activeTab &#x3D;&#x3D;&#x3D; &#x27;policies&#x27; ? &#x27;page&#x27; : undefined}
+          &gt;
+            Policies ({policies.length})
+          &lt;/button&gt;
+        &lt;/nav&gt;
+      &lt;/header&gt;
+
+      &lt;main className&#x3D;&quot;government-content&quot;&gt;
+        {activeTab &#x3D;&#x3D;&#x3D; &#x27;cabinet&#x27; &amp;&amp; (
+          &lt;section className&#x3D;&quot;cabinet-section&quot;&gt;
+            &lt;header className&#x3D;&quot;section-header&quot;&gt;
+              &lt;h2&gt;Cabinet Ministers&lt;/h2&gt;
+              {isPrimeMinister &amp;&amp; (
+                &lt;button type&#x3D;&quot;button&quot; className&#x3D;&quot;btn-primary&quot;&gt;
+                  Appoint Minister
+                &lt;/button&gt;
+              )}
+            &lt;/header&gt;
+
+            &lt;div className&#x3D;&quot;ministers-grid&quot;&gt;
+              {cabinet.ministers.map(minister &#x3D;&gt; (
+                &lt;article key&#x3D;{minister.id} className&#x3D;&quot;minister-card&quot;&gt;
+                  &lt;header&gt;
+                    &lt;h3&gt;{minister.username}&lt;/h3&gt;
+                    &lt;span className&#x3D;&quot;portfolio-badge&quot;&gt;{minister.portfolio}&lt;/span&gt;
+                  &lt;/header&gt;
+                  &lt;dl&gt;
+                    &lt;dt&gt;Status:&lt;/dt&gt;
+                    &lt;dd&gt;
+                      &lt;span className&#x3D;{&#x60;status-badge status-${minister.status}&#x60;}&gt;
+                        {minister.status}
+                      &lt;/span&gt;
+                    &lt;/dd&gt;
+                    &lt;dt&gt;Appointed:&lt;/dt&gt;
+                    &lt;dd&gt;
+                      &lt;time dateTime&#x3D;{minister.appointedAt}&gt;
+                        {new Date(minister.appointedAt).toLocaleDateString()}
+                      &lt;/time&gt;
+                    &lt;/dd&gt;
+                  &lt;/dl&gt;
+                  {isPrimeMinister &amp;&amp; minister.status &#x3D;&#x3D;&#x3D; &#x27;active&#x27; &amp;&amp; (
+                    &lt;footer&gt;
+                      &lt;button type&#x3D;&quot;button&quot; className&#x3D;&quot;btn-secondary btn-sm&quot;&gt;
+                        Reassign Portfolio
+                      &lt;/button&gt;
+                      &lt;button type&#x3D;&quot;button&quot; className&#x3D;&quot;btn-danger btn-sm&quot;&gt;
+                        Dismiss
+                      &lt;/button&gt;
+                    &lt;/footer&gt;
+                  )}
+                &lt;/article&gt;
+              ))}
+            &lt;/div&gt;
+
+            {cabinet.ministers.length &#x3D;&#x3D;&#x3D; 0 &amp;&amp; (
+              &lt;p className&#x3D;&quot;empty-state&quot;&gt;No ministers appointed yet.&lt;/p&gt;
+            )}
+          &lt;/section&gt;
+        )}
+
+        {activeTab &#x3D;&#x3D;&#x3D; &#x27;actions&#x27; &amp;&amp; (
+          &lt;section className&#x3D;&quot;actions-section&quot;&gt;
+            &lt;header className&#x3D;&quot;section-header&quot;&gt;
+              &lt;h2&gt;Executive Actions&lt;/h2&gt;
+              {isMinister &amp;&amp; (
+                &lt;button
+                  type&#x3D;&quot;button&quot;
+                  onClick&#x3D;{() &#x3D;&gt; setShowActionForm(!showActionForm)}
+                  className&#x3D;&quot;btn-primary&quot;
+                  aria-expanded&#x3D;{showActionForm}
+                &gt;
+                  {showActionForm ? &#x27;Cancel&#x27; : &#x27;Propose Action&#x27;}
+                &lt;/button&gt;
+              )}
+            &lt;/header&gt;
+
+            {showActionForm &amp;&amp; (
+              &lt;form onSubmit&#x3D;{handleProposeAction} className&#x3D;&quot;action-form&quot;&gt;
+                &lt;div className&#x3D;&quot;form-group&quot;&gt;
+                  &lt;label htmlFor&#x3D;&quot;action-type&quot;&gt;Type:&lt;/label&gt;
+                  &lt;select
+                    id&#x3D;&quot;action-type&quot;
+                    value&#x3D;{actionForm.type}
+                    onChange&#x3D;{e &#x3D;&gt;
+                      setActionForm({
+                        ...actionForm,
+                        type: e.target.value as ExecutiveAction[&#x27;type&#x27;],
+                      })
+                    }
+                    required
+                  &gt;
+                    &lt;option value&#x3D;&quot;policy&quot;&gt;Policy&lt;/option&gt;
+                    &lt;option value&#x3D;&quot;appointment&quot;&gt;Appointment&lt;/option&gt;
+                    &lt;option value&#x3D;&quot;budget&quot;&gt;Budget&lt;/option&gt;
+                    &lt;option value&#x3D;&quot;emergency&quot;&gt;Emergency&lt;/option&gt;
+                  &lt;/select&gt;
+                &lt;/div&gt;
+
+                &lt;div className&#x3D;&quot;form-group&quot;&gt;
+                  &lt;label htmlFor&#x3D;&quot;action-portfolio&quot;&gt;Portfolio:&lt;/label&gt;
+                  &lt;input
+                    id&#x3D;&quot;action-portfolio&quot;
+                    type&#x3D;&quot;text&quot;
+                    value&#x3D;{actionForm.portfolio}
+                    onChange&#x3D;{e &#x3D;&gt; setActionForm({ ...actionForm, portfolio: e.target.value })}
+                    required
+                    placeholder&#x3D;&quot;e.g., Health, Education, Defence&quot;
+                  /&gt;
+                &lt;/div&gt;
+
+                &lt;div className&#x3D;&quot;form-group&quot;&gt;
+                  &lt;label htmlFor&#x3D;&quot;action-title&quot;&gt;Title:&lt;/label&gt;
+                  &lt;input
+                    id&#x3D;&quot;action-title&quot;
+                    type&#x3D;&quot;text&quot;
+                    value&#x3D;{actionForm.title}
+                    onChange&#x3D;{e &#x3D;&gt; setActionForm({ ...actionForm, title: e.target.value })}
+                    required
+                    maxLength&#x3D;{200}
+                  /&gt;
+                &lt;/div&gt;
+
+                &lt;div className&#x3D;&quot;form-group&quot;&gt;
+                  &lt;label htmlFor&#x3D;&quot;action-description&quot;&gt;Description:&lt;/label&gt;
+                  &lt;textarea
+                    id&#x3D;&quot;action-description&quot;
+                    value&#x3D;{actionForm.description}
+                    onChange&#x3D;{e &#x3D;&gt; setActionForm({ ...actionForm, description: e.target.value })}
+                    required
+                    maxLength&#x3D;{2000}
+                    rows&#x3D;{6}
+                  /&gt;
+                &lt;/div&gt;
+
+                &lt;button type&#x3D;&quot;submit&quot; className&#x3D;&quot;btn-primary&quot; disabled&#x3D;{submittingAction}&gt;
+                  {submittingAction ? &#x27;Submitting...&#x27; : &#x27;Propose Action&#x27;}
+                &lt;/button&gt;
+              &lt;/form&gt;
+            )}
+
+            &lt;ul className&#x3D;&quot;actions-list&quot;&gt;
+              {actions.length &#x3D;&#x3D;&#x3D; 0 ? (
+                &lt;p className&#x3D;&quot;empty-state&quot;&gt;No executive actions proposed yet.&lt;/p&gt;
+              ) : (
+                actions.map(action &#x3D;&gt; (
+                  &lt;li key&#x3D;{action.id} className&#x3D;&quot;action-card&quot;&gt;
+                    &lt;header&gt;
+                      &lt;h3&gt;{action.title}&lt;/h3&gt;
+                      &lt;div className&#x3D;&quot;action-meta&quot;&gt;
+                        &lt;span className&#x3D;&quot;type-badge type-{action.type}&quot;&gt;{action.type}&lt;/span&gt;
+                        &lt;span className&#x3D;{&#x60;status-badge status-${action.status}&#x60;}&gt;
+                          {action.status}
+                        &lt;/span&gt;
+                      &lt;/div&gt;
+                    &lt;/header&gt;
+                    &lt;p&gt;{action.description}&lt;/p&gt;
+                    &lt;footer&gt;
+                      &lt;span className&#x3D;&quot;minister-info&quot;&gt;
+                        {action.ministerName} ({action.portfolio})
+                      &lt;/span&gt;
+                      &lt;time dateTime&#x3D;{action.createdAt}&gt;
+                        {new Date(action.createdAt).toLocaleDateString()}
+                      &lt;/time&gt;
+                    &lt;/footer&gt;
+                  &lt;/li&gt;
+                ))
+              )}
+            &lt;/ul&gt;
+          &lt;/section&gt;
+        )}
+
+        {activeTab &#x3D;&#x3D;&#x3D; &#x27;policies&#x27; &amp;&amp; (
+          &lt;section className&#x3D;&quot;policies-section&quot;&gt;
+            &lt;header className&#x3D;&quot;section-header&quot;&gt;
+              &lt;h2&gt;Government Policies&lt;/h2&gt;
+            &lt;/header&gt;
+
+            &lt;div className&#x3D;&quot;policies-grid&quot;&gt;
+              {policies.length &#x3D;&#x3D;&#x3D; 0 ? (
+                &lt;p className&#x3D;&quot;empty-state&quot;&gt;No policies implemented yet.&lt;/p&gt;
+              ) : (
+                policies.map(policy &#x3D;&gt; (
+                  &lt;article key&#x3D;{policy.id} className&#x3D;&quot;policy-card&quot;&gt;
+                    &lt;header&gt;
+                      &lt;h3&gt;{policy.title}&lt;/h3&gt;
+                      &lt;span className&#x3D;{&#x60;status-badge status-${policy.status}&#x60;}&gt;
+                        {policy.status}
+                      &lt;/span&gt;
+                    &lt;/header&gt;
+                    &lt;p&gt;{policy.description}&lt;/p&gt;
+                    &lt;dl&gt;
+                      &lt;dt&gt;Portfolio:&lt;/dt&gt;
+                      &lt;dd&gt;{policy.portfolio}&lt;/dd&gt;
+                      {policy.implementedAt &amp;&amp; (
+                        &lt;&gt;
+                          &lt;dt&gt;Implemented:&lt;/dt&gt;
+                          &lt;dd&gt;
+                            &lt;time dateTime&#x3D;{policy.implementedAt}&gt;
+                              {new Date(policy.implementedAt).toLocaleDateString()}
+                            &lt;/time&gt;
+                          &lt;/dd&gt;
+                        &lt;/&gt;
+                      )}
+                    &lt;/dl&gt;
+                  &lt;/article&gt;
+                ))
+              )}
+            &lt;/div&gt;
+          &lt;/section&gt;
+        )}
+      &lt;/main&gt;
+    &lt;/div&gt;
+  );
+};
+
+export default GovernmentDashboard;
+</code></pre>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'interface';
+            var COMPODOC_CURRENT_PAGE_URL = 'Minister-1.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

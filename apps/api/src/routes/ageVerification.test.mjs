@@ -8,12 +8,12 @@ import { CompleteVerificationSchema, InitiateVerificationSchema } from '../utils
 
 // Mock age verification service
 const mockAgeVerificationService = {
-  initiateVerification: async (_userId, method) => ({
+  initiateVerification: (_userId, method) => ({
     success: true,
     verificationId: 'test-verification-id',
     method,
   }),
-  completeVerification: async (verificationId, _data) => ({
+  completeVerification: (verificationId, _data) => ({
     success: true,
     verificationId,
     age: 18,
@@ -29,7 +29,7 @@ const createTestRouter = _unused => {
     try {
       const input = InitiateVerificationSchema.parse(req.body);
       const userId = req.user?.id || 'anonymous';
-      const result = await mockAgeVerificationService.initiateVerification(userId, input.method);
+      const result = mockAgeVerificationService.initiateVerification(userId, input.method);
 
       if (result.success) {
         res.json({ success: true, data: result });
@@ -58,10 +58,7 @@ const createTestRouter = _unused => {
   router.post('/verify', async (req, res) => {
     try {
       const input = CompleteVerificationSchema.parse(req.body);
-      const result = await mockAgeVerificationService.completeVerification(
-        input.verificationId,
-        input
-      );
+      const result = mockAgeVerificationService.completeVerification(input.verificationId, input);
 
       if (result.success) {
         res.json({ success: true, data: result });

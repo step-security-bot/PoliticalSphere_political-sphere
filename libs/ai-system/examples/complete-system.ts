@@ -9,6 +9,7 @@
  * 5. Accessibility (WCAG 2.2 AA)
  * 6. Privacy (GDPR compliance)
  */
+/* eslint-disable no-console */
 
 import { createOrchestrator, defineAgent } from '../src';
 import { WCAGValidator } from '../src/accessibility/wcag-validator';

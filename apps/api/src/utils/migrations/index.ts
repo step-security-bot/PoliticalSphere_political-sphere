@@ -5,10 +5,12 @@
  * @see docs/architecture/decisions/adr-0001-database-migrations.md
  */
 
+import type { Database } from 'better-sqlite3';
+
 const fs = require('node:fs');
 const path = require('node:path');
 
-const Database = require('better-sqlite3');
+const DatabaseClass = require('better-sqlite3');
 const { info, error: logError, warn } = require('./logger');
 
 const { DB_PATH, DEFAULT_DB_PATH } = require('../config');
@@ -19,16 +21,23 @@ const {
   MigrationValidationError,
 } = require('./migration-error');
 
+type Migration = {
+  name: string;
+  up: (db: Database) => void;
+  down: (db: Database) => Promise<void>;
+};
+
 /**
  * Initialize the database connection
  * @param {string} [dbPath] - Path to the database file (defaults to data/political-sphere.db)
- * @returns {Database.Database} - Database connection
+ * @returns {Database} - Database connection
  */
-function initializeDatabase(dbPath) {
+function initializeDatabase(dbPath: string): Database {
   const finalPath = dbPath || DB_PATH || DEFAULT_DB_PATH;
 
-  const db = new Database(finalPath, {
-    verbose: process.env.NODE_ENV === 'development' ? sql => info(`SQL: ${sql}`) : undefined,
+  const db = new DatabaseClass(finalPath, {
+    verbose:
+      process.env.NODE_ENV === 'development' ? (sql: string) => info(`SQL: ${sql}`) : undefined,
   });
 
   // Enable WAL mode for better concurrency when supported
@@ -50,19 +59,21 @@ function initializeDatabase(dbPath) {
 
 /**
  * Load migration files from the migrations directory
- * @returns {Promise<Array>} Array of migration objects with name, up, and down functions
+ * @returns {Promise<Migration[]>} Array of migration objects with name, up, and down functions
  */
-async function loadMigrations() {
+async function loadMigrations(): Promise<Migration[]> {
   const migrationsDir = __dirname;
   const files = fs
     .readdirSync(migrationsDir)
-    .filter(file => file.endsWith('.js') && file !== 'index.js' && file !== 'migration-error.js')
+    .filter(
+      (file: string) => file.endsWith('.js') && file !== 'index.js' && file !== 'migration-error.js'
+    )
     .sort(); // Ensure migrations run in order
 
-  const migrations = [];
+  const migrations: Migration[] = [];
   for (const file of files) {
     const filePath = path.join(migrationsDir, file);
-    const migration = require(filePath);
+    const migration = require(filePath) as Migration;
     if (
       migration.name &&
       typeof migration.up === 'function' &&
@@ -83,14 +94,15 @@ async function loadMigrations() {
  * @param {Database.Database} db - Database connection
  * @throws {MigrationValidationError} If validation fails
  */
-function _validateSchema(db) {
+function _validateSchema(db: Database) {
   try {
     // Check if all expected tables exist
     const tables = db
       .prepare("SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'")
       .all();
     const expectedTables = ['users', 'parties', 'bills', 'votes', '_migrations'];
-    const existingTables = tables.map(t => t.name);
+    // Result rows are objects like { name: string }; ensure proper typing
+    const existingTables = (tables as Array<{ name: string }>).map(t => t.name);
 
     for (const table of expectedTables) {
       if (!existingTables.includes(table)) {
@@ -125,7 +137,10 @@ function _validateSchema(db) {
  * @param {Object} migration - Migration object with name and down function
  * @throws {MigrationRollbackError} If rollback fails
  */
-async function rollbackMigration(db, migration) {
+async function rollbackMigration(
+  db: Database,
+  migration: { name: string; down: (db: Database) => Promise<void> }
+) {
   try {
     info(`Rolling back migration: ${migration.name}`);
     await migration.down(db);
@@ -146,7 +161,7 @@ async function rollbackMigration(db, migration) {
  * @param {boolean} [rollbackOnError=true] - Whether to rollback on migration failure
  * @throws {MigrationError} If migration fails
  */
-async function runMigrations(db, rollbackOnError = true) {
+async function runMigrations(db: Database, rollbackOnError = true) {
   // Create migrations tracking table
   db.exec(`
     CREATE TABLE IF NOT EXISTS _migrations (
@@ -157,7 +172,7 @@ async function runMigrations(db, rollbackOnError = true) {
   `);
 
   const migrations = await loadMigrations();
-  const appliedMigrations = [];
+  const appliedMigrations: Migration[] = [];
 
   // Apply migrations
   for (const migration of migrations) {
@@ -176,21 +191,23 @@ async function runMigrations(db, rollbackOnError = true) {
         appliedMigrations.push(migration);
         info(`Migration ${migration.name} applied successfully in ${duration}ms`);
       } catch (err) {
-        logError(`Migration ${migration.name} failed: ${err.message}`);
+        const error = err as Error;
+        logError(`Migration ${migration.name} failed: ${error.message}`);
         if (rollbackOnError) {
           // Rollback applied migrations in reverse order
           for (const applied of appliedMigrations.reverse()) {
             try {
               await rollbackMigration(db, applied);
             } catch (rollbackError) {
-              logError(`Rollback also failed for ${applied.name}: ${rollbackError.message}`);
+              const rbError = rollbackError as Error;
+              logError(`Rollback also failed for ${applied.name}: ${rbError.message}`);
             }
           }
         }
         throw new MigrationError(
-          `Migration ${migration.name} failed: ${err.message}`,
+          `Migration ${migration.name} failed: ${error.message}`,
           migration.name,
-          err
+          error
         );
       }
     } else {
@@ -208,8 +225,10 @@ async function runMigrations(db, rollbackOnError = true) {
  * @param {Database.Database} db - Database connection
  * @throws {MigrationRollbackError} If rollback fails
  */
-async function rollbackAllMigrations(db) {
-  const appliedMigrations = db.prepare('SELECT name FROM _migrations ORDER BY id DESC').all();
+async function rollbackAllMigrations(db: Database) {
+  const appliedMigrations = db.prepare('SELECT name FROM _migrations ORDER BY id DESC').all() as {
+    name: string;
+  }[];
   const migrations = await loadMigrations();
 
   for (const row of appliedMigrations) {

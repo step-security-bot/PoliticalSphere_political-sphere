@@ -4,7 +4,8 @@
  * WCAG 2.2 AA Compliant
  */
 
-import React, { Component, ErrorInfo, ReactNode } from 'react';
+import { Component } from 'react';
+import type { ErrorInfo, ReactNode } from 'react';
 import './ErrorBoundary.css';
 
 interface ErrorBoundaryState {
@@ -21,8 +22,18 @@ interface ErrorBoundaryProps {
   maxRetries?: number;
 }
 
+/**
+ * React Error Boundary component for catching and handling JavaScript errors in the component tree.
+ * Provides fallback UI, error logging, and retry functionality to improve user experience
+ * during unexpected errors. Implements WCAG accessibility guidelines for error states.
+ */
 export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
   private retryTimeouts: NodeJS.Timeout[] = [];
+  private emitLog = (level: 'info' | 'error', payload: Record<string, unknown>) => {
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent('app-log', { detail: { level, payload } }));
+    }
+  };
 
   constructor(props: ErrorBoundaryProps) {
     super(props);
@@ -50,12 +61,18 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
     this.props.onError?.(error, errorInfo);
 
     // Log error for monitoring/reporting
-    console.error('ErrorBoundary caught an error:', error, errorInfo);
+    this.emitLog('error', {
+      error: error.message,
+      stack: error.stack,
+      componentStack: errorInfo.componentStack,
+    });
   }
 
   override componentWillUnmount() {
     // Clear any pending retry timeouts
-    this.retryTimeouts.forEach(timeout => clearTimeout(timeout));
+    this.retryTimeouts.forEach(timeout => {
+      clearTimeout(timeout);
+    });
   }
 
   handleRetry = () => {
@@ -101,7 +118,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
         url: window.location.href,
       };
 
-      console.log('Error report:', errorReport);
+      this.emitLog('info', { message: 'Error report generated', errorReport });
 
       // For now, just show an alert. In production, integrate with services like Sentry
       alert(

@@ -90,12 +90,22 @@ const ReportContent = ({ contentId, contentType = 'proposal', onClose, onReportS
   React.useEffect(() => {
     announce('Report content dialog opened', 'assertive');
 
+    const handleEscape = event => handleKeyDown(event);
+    document.addEventListener('keydown', handleEscape);
+
     // Trap focus in the modal
     const modalElement = document.querySelector('.report-content-modal');
     if (modalElement) {
       const cleanup = trapFocus(modalElement);
-      return cleanup;
+      return () => {
+        cleanup();
+        document.removeEventListener('keydown', handleEscape);
+      };
     }
+
+    return () => {
+      document.removeEventListener('keydown', handleEscape);
+    };
   }, [announce, trapFocus]);
 
   if (success) {
@@ -126,7 +136,7 @@ const ReportContent = ({ contentId, contentType = 'proposal', onClose, onReportS
       role="dialog"
       aria-labelledby="report-title"
       aria-describedby="report-description"
-      onKeyDown={handleKeyDown}
+      tabIndex={-1}
     >
       <div className="report-content-content">
         <header className="report-content-header">

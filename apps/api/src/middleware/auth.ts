@@ -7,6 +7,30 @@ import jwt from 'jsonwebtoken';
 import type { Request, Response, NextFunction } from 'express';
 import logger from '../utils/logger';
 
+/**
+ * AuthUser - structure of an authenticated user stored on the request.
+ *
+ * - `id` is the primary user id stored on the token
+ * - `userId` is an alias used across the codebase for compatibility
+ * - `username` is the display or login name
+ * - `role` is used for role-based authorization checks
+ * - `email` is optional and may not be present in all tokens
+ */
+// Local definition of AuthUser (was previously imported from non-existent auth.middleware)
+/**
+ * AuthUser - structure of an authenticated user attached to `req.user`.
+ *
+ * `id` and `userId` are included for historical compatibility; `role` is
+ * used by authorization middleware. Email may be absent depending on token scope.
+ */
+export interface AuthUser {
+  id: string;
+  userId: string;
+  username: string;
+  role: string;
+  email?: string;
+}
+
 // JWT configuration
 const JWT_SECRET = process.env.JWT_SECRET;
 const JWT_REFRESH_SECRET = process.env.JWT_REFRESH_SECRET || JWT_SECRET;
@@ -31,6 +55,7 @@ interface User {
 }
 
 declare global {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Express {
     interface Request {
       user?: User;
@@ -47,8 +72,12 @@ interface JwtPayload {
 }
 
 /**
- * JWT Authentication Middleware
- * Validates JWT token and attaches user to request
+ * authenticate - JWT authentication middleware
+ *
+ * Verifies access tokens from either the Authorization header (Bearer token),
+ * or an httpOnly cookie `accessToken`. On success attaches `AuthUser` to the
+ * request as `req.user` for compatibility across the codebase. Returns 401
+ * on missing/invalid tokens and logs authentication failures.
  */
 function authenticate(req: Request, res: Response, next: NextFunction): void {
   try {
@@ -83,11 +112,12 @@ function authenticate(req: Request, res: Response, next: NextFunction): void {
       id: decoded.userId,
       userId: decoded.userId,
       username: decoded.username,
-      email: decoded.email,
       role: decoded.role,
-    };
+      // Optional fields only if present in token
+      ...(decoded.email ? { email: decoded.email as string } : {}),
+    } as AuthUser;
 
-    logger.debug('User authenticated', { userId: req.user.id, path: req.path });
+    logger.debug('User authenticated', { userId: req.user?.id || decoded.userId, path: req.path });
     next();
   } catch (error) {
     if ((error as Error).name === 'TokenExpiredError') {
@@ -151,8 +181,12 @@ function requireRole(requiredRoles: string | string[]) {
 }
 
 /**
- * Optional Authentication Middleware
- * Attaches user if token is present, but doesn't require it
+ * optionalAuth - Optional authentication middleware
+ *
+ * Attempts to attach an authenticated user to the request if a valid access
+ * token is present (either Authorization header or cookie). Does not return
+ * an error if token is missing or invalid allowing downstream handlers to
+ * treat requests as unauthenticated.
  */
 function optionalAuth(req: Request, _res: Response, next: NextFunction): void {
   try {
@@ -181,22 +215,25 @@ function optionalAuth(req: Request, _res: Response, next: NextFunction): void {
 }
 
 /**
- * Admin-only Authorization Middleware
+ * requireAdmin - middleware to assert the authenticated user has the `ADMIN` role
  */
 function requireAdmin(req: Request, res: Response, next: NextFunction): void {
   requireRole('ADMIN')(req, res, next);
 }
 
 /**
- * Moderator Authorization Middleware (Admin or Moderator)
+ * requireModerator - middleware to assert the authenticated user has either the
+ * `ADMIN` or `MODERATOR` role
  */
 function requireModerator(req: Request, res: Response, next: NextFunction): void {
   requireRole(['ADMIN', 'MODERATOR'])(req, res, next);
 }
 
 /**
- * Refresh Token Authentication Middleware
- * For token refresh endpoints
+ * authenticateRefreshToken - Verifies refresh tokens used for access token rotation
+ *
+ * Reads `refreshToken` from the request body and validates it; on success
+ * attaches an `AuthUser` object on the request as `req.user`.
  */
 function authenticateRefreshToken(req: Request, res: Response, next: NextFunction): void {
   try {

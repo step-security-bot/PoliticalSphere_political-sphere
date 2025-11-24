@@ -1,5 +1,6 @@
 import * as fsSync from 'node:fs';
 import * as pathModule from 'node:path';
+import * as fs from 'node:fs';
 
 // Note: Avoid using child_process for backup operations; prefer library APIs
 import * as loggerModule from './logger.js';
@@ -39,6 +40,11 @@ interface QueuedBackup {
   reject: (reason?: Error) => void;
 }
 
+/**
+ * Database backup manager for creating, managing, and restoring database backups.
+ * Supports compression, verification, retention policies, and concurrent backup operations.
+ * Designed for production use with proper error handling and monitoring.
+ */
 class DatabaseBackupManager {
   private backupDir: string;
   private retentionDays: number;
@@ -160,9 +166,11 @@ class DatabaseBackupManager {
       // Process next queued backup
       if (this.backupQueue.length > 0 && this.activeBackups < this.maxConcurrentBackups) {
         const next = this.backupQueue.shift();
-        this.performBackup(next.dbPath, next.backupPath, next.compress, next.verify)
-          .then(next.resolve)
-          .catch(next.reject);
+        if (next) {
+          await this.performBackup(next.dbPath, next.backupPath, next.compress, next.verify)
+            .then(result => next.resolve(result))
+            .catch(err => next.reject(err));
+        }
       }
     }
 
@@ -261,7 +269,10 @@ class DatabaseBackupManager {
    * @param {string} dbPath - Path to restore database to
    * @returns {Promise<Object>} Restore result
    */
-  async restoreBackup(backupPath, dbPath) {
+  async restoreBackup(
+    backupPath: string,
+    dbPath: string
+  ): Promise<{ success: boolean; backupPath: string; dbPath: string; duration: number }> {
     const startTime = Date.now();
     const result = {
       success: false,
@@ -434,7 +445,11 @@ class DatabaseBackupManager {
 
         // Check if we exceed max backups
         const stats = this.getBackupStats();
-        if (stats.totalBackups > maxBackups) {
+        if (
+          'totalBackups' in stats &&
+          stats.totalBackups !== undefined &&
+          stats.totalBackups > maxBackups
+        ) {
           logger.warn('Too many backups, consider increasing retention or reducing schedule', {
             totalBackups: stats.totalBackups,
             maxBackups,

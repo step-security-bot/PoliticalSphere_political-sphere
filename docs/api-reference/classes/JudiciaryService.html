@@ -1,0 +1,2962 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>political-sphere documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">political-sphere documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content class">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Classes</li>
+  <li class="breadcrumb-item" >JudiciaryService</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>apps/api/src/domain/judiciary-service.ts</code>
+        </p>
+
+
+            <p class="comment">
+                <h3>Description</h3>
+            </p>
+            <p class="comment">
+                <p>JudiciaryService - manages legal cases, judge appointments, rulings and
+reviews within the application domain. Performs validation and persistence
+with audit-friendly records.</p>
+
+            </p>
+
+
+
+
+            <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#analyzeCaseNLP" >analyzeCaseNLP</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#calculateLegalComplexity" >calculateLegalComplexity</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#classifyCaseAndFindPrecedents" >classifyCaseAndFindPrecedents</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#createCase" >createCase</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#createJudge" >createJudge</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#createPrecedent" >createPrecedent</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#createReview" >createReview</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#createRuling" >createRuling</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#decideCase" >decideCase</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#denyReview" >denyReview</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#generateLegalReasoning" >generateLegalReasoning</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#getActiveCases" >getActiveCases</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#getCase" >getCase</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#getCasesByJudge" >getCasesByJudge</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#getCasesUnderReview" >getCasesUnderReview</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#getJudge" >getJudge</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#getReview" >getReview</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#getRuling" >getRuling</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#grantReview" >grantReview</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#listCases" >listCases</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#listJudges" >listJudges</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#listPrecedents" >listPrecedents</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#listReviews" >listReviews</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#listRulings" >listRulings</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#updateCase" >updateCase</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#updateJudge" >updateJudge</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#updateReview" >updateReview</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+
+
+            <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="analyzeCaseNLP"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>analyzeCaseNLP</b></span>
+                        <a href="#analyzeCaseNLP"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>analyzeCaseNLP(caseId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="492"
+                                    class="link-to-prism">apps/api/src/domain/judiciary-service.ts:492</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Analyze case content using NLP for legal insights</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>caseId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Promise&lt;literal type&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="calculateLegalComplexity"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>calculateLegalComplexity</b></span>
+                        <a href="#calculateLegalComplexity"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>calculateLegalComplexity(content: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="581"
+                                    class="link-to-prism">apps/api/src/domain/judiciary-service.ts:581</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Calculate legal complexity of case content</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>content</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>literal type</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="classifyCaseAndFindPrecedents"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>classifyCaseAndFindPrecedents</b></span>
+                        <a href="#classifyCaseAndFindPrecedents"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>classifyCaseAndFindPrecedents(caseId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="548"
+                                    class="link-to-prism">apps/api/src/domain/judiciary-service.ts:548</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Classify case type and suggest similar precedents</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>caseId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Promise&lt;literal type&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="createCase"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>createCase</b></span>
+                        <a href="#createCase"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>createCase(data: <a href="../interfaces/CreateCaseData.html" target="_self">CreateCaseData</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="83"
+                                    class="link-to-prism">apps/api/src/domain/judiciary-service.ts:83</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Create a new case</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>data</td>
+                                            <td>
+                                                            <code><a href="../interfaces/CreateCaseData.html" target="_self" >CreateCaseData</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>unknown</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="createJudge"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>createJudge</b></span>
+                        <a href="#createJudge"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>createJudge(data: <a href="../interfaces/CreateJudgeData.html" target="_self">CreateJudgeData</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="181"
+                                    class="link-to-prism">apps/api/src/domain/judiciary-service.ts:181</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Create judge</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>data</td>
+                                            <td>
+                                                            <code><a href="../interfaces/CreateJudgeData.html" target="_self" >CreateJudgeData</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>unknown</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="createPrecedent"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>createPrecedent</b></span>
+                        <a href="#createPrecedent"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>createPrecedent(data: <a href="../interfaces/CreatePrecedentData.html" target="_self">CreatePrecedentData</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="410"
+                                    class="link-to-prism">apps/api/src/domain/judiciary-service.ts:410</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Create precedent</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>data</td>
+                                            <td>
+                                                            <code><a href="../interfaces/CreatePrecedentData.html" target="_self" >CreatePrecedentData</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>unknown</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="createReview"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>createReview</b></span>
+                        <a href="#createReview"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>createReview(data: <a href="../interfaces/CreateReviewData.html" target="_self">CreateReviewData</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="305"
+                                    class="link-to-prism">apps/api/src/domain/judiciary-service.ts:305</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Create review (appeal or judicial review)</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>data</td>
+                                            <td>
+                                                            <code><a href="../interfaces/CreateReviewData.html" target="_self" >CreateReviewData</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>unknown</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="createRuling"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>createRuling</b></span>
+                        <a href="#createRuling"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>createRuling(data: <a href="../interfaces/CreateRulingData.html" target="_self">CreateRulingData</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="255"
+                                    class="link-to-prism">apps/api/src/domain/judiciary-service.ts:255</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Create ruling</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>data</td>
+                                            <td>
+                                                            <code><a href="../interfaces/CreateRulingData.html" target="_self" >CreateRulingData</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>unknown</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="decideCase"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>decideCase</b></span>
+                        <a href="#decideCase"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>decideCase(id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="163"
+                                    class="link-to-prism">apps/api/src/domain/judiciary-service.ts:163</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Decide case</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>id</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>unknown</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="denyReview"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>denyReview</b></span>
+                        <a href="#denyReview"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>denyReview(id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="398"
+                                    class="link-to-prism">apps/api/src/domain/judiciary-service.ts:398</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Deny review</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>id</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>unknown</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="generateLegalReasoning"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>generateLegalReasoning</b></span>
+                        <a href="#generateLegalReasoning"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>generateLegalReasoning(caseId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, judgeId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="528"
+                                    class="link-to-prism">apps/api/src/domain/judiciary-service.ts:528</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Generate automated legal reasoning for a case</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>caseId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>judgeId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Promise&lt;string&gt;</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getActiveCases"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>getActiveCases</b></span>
+                        <a href="#getActiveCases"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getActiveCases()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="468"
+                                    class="link-to-prism">apps/api/src/domain/judiciary-service.ts:468</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Get active cases (not decided)</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>unknown</code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getCase"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>getCase</b></span>
+                        <a href="#getCase"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getCase(id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="104"
+                                    class="link-to-prism">apps/api/src/domain/judiciary-service.ts:104</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Get case by ID</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>id</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>unknown</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getCasesByJudge"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>getCasesByJudge</b></span>
+                        <a href="#getCasesByJudge"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getCasesByJudge(judgeId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="447"
+                                    class="link-to-prism">apps/api/src/domain/judiciary-service.ts:447</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Get cases by judge</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>judgeId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>unknown</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getCasesUnderReview"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>getCasesUnderReview</b></span>
+                        <a href="#getCasesUnderReview"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getCasesUnderReview()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="480"
+                                    class="link-to-prism">apps/api/src/domain/judiciary-service.ts:480</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Get cases under review</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>unknown</code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getJudge"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>getJudge</b></span>
+                        <a href="#getJudge"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getJudge(id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="206"
+                                    class="link-to-prism">apps/api/src/domain/judiciary-service.ts:206</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Get judge by ID</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>id</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>unknown</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getReview"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>getReview</b></span>
+                        <a href="#getReview"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getReview(id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="325"
+                                    class="link-to-prism">apps/api/src/domain/judiciary-service.ts:325</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Get review by ID</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>id</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>unknown</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getRuling"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>getRuling</b></span>
+                        <a href="#getRuling"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getRuling(id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="276"
+                                    class="link-to-prism">apps/api/src/domain/judiciary-service.ts:276</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Get ruling by ID</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>id</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>unknown</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="grantReview"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>grantReview</b></span>
+                        <a href="#grantReview"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>grantReview(id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="386"
+                                    class="link-to-prism">apps/api/src/domain/judiciary-service.ts:386</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Grant review</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>id</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>unknown</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="listCases"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>listCases</b></span>
+                        <a href="#listCases"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>listCases(options: literal type)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="120"
+                                    class="link-to-prism">apps/api/src/domain/judiciary-service.ts:120</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>List cases with optional filtering</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Default value</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>options</td>
+                                            <td>
+                                                        <code>literal type</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+                                            <td>
+                                                    <code>{}</code>
+                                            </td>
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>unknown</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="listJudges"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>listJudges</b></span>
+                        <a href="#listJudges"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>listJudges(options: literal type)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="222"
+                                    class="link-to-prism">apps/api/src/domain/judiciary-service.ts:222</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>List judges</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Default value</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>options</td>
+                                            <td>
+                                                        <code>literal type</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+                                            <td>
+                                                    <code>{}</code>
+                                            </td>
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>unknown</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="listPrecedents"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>listPrecedents</b></span>
+                        <a href="#listPrecedents"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>listPrecedents(options: literal type)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="430"
+                                    class="link-to-prism">apps/api/src/domain/judiciary-service.ts:430</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>List precedents</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Default value</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>options</td>
+                                            <td>
+                                                        <code>literal type</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+                                            <td>
+                                                    <code>{}</code>
+                                            </td>
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>unknown</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="listReviews"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>listReviews</b></span>
+                        <a href="#listReviews"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>listReviews(caseId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, options: literal type)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="341"
+                                    class="link-to-prism">apps/api/src/domain/judiciary-service.ts:341</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>List reviews for a case</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Default value</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>caseId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+                                            <td>
+                                            </td>
+
+                                        </tr>
+                                        <tr>
+                                                <td>options</td>
+                                            <td>
+                                                        <code>literal type</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+                                            <td>
+                                                    <code>{}</code>
+                                            </td>
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>unknown</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="listRulings"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>listRulings</b></span>
+                        <a href="#listRulings"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>listRulings(caseId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="292"
+                                    class="link-to-prism">apps/api/src/domain/judiciary-service.ts:292</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>List rulings for a case</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>caseId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>unknown</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="updateCase"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>updateCase</b></span>
+                        <a href="#updateCase"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>updateCase(id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, data: Partial<unknown>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="145"
+                                    class="link-to-prism">apps/api/src/domain/judiciary-service.ts:145</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Update case</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>id</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>data</td>
+                                            <td>
+                                                        <code>Partial&lt;unknown&gt;</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>unknown</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="updateJudge"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>updateJudge</b></span>
+                        <a href="#updateJudge"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>updateJudge(id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, data: Partial<unknown>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="240"
+                                    class="link-to-prism">apps/api/src/domain/judiciary-service.ts:240</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Update judge</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>id</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>data</td>
+                                            <td>
+                                                        <code>Partial&lt;unknown&gt;</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>unknown</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="updateReview"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>updateReview</b></span>
+                        <a href="#updateReview"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>updateReview(id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, data: literal type)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="365"
+                                    class="link-to-prism">apps/api/src/domain/judiciary-service.ts:365</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Update review status</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>id</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>data</td>
+                                            <td>
+                                                        <code>literal type</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>unknown</code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+
+
+
+
+
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { getLogger } from &#x27;@political-sphere/shared&#x27;;
+import { JudiciaryDB } from &#x27;../services/database.service.js&#x27;;
+// import { nlpService } from &#x27;../../../../libs/ai-system/src/nlp&#x27;;
+
+/** Helper to safely extract error message */
+function getErrorMessage(error: unknown): string {
+  if (error instanceof Error) return getErrorMessage(error);
+  return String(error);
+}
+const logger &#x3D; getLogger({ service: &#x27;judiciary&#x27; });
+
+/**
+ * Payload for creating a new legal case
+ */
+export interface CreateCaseData {
+  title: string;
+  description?: string;
+  type: &#x27;constitutional&#x27; | &#x27;civil&#x27; | &#x27;criminal&#x27;;
+}
+
+/**
+ * Payload to create a judge appointment
+ */
+export interface CreateJudgeData {
+  userId: string;
+  court: string;
+  position: string;
+  termEndsAt?: Date;
+}
+
+/**
+ * Payload for issuing a ruling on a case
+ */
+export interface CreateRulingData {
+  caseId: string;
+  judgeId: string;
+  decision: string;
+  reasoning?: string;
+}
+
+/**
+ * Payload for requesting a review (appeal or judicial review)
+ */
+export interface CreateReviewData {
+  caseId: string;
+  type: &#x27;appeal&#x27; | &#x27;judicial_review&#x27;;
+}
+
+/**
+ * Payload to create a legal precedent entry
+ */
+export interface CreatePrecedentData {
+  citation: string;
+  summary: string;
+  holding: string;
+  caseId?: string;
+}
+
+/**
+ * JudiciaryService provides APIs for creating and managing legal cases,
+ * judge appointments, rulings, reviews, and legal precedents. It applies
+ * application-level validation and audit-friendly persistence using
+ * &#x60;JudiciaryDB&#x60;.
+ */
+/**
+ * JudiciaryService - manages legal cases, judge appointments, rulings and
+ * reviews within the application domain. Performs validation and persistence
+ * with audit-friendly records.
+ */
+export class JudiciaryService {
+  /**
+   * Create a new case
+   */
+  async createCase(data: CreateCaseData) {
+    try {
+      logger.info(&#x27;Creating case&#x27;, { title: data.title, type: data.type });
+      const caseData &#x3D; await JudiciaryDB.createCase({
+        title: data.title,
+        description: data.description,
+        type: data.type,
+        status: &#x27;filed&#x27;,
+        filedAt: new Date(),
+      });
+      logger.info(&#x27;Case created&#x27;, { id: caseData.id });
+      return caseData;
+    } catch (error) {
+      logger.error(&#x27;Failed to create case&#x27;, { error: getErrorMessage(error), data });
+      throw error;
+    }
+  }
+
+  /**
+   * Get case by ID
+   */
+  async getCase(id: string) {
+    try {
+      const caseData &#x3D; await JudiciaryDB.getCase(id);
+      if (!caseData) {
+        throw new Error(&#x60;Case with id ${id} not found&#x60;);
+      }
+      return caseData;
+    } catch (error) {
+      logger.error(&#x27;Failed to get case&#x27;, { id, error: getErrorMessage(error) });
+      throw error;
+    }
+  }
+
+  /**
+   * List cases with optional filtering
+   */
+  async listCases(options: { status?: string; type?: string; limit?: number } &#x3D; {}) {
+    try {
+      const where: any &#x3D; {};
+      if (options.status) {
+        where.status &#x3D; options.status;
+      }
+      if (options.type) {
+        where.type &#x3D; options.type;
+      }
+
+      const cases &#x3D; await JudiciaryDB.listCases(where, {
+        orderBy: { filedAt: &#x27;desc&#x27; },
+        take: options.limit || 50,
+      });
+
+      return cases;
+    } catch (error) {
+      logger.error(&#x27;Failed to list cases&#x27;, { options, error: getErrorMessage(error) });
+      throw error;
+    }
+  }
+
+  /**
+   * Update case
+   */
+  async updateCase(
+    id: string,
+    data: Partial&lt;CreateCaseData &amp; { status: string; decidedAt?: Date }&gt;
+  ) {
+    try {
+      logger.info(&#x27;Updating case&#x27;, { id, data });
+      const caseData &#x3D; await JudiciaryDB.updateCase(id, data);
+      logger.info(&#x27;Case updated&#x27;, { id });
+      return caseData;
+    } catch (error) {
+      logger.error(&#x27;Failed to update case&#x27;, { id, data, error: getErrorMessage(error) });
+      throw error;
+    }
+  }
+
+  /**
+   * Decide case
+   */
+  async decideCase(id: string) {
+    try {
+      logger.info(&#x27;Deciding case&#x27;, { id });
+      const caseData &#x3D; await this.updateCase(id, {
+        status: &#x27;decided&#x27;,
+        decidedAt: new Date(),
+      });
+      logger.info(&#x27;Case decided&#x27;, { id });
+      return caseData;
+    } catch (error) {
+      logger.error(&#x27;Failed to decide case&#x27;, { id, error: getErrorMessage(error) });
+      throw error;
+    }
+  }
+
+  /**
+   * Create judge
+   */
+  async createJudge(data: CreateJudgeData) {
+    try {
+      logger.info(&#x27;Creating judge&#x27;, {
+        userId: data.userId,
+        court: data.court,
+        position: data.position,
+      });
+      const judge &#x3D; await JudiciaryDB.createJudge({
+        userId: data.userId,
+        court: data.court,
+        position: data.position,
+        appointedAt: new Date(),
+        termEndsAt: data.termEndsAt,
+      });
+      logger.info(&#x27;Judge created&#x27;, { id: judge.id });
+      return judge;
+    } catch (error) {
+      logger.error(&#x27;Failed to create judge&#x27;, { error: getErrorMessage(error), data });
+      throw error;
+    }
+  }
+
+  /**
+   * Get judge by ID
+   */
+  async getJudge(id: string) {
+    try {
+      const judge &#x3D; await JudiciaryDB.getJudge(id);
+      if (!judge) {
+        throw new Error(&#x60;Judge with id ${id} not found&#x60;);
+      }
+      return judge;
+    } catch (error) {
+      logger.error(&#x27;Failed to get judge&#x27;, { id, error: getErrorMessage(error) });
+      throw error;
+    }
+  }
+
+  /**
+   * List judges
+   */
+  async listJudges(options: { court?: string; position?: string; limit?: number } &#x3D; {}) {
+    try {
+      const where: any &#x3D; {};
+      if (options.court) where.court &#x3D; options.court;
+      if (options.position) where.position &#x3D; options.position;
+
+      const judges &#x3D; await JudiciaryDB.listJudges(where);
+
+      return judges;
+    } catch (error) {
+      logger.error(&#x27;Failed to list judges&#x27;, { options, error: getErrorMessage(error) });
+      throw error;
+    }
+  }
+
+  /**
+   * Update judge
+   */
+  async updateJudge(id: string, data: Partial&lt;CreateJudgeData &amp; { termEndsAt?: Date }&gt;) {
+    try {
+      logger.info(&#x27;Updating judge&#x27;, { id, data });
+      const judge &#x3D; await JudiciaryDB.updateJudge(id, data);
+      logger.info(&#x27;Judge updated&#x27;, { id });
+      return judge;
+    } catch (error) {
+      logger.error(&#x27;Failed to update judge&#x27;, { id, data, error: getErrorMessage(error) });
+      throw error;
+    }
+  }
+
+  /**
+   * Create ruling
+   */
+  async createRuling(data: CreateRulingData) {
+    try {
+      logger.info(&#x27;Creating ruling&#x27;, { caseId: data.caseId, judgeId: data.judgeId });
+      const ruling &#x3D; await JudiciaryDB.createRuling({
+        caseId: data.caseId,
+        judgeId: data.judgeId,
+        decision: data.decision,
+        reasoning: data.reasoning,
+        issuedAt: new Date(),
+      });
+      logger.info(&#x27;Ruling created&#x27;, { id: ruling.id });
+      return ruling;
+    } catch (error) {
+      logger.error(&#x27;Failed to create ruling&#x27;, { error: getErrorMessage(error), data });
+      throw error;
+    }
+  }
+
+  /**
+   * Get ruling by ID
+   */
+  async getRuling(id: string) {
+    try {
+      const ruling &#x3D; await JudiciaryDB.getRuling(id);
+      if (!ruling) {
+        throw new Error(&#x60;Ruling with id ${id} not found&#x60;);
+      }
+      return ruling;
+    } catch (error) {
+      logger.error(&#x27;Failed to get ruling&#x27;, { id, error: getErrorMessage(error) });
+      throw error;
+    }
+  }
+
+  /**
+   * List rulings for a case
+   */
+  async listRulings(caseId: string) {
+    try {
+      const rulings &#x3D; await JudiciaryDB.listRulings({ caseId });
+      return rulings;
+    } catch (error) {
+      logger.error(&#x27;Failed to list rulings&#x27;, { caseId, error: getErrorMessage(error) });
+      throw error;
+    }
+  }
+
+  /**
+   * Create review (appeal or judicial review)
+   */
+  async createReview(data: CreateReviewData) {
+    try {
+      logger.info(&#x27;Creating review&#x27;, { caseId: data.caseId, type: data.type });
+      const review &#x3D; await JudiciaryDB.createReview({
+        caseId: data.caseId,
+        type: data.type,
+        status: &#x27;pending&#x27;,
+        filedAt: new Date(),
+      });
+      logger.info(&#x27;Review created&#x27;, { id: review.id });
+      return review;
+    } catch (error) {
+      logger.error(&#x27;Failed to create review&#x27;, { error: getErrorMessage(error), data });
+      throw error;
+    }
+  }
+
+  /**
+   * Get review by ID
+   */
+  async getReview(id: string) {
+    try {
+      const review &#x3D; await JudiciaryDB.getReview(id);
+      if (!review) {
+        throw new Error(&#x60;Review with id ${id} not found&#x60;);
+      }
+      return review;
+    } catch (error) {
+      logger.error(&#x27;Failed to get review&#x27;, { id, error: getErrorMessage(error) });
+      throw error;
+    }
+  }
+
+  /**
+   * List reviews for a case
+   */
+  async listReviews(
+    caseId: string,
+    options: { type?: string; status?: string; limit?: number } &#x3D; {}
+  ) {
+    try {
+      const where: any &#x3D; { caseId };
+      if (options.type) where.type &#x3D; options.type;
+      if (options.status) where.status &#x3D; options.status;
+
+      const reviews &#x3D; await JudiciaryDB.listReviews(where, {
+        orderBy: { filedAt: &#x27;desc&#x27; },
+        take: options.limit || 20,
+      });
+
+      return reviews;
+    } catch (error) {
+      logger.error(&#x27;Failed to list reviews&#x27;, { caseId, options, error: getErrorMessage(error) });
+      throw error;
+    }
+  }
+
+  /**
+   * Update review status
+   */
+  async updateReview(
+    id: string,
+    data: { status: &#x27;pending&#x27; | &#x27;granted&#x27; | &#x27;denied&#x27;; decidedAt?: Date }
+  ) {
+    try {
+      logger.info(&#x27;Updating review&#x27;, { id, status: data.status });
+      const review &#x3D; await JudiciaryDB.updateReview(id, {
+        status: data.status,
+        decidedAt: data.decidedAt || (data.status !&#x3D;&#x3D; &#x27;pending&#x27; ? new Date() : undefined),
+      });
+      logger.info(&#x27;Review updated&#x27;, { id, status: data.status });
+      return review;
+    } catch (error) {
+      logger.error(&#x27;Failed to update review&#x27;, { id, data, error: getErrorMessage(error) });
+      throw error;
+    }
+  }
+
+  /**
+   * Grant review
+   */
+  async grantReview(id: string) {
+    try {
+      return await this.updateReview(id, { status: &#x27;granted&#x27;, decidedAt: new Date() });
+    } catch (error) {
+      logger.error(&#x27;Failed to grant review&#x27;, { id, error: getErrorMessage(error) });
+      throw error;
+    }
+  }
+
+  /**
+   * Deny review
+   */
+  async denyReview(id: string) {
+    try {
+      return await this.updateReview(id, { status: &#x27;denied&#x27;, decidedAt: new Date() });
+    } catch (error) {
+      logger.error(&#x27;Failed to deny review&#x27;, { id, error: getErrorMessage(error) });
+      throw error;
+    }
+  }
+
+  /**
+   * Create precedent
+   */
+  async createPrecedent(data: CreatePrecedentData) {
+    try {
+      logger.info(&#x27;Creating precedent&#x27;, { citation: data.citation });
+      const precedent &#x3D; await JudiciaryDB.createPrecedent({
+        citation: data.citation,
+        summary: data.summary,
+        holding: data.holding,
+        caseId: data.caseId,
+      });
+      logger.info(&#x27;Precedent created&#x27;, { id: precedent.id });
+      return precedent;
+    } catch (error) {
+      logger.error(&#x27;Failed to create precedent&#x27;, { error: getErrorMessage(error), data });
+      throw error;
+    }
+  }
+
+  /**
+   * List precedents
+   */
+  async listPrecedents(options: { caseId?: string; limit?: number } &#x3D; {}) {
+    try {
+      const where: any &#x3D; {};
+      if (options.caseId) where.caseId &#x3D; options.caseId;
+
+      const precedents &#x3D; await JudiciaryDB.listPrecedents(where);
+
+      return precedents;
+    } catch (error) {
+      logger.error(&#x27;Failed to list precedents&#x27;, { options, error: getErrorMessage(error) });
+      throw error;
+    }
+  }
+
+  /**
+   * Get cases by judge
+   */
+  async getCasesByJudge(judgeId: string) {
+    try {
+      // Get all rulings by this judge, then get the associated cases
+      const rulings &#x3D; await JudiciaryDB.listRulings({ judgeId });
+      const caseIds &#x3D; [...new Set(rulings.map(r &#x3D;&gt; r.caseId))];
+
+      if (caseIds.length &#x3D;&#x3D;&#x3D; 0) {
+        return [];
+      }
+
+      const cases &#x3D; await Promise.all(caseIds.map(id &#x3D;&gt; this.getCase(id as string)));
+      return cases;
+    } catch (error) {
+      logger.error(&#x27;Failed to get cases by judge&#x27;, { judgeId, error: getErrorMessage(error) });
+      throw error;
+    }
+  }
+
+  /**
+   * Get active cases (not decided)
+   */
+  async getActiveCases() {
+    try {
+      return await this.listCases({ status: &#x27;filed&#x27; });
+    } catch (error) {
+      logger.error(&#x27;Failed to get active cases&#x27;, { error: getErrorMessage(error) });
+      throw error;
+    }
+  }
+
+  /**
+   * Get cases under review
+   */
+  async getCasesUnderReview() {
+    try {
+      return await this.listCases({ status: &#x27;under_review&#x27; });
+    } catch (error) {
+      logger.error(&#x27;Failed to get cases under review&#x27;, { error: getErrorMessage(error) });
+      throw error;
+    }
+  }
+
+  /**
+   * Analyze case content using NLP for legal insights
+   */
+  async analyzeCaseNLP(caseId: string): Promise&lt;{
+    analysis: any;
+    sentiment: any;
+    entities: any[];
+    keywords: string[];
+    complexity: {
+      score: number;
+      factors: string[];
+    };
+  }&gt; {
+    try {
+      const caseData &#x3D; await this.getCase(caseId);
+      const content &#x3D; &#x60;${caseData.title} ${caseData.description || &#x27;&#x27;}&#x60;;
+
+      // Stub NLP analysis for now
+      const analysis &#x3D; { sentiment: { label: &#x27;neutral&#x27;, score: 0.5 } };
+
+      // Calculate legal complexity
+      const complexity &#x3D; this.calculateLegalComplexity(content);
+
+      return {
+        analysis,
+        sentiment: analysis.sentiment,
+        entities: [],
+        keywords: content.split(&#x27; &#x27;).slice(0, 5),
+        complexity,
+      };
+    } catch (error) {
+      logger.error(&#x27;Failed to analyze case with NLP&#x27;, { caseId, error: getErrorMessage(error) });
+      throw error;
+    }
+  }
+
+  /**
+   * Generate automated legal reasoning for a case
+   */
+  async generateLegalReasoning(caseId: string, judgeId: string): Promise&lt;string&gt; {
+    try {
+      const caseData &#x3D; await this.getCase(caseId);
+      const judge &#x3D; await this.getJudge(judgeId);
+
+      // Stub legal reasoning generation
+      return &#x60;As Judge ${judge.position} in the ${judge.court}, I have reviewed the case &quot;${caseData.title}&quot;. Based on the facts presented and applicable legal principles, I conclude that the matter requires careful consideration of constitutional principles and fairness.&#x60;;
+    } catch (error) {
+      logger.error(&#x27;Failed to generate legal reasoning&#x27;, {
+        caseId,
+        judgeId,
+        error: getErrorMessage(error),
+      });
+      throw error;
+    }
+  }
+
+  /**
+   * Classify case type and suggest similar precedents
+   */
+  async classifyCaseAndFindPrecedents(caseId: string): Promise&lt;{
+    predictedType: string;
+    confidence: number;
+    similarPrecedents: any[];
+  }&gt; {
+    try {
+      const caseData &#x3D; await this.getCase(caseId);
+
+      // Stub classification for now
+      const predictedType &#x3D; caseData.type as string;
+      const confidence &#x3D; 0.8;
+
+      // Find similar precedents (simplified)
+      const precedents &#x3D; await this.listPrecedents({ limit: 10 });
+      const similarPrecedents &#x3D; precedents.slice(0, 3);
+
+      return {
+        predictedType,
+        confidence,
+        similarPrecedents,
+      };
+    } catch (error) {
+      logger.error(&#x27;Failed to classify case and find precedents&#x27;, {
+        caseId,
+        error: getErrorMessage(error),
+      });
+      throw error;
+    }
+  }
+
+  /**
+   * Calculate legal complexity of case content
+   */
+  private calculateLegalComplexity(content: string): { score: number; factors: string[] } {
+    const factors: string[] &#x3D; [];
+    let score &#x3D; 0;
+
+    // Length complexity
+    if (content.length &gt; 1000) {
+      score +&#x3D; 2;
+      factors.push(&#x27;Long case description&#x27;);
+    } else if (content.length &gt; 500) {
+      score +&#x3D; 1;
+      factors.push(&#x27;Moderate length description&#x27;);
+    }
+
+    // Legal terminology density
+    const legalTerms &#x3D; [
+      &#x27;constitutional&#x27;,
+      &#x27;rights&#x27;,
+      &#x27;law&#x27;,
+      &#x27;statute&#x27;,
+      &#x27;precedent&#x27;,
+      &#x27;jurisdiction&#x27;,
+      &#x27;remedy&#x27;,
+    ];
+    const termCount &#x3D; legalTerms.filter(term &#x3D;&gt; content.toLowerCase().includes(term)).length;
+    if (termCount &gt; 3) {
+      score +&#x3D; 2;
+      factors.push(&#x27;High legal terminology density&#x27;);
+    } else if (termCount &gt; 1) {
+      score +&#x3D; 1;
+      factors.push(&#x27;Moderate legal terminology&#x27;);
+    }
+
+    // Multiple parties/issues
+    const partyIndicators &#x3D; [&#x27; vs &#x27;, &#x27; versus &#x27;, &#x27; plaintiff &#x27;, &#x27; defendant &#x27;, &#x27; petitioner &#x27;];
+    const partyCount &#x3D; partyIndicators.filter(indicator &#x3D;&gt;
+      content.toLowerCase().includes(indicator)
+    ).length;
+    if (partyCount &gt; 1) {
+      score +&#x3D; 2;
+      factors.push(&#x27;Multiple parties involved&#x27;);
+    } else if (partyCount &gt; 0) {
+      score +&#x3D; 1;
+      factors.push(&#x27;Multiple parties mentioned&#x27;);
+    }
+
+    // Constitutional issues
+    if (
+      content.toLowerCase().includes(&#x27;constitutional&#x27;) ||
+      content.toLowerCase().includes(&#x27;amendment&#x27;)
+    ) {
+      score +&#x3D; 3;
+      factors.push(&#x27;Constitutional issues involved&#x27;);
+    }
+
+    return {
+      score: Math.min(10, score),
+      factors,
+    };
+  }
+}
+
+// Export singleton instance
+/**
+ * Shared &#x60;judiciaryService&#x60; instance used by HTTP routes. Instantiate the
+ * class directly in tests to supply a mock &#x60;JudiciaryDB&#x60;.
+ */
+export const judiciaryService &#x3D; new JudiciaryService();
+</code></pre>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'class';
+            var COMPODOC_CURRENT_PAGE_URL = 'JudiciaryService.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

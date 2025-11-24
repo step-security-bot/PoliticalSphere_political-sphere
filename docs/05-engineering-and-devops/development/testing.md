@@ -257,5 +257,6 @@ describe('Security validations', () => {
 
 - **High-level guidance**: [testing.md](testing.md) - Testing strategy and doctrine
 - **Main documentation**: [../copilot-instructions.md](../copilot-instructions.md#testing-infrastructure-core-principle) - Testing Infrastructure
+- **Test Failure Handling**: [../testing/test-failure-handling-sop.md](../testing/test-failure-handling-sop.md) - Standard Operating Procedure for handling test failures
 - **CI/CD integration**: [operations.md](operations.md) - Deployment and monitoring
 - **Accessibility**: [ux-accessibility.md](ux-accessibility.md) - WCAG compliance testing

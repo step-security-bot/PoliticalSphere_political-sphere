@@ -6,6 +6,13 @@ This repository enforces a fail-closed secrets scanning policy and documents how
 
 - If you discover a security vulnerability, open a private issue in this repository or contact the maintainers listed in CODEOWNERS.
 
+## Branch Protection (GitHub)
+
+- Protect `main`; no direct pushes or force-pushes. Require PRs with at least one approving review before merge (GitHub branch protection: https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/defining-protected-branches).
+- Require status checks to pass before merge: `ci` and `CodeQL Security Analysis`.
+- Disallow branch deletions and require conversation resolution so security-related comments are addressed.
+- Allow admins to bypass only for emergency fixes with a follow-up review.
+
 ## Required Secrets & Credentials
 
 ### Application Secrets (Required for Runtime)

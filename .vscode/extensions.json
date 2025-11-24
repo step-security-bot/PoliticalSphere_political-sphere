@@ -37,8 +37,35 @@
     "bradlc.vscode-tailwindcss", // CSS framework support
     "ms-vscode-remote.remote-containers", // Dev container support
 
-    // API productivity (Level 4: Local contract testing)
-    "rangav.vscode-thunder-client" // GUI REST client scoped to workspace
+    // Performance and debugging (Level 4: Development acceleration)
+    "ms-vscode.vscode-js-profile-flame",
+    "ms-vscode.vscode-json",
+
+    // Database and API development (Level 4: Full-stack development)
+    "mtxr.sqltools",
+    "mtxr.sqltools-driver-sqlite",
+    "humao.rest-client",
+
+    // Code intelligence (Level 4: Advanced code understanding)
+    "christian-kohler.path-intellisense",
+    "formulahendry.auto-rename-tag",
+
+    // Productivity (Level 4: Workflow optimization)
+    "alefragnani.bookmarks",
+    "gruntfuggly.todo-tree",
+    "ms-vscode.vscode-typescript-next",
+
+    // Testing enhancements (Level 4: Test-driven development)
+    "hbenl.vscode-test-explorer",
+    "ms-vscode.test-adapter-converter",
+
+    // Git workflow (Level 4: Version control excellence)
+    "mhutchie.git-graph",
+    "arturock.git-branch-warnings",
+
+    // Docker and containers (Level 4: Containerized development)
+    "ms-azuretools.vscode-docker",
+    "ms-vscode-remote.remote-containers",
   ],
 
   // Extensions with known performance issues - avoid or disable (Level 4: Performance optimization)

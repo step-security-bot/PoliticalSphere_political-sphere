@@ -5,6 +5,7 @@
  *
  * @module privacy/breach-notification
  */
+/* eslint-disable no-console */
 
 /**
  * Data breach incident

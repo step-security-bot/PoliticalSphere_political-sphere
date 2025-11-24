@@ -5,6 +5,7 @@
  *
  * @module privacy/consent-manager
  */
+/* eslint-disable no-console */
 
 import type { ConsentRecord } from '../types/index';
 

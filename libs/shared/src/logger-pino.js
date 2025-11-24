@@ -224,7 +224,7 @@ class Logger {
     // Pino doesn't require explicit close in most cases
     // But we'll flush to ensure all logs are written
     this.flush().catch(err => {
-      console.error('Failed to flush logs on close:', err);
+      this.pino.error(this.#enrichMeta({ err }), 'Failed to flush logs on close');
     });
   }
 }

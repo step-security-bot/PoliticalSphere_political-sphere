@@ -8,6 +8,12 @@ export interface AppConfig {
   environment: 'development' | 'production' | 'staging';
 }
 
+const emitAppEvent = (event: string, detail: unknown) => {
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(new CustomEvent(event, { detail }));
+  }
+};
+
 export class App {
   private config: AppConfig;
 
@@ -19,7 +25,10 @@ export class App {
    * Initialize the application
    */
   async initialize(): Promise<void> {
-    console.log('Initializing Political Sphere app...', this.config.environment);
+    emitAppEvent('app-log', {
+      message: 'Initializing Political Sphere app',
+      env: this.config.environment,
+    });
 
     // Initialize core services
     await this.initializeServices();
@@ -30,7 +39,7 @@ export class App {
     // Setup performance monitoring
     this.setupPerformanceMonitoring();
 
-    console.log('App initialized successfully');
+    emitAppEvent('app-log', { message: 'App initialized successfully' });
   }
 
   private async initializeServices(): Promise<void> {
@@ -42,13 +51,11 @@ export class App {
 
   private setupErrorHandling(): void {
     window.addEventListener('error', event => {
-      console.error('Global error:', event.error);
-      // Report to error tracking service
+      emitAppEvent('app-error', { type: 'global-error', error: event.error });
     });
 
     window.addEventListener('unhandledrejection', event => {
-      console.error('Unhandled promise rejection:', event.reason);
-      // Report to error tracking service
+      emitAppEvent('app-error', { type: 'unhandled-rejection', reason: event.reason });
     });
   }
 

@@ -99,18 +99,18 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-image: url("/login-background.png");
+  background-image: url('/login-background.png');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   background-attachment: fixed;
   padding: 2rem 1rem;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   position: relative;
 }
 
 .auth-container::before {
-  content: "";
+  content: '';
   position: absolute;
   top: 0;
   left: 0;
@@ -147,7 +147,7 @@
 }
 
 .auth-header::before {
-  content: "";
+  content: '';
   position: absolute;
   top: -50%;
   right: -50%;
@@ -275,6 +275,20 @@
   gap: 0.75rem;
 }
 
+.field-error {
+  background: #fef3c7;
+  border: 1px solid #fcd34d;
+  border-left: 4px solid #d97706;
+  color: #92400e;
+  padding: 0.5rem 0.75rem;
+  border-radius: 4px;
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
 .error-icon {
   font-size: 1.25rem;
   flex-shrink: 0;
@@ -298,9 +312,9 @@
   margin-left: 0.25rem;
 }
 
-.form-group input[type="email"],
-.form-group input[type="password"],
-.form-group input[type="text"] {
+.form-group input[type='email'],
+.form-group input[type='password'],
+.form-group input[type='text'] {
   width: 100%;
   padding: 1rem 1.125rem;
   border: 2px solid #e5e7eb;
@@ -343,12 +357,12 @@
   opacity: 0.6;
 }
 
-.form-group input[aria-invalid="true"] {
+.form-group input[aria-invalid='true'] {
   border-color: #dc2626;
   background: #fef2f2;
 }
 
-.form-group input[aria-invalid="true"]:focus {
+.form-group input[aria-invalid='true']:focus {
   box-shadow:
     0 0 0 4px rgba(220, 38, 38, 0.1),
     inset 0 1px 2px rgba(220, 38, 38, 0.05);
@@ -416,7 +430,7 @@
 }
 
 .field-help::before {
-  content: "\2139"; /* info icon (ℹ) */
+  content: '\2139'; /* info icon (ℹ) */
   display: inline-block;
   width: 1em;
   text-align: center;
@@ -646,7 +660,7 @@
   background-color: rgba(59, 130, 246, 0.04);
 }
 
-.checkbox-label input[type="checkbox"] {
+.checkbox-label input[type='checkbox'] {
   width: 16px;
   height: 16px;
   margin: 0;
@@ -658,11 +672,11 @@
   transition: transform 0.1s ease;
 }
 
-.checkbox-label input[type="checkbox"]:hover {
+.checkbox-label input[type='checkbox']:hover {
   transform: scale(1.05);
 }
 
-.checkbox-label input[type="checkbox"]:focus {
+.checkbox-label input[type='checkbox']:focus {
   outline: 2px solid #3b82f6;
   outline-offset: 2px;
   border-radius: 3px;
@@ -698,7 +712,7 @@
   background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
   color: white;
   border: none;
-  padding: 1rem 2rem;
+  padding: 1.25rem 2rem;
   border-radius: 12px;
   font-size: 1.0625rem;
   font-weight: 600;
@@ -712,7 +726,7 @@
 }
 
 .btn-primary::before {
-  content: "";
+  content: '';
   position: absolute;
   top: 50%;
   left: 50%;

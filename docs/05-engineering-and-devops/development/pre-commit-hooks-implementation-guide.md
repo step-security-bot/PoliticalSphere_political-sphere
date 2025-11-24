@@ -2,7 +2,6 @@
 
 > NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
 
-title: Pre-Commit Hooks Implementation Guide
 description: Comprehensive implementation guide for industry-standard pre-commit hooks using Lefthook
 version: 1.0.0
 status: READY_FOR_IMPLEMENTATION
@@ -17,7 +16,7 @@ applies_to: Repository-wide
 **Status:** READY_FOR_IMPLEMENTATION  
 **Last Updated:** 2025-11-17
 
-## Table of Contents
+## Overview
 
 1. [Executive Summary](#executive-summary)
 2. [Prerequisites](#prerequisites)

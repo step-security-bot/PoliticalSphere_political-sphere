@@ -10,7 +10,11 @@ import { info } from '../logger.js';
 
 const name = '003_sample_data';
 
-function up(db) {
+function up(db: {
+  exec: (sql: string) => void;
+  run?: (sql: string) => Promise<void>;
+  prepare: (sql: string) => unknown;
+}) {
   info('Running sample data migration up function...');
 
   // Sample users
@@ -35,7 +39,7 @@ function up(db) {
   const insertUser = db.prepare(`
     INSERT OR IGNORE INTO users (id, username, email, created_at, updated_at)
     VALUES (?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
-  `);
+  `) as { run: (id: string, username: string, email: string) => void };
 
   users.forEach(user => {
     insertUser.run(user.id, user.username, user.email);
@@ -66,14 +70,17 @@ function up(db) {
   const insertParty = db.prepare(`
     INSERT OR IGNORE INTO parties (id, name, description, color, created_at, updated_at)
     VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
-  `);
+  `) as { run: (id: string, name: string, description: string, color: string) => void };
 
   parties.forEach(party => {
     insertParty.run(party.id, party.name, party.description, party.color);
   });
 
   // Sample bills
-  const aliceId = users[0].id;
+  const aliceId = users[0]?.id;
+  if (!aliceId) {
+    throw new Error('Failed to get alice user ID');
+  }
   const bills = [
     {
       id: uuidv4(),
@@ -94,7 +101,15 @@ function up(db) {
   const insertBill = db.prepare(`
     INSERT OR IGNORE INTO bills (id, title, description, status, proposer_id, created_at, updated_at)
     VALUES (?, ?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
-  `);
+  `) as {
+    run: (
+      id: string,
+      title: string,
+      description: string,
+      status: string,
+      proposer_id: string
+    ) => void;
+  };
 
   bills.forEach(bill => {
     insertBill.run(bill.id, bill.title, bill.description, bill.status, bill.proposer_id);
@@ -104,14 +119,14 @@ function up(db) {
   const votes = [
     {
       id: uuidv4(),
-      bill_id: bills[0].id,
-      user_id: users[1].id,
+      bill_id: bills[0]?.id || '',
+      user_id: users[1]?.id || '',
       vote: 'yes',
     },
     {
       id: uuidv4(),
-      bill_id: bills[1].id,
-      user_id: users[2].id,
+      bill_id: bills[1]?.id || '',
+      user_id: users[2]?.id || '',
       vote: 'no',
     },
   ];
@@ -119,7 +134,7 @@ function up(db) {
   const insertVote = db.prepare(`
     INSERT OR IGNORE INTO votes (id, bill_id, user_id, vote, created_at)
     VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP)
-  `);
+  `) as { run: (id: string, bill_id: string, user_id: string, vote: string) => void };
 
   votes.forEach(vote => {
     insertVote.run(vote.id, vote.bill_id, vote.user_id, vote.vote);
@@ -157,7 +172,9 @@ function up(db) {
   const insertNews = db.prepare(`
     INSERT OR IGNORE INTO news (id, title, content, category, tags, created_at)
     VALUES (?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
-  `);
+  `) as {
+    run: (id: string, title: string, content: string, category: string, tags: string) => void;
+  };
 
   sampleNews.forEach(news => {
     insertNews.run(news.id, news.title, news.content, news.category, news.tags);
@@ -166,7 +183,7 @@ function up(db) {
   info('Sample data migration up function completed');
 }
 
-function down(db) {
+function down(db: { exec: (sql: string) => void; run?: (sql: string) => Promise<void> }) {
   // Remove sample data
   db.exec(`
     DELETE FROM news WHERE id IN (

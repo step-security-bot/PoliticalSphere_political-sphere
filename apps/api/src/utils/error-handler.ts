@@ -1,11 +1,22 @@
 import type { NextFunction, Request, Response } from 'express';
 
 import { sanitizeErrorForLog } from './log-sanitizer';
+import { getLogger } from '@political-sphere/shared';
 
+/**
+ * Express error handling middleware that sanitizes errors for logging and returns appropriate HTTP responses.
+ * Handles different error types with appropriate status codes and prevents information leakage.
+ * @param err - The error that occurred
+ * @param req - Express request object
+ * @param res - Express response object
+ * @param _next - Express next function (unused)
+ */
+// Express error handler (documented above) - keep implementation as-is
 export function handleError(err: Error, req: Request, res: Response, _next: NextFunction): void {
   // Security: Sanitize error data before logging to prevent log injection
   const sanitizedError = sanitizeErrorForLog(err, req as unknown as Record<string, unknown>);
-  console.error('Error:', sanitizedError);
+  const logger = getLogger({ service: 'api-error-handler' });
+  logger.error('Error:', { error: sanitizedError });
 
   // Don't leak internal errors
   const isDevelopment = process.env.NODE_ENV === 'development';
@@ -38,6 +49,13 @@ export function handleError(err: Error, req: Request, res: Response, _next: Next
   });
 }
 
+/**
+ * Higher-order function that wraps async route handlers to catch rejected promises and forward them to error handling middleware.
+ * Eliminates the need for try-catch blocks in async route handlers.
+ * @param fn - The async route handler function to wrap
+ * @returns A wrapped function that catches and forwards errors
+ */
+// Wrapper for async route handlers - documented above
 export function asyncHandler(
   fn: (req: Request, res: Response, _next: NextFunction) => Promise<void>
 ) {
@@ -47,6 +65,10 @@ export function asyncHandler(
 }
 
 // Custom error classes
+/**
+ * Error thrown when request validation fails (e.g., invalid input data).
+ * Maps to HTTP 400 Bad Request status.
+ */
 export class ValidationError extends Error {
   constructor(message: string) {
     super(message);
@@ -54,6 +76,10 @@ export class ValidationError extends Error {
   }
 }
 
+/**
+ * Error thrown when a requested resource cannot be found.
+ * Maps to HTTP 404 Not Found status.
+ */
 export class NotFoundError extends Error {
   constructor(resource: string) {
     super(`${resource} not found`);
@@ -61,6 +87,10 @@ export class NotFoundError extends Error {
   }
 }
 
+/**
+ * Error thrown when authentication is required but not provided or invalid.
+ * Maps to HTTP 401 Unauthorized status.
+ */
 export class UnauthorizedError extends Error {
   constructor(message: string = 'Unauthorized') {
     super(message);
@@ -68,6 +98,10 @@ export class UnauthorizedError extends Error {
   }
 }
 
+/**
+ * Error thrown when the request conflicts with the current state of the resource.
+ * Maps to HTTP 409 Conflict status.
+ */
 export class ConflictError extends Error {
   constructor(message: string) {
     super(message);
@@ -75,6 +109,10 @@ export class ConflictError extends Error {
   }
 }
 
+/**
+ * Error thrown when the request rate limit has been exceeded.
+ * Maps to HTTP 429 Too Many Requests status.
+ */
 export class RateLimitError extends Error {
   constructor(message: string = 'Too many requests') {
     super(message);
@@ -82,6 +120,10 @@ export class RateLimitError extends Error {
   }
 }
 
+/**
+ * Error thrown when a database operation fails.
+ * Maps to HTTP 500 Internal Server Error status.
+ */
 export class DatabaseError extends Error {
   constructor(message: string) {
     super(message);
@@ -89,6 +131,10 @@ export class DatabaseError extends Error {
   }
 }
 
+/**
+ * Error thrown when an external service or API call fails.
+ * Maps to HTTP 502 Bad Gateway status.
+ */
 export class ExternalServiceError extends Error {
   constructor(service: string, message: string) {
     super(`${service}: ${message}`);
@@ -97,6 +143,12 @@ export class ExternalServiceError extends Error {
 }
 
 // Circuit breaker for external services
+/**
+ * Circuit breaker pattern implementation for external service calls.
+ * Prevents cascading failures by temporarily stopping calls to failing services.
+ * Automatically transitions between CLOSED, OPEN, and HALF_OPEN states.
+ */
+// CircuitBreaker class documented above - implementation remains unchanged
 export class CircuitBreaker {
   private failures = 0;
   private lastFailureTime = 0;
@@ -107,6 +159,13 @@ export class CircuitBreaker {
     private recoveryTimeout: number = 60000 // 1 minute
   ) {}
 
+  /**
+   * Executes a function with circuit breaker protection.
+   * Tracks failures and manages circuit state transitions.
+   * @param fn - The async function to execute with circuit breaker protection
+   * @returns Promise resolving to the result of the executed function
+   * @throws ExternalServiceError if circuit is open, or the original error if execution fails
+   */
   async execute<T>(fn: () => Promise<T>): Promise<T> {
     if (this.state === 'OPEN') {
       if (Date.now() - this.lastFailureTime > this.recoveryTimeout) {
@@ -140,12 +199,26 @@ export class CircuitBreaker {
     }
   }
 
+  /**
+   * Gets the current state of the circuit breaker.
+   * @returns The current circuit breaker state ('CLOSED', 'OPEN', or 'HALF_OPEN')
+   */
   getState() {
     return this.state;
   }
 }
 
 // Retry mechanism with exponential backoff
+/**
+ * Retries an async function with exponential backoff on failure.
+ * Implements jitter-free exponential backoff to prevent thundering herd problems.
+ * @param fn - The async function to retry on failure
+ * @param maxRetries - Maximum number of retry attempts (default: 3)
+ * @param baseDelay - Base delay in milliseconds for exponential backoff (default: 1000)
+ * @returns Promise resolving to the result of the successfully executed function
+ * @throws The last error encountered if all retry attempts fail
+ */
+// `retryWithBackoff` helper (documented above) - retries async functions
 export const retryWithBackoff = async <T>(
   fn: () => Promise<T>,
   maxRetries: number = 3,

@@ -6,6 +6,7 @@
 
 import { describe, expect, it } from 'vitest';
 import { OrchestrationEngine } from '../../src/orchestration/engine';
+import { InMemoryResponseCache } from '../../src/orchestration/cache';
 import type { Agent, AgentInput, AgentOutput } from '../../src/types';
 
 // Mock agent for testing
@@ -234,7 +235,51 @@ describe('Orchestration Patterns', () => {
       });
 
       expect(result.success).toBe(false);
-      expect(result.error?.message).toContain('Pattern \'unsupported\' not implemented');
+      expect(result.error?.message).toContain("Pattern 'unsupported' not implemented");
+    });
+  });
+
+  describe('Caching', () => {
+    it('should return cached result and avoid re-execution', async () => {
+      let callCount = 0;
+      const agent: Agent = {
+        id: 'CachingAgent',
+        name: 'Caching Agent',
+        description: 'Agent used to verify caching',
+        async execute(_input: AgentInput): Promise<AgentOutput> {
+          callCount += 1;
+          return {
+            agentId: 'CachingAgent',
+            content: `Call #${callCount}`,
+            metadata: {
+              executionTime: 5,
+              timestamp: new Date(),
+            },
+          };
+        },
+      };
+
+      const engine = new OrchestrationEngine({ pattern: 'sequential' });
+      const cache = new InMemoryResponseCache();
+
+      const first = await engine.execute({
+        agents: [agent],
+        prompt: 'Cache me',
+        cache,
+        cacheKey: 'cache-test',
+      });
+      const second = await engine.execute({
+        agents: [agent],
+        prompt: 'Cache me',
+        cache,
+        cacheKey: 'cache-test',
+      });
+
+      expect(first.success).toBe(true);
+      expect(second.success).toBe(true);
+      expect(second.cacheHit).toBe(true);
+      expect(callCount).toBe(1);
+      expect(second.outputs[0].content).toBe(first.outputs[0].content);
     });
   });
 });

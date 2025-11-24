@@ -1,0 +1,33 @@
+{
+  "name": "@political-sphere/observability",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/observability/src",
+  "projectType": "library",
+  "tags": ["scope:observability", "type:util", "type:library"],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "libs/observability/dist",
+        "main": "libs/observability/src/index.ts",
+        "tsConfig": "libs/observability/tsconfig.lib.json",
+        "assets": ["libs/observability/src/**/*.js"],
+        "sourceMap": true
+      }
+    },
+    "lint": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "eslint libs/observability --ext .ts,.tsx,.js,.jsx --fix"
+      }
+    },
+    "test": {
+      "executor": "nx:run-commands",
+      "outputs": ["{workspaceRoot}/coverage/libs/observability"],
+      "options": {
+        "command": "vitest run --config ../../vitest.config.ts --coverage --reporter=verbose"
+      }
+    }
+  }
+}

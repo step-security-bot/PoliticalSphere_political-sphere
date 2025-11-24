@@ -6,8 +6,16 @@
  *
  * @module nlp
  */
+/* eslint-disable no-console */
 
-import { pipeline, Pipeline } from '@huggingface/transformers';
+import { pipeline } from '@huggingface/transformers';
+import type {
+  TextGenerationPipeline,
+  ZeroShotClassificationPipeline,
+  TextClassificationPipeline,
+  TokenClassificationPipeline,
+  Pipeline as TransformersPipeline,
+} from '@huggingface/transformers';
 
 /**
  * NLP Analysis Result
@@ -69,10 +77,10 @@ export interface TextGenerationOptions {
  * Provides comprehensive NLP capabilities for political content analysis
  */
 export class NLPService {
-  private sentimentPipeline?: Pipeline;
-  private nerPipeline?: Pipeline;
-  private classifierPipeline?: Pipeline;
-  private generatorPipeline?: Pipeline;
+  private sentimentPipeline?: TextClassificationPipeline;
+  private nerPipeline?: TokenClassificationPipeline;
+  private classifierPipeline?: ZeroShotClassificationPipeline;
+  private generatorPipeline?: TextGenerationPipeline | TransformersPipeline;
 
   /**
    * Initialize NLP pipelines
@@ -80,19 +88,23 @@ export class NLPService {
   async initialize(): Promise<void> {
     try {
       // Initialize sentiment analysis
-      this.sentimentPipeline = await pipeline(
+      const sentimentTask = pipeline(
         'sentiment-analysis',
-        'cardiffnlp/twitter-roberta-base-sentiment',
+        'cardiffnlp/twitter-roberta-base-sentiment'
       );
+      this.sentimentPipeline = (await sentimentTask) as TextClassificationPipeline;
 
       // Initialize named entity recognition
-      this.nerPipeline = await pipeline('ner', 'dbmdz/bert-large-cased-finetuned-conll03-english');
+      const nerTask = pipeline('ner', 'dbmdz/bert-large-cased-finetuned-conll03-english');
+      this.nerPipeline = (await nerTask) as TokenClassificationPipeline;
 
       // Initialize text classification for political topics
-      this.classifierPipeline = await pipeline('text-classification', 'facebook/bart-large-mnli');
+      const classifierTask = pipeline('zero-shot-classification', 'facebook/bart-large-mnli');
+      this.classifierPipeline = (await classifierTask) as ZeroShotClassificationPipeline;
 
       // Initialize text generation
-      this.generatorPipeline = await pipeline('text-generation', 'gpt2');
+      const generatorTask = pipeline('text-generation', 'gpt2');
+      this.generatorPipeline = (await generatorTask) as TextGenerationPipeline;
     } catch (error) {
       console.warn('Failed to initialize some NLP pipelines:', error);
       // Continue with available pipelines
@@ -110,10 +122,18 @@ export class NLPService {
       if (this.sentimentPipeline) {
         const sentiment = await this.sentimentPipeline(text);
         if (Array.isArray(sentiment) && sentiment.length > 0) {
-          result.sentiment = {
-            label: sentiment[0].label,
-            score: sentiment[0].score,
-          };
+          const firstResult = sentiment[0];
+          if (
+            firstResult &&
+            typeof firstResult === 'object' &&
+            'label' in firstResult &&
+            'score' in firstResult
+          ) {
+            result.sentiment = {
+              label: String(firstResult.label),
+              score: Number(firstResult.score),
+            };
+          }
         }
       }
 
@@ -121,13 +141,23 @@ export class NLPService {
       if (this.nerPipeline) {
         const entities = await this.nerPipeline(text);
         if (Array.isArray(entities)) {
-          result.entities = entities.map((entity: any) => ({
-            entity: entity.word,
-            label: entity.entity_group || entity.label,
-            confidence: entity.score,
-            start: entity.start,
-            end: entity.end,
-          }));
+          result.entities = entities.map((entity: unknown) => {
+            const e = entity as {
+              word?: string;
+              entity_group?: string;
+              label?: string;
+              score?: number;
+              start?: number;
+              end?: number;
+            };
+            return {
+              entity: e.word || '',
+              label: e.entity_group || e.label || '',
+              confidence: e.score || 0,
+              start: e.start || 0,
+              end: e.end || 0,
+            };
+          });
         }
       }
 
@@ -165,8 +195,9 @@ export class NLPService {
       });
 
       if (Array.isArray(result)) {
-        return result.map((item: any) => {
-          let text = item.generated_text;
+        return result.map((item: unknown) => {
+          const i = item as { generated_text?: string };
+          let text = i.generated_text || '';
           // Remove the original prompt from the generated text
           if (text.startsWith(prompt)) {
             text = text.slice(prompt.length).trim();
@@ -187,29 +218,29 @@ export class NLPService {
    */
   async classifyPoliticalText(
     text: string,
-    categories: string[],
+    categories: string[]
   ): Promise<Array<{ label: string; score: number }>> {
     if (!this.classifierPipeline) {
       throw new Error('Classification pipeline not initialized');
     }
 
     try {
-      const results = [];
+      // Use zero-shot classification with candidate labels
+      const result = await this.classifierPipeline(text, categories);
 
-      for (const category of categories) {
-        const hypothesis = `This text is about ${category}`;
-        const result = await this.classifierPipeline(text, hypothesis);
+      if (result && typeof result === 'object' && 'labels' in result && 'scores' in result) {
+        const labels = result.labels as string[];
+        const scores = result.scores as number[];
 
-        if (Array.isArray(result) && result.length > 0) {
-          results.push({
-            label: category,
-            score: result[0].score,
-          });
-        }
+        return labels
+          .map((label, index) => ({
+            label,
+            score: scores[index] || 0,
+          }))
+          .sort((a, b) => b.score - a.score);
       }
 
-      // Sort by score descending
-      return results.sort((a, b) => b.score - a.score);
+      return [];
     } catch (error) {
       console.error('Text classification failed:', error);
       return [];

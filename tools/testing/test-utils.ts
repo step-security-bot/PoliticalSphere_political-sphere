@@ -6,13 +6,75 @@
 
 import { faker } from '@faker-js/faker';
 import { beforeAll, afterAll, beforeEach, afterEach, vi } from 'vitest';
-import { TestDatabaseFactory } from './testcontainers';
-import { mswTestUtils } from './msw';
+import type { TestDatabase } from './testcontainers.js';
+import { TestDatabaseFactory } from './testcontainers.js';
+import { mswTestUtils } from './msw/index.ts';
 
 // Re-export commonly used testing utilities
 export { faker } from '@faker-js/faker';
-export { TestDatabaseFactory } from './testcontainers';
-export { mswTestUtils } from './msw';
+export { TestDatabaseFactory } from './testcontainers.ts';
+export { mswTestUtils } from './msw/index.ts';
+
+/**
+ * Type definitions for test data factories
+ */
+interface User {
+  id: string;
+  email: string;
+  username: string;
+  firstName: string;
+  lastName: string;
+  avatar: string;
+  role: string;
+  partyId: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+interface Bill {
+  id: string;
+  title: string;
+  description: string;
+  status: string;
+  category: string;
+  sponsorId: string;
+  coSponsors: string[];
+  content: string;
+  tags: string[];
+  createdAt: string;
+  updatedAt: string;
+}
+
+interface Vote {
+  id: string;
+  billId: string;
+  userId: string;
+  vote: string;
+  createdAt: string;
+}
+
+interface Party {
+  id: string;
+  name: string;
+  description: string;
+  color: string;
+  logo: string;
+  leaderId: string;
+  memberCount: number;
+  createdAt: string;
+}
+
+interface NewsArticle {
+  id: string;
+  title: string;
+  content: string;
+  summary: string;
+  category: string;
+  authorId: string;
+  tags: string[];
+  publishedAt: string;
+  updatedAt: string;
+}
 
 /**
  * Test Data Factories
@@ -21,7 +83,7 @@ export const factories = {
   /**
    * User factory
    */
-  user: (overrides: Partial<any> = {}) => ({
+  user: (overrides: Partial<User> = {}) => ({
     id: faker.string.uuid(),
     email: faker.internet.email(),
     username: faker.internet.username(),
@@ -38,7 +100,7 @@ export const factories = {
   /**
    * Bill factory
    */
-  bill: (overrides: Partial<any> = {}) => ({
+  bill: (overrides: Partial<Bill> = {}) => ({
     id: faker.string.uuid(),
     title: faker.lorem.sentence(),
     description: faker.lorem.paragraph(),
@@ -59,7 +121,7 @@ export const factories = {
   /**
    * Vote factory
    */
-  vote: (overrides: Partial<any> = {}) => ({
+  vote: (overrides: Partial<Vote> = {}) => ({
     id: faker.string.uuid(),
     billId: faker.string.uuid(),
     userId: faker.string.uuid(),
@@ -71,7 +133,7 @@ export const factories = {
   /**
    * Party factory
    */
-  party: (overrides: Partial<any> = {}) => ({
+  party: (overrides: Partial<Party> = {}) => ({
     id: faker.string.uuid(),
     name: faker.company.name(),
     description: faker.lorem.sentence(),
@@ -86,7 +148,7 @@ export const factories = {
   /**
    * News article factory
    */
-  newsArticle: (overrides: Partial<any> = {}) => ({
+  newsArticle: (overrides: Partial<NewsArticle> = {}) => ({
     id: faker.string.uuid(),
     title: faker.lorem.sentence(),
     content: faker.lorem.paragraphs(5),
@@ -119,9 +181,44 @@ export const helpers = {
   },
 
   /**
+   * Generate array of items using a factory with specific type
+   */
+  generateUsers: (count: number, overrides?: Partial<User>): User[] => {
+    return Array.from({ length: count }, () => factories.user(overrides));
+  },
+
+  /**
+   * Generate array of bills
+   */
+  generateBills: (count: number, overrides?: Partial<Bill>): Bill[] => {
+    return Array.from({ length: count }, () => factories.bill(overrides));
+  },
+
+  /**
+   * Generate array of votes
+   */
+  generateVotes: (count: number, overrides?: Partial<Vote>): Vote[] => {
+    return Array.from({ length: count }, () => factories.vote(overrides));
+  },
+
+  /**
+   * Generate array of parties
+   */
+  generateParties: (count: number, overrides?: Partial<Party>): Party[] => {
+    return Array.from({ length: count }, () => factories.party(overrides));
+  },
+
+  /**
+   * Generate array of news articles
+   */
+  generateNewsArticles: (count: number, overrides?: Partial<NewsArticle>): NewsArticle[] => {
+    return Array.from({ length: count }, () => factories.newsArticle(overrides));
+  },
+
+  /**
    * Create authenticated user context for tests
    */
-  createAuthContext: (userOverrides?: Partial<any>) => {
+  createAuthContext: (userOverrides?: Partial<User>) => {
     const user = factories.user(userOverrides);
     const token = faker.string.alphanumeric(32);
 
@@ -146,7 +243,7 @@ export const helpers = {
   /**
    * Mock fetch API for testing
    */
-  mockFetch: (response: any, status = 200) => {
+  mockFetch: (response: unknown, status = 200) => {
     global.fetch = vi.fn(() =>
       Promise.resolve({
         ok: status >= 200 && status < 300,
@@ -181,7 +278,7 @@ export const helpers = {
   createTestDb: async (options?: {
     type?: 'sqlite' | 'postgresql';
     schemaPath?: string;
-    seedData?: any[];
+    seedData?: string[];
   }) => {
     const { type = 'sqlite' } = options || {};
 
@@ -210,8 +307,9 @@ export const customMatchers = {
   /**
    * Check if object has required properties
    */
-  toHaveRequiredProperties: (received: any, requiredProps: string[]) => {
-    const missing = requiredProps.filter(prop => !(prop in received));
+  toHaveRequiredProperties: (received: unknown, requiredProps: string[]) => {
+    const isObject = received !== null && typeof received === 'object';
+    const missing = isObject ? requiredProps.filter(prop => !(prop in received)) : requiredProps;
 
     return {
       pass: missing.length === 0,
@@ -224,7 +322,7 @@ export const customMatchers = {
    */
   toBeValidISODate: (received: string) => {
     const date = new Date(received);
-    const isValid = !isNaN(date.getTime()) && received === date.toISOString();
+    const isValid = !Number.isNaN(date.getTime()) && received === date.toISOString();
 
     return {
       pass: isValid,
@@ -263,7 +361,7 @@ export const lifecycle = {
    * Setup database test environment
    */
   setupDatabaseTest: (dbType: 'sqlite' | 'postgresql' = 'sqlite') => {
-    let testDb: any;
+    let testDb: TestDatabase | undefined;
 
     beforeAll(async () => {
       testDb = await helpers.createTestDb({ type: dbType });

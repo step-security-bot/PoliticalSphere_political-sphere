@@ -192,7 +192,7 @@ const ElectionsManager: React.FC<ElectionsManagerProps> = ({
         <p className="elections-subtitle">Manage elections, constituencies, and voting</p>
       </header>
 
-      <nav className="elections-nav" role="tablist" aria-label="Election views">
+      <div className="elections-nav" role="tablist" aria-label="Election views">
         <button
           type="button"
           role="tab"
@@ -228,7 +228,7 @@ const ElectionsManager: React.FC<ElectionsManagerProps> = ({
         >
           Results
         </button>
-      </nav>
+      </div>
 
       {activeView === 'elections' && (
         <section
@@ -244,37 +244,33 @@ const ElectionsManager: React.FC<ElectionsManagerProps> = ({
           ) : (
             <ul className="elections-list" aria-label="List of elections">
               {elections.map(election => (
-                <li
-                  key={election.id}
-                  className={`election-card ${selectedElection?.id === election.id ? 'selected' : ''}`}
-                  onClick={() => setSelectedElection(election)}
-                  onKeyPress={e => {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                      e.preventDefault();
-                      setSelectedElection(election);
-                    }
-                  }}
-                  tabIndex={0}
-                  role="button"
-                  aria-pressed={selectedElection?.id === election.id}
-                >
-                  <div className="election-header">
-                    <h3>{election.name}</h3>
-                    <span
-                      className={`election-status status-${getElectionStatus(election).toLowerCase()}`}
-                    >
-                      {getElectionStatus(election)}
-                    </span>
-                  </div>
-                  <div className="election-meta">
-                    <span className="election-type">{election.electionType.replace('_', ' ')}</span>
-                    <span>Votes: {election.totalVotes.toLocaleString()}</span>
-                    <span>Turnout: {election.turnout.toFixed(1)}%</span>
-                  </div>
-                  <div className="election-dates">
-                    <span>Start: {new Date(election.startDate).toLocaleDateString()}</span>
-                    <span>End: {new Date(election.endDate).toLocaleDateString()}</span>
-                  </div>
+                <li key={election.id}>
+                  <button
+                    type="button"
+                    className={`election-card ${selectedElection?.id === election.id ? 'selected' : ''}`}
+                    onClick={() => setSelectedElection(election)}
+                    aria-pressed={selectedElection?.id === election.id}
+                  >
+                    <div className="election-header">
+                      <h3>{election.name}</h3>
+                      <span
+                        className={`election-status status-${getElectionStatus(election).toLowerCase()}`}
+                      >
+                        {getElectionStatus(election)}
+                      </span>
+                    </div>
+                    <div className="election-meta">
+                      <span className="election-type">
+                        {election.electionType.replace('_', ' ')}
+                      </span>
+                      <span>Votes: {election.totalVotes.toLocaleString()}</span>
+                      <span>Turnout: {election.turnout.toFixed(1)}%</span>
+                    </div>
+                    <div className="election-dates">
+                      <span>Start: {new Date(election.startDate).toLocaleDateString()}</span>
+                      <span>End: {new Date(election.endDate).toLocaleDateString()}</span>
+                    </div>
+                  </button>
                 </li>
               ))}
             </ul>
@@ -366,30 +362,24 @@ const ElectionsManager: React.FC<ElectionsManagerProps> = ({
           ) : (
             <ul className="constituencies-list" aria-label="List of constituencies">
               {constituencies.map(constituency => (
-                <li
-                  key={constituency.id}
-                  className={`constituency-card ${selectedConstituency === constituency.id ? 'selected' : ''}`}
-                  onClick={() => setSelectedConstituency(constituency.id)}
-                  onKeyPress={e => {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                      e.preventDefault();
-                      setSelectedConstituency(constituency.id);
-                    }
-                  }}
-                  tabIndex={0}
-                  role="button"
-                  aria-pressed={selectedConstituency === constituency.id}
-                >
-                  <h3>{constituency.name}</h3>
-                  <div className="constituency-stats">
-                    <span>Region: {constituency.region}</span>
-                    <span>Population: {constituency.population.toLocaleString()}</span>
-                    <span>Registered: {constituency.registeredVoters.toLocaleString()}</span>
-                    <span>Votes Cast: {constituency.votesCast.toLocaleString()}</span>
-                    <span className="turnout">
-                      Turnout: {constituency.turnoutPercentage.toFixed(1)}%
-                    </span>
-                  </div>
+                <li key={constituency.id}>
+                  <button
+                    type="button"
+                    className={`constituency-card ${selectedConstituency === constituency.id ? 'selected' : ''}`}
+                    onClick={() => setSelectedConstituency(constituency.id)}
+                    aria-pressed={selectedConstituency === constituency.id}
+                  >
+                    <h3>{constituency.name}</h3>
+                    <div className="constituency-stats">
+                      <span>Region: {constituency.region}</span>
+                      <span>Population: {constituency.population.toLocaleString()}</span>
+                      <span>Registered: {constituency.registeredVoters.toLocaleString()}</span>
+                      <span>Votes Cast: {constituency.votesCast.toLocaleString()}</span>
+                      <span className="turnout">
+                        Turnout: {constituency.turnoutPercentage.toFixed(1)}%
+                      </span>
+                    </div>
+                  </button>
                 </li>
               ))}
             </ul>

@@ -144,7 +144,7 @@ export function isValidEmail(email: string): boolean {
  */
 export function isValidUrl(
   url: string,
-  allowedProtocols: string[] = DEFAULT_ALLOWED_PROTOCOLS,
+  allowedProtocols: string[] = DEFAULT_ALLOWED_PROTOCOLS
 ): boolean {
   if (typeof url !== 'string') {
     return false;
@@ -266,7 +266,7 @@ export function validateTag(tag: string): string | null {
 export function checkRateLimit(
   key: string,
   optionsOrMaxRequests?: number | { maxRequests?: number; windowMs?: number },
-  windowMs?: number,
+  windowMs?: number
 ): boolean {
   let maxRequests: number;
   let windowDuration: number;
@@ -312,7 +312,7 @@ export function checkRateLimit(
  */
 export function getRateLimitInfo(
   key: string,
-  options?: { maxRequests?: number; windowMs?: number },
+  options?: { maxRequests?: number; windowMs?: number }
 ): { remaining: number; reset: number; limit: number } {
   const maxRequests = options?.maxRequests ?? DEFAULT_RATE_LIMIT.maxRequests;
   const windowMs = options?.windowMs ?? DEFAULT_RATE_LIMIT.windowMs;

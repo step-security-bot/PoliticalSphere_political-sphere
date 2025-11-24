@@ -40,7 +40,6 @@ function Dashboard() {
       setStatusMessage('Live data retrieved from API.');
     } catch (error) {
       setStatusMessage(`API unavailable: ${error.message}`);
-      console.error('Error fetching data:', error);
     } finally {
       setLoading(false);
     }

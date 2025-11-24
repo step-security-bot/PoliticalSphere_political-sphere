@@ -5,10 +5,17 @@
  */
 
 import { beforeAll, afterEach, afterAll, beforeEach } from 'vitest';
-import { startMSW, stopMSW, resetMSW } from './server';
+import { startMSW, stopMSW, resetMSW } from './server.js';
 
-export { server, startMSW, stopMSW, resetMSW, addMSWHandlers, removeMSWHandlers } from './server';
-export { handlers } from './handlers';
+export {
+  server,
+  startMSW,
+  stopMSW,
+  resetMSW,
+  addMSWHandlers,
+  removeMSWHandlers,
+} from './server.js';
+export { handlers } from './handlers.js';
 
 // Test utilities for MSW
 export const mswTestUtils = {

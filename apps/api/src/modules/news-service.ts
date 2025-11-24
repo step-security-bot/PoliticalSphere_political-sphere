@@ -24,11 +24,11 @@ function isValidUrl(value: string, allowedProtocols: string[]): boolean {
 
 function sanitizeHtml(value: string): string {
   return value
-    .replaceAll('&', '&amp;')
-    .replaceAll('<', '&lt;')
-    .replaceAll('>', '&gt;')
-    .replaceAll('"', '&quot;')
-    .replaceAll("'", '&#39;');
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;')
+    .replace(/&/g, '&amp;');
 }
 
 const ALLOWED_CATEGORIES = [
@@ -51,13 +51,18 @@ const LOCALHOST_SOURCE_NAMES = ['localhost', '127.0.0.1'];
 
 const DEFAULT_CATEGORY = 'general';
 
-function createValidationError(message, details) {
+interface NewsValidationError extends Error {
+  code: string;
+  details?: unknown;
+}
+
+function createValidationError(message: string, details?: unknown): NewsValidationError {
   const error = new Error(message);
-  error.code = 'VALIDATION_ERROR';
+  (error as NewsValidationError).code = 'VALIDATION_ERROR';
   if (details !== undefined) {
-    error.details = details;
+    (error as NewsValidationError).details = details;
   }
-  return error as Error & { code?: string; details?: unknown };
+  return error as NewsValidationError;
 }
 
 function assertPayloadObject(payload: unknown) {
@@ -334,6 +339,7 @@ class NewsService {
     const idx = items.findIndex(it => it.id === id);
     if (idx === -1) return null;
     const existing = items[idx];
+    if (!existing) return null;
     const updated: NewsRecord = {
       ...existing,
       ...changes,
@@ -388,4 +394,9 @@ class NewsService {
 }
 
 export { NewsService };
+/**
+ * Default module export containing `NewsService`. Import the named
+ * export for type-safety (`import { NewsService } from '.../news-service'`),
+ * or use the default export for quick access in scripts.
+ */
 export default { NewsService };

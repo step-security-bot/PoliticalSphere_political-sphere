@@ -1,7 +1,6 @@
 # API Documentation
 
 > NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
-
 > **Note:** The current implementation ships with a lightweight stub (`apps/api`) that exposes health checks and a synthetic `/api/news` feed to unblock development. The broader contract documented below remains the long-term target.
 
 ### Implemented endpoints (MVP)

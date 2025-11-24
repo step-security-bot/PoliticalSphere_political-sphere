@@ -1,9 +1,8 @@
 #!/usr/bin/env node
 
-import { execFileSync, spawn } from 'child_process';
-import { existsSync, readFileSync, writeFileSync } from 'fs';
-import { dirname, join, resolve } from 'path';
-import { fileURLToPath } from 'url';
+import { execFileSync, spawn } from 'node:child_process';
+import { existsSync, readFileSync, writeFileSync } from 'node:fs';
+import { join, resolve } from 'node:path';
 
 console.log('🤖 Starting Self-Healing Automation System...');
 
@@ -270,7 +269,7 @@ test('self-healing demo - nested tests - nested test case', () => {
     }
   }
 
-  async fixSyntaxError(match, _errorOutput, _context) {
+  async fixSyntaxError(match, _errorOutput) {
     const errorDetails = match[1];
     console.log(`🔧 Attempting to fix syntax error: ${errorDetails}`);
 
@@ -494,7 +493,7 @@ async function main() {
     process.exit(1);
   }
 
-  console.log(`🚀 Running with self-healing: ${command} ${commandArgs.join(' ')}`);
+  console.log(`🚀 Running with self-healing: ${command} ${commandArgs.join(' ')}`.trim());
 
   try {
     // Find and validate test file path

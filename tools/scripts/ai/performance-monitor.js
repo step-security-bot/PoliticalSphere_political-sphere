@@ -5,10 +5,10 @@
  * @fileoverview Monitors and reports AI performance metrics
  */
 
-import fs from 'fs';
-import { promises as fsp } from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
+import fs from 'node:fs';
+import { promises as fsp } from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 import { recordScriptEvent } from './analytics.js';
 
@@ -27,7 +27,7 @@ function loadMetrics() {
   for (const file of METRICS_FILES) {
     try {
       return JSON.parse(fs.readFileSync(file, 'utf8'));
-    } catch (_) {
+    } catch {
       // try next
     }
   }

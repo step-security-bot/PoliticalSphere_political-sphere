@@ -22,4 +22,9 @@ const requestId = (req: Request, res: Response, next: NextFunction): void => {
   next();
 };
 
+/**
+ * Middleware default export that attaches a correlation `requestId` to the request
+ * and response for tracing and log correlation. Use `req.requestId` to access
+ * the value in downstream middleware and handlers.
+ */
 export default requestId;

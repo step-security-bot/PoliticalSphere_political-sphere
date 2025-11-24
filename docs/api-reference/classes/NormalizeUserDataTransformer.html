@@ -1,0 +1,1124 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>political-sphere documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">political-sphere documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content class">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Classes</li>
+  <li class="breadcrumb-item" >NormalizeUserDataTransformer</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>apps/data-pipeline/src/transformers/normalize-user-data.ts</code>
+        </p>
+
+
+
+
+
+
+            <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#isValidRawData" >isValidRawData</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#normalizeCreatedAt" >normalizeCreatedAt</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#normalizeEmail" >normalizeEmail</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#normalizeId" >normalizeId</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#normalizeName" >normalizeName</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#sanitizeMetadata" >sanitizeMetadata</a>
+                            </li>
+                            <li>
+                                <a href="#transform" >transform</a>
+                            </li>
+                            <li>
+                                <a href="#transformBatch" >transformBatch</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+
+
+            <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="isValidRawData"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>isValidRawData</b></span>
+                        <a href="#isValidRawData"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>isValidRawData(data: unknown)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="137"
+                                    class="link-to-prism">apps/data-pipeline/src/transformers/normalize-user-data.ts:137</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Validate raw data structure (basic type check)</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>data</td>
+                                            <td>
+                                                        <code>unknown</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../miscellaneous/variables.html#g" target="_self" >Record&lt;string | unknown&gt;</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="normalizeCreatedAt"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>normalizeCreatedAt</b></span>
+                        <a href="#normalizeCreatedAt"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>normalizeCreatedAt(createdAt?: <a href="../unknowns/g.html" target="_self">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="182"
+                                    class="link-to-prism">apps/data-pipeline/src/transformers/normalize-user-data.ts:182</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Normalize createdAt to Date object with fallback</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>createdAt</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    Yes
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date" target="_blank" >Date</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="normalizeEmail"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>normalizeEmail</b></span>
+                        <a href="#normalizeEmail"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>normalizeEmail(email: <a href="../unknowns/g.html" target="_self">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="158"
+                                    class="link-to-prism">apps/data-pipeline/src/transformers/normalize-user-data.ts:158</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Normalize email: lowercase, trim, validate format</p>
+<p>Uses Zod&#39;s built-in email validation which follows RFC 5322 standards.
+This prevents common invalid formats like:</p>
+<ul>
+<li>test@domain..com (consecutive dots)</li>
+<li>test@.com (domain starting with dot)</li>
+<li>test@domain. (domain ending with dot)</li>
+<li>@domain.com (missing local part)</li>
+</ul>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>email</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="normalizeId"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>normalizeId</b></span>
+                        <a href="#normalizeId"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>normalizeId(data: <a href="../undefineds/RawUserData.html" target="_self">RawUserData</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="144"
+                                    class="link-to-prism">apps/data-pipeline/src/transformers/normalize-user-data.ts:144</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Normalize ID field with fallback to userId</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>data</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/typealiases.html#RawUserData" target="_self" >RawUserData</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="normalizeName"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>normalizeName</b></span>
+                        <a href="#normalizeName"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>normalizeName(data: <a href="../undefineds/RawUserData.html" target="_self">RawUserData</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="175"
+                                    class="link-to-prism">apps/data-pipeline/src/transformers/normalize-user-data.ts:175</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Normalize name field with fallback to username</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>data</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/typealiases.html#RawUserData" target="_self" >RawUserData</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="sanitizeMetadata"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>sanitizeMetadata</b></span>
+                        <a href="#sanitizeMetadata"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>sanitizeMetadata(metadata: <a href="../unknowns/g.html" target="_self">Record&lt;string | unknown&gt;</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="197"
+                                    class="link-to-prism">apps/data-pipeline/src/transformers/normalize-user-data.ts:197</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Sanitize metadata by removing potentially dangerous content
+This is a basic implementation; enhance based on specific security requirements</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>metadata</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/variables.html#g" target="_self" >Record&lt;string | unknown&gt;</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../miscellaneous/variables.html#g" target="_self" >Record&lt;string, unknown&gt;</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="transform"></a>
+                    <span class="name">
+                        <span ><b>transform</b></span>
+                        <a href="#transform"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>transform(rawData: unknown)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="94"
+                                    class="link-to-prism">apps/data-pipeline/src/transformers/normalize-user-data.ts:94</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Transform raw user data to normalized format with validation and sanitization</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-typescript">const transformer = new NormalizeUserDataTransformer();
+const result = transformer.transform({
+  id: &#39;123&#39;,
+```html
+  name: &#39;John Doe&#39;
+});</code></pre></div></div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>rawData</td>
+                                            <td>
+                                                        <code>unknown</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>The raw input data to transform</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../interfaces/UserData.html" target="_self" >UserData</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Normalized UserData object</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="transformBatch"></a>
+                    <span class="name">
+                        <span ><b>transformBatch</b></span>
+                        <a href="#transformBatch"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>transformBatch(rawDataArray: unknown[])</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="225"
+                                    class="link-to-prism">apps/data-pipeline/src/transformers/normalize-user-data.ts:225</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Batch transform multiple user records</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>rawDataArray</td>
+                                            <td>
+                                                        <code>unknown[]</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <ul>
+<li>Array of raw data objects</li>
+</ul>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../miscellaneous/typealiases.html#User" target="_self" >UserData[]</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Array of normalized UserData objects</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+
+
+
+
+
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { z } from &#x27;zod&#x27;;
+
+// Constants for field names and limits
+const FIELD_NAMES &#x3D; {
+  ID: &#x27;id&#x27;,
+  USER_ID: &#x27;userId&#x27;,
+  EMAIL: &#x27;email&#x27;,
+  NAME: &#x27;name&#x27;,
+  USERNAME: &#x27;username&#x27;,
+  CREATED_AT: &#x27;createdAt&#x27;,
+  METADATA: &#x27;metadata&#x27;,
+} as const;
+
+// Reserved for future use - length validation
+const _LIMITS &#x3D; {
+  MAX_EMAIL_LENGTH: 254,
+  MAX_NAME_LENGTH: 100,
+  MAX_ID_LENGTH: 50,
+} as const;
+
+// Custom error classes for better error handling
+export class ValidationError extends Error {
+  constructor(
+    message: string,
+    public readonly field?: string
+  ) {
+    super(message);
+    this.name &#x3D; &#x27;ValidationError&#x27;;
+  }
+}
+
+export class TransformationError extends Error {
+  constructor(
+    message: string,
+    public readonly originalError?: Error
+  ) {
+    super(message);
+    this.name &#x3D; &#x27;TransformationError&#x27;;
+  }
+}
+
+// Zod schema for input validation
+// Note: Email validation happens in two stages:
+// 1. Basic string check here (for raw input)
+// 2. Comprehensive RFC 5322 validation in normalizeEmail after normalization
+const RawUserDataSchema &#x3D; z.object({
+  id: z.string().optional(),
+  userId: z.string().optional(),
+  email: z.string(),
+  name: z.string().optional(),
+  username: z.string().optional(),
+  createdAt: z.string().optional(),
+  metadata: z.any().optional(),
+});
+
+type RawUserData &#x3D; z.infer&lt;typeof RawUserDataSchema&gt;;
+
+export interface UserData {
+  id: string;
+  email: string;
+  name: string;
+  createdAt: Date;
+  metadata: Record&lt;string, unknown&gt;;
+}
+
+export class NormalizeUserDataTransformer {
+  /**
+   * Transform raw user data to normalized format with validation and sanitization
+   *
+   * @param rawData - The raw input data to transform
+   * @returns Normalized UserData object
+   * @throws {ValidationError} If input validation fails
+   * @throws {TransformationError} If transformation fails
+   *
+   * @example
+   * &#x60;&#x60;&#x60;typescript
+   * const transformer &#x3D; new NormalizeUserDataTransformer();
+   * const result &#x3D; transformer.transform({
+   *   id: &#x27;123&#x27;,
+   *   email: &#x27;user@example.com&#x27;,
+   *   name: &#x27;John Doe&#x27;
+   * });
+   * &#x60;&#x60;&#x60;
+   */
+  transform(rawData: unknown): UserData {
+    try {
+      // Validate input structure
+      if (!this.isValidRawData(rawData)) {
+        throw new ValidationError(&#x27;Invalid user data format&#x27;);
+      }
+
+      // Validate with Zod schema
+      const validatedData &#x3D; RawUserDataSchema.parse(rawData);
+
+      // Manual validation for required field combinations
+      if (!validatedData[FIELD_NAMES.ID] &amp;&amp; !validatedData[FIELD_NAMES.USER_ID]) {
+        throw new ValidationError(&#x27;Either id or userId must be provided&#x27;);
+      }
+      if (!validatedData[FIELD_NAMES.NAME] &amp;&amp; !validatedData[FIELD_NAMES.USERNAME]) {
+        throw new ValidationError(&#x27;Either name or username must be provided&#x27;);
+      }
+
+      // Sanitize and normalize fields
+      const normalizedData: UserData &#x3D; {
+        id: this.normalizeId(validatedData),
+        email: this.normalizeEmail(validatedData[FIELD_NAMES.EMAIL]),
+        name: this.normalizeName(validatedData),
+        createdAt: this.normalizeCreatedAt(validatedData[FIELD_NAMES.CREATED_AT]),
+        metadata: this.sanitizeMetadata(validatedData[FIELD_NAMES.METADATA] || {}),
+      };
+
+      return normalizedData;
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        // Re-throw as Invalid user data format for consistency with tests
+        throw new ValidationError(&#x27;Invalid user data format&#x27;);
+      }
+      if (error instanceof ValidationError || error instanceof TransformationError) {
+        throw error;
+      }
+      throw new TransformationError(&#x27;Unexpected error during transformation&#x27;, error as Error);
+    }
+  }
+
+  /**
+   * Validate raw data structure (basic type check)
+   */
+  private isValidRawData(data: unknown): data is Record&lt;string, unknown&gt; {
+    return typeof data &#x3D;&#x3D;&#x3D; &#x27;object&#x27; &amp;&amp; data !&#x3D;&#x3D; null;
+  }
+
+  /**
+   * Normalize ID field with fallback to userId
+   */
+  private normalizeId(data: RawUserData): string {
+    return String(data[FIELD_NAMES.ID] || data[FIELD_NAMES.USER_ID]).trim();
+  }
+
+  /**
+   * Normalize email: lowercase, trim, validate format
+   *
+   * Uses Zod&#x27;s built-in email validation which follows RFC 5322 standards.
+   * This prevents common invalid formats like:
+   * - test@domain..com (consecutive dots)
+   * - test@.com (domain starting with dot)
+   * - test@domain. (domain ending with dot)
+   * - @domain.com (missing local part)
+   */
+  private normalizeEmail(email: string): string {
+    const normalized &#x3D; email.toLowerCase().trim();
+
+    // Use Zod&#x27;s RFC 5322 compliant email validation
+    const emailSchema &#x3D; z.string().email();
+    const result &#x3D; emailSchema.safeParse(normalized);
+
+    if (!result.success) {
+      throw new ValidationError(&#x27;Invalid email format&#x27;, &#x27;email&#x27;);
+    }
+
+    return normalized;
+  }
+
+  /**
+   * Normalize name field with fallback to username
+   */
+  private normalizeName(data: RawUserData): string {
+    return String(data[FIELD_NAMES.NAME] || data[FIELD_NAMES.USERNAME]).trim();
+  }
+
+  /**
+   * Normalize createdAt to Date object with fallback
+   */
+  private normalizeCreatedAt(createdAt?: string): Date {
+    if (createdAt) {
+      try {
+        return new Date(createdAt);
+      } catch {
+        // Invalid date string, fall back to current date
+      }
+    }
+    return new Date();
+  }
+
+  /**
+   * Sanitize metadata by removing potentially dangerous content
+   * This is a basic implementation; enhance based on specific security requirements
+   */
+  private sanitizeMetadata(metadata: Record&lt;string, unknown&gt;): Record&lt;string, unknown&gt; {
+    const sanitized: Record&lt;string, unknown&gt; &#x3D; {};
+
+    for (const [key, value] of Object.entries(metadata)) {
+      // Remove keys that might be dangerous (basic filtering)
+      if (typeof key &#x3D;&#x3D;&#x3D; &#x27;string&#x27; &amp;&amp; !key.includes(&#x27;&lt;script&#x27;) &amp;&amp; !key.includes(&#x27;javascript:&#x27;)) {
+        // For string values, basic sanitization
+        if (typeof value &#x3D;&#x3D;&#x3D; &#x27;string&#x27;) {
+          sanitized[key] &#x3D; value.replace(/&lt;[^&gt;]*&gt;/g, &#x27;&#x27;).trim(); // Remove HTML tags
+        } else if (typeof value &#x3D;&#x3D;&#x3D; &#x27;object&#x27; &amp;&amp; value !&#x3D;&#x3D; null) {
+          // Recursively sanitize nested objects (basic)
+          sanitized[key] &#x3D; this.sanitizeMetadata(value as Record&lt;string, unknown&gt;);
+        } else {
+          sanitized[key] &#x3D; value;
+        }
+      }
+    }
+
+    return sanitized;
+  }
+
+  /**
+   * Batch transform multiple user records
+   *
+   * @param rawDataArray - Array of raw data objects
+   * @returns Array of normalized UserData objects
+   * @throws {ValidationError|TransformationError} If any record fails validation/transformation
+   */
+  transformBatch(rawDataArray: unknown[]): UserData[] {
+    return rawDataArray.map((data, index) &#x3D;&gt; {
+      try {
+        return this.transform(data);
+      } catch (error) {
+        throw new TransformationError(
+          &#x60;Failed to transform record at index ${index}&#x60;,
+          error as Error
+        );
+      }
+    });
+  }
+}
+</code></pre>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'class';
+            var COMPODOC_CURRENT_PAGE_URL = 'NormalizeUserDataTransformer.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

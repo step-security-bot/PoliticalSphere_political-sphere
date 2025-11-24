@@ -1,0 +1,1041 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>political-sphere documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">political-sphere documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content class">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Classes</li>
+  <li class="breadcrumb-item" >DataServer</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>apps/data-pipeline/src/server.ts</code>
+        </p>
+
+
+
+
+
+
+            <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#analyticsPipeline" >analyticsPipeline</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#apiConnector" >apiConnector</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#cleanupJob" >cleanupJob</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#database" >database</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#externalSources" >externalSources</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#gameStatePipeline" >gameStatePipeline</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#isRunning" >isRunning</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#reportsJob" >reportsJob</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#scheduledImports" >scheduledImports</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#userPipeline" >userPipeline</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#getStatus" >getStatus</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#healthCheck" >healthCheck</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#registerExternalSources" >registerExternalSources</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#start" >start</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#stop" >stop</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+            <section data-compodoc="block-constructor">
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor()</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="32" class="link-to-prism">apps/data-pipeline/src/server.ts:32</a></div>
+                            </td>
+                        </tr>
+
+            </tbody>
+        </table>
+</section>
+
+            <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="analyticsPipeline"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>analyticsPipeline</b></span>
+                        <a href="#analyticsPipeline"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../classes/AnalyticsPipeline.html" target="_self" >AnalyticsPipeline</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="27" class="link-to-prism">apps/data-pipeline/src/server.ts:27</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="apiConnector"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>apiConnector</b></span>
+                        <a href="#apiConnector"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../classes/ApiConnector.html" target="_self" >ApiConnector</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="24" class="link-to-prism">apps/data-pipeline/src/server.ts:24</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="cleanupJob"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>cleanupJob</b></span>
+                        <a href="#cleanupJob"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../classes/DataCleanupJob.html" target="_self" >DataCleanupJob</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="30" class="link-to-prism">apps/data-pipeline/src/server.ts:30</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="database"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>database</b></span>
+                        <a href="#database"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../classes/DatabaseConnector.html" target="_self" >DatabaseConnector</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="23" class="link-to-prism">apps/data-pipeline/src/server.ts:23</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="externalSources"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>externalSources</b></span>
+                        <a href="#externalSources"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../classes/ExternalSourcesConnector.html" target="_self" >ExternalSourcesConnector</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="25" class="link-to-prism">apps/data-pipeline/src/server.ts:25</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="gameStatePipeline"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>gameStatePipeline</b></span>
+                        <a href="#gameStatePipeline"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../classes/GameStateSyncPipeline.html" target="_self" >GameStateSyncPipeline</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="28" class="link-to-prism">apps/data-pipeline/src/server.ts:28</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="isRunning"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>isRunning</b></span>
+                        <a href="#isRunning"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="32" class="link-to-prism">apps/data-pipeline/src/server.ts:32</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="reportsJob"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>reportsJob</b></span>
+                        <a href="#reportsJob"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../classes/ExportReportsJob.html" target="_self" >ExportReportsJob</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="31" class="link-to-prism">apps/data-pipeline/src/server.ts:31</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="scheduledImports"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>scheduledImports</b></span>
+                        <a href="#scheduledImports"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../classes/ScheduledImportsJob.html" target="_self" >ScheduledImportsJob</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="29" class="link-to-prism">apps/data-pipeline/src/server.ts:29</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="userPipeline"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>userPipeline</b></span>
+                        <a href="#userPipeline"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../classes/UserDataPipeline.html" target="_self" >UserDataPipeline</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="26" class="link-to-prism">apps/data-pipeline/src/server.ts:26</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+            <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getStatus"></a>
+                    <span class="name">
+                        <span ><b>getStatus</b></span>
+                        <a href="#getStatus"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getStatus()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="158"
+                                    class="link-to-prism">apps/data-pipeline/src/server.ts:158</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Get server status</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>literal type</code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="healthCheck"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>healthCheck</b></span>
+                        <a href="#healthCheck"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>healthCheck()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="143"
+                                    class="link-to-prism">apps/data-pipeline/src/server.ts:143</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Health check endpoint</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Promise&lt;literal type&gt;</code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="registerExternalSources"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>registerExternalSources</b></span>
+                        <a href="#registerExternalSources"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>registerExternalSources()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="128"
+                                    class="link-to-prism">apps/data-pipeline/src/server.ts:128</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Register external data sources</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="start"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>start</b></span>
+                        <a href="#start"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>start()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="85"
+                                    class="link-to-prism">apps/data-pipeline/src/server.ts:85</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Start the data server</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Promise&lt;void&gt;</code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="stop"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>stop</b></span>
+                        <a href="#stop"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>stop()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="115"
+                                    class="link-to-prism">apps/data-pipeline/src/server.ts:115</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Stop the data server</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Promise&lt;void&gt;</code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+
+
+
+
+
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { ApiConnector } from &#x27;./connectors/api-connector.js&#x27;;
+import { DatabaseConnector } from &#x27;./connectors/database-connector.js&#x27;;
+import { ExternalSourcesConnector } from &#x27;./connectors/external-sources.js&#x27;;
+import { DataCleanupJob } from &#x27;./jobs/data-cleanup.js&#x27;;
+import { ExportReportsJob } from &#x27;./jobs/export-reports.js&#x27;;
+import { ScheduledImportsJob } from &#x27;./jobs/scheduled-imports.js&#x27;;
+import { AnalyticsPipeline } from &#x27;./pipelines/analytics-pipeline.js&#x27;;
+import { GameStateSyncPipeline } from &#x27;./pipelines/game-state-sync.js&#x27;;
+import { UserDataPipeline } from &#x27;./pipelines/user-data-pipeline.js&#x27;;
+
+// Using console for logging here to avoid cross-package build coupling.
+
+export class DataServer {
+  private database: DatabaseConnector;
+  private apiConnector: ApiConnector;
+  private externalSources: ExternalSourcesConnector;
+  private userPipeline: UserDataPipeline;
+  private analyticsPipeline: AnalyticsPipeline;
+  private gameStatePipeline: GameStateSyncPipeline;
+  private scheduledImports: ScheduledImportsJob;
+  private cleanupJob: DataCleanupJob;
+  private reportsJob: ExportReportsJob;
+  private isRunning &#x3D; false;
+
+  constructor() {
+    // Initialize connectors
+    this.database &#x3D; new DatabaseConnector({
+      host: process.env.DB_HOST || &#x27;localhost&#x27;,
+      port: Number.parseInt(process.env.DB_PORT || &#x27;5432&#x27;, 10),
+      database: process.env.DB_NAME || &#x27;political_sphere&#x27;,
+      user: process.env.DB_USER || &#x27;postgres&#x27;,
+      password: process.env.DB_PASSWORD || &#x27;&#x27;,
+      poolSize: 10,
+    });
+
+    this.apiConnector &#x3D; new ApiConnector({
+      baseUrl: process.env.API_BASE_URL || &#x27;http://localhost:3000&#x27;,
+      timeout: 30000,
+      retries: 3,
+    });
+
+    this.externalSources &#x3D; new ExternalSourcesConnector();
+
+    // Initialize pipelines
+    this.userPipeline &#x3D; new UserDataPipeline({
+      name: &#x27;user-data&#x27;,
+      batchSize: 100,
+    });
+
+    this.analyticsPipeline &#x3D; new AnalyticsPipeline({
+      name: &#x27;analytics&#x27;,
+      batchSize: 1000,
+    });
+
+    this.gameStatePipeline &#x3D; new GameStateSyncPipeline({
+      name: &#x27;game-state&#x27;,
+      batchSize: 50,
+    });
+
+    // Initialize jobs
+    this.scheduledImports &#x3D; new ScheduledImportsJob(this.externalSources, this.database);
+
+    this.cleanupJob &#x3D; new DataCleanupJob(this.database, {
+      retentionDays: 90,
+      tables: [&#x27;events&#x27;, &#x27;logs&#x27;, &#x27;temp_data&#x27;],
+      archiveEnabled: true,
+      archiveDestination: &#x27;s3://archives/&#x27;,
+    });
+
+    this.reportsJob &#x3D; new ExportReportsJob(this.database);
+  }
+
+  /**
+   * Start the data server
+   */
+  async start(): Promise&lt;void&gt; {
+    console.log(&#x27;Starting data processing server...&#x27;);
+
+    try {
+      // Connect to database
+      await this.database.connect();
+      console.log(&#x27;✓ Database connected&#x27;);
+
+      // Verify API connectivity
+      const apiHealthy &#x3D; await this.apiConnector.healthCheck();
+      console.log(&#x60;✓ API connector ${apiHealthy ? &#x27;healthy&#x27; : &#x27;unavailable&#x27;}&#x60;);
+
+      // Register external sources
+      this.registerExternalSources();
+
+      // Start scheduled jobs
+      this.scheduledImports.startAll();
+      console.log(&#x27;✓ Scheduled import jobs started&#x27;);
+
+      this.isRunning &#x3D; true;
+      console.log(&#x27;✓ Data server running&#x27;);
+    } catch (error) {
+      console.error(&#x27;Failed to start data server:&#x27;, error);
+      throw error;
+    }
+  }
+
+  /**
+   * Stop the data server
+   */
+  async stop(): Promise&lt;void&gt; {
+    console.log(&#x27;Stopping data processing server...&#x27;);
+
+    this.scheduledImports.stopAll();
+    await this.database.disconnect();
+
+    this.isRunning &#x3D; false;
+    console.log(&#x27;✓ Data server stopped&#x27;);
+  }
+
+  /**
+   * Register external data sources
+   */
+  private registerExternalSources(): void {
+    // TODO: Load from configuration
+    this.externalSources.registerSource({
+      name: &#x27;uk-parliament-api&#x27;,
+      type: &#x27;rest&#x27;,
+      url: &#x27;https://api.parliament.uk&#x27;,
+      refreshInterval: 3600000, // 1 hour
+    });
+
+    console.log(&#x27;✓ External sources registered&#x27;);
+  }
+
+  /**
+   * Health check endpoint
+   */
+  async healthCheck(): Promise&lt;{
+    status: &#x27;healthy&#x27; | &#x27;unhealthy&#x27;;
+    database: boolean;
+    api: boolean;
+  }&gt; {
+    return {
+      status: this.isRunning ? &#x27;healthy&#x27; : &#x27;unhealthy&#x27;,
+      database: await this.database.healthCheck(),
+      api: await this.apiConnector.healthCheck(),
+    };
+  }
+
+  /**
+   * Get server status
+   */
+  getStatus(): {
+    running: boolean;
+    uptime: number;
+    pipelines: Record&lt;string, unknown&gt;;
+    jobs: {
+      cleanupConfigured: boolean;
+      reportsConfigured: boolean;
+    };
+  } {
+    return {
+      running: this.isRunning,
+      uptime: process.uptime(),
+      pipelines: {
+        user: this.userPipeline,
+        analytics: this.analyticsPipeline,
+        gameState: this.gameStatePipeline,
+      },
+      jobs: {
+        cleanupConfigured: !!this.cleanupJob,
+        reportsConfigured: !!this.reportsJob,
+      },
+    };
+  }
+}
+
+// Start server if running as main module
+if (import.meta.url &#x3D;&#x3D;&#x3D; &#x60;file://${process.argv[1]}&#x60;) {
+  const server &#x3D; new DataServer();
+
+  // Handle graceful shutdown
+  process.on(&#x27;SIGTERM&#x27;, async () &#x3D;&gt; {
+    console.log(&#x27;SIGTERM received, shutting down gracefully...&#x27;);
+    await server.stop();
+    process.exit(0);
+  });
+
+  process.on(&#x27;SIGINT&#x27;, async () &#x3D;&gt; {
+    console.log(&#x27;SIGINT received, shutting down gracefully...&#x27;);
+    await server.stop();
+    process.exit(0);
+  });
+
+  server.start().catch(error &#x3D;&gt; {
+    console.error(&#x27;Fatal error:&#x27;, error);
+    process.exit(1);
+  });
+}
+
+export default DataServer;
+</code></pre>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'class';
+            var COMPODOC_CURRENT_PAGE_URL = 'DataServer.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

@@ -1,3 +1,7 @@
+/**
+ * @ignore
+ */
+
 import {
   type Bill,
   type BillStatus,
@@ -8,6 +12,14 @@ import {
 import { getDatabase } from '../stores/index.js';
 import type { DatabaseRecord } from '../services/prisma-database.service.js';
 
+/**
+ * BillService contains business logic for proposing, retrieving, listing and
+ * updating bills within the simulation. It validates inputs, maps database
+ * records to domain types and exposes pagination helpers for listing.
+ *
+ * Persistence is delegated to the project store layer obtained via
+ * `getDatabase()` so the service remains database-agnostic and testable.
+ */
 export class BillService {
   // Lazy getter to avoid stale DB connections in tests
   private get db() {
@@ -34,10 +46,14 @@ export class BillService {
 
     // Map database result to Bill type (handle null description and ensure status type)
     const bill: Bill = {
-      ...billData,
+      id: billData.id as string,
+      title: billData.title as string,
+      description: (billData.description as string | undefined) ?? undefined,
+      proposerId: billData.proposerId as string,
       status: billData.status as BillStatus,
-      description: billData.description ?? undefined,
-    };
+      createdAt: new Date(billData.createdAt as string),
+      updatedAt: new Date(billData.updatedAt as string),
+    } as Bill;
     return bill;
   }
 
@@ -47,15 +63,19 @@ export class BillService {
 
     // Map database result to Bill type
     return {
-      ...billData,
+      id: billData.id as string,
+      title: billData.title as string,
+      description: (billData.description as string | undefined) ?? undefined,
+      proposerId: billData.proposerId as string,
       status: billData.status as BillStatus,
-      description: billData.description ?? undefined,
+      createdAt: new Date(billData.createdAt as string),
+      updatedAt: new Date(billData.updatedAt as string),
     };
   }
 
   async getAllBills(
     page: number = 1,
-    limit: number = 10,
+    limit: number = 10
   ): Promise<{
     bills: Bill[];
     total: number;
@@ -66,9 +86,13 @@ export class BillService {
 
     // Map database results to Bill type
     const bills = allBills.map((bill: DatabaseRecord) => ({
-      ...bill,
+      id: bill.id as string,
+      title: bill.title as string,
+      description: (bill.description as string | undefined) ?? undefined,
+      proposerId: bill.proposerId as string,
       status: bill.status as BillStatus,
-      description: bill.description ?? undefined,
+      createdAt: new Date(bill.createdAt as string),
+      updatedAt: new Date(bill.updatedAt as string),
     }));
 
     // Manual pagination since store doesn't support it
@@ -89,9 +113,13 @@ export class BillService {
     return allBills
       .filter((bill: DatabaseRecord) => bill.proposerId === proposerId)
       .map((bill: DatabaseRecord) => ({
-        ...bill,
+        id: bill.id as string,
+        title: bill.title as string,
+        description: (bill.description as string | undefined) ?? undefined,
+        proposerId: bill.proposerId as string,
         status: bill.status as BillStatus,
-        description: bill.description ?? undefined,
+        createdAt: new Date(bill.createdAt as string),
+        updatedAt: new Date(bill.updatedAt as string),
       }));
   }
 
@@ -105,9 +133,13 @@ export class BillService {
     if (!updated) return null;
 
     return {
-      ...updated,
+      id: updated.id as string,
+      title: updated.title as string,
+      description: (updated.description as string | undefined) ?? undefined,
+      proposerId: updated.proposerId as string,
       status: updated.status as BillStatus,
-      description: updated.description ?? undefined,
+      createdAt: new Date(updated.createdAt as string),
+      updatedAt: new Date(updated.updatedAt as string),
     };
   }
 }

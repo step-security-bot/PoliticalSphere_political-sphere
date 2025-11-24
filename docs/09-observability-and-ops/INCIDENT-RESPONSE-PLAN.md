@@ -566,9 +566,10 @@ Track and report monthly:
 4. Annual comprehensive review
 
 **Version History:**
-| Version | Date | Author | Changes |
-|---------|------|--------|---------|
-| 1.0 | 2025-10-29 | Security Team | Initial version |
+
+| Version | Date       | Author        | Changes         |
+| ------- | ---------- | ------------- | --------------- |
+| 1.0     | 2025-10-29 | Security Team | Initial version |
 
 ---
 

@@ -1,0 +1,2789 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>political-sphere documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">political-sphere documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content class">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Classes</li>
+  <li class="breadcrumb-item" >WebSocketServer</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>libs/shared/src/websocket/WebSocketServer.ts</code>
+        </p>
+
+
+            <p class="comment">
+                <h3>Description</h3>
+            </p>
+            <p class="comment">
+                <p>WebSocket server for real-time multiplayer game communication.
+Manages client connections, authentication, message routing, and game state synchronization.
+Implements rate limiting, ping/pong health checks, and secure origin validation.</p>
+
+            </p>
+
+
+
+
+            <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#allowedOrigins" >allowedOrigins</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#authRequired" >authRequired</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#CLIENT_TIMEOUT_MS" >CLIENT_TIMEOUT_MS</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#clients" >clients</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#gameRooms" >gameRooms</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#logger" >logger</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#MAX_MESSAGES_PER_MINUTE" >MAX_MESSAGES_PER_MINUTE</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#MESSAGE_WINDOW_MS" >MESSAGE_WINDOW_MS</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#PING_INTERVAL_MS" >PING_INTERVAL_MS</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#pingInterval" >pingInterval</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#wss" >wss</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#broadcast" >broadcast</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#broadcastToGame" >broadcastToGame</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#checkRateLimit" >checkRateLimit</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#close" >close</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#generateClientId" >generateClientId</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                <a href="#getStats" >getStats</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#handleDisconnect" >handleDisconnect</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#handleGameAction" >handleGameAction</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#handleJoinGame" >handleJoinGame</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#handleLeaveGame" >handleLeaveGame</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#handleMessage" >handleMessage</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#parseAllowedOrigins" >parseAllowedOrigins</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#parseAndValidateMessage" >parseAndValidateMessage</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#sendToClient" >sendToClient</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#setupEventHandlers" >setupEventHandlers</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Public</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#shutdown" >shutdown</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#startPingInterval" >startPingInterval</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#validateMessageSize" >validateMessageSize</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#verifyClient" >verifyClient</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+            <section data-compodoc="block-constructor">
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(server: HttpServer, options?: literal type)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="84" class="link-to-prism">libs/shared/src/websocket/WebSocketServer.ts:84</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>server</td>
+                                                  
+                                                        <td>
+                                                                    <code>HttpServer</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>options</td>
+                                                  
+                                                        <td>
+                                                                    <code>literal type</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            Yes
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+            <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="allowedOrigins"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>allowedOrigins</b></span>
+                        <a href="#allowedOrigins"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../miscellaneous/variables.html#g" target="_self" >string[]</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="84" class="link-to-prism">libs/shared/src/websocket/WebSocketServer.ts:84</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="authRequired"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>authRequired</b></span>
+                        <a href="#authRequired"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="83" class="link-to-prism">libs/shared/src/websocket/WebSocketServer.ts:83</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="CLIENT_TIMEOUT_MS"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>CLIENT_TIMEOUT_MS</b></span>
+                        <a href="#CLIENT_TIMEOUT_MS"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>60000</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="80" class="link-to-prism">libs/shared/src/websocket/WebSocketServer.ts:80</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="clients"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>clients</b></span>
+                        <a href="#clients"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/GameClient.html" target="_self" >Map&lt;string | GameClient&gt;</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new Map()</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="75" class="link-to-prism">libs/shared/src/websocket/WebSocketServer.ts:75</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="gameRooms"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>gameRooms</b></span>
+                        <a href="#gameRooms"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../miscellaneous/variables.html#g" target="_self" >Map&lt;string | Set&lt;string&gt;&gt;</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new Map()</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="76" class="link-to-prism">libs/shared/src/websocket/WebSocketServer.ts:76</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="logger"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>logger</b></span>
+                        <a href="#logger"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>ReturnType&lt;unknown&gt;</code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="77" class="link-to-prism">libs/shared/src/websocket/WebSocketServer.ts:77</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="MAX_MESSAGES_PER_MINUTE"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>MAX_MESSAGES_PER_MINUTE</b></span>
+                        <a href="#MAX_MESSAGES_PER_MINUTE"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>60</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="81" class="link-to-prism">libs/shared/src/websocket/WebSocketServer.ts:81</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="MESSAGE_WINDOW_MS"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>MESSAGE_WINDOW_MS</b></span>
+                        <a href="#MESSAGE_WINDOW_MS"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>60000</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="82" class="link-to-prism">libs/shared/src/websocket/WebSocketServer.ts:82</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="PING_INTERVAL_MS"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>PING_INTERVAL_MS</b></span>
+                        <a href="#PING_INTERVAL_MS"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>30000</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="79" class="link-to-prism">libs/shared/src/websocket/WebSocketServer.ts:79</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="pingInterval"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>pingInterval</b></span>
+                        <a href="#pingInterval"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>NodeJS.Timeout | null</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>null</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="78" class="link-to-prism">libs/shared/src/websocket/WebSocketServer.ts:78</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="wss"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>wss</b></span>
+                        <a href="#wss"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../classes/WebSocketServer.html" target="_self" >WSServer</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="74" class="link-to-prism">libs/shared/src/websocket/WebSocketServer.ts:74</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+            <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="broadcast"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>broadcast</b></span>
+                        <a href="#broadcast"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>broadcast(message: <a href="../interfaces/GameMessage.html" target="_self">GameMessage</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="636"
+                                    class="link-to-prism">libs/shared/src/websocket/WebSocketServer.ts:636</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Broadcast message to all connected clients</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>message</td>
+                                            <td>
+                                                            <code><a href="../interfaces/GameMessage.html" target="_self" >GameMessage</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="broadcastToGame"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>broadcastToGame</b></span>
+                        <a href="#broadcastToGame"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>broadcastToGame(gameId: <a href="../unknowns/g.html" target="_self">string</a>, message: <a href="../interfaces/GameMessage.html" target="_self">GameMessage</a>, excludeClientId?: <a href="../unknowns/g.html" target="_self">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="620"
+                                    class="link-to-prism">libs/shared/src/websocket/WebSocketServer.ts:620</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Broadcast message to all clients in a game</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>gameId</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>message</td>
+                                            <td>
+                                                            <code><a href="../interfaces/GameMessage.html" target="_self" >GameMessage</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>excludeClientId</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    Yes
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="checkRateLimit"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>checkRateLimit</b></span>
+                        <a href="#checkRateLimit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>checkRateLimit(client: <a href="../interfaces/GameClient.html" target="_self">GameClient</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="293"
+                                    class="link-to-prism">libs/shared/src/websocket/WebSocketServer.ts:293</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Check rate limiting for a client</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>client</td>
+                                            <td>
+                                                            <code><a href="../interfaces/GameClient.html" target="_self" >GameClient</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="close"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>close</b></span>
+                        <a href="#close"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>close()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="696"
+                                    class="link-to-prism">libs/shared/src/websocket/WebSocketServer.ts:696</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Close the WebSocket server (alias for shutdown for test compatibility)</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="generateClientId"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>generateClientId</b></span>
+                        <a href="#generateClientId"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>generateClientId()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="669"
+                                    class="link-to-prism">libs/shared/src/websocket/WebSocketServer.ts:669</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Generate unique client ID</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getStats"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                        <span ><b>getStats</b></span>
+                        <a href="#getStats"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getStats()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="676"
+                                    class="link-to-prism">libs/shared/src/websocket/WebSocketServer.ts:676</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Get statistics about connected clients</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>literal type</code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="handleDisconnect"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>handleDisconnect</b></span>
+                        <a href="#handleDisconnect"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>handleDisconnect(clientId: <a href="../unknowns/g.html" target="_self">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="579"
+                                    class="link-to-prism">libs/shared/src/websocket/WebSocketServer.ts:579</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Handle client disconnect</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>clientId</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="handleGameAction"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>handleGameAction</b></span>
+                        <a href="#handleGameAction"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>handleGameAction(clientId: <a href="../unknowns/g.html" target="_self">string</a>, message: <a href="../interfaces/GameMessage.html" target="_self">GameMessage</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="546"
+                                    class="link-to-prism">libs/shared/src/websocket/WebSocketServer.ts:546</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Handle game action from client</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>clientId</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>message</td>
+                                            <td>
+                                                            <code><a href="../interfaces/GameMessage.html" target="_self" >GameMessage</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="handleJoinGame"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>handleJoinGame</b></span>
+                        <a href="#handleJoinGame"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>handleJoinGame(clientId: <a href="../unknowns/g.html" target="_self">string</a>, message: <a href="../interfaces/GameMessage.html" target="_self">GameMessage</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="459"
+                                    class="link-to-prism">libs/shared/src/websocket/WebSocketServer.ts:459</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Handle client joining a game room</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>clientId</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>message</td>
+                                            <td>
+                                                            <code><a href="../interfaces/GameMessage.html" target="_self" >GameMessage</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="handleLeaveGame"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>handleLeaveGame</b></span>
+                        <a href="#handleLeaveGame"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>handleLeaveGame(clientId: <a href="../unknowns/g.html" target="_self">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="508"
+                                    class="link-to-prism">libs/shared/src/websocket/WebSocketServer.ts:508</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Handle client leaving a game room</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>clientId</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="handleMessage"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>handleMessage</b></span>
+                        <a href="#handleMessage"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>handleMessage(clientId: <a href="../unknowns/g.html" target="_self">string</a>, data: Buffer)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="381"
+                                    class="link-to-prism">libs/shared/src/websocket/WebSocketServer.ts:381</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Handle incoming messages from clients</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>clientId</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>data</td>
+                                            <td>
+                                                        <code>Buffer</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="parseAllowedOrigins"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>parseAllowedOrigins</b></span>
+                        <a href="#parseAllowedOrigins"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>parseAllowedOrigins()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="128"
+                                    class="link-to-prism">libs/shared/src/websocket/WebSocketServer.ts:128</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Parse allowed origins from environment variable</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../miscellaneous/variables.html#g" target="_self" >string[]</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="parseAndValidateMessage"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>parseAndValidateMessage</b></span>
+                        <a href="#parseAndValidateMessage"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>parseAndValidateMessage(client: <a href="../interfaces/GameClient.html" target="_self">GameClient</a>, data: Buffer)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="340"
+                                    class="link-to-prism">libs/shared/src/websocket/WebSocketServer.ts:340</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Parse and validate message</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>client</td>
+                                            <td>
+                                                            <code><a href="../interfaces/GameClient.html" target="_self" >GameClient</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>data</td>
+                                            <td>
+                                                        <code>Buffer</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../miscellaneous/variables.html#g" target="_self" >GameMessage | null</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="sendToClient"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>sendToClient</b></span>
+                        <a href="#sendToClient"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>sendToClient(clientId: <a href="../unknowns/g.html" target="_self">string</a>, message: <a href="../interfaces/GameMessage.html" target="_self">GameMessage</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="601"
+                                    class="link-to-prism">libs/shared/src/websocket/WebSocketServer.ts:601</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Send message to specific client</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>clientId</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>message</td>
+                                            <td>
+                                                            <code><a href="../interfaces/GameMessage.html" target="_self" >GameMessage</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="setupEventHandlers"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>setupEventHandlers</b></span>
+                        <a href="#setupEventHandlers"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>setupEventHandlers()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="208"
+                                    class="link-to-prism">libs/shared/src/websocket/WebSocketServer.ts:208</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Setup WebSocket event handlers</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="shutdown"></a>
+                    <span class="name">
+                            <span class="modifier">Public</span>
+                            <span class="modifier">Async</span>
+                        <span ><b>shutdown</b></span>
+                        <a href="#shutdown"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>shutdown()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="707"
+                                    class="link-to-prism">libs/shared/src/websocket/WebSocketServer.ts:707</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Graceful shutdown</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>    <code>Promise&lt;void&gt;</code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="startPingInterval"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>startPingInterval</b></span>
+                        <a href="#startPingInterval"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>startPingInterval()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="645"
+                                    class="link-to-prism">libs/shared/src/websocket/WebSocketServer.ts:645</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Start ping interval to detect dead connections</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="validateMessageSize"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>validateMessageSize</b></span>
+                        <a href="#validateMessageSize"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>validateMessageSize(client: <a href="../interfaces/GameClient.html" target="_self">GameClient</a>, data: Buffer)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="323"
+                                    class="link-to-prism">libs/shared/src/websocket/WebSocketServer.ts:323</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Validate message size</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>client</td>
+                                            <td>
+                                                            <code><a href="../interfaces/GameClient.html" target="_self" >GameClient</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>data</td>
+                                            <td>
+                                                        <code>Buffer</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="verifyClient"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>verifyClient</b></span>
+                        <a href="#verifyClient"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>verifyClient(info: literal type, callback: (verified: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>,code: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>,message: <a href="../unknowns/g.html">string</a>) => void)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="158"
+                                    class="link-to-prism">libs/shared/src/websocket/WebSocketServer.ts:158</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Verify client connection (origin validation, authentication, rate limiting)</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>info</td>
+                                            <td>
+                                                        <code>literal type</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>callback</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/function" target="_blank" >function</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+
+
+
+
+
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { createLogger } from &#x27;../logger&#x27;;
+import { initializeJWTFromEnv, verifyAuthHeader, type VerificationResult } from &#x27;../auth&#x27;;
+import type { Server as HttpServer } from &#x27;node:http&#x27;;
+import { WebSocketServer as WSServer, type WebSocket } from &#x27;ws&#x27;;
+
+export interface GameClient {
+  id: string;
+  socket: WebSocket;
+  gameId: string;
+  userId: string | undefined;
+  username: string | undefined;
+  authenticated: boolean;
+  lastPing: number;
+  messageCount: number;
+  lastMessageTime: number;
+}
+
+interface GameMessage {
+  type: string;
+  gameId?: string;
+  data?: unknown;
+  timestamp?: number;
+}
+
+/**
+ * Valid message types
+ */
+const VALID_MESSAGE_TYPES &#x3D; [&#x27;join&#x27;, &#x27;leave&#x27;, &#x27;action&#x27;, &#x27;ping&#x27;] as const;
+type ValidMessageType &#x3D; (typeof VALID_MESSAGE_TYPES)[number];
+
+/**
+ * Validate message structure
+ */
+function isValidMessage(msg: unknown): msg is GameMessage {
+  if (!msg || typeof msg !&#x3D;&#x3D; &#x27;object&#x27;) {
+    return false;
+  }
+
+  const message &#x3D; msg as Record&lt;string, unknown&gt;;
+
+  // Type must be a non-empty string
+  if (typeof message.type !&#x3D;&#x3D; &#x27;string&#x27; || message.type.trim() &#x3D;&#x3D;&#x3D; &#x27;&#x27;) {
+    return false;
+  }
+
+  // Type must be in valid list
+  if (!VALID_MESSAGE_TYPES.includes(message.type as ValidMessageType)) {
+    return false;
+  }
+
+  // GameId must be string if present
+  if (message.gameId !&#x3D;&#x3D; undefined &amp;&amp; typeof message.gameId !&#x3D;&#x3D; &#x27;string&#x27;) {
+    return false;
+  }
+
+  return true;
+}
+
+/**
+ * WebSocket server for real-time multiplayer game communication.
+ * Manages client connections, authentication, message routing, and game state synchronization.
+ * Implements rate limiting, ping/pong health checks, and secure origin validation.
+ */
+export class WebSocketServer {
+  private wss: WSServer;
+  private clients: Map&lt;string, GameClient&gt; &#x3D; new Map();
+  private gameRooms: Map&lt;string, Set&lt;string&gt;&gt; &#x3D; new Map();
+  private logger: ReturnType&lt;typeof createLogger&gt;;
+  private pingInterval: NodeJS.Timeout | null &#x3D; null;
+  private readonly PING_INTERVAL_MS &#x3D; 30000;
+  private readonly CLIENT_TIMEOUT_MS &#x3D; 60000;
+  private readonly MAX_MESSAGES_PER_MINUTE &#x3D; 60;
+  private readonly MESSAGE_WINDOW_MS &#x3D; 60000;
+  private readonly authRequired: boolean;
+  private readonly allowedOrigins: string[];
+
+  constructor(server: HttpServer, options?: { requireAuth?: boolean; allowedOrigins?: string[] }) {
+    this.logger &#x3D; createLogger({ service: &#x27;websocket-server&#x27; });
+    this.authRequired &#x3D; options?.requireAuth ?? true;
+
+    // Parse allowed origins from environment variable or options
+    this.allowedOrigins &#x3D; options?.allowedOrigins || this.parseAllowedOrigins();
+
+    this.logger.info(&#x27;WebSocket server configuration&#x27;, {
+      authRequired: this.authRequired,
+      allowedOrigins: this.allowedOrigins,
+    });
+
+    // Initialize JWT if authentication is required
+    if (this.authRequired) {
+      try {
+        initializeJWTFromEnv();
+        this.logger.info(&#x27;JWT authentication initialized for WebSocket server&#x27;);
+      } catch (error) {
+        const message &#x3D; error instanceof Error ? (error as Error).message : String(error);
+        this.logger.error(&#x27;Failed to initialize JWT authentication&#x27;, { error: message });
+        throw new Error(&#x60;WebSocket authentication setup failed: ${message}&#x60;);
+      }
+    }
+
+    this.wss &#x3D; new WSServer({
+      server,
+      path: &#x27;/ws&#x27;,
+      verifyClient: this.verifyClient.bind(this),
+    });
+
+    this.setupEventHandlers();
+    this.startPingInterval();
+
+    this.logger.info(&#x27;WebSocket server initialized&#x27;, {
+      path: &#x27;/ws&#x27;,
+      pingInterval: this.PING_INTERVAL_MS,
+    });
+  }
+
+  /**
+   * Parse allowed origins from environment variable
+   */
+  private parseAllowedOrigins(): string[] {
+    const envOrigins &#x3D; process.env.WS_ALLOWED_ORIGINS || process.env.CORS_ORIGIN || &#x27;&#x27;;
+
+    if (!envOrigins || envOrigins.trim() &#x3D;&#x3D;&#x3D; &#x27;&#x27;) {
+      // Default to localhost for development
+      this.logger.warn(&#x27;No allowed origins configured, defaulting to localhost&#x27;, {
+        env: &#x27;WS_ALLOWED_ORIGINS or CORS_ORIGIN not set&#x27;,
+      });
+      return [&#x27;http://localhost:3000&#x27;, &#x27;http://localhost:5173&#x27;, &#x27;http://localhost:5100&#x27;];
+    }
+
+    // Parse comma-separated list, trim whitespace
+    const origins &#x3D; envOrigins
+      .split(&#x27;,&#x27;)
+      .map(origin &#x3D;&gt; origin.trim())
+      .filter(origin &#x3D;&gt; origin.length &gt; 0);
+
+    if (origins.length &#x3D;&#x3D;&#x3D; 0) {
+      this.logger.warn(&#x27;Empty allowed origins list after parsing&#x27;, {
+        rawValue: envOrigins,
+      });
+      return [&#x27;http://localhost:3000&#x27;];
+    }
+
+    return origins;
+  }
+
+  /**
+   * Verify client connection (origin validation, authentication, rate limiting)
+   */
+  private verifyClient(
+    info: { origin: string; req: { headers: Record&lt;string, string | string[] | undefined&gt; } },
+    callback: (verified: boolean, code?: number, message?: string) &#x3D;&gt; void
+  ): void {
+    const origin &#x3D; info.origin || &#x27;unknown&#x27;;
+
+    // Origin validation
+    if (this.allowedOrigins.length &gt; 0 &amp;&amp; !this.allowedOrigins.includes(origin)) {
+      this.logger.warn(&#x27;Client connection rejected - origin not allowed&#x27;, {
+        origin,
+        allowedOrigins: this.allowedOrigins,
+      });
+      callback(false, 403, &#x27;Origin not allowed&#x27;);
+      return;
+    }
+
+    // Skip authentication if not required (development mode)
+    if (!this.authRequired) {
+      this.logger.debug(&#x27;Client connection accepted (auth disabled)&#x27;, { origin });
+      callback(true);
+      return;
+    }
+
+    // Extract and verify JWT token
+    const authHeader &#x3D; info.req.headers.authorization;
+    const authHeaderStr &#x3D; Array.isArray(authHeader) ? authHeader[0] : authHeader;
+
+    const result: VerificationResult &#x3D; verifyAuthHeader(authHeaderStr);
+
+    if (!result.valid) {
+      this.logger.warn(&#x27;Client connection rejected - authentication failed&#x27;, {
+        origin,
+        error: result.error,
+      });
+      callback(false, 401, result.error || &#x27;Authentication required&#x27;);
+      return;
+    }
+
+    this.logger.debug(&#x27;Client connection verified&#x27;, {
+      origin,
+      userId: result.payload?.userId,
+      username: result.payload?.username,
+    });
+
+    callback(true);
+  }
+
+  /**
+   * Setup WebSocket event handlers
+   */
+  private setupEventHandlers(): void {
+    this.wss.on(&#x27;connection&#x27;, (socket: WebSocket, req) &#x3D;&gt; {
+      const clientId &#x3D; this.generateClientId();
+
+      // Extract user info from token if authentication is enabled
+      let userId: string | undefined;
+      let username: string | undefined;
+      let authenticated &#x3D; false;
+
+      if (this.authRequired) {
+        const authHeader &#x3D; req.headers.authorization;
+        const authHeaderStr &#x3D; Array.isArray(authHeader) ? authHeader[0] : authHeader;
+        const result: VerificationResult &#x3D; verifyAuthHeader(authHeaderStr);
+
+        if (result.valid &amp;&amp; result.payload) {
+          userId &#x3D; result.payload.userId;
+          username &#x3D; result.payload.username;
+          authenticated &#x3D; true;
+        }
+      }
+
+      const client: GameClient &#x3D; {
+        id: clientId,
+        socket,
+        gameId: &#x27;&#x27;,
+        userId,
+        username,
+        authenticated,
+        lastPing: Date.now(),
+        messageCount: 0,
+        lastMessageTime: Date.now(),
+      };
+
+      this.clients.set(clientId, client);
+
+      this.logger.info(&#x27;Client connected&#x27;, {
+        clientId,
+        userId,
+        username,
+        authenticated,
+        ip: req.socket.remoteAddress,
+        totalClients: this.clients.size,
+      });
+
+      socket.on(&#x27;message&#x27;, (data: Buffer) &#x3D;&gt; {
+        this.handleMessage(clientId, data);
+      });
+
+      socket.on(&#x27;close&#x27;, () &#x3D;&gt; {
+        this.handleDisconnect(clientId);
+      });
+
+      socket.on(&#x27;error&#x27;, (error: Error) &#x3D;&gt; {
+        this.logger.error(&#x27;WebSocket error&#x27;, {
+          clientId,
+          error: (error as Error).message,
+        });
+      });
+
+      socket.on(&#x27;pong&#x27;, () &#x3D;&gt; {
+        const client &#x3D; this.clients.get(clientId);
+        if (client) {
+          client.lastPing &#x3D; Date.now();
+        }
+      });
+
+      // Send welcome message
+      this.sendToClient(clientId, {
+        type: &#x27;welcome&#x27;,
+        data: { clientId },
+        timestamp: Date.now(),
+      });
+    });
+
+    this.wss.on(&#x27;error&#x27;, (error: Error) &#x3D;&gt; {
+      this.logger.error(&#x27;WebSocket server error&#x27;, {
+        error: (error as Error).message,
+        stack: error.stack,
+      });
+    });
+  }
+
+  /**
+   * Check rate limiting for a client
+   */
+  private checkRateLimit(client: GameClient): boolean {
+    const now &#x3D; Date.now();
+    const timeSinceLastMessage &#x3D; now - client.lastMessageTime;
+
+    // Reset counter if outside the window
+    if (timeSinceLastMessage &gt; this.MESSAGE_WINDOW_MS) {
+      client.messageCount &#x3D; 0;
+      client.lastMessageTime &#x3D; now;
+    }
+
+    // Increment message count
+    client.messageCount++;
+
+    // Check if rate limit exceeded
+    if (client.messageCount &gt; this.MAX_MESSAGES_PER_MINUTE) {
+      this.logger.warn(&#x27;Rate limit exceeded&#x27;, {
+        clientId: client.id,
+        userId: client.userId,
+        messageCount: client.messageCount,
+        window: this.MESSAGE_WINDOW_MS,
+      });
+      return false;
+    }
+
+    return true;
+  }
+
+  /**
+   * Validate message size
+   */
+  private validateMessageSize(client: GameClient, data: Buffer): boolean {
+    const MAX_MESSAGE_SIZE &#x3D; 10 * 1024; // 10KB
+    if (data.length &gt; MAX_MESSAGE_SIZE) {
+      this.logger.warn(&#x27;Message too large&#x27;, {
+        clientId: client.id,
+        userId: client.userId,
+        size: data.length,
+        maxSize: MAX_MESSAGE_SIZE,
+      });
+      return false;
+    }
+    return true;
+  }
+
+  /**
+   * Parse and validate message
+   */
+  private parseAndValidateMessage(client: GameClient, data: Buffer): GameMessage | null {
+    try {
+      const message &#x3D; JSON.parse(data.toString()) as GameMessage;
+
+      // Validate message structure
+      if (!isValidMessage(message)) {
+        this.logger.warn(&#x27;Invalid message structure&#x27;, {
+          clientId: client.id,
+          userId: client.userId,
+          messageType:
+            typeof message &#x3D;&#x3D;&#x3D; &#x27;object&#x27; ? (message as Record&lt;string, unknown&gt;).type : &#x27;unknown&#x27;,
+        });
+        return null;
+      }
+
+      // Validate gameId format if present (UUID v4 pattern)
+      if (message.gameId !&#x3D;&#x3D; undefined &amp;&amp; message.gameId.trim() !&#x3D;&#x3D; &#x27;&#x27;) {
+        const uuidRegex &#x3D; /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+        if (!uuidRegex.test(message.gameId)) {
+          this.logger.warn(&#x27;Invalid gameId format&#x27;, {
+            clientId: client.id,
+            userId: client.userId,
+            gameId: message.gameId,
+          });
+          return null;
+        }
+      }
+
+      return message;
+    } catch (error) {
+      this.logger.error(&#x27;Error parsing message&#x27;, {
+        clientId: client.id,
+        error: error instanceof Error ? (error as Error).message : String(error),
+      });
+      return null;
+    }
+  }
+
+  /**
+   * Handle incoming messages from clients
+   */
+  private handleMessage(clientId: string, data: Buffer): void {
+    const client &#x3D; this.clients.get(clientId);
+    if (!client) {
+      this.logger.warn(&#x27;Message from unknown client&#x27;, { clientId });
+      return;
+    }
+
+    // Rate limiting check
+    if (!this.checkRateLimit(client)) {
+      this.sendToClient(clientId, {
+        type: &#x27;error&#x27;,
+        data: {
+          message: &#x27;Rate limit exceeded. Please slow down.&#x27;,
+          retryAfter: Math.ceil(
+            (client.lastMessageTime + this.MESSAGE_WINDOW_MS - Date.now()) / 1000
+          ),
+        },
+      });
+      return;
+    }
+
+    // Message size validation
+    if (!this.validateMessageSize(client, data)) {
+      this.sendToClient(clientId, {
+        type: &#x27;error&#x27;,
+        data: { message: &#x27;Message too large. Maximum size is 10KB.&#x27; },
+      });
+      return;
+    }
+
+    const message &#x3D; this.parseAndValidateMessage(client, data);
+    if (!message) {
+      this.sendToClient(clientId, {
+        type: &#x27;error&#x27;,
+        data: {
+          message: &#x27;Invalid message format. Message must have a valid type and structure.&#x27;,
+          allowedTypes: VALID_MESSAGE_TYPES,
+        },
+      });
+      return;
+    }
+
+    this.logger.debug(&#x27;Received message&#x27;, {
+      clientId,
+      userId: client.userId,
+      type: message.type,
+      gameId: message.gameId,
+    });
+
+    switch (message.type) {
+      case &#x27;join&#x27;:
+        this.handleJoinGame(clientId, message);
+        break;
+      case &#x27;leave&#x27;:
+        this.handleLeaveGame(clientId);
+        break;
+      case &#x27;action&#x27;:
+        this.handleGameAction(clientId, message);
+        break;
+      case &#x27;ping&#x27;:
+        this.sendToClient(clientId, { type: &#x27;pong&#x27;, timestamp: Date.now() });
+        break;
+      default:
+        // Type narrowing ensures this is unreachable
+        this.logger.warn(&#x27;Unknown message type&#x27;, {
+          clientId,
+          type: message.type,
+        });
+        this.sendToClient(clientId, {
+          type: &#x27;error&#x27;,
+          data: { message: &#x60;Unknown message type: ${message.type}&#x60; },
+        });
+    }
+  }
+
+  /**
+   * Handle client joining a game room
+   */
+  private handleJoinGame(clientId: string, message: GameMessage): void {
+    const client &#x3D; this.clients.get(clientId);
+    if (!client || !message.gameId) {
+      return;
+    }
+
+    // Leave current game if in one
+    if (client.gameId) {
+      this.handleLeaveGame(clientId);
+    }
+
+    client.gameId &#x3D; message.gameId;
+
+    // Add to game room
+    if (!this.gameRooms.has(message.gameId)) {
+      this.gameRooms.set(message.gameId, new Set());
+    }
+    const room &#x3D; this.gameRooms.get(message.gameId);
+    if (room) {
+      room.add(clientId);
+    }
+
+    this.logger.info(&#x27;Client joined game&#x27;, {
+      clientId,
+      gameId: message.gameId,
+      roomSize: room?.size || 0,
+    });
+
+    this.sendToClient(clientId, {
+      type: &#x27;joined&#x27;,
+      gameId: message.gameId,
+      timestamp: Date.now(),
+    });
+
+    // Notify others in the room
+    this.broadcastToGame(
+      message.gameId,
+      {
+        type: &#x27;player-joined&#x27;,
+        data: { clientId },
+        timestamp: Date.now(),
+      },
+      clientId
+    );
+  }
+
+  /**
+   * Handle client leaving a game room
+   */
+  private handleLeaveGame(clientId: string): void {
+    const client &#x3D; this.clients.get(clientId);
+    if (!client || !client.gameId) {
+      return;
+    }
+
+    const gameId &#x3D; client.gameId;
+    const room &#x3D; this.gameRooms.get(gameId);
+    if (room) {
+      room.delete(clientId);
+      if (room.size &#x3D;&#x3D;&#x3D; 0) {
+        this.gameRooms.delete(gameId);
+      }
+    }
+
+    this.logger.info(&#x27;Client left game&#x27;, {
+      clientId,
+      gameId,
+      remainingPlayers: room?.size || 0,
+    });
+
+    // Notify others in the room
+    this.broadcastToGame(
+      gameId,
+      {
+        type: &#x27;player-left&#x27;,
+        data: { clientId },
+        timestamp: Date.now(),
+      },
+      clientId
+    );
+
+    client.gameId &#x3D; &#x27;&#x27;;
+  }
+
+  /**
+   * Handle game action from client
+   */
+  private handleGameAction(clientId: string, message: GameMessage): void {
+    const client &#x3D; this.clients.get(clientId);
+    if (!client || !client.gameId) {
+      this.sendToClient(clientId, {
+        type: &#x27;error&#x27;,
+        data: { message: &#x27;Not in a game&#x27; },
+      });
+      return;
+    }
+
+    this.logger.info(&#x27;Game action&#x27;, {
+      clientId,
+      gameId: client.gameId,
+      actionType: message.type,
+    });
+
+    // TODO: Process game action through game engine
+    // For now, just broadcast to other players
+    this.broadcastToGame(
+      client.gameId,
+      {
+        type: &#x27;game-update&#x27;,
+        gameId: client.gameId,
+        data: message.data,
+        timestamp: Date.now(),
+      },
+      clientId
+    );
+  }
+
+  /**
+   * Handle client disconnect
+   */
+  private handleDisconnect(clientId: string): void {
+    const client &#x3D; this.clients.get(clientId);
+    if (!client) {
+      return;
+    }
+
+    // Leave game room
+    if (client.gameId) {
+      this.handleLeaveGame(clientId);
+    }
+
+    this.clients.delete(clientId);
+
+    this.logger.info(&#x27;Client disconnected&#x27;, {
+      clientId,
+      totalClients: this.clients.size,
+    });
+  }
+
+  /**
+   * Send message to specific client
+   */
+  private sendToClient(clientId: string, message: GameMessage): void {
+    const client &#x3D; this.clients.get(clientId);
+    if (!client || client.socket.readyState !&#x3D;&#x3D; client.socket.OPEN) {
+      return;
+    }
+
+    try {
+      client.socket.send(JSON.stringify(message));
+    } catch (error) {
+      this.logger.error(&#x27;Error sending message to client&#x27;, {
+        clientId,
+        error: error instanceof Error ? (error as Error).message : String(error),
+      });
+    }
+  }
+
+  /**
+   * Broadcast message to all clients in a game
+   */
+  public broadcastToGame(gameId: string, message: GameMessage, excludeClientId?: string): void {
+    const room &#x3D; this.gameRooms.get(gameId);
+    if (!room) {
+      return;
+    }
+
+    for (const clientId of room) {
+      if (clientId !&#x3D;&#x3D; excludeClientId) {
+        this.sendToClient(clientId, message);
+      }
+    }
+  }
+
+  /**
+   * Broadcast message to all connected clients
+   */
+  public broadcast(message: GameMessage): void {
+    for (const clientId of this.clients.keys()) {
+      this.sendToClient(clientId, message);
+    }
+  }
+
+  /**
+   * Start ping interval to detect dead connections
+   */
+  private startPingInterval(): void {
+    this.pingInterval &#x3D; setInterval(() &#x3D;&gt; {
+      const now &#x3D; Date.now();
+
+      for (const [clientId, client] of this.clients.entries()) {
+        // Remove dead connections
+        if (now - client.lastPing &gt; this.CLIENT_TIMEOUT_MS) {
+          this.logger.warn(&#x27;Client timeout&#x27;, { clientId });
+          client.socket.terminate();
+          this.handleDisconnect(clientId);
+          continue;
+        }
+
+        // Ping active connections
+        if (client.socket.readyState &#x3D;&#x3D;&#x3D; client.socket.OPEN) {
+          client.socket.ping();
+        }
+      }
+    }, this.PING_INTERVAL_MS);
+  }
+
+  /**
+   * Generate unique client ID
+   */
+  private generateClientId(): string {
+    return &#x60;client_${Date.now()}_${Math.random().toString(36).slice(2, 11)}&#x60;;
+  }
+
+  /**
+   * Get statistics about connected clients
+   */
+  public getStats(): {
+    totalClients: number;
+    activeGames: number;
+    rooms: Record&lt;string, number&gt;;
+  } {
+    const rooms: Record&lt;string, number&gt; &#x3D; {};
+    for (const [gameId, clients] of this.gameRooms.entries()) {
+      rooms[gameId] &#x3D; clients.size;
+    }
+
+    return {
+      totalClients: this.clients.size,
+      activeGames: this.gameRooms.size,
+      rooms,
+    };
+  }
+
+  /**
+   * Close the WebSocket server (alias for shutdown for test compatibility)
+   */
+  public close(): void {
+    this.shutdown().catch(error &#x3D;&gt; {
+      this.logger.error(&#x27;Error during WebSocket server close&#x27;, {
+        error: error instanceof Error ? (error as Error).message : String(error),
+      });
+    });
+  }
+
+  /**
+   * Graceful shutdown
+   */
+  public async shutdown(): Promise&lt;void&gt; {
+    this.logger.info(&#x27;Shutting down WebSocket server&#x27;);
+
+    if (this.pingInterval) {
+      clearInterval(this.pingInterval);
+      this.pingInterval &#x3D; null;
+    }
+
+    // Close all client connections
+    for (const client of this.clients.values()) {
+      client.socket.close(1000, &#x27;Server shutting down&#x27;);
+    }
+
+    return new Promise&lt;void&gt;(resolve &#x3D;&gt; {
+      this.wss.close(() &#x3D;&gt; {
+        this.logger.info(&#x27;WebSocket server closed&#x27;);
+        resolve();
+      });
+    });
+  }
+}
+</code></pre>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'class';
+            var COMPODOC_CURRENT_PAGE_URL = 'WebSocketServer.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

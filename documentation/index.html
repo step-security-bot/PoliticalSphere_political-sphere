@@ -1,0 +1,692 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>political-sphere documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="./images/favicon.ico">
+	   <link rel="stylesheet" href="./styles/style.css">
+        <link rel="stylesheet" href="./styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="./" class="navbar-brand">political-sphere documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content readme">
+                   <div class="content-data">
+
+
+<h1>Political Sphere</h1>
+<p><a href="package.json"><img src="https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen" alt="Node.js" class="img-responsive"></a>
+<a href="docs/TODO.md"><img src="https://img.shields.io/badge/tests-in%20progress-yellow" alt="Tests" class="img-responsive"></a>
+<a href="https://codecov.io/gh/political-sphere/political-sphere"><img src="https://codecov.io/gh/political-sphere/political-sphere/branch/main/graph/badge.svg" alt="Coverage" class="img-responsive"></a>
+<a href="#project-status"><img src="https://img.shields.io/badge/audit-completed-green" alt="Audit" class="img-responsive"></a></p>
+<p>🌍 <strong>Political Sphere</strong> is an immersive online multiplayer political simulation platform inspired by the UK&#39;s parliamentary system. Dive into the heart of democracy where players draft legislation, engage in heated debates, forge alliances, and cast votes that shape a virtual nation&#39;s destiny.</p>
+<p>Experience the thrill of governance as your choices ripple through realistic simulations affecting the economy, public sentiment, and societal dynamics. Whether you&#39;re a seasoned strategist or a curious newcomer, Political Sphere offers an unparalleled journey into the intricacies of democratic decision-making.</p>
+<p>Our mission: Deliver captivating gameplay that authentically mirrors the chaos and brilliance of real-world politics, while fostering civic understanding through experiential learning. No agendas, no biases—just pure, consequence-driven democracy in action.</p>
+<h3>Project Characteristics</h3>
+<ul>
+<li><strong>Development Model</strong>: Solo developer project leveraging AI systems as collaborative coding partners</li>
+<li><strong>Scale</strong>: Nx monorepo with 12+ applications and 17+ shared libraries</li>
+<li><strong>Architecture</strong>: Microservices with domain-driven design and event-driven patterns</li>
+<li><strong>Technology Focus</strong>: TypeScript-first with strict type safety, modern React patterns, and high-performance Node.js backend</li>
+<li><strong>Quality Standards</strong>: Enterprise-grade testing (80%+ coverage), security (zero-trust), and accessibility (WCAG 2.2 AA+)</li>
+<li><strong>Documentation</strong>: Comprehensive documentation across 12+ structured sections with 100+ documents</li>
+<li><strong>Governance</strong>: Constitutional framework ensuring democratic neutrality and ethical AI use</li>
+<li><strong>CI/CD</strong>: Automated testing, security scanning, and deployment with quality gates</li>
+<li><strong>Observability</strong>: Structured logging, distributed tracing (OpenTelemetry), and metrics (Prometheus)</li>
+</ul>
+<p><strong>AI Integration:</strong></p>
+<ul>
+<li><strong>🤖 Development*</strong> AI assistants are used for the vast majority of development tasks — including drafting code, generating documentation, and creating tests. This use of AI is experimental and operates within evolving guardrails that focus on governance, compliance, and security. Because of the experimental nature of AI, unexpected or incorrect outputs may occur, and every AI-generated change is monitored, reviewed, and ultimately approved by a human developer.</li>
+</ul>
+<p>The review process prioritises iteration over perfection. At times, code that contains known issues or incomplete logic is intentionally committed to the codebase — not as a final implementation, but as a checkpoint to capture progress and context. These issues are then revisited at the appropriate stage in development, allowing the project to maintain momentum. The sole human developer uses structured prompts to encourage the AI to identify, reflect on, and correct its own mistakes as part of the iterative review process. External validation tools (linters, type checkers, test suites, and security scanners) are used wherever possible to verify AI-generated work.</p>
+<ul>
+<li><strong>🎮 Gameplay*</strong> AI-driven NPCs participate in voting, providing realistic opposition and filling empty parliamentary seats using locally-hosted Ollama models</li>
+<li><strong>🏛️ Governance*</strong> Constitutional framework ensures AI systems cannot manipulate political outcomes or violate democratic principles (see <code>docs/02-governance/</code>)</li>
+<li><strong>🔍 Transparency*</strong> All AI decisions are auditable, explainable, and subject to human oversight with comprehensive logging</li>
+</ul>
+<h2>Table of Contents</h2>
+<ul>
+<li><a href="#project-status">Project Status</a></li>
+<li><a href="#features">Features</a></li>
+<li><a href="#installation">Installation</a></li>
+<li><a href="#usage">Usage</a></li>
+<li><a href="#development">Development</a></li>
+<li><a href="#testing">Testing</a></li>
+<li><a href="#contributing">Contributing</a></li>
+<li><a href="#documentation">Documentation</a></li>
+<li><a href="#license">License</a></li>
+</ul>
+<h2>Project Status</h2>
+<table class="table table-bordered compodoc-table">
+<thead>
+<tr>
+<th>Category</th>
+<th>Status</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Unit Tests</strong></td>
+<td>🔄 In Progress</td>
+<td>~130 tests passing, coverage improving</td>
+</tr>
+<tr>
+<td><strong>Test Coverage</strong></td>
+<td>🔄 In Progress</td>
+<td>Target: 80%+ critical paths</td>
+</tr>
+<tr>
+<td><strong>Security Audit</strong></td>
+<td>✅ Completed</td>
+<td>31 issues identified, remediation in progress</td>
+</tr>
+<tr>
+<td><strong>CI/CD Pipeline</strong></td>
+<td>✅ Active</td>
+<td>Automated testing and security scans</td>
+</tr>
+<tr>
+<td><strong>Production Ready</strong></td>
+<td>🚧 In Development</td>
+<td>MVP features implemented, hardening ongoing</td>
+</tr>
+</tbody>
+</table>
+<h2>✨ Features</h2>
+<h3>Core Gameplay Features</h3>
+<ul>
+<li>🏛️ <strong>Parliamentary Democracy Simulation</strong>: Full UK-inspired parliamentary system with Westminster-style procedures, Question Time, and legislative processes</li>
+<li>🗳️ <strong>Electoral System</strong>: FPTP and proportional representation voting mechanisms with constituency simulation</li>
+<li>📜 <strong>Legislative Framework</strong>: Draft, debate, amend, and vote on bills with realistic parliamentary procedures</li>
+<li>🤝 <strong>Coalition Building</strong>: Form parties, create coalitions, negotiate deals, and manage political relationships</li>
+<li>📊 <strong>Dynamic Political Landscape</strong>: Public opinion polls, media influence, and real-time reputation systems</li>
+<li>🎭 <strong>Role Progression</strong>: Start as backbencher, rise to party leadership, cabinet positions, or Prime Minister</li>
+<li>💼 <strong>Government Formation</strong>: Cabinet appointments, shadow cabinet, ministerial responsibilities</li>
+</ul>
+<h3>Technical Excellence</h3>
+<ul>
+<li>🧪 <strong>Comprehensive Testing Infrastructure</strong>:<ul>
+<li>Unit tests (Vitest) with 80%+ coverage targets</li>
+<li>Integration tests with Testcontainers for database/service testing</li>
+<li>E2E tests (Playwright) for critical user journeys</li>
+<li>Accessibility tests (axe-core, pa11y) for WCAG 2.2 AA+ validation</li>
+<li>Security tests (OWASP ZAP, Snyk) integrated in CI/CD</li>
+<li>Performance tests (k6) for load testing and benchmarking</li>
+</ul>
+</li>
+<li>🔒 <strong>Zero-Trust Security Architecture</strong>:<ul>
+<li>End-to-end encryption (TLS 1.3+ in transit, AES-256-GCM at rest)</li>
+<li>JWT authentication with secure refresh token rotation</li>
+<li>Input validation and sanitization (Zod schemas)</li>
+<li>Rate limiting and DDoS protection</li>
+<li>Comprehensive audit logging with tamper-evident trails</li>
+<li>OWASP ASVS v5.0.0 compliance</li>
+</ul>
+</li>
+<li>♿ <strong>Accessibility First</strong>:<ul>
+<li>WCAG 2.2 AA+ compliance across all interfaces</li>
+<li>Full keyboard navigation support</li>
+<li>Screen reader optimization with semantic HTML and ARIA labels</li>
+<li>High contrast modes and customizable text scaling</li>
+<li>Automated accessibility testing in CI pipeline</li>
+</ul>
+</li>
+<li>🤖 <strong>Ethical AI Integration</strong>:<ul>
+<li>Constitutional governance boundaries preventing political manipulation</li>
+<li>AI NPCs powered by locally-hosted Ollama models (privacy-first)</li>
+<li>Transparent, explainable AI decisions with comprehensive audit logs</li>
+<li>Human-in-the-loop oversight for critical political content</li>
+<li>Bias monitoring and fairness metrics</li>
+</ul>
+</li>
+</ul>
+<h3>Developer Experience</h3>
+<ul>
+<li>📦 <strong>Modern Monorepo</strong>: Nx workspace with intelligent build caching and affected command support</li>
+<li>🔄 <strong>Hot Module Replacement</strong>: Instant feedback with Vite for frontend and tsx watch for backend</li>
+<li>🎯 <strong>TypeScript Strict Mode</strong>: Full type safety across the entire codebase</li>
+<li>📝 <strong>Comprehensive Documentation</strong>: 100+ documents across 12 structured sections</li>
+<li>🛠️ <strong>Developer Tools</strong>:<ul>
+<li>AI-assisted development with Model Context Protocol (MCP) integration</li>
+<li>Automated code generation and scaffolding</li>
+<li>Performance monitoring and optimization tools</li>
+<li>Database migrations and seeding scripts</li>
+<li>Visual regression testing</li>
+</ul>
+</li>
+</ul>
+<h3>Infrastructure &amp; Operations</h3>
+<ul>
+<li>🐳 <strong>Containerized Development</strong>: Docker Compose for consistent local environments</li>
+<li>☸️ <strong>Kubernetes Ready</strong>: Helm charts and manifests for production deployment</li>
+<li>📊 <strong>Observability Built-In</strong>:<ul>
+<li>Structured JSON logging with Pino</li>
+<li>Distributed tracing with OpenTelemetry</li>
+<li>Metrics collection with Prometheus</li>
+<li>Grafana dashboards for system health</li>
+<li>Alert management with configurable thresholds</li>
+</ul>
+</li>
+<li>🚀 <strong>GitOps Deployment</strong>: ArgoCD for declarative, version-controlled deployments</li>
+<li>🔐 <strong>Secrets Management</strong>: Secure handling with AWS Secrets Manager / HashiCorp Vault</li>
+<li>📈 <strong>Performance Optimization</strong>:<ul>
+<li>Redis caching for frequently accessed data</li>
+<li>PostgreSQL query optimization and indexing</li>
+<li>CDN integration for static assets</li>
+<li>Load balancing with health checks</li>
+</ul>
+</li>
+</ul>
+<h2>Installation</h2>
+<h3>Prerequisites</h3>
+<ul>
+<li><strong>Node.js</strong>: 18.0.0 or higher (LTS recommended)</li>
+<li><strong>npm</strong>: Latest version (comes with Node.js)</li>
+<li><strong>Docker &amp; Docker Compose</strong>: Recommended for full development environment</li>
+<li><strong>Git</strong>: For version control</li>
+</ul>
+<h3>Setup</h3>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-bash"># Clone the repository
+git clone https://github.com/your-org/political-sphere.git
+cd political-sphere
+
+# Install dependencies
+npm install
+
+# Optional: Run health checks
+npm run preflight</code></pre></div><h2>Quick Start</h2>
+<p>For the impatient:</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-bash">git clone https://github.com/your-org/political-sphere.git
+cd political-sphere
+npm install
+npm run dev</code></pre></div><p>Visit <code>http://localhost:3000</code> to start exploring the political simulation.</p>
+<h2>Usage</h2>
+<h3>Development Servers</h3>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-bash"># Start all services with Docker (recommended)
+npm run dev
+
+# Or start individual services
+npm run dev:api          # Start API server with hot reload
+npm run dev:web          # Start frontend with Vite dev server
+npm run dev:game-server  # Start game simulation server</code></pre></div><h3>Build</h3>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-bash">npm run build:web        # Build the frontend for production
+npm run build:api        # Build the API (TypeScript compilation)</code></pre></div><h3>AI-Assisted Development</h3>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-bash">npm run ai:improve       # AI code review and suggestions
+npm run ai:status        # Check AI assistant status
+npm run ai:chat          # Interactive AI assistant</code></pre></div><h2>Development</h2>
+<h3>Available Commands</h3>
+<ul>
+<li><code>npm run lint</code> — ESLint with auto-fix and validation</li>
+<li><code>npm run format</code> — Prettier code formatting</li>
+<li><code>npm run type-check</code> — TypeScript type checking</li>
+<li><code>npm run test</code> — Run all unit tests</li>
+<li><code>npm run test:coverage</code> — Generate test coverage reports</li>
+<li><code>npm run test:smoke</code> — Run critical path E2E tests</li>
+<li><code>npm run audit</code> — Security and compliance scanning</li>
+<li><code>npm run perf:benchmark</code> — Performance benchmarking</li>
+</ul>
+<h3>Project Structure</h3>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-none">apps/                    # Applications
+├── dev/                 # Development environment, tools, and sandbox
+├── game-server/         # Game simulation engine (TypeScript + Node.js)
+
+libs/                    # Shared libraries and utilities (TBD)
+
+docs/                    # Documentation
+├── ...                  # Various guides and architecture docs
+
+tools/                   # Development tools and automation
+├── scripts/             # Build, test, and utility scripts
+├── mcp-servers/         # MCP server implementations
+├── monitoring/          # Performance and system monitoring
+└── docker-compose.yml   # Development environment setup
+
+data/                    # Test data, fixtures, and seeds
+├── fixtures/            # Test scenarios and user data
+├── datasets/            # Data catalogs
+└── runtime/             # Runtime data storage
+
+prisma/                  # Database schema and migrations
+
+.github/                 # GitHub workflows and templates
+
+ai/                      # AI-assisted development tools
+
+assets/                  # Static assets and resources
+
+config/                  # Configuration files
+
+reports/                 # Generated reports and analytics</code></pre></div><h2>Testing</h2>
+<p>Run comprehensive tests:</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-bash">npm run test              # All unit tests
+npm run test:coverage     # Unit tests with coverage report
+npm run test:smoke        # Critical path E2E tests
+npm run test:api          # API-specific unit tests
+npm run test:frontend     # Frontend component tests</code></pre></div><h3>Test Coverage Goals</h3>
+<ul>
+<li><strong>Unit Tests</strong>: 80%+ coverage for critical business logic</li>
+<li><strong>Integration Tests</strong>: API endpoints and database interactions</li>
+<li><strong>E2E Tests</strong>: Critical user journeys and accessibility</li>
+<li><strong>Security Tests</strong>: Input validation and authentication flows</li>
+</ul>
+<h2>Contributing</h2>
+<p>See <a href=".blackboxrules">.blackboxrules</a> for governance rules.</p>
+<h3>Development Workflow</h3>
+<ol>
+<li><strong>Fork and clone</strong> the repository</li>
+<li><strong>Create a feature branch</strong>: <code>git checkout -b feature/your-feature-name</code></li>
+<li><strong>Follow conventional commits</strong>: Use <code>feat:</code>, <code>fix:</code>, <code>docs:</code>, <code>test:</code> prefixes</li>
+<li><strong>Ensure quality gates pass</strong>:<ul>
+<li><code>npm run lint</code> - Code quality</li>
+<li><code>npm run type-check</code> - TypeScript validation</li>
+<li><code>npm run test</code> - Unit tests</li>
+<li><code>npm run audit</code> - Security scanning</li>
+</ul>
+</li>
+<li><strong>Submit a PR</strong> with comprehensive description and link to any related issues</li>
+</ol>
+<h3>Governance Rules</h3>
+<ul>
+<li><strong>Democratic Integrity</strong>: No manipulation of political outcomes</li>
+<li><strong>Security First</strong>: Zero-trust principles, input validation, no secrets in code</li>
+<li><strong>Accessibility</strong>: WCAG 2.2 AA compliance mandatory</li>
+<li><strong>Testing</strong>: Comprehensive automated testing required</li>
+<li><strong>AI Ethics</strong>: AI cannot influence political outcomes or bias results</li>
+</ul>
+<h2>🧠 Development Philosophy</h2>
+<p>Political Sphere embraces a <strong>human-AI collaborative development model</strong> where AI accelerates progress while maintaining human oversight and ethical boundaries. Our core principles:</p>
+<ul>
+<li><strong>Iterative Excellence</strong>: Prioritize momentum over perfection; commit working code early and refine iteratively</li>
+<li><strong>Ethical AI Use</strong>: AI assists development but never compromises democratic integrity or security</li>
+<li><strong>Open Governance</strong>: All decisions follow transparent, documented processes with community input</li>
+<li><strong>Quality Assurance</strong>: Comprehensive testing, security audits, and accessibility checks are non-negotiable</li>
+<li><strong>Educational Impact</strong>: Build systems that teach democratic principles through immersive experience</li>
+</ul>
+<h2>Documentation</h2>
+<h3>Architecture &amp; Design</h3>
+<ul>
+<li><a href="docs/STRUCTURE.md">System Architecture</a></li>
+<li><a href="docs/04-architecture/api.md">API Documentation</a></li>
+<li><a href="docs/06-security-and-risk/SECURITY.md">Security Guidelines</a></li>
+</ul>
+<h3>Development Guides</h3>
+<ul>
+<li><a href="docs/05-engineering-and-devops/coding-standards-typescript-react.md">Coding Standards</a></li>
+<li><a href="docs/05-engineering-and-devops/testing/">Testing Guide</a></li>
+<li><a href="docs/07-ai-and-simulation/ai-governance.md">AI Governance</a></li>
+</ul>
+<h3>Project Management</h3>
+<ul>
+<li><a href="docs/TODO.md">TODO List</a></li>
+<li><a href="docs/04-architecture/adr/">ADR Index</a></li>
+</ul>
+<h2>System Requirements</h2>
+<h3>Minimum Requirements</h3>
+<ul>
+<li><strong>Node.js</strong>: 18.0.0 or higher</li>
+<li><strong>Memory</strong>: 4GB RAM</li>
+<li><strong>Storage</strong>: 2GB free space</li>
+<li><strong>OS</strong>: macOS 12+, Windows 10+, Linux (Ubuntu 20.04+)</li>
+</ul>
+<h3>Recommended for Development</h3>
+<ul>
+<li><strong>Node.js</strong>: 20.x LTS</li>
+<li><strong>Memory</strong>: 8GB RAM</li>
+<li><strong>Storage</strong>: 5GB free space</li>
+<li><strong>Docker</strong>: For full development environment</li>
+</ul>
+<h2>Architecture Overview</h2>
+<p>Political Sphere is built as an <strong>Nx monorepo</strong> with <strong>microservices architecture</strong> and <strong>domain-driven design</strong> principles:</p>
+<h3>Core Technology Stack</h3>
+<h4>Frontend Layer</h4>
+<ul>
+<li><strong>Framework</strong>: React 19 + TypeScript (strict mode)</li>
+<li><strong>Build Tool</strong>: Vite with ESM support</li>
+<li><strong>State Management</strong>: Redux Toolkit + RTK Query</li>
+<li><strong>Styling</strong>: Tailwind CSS with custom design system</li>
+<li><strong>Module Federation</strong>: Micro-frontends for independent deployability</li>
+<li><strong>Accessibility</strong>: WCAG 2.2 AA+ compliance with automated testing (axe-core)</li>
+<li><strong>Testing</strong>: Vitest + Testing Library + Playwright E2E</li>
+</ul>
+<h4>Backend Layer</h4>
+<ul>
+<li><strong>Runtime</strong>: Node.js 22+ (LTS)</li>
+<li><strong>Framework</strong>: Fastify (lightweight, high-performance REST/GraphQL APIs)</li>
+<li><strong>Language</strong>: TypeScript with strict type checking</li>
+<li><strong>API Style</strong>: REST + GraphQL with OpenAPI/JSON Schema validation</li>
+<li><strong>Authentication</strong>: JWT with secure session management and refresh tokens</li>
+<li><strong>Validation</strong>: Zod schemas for runtime type safety</li>
+</ul>
+<h4>Data Layer</h4>
+<ul>
+<li><strong>Primary Database</strong>: PostgreSQL 15+ with Prisma ORM</li>
+<li><strong>Caching</strong>: Redis for sessions, pub/sub, and data caching</li>
+<li><strong>Search</strong>: PostgreSQL full-text search (with future Elasticsearch consideration)</li>
+<li><strong>Storage</strong>: Local file storage (S3-compatible for production)</li>
+<li><strong>Migrations</strong>: Prisma migrations with version control</li>
+</ul>
+<h4>Game Engine</h4>
+<ul>
+<li><strong>Simulation Engine</strong>: Custom deterministic simulation in TypeScript</li>
+<li><strong>AI NPCs</strong>: Ollama-powered local AI models for realistic political opponents</li>
+<li><strong>Event System</strong>: NATS/Redis pub/sub for real-time game events</li>
+<li><strong>State Management</strong>: PostgreSQL with transactional consistency</li>
+</ul>
+<h4>Infrastructure &amp; DevOps</h4>
+<ul>
+<li><strong>Containerization</strong>: Docker + Docker Compose for local development</li>
+<li><strong>Orchestration</strong>: Kubernetes with Helm charts (production)</li>
+<li><strong>IaC</strong>: Terraform for infrastructure provisioning</li>
+<li><strong>GitOps</strong>: ArgoCD for declarative deployments</li>
+<li><strong>CI/CD</strong>: GitHub Actions with comprehensive quality gates</li>
+<li><strong>Monitoring</strong>: Prometheus + Grafana + OpenTelemetry for observability</li>
+</ul>
+<h4>Testing Infrastructure</h4>
+<ul>
+<li><strong>Unit Testing</strong>: Vitest with 80%+ coverage targets</li>
+<li><strong>Integration Testing</strong>: Testcontainers for database/service testing</li>
+<li><strong>E2E Testing</strong>: Playwright for critical user journeys</li>
+<li><strong>Accessibility Testing</strong>: axe-core + pa11y for WCAG validation</li>
+<li><strong>Security Testing</strong>: OWASP ZAP, npm audit, Snyk</li>
+<li><strong>Performance Testing</strong>: k6 for load testing and benchmarking</li>
+</ul>
+<h4>Security &amp; Compliance</h4>
+<ul>
+<li><strong>Architecture</strong>: Zero-trust security model with principle of least privilege</li>
+<li><strong>Encryption</strong>: TLS 1.3+ in transit, AES-256-GCM at rest</li>
+<li><strong>Secrets Management</strong>: AWS Secrets Manager / HashiCorp Vault</li>
+<li><strong>Audit Logging</strong>: Tamper-evident structured logs with retention policies</li>
+<li><strong>Compliance</strong>: GDPR-first design, OWASP ASVS v5.0.0, NIST guidelines</li>
+</ul>
+<h3>Architectural Patterns</h3>
+<ul>
+<li><strong>Microservices</strong>: Independently deployable services with clear bounded contexts</li>
+<li><strong>Domain-Driven Design</strong>: Rich domain models with ubiquitous language</li>
+<li><strong>CQRS</strong>: Command-Query separation for complex domains (elections, legislation)</li>
+<li><strong>Event-Driven</strong>: Asynchronous communication via message queues and pub/sub</li>
+<li><strong>API Gateway</strong>: Centralized API routing with rate limiting and authentication</li>
+<li><strong>Repository Pattern</strong>: Data access abstraction with Prisma</li>
+<li><strong>Factory Pattern</strong>: Test data generation with Fishery + Faker</li>
+</ul>
+<h3>Monorepo Structure</h3>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-none">apps/           # 12+ deployable applications
+  ├── api/              # Main REST/GraphQL API service
+  ├── web/              # Primary React web application
+  ├── game-server/      # Real-time game simulation engine
+  ├── worker/           # Background job processing
+  ├── shell/            # Module federation host
+  ├── *-remote/         # Micro-frontend applications
+  └── infrastructure/   # IaC and deployment configurations
+
+libs/           # 17+ shared libraries
+  ├── shared/           # Common utilities and types
+  ├── platform/         # Platform services (auth, API client, state)
+  ├── ui/               # Design system and React components
+  ├── game-engine/      # Game logic and simulation
+  ├── domain-*/         # Domain-specific business logic
+  ├── data-*/           # Data access layers
+  └── testing/          # Test utilities and factories
+
+docs/           # Comprehensive documentation (12+ sections)
+tools/          # Development tools and scripts
+config/         # Configuration files</code></pre></div><h3>Key Design Principles</h3>
+<ol>
+<li><strong>Democratic Integrity</strong>: Absolute political neutrality with constitutional governance</li>
+<li><strong>Security First</strong>: Zero-trust model, encryption everywhere, comprehensive auditing</li>
+<li><strong>Accessibility Mandatory</strong>: WCAG 2.2 AA+ compliance, keyboard navigation, screen reader support</li>
+<li><strong>Test-Driven Quality</strong>: 80%+ coverage, automated testing at all levels</li>
+<li><strong>Observability Built-In</strong>: Structured logging, distributed tracing, metrics collection</li>
+<li><strong>Privacy by Design</strong>: Data minimization, GDPR compliance, user data sovereignty</li>
+</ol>
+<h2>API Overview</h2>
+<ul>
+<li><strong>Base URL</strong>: <code>http://localhost:3001</code> (development)</li>
+<li><strong>Authentication</strong>: JWT with refresh tokens</li>
+<li><strong>Rate Limiting</strong>: Configurable per endpoint</li>
+<li><strong>API Documentation</strong>: <a href="docs/04-architecture/api.md">View API Documentation</a></li>
+</ul>
+<h3>Key Endpoints</h3>
+<ul>
+<li><code>GET /health</code> - Service health check</li>
+<li><code>POST /auth/login</code> - User authentication</li>
+<li><code>GET /votes</code> - List active votes and proposals</li>
+<li><code>POST /votes/{voteId}/cast</code> - Cast votes on proposals</li>
+<li><code>GET /parties</code> - View political parties</li>
+<li><code>POST /parties</code> - Create political parties</li>
+<li><code>GET /news</code> - Browse news articles</li>
+</ul>
+<h2>Deployment</h2>
+<h3>Local Development</h3>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-bash">npm run dev              # Start all services with Docker</code></pre></div><h3>Production</h3>
+<ul>
+<li>Kubernetes manifests in <code>apps/infrastructure/</code></li>
+<li>GitOps deployment via ArgoCD</li>
+<li>Automated CI/CD pipelines with security scanning</li>
+</ul>
+<h2>FAQ</h2>
+<h3>What is Political Sphere?</h3>
+<p>Political Sphere is a multiplayer simulation game that lets players experience democratic governance through parliamentary procedures, policy-making, and coalition-building in a virtual UK-inspired political system.</p>
+<h3>How does AI integration work?</h3>
+<p>AI assistants help with development tasks and power in-game NPCs for realistic opposition. All AI systems are governed by strict ethical frameworks to ensure neutrality and prevent manipulation of political outcomes.</p>
+<h3>Is the game free?</h3>
+<p>Yes, Political Sphere is open-source and free to play. The project focuses on educational and entertainment value rather than monetization.</p>
+<h3>Can I contribute?</h3>
+<p>Absolutely! See the Contributing section above and our <a href=".blackboxrules">.blackboxrules</a> for governance guidelines. We welcome contributions that align with our principles of democratic integrity and security.</p>
+<h3>What technologies are used?</h3>
+<p>The project is built with Node.js, TypeScript, React, and various modern web technologies. It uses an Nx monorepo structure for scalable development.</p>
+<h2>Troubleshooting</h2>
+<h3>Common Issues</h3>
+<p><strong>API won&#39;t start</strong></p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-bash"># Check Node.js version
+node --version  # Should be 18+
+
+# Clear cache and reinstall
+npm run perf:cache-clear
+npm install</code></pre></div><p><strong>Tests failing</strong></p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-bash"># Clear test cache
+npm run perf:cache-clear
+
+# Run specific failing tests
+npm run test:api</code></pre></div><p><strong>Docker issues</strong></p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-bash"># Check Docker resources
+docker system df
+
+# Clean up containers
+npm run cleanup</code></pre></div><p><strong>Performance issues</strong></p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-bash"># Clear all caches
+npm run perf:full
+
+# Check system resources
+npm run perf:check</code></pre></div><p><strong>Database connection issues</strong></p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-bash"># Check database status
+npm run dev  # Start all services
+
+# Reset database
+npm run seed:dev</code></pre></div><p><strong>Build failures</strong></p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-bash"># Clear build cache
+npm run perf:cache-clear
+
+# Clean and rebuild
+rm -rf node_modules dist
+npm install
+npm run build</code></pre></div><h2>License</h2>
+<p>All Rights Reserved.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 0;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'readme';
+            var COMPODOC_CURRENT_PAGE_URL = 'index.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="./js/libs/custom-elements.min.js"></script>
+       <script src="./js/libs/lit-html.js"></script>
+
+       <script src="./js/menu-wc.js" defer></script>
+       <script nomodule src="./js/menu-wc_es5.js" defer></script>
+
+       <script src="./js/libs/bootstrap-native.js"></script>
+
+       <script src="./js/libs/es6-shim.min.js"></script>
+       <script src="./js/libs/EventDispatcher.js"></script>
+       <script src="./js/libs/promise.min.js"></script>
+
+       <script src="./js/compodoc.js"></script>
+
+       <script src="./js/tabs.js"></script>
+       <script src="./js/menu.js"></script>
+       <script src="./js/libs/clipboard.min.js"></script>
+       <script src="./js/libs/prism.js"></script>
+       <script src="./js/sourceCode.js"></script>
+          <script src="./js/search/search.js"></script>
+          <script src="./js/search/lunr.min.js"></script>
+          <script src="./js/search/search-lunr.js"></script>
+          <script src="./js/search/search_index.js"></script>
+       <script src="./js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

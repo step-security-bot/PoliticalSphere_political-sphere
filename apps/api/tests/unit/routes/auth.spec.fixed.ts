@@ -1,8 +1,8 @@
-import express from 'express';
+import express, { type Express } from 'express';
 import request from 'supertest';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import authRoutes from '../../routes/auth.js';
+import authRoutes from '../../../src/routes/auth';
 
 const bcryptMock = { hash: vi.fn(), compare: vi.fn() };
 const jwtMock = { sign: vi.fn() };
@@ -31,7 +31,7 @@ vi.mock('../../logger.js', () => ({
 }));
 
 describe('auth routes', () => {
-  let app;
+  let app: Express;
 
   beforeEach(() => {
     vi.clearAllMocks();
@@ -151,6 +151,195 @@ describe('auth routes', () => {
     expect(response.body).toEqual({
       success: true,
       message: 'Logged out successfully',
+    });
+  });
+
+  describe('SQL Injection Protection', () => {
+    it('should reject registration with SQL injection in email (single quote)', async () => {
+      const response = await request(app).post('/auth/register').send({
+        username: 'testuser',
+        email: "test@example.com' OR '1'='1",
+        password: 'securepassword123',
+      });
+
+      expect(response.status).toBe(400);
+      expect(response.body.success).toBe(false);
+      expect(response.body.details[0].field).toBe('email');
+      expect(response.body.details[0].message).toBe('Invalid email address');
+    });
+
+    it('should reject registration with SQL injection in email (semicolon)', async () => {
+      const response = await request(app).post('/auth/register').send({
+        username: 'testuser',
+        email: 'test@example.com; DROP TABLE users;',
+        password: 'securepassword123',
+      });
+
+      expect(response.status).toBe(400);
+      expect(response.body.success).toBe(false);
+      expect(response.body.details[0].field).toBe('email');
+      expect(response.body.details[0].message).toBe('Invalid email address');
+    });
+
+    it('should reject registration with SQL injection in email (double dash)', async () => {
+      const response = await request(app).post('/auth/register').send({
+        username: 'testuser',
+        email: 'test@example.com--',
+        password: 'securepassword123',
+      });
+
+      expect(response.status).toBe(400);
+      expect(response.body.success).toBe(false);
+      expect(response.body.details[0].field).toBe('email');
+      expect(response.body.details[0].message).toBe('Invalid email address');
+    });
+
+    it('should reject registration with SQL injection in email (backslash)', async () => {
+      const response = await request(app).post('/auth/register').send({
+        username: 'testuser',
+        email: 'test@example.com\\',
+        password: 'securepassword123',
+      });
+
+      expect(response.status).toBe(400);
+      expect(response.body.success).toBe(false);
+      expect(response.body.details[0].field).toBe('email');
+      expect(response.body.details[0].message).toBe('Invalid email address');
+    });
+
+    it('should reject login with SQL injection in email', async () => {
+      const response = await request(app).post('/auth/login').send({
+        email: "test@example.com' OR '1'='1",
+        password: 'password123',
+      });
+
+      expect(response.status).toBe(400);
+      expect(response.body.success).toBe(false);
+      expect(response.body.details[0].field).toBe('email');
+      expect(response.body.details[0].message).toBe('Invalid email address');
+    });
+  });
+
+  describe('Email Validation Edge Cases', () => {
+    it('should reject registration with email containing spaces', async () => {
+      const response = await request(app).post('/auth/register').send({
+        username: 'testuser',
+        email: 'test @example.com',
+        password: 'securepassword123',
+      });
+
+      expect(response.status).toBe(400);
+      expect(response.body.success).toBe(false);
+      expect(response.body.details[0].field).toBe('email');
+    });
+
+    it('should reject registration with email missing @ symbol', async () => {
+      const response = await request(app).post('/auth/register').send({
+        username: 'testuser',
+        email: 'testexample.com',
+        password: 'securepassword123',
+      });
+
+      expect(response.status).toBe(400);
+      expect(response.body.success).toBe(false);
+      expect(response.body.details[0].field).toBe('email');
+    });
+
+    it('should reject registration with email missing domain', async () => {
+      const response = await request(app).post('/auth/register').send({
+        username: 'testuser',
+        email: 'test@',
+        password: 'securepassword123',
+      });
+
+      expect(response.status).toBe(400);
+      expect(response.body.success).toBe(false);
+      expect(response.body.details[0].field).toBe('email');
+    });
+
+    it('should reject registration with email having consecutive dots', async () => {
+      const response = await request(app).post('/auth/register').send({
+        username: 'testuser',
+        email: 'test..user@example.com',
+        password: 'securepassword123',
+      });
+
+      expect(response.status).toBe(400);
+      expect(response.body.success).toBe(false);
+      expect(response.body.details[0].field).toBe('email');
+    });
+
+    it('should reject registration with email starting with dot', async () => {
+      const response = await request(app).post('/auth/register').send({
+        username: 'testuser',
+        email: '.test@example.com',
+        password: 'securepassword123',
+      });
+
+      expect(response.status).toBe(400);
+      expect(response.body.success).toBe(false);
+      expect(response.body.details[0].field).toBe('email');
+    });
+
+    it('should reject registration with email ending with dot', async () => {
+      const response = await request(app).post('/auth/register').send({
+        username: 'testuser',
+        email: 'test.@example.com',
+        password: 'securepassword123',
+      });
+
+      expect(response.status).toBe(400);
+      expect(response.body.success).toBe(false);
+      expect(response.body.details[0].field).toBe('email');
+    });
+
+    it('should reject registration with overly long email', async () => {
+      const longEmail = `${'a'.repeat(250)}@example.com`; // Exceeds 255 char limit
+      const response = await request(app).post('/auth/register').send({
+        username: 'testuser',
+        email: longEmail,
+        password: 'securepassword123',
+      });
+
+      expect(response.status).toBe(400);
+      expect(response.body.success).toBe(false);
+      expect(response.body.details[0].field).toBe('email');
+    });
+
+    it('should accept registration with valid email containing plus sign', async () => {
+      bcryptMock.hash.mockResolvedValue('hashed-password');
+      mockUsersStore.create.mockResolvedValue({
+        id: 'user-123',
+        username: 'testuser',
+        email: 'test+tag@example.com',
+      });
+
+      const response = await request(app).post('/auth/register').send({
+        username: 'testuser',
+        email: 'test+tag@example.com',
+        password: 'securepassword123',
+      });
+
+      expect(response.status).toBe(201);
+      expect(response.body.success).toBe(true);
+    });
+
+    it('should accept registration with valid email containing underscore', async () => {
+      bcryptMock.hash.mockResolvedValue('hashed-password');
+      mockUsersStore.create.mockResolvedValue({
+        id: 'user-123',
+        username: 'testuser',
+        email: 'test_user@example.com',
+      });
+
+      const response = await request(app).post('/auth/register').send({
+        username: 'testuser',
+        email: 'test_user@example.com',
+        password: 'securepassword123',
+      });
+
+      expect(response.status).toBe(201);
+      expect(response.body.success).toBe(true);
     });
   });
 });

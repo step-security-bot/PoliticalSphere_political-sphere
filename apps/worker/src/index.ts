@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 // Prefer the shared telemetry helper so the worker uses a single source of truth.
 // Fall back to a lightweight local logger if the shared logger cannot be imported.
 import { startTelemetry, getLogger } from '@political-sphere/shared';
@@ -9,33 +10,36 @@ interface Logger {
   error: (msg: string, meta?: Record<string, unknown>) => void;
 }
 
-import { Summary } from './aggregator';
-
-try {
-  // startTelemetry returns a Promise that resolves when the SDK is started
-  // We don't fail the worker startup if telemetry fails, but we try to initialize it.
-  await startTelemetry({
-    serviceName: 'political-sphere-worker',
-    serviceVersion: process.env.APP_VERSION || '0.0.0',
-    environment: process.env.NODE_ENV || 'development',
-  });
-} catch (err) {
-  // Telemetry is best-effort in dev; log the issue and continue
-  const tempLogger: Logger = {
-    info: (msg, meta) => console.log(JSON.stringify({ level: 'INFO', message: msg, ...meta })),
-    warn: (msg, meta) => console.warn(JSON.stringify({ level: 'WARN', message: msg, ...meta })),
-    error: (msg, meta) => console.error(JSON.stringify({ level: 'ERROR', message: msg, ...meta })),
-  };
-  tempLogger.error('Shared telemetry initialization failed (continuing)', {
-    error: (err as Error)?.message ?? err,
-  });
-}
+// Wrap top-level await in async IIFE to ensure compatibility
+(async () => {
+  try {
+    // startTelemetry returns a Promise that resolves when the SDK is started
+    // We don't fail the worker startup if telemetry fails, but we try to initialize it.
+    await startTelemetry({
+      serviceName: 'political-sphere-worker',
+      serviceVersion: process.env.APP_VERSION || '0.0.0',
+      environment: process.env.NODE_ENV || 'development',
+    });
+  } catch (err) {
+    // Telemetry is best-effort in dev; log the issue and continue
+    const tempLogger: Logger = {
+      info: (msg, meta) => console.log(JSON.stringify({ level: 'INFO', message: msg, ...meta })),
+      warn: (msg, meta) => console.warn(JSON.stringify({ level: 'WARN', message: msg, ...meta })),
+      error: (msg, meta) =>
+        console.error(JSON.stringify({ level: 'ERROR', message: msg, ...meta })),
+    };
+    tempLogger.error('Shared telemetry initialization failed (continuing)', {
+      error: (err as Error)?.message ?? err,
+    });
+  }
+})();
 
 import { mkdir, writeFile } from 'node:fs/promises';
 import { dirname } from 'node:path';
 import process from 'node:process';
 
 import { summarizeNews } from './aggregator';
+import type { Summary } from './aggregator';
 import { API_URL, INTERVAL, OUTPUT_PATH } from './config';
 // Prefer the shared logger when available, otherwise fall back to a compact local logger.
 const _localLogger: Logger = {

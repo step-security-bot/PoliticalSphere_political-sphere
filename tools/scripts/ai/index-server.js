@@ -4,11 +4,12 @@
   Usage: node scripts/ai/index-server.js
 */
 
-import { existsSync, readFileSync } from 'fs';
-import http from 'http';
+import { existsSync, readFileSync } from 'node:fs';
+import http from 'node:http';
 
 const INDEX_FILE = 'ai/index/codebase-index.json';
 const PORT = process.env.AI_INDEX_PORT || 3001;
+const HOST = process.env.AI_INDEX_HOST || '127.0.0.1';
 
 let index = null;
 
@@ -193,7 +194,7 @@ const server = http.createServer((req, res) => {
       ) {
         // Support both /search?q= and legacy /vector-search?q= for backward
         // compatibility with older tests and tooling.
-        const url = new URL(req.url, `http://localhost:${PORT}`);
+        const url = new URL(req.url, `http://${HOST}:${PORT}`);
         const query = url.searchParams.get('q') || '';
 
         // Input validation
@@ -242,8 +243,8 @@ try {
     index = { files: {}, tokens: {}, lastUpdated: null };
   }
 
-  server.listen(PORT, () => {
-    console.log(`Index server running on port ${PORT}`);
+  server.listen(PORT, HOST, () => {
+    console.log(`Index server running on http://${HOST}:${PORT}`);
     console.log(`Endpoints: /health, /metrics, /search?q=query, POST /reload`);
   });
 } catch (e) {

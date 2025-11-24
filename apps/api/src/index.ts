@@ -2,7 +2,7 @@
 // Export only the Express app from the TS source. Avoid re-exporting TS store modules
 // to prevent Node from importing TypeScript directly in environments that bypass Vite.
 import { createServer } from 'node:http';
-import { WebSocketServer } from './websocket/WebSocketServer';
+import { WebSocketServer } from '@political-sphere/shared';
 import { gameEventEmitter } from './events';
 import { app } from './app';
 import { getLogger } from '@political-sphere/shared';

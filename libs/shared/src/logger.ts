@@ -15,6 +15,9 @@ export interface LogMeta {
   [key: string]: unknown;
 }
 
+/**
+ * Structured logger wrapper around Pino with convenience helpers for HTTP, security and error logs.
+ */
 export class Logger {
   private logger: pino.Logger;
 
@@ -123,6 +126,9 @@ export class Logger {
 // Singleton instance
 let defaultLogger: Logger | null = null;
 
+/**
+ * Get a singleton logger instance for the application. Use for most modules to ensure consistent configuration.
+ */
 export function getLogger(options?: LoggerOptions): Logger {
   if (!defaultLogger) {
     defaultLogger = new Logger(options);
@@ -130,6 +136,9 @@ export function getLogger(options?: LoggerOptions): Logger {
   return defaultLogger;
 }
 
+/**
+ * Create a new Logger instance. Useful for creating dedicated loggers for specific subsystems.
+ */
 export function createLogger(options?: LoggerOptions): Logger {
   return new Logger(options);
 }

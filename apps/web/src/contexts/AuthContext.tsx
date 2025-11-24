@@ -9,6 +9,12 @@ import { api } from '../services/api';
 // TODO: Deprecate api-client.ts in favor of secure api.ts
 // import { apiClient } from '../utils/api-client';
 
+const emitAuthWarning = (detail: unknown) => {
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(new CustomEvent('auth-warning', { detail }));
+  }
+};
+
 interface AuthUser {
   id: string;
   username: string;
@@ -21,14 +27,15 @@ interface AuthContextType {
   isLoading: boolean;
   loginLoading: boolean;
   registerLoading: boolean;
+  accessToken: string | null;
   login: (
     emailOrUsername: string,
-    password: string,
+    password: string
   ) => Promise<{ success: boolean; error?: string }>;
   register: (
     username: string,
     email: string,
-    password: string,
+    password: string
   ) => Promise<{ success: boolean; error?: string }>;
   logout: () => Promise<void>;
 }
@@ -49,6 +56,7 @@ interface AuthProviderProps {
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<AuthUser | null>(null);
+  const [accessToken, setAccessToken] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [loginLoading, setLoginLoading] = useState(false);
   const [registerLoading, setRegisterLoading] = useState(false);
@@ -72,12 +80,19 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const login = async (emailOrUsername: string, password: string) => {
     setLoginLoading(true);
     try {
-      const response = await api.login(emailOrUsername, password);
+      const response = await api.login({ email: emailOrUsername, password });
 
       if (response.success && response.data) {
-        const userData = response.data.user;
+        // For now, decode token to get user info or use a separate endpoint
+        // TODO: Implement proper user info retrieval
+        const userData = { id: 'temp', username: emailOrUsername, email: emailOrUsername };
         setUser(userData);
-        sessionStorage.setItem('user', JSON.stringify(userData));
+        setAccessToken(response.data.token);
+        // Avoid storing sensitive data in sessionStorage
+        sessionStorage.setItem(
+          'user',
+          JSON.stringify({ id: userData.id, username: userData.username })
+        );
         setLoginLoading(false);
         return { success: true };
       }
@@ -99,27 +114,20 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const register = async (username: string, email: string, password: string) => {
     setRegisterLoading(true);
     try {
-      const response = await api.register(username, email, password);
+      const response = await api.register({ username, email, password });
 
       if (response.success && response.data) {
-        try {
-          // Register response has user data in response.data.user
-          const userData = {
-            id: response.data.user.id,
-            username: response.data.user.username,
-            email: response.data.user.email || '',
-          };
-          setUser(userData);
-          sessionStorage.setItem('user', JSON.stringify(userData));
-          setRegisterLoading(false);
-          return { success: true };
-        } catch {
-          setRegisterLoading(false);
-          return {
-            success: false,
-            error: 'Registration completed but failed to save session. Please log in.',
-          };
-        }
+        // For now, create user data from registration response
+        // TODO: Implement proper user info retrieval
+        const userData = {
+          id: 'temp',
+          username,
+          email,
+        };
+        setUser(userData);
+        sessionStorage.setItem('user', JSON.stringify(userData));
+        setRegisterLoading(false);
+        return { success: true };
       }
 
       setRegisterLoading(false);
@@ -127,11 +135,11 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         success: false,
         error: response.error || 'Registration failed',
       };
-    } catch {
+    } catch (error) {
       setRegisterLoading(false);
       return {
         success: false,
-        error: 'An unexpected error occurred. Please try again.',
+        error: error instanceof Error ? error.message : 'Registration failed',
       };
     }
   };
@@ -141,9 +149,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       await api.logout();
     } catch (error) {
       // Even if logout fails, we should clear local state
-      console.warn('Logout API call failed:', error);
+      emitAuthWarning({ message: 'Logout API call failed', error });
     }
     setUser(null);
+    setAccessToken(null);
     sessionStorage.removeItem('user');
   };
 
@@ -153,6 +162,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     isLoading,
     loginLoading,
     registerLoading,
+    accessToken,
     login,
     register,
     logout,

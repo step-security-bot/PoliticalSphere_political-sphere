@@ -6,6 +6,7 @@
  * @module governance/nist-ai-rmf
  * @see https://www.nist.gov/itl/ai-risk-management-framework
  */
+/* eslint-disable no-console */
 
 /**
  * AI System registration for governance tracking

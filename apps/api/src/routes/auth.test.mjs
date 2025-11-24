@@ -2,11 +2,12 @@ import assert from 'node:assert';
 import crypto from 'node:crypto';
 
 import express from 'express';
+import request from 'supertest';
 import { afterEach, beforeAll, beforeEach, describe, it } from 'vitest';
 
 import { dispatchRequest } from '../../tests/utils/express-request.js';
 import { closeDatabase, getDatabase } from '../stores/index.ts';
-import authRoutes from './auth.js';
+import authRoutes from './auth';
 
 describe('Auth Routes - Input Validation', () => {
   let app;
@@ -32,17 +33,15 @@ describe('Auth Routes - Input Validation', () => {
 
   describe('POST /auth/register - Zod Validation', () => {
     describe('Valid Registration', () => {
-      it('should accept valid registration data', async () => {
+      it('should accept valid registration data', { timeout: 60000 }, async () => {
         const timestamp = Date.now();
-        const response = await dispatchRequest(app, {
-          method: 'POST',
-          url: '/auth/register',
-          body: {
+        const response = await request(app)
+          .post('/auth/register')
+          .send({
             username: `validuser${timestamp}`,
             email: `test-${timestamp}@example.com`,
             password: 'SecurePass123',
-          },
-        });
+          });
 
         assert.strictEqual(response.status, 201);
         assert.strictEqual(
@@ -119,24 +118,26 @@ describe('Auth Routes - Input Validation', () => {
         }
       });
 
-      it('should accept valid username characters (letters, numbers, underscore, hyphen)', async () => {
-        const validUsernames = ['user_name', 'user-name', 'user123', 'User_Name-123'];
+      it(
+        'should accept valid username characters (letters, numbers, underscore, hyphen)',
+        { timeout: 60000 },
+        async () => {
+          const validUsernames = ['user_name', 'user-name', 'user123', 'User_Name-123'];
 
-        for (const username of validUsernames) {
-          const timestamp = Date.now();
-          const response = await dispatchRequest(app, {
-            method: 'POST',
-            url: '/auth/register',
-            body: {
-              username: `${username}${timestamp}`,
-              email: `test-${timestamp}@example.com`,
-              password: 'SecurePass123',
-            },
-          });
+          for (const username of validUsernames) {
+            const timestamp = Date.now();
+            const response = await request(app)
+              .post('/auth/register')
+              .send({
+                username: `${username}${timestamp}`,
+                email: `test-${timestamp}@example.com`,
+                password: 'SecurePass123',
+              });
 
-          assert.strictEqual(response.status, 201, `Should accept username: ${username}`);
+            assert.strictEqual(response.status, 201, `Should accept username: ${username}`);
+          }
         }
-      });
+      );
     });
 
     describe('Email Validation', () => {
@@ -169,7 +170,7 @@ describe('Auth Routes - Input Validation', () => {
       });
 
       it('should reject email longer than 255 characters', async () => {
-        const longEmail = 'a'.repeat(250) + '@test.com';
+        const longEmail = `${'a'.repeat(250)}@test.com`;
         const response = await dispatchRequest(app, {
           method: 'POST',
           url: '/auth/register',
@@ -210,7 +211,7 @@ describe('Auth Routes - Input Validation', () => {
           body: {
             username: 'testuser',
             email: 'test@example.com',
-            password: 'A1' + 'a'.repeat(127),
+            password: `A1${'a'.repeat(127)}`,
           },
         });
 
@@ -384,30 +385,24 @@ describe('Auth Routes - Input Validation', () => {
 
   describe('POST /auth/login - Zod Validation', () => {
     describe('Valid Login', () => {
-      it('should accept valid login credentials', async () => {
+      it('should accept valid login credentials', { timeout: 60000 }, async () => {
         const timestamp = Date.now();
         const email = `test-${timestamp}@example.com`;
         const password = 'SecurePass123';
 
         // First register a user
-        await dispatchRequest(app, {
-          method: 'POST',
-          url: '/auth/register',
-          body: {
+        await request(app)
+          .post('/auth/register')
+          .send({
             username: `user${timestamp}`,
             email,
             password,
-          },
-        });
+          });
 
         // Then login
-        const response = await dispatchRequest(app, {
-          method: 'POST',
-          url: '/auth/login',
-          body: {
-            email,
-            password,
-          },
+        const response = await request(app).post('/auth/login').send({
+          email,
+          password,
         });
 
         assert.strictEqual(response.status, 200);

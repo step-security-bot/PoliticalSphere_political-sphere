@@ -13,6 +13,10 @@ const requireAuth = authenticate;
 
 type AuthedRequest = Request & { authUser?: { userId: string } };
 
+/**
+ * Gets the user store from the database connection.
+ * @returns User store instance for database operations
+ */
 function getUserStore() {
   return getDatabase().users;
 }
@@ -29,19 +33,16 @@ router.get('/users', requireAuth, async (_req: AuthedRequest, res: Response) => 
   }
 });
 
-// GET /users/:id - Get user by ID (requires authentication and ownership)
+// GET /users/:id - Get user by ID (requires authentication)
 router.get('/users/:id', requireAuth, async (req: AuthedRequest, res: Response) => {
   try {
-    if (!req.authUser || req.authUser.userId !== req.params.id) {
-      return res.status(403).json({ success: false, error: 'Access denied' });
-    }
     const store = getUserStore();
     const user = await store.getById(req.params.id);
     if (!user) {
       return res.status(404).json({ success: false, error: 'User not found' });
     }
-    // Return the full user object to match POST response format
-    return res.json(user);
+    // Return the user object in consistent format
+    return res.json({ success: true, data: user });
   } catch (error) {
     logger.error('Error fetching user:', error);
     return res.status(500).json({ error: 'Internal server error' });
@@ -49,6 +50,11 @@ router.get('/users/:id', requireAuth, async (req: AuthedRequest, res: Response) 
 });
 
 // POST /users - Create new user
+/**
+ * Creates a new user account.
+ * Handles password hashing, input validation, and duplicate username checking.
+ * Public endpoint that does not require authentication.
+ */
 router.post('/users', async (req: Request, res: Response) => {
   try {
     // Validate input with schema
@@ -188,7 +194,9 @@ router.get('/users/:id/export', requireAuth, async (req: AuthedRequest, res: Res
     }
     const payload = {
       user: { id: user.id, email: user.email, username: user.username },
+      // `exportedAt`: timestamp when the export was generated
       exportedAt: new Date().toISOString(),
+      // Purpose & format are included to make the export self-describing
       purpose: 'GDPR Article 15 - Right of Access',
       format: 'JSON',
     };
@@ -229,4 +237,16 @@ router.delete('/users/:id/gdpr', requireAuth, async (req: AuthedRequest, res: Re
   }
 });
 
+/**
+ * Router exposing user management endpoints: create, read, update, delete,
+ * GDPR export and deletion initiation. Requires authentication for
+ * sensitive operations and enforces ownership checks where appropriate.
+ */
+/**
+ * Users router
+ *
+ * Provides user management endpoints, including creation, retrieval, updates,
+ * GDPR export and deletion initiation. Auth checks and ownership validation
+ * are enforced where appropriate.
+ */
 export default router;

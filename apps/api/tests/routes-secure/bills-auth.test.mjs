@@ -5,6 +5,7 @@ import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { getTestDatabase, resetTestDatabase } from '../../src/test-support/database.ts';
 import authRouter from '../../src/routes/auth.js';
 import billsRouter from '../../src/routes/bills.js';
+import { describeHttp, shouldSkipHttpTests } from '../utils/http-test-guard.ts';
 
 // Helper to register + login and return { token, user }
 async function registerAndLogin(app, email = `user+${Date.now()}@example.com`) {
@@ -27,7 +28,9 @@ async function registerAndLogin(app, email = `user+${Date.now()}@example.com`) {
   return { token: login.body.data.token, user: login.body.data.user };
 }
 
-describe('bills routes (auth enforced)', () => {
+const suite = shouldSkipHttpTests ? describe.skip : describeHttp;
+
+suite('bills routes (auth enforced)', () => {
   let app;
   let testDb;
   const prev = process.env.FORCE_AUTH;

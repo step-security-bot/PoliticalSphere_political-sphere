@@ -1,9 +1,16 @@
 import { Message, OrchestrationResult } from '../types';
 
+/**
+ * Tracer interface abstracts the tracing implementation used by the AI system.
+ * Implementations can map to OpenTelemetry, Honeycomb, or a no-op tracer for tests.
+ */
 export interface Tracer {
   startSpan(name: string, attributes?: Record<string, unknown>): Span;
 }
 
+/**
+ * Span represents a trace span provided by the underlying tracing backend.
+ */
 export interface Span {
   setAttribute(key: string, value: unknown): void;
   end(): void;
@@ -14,6 +21,14 @@ class NoopSpan implements Span {
   end(): void {}
 }
 
+/**
+ * No-operation tracer implementation that provides empty span objects.
+ * Useful for testing, development environments, or when tracing is disabled.
+ * All tracing operations are no-ops and have no performance impact.
+ */
+/**
+ * No-op tracer implementation used for environments where tracing is disabled (e.g., tests)
+ */
 export class NoopTracer implements Tracer {
   startSpan(): Span {
     return new NoopSpan();
@@ -25,6 +40,10 @@ export const tracer: Tracer = new NoopTracer();
 /**
  * Observability hooks for orchestration. These are thin and framework-agnostic so they
  * can be adapted to console logging, OpenTelemetry, etc.
+ */
+/**
+ * Observability hooks that the orchestration engine will call for lifecycle events.
+ * Implementations can forward metrics and logs to external systems or a console for debugging.
  */
 export interface Observability {
   onStart?(event: {

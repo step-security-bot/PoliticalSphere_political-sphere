@@ -68,13 +68,13 @@ function saveCompressedIndex(index) {
 
   if (compressed.length > COMPRESSED_MAX_SIZE) {
     console.warn(
-      `Compressed index size (${compressed.length} bytes) exceeds limit (${COMPRESSED_MAX_SIZE} bytes).`,
+      `Compressed index size (${compressed.length} bytes) exceeds limit (${COMPRESSED_MAX_SIZE} bytes).`
     );
   }
 
   writeFileSync(INDEX_FILE, compressed);
   console.log(
-    `Index saved (compressed: ${compressed.length} bytes, original: ${indexString.length} bytes)`,
+    `Index saved (compressed: ${compressed.length} bytes, original: ${indexString.length} bytes)`
   );
 }
 
@@ -186,7 +186,7 @@ async function buildIndex(rootDir = '.') {
   // Validate index before saving
   try {
     validateIndex(index);
-  } catch (_error) {
+  } catch (error) {
     console.error('Index validation failed:', error.message);
     throw error;
   }
@@ -194,7 +194,7 @@ async function buildIndex(rootDir = '.') {
   const indexString = JSON.stringify(index, null, 2);
   if (indexString.length > MAX_INDEX_SIZE) {
     console.warn(
-      `Index size (${indexString.length} bytes) exceeds limit (${MAX_INDEX_SIZE} bytes). Using compression.`,
+      `Index size (${indexString.length} bytes) exceeds limit (${MAX_INDEX_SIZE} bytes). Using compression.`
     );
   }
 
@@ -240,7 +240,7 @@ function searchIndex(query) {
     r =>
       !r.file.endsWith('codebase-index.json') &&
       !r.file.startsWith('ai/index/') &&
-      !r.file.startsWith('ai/index/'),
+      !r.file.startsWith('ai/index/')
   );
 
   // Return valid JSON structure for programmatic consumption
@@ -363,7 +363,7 @@ function showStats() {
   // Calculate average tokens per file
   const tokenCounts = Object.values(index.files).map(f => f.tokens.length);
   stats.averageTokensPerFile = Math.round(
-    tokenCounts.reduce((a, b) => a + b, 0) / tokenCounts.length,
+    tokenCounts.reduce((a, b) => a + b, 0) / tokenCounts.length
   );
 
   // Find largest file
@@ -403,9 +403,9 @@ async function updateIndex(rootDir = '.') {
       encoding: 'utf8',
     });
     changedFiles = [...gitStatus.split('\n'), ...untrackedFiles.split('\n')].filter(
-      f => f && SUPPORTED_EXTS.includes(extname(f)),
+      f => f && SUPPORTED_EXTS.includes(extname(f))
     );
-  } catch (_e) {
+  } catch {
     console.log('Not a git repository or git not available. Checking all files...');
   }
 
@@ -480,6 +480,6 @@ if (command === 'build') {
   }
 } else {
   console.log(
-    'Usage: node scripts/ai/code-indexer.js build|update|search <query>|stats|analyze <file>',
+    'Usage: node scripts/ai/code-indexer.js build|update|search <query>|stats|analyze <file>'
   );
 }

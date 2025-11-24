@@ -1,0 +1,1503 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>political-sphere documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">political-sphere documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content interface">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Interfaces</li>
+  <li class="breadcrumb-item"
+  >
+  RiskAssessment</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>libs/ai-system/src/governance/risk-management.ts</code>
+        </p>
+
+
+            <p class="comment">
+                <h3>Description</h3>
+            </p>
+            <p class="comment">
+                <p>Risk Assessment</p>
+
+            </p>
+
+
+        <section data-compodoc="block-index">
+            <h3 id="index">Index</h3>
+            <table class="table table-sm table-bordered index-table">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <h6><b>Properties</b></h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <ul class="index-list">
+                                <li>
+                                            <span class="modifier">Optional</span>
+                                        <a href="#assessedAt" 
+>
+                                            assessedAt
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#category" 
+>
+                                            category
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#description" 
+>
+                                            description
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#id" 
+>
+                                            id
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#identifiedAt" 
+>
+                                            identifiedAt
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#impact" 
+>
+                                            impact
+                                        </a>
+                                </li>
+                                <li>
+                                            <span class="modifier">Optional</span>
+                                        <a href="#mitigatedAt" 
+>
+                                            mitigatedAt
+                                        </a>
+                                </li>
+                                <li>
+                                            <span class="modifier">Optional</span>
+                                        <a href="#mitigationPlan" 
+>
+                                            mitigationPlan
+                                        </a>
+                                </li>
+                                <li>
+                                            <span class="modifier">Optional</span>
+                                        <a href="#monitoringPlan" 
+>
+                                            monitoringPlan
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#owner" 
+>
+                                            owner
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#potentialConsequences" 
+>
+                                            potentialConsequences
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#probability" 
+>
+                                            probability
+                                        </a>
+                                </li>
+                                <li>
+                                            <span class="modifier">Optional</span>
+                                        <a href="#reviewDate" 
+>
+                                            reviewDate
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#riskScore" 
+>
+                                            riskScore
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#severity" 
+>
+                                            severity
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#status" 
+>
+                                            status
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#systemId" 
+>
+                                            systemId
+                                        </a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+
+
+            <section data-compodoc="block-properties">
+                <h3 id="inputs">Properties</h3>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="assessedAt"></a>
+                                        <span class="name "><b>assessedAt</b>
+                                            <a href="#assessedAt">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>assessedAt:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date" target="_blank" >Date</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date" target="_blank" >Date</a></code>
+
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Optional</i>
+                                        </td>
+                                    </tr>
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="category"></a>
+                                        <span class="name "><b>category</b>
+                                            <a href="#category">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>category:         <code><a href="../miscellaneous/enumerations.html#RiskCategory" target="_self" >RiskCategory</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="../miscellaneous/enumerations.html#RiskCategory" target="_self" >RiskCategory</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="description"></a>
+                                        <span class="name "><b>description</b>
+                                            <a href="#description">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>description:         <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="id"></a>
+                                        <span class="name "><b>id</b>
+                                            <a href="#id">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>id:         <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="identifiedAt"></a>
+                                        <span class="name "><b>identifiedAt</b>
+                                            <a href="#identifiedAt">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>identifiedAt:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date" target="_blank" >Date</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date" target="_blank" >Date</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="impact"></a>
+                                        <span class="name "><b>impact</b>
+                                            <a href="#impact">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>impact:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="mitigatedAt"></a>
+                                        <span class="name "><b>mitigatedAt</b>
+                                            <a href="#mitigatedAt">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>mitigatedAt:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date" target="_blank" >Date</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date" target="_blank" >Date</a></code>
+
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Optional</i>
+                                        </td>
+                                    </tr>
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="mitigationPlan"></a>
+                                        <span class="name "><b>mitigationPlan</b>
+                                            <a href="#mitigationPlan">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>mitigationPlan:         <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Optional</i>
+                                        </td>
+                                    </tr>
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="monitoringPlan"></a>
+                                        <span class="name "><b>monitoringPlan</b>
+                                            <a href="#monitoringPlan">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>monitoringPlan:         <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Optional</i>
+                                        </td>
+                                    </tr>
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="owner"></a>
+                                        <span class="name "><b>owner</b>
+                                            <a href="#owner">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>owner:         <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="potentialConsequences"></a>
+                                        <span class="name "><b>potentialConsequences</b>
+                                            <a href="#potentialConsequences">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>potentialConsequences:         <code><a href="../miscellaneous/variables.html#g" target="_self" >string[]</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="../miscellaneous/variables.html#g" target="_self" >string[]</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="probability"></a>
+                                        <span class="name "><b>probability</b>
+                                            <a href="#probability">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>probability:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="reviewDate"></a>
+                                        <span class="name "><b>reviewDate</b>
+                                            <a href="#reviewDate">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>reviewDate:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date" target="_blank" >Date</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date" target="_blank" >Date</a></code>
+
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Optional</i>
+                                        </td>
+                                    </tr>
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="riskScore"></a>
+                                        <span class="name "><b>riskScore</b>
+                                            <a href="#riskScore">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>riskScore:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="severity"></a>
+                                        <span class="name "><b>severity</b>
+                                            <a href="#severity">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>severity:         <code><a href="../miscellaneous/enumerations.html#RiskSeverity" target="_self" >RiskSeverity</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="../miscellaneous/enumerations.html#RiskSeverity" target="_self" >RiskSeverity</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="status"></a>
+                                        <span class="name "><b>status</b>
+                                            <a href="#status">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>status:         <code><a href="../miscellaneous/enumerations.html#RiskStatus" target="_self" >RiskStatus</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="../miscellaneous/enumerations.html#RiskStatus" target="_self" >RiskStatus</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="systemId"></a>
+                                        <span class="name "><b>systemId</b>
+                                            <a href="#systemId">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>systemId:         <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="../miscellaneous/variables.html#g" target="_self" >string</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+            </section>
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import type { AISystemRegistration } from &#x27;./nist-ai-rmf&#x27;;
+
+/**
+ * Risk Assessment Categories
+ */
+export enum RiskCategory {
+  STRATEGIC &#x3D; &#x27;strategic&#x27;,
+  OPERATIONAL &#x3D; &#x27;operational&#x27;,
+  FINANCIAL &#x3D; &#x27;financial&#x27;,
+  COMPLIANCE &#x3D; &#x27;compliance&#x27;,
+  REPUTATIONAL &#x3D; &#x27;reputational&#x27;,
+  TECHNICAL &#x3D; &#x27;technical&#x27;,
+  ETHICAL &#x3D; &#x27;ethical&#x27;,
+  LEGAL &#x3D; &#x27;legal&#x27;,
+}
+
+/**
+ * Risk Severity Levels
+ */
+export enum RiskSeverity {
+  LOW &#x3D; &#x27;low&#x27;,
+  MEDIUM &#x3D; &#x27;medium&#x27;,
+  HIGH &#x3D; &#x27;high&#x27;,
+  CRITICAL &#x3D; &#x27;critical&#x27;,
+}
+
+/**
+ * Risk Status
+ */
+export enum RiskStatus {
+  IDENTIFIED &#x3D; &#x27;identified&#x27;,
+  ASSESSED &#x3D; &#x27;assessed&#x27;,
+  MITIGATED &#x3D; &#x27;mitigated&#x27;,
+  ACCEPTED &#x3D; &#x27;accepted&#x27;,
+  CLOSED &#x3D; &#x27;closed&#x27;,
+}
+
+/**
+ * Risk Assessment
+ */
+export interface RiskAssessment {
+  id: string;
+  systemId: string;
+  category: RiskCategory;
+  severity: RiskSeverity;
+  probability: number; // 0-1
+  impact: number; // 0-1
+  riskScore: number; // probability * impact
+  description: string;
+  potentialConsequences: string[];
+  status: RiskStatus;
+  identifiedAt: Date;
+  assessedAt?: Date;
+  mitigatedAt?: Date;
+  owner: string;
+  mitigationPlan?: string;
+  monitoringPlan?: string;
+  reviewDate?: Date;
+}
+
+/**
+ * Risk Mitigation Strategy
+ */
+export interface RiskMitigation {
+  id: string;
+  riskId: string;
+  strategy: &#x27;avoid&#x27; | &#x27;mitigate&#x27; | &#x27;transfer&#x27; | &#x27;accept&#x27;;
+  description: string;
+  responsibleParty: string;
+  timeline: string;
+  resources: string[];
+  successCriteria: string[];
+  status: &#x27;planned&#x27; | &#x27;in-progress&#x27; | &#x27;completed&#x27; | &#x27;failed&#x27;;
+  implementedAt?: Date;
+  effectiveness?: number; // 0-1, how well it reduced risk
+}
+
+/**
+ * Risk Register
+ *
+ * Central repository for tracking AI system risks, assessments, and mitigations.
+ * Provides risk scoring, status tracking, and mitigation planning for comprehensive
+ * risk management across all AI systems in the platform.
+ */
+export class RiskRegister {
+  private risks: Map&lt;string, RiskAssessment&gt; &#x3D; new Map();
+  private mitigations: Map&lt;string, RiskMitigation[]&gt; &#x3D; new Map();
+
+  /**
+   * Register a new risk
+   */
+  registerRisk(risk: Omit&lt;RiskAssessment, &#x27;id&#x27; | &#x27;identifiedAt&#x27; | &#x27;riskScore&#x27;&gt;): string {
+    const id &#x3D; &#x60;risk-${Date.now()}-${Math.random().toString(36).substr(2, 9)}&#x60;;
+    const riskScore &#x3D; risk.probability * risk.impact;
+
+    const fullRisk: RiskAssessment &#x3D; {
+      ...risk,
+      id,
+      identifiedAt: new Date(),
+      riskScore,
+    };
+
+    this.risks.set(id, fullRisk);
+    return id;
+  }
+
+  /**
+   * Update risk assessment
+   */
+  updateRisk(id: string, updates: Partial&lt;RiskAssessment&gt;): void {
+    const risk &#x3D; this.risks.get(id);
+    if (risk) {
+      this.risks.set(id, { ...risk, ...updates });
+    }
+  }
+
+  /**
+   * Get risk by ID
+   */
+  getRisk(id: string): RiskAssessment | undefined {
+    return this.risks.get(id);
+  }
+
+  /**
+   * Get all risks for a system
+   */
+  getRisksBySystem(systemId: string): RiskAssessment[] {
+    return Array.from(this.risks.values()).filter(r &#x3D;&gt; r.systemId &#x3D;&#x3D;&#x3D; systemId);
+  }
+
+  /**
+   * Get risks by severity
+   */
+  getRisksBySeverity(severity: RiskSeverity): RiskAssessment[] {
+    return Array.from(this.risks.values()).filter(r &#x3D;&gt; r.severity &#x3D;&#x3D;&#x3D; severity);
+  }
+
+  /**
+   * Get risks by status
+   */
+  getRisksByStatus(status: RiskStatus): RiskAssessment[] {
+    return Array.from(this.risks.values()).filter(r &#x3D;&gt; r.status &#x3D;&#x3D;&#x3D; status);
+  }
+
+  /**
+   * Add mitigation strategy
+   */
+  addMitigation(mitigation: Omit&lt;RiskMitigation, &#x27;id&#x27;&gt;): string {
+    const id &#x3D; &#x60;mitigation-${Date.now()}-${Math.random().toString(36).substr(2, 9)}&#x60;;
+    const fullMitigation: RiskMitigation &#x3D; { ...mitigation, id };
+
+    const existing &#x3D; this.mitigations.get(mitigation.riskId) || [];
+    this.mitigations.set(mitigation.riskId, [...existing, fullMitigation]);
+
+    return id;
+  }
+
+  /**
+   * Get mitigations for a risk
+   */
+  getMitigations(riskId: string): RiskMitigation[] {
+    return this.mitigations.get(riskId) || [];
+  }
+
+  /**
+   * Update mitigation status
+   */
+  updateMitigation(riskId: string, mitigationId: string, updates: Partial&lt;RiskMitigation&gt;): void {
+    const mitigations &#x3D; this.mitigations.get(riskId);
+    if (mitigations) {
+      const index &#x3D; mitigations.findIndex(m &#x3D;&gt; m.id &#x3D;&#x3D;&#x3D; mitigationId);
+      if (index !&#x3D;&#x3D; -1) {
+        const { id: _omit, ...rest } &#x3D; updates as Partial&lt;RiskMitigation&gt;;
+        const safeRest &#x3D; rest as Omit&lt;Partial&lt;RiskMitigation&gt;, &#x27;id&#x27;&gt;;
+        mitigations[index] &#x3D; { ...mitigations[index], ...safeRest } as RiskMitigation;
+      }
+    }
+  }
+
+  /**
+   * Generate risk report
+   */
+  generateRiskReport(): {
+    totalRisks: number;
+    bySeverity: Record&lt;string, number&gt;;
+    byStatus: Record&lt;string, number&gt;;
+    byCategory: Record&lt;string, number&gt;;
+    highRiskItems: RiskAssessment[];
+    overdueReviews: RiskAssessment[];
+    summary: {
+      averageRiskScore: number;
+      criticalRisks: number;
+      unmitigatedRisks: number;
+    };
+  } {
+    const allRisks &#x3D; Array.from(this.risks.values());
+
+    const bySeverity &#x3D; {
+      low: allRisks.filter(r &#x3D;&gt; r.severity &#x3D;&#x3D;&#x3D; RiskSeverity.LOW).length,
+      medium: allRisks.filter(r &#x3D;&gt; r.severity &#x3D;&#x3D;&#x3D; RiskSeverity.MEDIUM).length,
+      high: allRisks.filter(r &#x3D;&gt; r.severity &#x3D;&#x3D;&#x3D; RiskSeverity.HIGH).length,
+      critical: allRisks.filter(r &#x3D;&gt; r.severity &#x3D;&#x3D;&#x3D; RiskSeverity.CRITICAL).length,
+    };
+
+    const byStatus &#x3D; {
+      identified: allRisks.filter(r &#x3D;&gt; r.status &#x3D;&#x3D;&#x3D; RiskStatus.IDENTIFIED).length,
+      assessed: allRisks.filter(r &#x3D;&gt; r.status &#x3D;&#x3D;&#x3D; RiskStatus.ASSESSED).length,
+      mitigated: allRisks.filter(r &#x3D;&gt; r.status &#x3D;&#x3D;&#x3D; RiskStatus.MITIGATED).length,
+      accepted: allRisks.filter(r &#x3D;&gt; r.status &#x3D;&#x3D;&#x3D; RiskStatus.ACCEPTED).length,
+      closed: allRisks.filter(r &#x3D;&gt; r.status &#x3D;&#x3D;&#x3D; RiskStatus.CLOSED).length,
+    };
+
+    const byCategory &#x3D; Object.values(RiskCategory).reduce(
+      (acc, cat) &#x3D;&gt; {
+        acc[cat] &#x3D; allRisks.filter(r &#x3D;&gt; r.category &#x3D;&#x3D;&#x3D; cat).length;
+        return acc;
+      },
+      {} as Record&lt;string, number&gt;
+    );
+
+    const highRiskItems &#x3D; allRisks.filter(
+      r &#x3D;&gt; r.severity &#x3D;&#x3D;&#x3D; RiskSeverity.HIGH || r.severity &#x3D;&#x3D;&#x3D; RiskSeverity.CRITICAL
+    );
+
+    const overdueReviews &#x3D; allRisks.filter(r &#x3D;&gt; {
+      if (!r.reviewDate) return false;
+      return r.reviewDate &lt; new Date();
+    });
+
+    const averageRiskScore &#x3D;
+      allRisks.length &gt; 0 ? allRisks.reduce((sum, r) &#x3D;&gt; sum + r.riskScore, 0) / allRisks.length : 0;
+
+    const criticalRisks &#x3D; bySeverity.critical;
+    const unmitigatedRisks &#x3D; allRisks.filter(
+      r &#x3D;&gt; r.status &#x3D;&#x3D;&#x3D; RiskStatus.IDENTIFIED || r.status &#x3D;&#x3D;&#x3D; RiskStatus.ASSESSED
+    ).length;
+
+    return {
+      totalRisks: allRisks.length,
+      bySeverity,
+      byStatus,
+      byCategory,
+      highRiskItems,
+      overdueReviews,
+      summary: {
+        averageRiskScore,
+        criticalRisks,
+        unmitigatedRisks,
+      },
+    };
+  }
+
+  /**
+   * Export risk register to JSON
+   */
+  exportToJson(): string {
+    const data &#x3D; {
+      risks: Array.from(this.risks.values()),
+      mitigations: Object.fromEntries(this.mitigations),
+      exportDate: new Date().toISOString(),
+    };
+    return JSON.stringify(data, null, 2);
+  }
+
+  /**
+   * Import risk register from JSON
+   */
+  importFromJson(jsonData: string): void {
+    const data &#x3D; JSON.parse(jsonData);
+    this.risks &#x3D; new Map(data.risks.map((r: RiskAssessment) &#x3D;&gt; [r.id, r]));
+    this.mitigations &#x3D; new Map(
+      Object.entries(data.mitigations).map(([riskId, mitigations]) &#x3D;&gt; [
+        riskId,
+        mitigations as RiskMitigation[],
+      ])
+    );
+  }
+}
+
+/**
+ * Risk Management Orchestrator
+ *
+ * Coordinates comprehensive risk management across all AI systems.
+ */
+export class RiskManagementOrchestrator {
+  private riskRegister: RiskRegister;
+  private systemInventory: Map&lt;string, AISystemRegistration&gt;;
+
+  constructor(systemInventory: Map&lt;string, AISystemRegistration&gt;) {
+    this.riskRegister &#x3D; new RiskRegister();
+    this.systemInventory &#x3D; systemInventory;
+    this.initializeRiskAssessments();
+  }
+
+  /**
+   * Initialize risk assessments for all registered systems
+   */
+  // biome-ignore lint/correctness/noUnusedPrivateClassMembers: Used in constructor
+  private initializeRiskAssessments(): void {
+    for (const [systemId, system] of this.systemInventory) {
+      this.assessSystemRisks(systemId, system);
+    }
+  }
+
+  /**
+   * Assess risks for a specific AI system
+   */
+  private assessSystemRisks(systemId: string, system: AISystemRegistration): void {
+    // Model provider risks
+    if (system.model.provider &#x3D;&#x3D;&#x3D; &#x27;OpenAI&#x27;) {
+      this.riskRegister.registerRisk({
+        systemId,
+        category: RiskCategory.OPERATIONAL,
+        severity: RiskSeverity.MEDIUM,
+        probability: 0.3,
+        impact: 0.7,
+        description: &#x27;Dependency on external AI provider API availability&#x27;,
+        potentialConsequences: [
+          &#x27;Service disruption during API outages&#x27;,
+          &#x27;Increased latency during peak usage&#x27;,
+          &#x27;Cost overruns from unexpected usage spikes&#x27;,
+        ],
+        status: RiskStatus.ASSESSED,
+        owner: system.owner,
+        mitigationPlan: &#x27;Implement circuit breaker pattern and fallback responses&#x27;,
+        monitoringPlan: &#x27;Monitor API response times and error rates&#x27;,
+        reviewDate: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000), // 90 days
+      });
+    }
+
+    // Data privacy risks
+    const hasSensitiveData &#x3D; system.dataSources.some(
+      ds &#x3D;&gt;
+        ds.toLowerCase().includes(&#x27;personal&#x27;) ||
+        ds.toLowerCase().includes(&#x27;political&#x27;) ||
+        ds.toLowerCase().includes(&#x27;voting&#x27;)
+    );
+
+    if (hasSensitiveData) {
+      this.riskRegister.registerRisk({
+        systemId,
+        category: RiskCategory.COMPLIANCE,
+        severity: RiskSeverity.HIGH,
+        probability: 0.4,
+        impact: 0.9,
+        description: &#x27;Processing sensitive personal/political data&#x27;,
+        potentialConsequences: [
+          &#x27;GDPR compliance violations&#x27;,
+          &#x27;Data breach liabilities&#x27;,
+          &#x27;Loss of user trust&#x27;,
+          &#x27;Regulatory fines&#x27;,
+        ],
+        status: RiskStatus.ASSESSED,
+        owner: system.owner,
+        mitigationPlan: &#x27;Implement comprehensive data protection measures and DPIA&#x27;,
+        monitoringPlan: &#x27;Regular privacy impact assessments and audit logging&#x27;,
+        reviewDate: new Date(Date.now() + 180 * 24 * 60 * 60 * 1000), // 180 days
+      });
+    }
+
+    // Bias and fairness risks
+    if (system.riskLevel &#x3D;&#x3D;&#x3D; &#x27;high&#x27; || system.riskLevel &#x3D;&#x3D;&#x3D; &#x27;critical&#x27;) {
+      this.riskRegister.registerRisk({
+        systemId,
+        category: RiskCategory.ETHICAL,
+        severity: RiskSeverity.HIGH,
+        probability: 0.6,
+        impact: 0.8,
+        description: &#x27;Potential for biased outputs affecting democratic processes&#x27;,
+        potentialConsequences: [
+          &#x27;Unfair representation in political content&#x27;,
+          &#x27;Discrimination against protected groups&#x27;,
+          &#x27;Erosion of trust in democratic systems&#x27;,
+          &#x27;Legal challenges for bias&#x27;,
+        ],
+        status: RiskStatus.ASSESSED,
+        owner: system.owner,
+        mitigationPlan: &#x27;Continuous bias monitoring and human oversight&#x27;,
+        monitoringPlan: &#x27;Bias metrics tracking and regular fairness audits&#x27;,
+        reviewDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days
+      });
+    }
+
+    // Technical reliability risks
+    this.riskRegister.registerRisk({
+      systemId,
+      category: RiskCategory.TECHNICAL,
+      severity: RiskSeverity.MEDIUM,
+      probability: 0.2,
+      impact: 0.6,
+      description: &#x27;Technical failures and system downtime&#x27;,
+      potentialConsequences: [
+        &#x27;Service unavailability&#x27;,
+        &#x27;Data loss or corruption&#x27;,
+        &#x27;User experience degradation&#x27;,
+        &#x27;Operational costs increase&#x27;,
+      ],
+      status: RiskStatus.ASSESSED,
+      owner: system.owner,
+      mitigationPlan: &#x27;Implement redundancy, monitoring, and incident response&#x27;,
+      monitoringPlan: &#x27;Uptime monitoring and error tracking&#x27;,
+      reviewDate: new Date(Date.now() + 60 * 24 * 60 * 60 * 1000), // 60 days
+    });
+  }
+
+  /**
+   * Get risk register
+   */
+  getRiskRegister(): RiskRegister {
+    return this.riskRegister;
+  }
+
+  /**
+   * Assess new risk for a system
+   */
+  assessRisk(
+    systemId: string,
+    riskData: {
+      category: RiskCategory;
+      severity: RiskSeverity;
+      probability: number;
+      impact: number;
+      description: string;
+      potentialConsequences: string[];
+      owner: string;
+    }
+  ): string {
+    return this.riskRegister.registerRisk({
+      systemId,
+      ...riskData,
+      status: RiskStatus.IDENTIFIED,
+    });
+  }
+
+  /**
+   * Implement mitigation for a risk
+   */
+  implementMitigation(
+    riskId: string,
+    mitigationData: {
+      strategy: &#x27;avoid&#x27; | &#x27;mitigate&#x27; | &#x27;transfer&#x27; | &#x27;accept&#x27;;
+      description: string;
+      responsibleParty: string;
+      timeline: string;
+      resources: string[];
+      successCriteria: string[];
+    }
+  ): string {
+    return this.riskRegister.addMitigation({
+      riskId,
+      ...mitigationData,
+      status: &#x27;planned&#x27;,
+    });
+  }
+
+  /**
+   * Generate comprehensive risk management report
+   */
+  generateRiskManagementReport(): {
+    executiveSummary: {
+      totalRisks: number;
+      criticalRisks: number;
+      unmitigatedRisks: number;
+      averageRiskScore: number;
+    };
+    riskBreakdown: {
+      byCategory: Record&lt;string, number&gt;;
+      bySeverity: Record&lt;string, number&gt;;
+      byStatus: Record&lt;string, number&gt;;
+    };
+    topRisks: RiskAssessment[];
+    mitigationStatus: {
+      totalMitigations: number;
+      completed: number;
+      inProgress: number;
+      planned: number;
+    };
+    recommendations: string[];
+  } {
+    const report &#x3D; this.riskRegister.generateRiskReport();
+
+    // Calculate mitigation statistics
+    let totalMitigations &#x3D; 0;
+    let completed &#x3D; 0;
+    let inProgress &#x3D; 0;
+    let planned &#x3D; 0;
+
+    for (const mitigations of this.riskRegister.getMitigations.bind(this.riskRegister)(
+      &#x27;all-risks&#x27;
+    ) || []) {
+      totalMitigations++;
+      switch (mitigations.status) {
+        case &#x27;completed&#x27;:
+          completed++;
+          break;
+        case &#x27;in-progress&#x27;:
+          inProgress++;
+          break;
+        case &#x27;planned&#x27;:
+          planned++;
+          break;
+      }
+    }
+
+    // Generate recommendations
+    const recommendations: string[] &#x3D; [];
+
+    if (report.summary.criticalRisks &gt; 0) {
+      recommendations.push(&#x27;Immediate attention required for critical risks&#x27;);
+    }
+
+    if (report.summary.unmitigatedRisks &gt; 5) {
+      recommendations.push(&#x27;Review risk mitigation backlog and resource allocation&#x27;);
+    }
+
+    if (report.overdueReviews.length &gt; 0) {
+      recommendations.push(&#x60;Conduct overdue risk reviews (${report.overdueReviews.length} items)&#x60;);
+    }
+
+    recommendations.push(&#x27;Implement continuous risk monitoring and alerting&#x27;);
+    recommendations.push(&#x27;Regular risk management training for AI system owners&#x27;);
+
+    return {
+      executiveSummary: {
+        totalRisks: report.totalRisks,
+        criticalRisks: report.summary.criticalRisks,
+        unmitigatedRisks: report.summary.unmitigatedRisks,
+        averageRiskScore: report.summary.averageRiskScore,
+      },
+      riskBreakdown: {
+        byCategory: report.byCategory,
+        bySeverity: report.bySeverity,
+        byStatus: report.byStatus,
+      },
+      topRisks: report.highRiskItems.slice(0, 10),
+      mitigationStatus: {
+        totalMitigations,
+        completed,
+        inProgress,
+        planned,
+      },
+      recommendations,
+    };
+  }
+}
+</code></pre>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'interface';
+            var COMPODOC_CURRENT_PAGE_URL = 'RiskAssessment.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

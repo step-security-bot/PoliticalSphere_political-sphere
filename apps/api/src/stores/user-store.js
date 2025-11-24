@@ -2,7 +2,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 // eslint-disable-next-line no-restricted-imports
 import { CACHE_TTL, cacheKeys } from '../utils/cache.ts';
-import { DatabaseError, retryWithBackoff } from '../utils/error-handler.js'; // eslint-disable-line no-restricted-imports
+import { DatabaseError, retryWithBackoff } from '../utils/error-handler.ts'; // eslint-disable-line no-restricted-imports
 
 /**
  * @typedef {import('../utils/cache.ts').CacheService} CacheService
@@ -16,6 +16,52 @@ class UserStore {
   constructor(db, cache = null) {
     this.db = db;
     this.cache = cache;
+  }
+
+  /**
+   * Format user data and cache the result under multiple user cache keys
+   * @param {object} user
+   */
+  async _cacheUser(user) {
+    const result = {
+      id: user.id,
+      username: user.username,
+      email: user.email,
+      role: user.role,
+      createdAt: new Date(user.createdAt).toISOString(),
+      updatedAt: new Date(user.updatedAt).toISOString(),
+    };
+
+    if (this.cache) {
+      // Cache under user:id
+      await this.cache.set(cacheKeys.user(user.id), result, CACHE_TTL.USER);
+      // Cache under user:username:username
+      await this.cache.set(cacheKeys.userByUsername(user.username), result, CACHE_TTL.USER);
+      // Cache under user:email:email
+      await this.cache.set(cacheKeys.userByEmail(user.email), result, CACHE_TTL.USER);
+    }
+
+    return result;
+  }
+
+  /**
+   * Format user data and cache the result under a single cache key
+   */
+  async _formatAndCacheUser(user, cacheKey) {
+    const result = {
+      id: user.id,
+      username: user.username,
+      email: user.email,
+      role: user.role,
+      createdAt: new Date(user.createdAt).toISOString(),
+      updatedAt: new Date(user.updatedAt).toISOString(),
+    };
+
+    if (this.cache) {
+      await this.cache.set(cacheKey, result, CACHE_TTL.USER);
+    }
+
+    return result;
   }
 
   async create(input) {
@@ -39,23 +85,15 @@ class UserStore {
 
         stmt.run(id, input.username, input.email, passwordHash || null, role);
 
-        const result = {
-          id,
-          username: input.username,
-          email: input.email,
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString(),
-        };
-
-        if (this.cache) {
-          await Promise.all([
-            this.cache.set(cacheKeys.user(id), result, CACHE_TTL.USER),
-            this.cache.set(cacheKeys.userByUsername(input.username), result, CACHE_TTL.USER),
-            this.cache.set(cacheKeys.userByEmail(input.email), result, CACHE_TTL.USER),
-            this.cache.invalidatePattern('user:*:bills'),
-            this.cache.invalidatePattern('user:*:votes'),
-          ]);
-        }
+        // Select back to get exact timestamps
+        const selectStmt = this.db.prepare(`
+          SELECT id, username, email, role, created_at as createdAt, updated_at as updatedAt
+          FROM users
+          WHERE id = ?
+        `);
+        const dbUser = selectStmt.get(id);
+        // Cache the user under all three keys
+        const result = this._cacheUser(dbUser);
 
         return result;
       });
@@ -74,27 +112,14 @@ class UserStore {
     try {
       return await retryWithBackoff(async () => {
         const stmt = this.db.prepare(`
-          SELECT id, username, email, created_at as createdAt, updated_at as updatedAt
+          SELECT id, username, email, role, created_at as createdAt, updated_at as updatedAt
           FROM users
           WHERE id = ?
         `);
         const user = stmt.get(id);
         if (!user) return null;
 
-        const result = {
-          id: user.id,
-          username: user.username,
-          email: user.email,
-          createdAt: user.createdAt,
-          updatedAt: user.updatedAt,
-        };
-
-        // Cache the result
-        if (this.cache) {
-          await this.cache.set(cacheKeys.user(id), result, CACHE_TTL.USER);
-        }
-
-        return result;
+        return this._formatAndCacheUser(user, cacheKeys.user(id));
       });
     } catch (error) {
       throw new DatabaseError(`Failed to get user ${id}: ${error.message}`);
@@ -111,27 +136,14 @@ class UserStore {
     try {
       return await retryWithBackoff(async () => {
         const stmt = this.db.prepare(`
-          SELECT id, username, email, created_at as createdAt, updated_at as updatedAt
+          SELECT id, username, email, role, created_at as createdAt, updated_at as updatedAt
           FROM users
           WHERE username = ?
         `);
         const user = stmt.get(username);
         if (!user) return null;
 
-        const result = {
-          id: user.id,
-          username: user.username,
-          email: user.email,
-          createdAt: user.createdAt,
-          updatedAt: user.updatedAt,
-        };
-
-        // Cache the result
-        if (this.cache) {
-          await this.cache.set(cacheKeys.userByUsername(username), result, CACHE_TTL.USER);
-        }
-
-        return result;
+        return this._formatAndCacheUser(user, cacheKeys.userByUsername(username));
       });
     } catch (error) {
       throw new DatabaseError(`Failed to get user by username ${username}: ${error.message}`);
@@ -148,27 +160,14 @@ class UserStore {
     try {
       return await retryWithBackoff(async () => {
         const stmt = this.db.prepare(`
-          SELECT id, username, email, created_at as createdAt, updated_at as updatedAt
+          SELECT id, username, email, role, created_at as createdAt, updated_at as updatedAt
           FROM users
           WHERE email = ?
         `);
         const user = stmt.get(email);
         if (!user) return null;
 
-        const result = {
-          id: user.id,
-          username: user.username,
-          email: user.email,
-          createdAt: user.createdAt,
-          updatedAt: user.updatedAt,
-        };
-
-        // Cache the result
-        if (this.cache) {
-          await this.cache.set(cacheKeys.userByEmail(email), result, CACHE_TTL.USER);
-        }
-
-        return result;
+        return this._formatAndCacheUser(user, cacheKeys.userByEmail(email));
       });
     } catch (error) {
       throw new DatabaseError(`Failed to get user by email ${email}: ${error.message}`);
@@ -182,7 +181,7 @@ class UserStore {
     try {
       return await retryWithBackoff(async () => {
         const stmt = this.db.prepare(`
-          SELECT id, username, email, created_at as createdAt, updated_at as updatedAt
+          SELECT id, username, email, role, created_at as createdAt, updated_at as updatedAt
           FROM users
           ORDER BY created_at DESC
         `);
@@ -191,6 +190,7 @@ class UserStore {
           id: user.id,
           username: user.username,
           email: user.email,
+          role: user.role,
           createdAt: user.createdAt,
           updatedAt: user.updatedAt,
         }));
@@ -245,7 +245,7 @@ class UserStore {
 
         // Return updated user
         const selectStmt = this.db.prepare(`
-          SELECT id, username, email, created_at as createdAt, updated_at as updatedAt
+          SELECT id, username, email, role, created_at as createdAt, updated_at as updatedAt
           FROM users
           WHERE id = ?
         `);
@@ -254,6 +254,7 @@ class UserStore {
           id: user.id,
           username: user.username,
           email: user.email,
+          role: user.role,
           createdAt: user.createdAt,
           updatedAt: user.updatedAt,
         };

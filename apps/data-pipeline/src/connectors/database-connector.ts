@@ -22,6 +22,11 @@ export interface QueryResult<T = unknown> {
   rowCount: number;
 }
 
+/**
+ * Database connector for data pipeline operations.
+ * Provides connection management, query execution, and result processing
+ * for PostgreSQL and SQLite databases with connection pooling support.
+ */
 export class DatabaseConnector {
   private config: DatabaseConfig;
   private connected = false;

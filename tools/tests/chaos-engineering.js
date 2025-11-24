@@ -43,7 +43,7 @@ class ChaosEngineering {
     try {
       const experimentsData = await fs.readFile('ai-learning/chaos-experiments.json', 'utf8');
       this.experiments = JSON.parse(experimentsData);
-    } catch (error) {
+    } catch {
       console.log('📊 No existing experiments found, starting fresh...');
       this.experiments = {};
     }
@@ -51,7 +51,7 @@ class ChaosEngineering {
     try {
       const resultsData = await fs.readFile('ai-learning/chaos-results.json', 'utf8');
       this.results = JSON.parse(resultsData);
-    } catch (error) {
+    } catch {
       console.log('📈 No results found, starting fresh...');
       this.results = [];
     }
@@ -177,7 +177,7 @@ class ChaosEngineering {
         console.log(`🧭 Loaded ${Object.keys(overrides).length} experiments from ${configPath}`);
         return { ...defaults, ...overrides };
       }
-    } catch (error) {
+    } catch {
       // If the file is missing that's ok; we fall back to defaults.
     }
 
@@ -209,7 +209,7 @@ class ChaosEngineering {
       const data = await fs.readFile(BASELINE_PATH, 'utf8');
       this.baselines = JSON.parse(data);
       console.log('📂 Loaded persisted baselines');
-    } catch (error) {
+    } catch {
       this.baselines = {};
     }
   }

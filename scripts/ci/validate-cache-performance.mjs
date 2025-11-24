@@ -6,8 +6,7 @@
  */
 
 import { execSync } from 'node:child_process';
-import { readFileSync, writeFileSync, existsSync } from 'node:fs';
-import { join } from 'node:path';
+import { writeFileSync, existsSync } from 'node:fs';
 
 const CACHE_METRICS_FILE = 'cache-performance-results.json';
 
@@ -18,7 +17,7 @@ class CachePerformanceMonitor {
       workflow: process.env.GITHUB_WORKFLOW || 'unknown',
       runId: process.env.GITHUB_RUN_ID || 'unknown',
       sha: process.env.GITHUB_SHA || 'unknown',
-      caches: {}
+      caches: {},
     };
   }
 
@@ -26,9 +25,12 @@ class CachePerformanceMonitor {
     // In CI environment, try GitHub CLI
     if (process.env.CI) {
       try {
-        const result = execSync(`gh cache list --key "${cacheKey}" --json key,sizeInBytes,createdAt,lastAccessedAt`, {
-          encoding: 'utf8'
-        });
+        const result = execSync(
+          `gh cache list --key "${cacheKey}" --json key,sizeInBytes,createdAt,lastAccessedAt`,
+          {
+            encoding: 'utf8',
+          }
+        );
 
         const caches = JSON.parse(result);
         const cache = caches.find(c => c.key.includes(cacheKey) || cacheKey.includes(c.key));
@@ -39,7 +41,7 @@ class CachePerformanceMonitor {
             size: cache.sizeInBytes,
             createdAt: cache.createdAt,
             lastAccessedAt: cache.lastAccessedAt,
-            age: Date.now() - new Date(cache.createdAt).getTime()
+            age: Date.now() - new Date(cache.createdAt).getTime(),
           };
         }
 
@@ -52,22 +54,22 @@ class CachePerformanceMonitor {
       // Local environment - check for cache directories
       const cacheDirs = {
         'nx-cloud': '.nx/cache',
-        'dependencies': 'node_modules',
+        dependencies: 'node_modules',
         'build-artifacts': 'dist',
-        'docker-layers': '.docker-cache'
+        'docker-layers': '.docker-cache',
       };
 
       const cacheDir = cacheDirs[cacheName];
       if (cacheDir && existsSync(cacheDir)) {
         try {
           const stats = execSync(`du -sb ${cacheDir} 2>/dev/null | cut -f1`, { encoding: 'utf8' });
-          const size = parseInt(stats.trim()) || 0;
+          const size = parseInt(stats.trim(), 10) || 0;
           return {
             hit: true,
             size,
-            local: true
+            local: true,
           };
-        } catch (error) {
+        } catch {
           return { hit: true, local: true };
         }
       }
@@ -88,15 +90,18 @@ class CachePerformanceMonitor {
 
     try {
       if (existsSync(nxCacheDir)) {
-        const output = execSync(`find ${nxCacheDir} -type f -exec stat -f "%z" {} + 2>/dev/null | awk '{sum += $1} END {print sum}'`, {
-          encoding: 'utf8'
-        });
+        const output = execSync(
+          `find ${nxCacheDir} -type f -exec stat -f "%z" {} + 2>/dev/null | awk '{sum += $1} END {print sum}'`,
+          {
+            encoding: 'utf8',
+          }
+        );
         cacheSize = parseInt(output.trim(), 10) || 0;
 
         const entries = execSync(`find ${nxCacheDir} -type f | wc -l`, {
-          encoding: 'utf8'
+          encoding: 'utf8',
         });
-        cacheEntries = parseInt(entries.trim()) || 0;
+        cacheEntries = parseInt(entries.trim(), 10) || 0;
       }
     } catch (error) {
       console.warn('Failed to measure Nx cache size:', error.message);
@@ -106,7 +111,7 @@ class CachePerformanceMonitor {
       ...hit,
       size: cacheSize,
       entries: cacheEntries,
-      type: 'nx-cloud'
+      type: 'nx-cloud',
     };
   }
 
@@ -119,7 +124,7 @@ class CachePerformanceMonitor {
     let nodeModulesSize = 0;
     try {
       const output = execSync(`du -sb node_modules 2>/dev/null | cut -f1`, {
-        encoding: 'utf8'
+        encoding: 'utf8',
       });
       nodeModulesSize = parseInt(output.trim(), 10) || 0;
     } catch (error) {
@@ -129,7 +134,7 @@ class CachePerformanceMonitor {
     this.metrics.caches.dependencies = {
       ...hit,
       nodeModulesSize,
-      type: 'npm-dependencies'
+      type: 'npm-dependencies',
     };
   }
 
@@ -141,9 +146,12 @@ class CachePerformanceMonitor {
     // Measure build outputs size
     let buildSize = 0;
     try {
-      const output = execSync(`du -sb dist apps/*/dist libs/*/dist 2>/dev/null | awk '{sum += $1} END {print sum}'`, {
-        encoding: 'utf8'
-      });
+      const output = execSync(
+        `du -sb dist apps/*/dist libs/*/dist 2>/dev/null | awk '{sum += $1} END {print sum}'`,
+        {
+          encoding: 'utf8',
+        }
+      );
       buildSize = parseInt(output.trim(), 10) || 0;
     } catch (error) {
       console.warn('Failed to measure build size:', error.message);
@@ -152,7 +160,7 @@ class CachePerformanceMonitor {
     this.metrics.caches['build-artifacts'] = {
       ...hit,
       buildSize,
-      type: 'build-outputs'
+      type: 'build-outputs',
     };
   }
 
@@ -164,7 +172,7 @@ class CachePerformanceMonitor {
 
     this.metrics.caches['docker-layers'] = {
       ...hit,
-      type: 'docker-layers'
+      type: 'docker-layers',
     };
   }
 
@@ -185,7 +193,7 @@ class CachePerformanceMonitor {
       performanceImprovement: Math.round(performanceImprovement * 100) / 100,
       targetHitRate: 80,
       targetPerformanceImprovement: 25,
-      status: hitRate >= 80 ? 'PASS' : 'WARN'
+      status: hitRate >= 80 ? 'PASS' : 'WARN',
     };
 
     return this.metrics.validation;
@@ -198,14 +206,16 @@ class CachePerformanceMonitor {
       this.measureNxCachePerformance(),
       this.measureDependencyCachePerformance(),
       this.measureBuildCachePerformance(),
-      this.measureDockerCachePerformance()
+      this.measureDockerCachePerformance(),
     ]);
 
     const validation = this.calculateOverallMetrics();
 
     console.log(`\n📊 Cache Performance Results:`);
     console.log(`   Cache Hit Rate: ${validation.hitRate}% (Target: ${validation.targetHitRate}%)`);
-    console.log(`   Performance Improvement: ${validation.performanceImprovement}% (Target: ${validation.targetPerformanceImprovement}%)`);
+    console.log(
+      `   Performance Improvement: ${validation.performanceImprovement}% (Target: ${validation.targetPerformanceImprovement}%)`
+    );
     console.log(`   Status: ${validation.status}`);
 
     // Save results

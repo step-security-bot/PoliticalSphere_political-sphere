@@ -7,8 +7,30 @@ permissions:
 on:
   pull_request:
     branches: [main, develop]
+    paths:
+      - 'tools/scripts/ai/**'
+      - 'ai/**'
+      - 'ai-logs/**'
+      - 'libs/ai-system/**'
+      - 'docs/07-ai-and-simulation/**'
+      - 'docs/ai/**'
+      - '.github/workflows/ai-governance.yml'
+      - '.github/copilot-instructions.md'
+      - '.github/instructions/**'
+      - '.github/agents/**'
   push:
     branches: [main, develop]
+    paths:
+      - 'tools/scripts/ai/**'
+      - 'ai/**'
+      - 'ai-logs/**'
+      - 'libs/ai-system/**'
+      - 'docs/07-ai-and-simulation/**'
+      - 'docs/ai/**'
+      - '.github/workflows/ai-governance.yml'
+      - '.github/copilot-instructions.md'
+      - '.github/instructions/**'
+      - '.github/agents/**'
 
 jobs:
   political-neutrality:

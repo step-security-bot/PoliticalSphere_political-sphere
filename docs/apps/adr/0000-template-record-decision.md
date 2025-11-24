@@ -2,7 +2,6 @@
 
 > NOTE: For project-level context and strategy, see `docs/00-foundation/project-context.md`.
 
-title: '0000 - Record decision title'
 date: 2025-10-28
 status: proposed
 deciders:
