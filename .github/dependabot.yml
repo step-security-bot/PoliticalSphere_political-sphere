@@ -83,3 +83,68 @@ updates:
       - 'infrastructure'
     commit-message:
       prefix: 'chore(terraform)'
+
+  - package-ecosystem: docker
+    directory: /.devcontainer
+    schedule:
+      interval: daily
+
+  - package-ecosystem: npm
+    directory: /apps/api/openapi
+    schedule:
+      interval: daily
+
+  - package-ecosystem: npm
+    directory: /apps/web/.vite/deps
+    schedule:
+      interval: daily
+
+  - package-ecosystem: npm
+    directory: /apps/web
+    schedule:
+      interval: daily
+
+  - package-ecosystem: npm
+    directory: /docs/apps/.vitepress/cache/deps_temp_e07a905f
+    schedule:
+      interval: daily
+
+  - package-ecosystem: npm
+    directory: /libs/ai-system
+    schedule:
+      interval: daily
+
+  - package-ecosystem: npm
+    directory: /libs/game-engine
+    schedule:
+      interval: daily
+
+  - package-ecosystem: npm
+    directory: /libs/shared
+    schedule:
+      interval: daily
+
+  - package-ecosystem: npm
+    directory: /libs/testing
+    schedule:
+      interval: daily
+
+  - package-ecosystem: npm
+    directory: /tools/config
+    schedule:
+      interval: daily
+
+  - package-ecosystem: docker
+    directory: /tools/keycloak
+    schedule:
+      interval: daily
+
+  - package-ecosystem: npm
+    directory: /tools/scripts/ai
+    schedule:
+      interval: daily
+
+  - package-ecosystem: npm
+    directory: /vendor/js-yaml-patched
+    schedule:
+      interval: daily
