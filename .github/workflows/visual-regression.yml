@@ -37,7 +37,7 @@ jobs:
           fetch-depth: 0 # Need history for baseline comparison
 
       - name: Setup Node.js
-        uses: actions/setup-node@1e60f620b9541d16bece96c5465dc8ee9832be0b # v4.1.0
+        uses: actions/setup-node@2028fbc5c25fe9cf00d9f06a71cc4710d4507903 # v4.1.0
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'npm'

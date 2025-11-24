@@ -51,7 +51,7 @@ jobs:
           fetch-depth: 1
 
       - name: Setup Node.js
-        uses: actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af # v4.1.0 (pinned SHA)
+        uses: actions/setup-node@2028fbc5c25fe9cf00d9f06a71cc4710d4507903 # v4.1.0 (pinned SHA)
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'npm'
